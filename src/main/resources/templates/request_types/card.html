@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="request_types_body" th:remove="tag">
+        <form id="request-types-detail" class="mb-2" th:action="@{/request_types/detail}" method="post">
+            <input name="mode" value="0" hidden>
+              <div id="request-types-btn-large" class="d-none d-sm-block">
+                 <button type="submit" id="request-types-detailbtn" class="btn btn-sm btn-dark request_types_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="request-types-addbtn" class="btn btn-sm btn-dark request_types_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="submit" id="request-types-editbtn" class="btn btn-sm btn-dark request_types_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="request-types-delbtn" class="btn btn-sm btn-dark request_types_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="request-types-btn-small" class="d-block d-sm-none">
+                 <button type="submit" id="request-types-detailbtn-sx" class="btn btn-sm btn-dark request_types_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="request-types-addbtn-sx" class="btn btn-sm btn-dark request_types_btn_control" th:attr="mode=0" disabled><i data-feather="plus"></i></button>
+                 <button type="submit" id="request-types-editbtn-sx" class="btn btn-sm btn-dark request_types_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="request-types-delbtn-sx" class="btn btn-sm btn-dark request_types_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+
+        <div><table id="table-request-types" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vRequestTypeValue;
+    vRequestTypeValue = {
+        table : '#table-request-types',
+        ajax : {
+            "url": /*[[@{/request_types/gettable}]]*/ "request_types/gettable",
+            "type": "post",
+            "data": {
+            }
+        },
+        key : "req_type_id",
+        switchControl : request_types_switchControl,
+        rowdata:{
+           req_type_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["req_type_colour"]);
+        },
+        columnDefs:[
+                    {"targets": [4], "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{request_types.req_type_id}]]*/ "req_type_id", "data": "req_type_id", "width": "3%"},
+                /*1*/{"title": /*[[#{request_types.req_type_sname}]]*/ "req_type_sname", "data": "req_type_sname", "width": "15%", "className": "desktop" },
+                /*2*/{"title": /*[[#{request_types.req_type_name}]]*/ "req_type_name", "data": "req_type_name", "width": "21%"},
+                /*3*/{"title": /*[[#{request_types.req_type_description}]]*/ "req_type_description", "data": "req_type_description", "width": "60%", "className": "desktop"},
+                /*4*/{"title": /*[[#{request_types.req_type_colour}]]*/ "req_type_colour", "data": "req_type_colour", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function request_types_switchControl(){
+        if(vRequestTypeValue.rowdata.req_type_id != null) {
+                $("#request-types-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#request-types-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#request-types-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#request-types-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+                $("#request-types-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#request-types-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#request-types-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#request-types-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.request_types_btn_control').on('click', function (){
+        $("#request-types-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#request-types-detail').submit(function() {
+        vRequestTypeValue.rowdata.request_types_table_order_column = $(vRequestTypeValue.table).DataTable().order()[0][0];
+        vRequestTypeValue.rowdata.request_types_table_order_type = $(vRequestTypeValue.table).DataTable().order()[0][1];
+        vRequestTypeValue.rowdata.request_types_table_search = $(vRequestTypeValue.table).DataTable().search();
+        vRequestTypeValue.rowdata.request_types_table_pagelen = $(vRequestTypeValue.table).DataTable().page.len();
+        vRequestTypeValue.rowdata.request_types_table_page = $(vRequestTypeValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vRequestTypeValue.rowdata).forEach(function (index) {
+            $("#request-types-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#request-types-detail input[name=\"" + index + "\"]").val(vRequestTypeValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vRequestTypeValue.rowdata.req_type_id = /*[[${req_type_id}]]*/ null;
+
+        vRequestTypeValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vRequestTypeValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vRequestTypeValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vRequestTypeValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vRequestTypeValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vRequestTypeValue);
+        $('#main_li').removeClass('active');
+
+        $('#dictionaries_li').addClass('active').removeClass('collapsed');
+        $('#dictionaries_a').attr('aria-expanded',true);
+        $('#dictionaries').addClass('show');
+
+        $('#request_types_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

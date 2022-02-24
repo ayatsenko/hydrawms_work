@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{aero_world.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="aero_world_filter_card">
+            <div class="card-header pb-0 mb-0">
+                <div class="card-actions float-right">
+                    <a href="#aero_world_filter_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#aero_world_filter_div" data-toggle="collapse" th:text="#{aero_world.filter}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse" id="aero_world_filter_div">
+                <div>
+                    <span th:replace="aero_world/filter_card :: aero_world_filter_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="aero_world_main_card">
+            <div class="card-header pb-0 mb-0">
+                <div class="card-actions float-right">
+                    <a href="#aero_world_main_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#aero_world_main_div" data-toggle="collapse" th:text="#{aero_world.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="aero_world_main_div">
+                <div>
+                    <span th:replace="aero_world/main_check_modal :: aero_world_main_time_modal_body"></span>
+                    <span th:replace="aero_world/main_modal :: aero_world_main_modal_body"></span>
+                    <span th:replace="aero_world/main_card :: aero_world_main_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div>
+            <div class="tab mb-2">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"><a class="nav-link active text-primary" href="#tab-1" data-toggle="tab" role="tab" th:text="#{aero_world.tabs.timetable}">Timetable</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-2" data-toggle="tab" role="tab" th:text="#{aero_world.tabs.costs}">Costs</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-3" data-toggle="tab" role="tab" th:text="#{aero_world.tabs.addresses}" hidden>Addresses</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-4" data-toggle="tab" role="tab" th:text="#{aero_world.tabs.aims}" hidden>Aims</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-5" data-toggle="tab" role="tab" th:text="#{aero_world.tabs.transports}" hidden>Transports</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-6" data-toggle="tab" role="tab" th:text="#{aero_world.tabs.reports}" hidden>Reports</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-7" data-toggle="tab" role="tab" th:text="#{aero_world.tabs.errors}" hidden>Errors</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-8" data-toggle="tab" role="tab" th:text="#{aero_world.tabs.notes}" hidden>Notes</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-9" data-toggle="tab" role="tab" th:text="#{aero_world.tabs.tasks}" hidden>Tasks</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-1" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="aero_world/timelog_card :: aero_world_timelog_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-2" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <span th:replace="aero_world/costs_groups_card :: aero_world_costs_groups_body"></span>
+                                    </div>
+                                    <div class="col-9">
+                                        <span th:replace="aero_world/costs_modal :: aero_world_costs_modal_body"></span>
+                                        <span th:replace="aero_world/costs_card :: aero_world_costs_body"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-3" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-4" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-5" role="tabpanel">
+                        <div class="row">
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-6" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-7" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-8" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-9" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FA -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="aero_world/timelog_card :: cardscript"></script>
+
+<script th:replace="aero_world/costs_modal :: cardscript"></script>
+<script th:replace="aero_world/costs_card :: cardscript"></script>
+
+<script th:replace="aero_world/costs_groups_card :: cardscript"></script>
+
+<script th:replace="aero_world/main_check_modal :: cardscript"></script>
+<script th:replace="aero_world/main_modal :: cardscript"></script>
+<script th:replace="aero_world/main_card :: cardscript"></script>
+<script th:replace="aero_world/filter_card :: cardscript"></script>
+</body>
+</html>

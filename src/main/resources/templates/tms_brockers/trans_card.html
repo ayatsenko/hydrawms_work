@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_brockers_trans_body" th:remove="tag">
+        <form id="tms-brockers-trans-detail" class="mb-2" th:action="@{/tms_brockers/trans_detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="tms-brockers-trans-btn-large" class="d-none d-sm-block">
+                 <button type="submit" id="tms-brockers-trans-detailbtn" class="btn btn-sm btn-dark tms_brockers_trans_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="tms-brockers-trans-addbtn" class="btn btn-sm btn-dark tms_brockers_trans_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="submit" id="tms-brockers-trans-editbtn" class="btn btn-sm btn-dark tms_brockers_trans_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="tms-brockers-trans-delbtn" class="btn btn-sm btn-dark tms_brockers_trans_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="tms-brockers-trans-btn-small" class="d-block d-sm-none">
+                 <button type="submit" id="tms-brockers-trans-detailbtn-sx" class="btn btn-sm btn-dark tms_brockers_trans_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="tms-brockers-trans-addbtn-sx" class="btn btn-sm btn-dark tms_brockers_trans_btn_control" th:attr="mode=0" disabled><i data-feather="plus"></i></button>
+                 <button type="submit" id="tms-brockers-trans-editbtn-sx" class="btn btn-sm btn-dark tms_brockers_trans_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="tms-brockers-trans-delbtn-sx" class="btn btn-sm btn-dark tms_brockers_trans_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-tms-brockers-trans" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vClaimTransValue;
+    vClaimTransValue = {
+        table : '#table-tms-brockers-trans',
+        button_form: "#tms-brockers-trans-detail",
+        ajax : {
+            "url": /*[[@{/tms_brockers/get_trans_table}]]*/ "tms_brockers/get_trans_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vClaimTransValue.rowdata.clm_id
+            }
+        },
+        key : "clmtrl_id",
+        switchControl : tms_brockers_trans_switchControl,
+        rowdata:{
+            clm_id: null,
+            clmtrl_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).css('background-color', data["act_type_colour"]);*/
+        },
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [14], "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{tms_brockers.trans.clmtrl_id}]]*/ "clmtrl_id", "data": "clmtrl_id", "width": "1%"},
+                /*1*/{"title": /*[[#{tms_brockers.trans.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": "20%" },
+                /*2*/{"title": /*[[#{tms_brockers.trans.cntc_type_sname}]]*/ "cntc_type_sname", "data": "cntc_type_sname", "width": "5%", "className": "text-center"},
+                /*3*/{"title": /*[[#{tms_brockers.trans.cntc_type_brand}]]*/ "cntc_type_brand", "data": "cntc_type_brand", "width": "5%", "className": "text-center"},
+                /*4*/{"title": /*[[#{tms_brockers.trans.cntc_type_number}]]*/ "cntc_type_number", "data": "cntc_type_number", "width": "5%", "className": "text-center"},
+                /*5*/{"title": /*[[#{tms_brockers.trans.cntt_type_sname}]]*/ "cntt_type_sname", "data": "cntt_type_sname", "width": "5%", "className": "text-center"},
+                /*6*/{"title": /*[[#{tms_brockers.trans.cntt_type_brand}]]*/ "cntt_type_brand", "data": "cntt_type_brand", "width": "5%", "className": "text-center"},
+                /*7*/{"title": /*[[#{tms_brockers.trans.cntt_type_number}]]*/ "cntt_type_number", "data": "cntt_type_number", "width": "5%", "className": "text-center"},
+                /*8*/{"title": /*[[#{tms_brockers.trans.cntd_name}]]*/ "cntd_name", "data": "cntd_name", "width": "14%"},
+                /*9*/{"title": /*[[#{tms_brockers.trans.cntd_name_eng}]]*/ "cntd_name_eng", "data": "cntd_name_eng", "width": "10%"},
+                /*10*/{"title": /*[[#{tms_brockers.trans.cntd_name_doc}]]*/ "cntd_name_doc", "data": "cntd_name_doc", "width": "5%"},
+                /*11*/{"title": /*[[#{tms_brockers.trans.cntd_name_lisence}]]*/ "cntd_name_lisence", "data": "cntd_name_lisence", "width": "5%"},
+                /*12*/{"title": /*[[#{tms_brockers.trans.cntd_main_phone}]]*/ "cntd_main_phone", "data": "cntd_main_phone", "width": "5%"},
+                /*13*/{"title": /*[[#{tms_brockers.trans.cntd_second_phone}]]*/ "cntd_second_phone", "data": "cntd_second_phone", "width": "5%"},
+                /*14*/{"title": /*[[#{tms_brockers.trans.cntd_email}]]*/ "cntd_email", "data": "cntd_email", "width": "5%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function tms_brockers_trans_switchControl(){
+        if(vClaimTransValue.rowdata.clmtrl_id != null) {
+                $("#tms-brockers-trans-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-trans-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-trans-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#tms-brockers-trans-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-trans-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-trans-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+                $("#tms-brockers-trans-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-trans-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-trans-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#tms-brockers-trans-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-trans-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-trans-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.tms_brockers_trans_btn_control').on('click', function (){
+        $("#tms-brockers-trans-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#tms-brockers-trans-detail').submit(function() {
+        vClaimTransValue.rowdata.tms_brockers_trans_table_order_column = $(vClaimTransValue.table).DataTable().order()[0][0];
+        vClaimTransValue.rowdata.tms_brockers_trans_table_order_type = $(vClaimTransValue.table).DataTable().order()[0][1];
+        vClaimTransValue.rowdata.tms_brockers_trans_table_search = $(vClaimTransValue.table).DataTable().search();
+        vClaimTransValue.rowdata.tms_brockers_trans_table_pagelen = $(vClaimTransValue.table).DataTable().page.len();
+        vClaimTransValue.rowdata.tms_brockers_trans_table_page = $(vClaimTransValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vClaimTransValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+        vClaimTransValue.rowdata.clm_num = vClaimsValue.rowdata.clm_num;
+        vClaimTransValue.rowdata.cnt_name = vClaimsValue.rowdata.cnt_name;
+
+        Object.keys(vClaimTransValue.rowdata).forEach(function (index) {
+            $("#tms-brockers-trans-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#tms-brockers-trans-detail input[name=\"" + index + "\"]").val(vClaimTransValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vClaimTransValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vClaimTransValue.rowdata.clmtrl_id = /*[[${clmtrl_id}]]*/ null;
+
+        vClaimTransValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vClaimTransValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vClaimTransValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vClaimTransValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vClaimTransValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vClaimTransValue);
+    });
+</script>
+
+</body>
+</html>

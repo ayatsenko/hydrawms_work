@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{finance.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="finance_filter_card">
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#finance_filter_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#finance_filter_div" data-toggle="collapse" th:text="#{finance.filter}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="finance_filter_div">
+                <form class="form-inline">
+                    <div class="custom-control custom-switch">
+                        <input class="custom-control-input" type="checkbox" id="finance_filter_check" name="finance_filter_check">
+                        <label class="custom-control-label" for="finance_filter_check"></label>
+                    </div>
+                    <div class="form-group form-group-sm mr-2">
+                        <label for="finance_filter_start_date" class="mr-2" th:text="#{finance.list.filter_start_date}">StartDate:</label>
+                        <input class="form-control" type="text" id="finance_filter_start_date" name="finance_filter_start_date" disabled/>
+                    </div>
+
+                    <div class="form-group form-group-sm mr-2">
+                        <label for="finance_filter_end_date" class="mr-2" th:text="#{finance.list.filter_end_date}">EndDate:</label>
+                        <input class="form-control" type="text" id="finance_filter_end_date" name="finance_filter_end_date" disabled/>
+                    </div>
+                    <button type="button" class="btn btn-dark align-middle" id="finance_filter_show" disabled><i data-feather="search"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>    
+    
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="finance_list_card">
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#finance_list_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#finance_list_div" data-toggle="collapse" th:text="#{finance.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="finance_list_div">
+                <div>
+                    <span th:replace="finance/list_card :: finance_list_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Location -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<script th:replace="finance/list_card :: cardscript"></script>
+</body>
+</html>

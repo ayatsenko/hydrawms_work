@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_files_body" th:remove="tag">
+        <form id="clients-files-detail" class="mb-2" th:action="@{/clients/files_detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="clients-files-detailbtn-large" class="d-none d-sm-block">
+                 <button id="clients-files-downloadbtn" class="btn btn-sm btn-dark clients_files_btn_control" form="frmdownload" th:text="#{general.download}" disabled>View</button>
+                 <button type="submit" id="clients-files-addbtn" class="btn btn-sm btn-dark clients_files_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="submit" id="clients-files-delbtn" class="btn btn-sm btn-dark clients_files_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="clients-files-detailbtn-small" class="d-block d-sm-none">
+                 <button id="clients-files-downloadbtn-sx" class="btn btn-sm btn-dark clients_files_btn_control" form="frmdownload" disabled><i data-feather="save"></i></button>
+                 <button type="submit" id="clients-files-addbtn-sx" class="btn btn-sm btn-dark clients_files_btn_control" th:attr="mode=0" disabled><i data-feather="plus"></i></button>
+                 <button type="submit" id="clients-files-delbtn-sx" class="btn btn-sm btn-dark clients_files_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+
+        <form id="frmdownload" method="post" th:action="@{/clients/files_download}">
+            <input type="hidden" name="cnt_doc_file_id">
+        </form>
+
+        <div><table id="table-clients-files" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vClientDocFilesListValue;
+    vClientDocFilesListValue = {
+        table : '#table-clients-files',
+        button_form: "#clients-files-detail",
+        ajax : {
+            "url": /*[[@{/clients/get_files_table}]]*/ "clients/get_files_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.cnt_id = vClientDocFilesListValue.rowdata.cnt_id;
+                d.cnt_doc_id = vClientDocFilesListValue.rowdata.cnt_doc_id;
+            }
+        },
+        key : "cnt_doc_file_id",
+        switchControl : clients_files_switchControl,
+        rowdata:{
+            cnt_doc_file_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 'ftp',
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [1], type: 'de_date'}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{clients.files.cnt_doc_file_id}]]*/ "cnt_doc_file_id", "data": "cnt_doc_file_id", "width": "1%"},
+            /*1*/{"title": /*[[#{clients.files.cnt_doc_file_date}]]*/ "cnt_doc_file_date", "data": "cnt_doc_file_date", "width": "10%", "className": "min-tablet-p"},
+            /*2*/{"title": /*[[#{clients.files.cnt_doc_file_name}]]*/ "cnt_doc_file_name", "data": "cnt_doc_file_name", "width": "89%"}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function clients_files_switchControl(){
+        if(vClientDocFilesListValue.rowdata.cnt_doc_file_id != null) {
+            if(vClientsListValue.rowdata.cnt_user_main_access === 1) {
+                $("#clients-files-downloadbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#clients-files-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#clients-files-downloadbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#clients-files-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }else{
+                $("#clients-files-downloadbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-files-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#clients-files-downloadbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-files-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+        } else{
+            $("#clients-files-downloadbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-files-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#clients-files-downloadbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-files-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.clients_files_btn_control').on('click', function (){
+        $("#clients-files-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#frmdownload').submit(function(){
+        $("#frmdownload input[name=cnt_doc_file_id]").val(vClientDocFilesListValue.rowdata.cnt_doc_file_id);
+    });
+
+    $('#clients-files-detail').submit(function(){
+        vClientDocFilesListValue.rowdata.clients_files_table_order_column = $(vClientDocFilesListValue.table).DataTable().order()[0][0];
+        vClientDocFilesListValue.rowdata.clients_files_table_order_type = $(vClientDocFilesListValue.table).DataTable().order()[0][1];
+        vClientDocFilesListValue.rowdata.clients_files_table_search = $(vClientDocFilesListValue.table).DataTable().search();
+        vClientDocFilesListValue.rowdata.clients_files_table_pagelen = $(vClientDocFilesListValue.table).DataTable().page.len();
+        vClientDocFilesListValue.rowdata.clients_files_table_page = $(vClientDocFilesListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vClientDocFilesListValue.rowdata.cnt_id = vClientsListValue.rowdata.cnt_id;
+        vClientDocFilesListValue.rowdata.cnt_name = vClientsListValue.rowdata.cnt_name;
+
+        vClientDocFilesListValue.rowdata.clients_list_table_order_column = $(vClientsListValue.table).DataTable().order()[0][0];
+        vClientDocFilesListValue.rowdata.clients_list_table_order_type = $(vClientsListValue.table).DataTable().order()[0][1];
+        vClientDocFilesListValue.rowdata.clients_list_table_search = $(vClientsListValue.table).DataTable().search();
+        vClientDocFilesListValue.rowdata.clients_list_table_pagelen = $(vClientsListValue.table).DataTable().page.len();
+        vClientDocFilesListValue.rowdata.clients_list_table_page = $(vClientsListValue.table).DataTable().page.info().page;
+
+        vClientDocFilesListValue.rowdata.cnt_doc_id = vClientDocumentsListValue.rowdata.cnt_doc_id;
+        vClientDocFilesListValue.rowdata.cnt_doc_num = vClientDocumentsListValue.rowdata.cnt_doc_num;
+
+        Object.keys(vClientDocFilesListValue.rowdata).forEach(function (index) {
+            $("#clients-files-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#clients-files-detail input[name=\"" + index + "\"]").val(vClientDocFilesListValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vClientDocFilesListValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+        vClientDocFilesListValue.rowdata.cnt_doc_id = /*[[${cnt_id}]]*/ null;
+        vClientDocFilesListValue.rowdata.cnt_doc_file_id = /*[[${cnt_doc_file_id}]]*/ null;
+
+        vClientDocFilesListValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vClientDocFilesListValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vClientDocFilesListValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vClientDocFilesListValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vClientDocFilesListValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vClientDocFilesListValue);
+    });
+</script>
+
+</body>
+</html>

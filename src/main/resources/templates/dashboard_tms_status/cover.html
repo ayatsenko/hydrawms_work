@@ -1,0 +1,178 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{dashboard_tms_status.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2">
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#dashboard_tms_status_filter_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#dashboard_tms_status_filter_div" data-toggle="collapse" th:text="#{dashboard_tms_status.filter.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="dashboard_tms_status_filter_div">
+                <div>
+                    <span th:replace="dashboard_tms_status/head_card :: dashboard_tms_status_head_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Header -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="dashboard_tms_status_detail_card" hidden>
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#dashboard_tms_status_detail_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#dashboard_tms_status_detail_div" data-toggle="collapse" th:text="#{dashboard_tms_status.detail.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="dashboard_tms_status_detail_div">
+                <div>
+                    <span th:replace="dashboard_tms_status/detail_card :: dashboard_tms_status_detail_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Detail -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div id="dashboard_tms_status_tabs_div" hidden>
+            <div class="tab">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"><a class="nav-link text-primary active" href="#tab-1" data-toggle="tab" role="tab" th:text="#{dashboard_tms_status.tabs.all}">All</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-2" data-toggle="tab" role="tab" th:text="#{dashboard_tms_status.tabs.notfilled}">NotFilled</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-3" data-toggle="tab" role="tab" th:text="#{dashboard_tms_status.tabs.new}">New</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-4" data-toggle="tab" role="tab" th:text="#{dashboard_tms_status.tabs.drawup}">Drawup</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-5" data-toggle="tab" role="tab" th:text="#{dashboard_tms_status.tabs.onload}">Onload</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-6" data-toggle="tab" role="tab" th:text="#{dashboard_tms_status.tabs.loaded}">Loaded</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-7" data-toggle="tab" role="tab" th:text="#{dashboard_tms_status.tabs.document}">Document</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-8" data-toggle="tab" role="tab" th:text="#{dashboard_tms_status.tabs.border}">Border</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-9" data-toggle="tab" role="tab" th:text="#{dashboard_tms_status.tabs.custom}">Custom</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-10" data-toggle="tab" role="tab" th:text="#{dashboard_tms_status.tabs.unloading}">Unloading</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-11" data-toggle="tab" role="tab" th:text="#{dashboard_tms_status.tabs.unloaded}">Unloaded</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-12" data-toggle="tab" role="tab" th:text="#{dashboard_tms_status.tabs.closed}">Closed</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-13" data-toggle="tab" role="tab" th:text="#{dashboard_tms_status.tabs.payed}">Payed</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-1" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="dashboard_tms_status/all_card :: dashboard_tms_status_all_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-2" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="dashboard_tms_status/notfilled_card :: dashboard_tms_status_notfilled_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-3" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="dashboard_tms_status/new_card :: dashboard_tms_status_new_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-4" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="dashboard_tms_status/drawup_card :: dashboard_tms_status_drawup_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-5" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="dashboard_tms_status/onload_card :: dashboard_tms_status_onload_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-6" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="dashboard_tms_status/loaded_card :: dashboard_tms_status_loaded_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-7" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="dashboard_tms_status/document_card :: dashboard_tms_status_document_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-8" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="dashboard_tms_status/border_card :: dashboard_tms_status_border_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-9" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="dashboard_tms_status/custom_card :: dashboard_tms_status_custom_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-10" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="dashboard_tms_status/unloading_card :: dashboard_tms_status_unloading_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-11" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="dashboard_tms_status/unloaded_card :: dashboard_tms_status_unloaded_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-12" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="dashboard_tms_status/closed_card :: dashboard_tms_status_closed_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-13" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="dashboard_tms_status/paid_card :: dashboard_tms_status_paid_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Tabs -->
+</div>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<script th:replace="dashboard_tms_status/all_card :: cardscript"></script>
+<script th:replace="dashboard_tms_status/notfilled_card :: cardscript"></script>
+<script th:replace="dashboard_tms_status/new_card :: cardscript"></script>
+<script th:replace="dashboard_tms_status/drawup_card :: cardscript"></script>
+<script th:replace="dashboard_tms_status/onload_card :: cardscript"></script>
+<script th:replace="dashboard_tms_status/loaded_card :: cardscript"></script>
+<script th:replace="dashboard_tms_status/document_card :: cardscript"></script>
+<script th:replace="dashboard_tms_status/border_card :: cardscript"></script>
+<script th:replace="dashboard_tms_status/custom_card :: cardscript"></script>
+<script th:replace="dashboard_tms_status/unloading_card :: cardscript"></script>
+<script th:replace="dashboard_tms_status/unloaded_card :: cardscript"></script>
+<script th:replace="dashboard_tms_status/closed_card :: cardscript"></script>
+<script th:replace="dashboard_tms_status/paid_card :: cardscript"></script>
+
+<script th:replace="dashboard_tms_status/detail_card :: cardscript"></script>
+<script th:replace="dashboard_tms_status/head_card :: cardscript"></script>
+
+</body>
+</html>

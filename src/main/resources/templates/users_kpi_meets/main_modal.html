@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="users_kpi_meets_main_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="users_kpi_meets_main_modal" data-toggle="validator" tabindex="-1" role="dialog"
+         data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="users_kpi_meets_main_modal_mode">
+            </div>
+
+            <div class="modal-content" id="users_kpi_meets_main_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{clients.address.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mb-1">
+                    <form id="users_kpi_meets_main_modal_form" name="users_kpi_meets_main_modal_form" class="was-validated" novalidate>
+                        <div class="form-row">
+                            <div class="col-12 col-md-3 mb-1" id="user_kpi_meet_id_row">
+                                <label for="user_kpi_meet_id" class="form-label" th:text="'1. '+ #{users_kpi_meets.main.user_kpi_meet_id}"></label>
+                                <input type="number" class="form-control" id="user_kpi_meet_id" name="user_kpi_meet_id" readonly>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 mb-1" id="add_type_id_row">
+                                <label for="user_kpi_meet_type_id" th:text="'2. '+#{users_kpi_meets.main.user_kpi_meet_type_id}"></label>
+                                <div class="input-group d-flex">
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <select type="text" id="user_kpi_meet_type_id" name="user_kpi_meet_type_id" class="form-control p-1" aria-describedby="user_kpi_meet_type_id_helpBlock">
+                                    </select>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-12 col-md-3 mb-1" id="user_kpi_date_row">
+                                <label for="user_kpi_date" class="form-label" th:text="'3. '+ #{users_kpi_meets.main.user_kpi_date}"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="user_kpi_date" name="user_kpi_date">
+                                    <button type="button" id="user_kpi_date_x" name="user_kpi_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 mb-1">
+                                <label for="user_kpi_meet_name" class="form-label" th:text="'4. '+#{users_kpi_meets.main.user_kpi_meet_name}"></label>
+                                <input type="text" maxlength="32" class="form-control" id="user_kpi_meet_name" name="user_kpi_meet_name">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </form>
+                </div><!-- Body -->
+                <div class="modal-footer">
+                    <button type="button" id="users_kpi_meets_main_modal_closebtn" class="btn btn-outline-dark mr-1"
+                            data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="users_kpi_meets_main_modal_addbtn" class="btn btn-outline-primary"
+                            th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="users_kpi_meets_main_modal_editbtn" class="btn btn-outline-primary"
+                            th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="users_kpi_meets_main_modal_delbtn" class="btn btn-outline-primary"
+                            th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+// Clear Fields
+    function clear_users_kpi_meets_main_modal_detail() {
+        $("#users_kpi_meets_main_modal_detail input[type=text]").val('');
+        $("#users_kpi_meets_main_modal_detail input[type=number]").val('');
+        $("#users_kpi_meets_main_modal_detail select").empty();
+        $("#users_kpi_meets_main_modal_detail textarea").val('');
+    }
+
+// Block And Required Fields
+    function block_users_kpi_meets_main_modal_detail() {
+        $('#user_kpi_date').attr('required', true);
+        $('#user_kpi_meet_name').attr('required', true);
+
+        if ($('#users_kpi_meets_main_modal_mode').val() === "0") {
+            $('#user_kpi_meet_id_row').attr('hidden', true);
+
+            $('#user_kpi_date').removeAttr('disabled');
+            $('#user_kpi_date_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#user_kpi_meet_name').removeAttr('readonly');
+        } else if ($('#users_kpi_meets_main_modal_mode').val() === "1") {
+            $('#user_kpi_meet_id_row').removeAttr('hidden');
+
+            $('#user_kpi_date').removeAttr('disabled');
+            $('#user_kpi_date_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#user_kpi_meet_name').removeAttr('readonly');
+        } else {
+            $('#user_kpi_meet_id_row').removeAttr('hidden');
+
+            $('#user_kpi_date').attr('disabled', true);
+            $('#user_kpi_date_x').attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#user_kpi_meet_name').attr('readonly', true);
+        }
+    }
+// Users KPI Date
+$("#user_kpi_date").daterangepicker({
+    "singleDatePicker": true,
+    "locale": {
+        "format": "DD.MM.YYYY",
+        "separator": " - ",
+        "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+        "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+        "daysOfWeek": [
+            /*[[#{weekdays.07_short}]]*/ "Su",
+            /*[[#{weekdays.01_short}]]*/ "Mo",
+            /*[[#{weekdays.02_short}]]*/ "Tu",
+            /*[[#{weekdays.03_short}]]*/ "We",
+            /*[[#{weekdays.04_short}]]*/ "Th",
+            /*[[#{weekdays.05_short}]]*/ "Fr",
+            /*[[#{weekdays.06_short}]]*/ "Sa"
+        ],
+        "monthNames": [
+            /*[[#{month.01}]]*/ "January",
+            /*[[#{month.02}]]*/ "February",
+            /*[[#{month.03}]]*/ "March",
+            /*[[#{month.04}]]*/ "April",
+            /*[[#{month.05}]]*/ "May",
+            /*[[#{month.06}]]*/ "June",
+            /*[[#{month.07}]]*/ "July",
+            /*[[#{month.08}]]*/ "August",
+            /*[[#{month.09}]]*/ "September",
+            /*[[#{month.10}]]*/ "October",
+            /*[[#{month.11}]]*/ "November",
+            /*[[#{month.12}]]*/ "December"
+        ],
+        "firstDay": 1
+    }
+});
+
+$('#user_kpi_date_x').on('click', function() {
+    $('#user_kpi_date').empty().val('');
+});
+
+// Meetings Type Сhange Function
+function meetingTypeChange(vMode, vMeetingTypeID) {
+    $('#user_kpi_meet_type_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/users_kpi_meets/get_meeting_type_list'}]]*/ "/users_kpi_meets/get_meeting_type_list",
+        type: "get",
+        data: {
+            "mode": vMode
+        },
+        success: function (user_kpi_meet_type_list) {
+            for (var i = 0; i < user_kpi_meet_type_list.data.length; i++) {
+                $("select[name='user_kpi_meet_type_id']").find('option').end().append("<option value='" + user_kpi_meet_type_list.data[i].user_kpi_meet_type_id + "'>" + user_kpi_meet_type_list.data[i].user_kpi_meet_type_sname + "</option>");
+            }
+            if(vMeetingTypeID !== null){
+                $('#user_kpi_meet_type_id').val(vMeetingTypeID);
+            }
+        },
+        error: function(){}
+    }));
+}
+
+// Load Function
+    function fill_users_kpi_meets_main_modal_detail(aMode) {
+        $('#users_kpi_meets_main_modal_mode').val(aMode);
+
+        clear_users_kpi_meets_main_modal_detail();
+        block_users_kpi_meets_main_modal_detail();
+
+        if (aMode > 0) {
+            $.when(
+                meetingTypeChange(aMode,vUsersKPIMeetsValue.rowdata.user_kpi_meet_type_id)
+            ).then(function () {
+                $('#user_kpi_meet_id').val(vUsersKPIMeetsValue.rowdata.user_kpi_meet_id);
+
+                $('#user_kpi_meet_name').val(vUsersKPIMeetsValue.rowdata.user_kpi_meet_name);
+
+                $('#user_kpi_date').data('daterangepicker').setStartDate(vUsersKPIMeetsValue.rowdata.user_kpi_date);
+                $('#user_kpi_date').data('daterangepicker').setEndDate(vUsersKPIMeetsValue.rowdata.user_kpi_date);
+                $('#user_kpi_date').trigger("apply.daterangepicker");
+
+                $('#users_kpi_meets_main_modal').modal('show');
+            });
+        } else if (aMode === 0) {
+            $.when(
+                meetingTypeChange(aMode,0)
+            ).then(function (){
+                $('#users_kpi_meets_main_modal').modal('show');
+            });
+        }
+    }
+
+// Add button script
+    $('#users_kpi_meets_main_modal_addbtn').on('click', function () {
+        $('#users_kpi_meets_main_modal_form').submit();
+    });
+// Edit button script
+    $('#users_kpi_meets_main_modal_editbtn').on('click', function () {
+        $('#users_kpi_meets_main_modal_form').submit();
+    });
+// Del button script
+    $('#users_kpi_meets_main_modal_delbtn').on('click', function () {
+        $('#users_kpi_meets_main_modal_form').submit();
+    });
+
+//Add Department
+    function addKPIMeets() {
+        var RowID = vUsersKPIMeetsValue.rowdata.user_kpi_meet_id;
+        $.ajax({
+            url: /*[[ @{/users_kpi_meets/add_kpi_meet} ]]*/ "/users_kpi_meets/add_kpi_meet",
+            type: 'POST',
+            data: {
+                "user_kpi_date": $('#user_kpi_date').val(),
+                "user_kpi_meet_name": $('#user_kpi_meet_name').val(),
+                "user_kpi_meet_type_id": $('#user_kpi_meet_type_id').val()
+            },
+            success: function (result) {
+                $('#users_kpi_meets_main_modal').modal('hide');
+                vUsersKPIMeetsValue.rowdata.user_kpi_meet_id = RowID;
+                $(vUsersKPIMeetsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+//Edit Department
+    function editKPIMeets() {
+        var RowID = vUsersKPIMeetsValue.rowdata.user_kpi_meet_id;
+        $.ajax({
+            url: /*[[ @{/users_kpi_meets/edit_kpi_meet} ]]*/ "/users_kpi_meets/edit_kpi_meet",
+            type: 'POST',
+            data: {
+                "user_kpi_meet_id": RowID,
+                "user_kpi_date": $('#user_kpi_date').val(),
+                "user_kpi_meet_name": $('#user_kpi_meet_name').val(),
+                "user_kpi_meet_type_id": $('#user_kpi_meet_type_id').val()
+            },
+            success: function (result) {
+                $('#users_kpi_meets_main_modal').modal('hide');
+                vUsersKPIMeetsValue.rowdata.user_kpi_meet_id = RowID;
+                $(vUsersKPIMeetsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+// Delete button script
+    function delKPIMeets() {
+        var RowID = vUsersKPIMeetsValue.rowdata.user_kpi_meet_id;
+        $.ajax({
+            url: /*[[ @{/users_kpi_meets/del_kpi_meet} ]]*/ "/users_kpi_meets/del_kpi_meet",
+            type: 'POST',
+            data: {
+                "user_kpi_meet_id": RowID
+            },
+            success: function (result) {
+                $('#users_kpi_meets_main_modal').modal('hide');
+                vUsersKPIMeetsValue.rowdata.user_kpi_meet_id = RowID;
+                $(vUsersKPIMeetsValue.table).DataTable().ajax.reload(null, false);
+                vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_id = null;
+                $(vUsersKPIMeetsUsersValue.table).DataTable().clear().draw();                
+            }
+        });
+    }
+
+//Validation Form
+    $('#users_kpi_meets_main_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function (error, element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            if ($('#users_kpi_meets_main_modal_mode').val() === '0') {
+                addKPIMeets();
+            } else if ($('#users_kpi_meets_main_modal_mode').val() === '1') {
+                editKPIMeets();
+            } else if ($('#users_kpi_meets_main_modal_mode').val() === '2') {
+                delKPIMeets();
+            }
+            return false;
+        }
+    });
+// OnChange Functions
+</script>
+
+</body>
+</html>

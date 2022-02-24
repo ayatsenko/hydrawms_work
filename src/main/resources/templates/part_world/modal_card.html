@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="part_world_main_time_modal_body" th:remove="tag">
+    <div class="modal fade" id="part_world_main_time_modal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{part_world.main.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                        <div class="row">
+                            <div class="col-6" id="load_date_row" hidden>
+                                <label for="load_date" class="form-label" th:text="#{part_world.modal.load_date}"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="load_date" name="load_date">
+                                    <button type="button" id="load_date_x" name="load_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                                </div>
+                            </div>
+                        </div><!-- Load Date -->
+
+                        <div class="row">
+                            <div class="col-6" id="loaded_date_row" hidden>
+                                <label for="loaded_date" class="form-label" th:text="#{part_world.modal.loaded_date}"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="loaded_date" name="loaded_date">
+                                    <button type="button" id="loaded_date_x" name="loaded_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                                </div>
+                            </div>
+                        </div><!-- Loaded Date -->
+
+                        <div class="row">
+                            <div class="col-6" id="custom_date_row" hidden>
+                                <label for="custom_date" class="form-label" th:text="#{part_world.modal.custom_date}"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="custom_date" name="custom_date">
+                                    <button type="button" id="custom_date_x" name="custom_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                                </div>
+                            </div>
+                        </div><!-- Custom Date -->
+
+                        <div class="row">
+                            <div class="col-6" id="wh_start_date_row" hidden>
+                                <label for="wh_start_date" class="form-label" th:text="#{part_world.modal.wh_start_date}"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="wh_start_date" name="border_date">
+                                    <button type="button" id="wh_start_date_x" name="wh_start_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                                </div>
+                            </div>
+                        </div><!-- WH Start Date -->
+
+                        <div class="row">
+                            <div class="col-6" id="wh_end_date_row" hidden>
+                                <label for="wh_start_date" class="form-label" th:text="#{part_world.modal.wh_end_date}"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="wh_end_date" name="wh_end_date">
+                                    <button type="button" id="wh_end_date_x" name="wh_end_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                                </div>
+                            </div>
+                        </div><!-- WH End Date -->
+
+                        <div class="row">
+                            <div class="col-6" id="sec_custom_date_row" hidden>
+                                <label for="sec_custom_date" class="form-label" th:text="#{part_world.modal.sec_custom_date}"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="sec_custom_date" name="sec_custom_date">
+                                    <button type="button" id="sec_custom_date_x" name="sec_custom_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                                </div>
+                            </div>
+                        </div><!-- Sec Custom Date -->
+
+                        <div class="row">
+                            <div class="col-6" id="unload_date_row" hidden>
+                                <label for="unload_date" class="form-label" th:text="#{part_world.modal.unload_date}"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="unload_date" name="unload_date">
+                                    <button type="button" id="unload_date_x" name="unload_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                                </div>
+                            </div>
+                        </div><!-- Unload Date -->
+
+                        <div class="row">
+                            <div class="col-6" id="unloaded_date_row" hidden>
+                                <label for="unloaded_date" class="form-label" th:text="#{part_world.modal.unloaded_date}"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="unloaded_date" name="unloaded_date">
+                                    <button type="button" id="unloaded_date_x" name="unloaded_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                                </div>
+                            </div>
+                        </div><!-- Unloaded Date -->
+
+                        <div class="row">
+                            <div class="col-6" id="close_date_row" hidden>
+                                <label for="close_date" class="form-label" th:text="#{part_world.modal.close_date}"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="close_date" name="close_date">
+                                    <button type="button" id="close_date_x" name="close_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                                </div>
+                            </div>
+                        </div><!-- Close Date -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="part_world_main_time_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="part_world_main_time_modal_savebtn" class="btn btn-outline-primary" th:text="#{general.editbtn}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+//Load Date
+    $("#load_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#load_date_x').on('click', function() {
+        $('#load_date').empty().val('');
+    });
+//Loaded Date
+    $("#loaded_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#loaded_date_x').on('click', function() {
+        $('#loaded_date').empty().val('');
+    });
+//Custon Date
+    $("#custom_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#custom_date_x').on('click', function() {
+        $('#custom_date').empty().val('');
+    });
+//Wh Start Date
+    $("#wh_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#wh_start_date_x').on('click', function() {
+        $('#border_date').empty().val('');
+    });
+//Wh End Date
+    $("#wh_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#wh_end_date_x').on('click', function() {
+        $('#border_date').empty().val('');
+    });
+//Custom Date
+    $("#sec_custom_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#sec_custom_date_x').on('click', function() {
+        $('#sec_custom_date').empty().val('');
+    });
+//Unloaded Date
+    $("#unload_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#unload_date_x').on('click', function() {
+        $('#unload_date').empty().val('');
+    });
+//Unloaded Date
+    $("#unloaded_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#unloaded_date_x').on('click', function() {
+        $('#unloaded_date').empty().val('');
+    });
+//Close Date
+    $("#close_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#close_date_x').on('click', function() {
+        $('#close_date').empty().val('');
+    });
+
+    function part_world_main_time_modal_valid(){
+        if (vFLGClaimsValue.rowdata.clm_id != null) {
+            var RowID = vFLGClaimsValue.rowdata.clm_id;
+            $.ajax({
+                url: /*[[ @{/part_world/main_full_check} ]]*/ "/part_world/main_full_check",
+                type: 'POST',
+                data: {
+                    "clm_id": RowID,
+                    "clm_status_id": vFLGClaimsValue.rowdata.clm_status_id,
+                    "load_date": $('#load_date').val(),
+                    "loaded_date": $('#loaded_date').val(),
+                    "custom_date": $('#custom_date').val(),
+                    "unload_date": $('#unload_date').val(),
+                    "unloaded_date": $('#unloaded_date').val(),
+                    "close_date": $('#close_date').val(),
+                    "wh_start_date": $('#wh_start_date').val(),
+                    "wh_end_date": $('#wh_end_date').val(),
+                    "sec_custom_date": $('#sec_custom_date').val()
+                },
+                success: function (result) {
+                    $('#part_world_main_time_modal').modal('hide');
+                    vFLGClaimsValue.rowdata.clm_id = RowID;
+                    $(vFLGClaimsValue.table).DataTable().ajax.reload(null, false);
+                    vFLGClaimTimeLogValue.rowdata.clm_id = RowID;
+                    $(vFLGClaimTimeLogValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }
+
+    $(document).ready(function() {
+        $('#part_world_main_time_modal_savebtn').on('click', function () {
+            var StatusID = vFLGClaimsValue.rowdata.clm_status_next_id;
+            if(StatusID === 3 && $('#load_date').val() != null && $('#load_date').val() != ''){
+                part_world_main_time_modal_valid();
+            }
+            else if(StatusID === 4 && $('#loaded_date').val() != null && $('#loaded_date').val() != ''){
+                part_world_main_time_modal_valid();
+            }
+            else if(StatusID === 6 && $('#custom_date').val() != null && $('#custom_date').val() != ''){
+                part_world_main_time_modal_valid();
+            }
+            else if(StatusID === 7 && $('#wh_start_date').val() != null && $('#wh_start_date').val() != ''){
+                part_world_main_time_modal_valid();
+            }
+            else if(StatusID === 8 && $('#wh_end_date').val() != null && $('#wh_end_date').val() != ''){
+                part_world_main_time_modal_valid();
+            }
+            else if(StatusID === 9 && $('#sec_custom_date').val() != null && $('#sec_custom_date').val() != ''){
+                part_world_main_time_modal_valid();
+            }
+            else if(StatusID === 10 && $('#unload_date').val() != null && $('#unload_date').val() != ''){
+                part_world_main_time_modal_valid();
+            }
+            else if(StatusID === 11 && $('#unloaded_date').val() != null && $('#unloaded_date').val() != ''){
+                part_world_main_time_modal_valid();
+            }
+            else if(StatusID === 12 && $('#close_date').val() != null && $('#close_date').val() != ''){
+                part_world_main_time_modal_valid();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

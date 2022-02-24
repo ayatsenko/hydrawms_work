@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="kpi_facts_cs_clients_debtors_result_body" th:remove="tag">
+        <div><table id="table-kpi-facts-cs-clients-debtors-result" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+        $("#table-kpi-facts-cs-clients-debtors-result").append('<tfoot class="font-weight-bold" style="background-color: #d5e1df">' +
+                '<th></th><th></th><th></th><th></th><th></th>' +
+                '<th></th><th></th><th></th><th></th><th></th>' +
+                '<th></th>' +
+                '</tfoot>');
+
+        var rn_id_show, fin_month_show, fin_month_name_show, fin_sum_show, kpirupl_plan_show, kpirupl_fact_show, kpirupl_persent_show, kpirupl_paid_show, result_show,
+                result_sum_show, result_color_show;
+        var rn_id_width, fin_month_width, fin_month_name_width, fin_sum_width, kpirupl_plan_width, kpirupl_fact_width, kpirupl_persent_width, kpirupl_paid_width, result_width,
+                result_sum_width, result_color_width;
+        var rn_id_class, fin_month_class, fin_month_name_class, fin_sum_class, kpirupl_plan_class, kpirupl_fact_class, kpirupl_persent_class, kpirupl_paid_class, result_class,
+                result_sum_class, result_color_class;
+
+        if(mobileScreenSize){
+                vDomParam = "Blfrtp";
+        }
+        else if(smallScreenSize){
+                vDomParam = "Blfrtip";
+                rn_id_show = false;
+                rn_id_width = "";
+                rn_id_class = "";
+                fin_month_show = false;
+                fin_month_width = "";
+                fin_month_class = "";
+                fin_month_name_show = true;
+                fin_month_name_width = "30%";
+                fin_month_name_class = "small_size small_head_size small_footer_size";
+                fin_sum_show = true;
+                fin_sum_width = "10%";
+                fin_sum_class = "small_size small_head_size small_footer_size";
+                kpirupl_plan_show = true;
+                kpirupl_plan_width = "10%";
+                kpirupl_plan_class = "small_size small_head_size small_footer_size";
+                kpirupl_fact_show = true;
+                kpirupl_fact_width = "10%";
+                kpirupl_fact_class = "small_size small_head_size small_footer_size";
+                kpirupl_persent_show = true;
+                kpirupl_persent_width = "10%";
+                kpirupl_persent_class = "small_size small_head_size small_footer_size text-center";
+                kpirupl_paid_show = true;
+                kpirupl_paid_width = "10%";
+                kpirupl_paid_class = "small_size small_head_size small_footer_size text-center";
+                result_show = true;
+                result_width = "10%";
+                result_class = "small_size small_head_size small_footer_size";
+                result_sum_show = true;
+                result_sum_width = "10%";
+                result_sum_class = "small_size small_head_size small_footer_size";
+                result_color_show = false;
+                result_color_width = "";
+                result_color_class = "";
+        }
+        else{
+                vDomParam = "Blfrtip";
+                rn_id_show = false;
+                rn_id_width = "";
+                rn_id_class = "";
+                fin_month_show = false;
+                fin_month_width = "";
+                fin_month_class = "";
+                fin_month_name_show = true;
+                fin_month_name_width = "30%";
+                fin_month_name_class = "small_size small_head_size small_footer_size";
+                fin_sum_show = true;
+                fin_sum_width = "10%";
+                fin_sum_class = "small_size small_head_size small_footer_size";
+                kpirupl_plan_show = true;
+                kpirupl_plan_width = "10%";
+                kpirupl_plan_class = "small_size small_head_size small_footer_size";
+                kpirupl_fact_show = true;
+                kpirupl_fact_width = "10%";
+                kpirupl_fact_class = "small_size small_head_size small_footer_size";
+                kpirupl_persent_show = true;
+                kpirupl_persent_width = "10%";
+                kpirupl_persent_class = "small_size small_head_size small_footer_size text-center";
+                kpirupl_paid_show = true;
+                kpirupl_paid_width = "10%";
+                kpirupl_paid_class = "small_size small_head_size small_footer_size text-center";
+                result_show = true;
+                result_width = "10%";
+                result_class = "small_size small_head_size small_footer_size";
+                result_sum_show = true;
+                result_sum_width = "10%";
+                result_sum_class = "small_size small_head_size small_footer_size";
+                result_color_show = false;
+                result_color_width = "";
+                result_color_class = "";
+        }
+
+        var vKPIFactsCsClientsDebtorsResult;
+        vKPIFactsCsClientsDebtorsResult = {
+                table : '#table-kpi-facts-cs-clients-debtors-result',
+                ajax : {
+                        "url": /*[[@{/kpi_facts/cs_clients_debtors_result_menu}]]*/ "kpi_facts/cs_clients_debtors_result_menu",
+                        "type": "post",
+                        "data": function ( d ) {
+                                d.kpi_facts_param_id = vKPIFactsCsClientsDebtorsResult.rowdata.kpi_facts_param_id;
+                                d.kpi_facts_user_id = vKPIFactsCsClientsDebtorsResult.rowdata.kpi_facts_user_id;
+                                d.kpi_facts_year = vKPIFactsCsClientsDebtorsResult.rowdata.kpi_facts_year;
+                                d.kpi_facts_month = vKPIFactsCsClientsDebtorsResult.rowdata.kpi_facts_month;
+                        }
+                },
+                key : "rn_id",
+                switchControl : kpi_facts_cs_clients_debtors_result_switchControl,
+                rowdata:{
+                        rn_id: null,
+                        fin_sum: null,
+                        kpirupl_paid: null,
+                        fin_month: null
+                },
+                ordering: true,
+                order: [
+                        [1, "asc"]
+                ],
+                dom: vDomParam,
+                createdRow: function( row, data, dataIndex ) {
+                        $(row).css('background-color', data["result_color"]);
+                        /*
+                        if ( data.kpirupl_paid === 0 ){
+                                $(row).css('background-color', '#ff8566');
+                        }else {
+                                $(row).css('background-color', 'rgb(181,231,160)');
+                        }
+                        */
+                },
+                footerCallback: function ( row, data, start, end, display ) {
+                        var api = this.api(), data;
+
+                        // Remove the formatting to get integer data for summation
+                        var intVal = function ( i ) {
+                                return typeof i === 'string' ?
+                                        i.replace(/[\$,]/g, '')*1 :
+                                        typeof i === 'number' ?
+                                                i : 0;
+                        };
+                        var numFormat = $.fn.dataTable.render.number( '\ ', '.', 0, '').display;
+                        var numFormatTwo = $.fn.dataTable.render.number( '\ ', '.', 2, '').display;
+
+                        // Total over all pages
+                        let Total = api.column(8, {filter:'applied'}).data().reduce( function (a, b){ return intVal(a) + intVal(b);}, 2 );
+                        let TotalSum = api.column(9, {filter:'applied'}).data().reduce( function (a, b){ return intVal(a) + intVal(b);}, 0 );
+
+                        $( api.column(7).footer()).html('Всего: ');
+                        $( api.column(8).footer()).html(numFormatTwo(Total));
+                        $( api.column(9).footer()).html(numFormat(TotalSum));
+                },
+                columnDefs:[
+                        {"targets": [0], "width": rn_id_width, "className": rn_id_class, "visible": rn_id_show},
+                        {"targets": [1], "width": fin_month_width, "className": fin_month_class, "visible": fin_month_show},
+                        {"targets": [2], "width": fin_month_name_width, "className": fin_month_name_class, "visible": fin_month_name_show},
+                        {"targets": [3], "width": fin_sum_width, "className": fin_sum_class, "visible": fin_sum_show,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+                        {"targets": [4], "width": kpirupl_plan_width, "className": kpirupl_plan_class, "visible": kpirupl_plan_show,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+                        {"targets": [5], "width": kpirupl_fact_width, "className": kpirupl_fact_class, "visible": kpirupl_fact_show,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+                        {"targets": [6], "width": kpirupl_persent_width, "className": kpirupl_persent_class, "visible": kpirupl_persent_show,  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [7], "width": kpirupl_paid_width, "className": kpirupl_paid_class, "visible": kpirupl_paid_show,
+                                render: function ( data, type, row ) {
+                                        if ( type === 'display' ) {             //if column data is 1 then set attr to checked, use row id as input id (plus prefix)
+                                                return '<label class="custom-control custom-checkbox mb-0 mt-0 text-center"><input type="checkbox" ' + ((data == 1) ? 'checked' : '') + ' id="input' + row.id + '" class="custom-control-input" disabled><span class="custom-control-label"></span></label>'
+                                        }
+                                        return data;
+                                }
+                        },
+                        {"targets": [8], "width": result_width, "className": result_class, "visible": result_show,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+                        {"targets": [9], "width": result_sum_width, "className": result_sum_class, "visible": result_sum_show,  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [10], "width": result_color_width, "className": result_color_class, "visible": result_color_show}
+                ],
+                columns : [
+                        /*0*/{"title": /*[[#{kpi_facts.cs_clients_debtors_result.rn_id}]]*/ "rn_id", "data": "rn_id"},
+                        /*1*/{"title": /*[[#{kpi_facts.cs_clients_debtors_result.fin_month}]]*/ "fin_month", "data": "fin_month"},
+                        /*2*/{"title": /*[[#{kpi_facts.cs_clients_debtors_result.fin_month}]]*/ "fin_month_name", "data": "fin_month_name"},
+                        /*3*/{"title": /*[[#{kpi_facts.cs_clients_debtors_result.fin_sum}]]*/ "fin_sum", "data": "fin_sum"},
+                        /*4*/{"title": /*[[#{kpi_facts.cs_clients_debtors_result.kpirupl_plan}]]*/ "kpirupl_plan", "data": "kpirupl_plan"},
+                        /*5*/{"title": /*[[#{kpi_facts.cs_clients_debtors_result.kpirupl_fact}]]*/ "kpirupl_fact", "data": "kpirupl_fact"},
+                        /*6*/{"title": /*[[#{kpi_facts.cs_clients_debtors_result.kpirupl_persent}]]*/ "kpirupl_persent", "data": "kpirupl_persent"},
+                        /*7*/{"title": /*[[#{kpi_facts.cs_clients_debtors_result.kpirupl_paid}]]*/ "kpirupl_paid", "data": "kpirupl_paid"},
+                        /*8*/{"title": /*[[#{kpi_facts.cs_clients_debtors_result.result}]]*/ "result", "data": "result"},
+                        /*9*/{"title": /*[[#{kpi_facts.cs_clients_debtors_result.result_sum}]]*/ "result_sum", "data": "result_sum"},
+                        /*10*/{"title": /*[[#{kpi_facts.cs_clients_debtors_result.result_color}]]*/ "result_color", "data": "result_color"}
+                ],
+                pageLength: 25,
+                copy_button: true,
+                excel_button: true,
+                pdf_button: true,
+                print_button: true
+        };
+
+        function kpi_facts_cs_clients_debtors_result_hide(){
+                $('#kpi_facts_cs_clients_debtors').attr('hidden',true);
+                kpi_facts_cs_clients_debtors_hide();
+        }
+
+        function kpi_facts_cs_clients_debtors_result_switchControl(){
+                kpi_facts_cs_clients_debtors_result_hide();
+                if(vKPIFactsCsClientsDebtorsResult.rowdata.rn_id != null) {
+                        $('#kpi_facts_cs_clients_debtors').removeAttr('hidden');
+                        vKPIFactsCsClientsDebtors.rowdata.kpi_facts_param_id = vKPIFactCalcValue.rowdata.user_kpi_type_id;
+                        vKPIFactsCsClientsDebtors.rowdata.kpi_facts_user_id = vKPIFactUsersValue.rowdata.user_id;
+                        vKPIFactsCsClientsDebtors.rowdata.kpi_facts_year = $("#kpi_facts_year").val();
+                        vKPIFactsCsClientsDebtors.rowdata.kpi_facts_month = $("#kpi_facts_month").val();
+                        vKPIFactsCsClientsDebtors.rowdata.kpi_facts_res_month = vKPIFactsCsClientsDebtorsResult.rowdata.fin_month;
+                        $(vKPIFactsCsClientsDebtors.table).DataTable().ajax.reload(null, false);
+                } else{
+                        vKPIFactsCsClientsDebtors.rowdata.kpi_facts_param_id = null;
+                        vKPIFactsCsClientsDebtors.rowdata.kpi_facts_user_id = null;
+                        vKPIFactsCsClientsDebtors.rowdata.kpi_facts_year = null;
+                        vKPIFactsCsClientsDebtors.rowdata.kpi_facts_month = null;
+                        vKPIFactsCsClientsDebtors.rowdata.kpi_facts_res_month = null;
+                        vKPIFactsCsClientsDebtors.rowdata.rn = null;
+                        $(vKPIFactsCsClientsDetailDebtors.table).DataTable().clear().draw();
+                }
+        }
+
+        $(document).ready(function(){
+                vKPIFactsCsClientsDebtorsResult.rowdata.fin_sum = /*[[${fin_sum}]]*/ null;
+
+                vKPIFactsCsClientsDebtorsResult.rowdata.ukpirupl_fact = /*[[${ukpirupl_fact}]]*/ null;
+                vKPIFactsCsClientsDebtorsResult.rowdata.dep_kpi_year = /*[[${dep_kpi_year}]]*/ null;
+                vKPIFactsCsClientsDebtorsResult.rowdata.dep_kpi_month = /*[[${dep_kpi_month}]]*/ null;
+
+                vKPIFactsCsClientsDebtorsResult.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+                vKPIFactsCsClientsDebtorsResult.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+                vKPIFactsCsClientsDebtorsResult.rowdata.table_search = /*[[${table_search}]]*/ null;
+                vKPIFactsCsClientsDebtorsResult.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+                vKPIFactsCsClientsDebtorsResult.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+                recreateDataTable(vKPIFactsCsClientsDebtorsResult);
+        });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="finance_abc_detail_body" th:remove="tag">
+        <div><table id="table-finance-abc-detail" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var vFinanceABCDetailValue;
+    vFinanceABCDetailValue = {
+        table : '#table-finance-abc-detail',
+        ajax : {
+            "url": /*[[@{/finance_abc/get_detail_table}]]*/ "/finance_abc/get_detail_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.start_date = vFinanceABCDetailValue.rowdata.start_date;
+                d.end_date = vFinanceABCDetailValue.rowdata.end_date;
+            }
+        },
+        key : "rn",
+        switchControl : finance_abc_detail_switchControl,
+        rowdata:{
+            rn: null,
+            start_date: null,
+            end_date: null
+        },
+        ordering: true,
+        order: [
+            [4, "desc"]
+        ],
+        scrollX: true,
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+                $(row).find('td:eq(2)').css('background-color', data["fin_color"]);
+                $(row).find('td:eq(3)').css('background-color', data["fin_color"]);
+                $(row).find('td:eq(4)').css('background-color', data["fin_color"]);
+
+                $(row).find('td:eq(5)').css('background-color', data["req_color"]);
+                $(row).find('td:eq(6)').css('background-color', data["req_color"]);
+                $(row).find('td:eq(7)').css('background-color', data["req_color"]);
+
+                $(row).find('td:eq(8)').css('background-color', data["tend_color"]);
+                $(row).find('td:eq(9)').css('background-color', data["tend_color"]);
+                $(row).find('td:eq(10)').css('background-color', data["tend_color"]);
+        },
+        columnDefs:[
+                {"targets": [0], "visible": false, className: "noExport"},
+                {"targets": [4],  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                {"targets": [5],  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), className: 'th-border-black'},
+                {"targets": [6], "visible": false, className: "noExport"},
+
+                {"targets": [8],  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                {"targets": [9],  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), className: 'th-border-black'},
+                {"targets": [10], "visible": false, className: "noExport"},
+
+                {"targets": [12],  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                {"targets": [13],  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), className: 'th-border-black'},
+                {"targets": [14], "visible": false, className: "noExport"},
+                {"targets": [15], className: "desktop noExport"}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{finance_abc.detail.rn}]]*/ "rn", "data": "rn", "width": "1%"},
+                /*1*/{"title": /*[[#{finance_abc.detail.ser_id}]]*/ "ser_id", "data": "ser_id", "width": "3%", "className": "desktop"},
+                /*2*/{"title": /*[[#{finance_abc.detail.ser_name}]]*/ "ser_name", "data": "ser_name", "width": "30%", "className": "text-center"},
+
+                /*3*/{"title": /*[[#{finance_abc.detail.fin_value}]]*/ "fin_value", "data": "fin_value", "width": "5%", "className": "text-center"},
+                /*4*/{"title": /*[[#{finance_abc.detail.fin_sum}]]*/ "fin_sum", "data": "fin_sum", "width": "5%", "className": "text-center"},
+                /*5*/{"title": /*[[#{finance_abc.detail.fin_pers}]]*/ "fin_pers", "data": "fin_pers", "width": "5%", "className": "text-center"},
+                /*6*/{"title": /*[[#{finance_abc.detail.fin_color}]]*/ "fin_color", "data": "fin_color", "width": "1%"},
+
+                /*7*/{"title": /*[[#{finance_abc.detail.req_value}]]*/ "req_value", "data": "req_value", "width": "5%", "className": "text-center"},
+                /*8*/{"title": /*[[#{finance_abc.detail.req_sum}]]*/ "req_sum", "data": "req_sum", "width": "5%", "className": "text-center"},
+                /*9*/{"title": /*[[#{finance_abc.detail.req_pers}]]*/ "req_pers", "data": "req_pers", "width": "5%", "className": "text-center"},
+                /*10*/{"title": /*[[#{finance_abc.detail.req_color}]]*/ "req_color", "data": "req_color", "width": "1%"},
+
+                /*11*/{"title": /*[[#{finance_abc.detail.tend_value}]]*/ "tend_value", "data": "tend_value", "width": "5%", "className": "text-center"},
+                /*12*/{"title": /*[[#{finance_abc.detail.tend_sum}]]*/ "tend_sum", "data": "tend_sum", "width": "5%", "className": "text-center"},
+                /*13*/{"title": /*[[#{finance_abc.detail.tend_pers}]]*/ "tend_pers", "data": "tend_pers", "width": "5%", "className": "text-center"},
+                /*14*/{"title": /*[[#{finance_abc.detail.tend_color}]]*/ "tend_color", "data": "tend_color", "width": "1%"},
+                /*15*/{"title": /*[[#{finance_abc.detail.empty_column}]]*/ "empty_column", "data": "empty_column", "width": "18%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function finance_abc_detail_switchControl(){
+        if(vFinanceABCDetailValue.rowdata.rn != null){
+        } else{
+        }
+    }
+
+    $('.positions_btn_control').on('click', function (){
+        $("#positions-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $(document).ready(function(){
+        vFinanceABCDetailValue.rowdata.start_date = null;
+        vFinanceABCDetailValue.rowdata.end_date = null;
+
+        recreateDataTable(vFinanceABCDetailValue);
+    });
+</script>
+
+</body>
+</html>

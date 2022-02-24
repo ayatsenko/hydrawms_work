@@ -1,0 +1,90 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.6.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+	id 'war'
+}
+
+group = 'ua.com.idltd'
+version = '##1.0.0'
+sourceCompatibility = '1.8'
+
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+war{
+    enabled = true
+//  archiveBaseName = 'hydrawms_new'
+    archiveName 'hydrawms_new.war'
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5'
+	compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+	compile group: 'org.apache.poi', name: 'poi', version: '4.1.2'
+	compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.2'
+	compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.1.2'
+
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	compile files('/src/main/resources/ojdbc8.jar')
+	compile files('/src/main/resources/ucp.jar')
+
+	compile "org.telegram:telegrambots-spring-boot-starter:4.1.2"
+
+	compile files('/src/main/resources/jasperreports-6.11.0.jar')
+	compile files('/src/main/resources/jasperreports-functions-6.11.0.jar')
+	compile files('/src/main/resources/jasperreports-javaflow-6.11.0.jar')
+	compile files('/src/main/resources/net.tascalate.javaflow.api-2.2.1.jar')
+//    compile files('/src/main/resources/jasperreports-extensions-3.5.3.jar')
+	compile files('/src/main/resources/jasperreports-fonts-6.11.0.jar')
+	compile files('/src/main/resources/jrfonts.jar')
+
+	compile files('/src/main/resources/itext-2.1.7.js4.jar')
+	compile group: 'net.sourceforge.barbecue', name: 'barbecue', version: '1.5-beta1'
+	compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+	compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
+	compile group: 'commons-digester', name: 'commons-digester', version: '2.1'
+	compile group: 'commons-logging', name: 'commons-logging', version: '1.2'
+	compile group: 'cglib', name: 'cglib', version: '3.3.0'
+//    compile group: 'com.google.code.maven-play-plugin.org.apache.commons', name: 'commons-javaflow', version: '1590792-patched-play-1.3.0'
+	compile group: 'joda-time', name: 'joda-time', version: '2.3'
+
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml
+	compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.10.3'
+	compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-csv', version: '2.11.0.rc1'
+
+	compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+	compile group: 'org.springframework', name: 'spring-mock', version: '2.0.8'
+
+	// https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox
+	compile group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.21'
+
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+	testImplementation 'org.springframework.security:spring-security-test'
+}
+
+test {
+	useJUnitPlatform()
+}

@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{action_types.caption})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{action_types.caption}"></h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <!--/*@thymesVar id="action_types_detail" type="java.util.List"*/-->
+                <form id="action-types-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/action_types/model}">
+                    <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="action-types-indexfrm">Cancel</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="action-types-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                            <button th:case="1" type="submit" id="action-types-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                            <button th:case="2" type="submit" id="action-types-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                        </div>
+                    </div>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="act_type_id" th:value="${act_type_id}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="action_types_table_order_column" th:value="${action_types_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="action_types_table_order_type" th:value="${action_types_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="action_types_table_search" th:value="${action_types_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="action_types_table_pagelen" th:value="${action_types_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="action_types_table_page" th:value="${action_types_table_page}" >
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-1" id="act_type_id_row">
+                            <label for="act_type_id" class="form-label" th:text="'1. '+ #{action_types.act_type_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="act_type_id" name="act_type_id" th:value="${act_type_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="act_type_sname" class="form-label" th:text="'2. '+#{action_types.act_type_sname}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="act_type_sname" name="act_type_sname" th:value="${act_type_sname}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-9 mb-9">
+                            <label for="act_type_name" class="form-label" th:text="'3. '+#{action_types.act_type_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="48" class="form-control" id="act_type_name" name="act_type_name" th:value="${act_type_name}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-12 mb-12">
+                            <label for="act_type_description" th:text="'4. '+#{action_types.act_type_description}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="512" style="resize:none;" id="act_type_description" name="act_type_description" th:text="${act_type_description}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-2" id="act_type_short_row">
+                            <label for="act_type_short" class="form-label" th:text="'5. '+ #{action_types.act_type_short}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" maxlength="3" id="act_type_short" name="act_type_short" th:value="${act_type_short}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-10 mb-10" id="act_type_colour_row">
+                            <label for="act_type_colour" class="form-label" th:text="'6. '+#{action_types.act_type_colour}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="color" class="form-control color" id="act_type_colour" name="act_type_colour" th:value="${act_type_colour}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--/*@thymesVar id="action_types_detail" type="java.util.List"*/-->
+    <form id="action-types-indexfrm" method="post" th:action="@{/action_types}" hidden>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="act_type_id" th:value="${act_type_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_order_column" th:value="${action_types_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_order_type" th:value="${action_types_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_search" th:value="${action_types_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_pagelen" th:value="${action_types_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_page" th:value="${action_types_table_page}" >
+    </form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'action-types-indexfrm')">Error</span>
+
+<script>
+    $(document).ready(function(){
+<!-- Hihglight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#dictionaries_li').addClass('active').removeClass('collapsed');
+        $('#dictionaries_a').attr('aria-expanded',true);
+        $('#dictionaries').addClass('show');
+
+        $('#action_types_a').addClass('text-primary');
+<!-- Form Start -->
+        $('#act_type_id').prop('readOnly',true);
+        $('#act_type_sname').prop('required',true);
+
+<!-- Change Function -->
+        if($('#mode').val() === '0'){
+            $('#act_type_id_row').prop('hidden',true);
+            $('#act_type_name').prop('required',true);
+        }
+        else if($('#mode').val() === '2' || $('#mode').val() === '4'){
+            $('#act_type_id').prop('readOnly',true);
+            $('#act_type_sname').prop('readOnly',true);
+            $('#act_type_name').prop('readOnly',true);
+            $('#act_type_description').prop('readOnly',true);
+            $('#act_type_short').prop('readOnly',true);
+            $('#act_type_colour').prop('readOnly',true);
+        }
+    });
+</script>
+</body>
+</html>

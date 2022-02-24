@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="kpi_facts_plan_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="kpi_facts_plan_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="kpi_facts_plan_modal_mode">
+                <input type="hidden" id="kpi_facts_plan_modal_kpirupl_id">
+            </div>
+
+            <div class="modal-content" id="kpi_facts_plan_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{tms_locals.notes.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body m-1">
+                    <form id="kpi_facts_plan_modal_form">
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="kpi_facts_plan_modal_dep_name_row">
+                            <label for="kpi_facts_plan_modal_dep_name" class="form-label mb-0" th:text="'1. '+ #{kpi_facts.main.dep_name}"></label>
+                            <input type="text" class="form-control" id="kpi_facts_plan_modal_dep_name" name="kpi_facts_plan_modal_dep_name">
+                        </div>                        
+                    </div>
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="kpi_facts_plan_modal_branch_name_row">
+                            <label for="kpi_facts_plan_modal_branch_name" class="form-label mb-0" th:text="'2. '+ #{kpi_facts.branch.dep_name}"></label>
+                            <input type="text" class="form-control" id="kpi_facts_plan_modal_branch_name" name="kpi_facts_plan_modal_branch_name">
+                        </div>
+                    </div>
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="kpi_facts_plan_modal_user_name_row">
+                            <label for="kpi_facts_plan_modal_user_name" class="form-label mb-0" th:text="'3. '+ #{kpi_facts.users.user_name}"></label>
+                            <input type="text" class="form-control" id="kpi_facts_plan_modal_user_name" name="kpi_facts_plan_modal_user_name">
+                        </div>
+                    </div>
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="kpi_facts_plan_modal_user_kpi_type_name_row">
+                            <label for="kpi_facts_plan_modal_user_kpi_type_name" class="form-label mb-0" th:text="'4. '+ #{kpi_facts.calc.user_kpi_type_name}"></label>
+                            <input type="text" class="form-control" id="kpi_facts_plan_modal_user_kpi_type_name" name="kpi_facts_plan_modal_user_kpi_type_name">
+                        </div>
+                    </div>
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="kpi_facts_plan_modal_kpirupl_plan_row">
+                            <label for="kpi_facts_plan_modal_kpirupl_plan" class="form-label mb-0" th:text="'5. '+ #{kpi_facts.calc.kpirupl_plan}"></label>
+                            <input type="text" class="form-control" id="kpi_facts_plan_modal_kpirupl_plan" name="kpi_facts_plan_modal_kpirupl_plan">
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="kpi_facts_plan_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="kpi_facts_plan_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="kpi_facts_plan_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="kpi_facts_plan_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    // Clear Fields
+    function clear_kpi_facts_plan_modal_detail() {
+        $("#kpi_facts_plan_modal_detail input[type=text]").val('').removeAttr('required').removeAttr('readonly');
+        $("#kpi_facts_plan_modal_detail input[type=number]").val('').removeAttr('required').removeAttr('readonly');
+        $("#kpi_facts_plan_modal_detail select").empty().removeAttr('required').removeAttr('disabled');
+        $("#kpi_facts_plan_modal_detail textarea").val('').removeAttr('required').removeAttr('readonly');
+    }
+    // Block And Required Fields
+    function block_kpi_facts_plan_modal_detail() {
+        if($('#kpi_facts_plan_modal_mode').val() === "0"){
+
+        }
+        else if($('#kpi_facts_plan_modal_mode').val() === "1"){
+            $('#kpi_facts_plan_modal_dep_name').attr('readonly', true);
+            $('#kpi_facts_plan_modal_branch_name').attr('readonly', true);
+            $('#kpi_facts_plan_modal_user_name').attr('readonly', true);
+            $('#kpi_facts_plan_modal_user_kpi_type_name').attr('readonly', true);
+        }
+        else{
+            $('#kpi_facts_plan_modal_dep_name').attr('readonly', true);
+            $('#kpi_facts_plan_modal_branch_name').attr('readonly', true);
+            $('#kpi_facts_plan_modal_user_name').attr('readonly', true);
+            $('#kpi_facts_plan_modal_user_kpi_type_name').attr('readonly', true);
+        }
+    }
+    // Load Function
+    function fill_kpi_facts_plan_modal_detail(aMode){
+        clear_kpi_facts_plan_modal_detail();
+        $('#kpi_facts_plan_modal_mode').val(aMode);
+        block_kpi_facts_plan_modal_detail();
+
+        if(aMode === 1) {
+            $('#kpi_facts_plan_modal_kpirupl_id').val(vKPIFactCalcValue.rowdata.kpirupl_id);
+            $('#kpi_facts_plan_modal_dep_name').val(vKPIFactListValue.rowdata.dep_name);
+            $('#kpi_facts_plan_modal_branch_name').val(vKPIFactBranchValue.rowdata.dep_name);
+            $('#kpi_facts_plan_modal_user_name').val(vKPIFactUsersValue.rowdata.user_name);
+            $('#kpi_facts_plan_modal_user_kpi_type_name').val(vKPIFactCalcValue.rowdata.user_kpi_type_name);
+            $('#kpi_facts_plan_modal_kpirupl_plan').val(vKPIFactCalcValue.rowdata.kpirupl_plan);
+
+            $('#kpi_facts_plan_modal').modal('show');
+        }
+    }
+    // Add Function
+    function addPlanModal(){
+        var RowID = vActionsValue.rowdata.act_id;
+    }
+    // Add button script
+    $('#kpi_facts_plan_modal_addbtn').on('click', function(){
+        $('#kpi_facts_plan_modal_form').submit();
+    });
+    function calendarFocus() {
+        $('html,body').animate({scrollTop: $(vKPIFactCalcValue.table).offset().top}, 'slow');
+    }
+
+    //Edit Function
+    function editPlanModal(){
+        let RowID = vKPIFactCalcValue.rowdata.user_kpi_type_id;
+        let UserRowID = vKPIFactUsersValue.rowdata.user_id;
+        let DepRowID = vKPIFactUsersValue.rowdata.dep_id;
+
+        $.ajax({
+            url: /*[[ @{/kpi_facts/edit_fact_plan} ]]*/ "/kpi_facts/edit_fact_plan",
+            type: 'POST',
+            data: {
+                "kpirupl_id": $('#kpi_facts_plan_modal_kpirupl_id').val(),
+                "kpirupl_plan":  $('#kpi_facts_plan_modal_kpirupl_plan').val()
+            },
+            success: function (result) {
+                if(vKPIFactCalcValue.rowdata.user_kpi_type_general_id === 0) {
+                    vKPIFactCalcValue.rowdata.kpi_user_id = UserRowID;
+                    vKPIFactCalcValue.rowdata.kpi_facts_year = $("#kpi_facts_year").val();
+                    vKPIFactCalcValue.rowdata.kpi_facts_month = $("#kpi_facts_month").val();
+                    vKPIFactCalcValue.rowdata.dep_id = DepRowID;
+                    vKPIFactCalcValue.rowdata.user_kpi_type_id = RowID;
+                    $(vKPIFactCalcValue.table).DataTable().ajax.reload(null, false);
+                }
+                else{
+                    vKPIFactListValue.rowdata.kpi_facts_year = $("#kpi_facts_year").val();
+                    $(vKPIFactListValue.table).DataTable().ajax.reload(null, false);
+                    setTimeout(function(){ calendarFocus(); }, 1000);
+                }
+                $('#kpi_facts_plan_modal').modal('hide');
+            }
+        });
+    }
+    // Edit button script
+    $('#kpi_facts_plan_modal_editbtn').on('click', function(){
+        $('#kpi_facts_plan_modal_form').submit();
+    });
+
+    //Delete Function
+    function delPlanModal(){
+        var RowID = vActionsValue.rowdata.act_id;
+    }
+
+    // Del button script
+    $('#kpi_facts_plan_modal_delbtn').on('click', function(){
+        $('#kpi_facts_plan_modal_form').submit();
+    });
+
+    //Validation Form
+    $('#kpi_facts_plan_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function(error,element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            if($('#kpi_facts_plan_modal_mode').val() === '0') {
+                addPlanModal();
+            }
+            else if($('#kpi_facts_plan_modal_mode').val() === '1') {
+                editPlanModal();
+            }
+            else if($('#kpi_facts_plan_modal_mode').val() === '2') {
+                delPlanModal();
+            }
+            return false;
+        }
+    });    
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_locals_main_add_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="tms_locals_main_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="tms_locals_main_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{tms_locals.main.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body pr-3 pl-3 pb-1 pt-1">
+                    <form id="tms_locals_main_modal_form" name="tms_locals_main_modal_form" class="was-validated" novalidate>
+                    <input type="hidden" id="tms_locals_main_add_modal_mode" name="tms_locals_main_add_modal_mode">
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-2" id="tms_locals_main_modal_clm_num_row">
+                            <label for="tms_locals_main_modal_clm_num" class="form-label mb-0" th:text="'1. '+ #{tms_locals.main.clm_num}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="tms_locals_main_modal_clm_num" name="tms_locals_main_modal_clm_num">
+                        </div>
+                        <div class="col-12 col-md-3" id="tms_locals_main_modal_clm_client_num_row">
+                            <label for="tms_locals_main_modal_clm_client_num" class="form-label mb-0" th:text="'2. '+ #{tms_locals.main.clm_client_num}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="tms_locals_main_modal_clm_client_num" name="tms_locals_main_modal_clm_client_num">
+                        </div>
+                        <div class="col-12 col-md-5">
+                            <label for="tms_locals_main_modal_ser_id" class="form-label mb-0" th:text="'3. '+#{tms_locals.main.ser_sname}">Service </label>
+                            <select type="text" id="tms_locals_main_modal_ser_id" name="tms_locals_main_modal_ser_id" class="custom-select">
+                            </select>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-4" id="cnt_filter_row">
+                            <label for="cnt_filter" class="form-label mb-0" th:text="'4. '+ #{tms_locals.main.cnt_filter}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="cnt_filter" name="cnt_filter">
+                                <button type="button" id="cnt_filter_check" name="cnt_filter_check" class="btn btn-outline-primary"><i class="fas fa-database"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6" id="tms_locals_main_modal_cnt_id_div">
+                            <label for="tms_locals_main_modal_cnt_id" class="form-label mb-0" th:text="'5. '+#{tms_locals.main.cnt_name}"></label>
+                            <div class="input-group">
+                                <select type="text" id="tms_locals_main_modal_cnt_id" name="tms_locals_main_modal_cnt_id" class="custom-select" aria-describedby="tms_locals_main_modal_cnt_id_helpBlock">
+                                </select>
+                                <button type="button" id="tms_locals_main_modal_cnt_id_x" name="tms_locals_main_modal_cnt_id_x" class="btn btn-outline-primary select_clear" data-parent="tms_locals_main_modal_cnt_id"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row mb-2">
+                        <div class="col-12 col-md-3">
+                            <label for="tms_locals_main_modal_clm_aim_type_id" class="form-label mb-0" th:text="'6. '+#{tms_locals.main.clm_aim_type_sname}">Aim </label>
+                            <select type="text" id="tms_locals_main_modal_clm_aim_type_id" name="tms_locals_main_modal_clm_aim_type_id" class="custom-select">
+                            </select>
+                        </div>
+                    </div> <!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-12 m-0 p-0 container">
+						    <div class="tab tab-vertical tab-light">
+								<ul class="nav nav-tabs" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link text-primary active" href="#tms_locals_main_modal_tab_1" data-toggle="tab" role="tab">
+                                            <i class="align-middle fa fa-map-marked-alt"></i>
+                                        </a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link text-primary" href="#tms_locals_main_modal_tab_2" data-toggle="tab" role="tab">
+                                            <i class="align-middle fa fa-truck-loading"></i>
+                                        </a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link text-primary" href="#tms_locals_main_modal_tab_3" data-toggle="tab" role="tab">
+                                            <i class="align-middle fa fa-dollar-sign"></i>
+                                        </a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link text-primary" href="#tms_locals_main_modal_tab_4" data-toggle="tab" role="tab">
+                                            <i class="align-middle fa fa-sticky-note"></i>
+                                        </a>
+									</li>
+								</ul>
+								<div class="tab-content p-3">
+									<div class="tab-pane active" id="tms_locals_main_modal_tab_1" role="tabpanel">
+										<h6 class="text-primary" th:text="#{tms_locals.main.tabs.ways}"></h6>
+                                        <input type="hidden" id="tms_locals_main_modal_clm_way_id_temp">
+                                        <input type="hidden" id="tms_locals_main_modal_order_id_temp">
+
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-3">
+                                                <label for="tms_locals_main_modal_clm_way_id" class="form-label mb-0 text-dark" th:text="'7. '+#{tms_locals.main.way_types}"></label>
+                                                <select type="text" class="custom-select" id="tms_locals_main_modal_clm_way_id" name="tms_locals_main_modal_clm_way_id">
+                                                </select>
+                                            </div>
+
+                                            <div class="col-12 col-md-8" id="tms_locals_main_modal_cnt_way_id_row">
+                                                <label for="tms_locals_main_modal_cnt_way_id" class="form-label mb-0 text-dark" th:text="'8. '+#{tms_locals.main.ways.cnt_way_name}"></label>
+                                                <div class="input-group">
+                                                    <select type="text" id="tms_locals_main_modal_cnt_way_id" name="tms_locals_main_modal_cnt_way_id" class="custom-select" aria-describedby="tms_locals_main_modal_cnt_way_id_helpBlock">
+                                                    </select>
+                                                    <button type="button" id="tms_locals_main_modal_cnt_way_id_x" name="tms_locals_main_modal_cnt_way_id_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div><!-- Tab 1 Row 1 -->
+
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-2" id="cnt_way_date_row">
+                                                <label for="cnt_way_date" class="form-label mb-0 text-dark" th:text="'9. '+ #{tms_locals.main.ways.cnt_way_date}"></label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="cnt_way_date" name="cnt_way_date">
+                                                    <button type="button" id="cnt_way_date_x" name="cnt_way_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-4" id="cnt_way_area_row">
+                                                <label for="cnt_way_area" class="form-label mb-0 text-dark" th:text="'10. '+ #{tms_locals.main.ways.cnt_way_area}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="cnt_way_area" name="cnt_way_area">
+                                            </div>
+
+                                            <div class="col-12 col-md-5" id="cnt_way_region_row">
+                                                <label for="cnt_way_region" class="form-label mb-0 text-dark" th:text="'11. '+ #{tms_locals.main.ways.cnt_way_region}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="cnt_way_region" name="cnt_way_region">
+                                            </div>
+                                        </div><!-- Tab 1 Row 2 -->
+
+                                        <div class="form-row mb-2">
+                                            <div class="col-12 col-md-4" id="cnt_way_city_row">
+                                                <label for="cnt_way_city" class="form-label mb-0 text-dark" th:text="'12. '+ #{tms_locals.main.ways.cnt_way_city}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="cnt_way_city" name="cnt_way_city">
+                                            </div>
+
+                                        <div class="col-12 col-md-5" id="cnt_way_street_row">
+                                            <label for="cnt_way_street" class="form-label mb-0 text-dark" th:text="'13. '+ #{tms_locals.main.ways.cnt_way_street}"></label>
+                                            <input type="text" maxlength="64" class="form-control" id="cnt_way_street" name="cnt_way_street">
+                                        </div>
+
+                                        <div class="col-12 col-md-3" id="cnt_way_home_row">
+                                            <label for="cnt_way_home" class="form-label mb-0 text-dark" th:text="'14. '+ #{tms_locals.main.ways.cnt_way_home}"></label>
+                                            <input type="text" maxlength="32" class="form-control" id="cnt_way_home" name="cnt_way_home">
+                                        </div>
+                                    </div><!-- Tab 1 Row 3 -->
+
+                                    <h6 class="text-primary mb-1" id="cnt_way_company_header" th:text="#{tms_locals.main.ways.cnt_way_company_sender}" hidden></h6>
+                                        <div class="row mb-1" hidden>
+                                            <div class="col-12 col-md-8" id="tms_locals_main_modal_cnt_way_cons_id_row">
+                                                <label for="tms_locals_main_modal_cnt_way_cons_id" id="tms_locals_main_modal_cnt_way_cons_id_label" class="form-label mb-0 text-dark" th:text="'15. '+#{tms_locals.main.ways.cnt_way_cons_senders}"></label>
+                                                <div class="input-group">
+                                                    <select type="text" id="tms_locals_main_modal_cnt_way_cons_id" name="tms_locals_main_modal_cnt_way_cons_id" class="custom-select" aria-describedby="tms_locals_main_modal_cnt_way_cons_id_helpBlock">
+                                                    </select>
+                                                    <button type="button" id="tms_locals_main_modal_cnt_way_cons_id_x" name="tms_locals_main_modal_cnt_way_cons_id_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div><!-- Tab 1 Row 4 -->
+                                    <div class="row mb-1" hidden>
+                                        <div class="col-12 col-md-8" id="cnt_way_company_row">
+                                            <label for="cnt_way_company" id="cnt_way_company_label" class="form-label mb-0 text-dark" th:text="'16. '+ #{tms_locals.main.ways.cnt_way_company_sender}"></label>
+                                            <input type="text" maxlength="256" class="form-control" id="cnt_way_company" name="cnt_way_company">
+                                        </div>
+                                    </div><!-- Tab 1 Row 5 -->
+
+                                    <h6 class="text-primary mb-1" id="cnt_way_contact_header" th:text="#{tms_locals.main.ways.cnt_way_contact_header}"></h6>
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-8" id="tms_locals_main_modal_cnt_way_contact_id_row">
+                                                <label for="tms_locals_main_modal_cnt_way_contact_id" id="tms_locals_main_modal_cnt_way_contact_id_label" class="form-label mb-0 text-dark" th:text="'17. '+#{tms_locals.main.ways.cnt_way_contact_name}"></label>
+                                                <div class="input-group">
+                                                    <select type="text" id="tms_locals_main_modal_cnt_way_contact_id" name="tms_locals_main_modal_cnt_way_contact_id" class="custom-select" aria-describedby="tms_locals_main_modal_cnt_way_contact_id_helpBlock">
+                                                    </select>
+                                                    <button type="button" id="tms_locals_main_modal_cnt_way_contact_id_x" name="tms_locals_main_modal_cnt_way_contact_id_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div><!-- Tab 1 Row 6 -->
+
+                                        <div class="form-row mb-2">
+                                            <div class="col-12 col-md-5" id="cnt_way_contact_person_row">
+                                                <label for="cnt_way_contact_person" class="form-label mb-0 text-dark" th:text="'18. '+ #{tms_locals.main.ways.cnt_way_contact_person}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="cnt_way_contact_person" name="cnt_way_contact_person">
+                                            </div>
+
+                                        <div class="col-12 col-md-3" id="cnt_way_contact_phone_row">
+                                            <label for="cnt_way_contact_phone" class="form-label mb-0 text-dark" th:text="'19. '+ #{tms_locals.main.ways.cnt_way_contact_phone}"></label>
+                                            <input type="text" maxlength="16" class="form-control" id="cnt_way_contact_phone" name="cnt_way_contact_phone">
+                                        </div>
+
+                                        <div class="col-12 col-md-3" id="cnt_way_contact_phone2_row">
+                                            <label for="cnt_way_contact_phone2" class="form-label mb-0 text-dark" th:text="'20. '+ #{tms_locals.main.ways.cnt_way_contact_phone2}"></label>
+                                            <input type="text" maxlength="16" class="form-control" id="cnt_way_contact_phone2" name="cnt_way_contact_phone2">
+                                        </div>
+                                    </div><!-- Tab 1 Row 7 -->
+
+                                    <h6 class="text-primary mb-1" id="cnt_way_result_header" th:text="#{tms_locals.main.ways.cnt_way_result_header}"></h6>
+                                    <div class="row">
+                                          <div class="col-12 text-dark" id="main_address_modal_row">
+                                              <span th:replace="tms_locals/main_address_modal :: tms_locals_main_address_modal_body"></span>
+                                          </div>
+                                    </div><!-- Tab 1 Row 8 -->
+								</div><!-- Tab 1 -->
+                                    <div class="tab-pane" id="tms_locals_main_modal_tab_2" role="tabpanel">
+										<h6 class="text-primary mb-1" th:text="#{tms_locals.main.tabs.cargo}"></h6>
+                                        <div class="form-row mb-1">
+                                        <input type="hidden" id="tms_locals_main_modal_clm_load_id_temp">
+
+                                            <div class="col-12 col-md-3" id="clmll_client_order_num_row">
+                                                <label for="clmll_client_order_num" class="form-label mb-0 text-dark" th:text="'21. '+ #{tms_locals.loads.clmll_client_order_num}"></label>
+                                                <input type="text" class="form-control" id="clmll_client_order_num" name="clmll_client_order_num">
+                                            </div>
+                    
+                                            <div class="col-12 col-md-6" id="clm_load_name_row">
+                                                <label for="clm_load_name" class="form-label mb-0 text-dark" th:text="'22. '+ #{tms_locals.loads.clm_load_name}"></label>
+                                                <input type="text" maxlength="32" class="form-control" id="clm_load_name" name="clm_load_name">
+                                            </div>                        
+                                        </div> <!-- Tab 2 Row 1 -->
+                    
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-3" id="clm_load_weight_row">
+                                                <label for="clm_load_weight" class="form-label mb-0 text-dark" th:text="'23. '+ #{tms_locals.loads.clm_load_weight}"></label>
+                                                <input type="text" class="form-control" id="clm_load_weight" name="clm_load_weight">
+                                            </div>
+                    
+                                            <div class="col-12 col-md-6" id="weight_type_id_row">
+                                                <label for="weight_type_id" class="form-label mb-0 text-dark" th:text="'24. '+#{tms_locals.loads.weight_type_id}">Weight Type: </label>
+                                                <select type="text" id="weight_type_id" name="weight_type_id" class="form-control p-1">
+                                                </select>
+                                            </div>
+                                        </div><!-- Tab 2 Row 2 -->
+                    
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-2" id="clmll_space_count_row">
+                                                <label for="clmll_space_count" class="form-label mb-0 text-dark" th:text="'25. '+ #{tms_locals.loads.clmll_space_count}"></label>
+                                                <input type="number" class="form-control" id="clmll_space_count" name="clmll_space_count">
+                                            </div>
+                    
+                                            <div class="col-12 col-md-2" id="clmll_load_meters_row">
+                                                <label for="clmll_load_meters" class="form-label mb-0 text-dark" th:text="'26. '+ #{tms_locals.loads.clmll_load_meters}"></label>
+                                                <input type="text" class="form-control" id="clmll_load_meters" name="clmll_load_meters">
+                                            </div>
+                    
+                                            <div class="col-12 col-md-2" id="clm_load_dims_row">
+                                                <label for="clm_load_dims" class="form-label mb-0 text-dark" th:text="'27. '+ #{tms_locals.loads.clm_load_dims}"></label>
+                                                <input type="text" class="form-control" id="clm_load_dims" name="clm_load_dims">
+                                            </div>
+                                        </div> <!-- Tab 2 Row 3 -->
+                                        
+                                        <div class="form-row mb-1">
+                                            <div class="col-12">
+                                                <label for="clm_load_notes" class="form-label mb-0 text-dark" th:text="'28. '+#{tms_locals.loads.clm_load_notes}"></label>
+                                                <textarea class="form-control" rows="5" maxlength="512" minlength="10" style="resize:none;" id="clm_load_notes" name="clm_load_notes">
+                                                </textarea>
+                                            </div>
+                                        </div>  <!-- Tab 2 Row 4 -->
+
+                                        <h6 class="text-primary mb-1" id="cnt_loads_result_header" th:text="#{tms_locals.main.lods.cnt_loads_result_header}"></h6>
+                                        <div class="row">
+                                          <div class="col-12 text-dark" id="main_loads_modal_row">
+                                              <span th:replace="tms_locals/main_loads_modal :: tms_locals_main_loads_modal_body"></span>
+                                          </div>
+                                        </div><!-- Tab 2 Row 5 -->
+									</div><!-- Tab 2 -->
+                                    <div class="tab-pane" id="tms_locals_main_modal_tab_3" role="tabpanel">
+										<h6 class="text-primary mb-1" th:text="#{tms_locals.main.tabs.costs}"></h6>
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-2" id="clm_sum_row">
+                                                <label for="clm_sum" class="form-label mb-0 text-dark" th:text="'29. '+ #{tms_locals.main.clm_sum}"></label>
+                                                <input type="text" class="form-control" id="clm_sum" name="clm_sum">
+                                            </div>
+                        
+                                            <div class="col-12 col-md-4" id="clm_sum_currency_row">
+                                                <label for="clm_sum_currency_id" class="form-label mb-0 text-dark" th:text="'30. '+#{full_world.main.clm_rate_currency_id}">Currency: </label>
+                                                <select id="clm_sum_currency_id" name="clm_sum_currency_id" class="form-control">
+                                                </select>
+                                            </div>
+                                        </div><!-- Tab 3 Row 1 -->
+                        
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-3" id="clm_sum_currency_type1_row">
+                                                <label for="clm_sum_currency_date" class="form-label mb-0 text-dark" th:text="'31. '+ #{tms_locals.main.clm_sum_currency_date}"></label>
+                                                <label class="custom-control custom-radio mb-0 text-dark">
+                                                    <input id="clm_sum_currency_ondate" name="clm_sum_currency_ondate" type="radio" class="custom-control-input" value="1">
+                                                    <span class="custom-control-label text-body">Курс на дату</span>
+                                                </label>
+                                                <label class="custom-control custom-radio mb-0 text-dark">
+                                                    <input id="clm_sum_currency_onload" name="clm_sum_currency_ondate" type="radio" class="custom-control-input" value="2">
+                                                    <span class="custom-control-label text-body">Курс на дату загрузки</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-12 col-md-3" id="clm_sum_currency_type2_row">
+                                                <label class="form-label mb-0 text-dark"> </label>
+                                                <label class="custom-control custom-radio mb-0 text-dark">
+                                                    <input id="clm_sum_currency_onunload" name="clm_sum_currency_ondate" type="radio" class="custom-control-input" value="4">
+                                                    <span class="custom-control-label text-body">Курс на дату выгрузки</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-12 col-md-2" id="clm_sum_currency_date_row">
+                                                <label class="form-label mb-0 text-dark"> </label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="clm_sum_currency_date" name="clm_sum_currency_date">
+                                                    <button type="button" id="clm_sum_currency_date_x" name="clm_sum_currency_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>  <!-- Tab 3 Row 2 -->
+                        
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-2" id="clm_rate_row">
+                                                <label for="clm_rate" class="form-label mb-0 text-dark" th:text="'32. '+ #{tms_locals.main.clm_rate}"></label>
+                                                <input type="text" class="form-control" id="clm_rate" name="clm_rate">
+                                            </div>
+                                            <div class="col-12 col-md-4" id="clm_rate_currency_row">
+                                                <label for="clm_rate_currency_id" class="form-label mb-0 text-dark" th:text="'33. '+#{full_world.main.clm_rate_currency_id}">Currency: </label>
+                                                <select id="clm_rate_currency_id" name="clm_rate_currency_id" class="form-control">
+                                                </select>
+                                            </div>
+                                        </div>  <!-- Tab 3 Row 3 -->
+                        
+                                        <div class="form-row">
+                                            <div class="col-12 col-md-3 mb-1" id="clm_rate_currency_type1_row">
+                                                <label for="clm_sum_currency_date" class="form-label mb-0 text-dark" th:text="'34. '+ #{tms_locals.main.clm_rate_currency_date}"></label>
+                                                <label class="custom-control custom-radio mb-0 text-dark">
+                                                    <input id="clm_rate_currency_ondate" name="clm_rate_currency_ondate" type="radio" class="custom-control-input" value="1">
+                                                    <span class="custom-control-label text-body">Курс на дату</span>
+                                                </label>
+                                                <label class="custom-control custom-radio mb-0 text-dark">
+                                                    <input id="clm_rate_currency_onload" name="clm_rate_currency_ondate" type="radio" class="custom-control-input" value="2">
+                                                    <span class="custom-control-label text-body">Курс на дату загрузки</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-12 col-md-3 mb-1" id="clm_rate_currency_type2_row">
+                                                <label class="form-label mb-0 text-dark"> </label>
+                                                <label class="custom-control custom-radio mb-0 text-dark">
+                                                    <input id="clm_rate_currency_onunload" name="clm_rate_currency_ondate" type="radio" class="custom-control-input" value="4">
+                                                    <span class="custom-control-label text-body">Курс на дату выгрузки</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-12 col-md-2 mb-1" id="clm_rate_currency_date_row">
+                                                <label class="form-label mb-0 text-dark"> </label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="clm_rate_currency_date" name="clm_rate_currency_date">
+                                                    <button type="button" id="clm_rate_currency_date_x" name="clm_rate_currency_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>  <!-- Tab 3 Row 4 --> 
+									</div><!-- Tab 3 -->
+									<div class="tab-pane" id="tms_locals_main_modal_tab_4" role="tabpanel">
+										<h6 class="text-primary mb-1" th:text="#{tms_locals.main.tabs.notes}"></h6>
+                                        <div class="form-row mb-1">
+                                            <div class="col-12">
+                                                <label for="clm_note" class="form-label mb-0 text-dark" th:text="'35. '+#{tms_locals.main.clm_note}"></label>
+                                                <textarea class="form-control" rows="5" maxlength="512" minlength="10" style="resize:none;" id="clm_note" name="clm_note">
+                                                </textarea>
+                                            </div>
+                                        </div>  <!-- Tab 4 Row 4 -->
+									</div><!-- Tab 4 -->
+								</div>
+							</div>
+                        </div>
+                    </div>  <!-- Row 7 -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="tms_locals_main_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="tms_locals_main_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+//Address Block
+    function tms_locals_main_address_modal_block() {
+        $("#tms_locals_main_modal_clm_way_id").attr('disabled',true);
+
+        $("#tms_locals_main_modal_cnt_way_id").attr('disabled',true);
+        $("#tms_locals_main_modal_cnt_way_id_x").attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+        $("#cnt_way_date").attr('disabled',true);
+        $("#cnt_way_date_x").attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+        $("#cnt_way_area").attr('disabled',true);
+        $("#cnt_way_region").attr('disabled',true);
+        $("#cnt_way_city").attr('disabled',true);
+        $("#cnt_way_street").attr('disabled',true);
+        $("#cnt_way_home").attr('disabled',true);
+
+        $("#tms_locals_main_modal_cnt_way_cons_id").attr('disabled',true);
+        $("#tms_locals_main_modal_cnt_way_cons_id_x").attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+        $("#cnt_way_company").attr('disabled',true);
+
+        $("#tms_locals_main_modal_cnt_way_contact_id").attr('disabled',true);
+        $("#tms_locals_main_modal_cnt_way_contact_id_x").attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+        $("#cnt_way_contact_person").attr('disabled',true);
+        $("#cnt_way_contact_phone").attr('disabled',true);
+        $("#cnt_way_contact_phone2").attr('disabled',true);
+
+        $("#tms_locals_main_modal_address_add").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+        $("#tms_locals_main_modal_address_upload").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        $("#tms_locals_main_modal_address_clear").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+        $("#tms_locals_main_modal_address_delete").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+    }
+//Loads Block
+    function tms_locals_main_loads_modal_block(){
+        $("#clmll_client_order_num").attr('disabled',true);
+        $("#clm_load_name").attr('disabled',true);
+        $("#clm_load_weight").attr('disabled',true);
+        $("#weight_type_id").attr('disabled',true);
+        $("#clmll_space_count").attr('disabled',true);
+        $("#clmll_load_meters").attr('disabled',true);
+        $("#clm_load_dims").attr('disabled',true);
+        $("#clm_load_notes").attr('disabled',true);
+
+        $("#tms_locals_main_modal_loads_add").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+        $("#tms_locals_main_modal_loads_upload").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        $("#tms_locals_main_modal_loads_clear").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+        $("#tms_locals_main_modal_loads_delete").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+    }
+//Costs Block
+    function tms_locals_main_costs_modal_block(){
+        $("#clm_sum").attr('disabled',true);
+        $("#clm_sum_currency_id").attr('disabled',true);
+        $("#clm_sum_currency_ondate").attr('disabled',true);
+        $("#clm_sum_currency_onload").attr('disabled',true);
+        $("#clm_sum_currency_onunload").attr('disabled',true);
+        $("#clm_sum_currency_date").attr('disabled',true);
+        $("#clm_sum_currency_date_x").attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+        $("#clm_rate").attr('disabled',true);
+        $("#clm_rate_currency_id").attr('disabled',true);
+        $("#clm_rate_currency_ondate").attr('disabled',true);
+        $("#clm_rate_currency_onload").attr('disabled',true);
+        $("#clm_rate_currency_onunload").attr('disabled',true);
+        $("#clm_rate_currency_date").attr('disabled',true);
+        $("#clm_rate_currency_date_x").attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+    }
+//Notes Block
+    function tms_locals_main_notes_modal_block(){
+        $("#clm_note").attr('disabled',true);
+    }
+
+    function tms_locals_main_modal_block() {
+        $('#tms_locals_main_modal_cnt_id').attr('required',true);
+
+        tms_locals_main_address_modal_block();
+        tms_locals_main_loads_modal_block();
+        tms_locals_main_costs_modal_block();
+        tms_locals_main_notes_modal_block();
+    }
+//Address remove block
+    function tms_locals_main_modal_address_remove_block() {
+        $("#cnt_way_date").removeAttr('disabled');
+        $("#cnt_way_date_x").removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+        $("#cnt_way_area").removeAttr('disabled');
+        $("#cnt_way_region").removeAttr('disabled');
+        $("#cnt_way_city").removeAttr('disabled');
+        $("#cnt_way_street").removeAttr('disabled');
+        $("#cnt_way_home").removeAttr('disabled');
+
+        $("#tms_locals_main_modal_cnt_way_cons_id").removeAttr('disabled');
+        $("#tms_locals_main_modal_cnt_way_cons_id_x").removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+        $("#cnt_way_company").removeAttr('disabled');
+
+        $("#tms_locals_main_modal_cnt_way_contact_id").removeAttr('disabled');
+        $("#tms_locals_main_modal_cnt_way_contact_id_x").removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+        $("#cnt_way_contact_person").removeAttr('disabled');
+        $("#cnt_way_contact_phone").removeAttr('disabled');
+        $("#cnt_way_contact_phone2").removeAttr('disabled');
+
+        $("#tms_locals_main_modal_address_add").prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+        $("#tms_locals_main_modal_address_clear").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+    }
+//Loads remove block
+    function tms_locals_main_modal_loads_remove_block() {
+        $("#tms_locals_main_modal_cnt_way_id").removeAttr('disabled');
+        $("#tms_locals_main_modal_cnt_way_id_x").removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+        $("#clmll_client_order_num").removeAttr('disabled');
+        $("#clm_load_name").removeAttr('disabled');
+        $("#clm_load_weight").removeAttr('disabled');
+        $("#weight_type_id").removeAttr('disabled');
+        $("#clmll_space_count").removeAttr('disabled');
+        $("#clmll_load_meters").removeAttr('disabled');
+        $("#clm_load_dims").removeAttr('disabled');
+        $("#clm_load_notes").removeAttr('disabled');
+
+        $("#tms_locals_main_modal_loads_add").prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+        $("#tms_locals_main_modal_loads_clear").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+    }
+//Costs remove Block
+    function tms_locals_main_modal_costs_remove_block(){
+        $("#clm_sum").removeAttr('disabled');
+        $("#clm_sum_currency_id").removeAttr('disabled');
+        $("#clm_sum_currency_ondate").removeAttr('disabled');
+        $("#clm_sum_currency_onload").removeAttr('disabled');
+        $("#clm_sum_currency_onunload").removeAttr('disabled');
+        $("#clm_sum_currency_date").removeAttr('disabled');
+        $("#clm_sum_currency_date_x").removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+        $("#clm_rate").removeAttr('disabled');
+        $("#clm_rate_currency_id").removeAttr('disabled');
+        $("#clm_rate_currency_ondate").removeAttr('disabled');
+        $("#clm_rate_currency_onload").removeAttr('disabled');
+        $("#clm_rate_currency_onunload").removeAttr('disabled');
+        $("#clm_rate_currency_date").removeAttr('disabled');
+        $("#clm_rate_currency_date_x").removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+    }
+//Notes remove block
+    function tms_locals_main_modal_notes_remove_block() {
+        $("#clm_note").removeAttr('disabled');
+    }
+
+    // Clear Fields
+    function clear_tms_locals_main_modal_detail() {
+        $("#tms_locals_main_modal_detail input[type=text]").val('');
+        $("#tms_locals_main_modal_detail input[type=number]").val('');
+        $("#tms_locals_main_modal_detail select").empty();
+        $("#tms_locals_main_modal_detail textarea").val('');
+    }
+
+    // Block And Required Fields
+    function block_tms_locals_main_modal_detail(){
+        $('#tms_locals_main_modal_cnt_id').attr('required', true);
+        $('#tms_locals_main_modal_clm_way_id').attr('required', true);
+    }
+
+    // Service List
+    function addServiceChange(vMode) {
+        $('#tms_locals_main_modal_ser_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tms_locals/get_service_list'}]]*/ "/tms_locals/get_service_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "ser_id": 1
+            },
+            success: function (locals_main_modal_ser_list) {
+                for (var i = 0; i < locals_main_modal_ser_list.data.length; i++) {
+                    $("select[name='tms_locals_main_modal_ser_id']").find('option').end().append(
+                        "<option value='" + locals_main_modal_ser_list.data[i].ser_id
+                        + "'>" + locals_main_modal_ser_list.data[i].ser_name + "</option>");
+                }
+            }
+        }));
+    }
+
+    // Client List
+    function tmsAddClientChange(vMode,vCNTID,vCNTFILTER) {
+        $('#tms_locals_main_modal_cnt_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tms_locals/get_tms_client_list'}]]*/ "/tms_locals/get_tms_client_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "cnt_filter": vCNTFILTER
+            },
+            success: function (client_list) {
+                for (var i = 0; i < client_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='tms_locals_main_modal_cnt_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='tms_locals_main_modal_cnt_id']").find('option').end().append(
+                        "<option value='" + client_list.data[i].cnt_id
+                        + "'>" + client_list.data[i].cnt_name + "</option>");
+                }
+                if(vCNTID != null){
+                    $("#tms_locals_main_modal_cnt_id").val(vCNTID);
+                }
+            }
+        }));
+    }
+    // Way Types List
+    function wayAddTypeChange(vMode, vWayTypeID) {
+        $('#tms_locals_main_modal_clm_way_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tms_locals/get_ways_type_list'}]]*/ "/tms_locals/get_ways_type_list",
+            type: "get",
+            data: {"mode": vMode,
+                "tms_locals_main_modal_clm_way_id": vWayTypeID
+            },
+            success: function (way_list) {
+                for (var i = 0; i < way_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='tms_locals_main_modal_clm_way_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='tms_locals_main_modal_clm_way_id']").find('option').end().append("<option value='" + way_list.data[i].clm_way_id + "'>" + way_list.data[i].clm_way_name + "</option>");
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    // Aim Type List
+    function aimAddTypeChange(vMode) {
+        $('#tms_locals_main_modal_clm_aim_type_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tms_locals/get_aim_type_list'}]]*/ "/tms_locals/get_aim_type_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (aim_type_list) {
+                for (var i = 0; i < aim_type_list.data.length; i++) {
+                    $("select[name='tms_locals_main_modal_clm_aim_type_id']").find('option').end().append(
+                        "<option value='" + aim_type_list.data[i].clm_aim_type_id
+                        + "'>" + aim_type_list.data[i].clm_aim_type_name + "</option>");
+                }
+            }
+        }));
+    }
+
+    // Ways Type List
+    function wayAddressChange(vMode,vCNTID,vClmWayID) {
+        $('#tms_locals_main_modal_cnt_way_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tms_locals/get_fld_way_list'}]]*/ "/tms_locals/get_fld_way_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "cnt_id": vCNTID,
+                "clm_way_id": vClmWayID
+            },
+            success: function (cnt_way_list) {
+                for (var i = 0; i < cnt_way_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='tms_locals_main_modal_cnt_way_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='tms_locals_main_modal_cnt_way_id']").find('option').end().append(
+                        "<option value='" + cnt_way_list.data[i].cnt_way_id
+                        + "'>" + cnt_way_list.data[i].cnt_way_name + "</option>");
+                }
+            }
+        }));
+    }
+    //Way Date
+    $("#cnt_way_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    // Consumers List
+    function wayConsumersListChange(vMode,vCNTID,vClmWayID) {
+        $('#tms_locals_main_modal_cnt_way_cons_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tms_locals/get_fld_consumers_list'}]]*/ "/tms_locals/get_fld_consumers_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "cnt_id": vCNTID,
+                "clm_way_id": vClmWayID
+            },
+            success: function (cnt_cons_list) {
+                for (var i = 0; i < cnt_cons_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='tms_locals_main_modal_cnt_way_cons_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='tms_locals_main_modal_cnt_way_cons_id']").find('option').end().append(
+                        "<option value='" + cnt_cons_list.data[i].cnt_way_cons_id
+                        + "'>" + cnt_cons_list.data[i].cnt_way_company + "</option>");
+                }
+            }
+        }));
+    }
+
+    // Loads List
+    function loadTempWeightChange(vMode, vWeightTypeID) {
+        $('#weight_type_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tms_locals/get_loads_weights_list'}]]*/ "/tms_locals/get_loads_weights_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (weight_type_list) {
+                for (var i = 0; i < weight_type_list.data.length; i++) {
+                    $("select[name='weight_type_id']").find('option').end().append(
+                        "<option value='" + weight_type_list.data[i].weight_type_id
+                        + "'>" + weight_type_list.data[i].weight_type_name + "</option>");
+                    if(vWeightTypeID !== ''){
+                        $('#weight_type_id').val(vWeightTypeID);
+                    }
+                }
+            }
+        }));
+    }
+
+    // Sum Currency List
+    function sumAddCurrencyChange(vMode) {
+        $('#clm_sum_currency_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/full_world/get_currency_list'}]]*/ "/full_world/get_currency_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (currency_list) {
+                for (var i = 0; i < currency_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='clm_sum_currency_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='clm_sum_currency_id']").find('option').end().append(
+                        "<option value='" + currency_list.data[i].currency_id
+                        + "'>" + currency_list.data[i].currency_name + "</option>");
+                }
+            }
+        }));
+    }
+    // Sum Currency List
+    function rateAddCurrencyChange(vMode) {
+        $('#clm_rate_currency_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/full_world/get_currency_list'}]]*/ "/full_world/get_currency_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (rate_currency_list) {
+                for (var i = 0; i < rate_currency_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='clm_rate_currency_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='clm_rate_currency_id']").find('option').end().append(
+                        "<option value='" + rate_currency_list.data[i].currency_id
+                        + "'>" + rate_currency_list.data[i].currency_name + "</option>");
+                }
+            }
+        }));
+    }
+
+    // Currency Date
+    $("#clm_sum_currency_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+    // Rate Currency Date
+    $("#clm_rate_currency_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    // Load Function
+    function fill_tms_locals_main_modal_detail(aMode){
+        clear_tms_locals_main_modal_detail();
+        $('#tms_locals_main_add_modal_mode').val(0);
+        block_tms_locals_main_modal_detail();
+        tms_locals_main_modal_block();
+
+        $.when(
+            addServiceChange(0),
+            aimAddTypeChange(0),
+            wayAddTypeChange(0,1),
+            loadTempWeightChange(0,1),
+            sumAddCurrencyChange(0),
+            rateAddCurrencyChange(0)
+        ).then(function () {
+            $('#tms_locals_main_modal_clm_id_row').attr('hidden',true);
+            $('#tms_locals_main_modal_clm_num').val('30-2007-0001');
+
+            $('#clm_date').val(currentDayRu);
+            $('#cnt_way_date').data('daterangepicker').setStartDate(currentDayRu);
+            $('#cnt_way_date').data('daterangepicker').setEndDate(currentDayRu);
+            $('#cnt_way_date').trigger("apply.daterangepicker");
+
+            $(vClaimsAddressTemp.table).DataTable().ajax.reload(false, true);
+            $(vClaimsLoadsTemp.table).DataTable().ajax.reload(false, true);
+
+            $('#clm_sum').val('0,00');
+            $('#clm_sum_currency_id').val(980);
+            $("#clm_sum_currency_ondate").prop("checked", true);
+            $('#clm_sum_currency_date').data('daterangepicker').setStartDate(currentDayRu);
+            $('#clm_sum_currency_date').data('daterangepicker').setEndDate(currentDayRu);
+            $('#clm_sum_currency_date').trigger("apply.daterangepicker");
+
+            $('#clm_rate').val('0,00');
+            $('#clm_rate_currency_id').val(980);
+            $("#clm_rate_currency_ondate").prop("checked", true);
+            $('#clm_rate_currency_date').data('daterangepicker').setStartDate(currentDayRu);
+            $('#clm_rate_currency_date').data('daterangepicker').setEndDate(currentDayRu);
+            $('#clm_rate_currency_date').trigger("apply.daterangepicker");
+
+            $('#tms_locals_main_modal_tab_1').addClass('active');
+            $('#tms_locals_main_modal_tab_2').removeClass('active');
+            $('#tms_locals_main_modal_tab_3').removeClass('active');
+            $('#tms_locals_main_modal_tab_4').removeClass('active');
+
+            $('#tms_locals_main_modal').modal('show');
+        });
+    }
+// Add button function
+    function addTMSLocalsMain(){
+        let RowID = vClaimsValue.rowdata.clm_id;
+        $.ajax({
+            url: /*[[ @{/tms_locals/add_master_main} ]]*/ "/tms_locals/add_master_main",
+            type: 'POST',
+            data: {
+                "clm_num": $('#tms_locals_main_modal_clm_num').val(),
+                "clm_client_num": $('#tms_locals_main_modal_clm_client_num').val(),
+                "cnt_id": $('#tms_locals_main_modal_cnt_id').val(),
+                "clm_sum": $('#clm_sum').val(),
+                "clm_sum_currency_id": $('#clm_sum_currency_id').val(),
+                "clm_sum_currency_date_type": $("input[name='clm_sum_currency_ondate']:checked").val(),
+                "clm_sum_currency_date": $('#clm_sum_currency_date').val(),
+                "clm_rate": $('#clm_rate').val(),
+                "clm_rate_currency_id": $('#clm_rate_currency_id').val(),
+                "clm_rate_currency_date_type": $("input[name='clm_rate_currency_ondate']:checked").val(),
+                "clm_rate_currency_date": $('#clm_rate_currency_date').val(),
+                "clm_aim_type_id": $('#tms_locals_main_modal_clm_aim_type_id').val(),
+                "clm_note": $('#clm_note').val(),
+                "ser_id": $('#tms_locals_main_modal_ser_id').val()
+            },
+            success: function (result) {
+                $('#tms_locals_main_modal').modal('hide');
+                vClaimsValue.rowdata.clm_id = RowID;
+                $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    // Add button script
+    $('#tms_locals_main_modal_addbtn').click(function(){
+        $('#tms_locals_main_modal_form').submit();
+    });
+
+    //Validation Form
+    $('#tms_locals_main_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function(error,element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            if($('#tms_locals_main_add_modal_mode').val() === '0') {
+                addTMSLocalsMain();
+            }
+            return false;
+        }
+    });
+
+    // OnClick Function
+    $('#cnt_sum_currency_date_x').click(function() {
+        $('#cnt_sum_currency_date').empty().val('');
+    });
+
+    $('#cnt_rate_currency_date_x').click(function() {
+        $('#cnt_rate_currency_date').empty().val('');
+    });
+
+    $("input[name='cnt_sum_currency_ondate']").on('change', function () {
+        if ($("input[name='cnt_sum_currency_ondate']:checked").val() === '1') {
+            $('#cnt_sum_currency_date').removeAttr('disabled');
+            $('#cnt_sum_currency_date_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+        } else {
+            $('#cnt_sum_currency_date').attr('disabled', true);
+            $('#cnt_sum_currency_date_x').attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+        }
+    });
+
+    $("input[name='cnt_rate_currency_ondate']").on('change', function () {
+        if($("input[name='cnt_rate_currency_ondate']:checked").val() === '1'){
+            $('#cnt_rate_currency_date').removeAttr('disabled');
+            $('#cnt_rate_currency_date_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+        }
+        else{
+            $('#cnt_rate_currency_date').attr('disabled', true);
+            $('#cnt_rate_currency_date_x').attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+        }
+    });
+
+    $('#cnt_filter_check').click(function() {
+        $('#tms_locals_main_modal_cnt_id').removeAttr('disabled');
+        $('#tms_locals_main_modal_cnt_id_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+        tmsAddClientChange(
+            $('#tms_locals_main_add_modal_mode').val(),
+            $('#tms_locals_main_modal_cnt_id').val(),
+            $('#cnt_filter').val()
+        );
+    });
+
+    $('#tms_locals_main_modal_cnt_id').on('change', function() {
+        $('#tms_locals_main_modal_clm_way_id').removeAttr('disabled');
+        tms_locals_main_modal_loads_remove_block();
+        tms_locals_main_modal_costs_remove_block();
+        tms_locals_main_modal_notes_remove_block();
+    });
+
+    $('#tms_locals_main_modal_clm_way_id').on('change', function() {
+        tms_locals_main_modal_address_remove_block();
+        wayAddressChange(
+            $('#tms_locals_main_add_modal_mode').val(),
+            $('#tms_locals_main_modal_cnt_id').val(),
+            $('#tms_locals_main_modal_clm_way_id').val()
+        );
+        let mainHeader, listHeader, companyHeader;
+
+        if($('#tms_locals_main_modal_clm_way_id').val() === '5'){
+            mainHeader = /*[[#{tms_locals.main.ways.cnt_way_consumers}]]*/ null;
+            listHeader = /*[[#{tms_locals.main.ways.cnt_way_cons_consumers}]]*/ null;
+            companyHeader = /*[[#{tms_locals.main.ways.cnt_way_company_consumer}]]*/ null;
+        }
+        else{
+            mainHeader = /*[[#{tms_locals.main.ways.cnt_way_senders}]]*/ null;
+            listHeader = /*[[#{tms_locals.main.ways.cnt_way_cons_senders}]]*/ null;
+            companyHeader = /*[[#{tms_locals.main.ways.cnt_way_company_sender}]]*/ null;
+        }
+
+        $('#cnt_way_company_header').text(mainHeader);
+        $('#tms_locals_main_modal_cnt_way_cons_id_label').text('14. '+listHeader);
+        $('#cnt_way_company_label').text('15. '+companyHeader);
+
+        wayConsumersListChange(
+            $('#tms_locals_main_add_modal_mode').val(),
+            $('#tms_locals_main_modal_cnt_id').val(),
+            $('#tms_locals_main_modal_clm_way_id').val()
+        );
+    });
+
+    //Currency Date
+    $('#cnt_way_date_x').click(function() {
+        $('#cnt_way_date').empty().val('');
+    });
+
+    $('#tms_locals_main_modal_cnt_way_id').on('change', function() {
+        if($('#tms_locals_main_modal_cnt_way_id').val() > 0){
+            $.ajax({
+                url:/*[[@{'/tms_locals/get_fld_way_details'}]]*/ "tms_locals/get_fld_way_details",
+                type: "get",
+                data: {
+                    "mode": $('#tms_locals_main_add_modal_mode').val(),
+                    "cnt_way_id": $('#tms_locals_main_modal_cnt_way_id').val()
+                },
+                success: function (tms_locals_main_modal_cnt_way_detail){
+                    $('#cnt_way_area').val(tms_locals_main_modal_cnt_way_detail.data[0].cnt_way_area);
+                    $('#cnt_way_region').val(tms_locals_main_modal_cnt_way_detail.data[0].cnt_way_region);
+                    $('#cnt_way_city').val(tms_locals_main_modal_cnt_way_detail.data[0].cnt_way_city);
+                    $('#cnt_way_street').val(tms_locals_main_modal_cnt_way_detail.data[0].cnt_way_street);
+                    $('#cnt_way_home').val(tms_locals_main_modal_cnt_way_detail.data[0].cnt_way_home);
+                }
+            });
+        }
+        else{
+            $('#cnt_way_area').val('');
+            $('#cnt_way_region').val('');
+            $('#cnt_way_city').val('');
+            $('#cnt_way_street').val('');
+            $('#cnt_way_home').val('');
+        }
+    });
+
+    $('#tms_locals_main_modal_cnt_way_id_x').click( function () {
+        $('#tms_locals_main_modal_cnt_way_id').val('');
+        $('#cnt_way_area').val('');
+        $('#cnt_way_region').val('');
+        $('#cnt_way_city').val('');
+        $('#cnt_way_street').val('');
+        $('#cnt_way_home').val('');
+    });
+
+    $('#tms_locals_main_modal_cnt_way_cons_id').on('change', function() {
+        if($('#tms_locals_main_modal_cnt_way_cons_id').val() > 0){
+            $('#cnt_way_company').val($("#tms_locals_main_modal_cnt_way_cons_id option:selected").text());
+        }
+        else{
+            $('#cnt_way_company').val('');
+        }
+    });
+
+    $('#tms_locals_main_modal_cnt_way_cons_id_x').click( function () {
+        $('#tms_locals_main_modal_cnt_way_cons_id').val('');
+        $('#cnt_way_company').val('');
+    });
+
+    // OnClick Function
+    $('#clm_sum_currency_date_x').click(function() {
+        $('#clm_sum_currency_date').empty().val('');
+    });
+
+    $('#clm_rate_currency_date_x').click(function() {
+        $('#clm_rate_currency_date').empty().val('');
+    });
+
+    $("input[name='clm_sum_currency_ondate']").on('change', function () {
+        if ($("input[name='clm_sum_currency_ondate']:checked").val() === '1') {
+            $('#clm_sum_currency_date').removeAttr('disabled');
+            $('#clm_sum_currency_date_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+        } else {
+            $('#clm_sum_currency_date').attr('disabled', true);
+            $('#clm_sum_currency_date_x').attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+        }
+    });
+
+    $("input[name='clm_rate_currency_ondate']").on('change', function () {
+        if($("input[name='clm_rate_currency_ondate']:checked").val() === '1'){
+            $('#clm_rate_currency_date').removeAttr('disabled');
+            $('#clm_rate_currency_date_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+        }
+        else{
+            $('#clm_rate_currency_date').attr('disabled', true);
+            $('#clm_rate_currency_date_x').attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+        }
+    });
+</script>
+
+</body>
+</html>

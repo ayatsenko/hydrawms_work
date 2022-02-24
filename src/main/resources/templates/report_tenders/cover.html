@@ -1,0 +1,213 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{report_tenders.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="report_tenders_filter_card">
+        <div class="card-header pb-0">
+            <div class="card-actions float-right">
+                <a href="#report_tenders_filter_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+            </div>
+            <h5 class="card-title" href="#report_tenders_filter_div" data-toggle="collapse" th:text="#{report_tenders.filter}"></h5>
+        </div>
+        <div class="card-body pt-0 collapse show" id="report_tenders_filter_div">
+            <div>
+                <span th:replace="report_tenders/head_card :: report_tenders_head_body"></span>
+            </div>
+        </div>
+    </div>
+    </div><!-- Header -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="report_tenders_detail_card" hidden>
+        <div class="card-header pb-0">
+            <div class="card-actions float-right">
+                <a href="#report_tenders_detail_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+            </div>
+            <h5 class="card-title" href="#report_tenders_detail_div" data-toggle="collapse" th:text="#{report_tenders.detail.caption}"></h5>
+        </div>
+        <div class="card-body pt-0 collapse show" id="report_tenders_detail_div">
+            <div>
+                <span th:replace="report_tenders/detail_card :: report_tenders_detail_body"></span>
+            </div>
+        </div>
+    </div>
+    </div><!-- Detail -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div id="report_tenders_tabs_div" hidden>
+        <div class="tab">
+            <ul class="nav nav-pills" role="tablist">
+                <li class="nav-item"><a class="nav-link active" href="#tab-1" data-toggle="tab" role="tab" th:text="#{report_tenders.tabs.all_tab}">All</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="#tab-2" data-toggle="tab" role="tab" th:text="#{report_tenders.tabs.not_fill_tab}">Contract</a></li>
+                <li class="nav-item"><a class="nav-link" href="#tab-3" data-toggle="tab" role="tab" th:text="#{report_tenders.tabs.contract_tab}">Start</a></li>
+                <li class="nav-item"><a class="nav-link" href="#tab-4" data-toggle="tab" role="tab" th:text="#{report_tenders.tabs.start_tab}">Not Fill</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="#tab-5" data-toggle="tab" role="tab" th:text="#{report_tenders.tabs.close_suc_tab}">Close Suc</a></li>
+                <li class="nav-item"><a class="nav-link" href="#tab-6" data-toggle="tab" role="tab" th:text="#{report_tenders.tabs.close_lose_tab}">Close Lose</a></li>
+                <li class="nav-item"><a class="nav-link" href="#tab-7" data-toggle="tab" role="tab" th:text="#{report_tenders.tabs.close_can_tab}">Close Can</a></li>
+                <li class="nav-item"><a class="nav-link" href="#tab-8" data-toggle="tab" role="tab" th:text="#{report_tenders.tabs.close_fail_tab}">Close Fail</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="#tab-9" data-toggle="tab" role="tab" th:text="#{report_tenders.tabs.new_tab}">New</a></li>
+                <li class="nav-item"><a class="nav-link" href="#tab-10" data-toggle="tab" role="tab" th:text="#{report_tenders.tabs.work_tab}">Work</a></li>
+                <li class="nav-item"><a class="nav-link" href="#tab-11" data-toggle="tab" role="tab" th:text="#{report_tenders.tabs.complete_tab}">Complete</a></li>
+                <li class="nav-item"><a class="nav-link" href="#tab-12" data-toggle="tab" role="tab" th:text="#{report_tenders.tabs.send_tab}">Send</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="#tab-13" data-toggle="tab" role="tab" th:text="#{report_tenders.tabs.admin_del_tab}">Admin Del</a></li>
+                <li class="nav-item"><a class="nav-link" href="#tab-14" data-toggle="tab" role="tab" th:text="#{report_tenders.tabs.user_del_tab}">User Del</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="#tab-15" data-toggle="tab" role="tab" th:text="#{report_tenders.tabs.contract_can_tab}">Contract Can</a></li>
+                <li class="nav-item"><a class="nav-link" href="#tab-16" data-toggle="tab" role="tab" th:text="#{report_tenders.tabs.start_can_tab}">Start Can</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab-1" role="tabpanel">
+                    <div class="row">
+                        <div class="col-12">
+                            <span th:replace="report_tenders/all_card :: report_tenders_all_body"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab-2" role="tabpanel">
+                    <div class="row">
+                        <div class="col-12">
+                            <span th:replace="report_tenders/not_fill_card :: report_tenders_not_fill_body"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab-3" role="tabpanel">
+                    <div class="row">
+                        <div class="col-12">
+                            <span th:replace="report_tenders/contract_card :: report_tenders_contract_body"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab-4" role="tabpanel">
+                    <div class="row">
+                        <div class="col-12">
+                            <span th:replace="report_tenders/start_card :: report_tenders_start_body"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab-5" role="tabpanel">
+                    <div class="row">
+                        <div class="col-12">
+                            <span th:replace="report_tenders/close_suc_card :: report_tenders_close_suc_body"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab-6" role="tabpanel">
+                    <div class="row">
+                        <div class="col-12">
+                            <span th:replace="report_tenders/close_lose_card :: report_tenders_close_lose_body"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab-7" role="tabpanel">
+                    <div class="row">
+                        <div class="col-12">
+                            <span th:replace="report_tenders/close_can_card :: report_tenders_close_can_body"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab-8" role="tabpanel">
+                    <div class="row">
+                        <div class="col-12">
+                            <span th:replace="report_tenders/close_fail_card :: report_tenders_close_fail_body"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab-9" role="tabpanel">
+                    <div class="row">
+                        <div class="col-12">
+                            <span th:replace="report_tenders/new_card :: report_tenders_new_body"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab-10" role="tabpanel">
+                    <div class="row">
+                        <div class="col-12">
+                            <span th:replace="report_tenders/work_card :: report_tenders_work_body"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab-11" role="tabpanel">
+                    <div class="row">
+                        <div class="col-12">
+                            <span th:replace="report_tenders/complete_card :: report_tenders_complete_body"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab-12" role="tabpanel">
+                    <div class="row">
+                        <div class="col-12">
+                            <span th:replace="report_tenders/send_card :: report_tenders_send_body"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab-13" role="tabpanel">
+                    <div class="row">
+                        <div class="col-12">
+                            <span th:replace="report_tenders/admin_del_card :: report_tenders_admin_del_body"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab-14" role="tabpanel">
+                    <div class="row">
+                        <div class="col-12">
+                            <span th:replace="report_tenders/user_del_card :: report_tenders_user_del_body"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab-15" role="tabpanel">
+                    <div class="row">
+                        <div class="col-12">
+                            <span th:replace="report_tenders/contract_can_card :: report_tenders_contract_can_body"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab-16" role="tabpanel">
+                    <div class="row">
+                        <div class="col-12">
+                            <span th:replace="report_tenders/start_can_card :: report_tenders_start_can_body"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div><!-- Tabs -->
+</div>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<script th:replace="report_tenders/all_card :: cardscript"></script>
+<script th:replace="report_tenders/not_fill_card :: cardscript"></script>
+
+<script th:replace="report_tenders/close_suc_card :: cardscript"></script>
+<script th:replace="report_tenders/contract_card :: cardscript"></script>
+<script th:replace="report_tenders/start_card :: cardscript"></script>
+<script th:replace="report_tenders/close_lose_card :: cardscript"></script>
+<script th:replace="report_tenders/close_can_card :: cardscript"></script>
+<script th:replace="report_tenders/close_fail_card :: cardscript"></script>
+
+<script th:replace="report_tenders/new_card :: cardscript"></script>
+<script th:replace="report_tenders/work_card :: cardscript"></script>
+<script th:replace="report_tenders/complete_card :: cardscript"></script>
+<script th:replace="report_tenders/send_card :: cardscript"></script>
+
+<script th:replace="report_tenders/user_del_card :: cardscript"></script>
+<script th:replace="report_tenders/admin_del_card :: cardscript"></script>
+<script th:replace="report_tenders/contract_can_card :: cardscript"></script>
+<script th:replace="report_tenders/start_can_card :: cardscript"></script>
+
+<script th:replace="report_tenders/detail_card :: cardscript"></script>
+<script th:replace="report_tenders/head_card :: cardscript"></script>
+
+</body>
+</html>

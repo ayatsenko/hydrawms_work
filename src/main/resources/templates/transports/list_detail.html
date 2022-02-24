@@ -1,0 +1,730 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{transports.list.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{transports.list.caption}"></h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <!--/*@thymesVar id="transports_list_detail_detail" type="java.util.List"*/-->
+                <form id="transports-list-detail-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/transports/list_model}">
+                    <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="transports-list-detail-indexfrm">Cancel</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="transports-list-detail-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                            <button th:case="1" type="submit" id="transports-list-detail-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                            <button th:case="2" type="submit" id="transports-list-detail-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                        </div>
+                    </div>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="cnt_id" th:value="${cnt_id}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="req_country_id" th:value="${req_country_id}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="req_address" th:value="${req_address}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="req_tir_check" th:value="${req_tir_check}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="req_adr_check" th:value="${req_adr_check}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="req_ekmt_check" th:value="${req_ekmt_check}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="transports_list_table_order_column" th:value="${transports_list_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="transports_list_table_order_type" th:value="${transports_list_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="transports_list_table_search" th:value="${transports_list_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="transports_list_table_pagelen" th:value="${transports_list_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="transports_list_table_page" th:value="${transports_list_table_page}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_transports_collapse" th:value="${clients_transports_collapse}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_trailers_collapse" th:value="${clients_trailers_collapse}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_drivers_collapse" th:value="${clients_drivers_collapse}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_contacts_collapse" th:value="${clients_contacts_collapse}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_country_collapse" th:value="${clients_country_collapse}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_services_collapse" th:value="${clients_services_collapse}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_address_collapse" th:value="${clients_address_collapse}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_documents_collapse" th:value="${clients_documents_collapse}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_files_collapse" th:value="${clients_files_collapse}" >
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-1" id="cnt_id_row">
+                            <label for="cnt_id" class="form-label" th:text="'1. '+ #{transports.list.cnt_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="cnt_id" name="cnt_id" th:value="${cnt_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-5 mb-1">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="cnt_name" class="form-label" th:text="'2. '+#{transports.list.cnt_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="120" class="form-control" id="cnt_name" name="cnt_name" th:value="${cnt_name}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-1" id="country_id_row">
+                            <label for="country_id" th:text="'3. '+#{transports.list.country_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" class="form-control" id="country_id" name="country_id">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option th:each="count_list : ${country_list}"
+                                        th:value="${count_list.country_id}"
+                                        th:text="${count_list.country_nameen}"
+                                        th:selected="${count_list.country_id == country_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-3 mb-1" id="cnt_resident_row">
+                            <label class="form-label" for="cnt_resident" th:text="'4. '+ #{transports.list.cnt_resident}"></label>
+                            <div class="custom-control custom-switch centered">
+                                <div class="custom-control custom-switch">
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <input class="custom-control-input" type="checkbox" id="cnt_resident" name="cnt_resident" th:checked="${cnt_resident == 1}">
+                                    <label class="custom-control-label" for="cnt_resident"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-1" id="owt_id_row">
+                            <label for="owt_id" th:text="'5. '+#{transports.list.owt_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" class="form-control" id="owt_id" name="owt_id">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                             <option class="p-1"
+                                            th:each="own : ${own_list}"
+                                            th:value="${own.owt_id}"
+                                            th:text="${own.owt_name}"
+                                            th:selected="${own.owt_id == owt_id}"
+                              ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-3 mb-1" id="cnt_identifycode_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="cnt_identifycode" class="form-label" th:text="'6. '+#{transports.list.cnt_identifycode}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="cnt_identifycode" name="cnt_identifycode" th:value="${cnt_identifycode}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="tms_contt_id_row">
+                            <label for="tms_contt_id" th:text="'7. '+#{transports.list.tms_contt_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" class="form-control" id="tms_contt_id" name="tms_contt_id">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="tms_contt : ${tms_contt_list}"
+                                        th:value="${tms_contt.tms_contt_id}"
+                                        th:text="${tms_contt.tms_contt_sname}"
+                                        th:selected="${tms_contt.tms_contt_id == tms_contt_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="tms_contt_num_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="tms_contt_num" class="form-label" th:text="'8. '+#{transports.list.tms_contt_num}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="tms_contt_num" name="tms_contt_num" th:value="${tms_contt_num}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="tms_contt_date_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="tms_contt_date" class="form-label" th:text="'9. '+#{transports.list.tms_contt_date_edit}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" maxlength="32" class="form-control" id="tms_contt_date" name="tms_contt_date" th:value="${tms_contt_date}">
+                                <button type="button" id="tms_contt_date_x" name="tms_contt_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 4 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="tms_contt_check_row">
+                            <label class="form-label" for="tms_contt_check" th:text="'10. '+ #{transports.list.tms_contt_check}"></label>
+                            <div class="custom-control custom-switch">
+                                <div class="custom-control custom-switch">
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <input class="custom-control-input" type="checkbox" id="tms_contt_check" name="tms_contt_check" th:checked="${tms_contt_check == 1}">
+                                    <label class="custom-control-label" for="tms_contt_check"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="tms_contt_count_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="tms_contt_count" class="form-label" th:text="'11. '+#{transports.list.tms_contt_count}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="tms_contt_count" name="tms_contt_count" th:value="${tms_contt_count}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="tms_contt_next_date_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="tms_contt_next_date" class="form-label" th:text="'12. '+#{transports.list.tms_contt_next_date}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" maxlength="32" class="form-control" id="tms_contt_next_date" name="tms_contt_next_date" th:value="${tms_contt_next_date}">
+                                <button type="button" id="tms_contt_next_date_x" name="tms_contt_next_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 5 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="tms_lic_num_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="tms_lic_num" class="form-label" th:text="'13. '+#{transports.list.tms_lic_num}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="tms_lic_num" name="tms_lic_num" th:value="${tms_lic_num}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="tms_lic_date_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="tms_lic_date" class="form-label" th:text="'14. '+#{transports.list.tms_lic_date_edit}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" maxlength="32" class="form-control" id="tms_lic_date" name="tms_lic_date" th:value="${tms_lic_date}">
+                                <button type="button" id="tms_lic_date_x" name="tms_lic_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 6 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="tms_ins_num_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="tms_ins_num" class="form-label" th:text="'15. '+#{transports.list.tms_ins_num}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="tms_ins_num" name="tms_ins_num" th:value="${tms_ins_num}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="tms_ins_date_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="tms_ins_date" class="form-label" th:text="'16. '+#{transports.list.tms_ins_date_edit}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" maxlength="32" class="form-control" id="tms_ins_date" name="tms_ins_date" th:value="${tms_ins_date}">
+                                <button type="button" id="tms_ins_date_x" name="tms_ins_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 7 -->
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-1" id="tms_contt_tir_row">
+                            <label class="form-label" for="tms_tir_check" th:text="'17. '+ #{transports.list.tms_tir_check}"></label>
+                            <div class="custom-control custom-switch">
+                                <div class="custom-control custom-switch">
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <input class="custom-control-input" type="checkbox" id="tms_tir_check" name="tms_tir_check" th:checked="${tms_tir_check == 1}">
+                                    <label class="custom-control-label" for="tms_tir_check"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 mb-1" id="tms_contt_ard_row">
+                            <label class="form-label" for="tms_adr_check" th:text="'18 '+ #{transports.list.tms_adr_check}"></label>
+                            <div class="custom-control custom-switch">
+                                <div class="custom-control custom-switch">
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <input class="custom-control-input" type="checkbox" id="tms_adr_check" name="tms_adr_check" th:checked="${tms_adr_check == 1}">
+                                    <label class="custom-control-label" for="tms_adr_check"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 mb-1" id="tms_contt_ekmt_row">
+                            <label class="form-label" for="tms_ekmt_check" th:text="'19. '+ #{transports.list.tms_ekmt_check}"></label>
+                            <div class="custom-control custom-switch">
+                                <div class="custom-control custom-switch">
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <input class="custom-control-input" type="checkbox" id="tms_ekmt_check" name="tms_ekmt_check" th:checked="${tms_ekmt_check == 1}">
+                                    <label class="custom-control-label" for="tms_ekmt_check"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 8 -->
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-1" id="user_id_row">
+                            <label for="user_id" th:text="'20. '+#{transports.list.user_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" class="form-control" id="user_id" name="user_id">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="user : ${user_list}"
+                                        th:value="${user.id}"
+                                        th:text="${user.username}"
+                                        th:selected="${user.id == user_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-3 mb-1" id="cnt_source_id_row">
+                            <label for="cnt_source_id" th:text="'21. '+#{transports.list.cnt_source_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" class="form-control" id="cnt_source_id" name="cnt_source_id">
+                                <option value="">Выберите тип источника</option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="cnt_source : ${cnt_source_list}"
+                                        th:value="${cnt_source.cnt_source_id}"
+                                        th:text="${cnt_source.cnt_source_sname}"
+                                        th:selected="${cnt_source.cnt_source_id == cnt_source_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 9 -->
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-1" id="cs_id_row">
+                            <label for="cs_id" th:text="'22. '+#{transports.list.cs_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" class="form-control" id="cs_id" name="cs_id">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="cs : ${cs_list}"
+                                        th:value="${cs.cs_id}"
+                                        th:text="${cs.cs_name}"
+                                        th:selected="${cs.cs_id == cs_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 10 -->
+
+                    <div class="form-row">
+                        <div class="col-md-6 mb-1" id="cnt_note_row">
+                            <label for="cnt_note" th:text="'23. '+#{transports.list.cnt_note}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="64" style="resize:none;" id="cnt_note" name="cnt_note" th:text="${cnt_note}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 11 -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--/*@thymesVar id="transports_list_detail_detail" type="java.util.List"*/-->
+    <form id="transports-list-detail-indexfrm" method="post" th:action="@{/transports}" hidden>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="cnt_id" th:value="${cnt_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="req_country_id" th:value="${req_country_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="req_address" th:value="${req_address}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="req_tir_check" th:value="${req_tir_check}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="req_adr_check" th:value="${req_adr_check}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="req_ekmt_check" th:value="${req_ekmt_check}">
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="transports_list_table_order_column" th:value="${transports_list_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="transports_list_table_order_type" th:value="${transports_list_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="transports_list_table_search" th:value="${transports_list_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="transports_list_table_pagelen" th:value="${transports_list_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="transports_list_table_page" th:value="${transports_list_table_page}" >
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_transports_collapse" th:value="${clients_transports_collapse}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_trailers_collapse" th:value="${clients_trailers_collapse}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_drivers_collapse" th:value="${clients_drivers_collapse}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_contacts_collapse" th:value="${clients_contacts_collapse}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_country_collapse" th:value="${clients_country_collapse}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_services_collapse" th:value="${clients_services_collapse}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_address_collapse" th:value="${clients_address_collapse}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_documents_collapse" th:value="${clients_documents_collapse}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_files_collapse" th:value="${clients_files_collapse}">
+    </form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'transports-list-detail-indexfrm')">Error</span>
+
+<script>
+    $(document).ready(function(){
+<!-- Form Element Settings -->
+        var conttDateValue = $('#tms_contt_date').val();
+        $("#tms_contt_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        $('#tms_contt_date_x').on('click', function() {
+            $('#tms_contt_date').empty().val('');
+            $('#tms_contt_next_date').empty().val('');
+        });
+
+        if(conttDateValue === null || conttDateValue === ''){
+            $('#tms_contt_date').empty().val('');
+        }
+
+        var licDateValue = $('#tms_lic_date').val();
+        $("#tms_lic_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        $('#tms_lic_date_x').on('click', function() {
+            $('#tms_lic_date').empty().val('');
+        });
+
+        if(licDateValue === null || licDateValue === ''){
+            $('#tms_lic_date').empty().val('');
+        }
+
+        var insDateValue = $('#tms_ins_date').val();
+        $("#tms_ins_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        $('#tms_ins_date_x').on('click', function() {
+            $('#tms_ins_date').empty().val('');
+        });
+
+        if(insDateValue === null || insDateValue === ''){
+            $('#tms_ins_date').empty().val('');
+        }
+
+        var conttNextDate = $('#tms_contt_next_date').val();
+        $("#tms_contt_next_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        $('#tms_contt_next_date_x').on('click', function() {
+            $('#tms_contt_next_date').empty().val('');
+        });
+
+        if(conttNextDate === null || conttNextDate === ''){
+            $('#tms_contt_next_date').empty().val('');
+        }
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#tms_li').addClass('active').removeClass('collapsed');
+        $('#tms_a').attr('aria-expanded',true);
+        $('#tms').addClass('show');
+
+        $('#transports_a').addClass('text-primary');
+<!-- Form Start -->
+        $('#cnt_id').prop('readOnly',true);
+        $('#act_type_sname').prop('required',true);
+
+        $('#tms_contt_next_date').attr('disabled',true);
+        $('#tms_contt_next_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+        if(['3','2'].indexOf($('#mode').val()) >= 0){
+            $('#cnt_resident').attr('disabled',true);
+            $('#owt_id').attr('disabled',true);
+            $('#cs_id').attr('disabled',true);
+        }
+
+        if ($('#cnt_resident').is(':checked')){
+            $('#cnt_identifycode').attr('required',true);
+        }
+        else{
+            $('#cnt_identifycode').removeAttr('required');
+        }
+
+        if ($('#tms_contt_check').is(':checked')) {
+            $('#tms_contt_count').removeAttr('disabled').attr('required',true);
+        }
+        else{
+            $('#tms_contt_count').attr('disabled',true).removeAttr('required');
+        }
+        if($('#error_id').val() == '1'){
+            $('#cnt_name').setCursorPosition(1);
+        }
+        else if ($('#error_id').val() == '2'){
+            $('#cnt_identifycode').setCursorPosition(1);
+        }
+
+<!-- Change Function -->
+        if($('#mode').val() === '0'){
+            $('#cnt_id_row').prop('hidden',true);
+            $('#act_type_name').prop('required',true);
+
+            $('#cnt_source_id').prop('required',true);
+        }
+        else if($('#mode').val() === '2' || $('#mode').val() === '4'){
+            $('#cnt_id').prop('readOnly',true);
+            $('#cnt_name').prop('readOnly',true);
+
+            $('#country_id').attr('disabled','disabled');
+            $('#cnt_resident').attr('disabled','disabled');
+
+            $('#owt_id').attr('disabled','disabled');
+            $('#cnt_identifycode').prop('readOnly',true);
+
+            $('#tms_contt_id').attr('disabled','disabled');
+            $('#tms_contt_num').prop('readOnly',true);
+            $('#tms_contt_date').attr('disabled','disabled');
+            $('#tms_contt_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#tms_lic_num').prop('readOnly',true);
+            $('#tms_lic_date').attr('disabled','disabled');
+            $('#tms_lic_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#tms_ins_num').prop('readOnly',true);
+            $('#tms_ins_date').attr('disabled','disabled');
+            $('#tms_ins_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#user_id').attr('disabled','disabled');
+            $('#cnt_source_id').attr('disabled','disabled');
+
+            $('#cs_id').attr('disabled','disabled');
+            $('#cnt_note').prop('readOnly',true);
+
+            $('#tms_contt_check').attr('disabled','disabled');
+            $('#tms_contt_count').prop('readOnly',true);
+            $('#tms_contt_next_date').attr('disabled','disabled');
+            $('#tms_contt_next_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#tms_tir_check').attr('disabled','disabled');
+            $('#tms_adr_check').attr('disabled','disabled');
+            $('#tms_ekmt_check').attr('disabled','disabled');
+        }
+
+        $('#cnt_resident').click(function() {
+            if ($('#cnt_resident').is(':checked')) {
+                $('#cnt_identifycode').attr('required', true);
+            }
+            else {
+                $('#cnt_identifycode').removeAttr('required');
+            }
+        });
+
+        function changeConttNewDate(){
+            if($('#tms_contt_date').val().length > 0) {
+                var date = new Date($('#tms_contt_date').val().slice(6, 10), $('#tms_contt_date').val().slice(3, 5) - 1, $('#tms_contt_date').val().slice(0, 2));
+                var NewDateRu = new Date(date.setDate(date.getDate() + parseInt($('#tms_contt_count').val()))).toLocaleDateString('ru');
+                $('#tms_contt_next_date').val(NewDateRu);
+            }
+        }
+
+        $('#tms_contt_check').click(function() {
+            if ($('#tms_contt_check').is(':checked')) {
+                $('#tms_contt_count').removeAttr('disabled').attr('required', true);
+                changeConttNewDate();
+            } else {
+                $('#tms_contt_count').attr('disabled', true).removeAttr('required');
+            }
+        });
+
+        $('#tms_contt_count').on('change', function () {
+            changeConttNewDate();
+        });
+
+        $('#tms_contt_date').on('change', function () {
+            if ($('#tms_contt_check').is(':checked')) {
+                changeConttNewDate();
+            }
+        });
+    });
+</script>
+</body>
+</html>

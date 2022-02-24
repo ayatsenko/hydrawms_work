@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="aero_world_filter_body" th:remove="tag">
+    <form class="form-inline">
+        <div class="custom-control custom-switch">
+            <input class="custom-control-input" type="checkbox" id="aero_world_filter_check" name="aero_world_filter_check">
+            <label class="custom-control-label" for="aero_world_filter_check"></label>
+        </div>
+        <div class="form-group form-group-sm mr-2">
+            <label for="aero_world_filter_start_date" class="mr-2" th:text="#{aero_world.filter_start_date}">StartDate:</label>
+            <input class="form-control" type="text" id="aero_world_filter_start_date" name="aero_world_tenders_start_date" disabled/>
+        </div>
+
+        <div class="form-group form-group-sm mr-2">
+            <label for="aero_world_filter_end_date" class="mr-2" th:text="#{aero_world.filter_end_date}">EndDate:</label>
+            <input class="form-control" type="text" id="aero_world_filter_end_date" name="aero_world_tenders_end_date" disabled/>
+        </div>
+        <button type="button" class="btn btn-dark align-middle" id="aero_world_filter_show" disabled><i data-feather="search"></i></button>
+    </form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    $("#aero_world_filter_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#aero_world_filter_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#aero_world_filter_check').click(function(){
+        if($(this).prop('checked')){
+            $('#aero_world_filter_start_date').removeAttr('disabled');
+            $('#aero_world_filter_end_date').removeAttr('disabled');
+            $("#aero_world_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if (window.screen.width < 1024 && window.screen.height < 768) {
+                $("#aero_world_filter_start_date").attr('readonly',true);
+                $("#aero_world_filter_end_date").attr('readonly',true);
+            }
+        }
+        else{
+            $('#aero_world_filter_start_date').attr('disabled',true);
+            $('#aero_world_filter_end_date').attr('disabled',true);
+            $("#aero_world_filter_show").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            if(vClaimsValue.rowdata.aero_world_filter_id === 1){
+                vClaimsValue.rowdata.aero_world_filter_id = 0;
+                $(vClaimsValue.table).DataTable().ajax.reload();
+            }
+        }
+    });
+
+    $('#aero_world_filter_show').click(function() {
+        vClaimsValue.rowdata.aero_world_filter_id = 1;
+        vClaimsValue.rowdata.aero_world_filter_start_date = $('#aero_world_filter_start_date').val();
+        vClaimsValue.rowdata.aero_world_filter_end_date = $('#aero_world_filter_end_date').val();
+
+        $(vClaimsValue.table).DataTable().ajax.reload();
+    });
+</script>
+
+</body>
+</html>

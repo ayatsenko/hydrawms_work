@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{sea_ships.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="sea_ships_filter_card">
+            <div class="card-header pb-0 mb-0">
+                <div class="card-actions float-right">
+                    <a href="#sea_ships_filter_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#sea_ships_filter_div" data-toggle="collapse" th:text="#{sea_ships.filter}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse" id="sea_ships_filter_div">
+                <div>
+                    <span th:replace="sea_ships/filter_card :: sea_ships_filter_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="sea_ships_main_card">
+            <div class="card-header pb-0 mb-0">
+                <div class="card-actions float-right">
+                    <a href="#sea_ships_main_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#sea_ships_main_div" data-toggle="collapse" th:text="#{sea_ships.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="sea_ships_main_div">
+                <div>
+                    <span th:replace="sea_ships/main_check_modal :: sea_ships_main_time_modal_body"></span>
+                    <span th:replace="sea_ships/main_modal :: sea_ships_main_modal_body"></span>
+                    <span th:replace="sea_ships/main_card :: sea_ships_main_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div>
+            <div class="tab mb-2">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"><a class="nav-link active text-primary" href="#tab-1" data-toggle="tab" role="tab" th:text="#{sea_ships.tabs.timetable}">Timetable</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-2" data-toggle="tab" role="tab" th:text="#{sea_ships.tabs.addresses}" hidden>Addresses</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-3" data-toggle="tab" role="tab" th:text="#{sea_ships.tabs.aims}" hidden>Aims</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-4" data-toggle="tab" role="tab" th:text="#{sea_ships.tabs.transports}">Transports</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-5" data-toggle="tab" role="tab" th:text="#{sea_ships.tabs.costs}">Costs</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-6" data-toggle="tab" role="tab" th:text="#{sea_ships.tabs.reports}" hidden>Reports</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-7" data-toggle="tab" role="tab" th:text="#{sea_ships.tabs.errors}">Errors</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-8" data-toggle="tab" role="tab" th:text="#{sea_ships.tabs.notes}" hidden>Notes</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-9" data-toggle="tab" role="tab" th:text="#{sea_ships.tabs.tasks}">Tasks</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-1" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="sea_ships/timelog_card :: sea_ships_timelog_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-2" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-3" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-4" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="sea_ships/trans_modal :: sea_ships_trans_modal_body"></span>
+                                <span th:replace="sea_ships/trans_card :: sea_ships_trans_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-5" role="tabpanel">
+                        <div class="row">
+                            <div class="col-3">
+                                <span th:replace="sea_ships/costs_groups_card :: sea_ships_costs_groups_body"></span>
+                            </div>
+                            <div class="col-9">
+                                <span th:replace="sea_ships/costs_modal :: sea_ships_costs_modal_body"></span>
+                                <span th:replace="sea_ships/costs_card :: sea_ships_costs_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-6" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-7" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="sea_ships/errors_card :: sea_ships_errors_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-8" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-9" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="sea_ships/tasks_modal :: sea_ships_tasks_modal_body"></span>
+                                <span th:replace="sea_ships/tasks_card :: sea_ships_tasks_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FS -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="sea_ships/errors_card :: cardscript"></script>
+
+<script th:replace="sea_ships/tasks_modal :: cardscript"></script>
+<script th:replace="sea_ships/tasks_card :: cardscript"></script>
+
+<script th:replace="sea_ships/costs_modal :: cardscript"></script>
+<script th:replace="sea_ships/costs_card :: cardscript"></script>
+
+<script th:replace="sea_ships/costs_groups_card :: cardscript"></script>
+
+<script th:replace="sea_ships/trans_modal :: cardscript"></script>
+<script th:replace="sea_ships/trans_card :: cardscript"></script>
+
+<script th:replace="sea_ships/timelog_card :: cardscript"></script>
+
+<script th:replace="sea_ships/main_check_modal :: cardscript"></script>
+<script th:replace="sea_ships/main_containers_modal :: cardscript"></script>
+<script th:replace="sea_ships/main_modal :: cardscript"></script>
+<script th:replace="sea_ships/main_card :: cardscript"></script>
+<script th:replace="sea_ships/filter_card :: cardscript"></script>
+</body>
+</html>

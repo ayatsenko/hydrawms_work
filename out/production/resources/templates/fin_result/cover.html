@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{fin_result.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0" th:text="#{fin_result.caption}"></h5>
+            </div>
+            <div class="card-body py-3">
+                <div>
+                    <span th:replace="fin_result/head_card :: fin_result_head_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Header -->
+
+    <div class="col-12">
+        <div class="card" id="fin_result_detail_card" hidden>
+            <div class="card-header">
+                <div class="card-actions float-right">
+                    <a href="#fin_result_detail_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title mb-0" th:text="#{fin_result.detail.caption}"></h5>
+            </div>
+            <div class="card-body py-3 collapse show" id="fin_result_detail_div">
+                <div>
+                    <span th:replace="fin_result/detail_card :: fin_result_detail_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Detail -->
+
+    <div class="col-12">
+        <div id="fin_result_tabs_div" hidden>
+            <div class="tab">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"><a class="nav-link text-primary active" href="#tab-1" data-toggle="tab" role="tab" th:text="#{fin_result.tabs.tab1}">Downloaded</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-2" data-toggle="tab" role="tab" th:text="#{fin_result.tabs.tab2}">Error</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-1" role="tabpanel">
+                        <span th:replace="fin_result/finance_card :: fin_result_finance_body"></span>
+                    </div>
+                    <div class="tab-pane" id="tab-2" role="tabpanel">
+                        <span th:replace="fin_result/error_card :: fin_result_error_body"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Tabs -->
+</div>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<script th:replace="fin_result/finance_card :: cardscript"></script>
+<script th:replace="fin_result/error_card :: cardscript"></script>
+
+<script th:replace="fin_result/detail_card :: cardscript"></script>
+<script th:replace="fin_result/head_card :: cardscript"></script>
+
+</body>
+</html>

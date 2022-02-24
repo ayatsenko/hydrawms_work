@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{report_tms_trans_cities.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2">
+            <div class="card-header pb-0" id="report_tms_trans_cities_filter_card">
+                <div class="card-actions float-right">
+                    <a href="#report_tms_trans_cities_filter_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>                
+                <h5 class="card-title" href="#report_tms_trans_cities_filter_div" data-toggle="collapse" th:text="#{report_tms_trans_cities.filter}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="report_tms_trans_cities_filter_div">
+                <div>
+                    <span th:replace="report_tms_trans_cities/head_card :: report_tms_trans_cities_head_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="report_tms_trans_cities_detail_card" hidden>
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#report_tms_trans_cities_detail_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#report_tms_trans_cities_detail_div" data-toggle="collapse" th:text="#{report_tms_trans_cities.detail.caption}"></h5>
+            </div>
+
+            <div class="card-body pt-0 collapse show" id="report_tms_trans_cities_detail_div">
+                <div>
+                    <span th:replace="report_tms_trans_cities/detail_card :: report_tms_trans_cities_detail_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Header -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<script th:replace="report_tms_trans_cities/detail_card :: cardscript"></script>
+<script th:replace="report_tms_trans_cities/head_card :: cardscript"></script>
+
+</body>
+</html>

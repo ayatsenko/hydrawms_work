@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{report_requests.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{report_requests.caption}"></h5>
+        </div>
+        <div class="card-body py-3">
+            <div>
+                <span th:replace="report_requests/head_card :: report_requests_head_body"></span>
+            </div>
+        </div>
+    </div>
+    </div><!-- Header -->
+
+    <div class="col-12">
+        <div class="card" id="report_requests_detail_card" hidden>
+        <div class="card-header">
+            <div class="card-actions float-right">
+                <a href="#report_requests_detail_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+            </div>
+            <h5 class="card-title mb-0" th:text="#{report_requests.detail.caption}"></h5>
+        </div>
+        <div class="card-body py-3 collapse show" id="report_requests_detail_div">
+            <div>
+                <span th:replace="report_requests/detail_card :: report_requests_detail_body"></span>
+            </div>
+        </div>
+    </div>
+    </div><!-- Detail -->
+
+    <div class="col-12">
+        <div id="report_requests_tabs_div" hidden>
+        <div class="tab">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item"><a class="nav-link text-primary active" href="#tab-1" data-toggle="tab" role="tab" th:text="#{report_requests.tabs.all_tab}">All</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-2" data-toggle="tab" role="tab" th:text="#{report_requests.tabs.suc_tab}">Success</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-3" data-toggle="tab" role="tab" th:text="#{report_requests.tabs.contract_tab}">Contract</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-4" data-toggle="tab" role="tab" th:text="#{report_requests.tabs.start_tab}">Start</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-5" data-toggle="tab" role="tab" th:text="#{report_requests.tabs.lose_tab}">Lose</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-6" data-toggle="tab" role="tab" th:text="#{report_requests.tabs.can_tab}">Canceled</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-7" data-toggle="tab" role="tab" th:text="#{report_requests.tabs.fail_tab}">Failed</a></li>
+
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-8" data-toggle="tab" role="tab" th:text="#{report_requests.tabs.not_fill_tab}">Not Fill</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-9" data-toggle="tab" role="tab" th:text="#{report_requests.tabs.new_tab}">New</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-10" data-toggle="tab" role="tab" th:text="#{report_requests.tabs.work_tab}">Work</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-11" data-toggle="tab" role="tab" th:text="#{report_requests.tabs.complete_tab}">Complete</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-12" data-toggle="tab" role="tab" th:text="#{report_requests.tabs.send_tab}">Send</a></li>
+
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-13" data-toggle="tab" role="tab" th:text="#{report_requests.tabs.user_del_tab}">User Del</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-14" data-toggle="tab" role="tab" th:text="#{report_requests.tabs.admin_del}">Admin Del</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-15" data-toggle="tab" role="tab" th:text="#{report_requests.tabs.contract_can_tab}">Contract Can</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-16" data-toggle="tab" role="tab" th:text="#{report_requests.tabs.start_can_tab}">Start Can</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab-1" role="tabpanel">
+                    <span th:replace="report_requests/all_card :: report_requests_all_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-2" role="tabpanel">
+                    <span th:replace="report_requests/suc_card :: report_requests_suc_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-3" role="tabpanel">
+                    <span th:replace="report_requests/contract_card :: report_requests_contract_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-4" role="tabpanel">
+                    <span th:replace="report_requests/start_card :: report_requests_start_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-5" role="tabpanel">
+                    <span th:replace="report_requests/lose_card :: report_requests_lose_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-6" role="tabpanel">
+                    <span th:replace="report_requests/can_card :: report_requests_can_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-7" role="tabpanel">
+                    <span th:replace="report_requests/fail_card :: report_requests_fail_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-8" role="tabpanel">
+                    <span th:replace="report_requests/not_fill_card :: report_requests_not_fill_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-9" role="tabpanel">
+                    <span th:replace="report_requests/new_card :: report_requests_new_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-10" role="tabpanel">
+                    <span th:replace="report_requests/work_card :: report_requests_work_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-11" role="tabpanel">
+                    <span th:replace="report_requests/complete_card :: report_requests_complete_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-12" role="tabpanel">
+                    <span th:replace="report_requests/send_card :: report_requests_send_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-13" role="tabpanel">
+                    <span th:replace="report_requests/user_del_card :: report_requests_user_del_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-14" role="tabpanel">
+                    <span th:replace="report_requests/admin_del_card :: report_requests_admin_del_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-15" role="tabpanel">
+                    <span th:replace="report_requests/contract_can_card :: report_requests_contract_can_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-16" role="tabpanel">
+                    <span th:replace="report_requests/start_can_card :: report_requests_start_can_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div><!-- Tabs -->
+</div>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+
+<script th:replace="report_requests/all_card :: cardscript"></script>
+<script th:replace="report_requests/suc_card :: cardscript"></script>
+<script th:replace="report_requests/contract_card :: cardscript"></script>
+<script th:replace="report_requests/start_card :: cardscript"></script>
+<script th:replace="report_requests/lose_card :: cardscript"></script>
+<script th:replace="report_requests/can_card :: cardscript"></script>
+<script th:replace="report_requests/fail_card :: cardscript"></script>
+
+<script th:replace="report_requests/not_fill_card :: cardscript"></script>
+<script th:replace="report_requests/new_card :: cardscript"></script>
+<script th:replace="report_requests/work_card :: cardscript"></script>
+<script th:replace="report_requests/complete_card :: cardscript"></script>
+<script th:replace="report_requests/send_card :: cardscript"></script>
+<script th:replace="report_requests/user_del_card :: cardscript"></script>
+<script th:replace="report_requests/admin_del_card :: cardscript"></script>
+<script th:replace="report_requests/contract_can_card :: cardscript"></script>
+<script th:replace="report_requests/start_can_card :: cardscript"></script>
+
+<script th:replace="report_requests/detail_card :: cardscript"></script>
+<script th:replace="report_requests/head_card :: cardscript"></script>
+
+</body>
+</html>

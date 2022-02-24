@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_locals_main_address_modal_body" th:remove="tag">
+    <form id="tms-locals-main-address-modal-detail" class="mb-2" hidden>
+        <div>
+            <button type="button" id="tms_locals_main_modal_address_add" class="btn btn-success"><i class="fa fa-check"></i></button>
+            <button type="button" id="tms_locals_main_modal_address_upload" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+
+            <button type="button" id="tms_locals_main_modal_address_clear" class="btn btn-danger mr-2"><i class="fa fa-times"></i></button>
+
+            <button type="button" id="tms_locals_main_modal_address_delete" class="btn btn-dark mr-2" disabled><i class="fa fa-trash-alt"></i></button>
+
+            <button type="button" id="tms_locals_main_modal_address_reload" class="btn btn-primary"><i class="fa fa-sync-alt"></i></button>
+        </div>
+    </form>
+
+    <div><table id="table-tms-locals-address-modal" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var rn_width, cnt_way_date_width, clm_way_id_width, order_id_width,clm_way_sname_width,cnt_way_name_width,cnt_way_company_width,cnt_way_contact_person_width;
+
+    var rn_class, cnt_way_date_class, clm_way_id_class, order_id_class,clm_way_sname_class,cnt_way_name_class,cnt_way_company_class,cnt_way_contact_person_class;
+
+    var rn_show, cnt_way_date_show, clm_way_id_show, order_id_show,clm_way_sname_show,cnt_way_name_show,cnt_way_company_show,cnt_way_contact_person_show;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+
+        $('#tms-locals-main-address-modal-detail').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "t";
+        rn_show = true;
+        rn_width = "5%";
+        rn_class = "small_size small_head_size head-center small_footer_size";
+        cnt_way_date_show = true;
+        cnt_way_date_width = "8%";
+        cnt_way_date_class = "small_size small_head_size head-center small_footer_size text-center";
+        clm_way_id_show = false;
+        clm_way_id_width = "";
+        clm_way_id_class = "";
+        order_id_show = false;
+        order_id_width = "";
+        order_id_class = "";
+        clm_way_sname_show = true;
+        clm_way_sname_width = "10%";
+        clm_way_sname_class = "small_size small_head_size head-center small_footer_size text-center";
+        cnt_way_name_show = true;
+        cnt_way_name_width = "27%";
+        cnt_way_name_class = "small_size small_head_size head-center small_footer_size";
+        cnt_way_company_show = true;
+        cnt_way_company_width = "25%";
+        cnt_way_company_class = "small_size small_head_size head-center small_footer_size";
+        cnt_way_contact_person_show = true;
+        cnt_way_contact_person_width = "25%";
+        cnt_way_contact_person_class = "small_size small_head_size head-center small_footer_size";
+
+        $('#tms-locals-main-address-modal-detail').removeAttr('hidden');
+    }
+    else{
+        vDomParam = "t";
+        rn_show = true;
+        rn_width = "5%";
+        rn_class = "small_size small_head_size head-center small_footer_size";
+        cnt_way_date_show = true;
+        cnt_way_date_width = "8%";
+        cnt_way_date_class = "small_size small_head_size head-center small_footer_size text-center";
+        clm_way_id_show = false;
+        clm_way_id_width = "";
+        clm_way_id_class = "";
+        order_id_show = false;
+        order_id_width = "";
+        order_id_class = "";
+        clm_way_sname_show = true;
+        clm_way_sname_width = "10%";
+        clm_way_sname_class = "small_size small_head_size head-center small_footer_size text-center";
+        cnt_way_name_show = true;
+        cnt_way_name_width = "27%";
+        cnt_way_name_class = "small_size small_head_size head-center small_footer_size";
+        cnt_way_company_show = true;
+        cnt_way_company_width = "25%";
+        cnt_way_company_class = "small_size small_head_size head-center small_footer_size";
+        cnt_way_contact_person_show = true;
+        cnt_way_contact_person_width = "25%";
+        cnt_way_contact_person_class = "small_size small_head_size head-center small_footer_size";
+    }
+
+    var vClaimsAddressTemp;
+    vClaimsAddressTemp = {
+        table : '#table-tms-locals-address-modal',
+        button_form: (mobileScreenSize || smallScreenSize ) ? null : "#tms-locals-main-address-modal-detail",
+        ajax : {
+            "url": /*[[@{/tms_locals/get_address_temp_table}]]*/ "tms_locals/get_address_temp_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.mode = $('#tms_locals_main_add_modal_mode').val();
+            }
+        },
+        key : "rn",
+        switchControl : tms_locals_main_address_modal_switchControl,
+        rowdata:{
+            clm_way_id: null,
+            order_id: null,
+            rn: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+        autoWidth: true,
+
+        dom: vDomParam,
+        columnDefs:[
+            {"targets": [0], "width": rn_width, "className": rn_class, "visible": rn_show},
+            {"targets": [1], "width": cnt_way_date_width, "className": cnt_way_date_class, "visible": cnt_way_date_show},
+            {"targets": [2], "width": clm_way_id_width, "className": clm_way_id_class, "visible": clm_way_id_show},
+            {"targets": [3], "width": order_id_width, "className": order_id_class, "visible": order_id_show},
+            {"targets": [4], "width": clm_way_sname_width, "className": clm_way_sname_class, "visible": clm_way_sname_show},
+            {"targets": [5], "width": cnt_way_name_width, "className": cnt_way_name_class, "visible": cnt_way_name_show},
+            {"targets": [6], "width": cnt_way_company_width, "className": cnt_way_company_class, "visible": cnt_way_company_show},
+            {"targets": [7], "width": cnt_way_contact_person_width, "className": cnt_way_contact_person_class, "visible": cnt_way_contact_person_show} 
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{tms_locals.address_modal.rn}]]*/ "rn", "data": "rn"},
+            /*1*/{"title": /*[[#{tms_locals.address_modal.cnt_way_date}]]*/ "clm_way_id", "data": "cnt_way_date"},
+            /*2*/{"title": /*[[#{tms_locals.address_modal.clm_way_id}]]*/ "clm_way_id", "data": "clm_way_id"},
+            /*3*/{"title": /*[[#{tms_locals.address_modal.order_id}]]*/ "order_id", "data": "order_id"},
+            /*4*/{"title": /*[[#{tms_locals.address_modal.clm_way_sname}]]*/ "clm_way_sname", "data": "clm_way_sname"},
+            /*5*/{"title": /*[[#{tms_locals.address_modal.cnt_way_name}]]*/ "cnt_way_name", "data": "cnt_way_name"},
+            /*6*/{"title": /*[[#{tms_locals.address_modal.cnt_way_company}]]*/ "cnt_way_company", "data": "cnt_way_company"},
+            /*7*/{"title": /*[[#{tms_locals.address_modal.cnt_way_contact_person}]]*/ "cnt_way_contact_person", "data": "cnt_way_contact_person"}
+        ],
+        pageLength: 50,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function tms_locals_main_address_modal_switchControl(){
+        if(vClaimsAddressTemp.rowdata.rn != null) {
+            $("#tms_locals_main_modal_address_delete").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+            $("#tms_locals_main_modal_address_upload").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        }
+        else{
+            $("#tms_locals_main_modal_address_delete").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            $("#tms_locals_main_modal_address_upload").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    // Add button function
+    function addTMSLocalAddressTemp(){
+        $.ajax({
+            url: /*[[ @{/tms_locals/add_main_temp} ]]*/ "/tms_locals/add_main_temp",
+            type: 'POST',
+            data: {
+                "cnt_id": $('#tms_locals_main_modal_cnt_id').val(),
+                "clm_way_id": $('#tms_locals_main_modal_clm_way_id').val(),
+                "cnt_way_id":  $('#tms_locals_main_modal_cnt_way_id').val(),
+                "cnt_way_area":  $('#cnt_way_area').val(),
+                "cnt_way_region":  $('#cnt_way_region').val(),
+                "cnt_way_city":  $('#cnt_way_city').val(),
+                "cnt_way_street":  $('#cnt_way_street').val(),
+                "cnt_way_home":  $('#cnt_way_home').val(),
+                "cnt_way_cons_id":  $('#tms_locals_main_modal_cnt_way_cons_id').val(),
+                "cnt_way_company":  $('#cnt_way_company').val(),
+                "cnt_way_contact_id":  $('#tms_locals_main_modal_cnt_way_contact_id').val(),
+                "cnt_way_contact_person":  $('#cnt_way_contact_person').val(),
+                "cnt_way_contact_phone":  $('#cnt_way_contact_phone').val(),
+                "cnt_way_contact_phone2":  $('#cnt_way_contact_phone2').val(),
+                "cnt_way_date":  $('#cnt_way_date').val(),
+                "clm_way_id_temp":  $('#tms_locals_main_modal_clm_way_id_temp').val(),
+                "order_id_temp":  $('#tms_locals_main_modal_order_id_temp').val()
+            },
+            success: function (result) {
+                $(vClaimsAddressTemp.table).DataTable().ajax.reload(false, true);
+                $('#tms_locals_main_modal_order_id_temp').val('');
+            }
+        });
+    }
+
+    //Add Temp button script
+    $('#tms_locals_main_modal_address_add').click(function(){
+        addTMSLocalAddressTemp();
+    });
+
+    function localTMSAdressTemReload(){
+        $(vClaimsAddressTemp.table).DataTable().ajax.reload(null, false);
+    }
+    //Reload Button
+    $('#tms_locals_main_modal_address_reload').click(function(){
+        localTMSAdressTemReload();
+    });
+
+    //Delete Function
+    function localTMSAdressTemDelete(){
+        if (vClaimsAddressTemp.rowdata.rn != null) {
+            $.ajax({
+                url: /*[[ @{/tms_locals/del_main_temp} ]]*/ "/tms_locals/main_uncheck",
+                type: 'POST',
+                data: {
+                    "clm_way_id": vClaimsAddressTemp.rowdata.clm_way_id,
+                    "order_id": vClaimsAddressTemp.rowdata.order_id
+                },
+                success: function (result) {
+                    $(vClaimsAddressTemp.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }
+    //Delete Button
+    $('#tms_locals_main_modal_address_delete').click(function(){
+        localTMSAdressTemDelete();
+    });
+
+    function tms_locals_main_modal_address_clear() {
+        $('#tms_locals_main_modal_clm_way_id').val('');
+
+        $("#tms_locals_main_modal_cnt_way_id").val('');
+
+        $('#cnt_way_date').data('daterangepicker').setStartDate(currentDayRu);
+        $('#cnt_way_date').data('daterangepicker').setEndDate(currentDayRu);
+        $('#cnt_way_date').trigger("apply.daterangepicker");
+
+        $("#cnt_way_area").val('');
+        $("#cnt_way_region").val('');
+        $("#cnt_way_city").val('');
+        $("#cnt_way_street").val('');
+        $("#cnt_way_home").val('');
+
+        $("#tms_locals_main_modal_cnt_way_cons_id").val('');
+
+        $("#cnt_way_company").val('');
+
+        $("#tms_locals_main_modal_cnt_way_contact_id").val('');
+
+        $("#cnt_way_contact_person").val('');
+        $("#cnt_way_contact_phone").val('');
+        $("#cnt_way_contact_phone2").val('');
+    }
+
+    //Clear Button
+    $('#tms_locals_main_modal_address_clear').click(function(){
+        tms_locals_main_modal_address_clear();
+    });
+
+    //Upload Function
+    function localTMSAdressTempUpload(){
+        if (vClaimsAddressTemp.rowdata.rn != null) {
+            $.ajax({
+                url: /*[[ @{/tms_locals/get_address_temp_detail} ]]*/ "/tms_locals/get_address_temp_detail",
+                type: 'get',
+                data: {
+                    "clm_way_id": vClaimsAddressTemp.rowdata.clm_way_id,
+                    "order_id": vClaimsAddressTemp.rowdata.order_id
+                },
+                success: function (address_temp_detail) {
+                    tms_locals_main_modal_address_clear();
+                    $('#tms_locals_main_modal_clm_way_id_temp').val(address_temp_detail.data[0].clm_way_id);
+                    $('#tms_locals_main_modal_order_id_temp').val(address_temp_detail.data[0].order_id);
+
+                    $('#tms_locals_main_modal_clm_way_id').val(address_temp_detail.data[0].clm_way_id);
+
+                    $("#tms_locals_main_modal_cnt_way_id").val(address_temp_detail.data[0].cnt_way_id);
+
+                    $('#cnt_way_date').data('daterangepicker').setStartDate(address_temp_detail.data[0].cnt_way_date);
+                    $('#cnt_way_date').data('daterangepicker').setEndDate(address_temp_detail.data[0].cnt_way_date);
+                    $('#cnt_way_date').trigger("apply.daterangepicker");
+
+                    $("#cnt_way_area").val(address_temp_detail.data[0].cnt_way_area);
+                    $("#cnt_way_region").val(address_temp_detail.data[0].cnt_way_region);
+                    $("#cnt_way_city").val(address_temp_detail.data[0].cnt_way_city);
+                    $("#cnt_way_street").val(address_temp_detail.data[0].cnt_way_street);
+                    $("#cnt_way_home").val(address_temp_detail.data[0].cnt_way_home);
+
+                    $("#tms_locals_main_modal_cnt_way_cons_id").val(address_temp_detail.data[0].cnt_way_cons_id);
+
+                    $("#cnt_way_company").val(address_temp_detail.data[0].cnt_way_company);
+
+                    $("#tms_locals_main_modal_cnt_way_contact_id").val(address_temp_detail.data[0].cnt_way_contact_id);
+
+                    $("#cnt_way_contact_person").val(address_temp_detail.data[0].cnt_way_contact_person);
+                    $("#cnt_way_contact_phone").val(address_temp_detail.data[0].cnt_way_contact_phone);
+                    $("#cnt_way_contact_phone2").val(address_temp_detail.data[0].cnt_way_contact_phone2);
+                }
+            });
+        }
+    }
+
+    //Upload Button
+    $('#tms_locals_main_modal_address_upload').click(function(){
+        localTMSAdressTempUpload();
+    });
+    $(document).ready(function(){
+        recreateDataTable(vClaimsAddressTemp);
+    });
+</script>
+
+</body>
+</html>

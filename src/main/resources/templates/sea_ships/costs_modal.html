@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="sea_ships_costs_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="sea_ships_costs_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="sea_ships_costs_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{sea_ships.costs.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <div class="form-row">
+                        <input type="hidden" id="sea_ships_costs_modal_mode">
+
+                        <div class="col-12 col-md-3 mb-1" id="sea_ships_costs_modal_clm_id_row">
+                            <label for="sea_ships_costs_modal_clm_id" class="form-label" th:text="'1. '+ #{sea_ships.main.clm_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="sea_ships_costs_modal_clm_id" name="sea_ships_costs_modal_clm_id" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-12 col-md-3 mb-1" id="sea_ships_costs_modal_clm_num_row">
+                            <label for="sea_ships_costs_modal_clm_num" class="form-label" th:text="'2. '+ #{sea_ships.main.clm_num}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="sea_ships_costs_modal_clm_num" name="sea_ships_costs_modal_clm_num" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-12 col-md-6 mb-1" id="sea_ships_costs_modal_cnt_name_row">
+                            <label for="sea_ships_costs_modal_cnt_name" class="form-label" th:text="'3. '+ #{sea_ships.main.cnt_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="sea_ships_costs_modal_cnt_name" name="sea_ships_costs_modal_cnt_name" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="sea_ships_costs_modal_clmcgl_id_row">
+                            <label for="sea_ships_costs_modal_clmcgl_id" class="form-label" th:text="'4. '+ #{sea_ships.costs_groups.clmcgl_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="sea_ships_costs_modal_clmcgl_id" name="sea_ships_costs_modal_clmcgl_id" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 mb-1" id="sea_ships_costs_modal_clmcg_type_name_row">
+                            <label for="sea_ships_costs_modal_clmcg_type_name" class="form-label" th:text="'5. '+ #{sea_ships.costs_groups.clmcg_type_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="sea_ships_costs_modal_clmcg_type_name" name="sea_ships_costs_modal_clmcg_type_name" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="clmcl_id_row">
+                            <label for="clmcl_id" class="form-label" th:text="'6. '+ #{sea_ships.costs.clmcl_id}"></label>
+                            <input type="number" class="form-control" id="clmcl_id" name="clmcl_id" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 mb-1">
+                            <label for="clmc_type_id" class="mr-2" th:text="'7. '+#{sea_ships.costs.clmc_type_sname}">Service: </label>
+                            <select type="text" id="clmc_type_id" name="clmc_type_id" class="form-control p-1">
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="clmcl_sum_row">
+                            <label for="clmcl_sum" class="form-label" th:text="'8. '+ #{sea_ships.costs.clmcl_sum}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="clmcl_sum" name="clmcl_sum">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-4 mb-1" id="sea_ships_costs_modal_currency_id_row">
+                            <label for="sea_ships_costs_modal_currency_id" class="mr-2" th:text="'9. '+#{sea_ships.costs.currenсy_id}">Currency: </label>
+                            <select id="sea_ships_costs_modal_currency_id" name="sea_ships_costs_modal_currency_id" class="form-control">
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-3 mb-1" id="sea_ships_costs_modal_currency_date_row">
+                            <label for="sea_ships_costs_modal_currency_date" class="form-label" th:text="'10. '+ #{sea_ships.costs.currency_date}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="sea_ships_costs_modal_currency_date" name="sea_ships_costs_modal_currency_date">
+                                <button type="button" id="sea_ships_costs_modal_currency_date_x" name="sea_ships_costs_modal_currency_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>                        
+                    </div> <!-- Row 4 -->
+
+                    <div class="form-row">
+                        <div class="col-12 mb-1">
+                            <label for="clmcl_note" th:text="'11. '+#{sea_ships.costs.clmcl_note}"></label>
+                            <textarea class="form-control" rows="5" maxlength="512" style="resize:none;" id="clmcl_note" name="clmcl_note">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 6 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="sea_ships_costs_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="sea_ships_costs_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="sea_ships_costs_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="sea_ships_costs_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+// Clear Fields
+    function clear_sea_ships_costs_modal_detail() {
+        $("#sea_ships_costs_modal_detail input[type=text]").val('');
+        $("#sea_ships_costs_modal_detail input[type=number]").val('');
+        $("#sea_ships_costs_modal_detail select").empty();
+        $("#sea_ships_costs_modal_detail textarea").val('');
+    }
+// Block And Required Fields
+    function block_sea_ships_costs_modal_detail() {
+        $('#clmc_type_id').attr('required', true);
+        $('#clmcl_sum').attr('required', true);
+        $('#sea_ships_costs_modal_currency_id').attr('required', true);
+
+        if($('#sea_ships_costs_modal_mode').val() === "0"){
+            $('#clmcl_id_row').prop('hidden',true);
+            $('#clmc_type_id').removeAttr('disabled');
+            $('#clmcl_sum').val(0).removeAttr('readonly');
+            $('#sea_ships_costs_modal_currency_id').removeAttr('disabled');
+            $('#sea_ships_costs_modal_currency_date').removeAttr('disabled');
+            $('#sea_ships_costs_modal_currency_date_x').attr('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#clmcl_note').removeAttr('readonly',true);
+        }
+        else if($('#sea_ships_costs_modal_mode').val() === "1"){
+            $('#clmcl_id_row').removeAttr('hidden');
+            $('#clmc_type_id').removeAttr('disabled');
+            $('#clmcl_sum').removeAttr('readonly');
+            $('#sea_ships_costs_modal_currency_id').removeAttr('disabled');
+            $('#sea_ships_costs_modal_currency_date').removeAttr('disabled');
+            $('#sea_ships_costs_modal_currency_date_x').attr('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#clmcl_note').removeAttr('readonly',true);
+        }
+        else{
+            $('#clmcl_id_row').removeAttr('hidden');
+            $('#clmc_type_id').attr('disabled',true);
+            $('#clmcl_sum').attr('readonly',true);
+            $('#sea_ships_costs_modal_currency_id').attr('disabled',true);
+            $('#sea_ships_costs_modal_currency_date').attr('disabled',true);
+            $('#sea_ships_costs_modal_currency_date_x').attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+            $('#clmcl_note').attr('readonly',true);
+        }
+    }
+//Costs Types List
+function sumCostsTypeChange(vMode,vCLMCTypeID,vCLMTransID) {
+    $('#clmc_type_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/sea_ships/get_costs_types_list'}]]*/ "/sea_ships/get_costs_types_list",
+        type: "get",
+        data: {
+            "mode": vMode,
+            "clmcg_type_id": vFSClaimCostsGroupsValue.rowdata.clmcg_type_id,
+            "clmc_type_id": vCLMCTypeID,
+            "trans_check_id": vCLMTransID
+        },
+        success: function (costs_types_list) {
+            for (var i = 0; i < costs_types_list.data.length; i++) {
+                if(i === 0) {
+                    $("select[name='clmc_type_id']").find('option').end().append("<option value=''></option>");
+                }
+                $("select[name='clmc_type_id']").find('option').end().append(
+                    "<option value='" + costs_types_list.data[i].clmc_type_id
+                    + "'>" + costs_types_list.data[i].clmc_type_name + "</option>");
+            }
+            if(vCLMCTypeID > 0){
+                $('#clmc_type_id').val(vCLMCTypeID);
+            }
+        }
+    }));
+}
+// Sum Currency List
+function sumCostsCurrencyChange(vMode,vCurrencyID) {
+    $('#sea_ships_costs_modal_currency_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/sea_ships/get_currency_list'}]]*/ "/sea_ships/get_currency_list",
+        type: "get",
+        data: {
+            "mode": vMode
+        },
+        success: function (currency_list) {
+            for (var i = 0; i < currency_list.data.length; i++) {
+                if(i === 0) {
+                    $("select[name='sea_ships_costs_modal_currency_id']").find('option').end().append("<option value=''></option>");
+                }
+                $("select[name='sea_ships_costs_modal_currency_id']").find('option').end().append(
+                    "<option value='" + currency_list.data[i].currency_id
+                    + "'>" + currency_list.data[i].currency_name + "</option>");
+            }
+         if(vCurrencyID > 0){
+             $('#sea_ships_costs_modal_currency_id').val(vCurrencyID);
+         }
+        }
+    }));
+}
+//Currency Date
+$("#sea_ships_costs_modal_currency_date").daterangepicker({
+    "singleDatePicker": true,
+    "locale": {
+        "format": "DD.MM.YYYY",
+        "separator": " - ",
+        "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+        "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+        "daysOfWeek": [
+            /*[[#{weekdays.07_short}]]*/ "Su",
+            /*[[#{weekdays.01_short}]]*/ "Mo",
+            /*[[#{weekdays.02_short}]]*/ "Tu",
+            /*[[#{weekdays.03_short}]]*/ "We",
+            /*[[#{weekdays.04_short}]]*/ "Th",
+            /*[[#{weekdays.05_short}]]*/ "Fr",
+            /*[[#{weekdays.06_short}]]*/ "Sa"
+        ],
+        "monthNames": [
+            /*[[#{month.01}]]*/ "January",
+            /*[[#{month.02}]]*/ "February",
+            /*[[#{month.03}]]*/ "March",
+            /*[[#{month.04}]]*/ "April",
+            /*[[#{month.05}]]*/ "May",
+            /*[[#{month.06}]]*/ "June",
+            /*[[#{month.07}]]*/ "July",
+            /*[[#{month.08}]]*/ "August",
+            /*[[#{month.09}]]*/ "September",
+            /*[[#{month.10}]]*/ "October",
+            /*[[#{month.11}]]*/ "November",
+            /*[[#{month.12}]]*/ "December"
+        ],
+        "firstDay": 1
+    }
+});
+
+$('#sea_ships_costs_modal_currency_date_x').on('click', function() {
+    $('#sea_ships_costs_modal_currency_date').empty().val('');
+});
+
+// Load Function
+    function fill_sea_ships_costs_modal_detail(aMode){
+        var vTransGroupID = vFSClaimCostsGroupsValue.rowdata.trans_costs_group;
+        clear_sea_ships_costs_modal_detail();
+        $('#sea_ships_costs_modal_mode').val(aMode);
+        block_sea_ships_costs_modal_detail();
+
+        $('#sea_ships_costs_modal_clm_id').val(vFSClaimsValue.rowdata.clm_id);
+        $('#sea_ships_costs_modal_clm_num').val(vFSClaimsValue.rowdata.clm_num);
+        $('#sea_ships_costs_modal_cnt_name').val(vFSClaimsValue.rowdata.cnt_name);
+
+        $('#sea_ships_costs_modal_clmcgl_id').val(vFSClaimCostsGroupsValue.rowdata.clmcgl_id);
+        $('#sea_ships_costs_modal_clmcg_type_name').val(vFSClaimCostsGroupsValue.rowdata.clmcg_type_name);
+
+        if(aMode !== 0) {
+            $.ajax({
+                url:/*[[@{'/sea_ships/get_costs_detail'}]]*/ "sea_ships/get_costs_detail",
+                type: "get",
+                data: {
+                    "mode": aMode,
+                    "clmcl_id": vFSClaimCostsValue.rowdata.clmcl_id
+                },
+                success: function (sea_ships_costs_modal_detail_result) {
+                    $.when(
+                        sumCostsTypeChange(aMode,sea_ships_costs_modal_detail_result.data[0].clmc_type_id, vTransGroupID),
+                        sumCostsCurrencyChange(aMode,sea_ships_costs_modal_detail_result.data[0].clmc_type_id)
+                    ).then(function () {
+                        $('#clmcl_id').val(sea_ships_costs_modal_detail_result.data[0].clmcl_id);
+                        $('#clmc_type_id').val(sea_ships_costs_modal_detail_result.data[0].clmc_type_id);
+                        $('#clmcl_sum').val(sea_ships_costs_modal_detail_result.data[0].clmcl_sum);
+                        $('#sea_ships_costs_modal_currency_id').val(sea_ships_costs_modal_detail_result.data[0].currency_id);
+                        $('#sea_ships_costs_modal_currency_date').val(sea_ships_costs_modal_detail_result.data[0].currency_date);
+                        $('#clmcl_note').val(sea_ships_costs_modal_detail_result.data[0].clmcl_note);
+
+                        $('#sea_ships_costs_modal').modal('show');
+                    });
+                }
+            });
+        }
+        else {
+            $.when(
+                sumCostsTypeChange(aMode,0,vTransGroupID),
+                sumCostsCurrencyChange(aMode,0)
+            ).then(function () {
+                $('#sea_ships_costs_modal').modal('show');
+            });
+        }
+    }
+// Add button script
+$('#sea_ships_costs_modal_addbtn').on('click', function(){
+    var MainRowID = vFSClaimsValue.rowdata.clm_id;
+    var GroupRowID = vFSClaimCostsGroupsValue.rowdata.clmcgl_id;
+    var RowID = vFSClaimCostsValue.rowdata.clmcl_id;
+
+    $.ajax({
+        url: /*[[ @{/sea_ships/add_costs} ]]*/ "/clients/add_costs",
+        type: 'POST',
+        data: {
+            "clm_id": MainRowID,
+            "clmcgl_id": GroupRowID,
+            "clmc_type_id":  $('#clmc_type_id').val(),
+            "clmcl_sum":  $('#clmcl_sum').val(),
+            "currency_id":  $('#sea_ships_costs_modal_currency_id').val(),
+            "currency_date":  $('#sea_ships_costs_modal_currency_date').val(),
+            "clmcl_note":  $('#clmcl_note').val()
+        },
+        success: function (result) {
+            $('#sea_ships_costs_modal').modal('hide');
+            vFSClaimCostsValue.rowdata.clm_id = MainRowID;
+            vFSClaimCostsValue.rowdata.clmcgl_id = GroupRowID;
+            vFSClaimCostsValue.rowdata.clmcl_id = RowID;
+            $(vFSClaimCostsValue.table).DataTable().ajax.reload(null, false);
+            vFSClaimsValue.rowdata.clm_id = MainRowID;
+            $(vFSClaimsValue.table).DataTable().ajax.reload(null, false);
+            vFSClaimErrorsValue.rowdata.clm_id = MainRowID;
+            $(vFSClaimErrorsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// Edit button script
+$('#sea_ships_costs_modal_editbtn').on('click', function(){
+    var MainRowID = vFSClaimsValue.rowdata.clm_id;
+    var GroupRowID = vFSClaimCostsGroupsValue.rowdata.clmcgl_id;
+    var RowID = vFSClaimCostsValue.rowdata.clmcl_id;
+
+    $.ajax({
+        url: /*[[ @{/sea_ships/edit_costs} ]]*/ "/clients/edit_costs",
+        type: 'POST',
+        data: {
+            "clmcl_id": RowID,
+            "clmcgl_id": GroupRowID,
+            "clmc_type_id":  $('#clmc_type_id').val(),
+            "clmcl_sum":  $('#clmcl_sum').val(),
+            "currency_id":  $('#sea_ships_costs_modal_currency_id').val(),
+            "currency_date":  $('#sea_ships_costs_modal_currency_date').val(),
+            "clmcl_note":  $('#clmcl_note').val()
+        },
+        success: function (result) {
+            $('#sea_ships_costs_modal').modal('hide');
+            vFSClaimCostsValue.rowdata.clm_id = MainRowID;
+            vFSClaimCostsValue.rowdata.clmcgl_id = GroupRowID;
+            vFSClaimCostsValue.rowdata.clmcl_id = RowID;
+            $(vFSClaimCostsValue.table).DataTable().ajax.reload(null, false);
+            vFSClaimsValue.rowdata.clm_id = MainRowID;
+            $(vFSClaimsValue.table).DataTable().ajax.reload(null, false);
+            vFSClaimErrorsValue.rowdata.clm_id = MainRowID;
+            $(vFSClaimErrorsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// Del button script
+$('#sea_ships_costs_modal_delbtn').on('click', function(){
+    var MainRowID = vFSClaimsValue.rowdata.clm_id;
+    var GroupRowID = vFSClaimCostsGroupsValue.rowdata.clmcgl_id;
+    var RowID = vFSClaimCostsValue.rowdata.clmcl_id;
+
+    $.ajax({
+        url: /*[[ @{/sea_ships/del_costs} ]]*/ "/clients/del_costs",
+        type: 'POST',
+        data: {
+            "clmcl_id": RowID
+        },
+        success: function (result) {
+            $('#sea_ships_costs_modal').modal('hide');
+            vFSClaimCostsValue.rowdata.clm_id = MainRowID;
+            vFSClaimCostsValue.rowdata.clmcgl_id = GroupRowID;
+            vFSClaimCostsValue.rowdata.clmcl_id = RowID;
+            $(vFSClaimCostsValue.table).DataTable().ajax.reload(null, false);
+            vFSClaimsValue.rowdata.clm_id = MainRowID;
+            $(vFSClaimsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+</script>
+
+</body>
+</html>

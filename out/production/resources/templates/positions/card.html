@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="positions_body" th:remove="tag">
+        <form id="positions-detail" class="mb-2" th:action="@{/positions/detail}" method="post">
+            <input name="mode" value="0" hidden>
+              <div id="positions-btn-large" class="d-none d-sm-block">
+                 <button type="submit" id="positions-detailbtn" class="btn btn-sm btn-dark positions_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="positions-addbtn" class="btn btn-sm btn-primary positions_btn_control" th:text="#{general.addbtn}" th:attr="mode=0">Add</button>
+                 <button type="submit" id="positions-editbtn" class="btn btn-sm btn-dark positions_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="positions-delbtn" class="btn btn-sm btn-dark positions_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="positions-btn-small" class="d-block d-sm-none">
+                 <button type="submit" id="positions-detailbtn-sx" class="btn btn-sm btn-dark positions_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="positions-addbtn-sx" class="btn btn-sm btn-primary positions_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                 <button type="submit" id="positions-editbtn-sx" class="btn btn-sm btn-dark positions_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="positions-delbtn-sx" class="btn btn-sm btn-dark positions_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-positions" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vDirectionsValue;
+    vDirectionsValue = {
+        table : '#table-positions',
+        ajax : {
+            "url": /*[[@{/positions/gettable}]]*/ "positions/gettable",
+            "type": "post",
+            "data": {
+            }
+        },
+        key : "pos_id",
+        switchControl : positions_switchControl,
+        rowdata:{
+           pos_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+        scrollX: true,
+        dom: 'Blfrtip',
+        columnDefs:[
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{positions.pos_id}]]*/ "pos_id", "data": "pos_id", "width": "3%"},
+                /*1*/{"title": /*[[#{positions.pos_sname}]]*/ "pos_sname", "data": "pos_sname", "width": "15%", "className": "desktop" },
+                /*2*/{"title": /*[[#{positions.pos_name}]]*/ "pos_name", "data": "pos_name", "width": "22%"},
+                /*3*/{"title": /*[[#{positions.pos_description}]]*/ "pos_description", "data": "pos_description", "width": "60%", "className": "desktop"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function positions_switchControl(){
+        if(vDirectionsValue.rowdata.pos_id != null) {
+                $("#positions-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#positions-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#positions-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#positions-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#positions-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#positions-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');                
+        } else{
+                $("#positions-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#positions-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#positions-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#positions-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#positions-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#positions-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.positions_btn_control').on('click', function (){
+        $("#positions-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#positions-detail').submit(function() {
+        vDirectionsValue.rowdata.positions_table_order_column = $(vDirectionsValue.table).DataTable().order()[0][0];
+        vDirectionsValue.rowdata.positions_table_order_type = $(vDirectionsValue.table).DataTable().order()[0][1];
+        vDirectionsValue.rowdata.positions_table_search = $(vDirectionsValue.table).DataTable().search();
+        vDirectionsValue.rowdata.positions_table_pagelen = $(vDirectionsValue.table).DataTable().page.len();
+        vDirectionsValue.rowdata.positions_table_page = $(vDirectionsValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vDirectionsValue.rowdata).forEach(function (index) {
+            $("#positions-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#positions-detail input[name=\"" + index + "\"]").val(vDirectionsValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vDirectionsValue.rowdata.pos_id = /*[[${pos_id}]]*/ null;
+
+        vDirectionsValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vDirectionsValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vDirectionsValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vDirectionsValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vDirectionsValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vDirectionsValue);
+        $('#main_li').removeClass('active');
+
+        $('#dictionaries_li').addClass('active').removeClass('collapsed');
+        $('#dictionaries_a').attr('aria-expanded',true);
+        $('#dictionaries').addClass('show');
+
+        $('#positions_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{wms_pairs.caption})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 col-md-7 pl-2 pr-1 pt-0">
+        <div class="card mb-2" id="wms_pairs_list_card">
+            <div class="card-header pt-1 pb-1 pr-1 pl-1">
+                <div class="row">
+                    <div class="col-1 text-center text-primary">
+                        <a><i class="fa fa-search"></i></a>
+                    </div>
+                    <div class="col-10">
+                        <h4 class="text-center text-primary pb-0" href="#wms_pairs_main_div" data-toggle="collapse" th:text="#{wms_pairs.caption}"></h4>
+                    </div>
+                    <div class="col-1 text-center">
+                        <a href="#wms_pairs_main_div" data-toggle="collapse"><i class="fa fa-minus"></i> </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pt-md-0 pb-md-2 pr-md-2 pl-md-2 collapse show" id="wms_pairs_main_div">
+                <div>
+                    <span th:replace="wms_pairs/main_card :: wms_pairs_main_body"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-md-1" id="wms_pairs_add_post_card">
+            <div class="card-body pt-md-0 pb-md-2 pr-md-2 pl-md-2 collapse show" id="wms_pairs_position_div">
+                <span th:replace="wms_pairs/add_card :: wms_pairs_add_body"></span>
+            </div>
+        </div>        
+    </div>
+
+    <div class="col-12 col-md-5 pl-0 pr-2 pt-0">
+        <div class="card mb-2" id="wms_pairs_detail_card">
+            <div class="card-header pt-1 pb-1 pr-1 pl-1">
+                <div class="row">
+                    <div class="col-1 text-center text-primary">
+                        <a><i class="fa fa-search"></i></a>
+                    </div>
+                    <div class="col-10">
+                        <h4 class="text-center text-primary pb-0" href="#wms_pairs_post_div" data-toggle="collapse" th:text="#{wms_pairs.detail.caption}"></h4>
+                    </div>
+                    <div class="col-1 text-center">
+                        <a href="#wms_pairs_post_div" data-toggle="collapse"><i class="fa fa-minus"></i> </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pt-md-0 pb-md-2 pr-md-2 pl-md-2 collapse show" id="wms_pairs_post_div">
+                <div>
+                    <span th:replace="wms_pairs/detail_modal :: wms_pairs_detail_modal_body"></span>
+                    <span th:replace="wms_pairs/detail_card :: wms_pairs_detail_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Detail -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="wms_pairs/add_card :: cardscript"></script>
+
+<script th:replace="wms_pairs/detail_modal :: cardscript"></script>
+<script th:replace="wms_pairs/detail_card :: cardscript"></script>
+
+<script th:replace="wms_pairs/main_card :: cardscript"></script>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="sea_ships_trans_body" th:remove="tag">
+        <form id="table-sea-ships-trans-buttons" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+
+            <button type="button" id="sea-ships-trans-detailbtn" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.detailbtn}" disabled><i class="fa fa-list"></i></button>
+            <button type="button" id="sea-ships-trans-addbtn" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" th:title="#{general.addbtn}"><i class="fa fa-plus"></i></button>
+            <button type="button" id="sea-ships-trans-editbtn" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.editbtn}" disabled><i class="fa fa-pencil-alt"></i></button>
+            <button type="button" id="sea-ships-trans-delbtn" class="btn btn-dark mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.delbtn}" disabled><i class="fa fa-trash-alt"></i></button>
+
+            <button type="button" id="sea-ships-trans-reloadbtn" class="btn btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.refreshbtn}"><i class="fa fa-sync"></i></button>
+        </form>
+        
+        <div><table id="table-sea-ships-trans" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var clmtrl_id_width, cnt_name_width, cntc_type_sname_width, cntc_type_brand_width, cntc_type_number_width, cntt_type_sname_width, cntt_type_brand_width, cntt_type_number_width, cntd_name_width,
+        cntd_name_eng_width, cntd_name_doc_width, cntd_name_lisence_width, cntd_main_phone_width, cntd_second_phone_width, cntd_email_width;
+
+    var clmtrl_id_class, cnt_name_class, cntc_type_sname_class, cntc_type_brand_class, cntc_type_number_class, cntt_type_sname_class, cntt_type_brand_class, cntt_type_number_class, cntd_name_class,
+        cntd_name_eng_class, cntd_name_doc_class, cntd_name_lisence_class, cntd_main_phone_class, cntd_second_phone_class, cntd_email_class;
+
+    var clmtrl_id_show, cnt_name_show, cntc_type_sname_show, cntc_type_brand_show, cntc_type_number_show, cntt_type_sname_show, cntt_type_brand_show, cntt_type_number_show, cntd_name_show,
+        cntd_name_eng_show, cntd_name_doc_show, cntd_name_lisence_show, cntd_main_phone_show, cntd_second_phone_show, cntd_email_show;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        clmtrl_id_show = false;
+        clmtrl_id_width = "";
+        clmtrl_id_class = "";
+        cnt_name_show = true;
+        cnt_name_width = "36%";
+        cnt_name_class = "small_size small_head_size small_footer_size sea_ships_trans_edit";
+        cntc_type_sname_show = true;
+        cntc_type_sname_width = "8%";
+        cntc_type_sname_class = "small_size small_head_size small_footer_size text-center sea_ships_trans_edit";
+        cntc_type_brand_show = false;
+        cntc_type_brand_width = "";
+        cntc_type_brand_class = "";
+        cntc_type_number_show = true;
+        cntc_type_number_width = "5%";
+        cntc_type_number_class = "small_size small_head_size small_footer_size text-center sea_ships_trans_edit";
+        cntt_type_sname_show = true;
+        cntt_type_sname_width = "8%";
+        cntt_type_sname_class = "small_size small_head_size small_footer_size text-center sea_ships_trans_edit";
+        cntt_type_brand_show = false;
+        cntt_type_brand_width = "";
+        cntt_type_brand_class = "";
+        cntt_type_number_show = true;
+        cntt_type_number_width = "5%";
+        cntt_type_number_class = "small_size small_head_size small_footer_size text-center sea_ships_trans_edit";
+        cntd_name_show = true;
+        cntd_name_width = "18%";
+        cntd_name_class = "small_size small_head_size small_footer_size sea_ships_trans_edit";
+        cntd_name_eng_show = false;
+        cntd_name_eng_width = "";
+        cntd_name_eng_class = "";
+        cntd_name_doc_show = false;
+        cntd_name_doc_width = "";
+        cntd_name_doc_class = "";
+        cntd_name_lisence_show = false;
+        cntd_name_lisence_width = "";
+        cntd_name_lisence_class = "";
+        cntd_main_phone_show = true;
+        cntd_main_phone_width = "10%";
+        cntd_main_phone_class = "small_size small_head_size small_footer_size sea_ships_trans_edit";
+        cntd_second_phone_show = true;
+        cntd_second_phone_width = "10%";
+        cntd_second_phone_class = "small_size small_head_size small_footer_size sea_ships_trans_edit";
+        cntd_email_show = false;
+        cntd_email_width = "";
+        cntd_email_class = "none";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        clmtrl_id_show = false;
+        clmtrl_id_width = "";
+        clmtrl_id_class = "";
+        cnt_name_show = true;
+        cnt_name_width = "36%";
+        cnt_name_class = "small_size small_head_size small_footer_size sea_ships_trans_edit";
+        cntc_type_sname_show = true;
+        cntc_type_sname_width = "8%";
+        cntc_type_sname_class = "small_size small_head_size small_footer_size text-center sea_ships_trans_edit";
+        cntc_type_brand_show = false;
+        cntc_type_brand_width = "";
+        cntc_type_brand_class = "";
+        cntc_type_number_show = true;
+        cntc_type_number_width = "5%";
+        cntc_type_number_class = "small_size small_head_size small_footer_size text-center sea_ships_trans_edit";
+        cntt_type_sname_show = true;
+        cntt_type_sname_width = "8%";
+        cntt_type_sname_class = "small_size small_head_size small_footer_size text-center sea_ships_trans_edit";
+        cntt_type_brand_show = false;
+        cntt_type_brand_width = "";
+        cntt_type_brand_class = "";
+        cntt_type_number_show = true;
+        cntt_type_number_width = "5%";
+        cntt_type_number_class = "small_size small_head_size small_footer_size text-center sea_ships_trans_edit";
+        cntd_name_show = true;
+        cntd_name_width = "18%";
+        cntd_name_class = "small_size small_head_size small_footer_size sea_ships_trans_edit";
+        cntd_name_eng_show = false;
+        cntd_name_eng_width = "";
+        cntd_name_eng_class = "";
+        cntd_name_doc_show = false;
+        cntd_name_doc_width = "";
+        cntd_name_doc_class = "";
+        cntd_name_lisence_show = false;
+        cntd_name_lisence_width = "";
+        cntd_name_lisence_class = "";
+        cntd_main_phone_show = true;
+        cntd_main_phone_width = "10%";
+        cntd_main_phone_class = "small_size small_head_size small_footer_size sea_ships_trans_edit";
+        cntd_second_phone_show = true;
+        cntd_second_phone_width = "10%";
+        cntd_second_phone_class = "small_size small_head_size small_footer_size sea_ships_trans_edit";
+        cntd_email_show = false;
+        cntd_email_width = "";
+        cntd_email_class = "none";
+    }
+
+    var vFSClaimTransValue;
+    vFSClaimTransValue = {
+        table : '#table-sea-ships-trans',
+        button_form: "#table-sea-ships-trans-buttons",
+        ajax : {
+            "url": /*[[@{/sea_ships/get_trans_table}]]*/ "sea_ships/get_trans_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vFSClaimTransValue.rowdata.clm_id
+            }
+        },
+        key : "clmtrl_id",
+        switchControl : sea_ships_trans_switchControl,
+        rowdata:{
+            clm_id: null,
+            clmtrl_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).css('background-color', data["act_type_colour"]);*/
+        },
+        columnDefs:[
+            {"targets": [0], "width": clmtrl_id_width, "className": clmtrl_id_class, "visible": clmtrl_id_show},
+            {"targets": [1], "width": cnt_name_width, "className": cnt_name_class, "visible": cnt_name_show},
+            {"targets": [2], "width": cntc_type_sname_width, "className": cntc_type_sname_class, "visible": cntc_type_sname_show},
+            {"targets": [3], "width": cntc_type_brand_width, "className": cntc_type_brand_class, "visible": cntc_type_brand_show},
+            {"targets": [4], "width": cntc_type_number_width, "className": cntc_type_number_class, "visible": cntc_type_number_show},
+            {"targets": [5], "width": cntt_type_sname_width, "className": cntt_type_sname_class, "visible": cntt_type_sname_show},
+            {"targets": [6], "width": cntt_type_brand_width, "className": cntt_type_brand_class, "visible": cntt_type_brand_show},
+            {"targets": [7], "width": cntt_type_number_width, "className": cntt_type_number_class, "visible": cntt_type_number_show},
+            {"targets": [8], "width": cntd_name_width, "className": cntd_name_class, "visible": cntd_name_show},
+            {"targets": [9], "width": cntd_name_eng_width, "className": cntd_name_eng_class, "visible": cntd_name_eng_show},
+            {"targets": [10], "width": cntd_name_doc_width, "className": cntd_name_doc_class, "visible": cntd_name_doc_show},
+            {"targets": [11], "width": cntd_name_lisence_width, "className": cntd_name_lisence_class, "visible": cntd_name_lisence_show},
+            {"targets": [12], "width": cntd_main_phone_width, "className": cntd_main_phone_class, "visible": cntd_main_phone_show},
+            {"targets": [13], "width": cntd_second_phone_width, "className": cntd_second_phone_class, "visible": cntd_second_phone_show},
+            {"targets": [14], "width": cntd_email_width, "className": cntd_email_class, "visible": cntd_email_show}
+        ],
+        columns:[
+            /*0*/{"title": /*[[#{sea_ships.trans.clmtrl_id}]]*/ "clmtrl_id", "data": "clmtrl_id"},
+            /*1*/{"title": /*[[#{sea_ships.trans.cnt_name}]]*/ "cnt_name", "data": "cnt_name"},
+            /*2*/{"title": /*[[#{sea_ships.trans.cntc_type_sname}]]*/ "cntc_type_sname", "data": "cntc_type_sname"},
+            /*3*/{"title": /*[[#{sea_ships.trans.cntc_type_brand}]]*/ "cntc_type_brand", "data": "cntc_type_brand"},
+            /*4*/{"title": /*[[#{sea_ships.trans.cntc_type_number}]]*/ "cntc_type_number", "data": "cntc_type_number"},
+            /*5*/{"title": /*[[#{sea_ships.trans.cntt_type_sname}]]*/ "cntt_type_sname", "data": "cntt_type_sname"},
+            /*6*/{"title": /*[[#{sea_ships.trans.cntt_type_brand}]]*/ "cntt_type_brand", "data": "cntt_type_brand"},
+            /*7*/{"title": /*[[#{sea_ships.trans.cntt_type_number}]]*/ "cntt_type_number", "data": "cntt_type_number"},
+            /*8*/{"title": /*[[#{sea_ships.trans.cntd_name}]]*/ "cntd_name", "data": "cntd_name"},
+            /*9*/{"title": /*[[#{sea_ships.trans.cntd_name_eng}]]*/ "cntd_name_eng", "data": "cntd_name_eng"},
+            /*10*/{"title": /*[[#{sea_ships.trans.cntd_name_doc}]]*/ "cntd_name_doc", "data": "cntd_name_doc"},
+            /*11*/{"title": /*[[#{sea_ships.trans.cntd_name_lisence}]]*/ "cntd_name_lisence", "data": "cntd_name_lisence"},
+            /*12*/{"title": /*[[#{sea_ships.trans.cntd_main_phone}]]*/ "cntd_main_phone", "data": "cntd_main_phone"},
+            /*13*/{"title": /*[[#{sea_ships.trans.cntd_second_phone}]]*/ "cntd_second_phone", "data": "cntd_second_phone"},
+            /*14*/{"title": /*[[#{sea_ships.trans.cntd_email}]]*/ "cntd_email", "data": "cntd_email"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function sea_ships_trans_switchControl(){
+        if(vFSClaimTransValue.rowdata.clmtrl_id != null) {
+            $("#sea-ships-trans-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+            if(RoleOPS || RoleChiefOPS || RoleSuperOPS) {
+                $("#sea-ships-trans-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#sea-ships-trans-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+        } else{
+            $("#sea-ships-trans-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#sea-ships-trans-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#sea-ships-trans-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    function seaShipsTransShow(){
+        $('#sea_ships_trans_modal_addbtn').attr('hidden',true);
+        $('#sea_ships_trans_modal_editbtn').attr('hidden',true);
+        $('#sea_ships_trans_modal_delbtn').attr('hidden',true);
+        fill_sea_ships_trans_modal_detail(4);
+    }
+
+    // Detail Button
+    $('#sea-ships-trans-detailbtn').click( function () {
+        seaShipsTransShow();
+    });
+
+    // Add Button
+    $('#sea-ships-trans-addbtn').click( function () {
+        $('#sea_ships_trans_modal_addbtn').removeAttr('hidden');
+        $('#sea_ships_trans_modal_editbtn').attr('hidden',true);
+        $('#sea_ships_trans_modal_delbtn').attr('hidden',true);
+        fill_sea_ships_trans_modal_detail(0);
+    });
+
+    function seaShipsTransEdit(){
+        $('#sea_ships_trans_modal_addbtn').attr('hidden',true);
+        $('#sea_ships_trans_modal_editbtn').removeAttr('hidden');
+        $('#sea_ships_trans_modal_delbtn').attr('hidden',true);
+        fill_sea_ships_trans_modal_detail(1);
+    }
+
+    // Edit Button
+    $('#sea-ships-trans-editbtn').click( function () {
+        seaShipsTransEdit();
+    });
+
+    // Del Button
+    $('#sea-ships-trans-delbtn').click( function () {
+        $('#sea_ships_trans_modal_addbtn').attr('hidden',true);
+        $('#sea_ships_trans_modal_editbtn').attr('hidden',true);
+        $('#sea_ships_trans_modal_delbtn').removeAttr('hidden');
+        fill_sea_ships_trans_modal_detail(2);
+    });
+
+    //Shift click
+    $('#table-sea-ships-trans').on('click','.trans_id_shift', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var taskTable = $("#table-sea-ships-trans").DataTable();
+
+        if (e.shiftKey) {
+            taskTable.row(selectedRow).select();
+            $('#sea_ships_trans_modal_addbtn').attr('hidden',true);
+            $('#sea_ships_trans_modal_editbtn').attr('hidden',true);
+            $('#sea_ships_trans_modal_delbtn').attr('hidden',true);
+            fill_sea_ships_trans_modal_detail(4);
+        }
+    });
+
+    function tmsLocalsTransReload(){
+        vFSClaimTransValue.rowdata.clm_id = vFSClaimsValue.rowdata.clm_id;
+        $(vFSClaimTransValue.table).DataTable().ajax.reload(null, false);
+    }
+    //Reload Button
+    $('#sea-ships-trans-reload').click(function(){
+        tmsLocalsTransReload();
+    });
+
+    $(document).ready(function(){
+        vFSClaimTransValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vFSClaimTransValue.rowdata.clmtrl_id = /*[[${clmtrl_id}]]*/ null;
+
+        vFSClaimTransValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vFSClaimTransValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vFSClaimTransValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vFSClaimTransValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vFSClaimTransValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vFSClaimTransValue);
+
+        $(vFSClaimTransValue.table).on('dblclick', '.sea_ships_trans_edit', function (e) {
+            var selectedTransRow = this._DT_CellIndex.row;
+            var currentTransTable = $(vFSClaimTransValue.table).DataTable();
+            var NameString =  /*[[${#authentication.name}]]*/ '';
+            vFSClaimTransValue.rowdata.clmtrl_id = currentTransTable.row(selectedTransRow).data().clmtrl_id;
+
+            if(RoleOPS || RoleChiefOPS || RoleSuperOPS) {
+                seaShipsTransEdit();
+            }
+            else{
+                seaShipsTransShow();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

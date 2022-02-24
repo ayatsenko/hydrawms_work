@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_brockers_tasks_body" th:remove="tag">
+        <form id="tms-brockers-tasks-detail" class="mb-2" th:action="@{/tms_brockers/tasks_detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="tms-brockers-tasks-btn-large" class="d-none d-sm-block">
+                 <button type="submit" id="tms-brockers-tasks-detailbtn" class="btn btn-sm btn-dark tms_brockers_tasks_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="tms-brockers-tasks-addbtn" class="btn btn-sm btn-dark tms_brockers_tasks_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="submit" id="tms-brockers-tasks-editbtn" class="btn btn-sm btn-dark tms_brockers_tasks_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="tms-brockers-tasks-delbtn" class="btn btn-sm btn-dark tms_brockers_tasks_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="tms-brockers-tasks-btn-small" class="d-block d-sm-none">
+                 <button type="submit" id="tms-brockers-tasks-detailbtn-sx" class="btn btn-sm btn-dark tms_brockers_tasks_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="tms-brockers-tasks-addbtn-sx" class="btn btn-sm btn-dark tms_brockers_tasks_btn_control" th:attr="mode=0" disabled><i data-feather="plus"></i></button>
+                 <button type="submit" id="tms-brockers-tasks-editbtn-sx" class="btn btn-sm btn-dark tms_brockers_tasks_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="tms-brockers-tasks-delbtn-sx" class="btn btn-sm btn-dark tms_brockers_tasks_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-tms-brockers-tasks" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+
+        <button type="submit" id="tms-brockers-tasks-check" class="btn btn-dark" disabled><i data-feather="check-square"></i></button>
+        <button type="submit" id="tms-brockers-tasks-uncheck" class="btn btn-dark" disabled><i data-feather="x-square"></i></button>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vClaimTasksValue;
+    vClaimTasksValue = {
+        table : '#table-tms-brockers-tasks',
+        button_form: "#tms-brockers-tasks-detail",
+        ajax : {
+            "url": /*[[@{/tms_brockers/get_tasks_table}]]*/ "tms_brockers/get_tasks_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vClaimTasksValue.rowdata.clm_id
+            }
+        },
+        key : "clmtl_id",
+        switchControl : tms_brockers_tasks_switchControl,
+        rowdata:{
+            clm_id: null,
+            clmtl_id: null,
+            clm_task_check: null,
+            clm_task_uncheck: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).css('background-color', data["act_type_colour"]);*/
+        },
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [3], type: 'de_datetime'},
+            {"targets": [4], type: 'de_datetime'},
+            {"targets": [6], type: 'de_datetime'},
+            {"targets": [7], "visible": false},
+            {"targets": [8], "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{tms_brockers.tasks.clmtl_id}]]*/ "clmtl_id", "data": "clmtl_id", "width": "1%"},
+                /*1*/{"title": /*[[#{tms_brockers.tasks.clm_task_sname}]]*/ "clm_task_sname", "data": "clm_task_sname", "width": "15%", "className": "desktop" },
+                /*2*/{"title": /*[[#{tms_brockers.tasks.start_user_name}]]*/ "start_user_name", "data": "start_user_name", "width": "10%"},
+                /*3*/{"title": /*[[#{tms_brockers.tasks.deadline_date}]]*/ "deadline_date", "data": "deadline_date", "width": "10%", "className": "desktop"},
+                /*4*/{"title": /*[[#{tms_brockers.tasks.start_date}]]*/ "start_date", "data": "start_date", "width": "10%", "className": "desktop"},
+                /*5*/{"title": /*[[#{tms_brockers.tasks.end_user_name}]]*/ "end_user_name", "data": "end_user_name", "width": "10%"},
+                /*6*/{"title": /*[[#{tms_brockers.tasks.end_date}]]*/ "end_date", "data": "end_date", "width": "42%"},
+                /*7*/{"title": /*[[#{tms_brockers.tasks.clm_task_check}]]*/ "clm_task_check", "data": "clm_task_check", "width": "1%"},
+                /*8*/{"title": /*[[#{tms_brockers.tasks.clm_task_uncheck}]]*/ "clm_task_uncheck", "data": "clm_task_uncheck", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function tms_brockers_tasks_switchControl(){
+        if(vClaimTasksValue.rowdata.clmtl_id != null) {
+                $("#tms-brockers-tasks-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-tasks-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-tasks-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#tms-brockers-tasks-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-tasks-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-tasks-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                if(vClaimTasksValue.rowdata.clm_task_check === 1){
+                    $("#tms-brockers-tasks-check").prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+                }
+                else{
+                    $("#tms-brockers-tasks-check").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                }
+
+                if(vClaimTasksValue.rowdata.clm_task_uncheck === 1){
+                    $("#tms-brockers-tasks-uncheck").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+                }
+                else{
+                    $("#tms-brockers-tasks-uncheck").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+                }
+        } else{
+                $("#tms-brockers-tasks-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-tasks-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-tasks-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#tms-brockers-tasks-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-tasks-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-tasks-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#tms-brockers-tasks-check").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                $("#tms-brockers-tasks-uncheck").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+        }
+    }
+
+    $('.tms_brockers_tasks_btn_control').on('click', function (){
+        $("#tms-brockers-tasks-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#tms-brockers-tasks-detail').submit(function() {
+        vClaimTasksValue.rowdata.tms_brockers_tasks_table_order_column = $(vClaimTasksValue.table).DataTable().order()[0][0];
+        vClaimTasksValue.rowdata.tms_brockers_tasks_table_order_type = $(vClaimTasksValue.table).DataTable().order()[0][1];
+        vClaimTasksValue.rowdata.tms_brockers_tasks_table_search = $(vClaimTasksValue.table).DataTable().search();
+        vClaimTasksValue.rowdata.tms_brockers_tasks_table_pagelen = $(vClaimTasksValue.table).DataTable().page.len();
+        vClaimTasksValue.rowdata.tms_brockers_tasks_table_page = $(vClaimTasksValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vClaimTasksValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+        vClaimTasksValue.rowdata.clm_num = vClaimsValue.rowdata.clm_num;
+        vClaimTasksValue.rowdata.cnt_name = vClaimsValue.rowdata.cnt_name;
+
+        Object.keys(vClaimTasksValue.rowdata).forEach(function (index) {
+            $("#tms-brockers-tasks-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#tms-brockers-tasks-detail input[name=\"" + index + "\"]").val(vClaimTasksValue.rowdata[index]);
+        });
+    });
+
+    $('#tms-brockers-tasks-check').on('click', function( event ) {
+        if (vClaimTasksValue.rowdata.clmtl_id != null) {
+            var RowID = vClaimTasksValue.rowdata.clmtl_id;
+            $.ajax({
+                url: /*[[ @{/tms_brockers/task_check} ]]*/ "/tms_brockers/task_check",
+                type: 'POST',
+                data: {"clmtl_id": vClaimTasksValue.rowdata.clmtl_id},
+                success: function (result) {
+                    vClaimTasksValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+
+                    vClaimTasksValue.rowdata.clmtl_id = RowID;
+                    $(vClaimTasksValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    }); <!-- Check Task Button -->
+
+    $('#tms-brockers-tasks-uncheck').on('click', function( event ) {
+        if (vClaimTasksValue.rowdata.clmtl_id != null) {
+            var RowID = vClaimTasksValue.rowdata.clmtl_id;
+            $.ajax({
+                url: /*[[ @{/tms_brockers/task_uncheck} ]]*/ "/tms_brockers/task_uncheck",
+                type: 'POST',
+                data: {"clmtl_id": vClaimTasksValue.rowdata.clmtl_id},
+                success: function (result) {
+                    vClaimTasksValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+
+                    vClaimTasksValue.rowdata.clmtl_id = RowID;
+                    $(vClaimTasksValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    }); <!-- Check Task Button -->
+
+    $(document).ready(function(){
+        vClaimTasksValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vClaimTasksValue.rowdata.clmtl_id = /*[[${clmtl_id}]]*/ null;
+
+        vClaimTasksValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vClaimTasksValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vClaimTasksValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vClaimTasksValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vClaimTasksValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vClaimTasksValue);
+    });
+</script>
+
+</body>
+</html>

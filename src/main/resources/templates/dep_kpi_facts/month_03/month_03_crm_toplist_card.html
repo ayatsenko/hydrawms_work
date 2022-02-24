@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="dep_kpi_facts_crm_toplist_month_03" th:remove="tag">
+        <div id="dep-kpi-facts-crm-toplist-month-03-buttons">
+              <div id="dep-kpi-facts-crm-toplist-btn-large" class="d-none d-sm-block">
+                 <button type="button" id="dep-kpi-facts-crm-toplist-month-03-check" class="btn btn-sm btn-dark" disabled><i class="fas fa-times"></i></button>
+                 <button type="button" id="dep-kpi-facts-crm-toplist-month-03-uncheck" class="btn btn-sm btn-dark mr-2" disabled><i class="fas fa-check"></i></button>
+
+                <button type="submit" id="dep-kpi-facts-crm-toplist-month-03-link-sx" form="dep-kpi-facts-crm-toplist-month-03-link-form" class="btn btn-sm btn-outline-dark mr-1 user_kpi_crm_toplist_link_control" th:text="#{general.gotobtn}" disabled>GoTo</button>
+              </div>
+              <div id="dep-kpi-facts-crm-toplist-btn-small" class="d-block d-sm-none">
+                 <button type="button" id="dep-kpi-facts-crm-toplist-month-03-check-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-times"></i></button>
+                 <button type="button" id="dep-kpi-facts-crm-toplist-month-03-uncheck-sx" class="btn btn-sm btn-dark mr-2" disabled><i class="fas fa-check"></i></button>
+
+                <button type="submit" id="dep-kpi-facts-crm-toplist-month-03-link" form="dep-kpi-facts-crm-toplist-month-03-link-form" class="btn btn-sm btn-outline-dark mr-1 user_kpi_crm_toplist_link_control" th:text="#{general.gotobtn}" disabled>GoTo</button>
+              </div>
+        </div>        
+
+        <div><table id="table-dep-kpi-facts-crm-toplist-month-03" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+        
+        <form id="dep-kpi-facts-crm-toplist-month-03-link-form" th:action="@{/clients}" method="post" target="_blank">
+                <input name="cnt_id" hidden>
+                <input name="clients_list_table_order_column" hidden>
+                <input name="clients_list_table_order_type" hidden>
+                <input name="clients_list_table_search" hidden>
+                <input name="clients_list_table_pagelen" hidden>
+                <input name="clients_list_table_page" hidden>
+        </form>        
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var block_check_width, cnt_id_width, cnt_name_width, cs_id_width, cs_name_width, user_id_width, user_name_width;
+    var block_check_class, cnt_id_class, cnt_name_class, cs_id_class, cs_name_class, user_id_class, user_name_class;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        block_check_width = "5%";
+        block_check_class = "small_size small_head_size small_footer_size text-center";
+        cnt_id_width ="";
+        cnt_id_class ="none";
+        cnt_name_width ="65%";
+        cnt_name_class ="small_size small_head_size small_footer_size";
+        cs_id_width ="";
+        cs_id_class ="none";
+        cs_name_width ="15%";
+        cs_name_class ="small_size small_head_size small_footer_size text-center";
+        user_id_width ="";
+        user_id_class ="none";
+        user_name_width ="15%";
+        user_name_class ="small_size small_head_size small_footer_size text-center";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        block_check_width = "5%";
+        block_check_class = "text-center";
+        cnt_id_width ="";
+        cnt_id_class ="none";
+        cnt_name_width ="65%";
+        cnt_name_class ="";
+        cs_id_width ="";
+        cs_id_class ="none";
+        cs_name_width ="15%";
+        cs_name_class ="text-center";
+        user_id_width ="";
+        user_id_class ="none";
+        user_name_width ="15%";
+        user_name_class ="text-center";
+    }
+
+    var vDepKPICRMToplistMonth03Value;
+    vDepKPICRMToplistMonth03Value = {
+        table : '#table-dep-kpi-facts-crm-toplist-month-03',
+        button_form: '#dep-kpi-facts-crm-toplist-month-03-buttons',
+        ajax : {
+            "url": /*[[@{/dep_kpi_facts/crm_toplist_menu}]]*/ "dep_kpi_facts/crm_toplist_menu",
+            "type": "post",
+            "data": function ( d ) {
+                d.dep_kpi_crm_param_id = vDepKPICRMToplistMonth03Value.rowdata.dep_kpi_crm_param_id;
+                d.dep_kpi_user_id = vDepKPICRMToplistMonth03Value.rowdata.dep_kpi_user_id;
+                d.dep_kpi_year = vDepKPICRMToplistMonth03Value.rowdata.dep_kpi_year;
+                d.dep_kpi_month = vDepKPICRMToplistMonth03Value.rowdata.dep_kpi_month;
+            }
+        },
+        key : "cnt_id",
+        switchControl : user_kpi_crm_toplist_month_03_switchControl,
+        rowdata:{
+            cnt_id: null,
+            cnt_name: null,
+            cs_name: null,
+            cs_id: null,
+            block_check: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            if ( data.block_check === 1 ){
+                $(row).css('background-color', '#ff8566');
+            }else {
+                $(row).css('background-color', data["act_status_color"]);
+            }
+        },
+        columnDefs:[
+            {"targets": [0],
+                render: function ( data, type, row ) {
+                    if ( type === 'display' ) {             //if column data is 1 then set attr to checked, use row id as input id (plus prefix)
+                        return '<input type="checkbox" ' + ((data == 1) ? 'checked' : '') + ' id="input' + row.id + '" class="filter-ck text-center" disabled="true"/>';
+                    }
+                    return data;
+                }
+            }
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{dep_kpi_facts.crm_clients.block_check}]]*/ "block_check", "data": "block_check", "width": block_check_width, "className": block_check_class},
+            /*1*/{"title": /*[[#{dep_kpi_facts.crm_clients.cnt_id}]]*/ "cnt_id", "data": "cnt_id", "width": cnt_id_width, "className": cnt_id_class},
+            /*2*/{"title": /*[[#{dep_kpi_facts.crm_clients.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": cnt_name_width, "className": cnt_name_class},
+            /*3*/{"title": /*[[#{dep_kpi_facts.crm_clients.cs_id}]]*/ "cs_id", "data": "cs_id", "width": cs_id_width, "className": cs_id_class},
+            /*4*/{"title": /*[[#{dep_kpi_facts.crm_clients.cs_name}]]*/ "cs_name", "data": "cs_name", "width": cs_name_width, "className": cs_name_class},
+            /*5*/{"title": /*[[#{dep_kpi_facts.crm_clients.user_id}]]*/ "user_id", "data": "user_id", "width": user_id_width, "className": user_id_class},
+            /*6*/{"title": /*[[#{dep_kpi_facts.crm_clients.user_name}]]*/ "user_name", "data": "user_name", "width": user_name_width, "className": user_name_class}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function user_kpi_crm_toplist_month_03_switchControl(){
+        if(vDepKPICRMToplistMonth03Value.rowdata.cnt_id != null) {
+            $("#dep-kpi-facts-crm-toplist-month-03-link").prop('disabled',false).removeClass('btn-outline-dark').addClass('btn-outline-primary');
+
+            $("#dep-kpi-facts-crm-toplist-month-03-link-sx").prop('disabled',false).removeClass('btn-outline-dark').addClass('btn-outline-primary');
+            if(vDepKPICRMToplistMonth03Value.rowdata.block_check === 0 && RoleAllAdmin === true){
+                $('#dep-kpi-facts-crm-toplist-month-03-check').prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+                $('#dep-kpi-facts-crm-toplist-month-03-check-sx').prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+
+                $('#dep-kpi-facts-crm-toplist-month-03-uncheck').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                $('#dep-kpi-facts-crm-toplist-month-03-uncheck-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+            }
+            else if(vDepKPICRMToplistMonth03Value.rowdata.block_check === 1 && RoleAllAdmin === true){
+                $('#dep-kpi-facts-crm-toplist-month-03-check').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+                $('#dep-kpi-facts-crm-toplist-month-03-check-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+                $('#dep-kpi-facts-crm-toplist-month-03-uncheck').prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+                $('#dep-kpi-facts-crm-toplist-month-03-uncheck-sx').prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+            }
+        } else{
+            $("#dep-kpi-facts-crm-toplist-month-03-link").prop('disabled',true).addClass('btn-outline-dark').removeClass('btn-outline-primary');
+
+            $("#dep-kpi-facts-crm-toplist-month-03-link-sx").prop('disabled',true).addClass('btn-outline-dark').removeClass('btn-outline-primary');
+
+            $('#dep-kpi-facts-crm-toplist-month-03-check').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            $('#dep-kpi-facts-crm-toplist-month-03-check-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+            $('#dep-kpi-facts-crm-toplist-month-03-uncheck').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+            $('#dep-kpi-facts-crm-toplist-month-03-uncheck-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+        }
+    }
+
+    $('.user_kpi_crm_toplist_btn_control').on('click', function (){
+        $("#dep-kpi-facts-crm-toplist-month-03 input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#dep-kpi-facts-crm-toplist-month-03').submit(function() {
+        vDepKPICRMToplistMonth03Value.rowdata.user_kpi_crm_toplist_table_order_column = $(vDepKPICRMToplistMonth03Value.table).DataTable().order()[0][0];
+        vDepKPICRMToplistMonth03Value.rowdata.user_kpi_crm_toplist_table_order_type = $(vDepKPICRMToplistMonth03Value.table).DataTable().order()[0][1];
+        vDepKPICRMToplistMonth03Value.rowdata.user_kpi_crm_toplist_table_search = $(vDepKPICRMToplistMonth03Value.table).DataTable().search();
+        vDepKPICRMToplistMonth03Value.rowdata.user_kpi_crm_toplist_table_pagelen = $(vDepKPICRMToplistMonth03Value.table).DataTable().page.len();
+        vDepKPICRMToplistMonth03Value.rowdata.user_kpi_crm_toplist_table_page = $(vDepKPICRMToplistMonth03Value.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vDepKPICRMToplistMonth03Value.rowdata).forEach(function (index) {
+            $("#dep-kpi-facts-crm-toplist-month-03").append("<input name=\"" + index + "\" hidden>");
+            $("#dep-kpi-facts-crm-toplist-month-03 input[name=\"" + index + "\"]").val(vDepKPICRMToplistMonth03Value.rowdata[index]);
+        });
+    });
+
+    $('.user_kpi_crm_toplist_link_control').on('click', function (){
+        $("#dep-kpi-facts-crm-toplist-month-03-link-form input[name=cnt_id]").val(vDepKPICRMToplistMonth03Value.rowdata.cnt_id);
+
+        $("#dep-kpi-facts-crm-toplist-month-03-link-form input[name=clients_list_table_order_column]").val(0);
+        $("#dep-kpi-facts-crm-toplist-month-03-link-form input[name=clients_list_table_order_type]").val("desc");
+        $("#dep-kpi-facts-crm-toplist-month-03-link-form input[name=clients_list_table_search]").val(vDepKPICRMToplistMonth03Value.rowdata.cnt_name);
+        $("#dep-kpi-facts-crm-toplist-month-03-link-form input[name=clients_list_table_pagelen]").val(25);
+        $("#dep-kpi-facts-crm-toplist-month-03-link-form input[name=clients_list_table_page]").val(0);
+    });
+
+    // Add button script
+    function addCRMToplistMonth03Block(){
+        var RowID = vDepKPICRMToplistMonth03Value.rowdata.cnt_id;
+        var YearID =  $("#dep_kpi_facts_year").val();
+        var MonthID = currentMonth03;
+        var UserID = vDepKPIFactUsersValue.rowdata.user_id;
+        var TypeID = vDepKPIFactCalcMonth03Value.rowdata.user_kpi_type_id;
+        var CRMTypeID = vDepKPIFactCRMMonth03Value.rowdata.user_kpi_crm_type_id;
+        var DepID = vDepKPIFactListValue.rowdata.dep_id;
+        $.ajax({
+            url: /*[[ @{/dep_kpi_facts/add_crm_toplist_block} ]]*/ "/dep_kpi_facts/add_crm_toplist_block",
+            type: 'POST',
+            data: {
+                "block_cnt_id": RowID,
+                "block_user_id": UserID,
+                "block_year": YearID,
+                "block_month": MonthID
+            },
+            success: function (result) {
+                vDepKPIFactListValue.rowdata.dep_kpi_facts_year = YearID;
+                vDepKPIFactListValue.rowdata.dep_id = DepID;
+                $(vDepKPIFactListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    // Del button script
+    function delCRMToplistMonth03Block(){
+        var RowID = vDepKPICRMToplistMonth03Value.rowdata.cnt_id;
+        var YearID =  $("#dep_kpi_facts_year").val();
+        var MonthID = currentMonth03;
+        var UserID = vDepKPIFactUsersValue.rowdata.user_id;
+        var TypeID = vDepKPIFactCalcMonth03Value.rowdata.user_kpi_type_id;
+        var CRMTypeID = vDepKPIFactCRMMonth03Value.rowdata.user_kpi_crm_type_id;
+        var DepID = vDepKPIFactListValue.rowdata.dep_id;
+        $.ajax({
+            url: /*[[ @{/dep_kpi_facts/del_crm_toplist_block} ]]*/ "/dep_kpi_facts/del_crm_toplist_block",
+            type: 'POST',
+            data: {
+                "block_cnt_id": RowID,
+                "block_user_id": UserID,
+                "block_year": YearID,
+                "block_month": MonthID
+            },
+            success: function (result) {
+                vDepKPIFactListValue.rowdata.dep_kpi_facts_year = YearID;
+                vDepKPIFactListValue.rowdata.dep_id = DepID;
+                $(vDepKPIFactListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    $('#dep-kpi-facts-crm-toplist-month-03-check').click(function () {
+        addCRMToplistMonth03Block();
+    });
+
+    $('#dep-kpi-facts-crm-toplist-month-03-check-sx').click(function () {
+        addCRMToplistMonth03Block();
+    });
+
+    $('#dep-kpi-facts-crm-toplist-month-03-uncheck').click(function () {
+        delCRMToplistMonth03Block();
+    });
+
+    $('#dep-kpi-facts-crm-toplist-month-03-uncheck-sx').click(function () {
+        delCRMToplistMonth03Block();
+    });
+
+    $(document).ready(function(){
+        vDepKPICRMToplistMonth03Value.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+
+        vDepKPICRMToplistMonth03Value.rowdata.cs_name = /*[[${cs_name}]]*/ null;
+        vDepKPICRMToplistMonth03Value.rowdata.dep_kpi_year = /*[[${dep_kpi_year}]]*/ null;
+        vDepKPICRMToplistMonth03Value.rowdata.dep_kpi_month = /*[[${dep_kpi_month}]]*/ null;
+
+        vDepKPICRMToplistMonth03Value.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vDepKPICRMToplistMonth03Value.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vDepKPICRMToplistMonth03Value.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vDepKPICRMToplistMonth03Value.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vDepKPICRMToplistMonth03Value.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vDepKPICRMToplistMonth03Value);
+    });
+</script>
+
+</body>
+</html>

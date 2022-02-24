@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_locals_costs_groups_body" th:remove="tag">
+        <form id="tms-locals-costs-groups-detail" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+        </form>
+        
+        <div><table id="table-tms-locals-costs-groups" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var clmcgl_id_show, clmcg_type_id_show, clmcg_type_name_show, cnt_id_show, trans_costs_group_show;
+    var clmcgl_id_width, clmcg_type_id_width, clmcg_type_name_width, cnt_id_width, trans_costs_group_width;
+    var clmcgl_id_class, clmcg_type_id_class, clmcg_type_name_class, cnt_id_class, trans_costs_group_class;
+
+    if(mobileScreenSize){
+        vDomParam = "ft";
+    }
+    else if(smallScreenSize){
+        vDomParam = "ft";
+        clmcgl_id_show = false;
+        clmcgl_id_width = "";
+        clmcgl_id_class = "";
+        clmcg_type_id_show = false;
+        clmcg_type_id_width = "";
+        clmcg_type_id_class = "";
+        clmcg_type_name_show = true;
+        clmcg_type_name_width = "100%";
+        clmcg_type_name_class = "small_size small_head_size small_footer_size";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "none";
+        trans_costs_group_show = false;
+        trans_costs_group_width = "";
+        trans_costs_group_class = "none";
+    }
+    else{
+        vDomParam = "ft";
+        clmcgl_id_show = false;
+        clmcgl_id_width = "";
+        clmcgl_id_class = "";
+        clmcg_type_id_show = false;
+        clmcg_type_id_width = "";
+        clmcg_type_id_class = "";
+        clmcg_type_name_show = true;
+        clmcg_type_name_width = "100%";
+        clmcg_type_name_class = "small_size small_head_size small_footer_size";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "none";
+        trans_costs_group_show = false;
+        trans_costs_group_width = "";
+        trans_costs_group_class = "none";
+    }
+
+    var vFLDClaimCostsGroupsValue;
+    vFLDClaimCostsGroupsValue = {
+        table : '#table-tms-locals-costs-groups',
+        button_form: "#tms-locals-costs-groups-detail",
+        ajax : {
+            "url": /*[[@{/tms_locals/get_costs_groups_table}]]*/ "tms_locals/get_costs_groups_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vFLDClaimCostsGroupsValue.rowdata.clm_id;
+            }
+        },
+        key : "clmcgl_id",
+        switchControl : tms_locals_costs_groups_switchControl,
+        rowdata:{
+            clm_id: null,
+            clmcgl_id: null,
+            clmcg_type_id: null,
+            clmcg_type_name: null,
+            trans_costs_group: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: vDomParam,
+        columnDefs:[
+            {"targets": [0], "width": clmcgl_id_width, "className": clmcgl_id_class, "visible": clmcgl_id_show},
+            {"targets": [1], "width": clmcg_type_id_width, "className": clmcg_type_id_class, "visible": clmcg_type_id_show},
+            {"targets": [2], "width": clmcg_type_name_width, "className": clmcg_type_name_class, "visible": clmcg_type_name_show},
+            {"targets": [3], "width": cnt_id_width, "className": cnt_id_class, "visible": cnt_id_show},
+            {"targets": [4], "width": trans_costs_group_width, "className": trans_costs_group_class, "visible": trans_costs_group_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{tms_locals.costs_groups.clmcgl_id}]]*/ "clmcgl_id", "data": "clmcgl_id"},
+            /*1*/{"title": /*[[#{tms_locals.costs_groups.clmcg_type_id}]]*/ "clmcg_type_id", "data": "clmcg_type_id"},
+            /*2*/{"title": /*[[#{tms_locals.costs_groups.clmcg_type_name}]]*/ "clmcg_type_name", "data": "clmcg_type_name"},
+            /*3*/{"title": /*[[#{tms_locals.costs_groups.cnt_id}]]*/ "cnt_id", "data": "cnt_id"},
+            /*4*/{"title": /*[[#{tms_locals.costs_groups.trans_costs_group}]]*/ "trans_costs_group", "data": "trans_costs_group"}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function tms_locals_costs_groups_switchControl(){
+        if(vFLDClaimCostsGroupsValue.rowdata.clmcgl_id != null) {
+            vFLDClaimCostsValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+            vFLDClaimCostsValue.rowdata.clmcgl_id = vFLDClaimCostsGroupsValue.rowdata.clmcgl_id;
+            $(vFLDClaimCostsValue.table).DataTable().ajax.reload();
+            $("#tms-locals-costs-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#tms-locals-costs-addbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        }
+        else{
+            vFLDClaimCostsValue.rowdata.clm_id = null;
+            vFLDClaimCostsValue.rowdata.clmcgl_id = null;
+            vFLDClaimCostsValue.rowdata.clmcl_id = null;
+            $(vFLDClaimCostsValue.table).DataTable().clear().draw();
+            $("#tms-locals-costs-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tms-locals-costs-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.tms_locals_costs_groups_btn_control').on('click', function (){
+        $("#tms-locals-costs-groups-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $(document).ready(function(){
+        vFLDClaimCostsGroupsValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vFLDClaimCostsGroupsValue.rowdata.clmcgl_id = /*[[${clmcgl_id}]]*/ null;
+
+        vFLDClaimCostsGroupsValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vFLDClaimCostsGroupsValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vFLDClaimCostsGroupsValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vFLDClaimCostsGroupsValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vFLDClaimCostsGroupsValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vFLDClaimCostsGroupsValue);
+    });
+</script>
+
+</body>
+</html>

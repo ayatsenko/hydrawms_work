@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="departments_main_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="departments_main_modal" data-toggle="validator" tabindex="-1" role="dialog"
+         data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="departments_main_modal_mode">
+            </div>
+
+            <div class="modal-content" id="departments_main_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{clients.address.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mb-1">
+                    <form id="departments_main_modal_form" name="departments_main_modal_form" class="was-validated" novalidate>
+                        <div class="form-row">
+                            <div class="col-12 col-md-3 mb-1" id="dep_id_row">
+                                <label for="dep_id" class="form-label" th:text="'1. '+ #{departments.main.dep_id}"></label>
+                                <input type="number" class="form-control" id="dep_id" name="dep_id" readonly>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                            
+                            <div class="col-12 col-md-6 mb-1">
+                                <label for="dep_sname" class="form-label" th:text="'2. '+#{departments.main.dep_sname}"></label>
+                                <input type="text" maxlength="16" class="form-control" id="dep_sname" name="dep_sname">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-12 col-md-9 mb-1" id="dep_name_row">
+                                <label for="dep_name" class="form-label" th:text="'3. '+#{departments.main.dep_name}"></label>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" maxlength="48" class="form-control" id="dep_name" name="dep_name" th:value="${dep_name}">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="col-12 col-md-12 mb-1" id="dep_description_row">
+                                <label for="dep_description" th:text="'4. '+#{departments.main.dep_description}"></label>
+                                <textarea class="form-control" rows="3" maxlength="512" style="resize:none;" id="dep_description" name="dep_description">
+                                </textarea>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-12 col-md-12 mb-1" id="dep_colour_row">
+                                <label for="dep_colour" class="form-label" th:text="'5. '+#{departments.main.dep_colour}"></label>
+                                <input type="color" class="form-control color" id="dep_colour" name="dep_colour">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </form>
+                </div><!-- Body -->
+                <div class="modal-footer">
+                    <button type="button" id="departments_main_modal_closebtn" class="btn btn-outline-dark mr-1"
+                            data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="departments_main_modal_addbtn" class="btn btn-outline-primary"
+                            th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="departments_main_modal_editbtn" class="btn btn-outline-primary"
+                            th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="departments_main_modal_delbtn" class="btn btn-outline-primary"
+                            th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+// Clear Fields
+    function clear_departments_main_modal_detail() {
+        $("#departments_main_modal_detail input[type=text]").val('');
+        $("#departments_main_modal_detail input[type=number]").val('');
+        $("#departments_main_modal_detail select").empty();
+        $("#departments_main_modal_detail textarea").val('');
+    }
+
+// Block And Required Fields
+    function block_departments_main_modal_detail() {
+        $('#dep_name').attr('required', true);
+        $('#dep_sname').attr('required', true);
+
+        if ($('#departments_main_modal_mode').val() === "0") {
+            $('#dep_id_row').attr('hidden', true);
+
+            $('#dep_name').removeAttr('readonly');
+            $('#dep_sname').removeAttr('readonly');
+            $('#dep_description').removeAttr('readonly');
+            $('#dep_colour').val('#ffffff').removeAttr('disabled');
+
+        } else if ($('#departments_main_modal_mode').val() === "1") {
+            $('#dep_id_row').removeAttr('hidden');
+
+            $('#dep_name').removeAttr('readonly');
+            $('#dep_sname').removeAttr('readonly');
+            $('#dep_description').removeAttr('readonly');
+            $('#dep_colour').removeAttr('disabled');
+        } else {
+            $('#dep_id_row').removeAttr('hidden');
+
+            $('#dep_name').attr('readonly', true);
+            $('#dep_sname').attr('readonly', true);
+            $('#dep_description').attr('readonly', true);
+            $('#dep_colour').attr('disabled', true);
+        }
+    }
+
+// Load Function
+    function fill_departments_main_modal_detail(aMode) {
+        $('#departments_main_modal_mode').val(aMode);
+
+        clear_departments_main_modal_detail();
+        block_departments_main_modal_detail();
+
+        if (aMode > 0) {
+            $.ajax({
+                url:/*[[@{'/departments/get_department_detail'}]]*/ "departments/get_department_detail",
+                type: "get",
+                data: {
+                    "mode": aMode,
+                    "dep_id": vDepartmentsMainValue.rowdata.dep_id
+                },
+                success: function (department_detail) {
+                    $.when(
+                    ).then(function () {
+                        $('#dep_id').val(department_detail.data[0].dep_id);
+
+                        $('#dep_name').val(department_detail.data[0].dep_name);
+                        $('#dep_sname').val(department_detail.data[0].dep_sname);
+                        $('#dep_description').val(department_detail.data[0].dep_description);
+                        $('#dep_colour').val(department_detail.data[0].dep_colour);
+
+                        $('#departments_main_modal').modal('show');
+                    });
+                }
+            });
+        } else if (aMode === 0) {
+            $.when(
+            ).then(function (){
+                $('#departments_main_modal').modal('show');
+            });
+        }
+    }
+
+// Add button script
+    $('#departments_main_modal_addbtn').on('click', function () {
+        $('#departments_main_modal_form').submit();
+    });
+// Edit button script
+    $('#departments_main_modal_editbtn').on('click', function () {
+        $('#departments_main_modal_form').submit();
+    });
+// Del button script
+    $('#departments_main_modal_delbtn').on('click', function () {
+        $('#departments_main_modal_form').submit();
+    });
+
+//Add Department
+    function addDepartments() {
+        var RowID = vDepartmentsMainValue.rowdata.dep_id;
+        $.ajax({
+            url: /*[[ @{/departments/add_department} ]]*/ "/departments/add_department",
+            type: 'POST',
+            data: {
+                "dep_name": $('#dep_name').val(),
+                "dep_sname": $('#dep_sname').val(),
+                "dep_description": $('#dep_description').val(),
+                "dep_colour": $('#dep_colour').val()
+            },
+            success: function (result) {
+                $('#departments_main_modal').modal('hide');
+                vDepartmentsMainValue.rowdata.dep_id = RowID;
+                $(vDepartmentsMainValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+//Edit Department
+    function editDepartments() {
+        var RowID = vDepartmentsMainValue.rowdata.dep_id;
+        $.ajax({
+            url: /*[[ @{/departments/edit_department} ]]*/ "/departments/edit_department",
+            type: 'POST',
+            data: {
+                "dep_id": RowID,
+                "dep_name": $('#dep_name').val(),
+                "dep_sname": $('#dep_sname').val(),
+                "dep_description": $('#dep_description').val(),
+                "dep_colour": $('#dep_colour').val()
+            },
+            success: function (result) {
+                $('#departments_main_modal').modal('hide');
+                vDepartmentsMainValue.rowdata.dep_id = RowID;
+                $(vDepartmentsMainValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+// Delete button script
+    function delDepartments() {
+        var RowID = vDepartmentsMainValue.rowdata.dep_id;
+        $.ajax({
+            url: /*[[ @{/departments/del_department} ]]*/ "/departments/del_department",
+            type: 'POST',
+            data: {
+                "dep_id": RowID
+            },
+            success: function (result) {
+                $('#departments_main_modal').modal('hide');
+                vDepartmentsMainValue.rowdata.dep_id = RowID;
+                $(vDepartmentsMainValue.table).DataTable().ajax.reload(null, false);
+                vDepartmentsUsersValue.rowdata.dep_id = null;
+                $(vDepartmentsUsersValue.table).DataTable().clear().draw();                
+            }
+        });
+    }
+
+//Validation Form
+    $('#departments_main_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function (error, element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            if ($('#departments_main_modal_mode').val() === '0') {
+                addDepartments();
+            } else if ($('#departments_main_modal_mode').val() === '1') {
+                editDepartments();
+            } else if ($('#departments_main_modal_mode').val() === '2') {
+                delDepartments();
+            }
+            return false;
+        }
+    });
+// OnChange Functions
+</script>
+
+</body>
+</html>

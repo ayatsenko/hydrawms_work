@@ -1,0 +1,187 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{report_employee_clients.link.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="card flex-fill w-100">
+    <div class="card-header">
+        <h5 class="card-title mb-0" th:text="#{report_employee_clients.link.caption}"></h5>
+    </div>
+    <div class="card-body">
+        <div>
+            <!--/*@thymesVar id="clients_users_detail" type="java.util.List"*/-->
+            <form id="report-employee-clients-link-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/clients/users_model}">
+                <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="report-employee-clients-link-indexfrm">Cancel</button>
+                    <div th:switch="${mode}">
+                        <button th:case="0" type="submit" id="report-employee-clients-link-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                        <button th:case="1" type="submit" id="report-employee-clients-link-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                        <button th:case="2" type="submit" id="report-employee-clients-link-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                    </div>
+                </div>
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="cntul_id" th:value="${cntul_id}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="cnt_id" th:value="${cnt_id}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="req_user_id" th:value="${req_user_id}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="user_id" th:value="${user_id}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="tab_id" th:value="${tab_id}" >
+                
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_users_table_order_column" th:value="${clients_users_table_order_column}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_users_table_order_type" th:value="${clients_users_table_order_type}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_users_table_search" th:value="${clients_users_table_search}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_users_table_pagelen" th:value="${clients_users_table_pagelen}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_users_table_page" th:value="${clients_users_table_page}" >
+
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_list_table_order_column" th:value="${clients_list_table_order_column}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_list_table_order_type" th:value="${clients_list_table_order_type}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_list_table_search" th:value="${clients_list_table_search}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_list_table_pagelen" th:value="${clients_list_table_pagelen}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_list_table_page" th:value="${clients_list_table_page}" >
+
+                <div class="form-row">
+                    <div class="col-md-1 mb-2" id="cnt_id_row">
+                        <label for="cnt_id" class="form-label" th:text="'1. '+ #{report_employee_clients.link.cnt_id}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="number" class="form-control" id="cnt_id" name="cnt_id" th:value="${cnt_id}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                    <div class="col-md-5 mb-2">
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <label for="cnt_name" class="form-label" th:text="'2. '+#{report_employee_clients.link.cnt_name}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="text" maxlength="120" class="form-control" id="cnt_name" name="cnt_name" th:value="${cnt_name}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div><!-- Row 1 -->
+
+                <div class="form-row">
+                    <div class="col-md-1 mb-2" id="cntul_id_row">
+                        <label for="cntul_id" class="form-label" th:text="'3. '+ #{report_employee_clients.link.cntul_id}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="number" class="form-control" id="cntul_id" name="cntul_id" th:value="${cntul_id}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                    <div class="col-md-3 mb-2" id="user_id_row">
+                        <label for="user_id" class="form-label" th:text="'4. '+ #{report_employee_clients.link.user_name}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <select type="text" id="user_id" name="user_id" class="form-control p-1" th:value="${user_id}">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <option class="p-1"
+                                    th:each="user_list : ${user_list}"
+                                    th:value="${user_list.id}"
+                                    th:text="${user_list.user_surname}"
+                                    th:selected="${user_list.id == user_id}"
+                            ></option>
+                        </select>
+                    </div>
+                </div><!-- Row 2 -->
+
+                <div class="form-row">
+                    <div class="col-12 col-md-3 mb-2" id="cntul_main_id_row">
+                        <div class="custom-control custom-switch centered">
+                            <label class="form-label" for="cntul_main_id" th:text="'5. '+ #{report_employee_clients.link.cntul_main_id}"></label>
+                            <div class="custom-control custom-switch">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input class="custom-control-input" type="checkbox" id="cntul_main_id" name="cntul_main_id" checked disabled>
+                                <label class="custom-control-label" for="cntul_main_id"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- Row 3 -->
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--/*@thymesVar id="clients_users_detail" type="java.util.List"*/-->
+<form id="report-employee-clients-link-indexfrm" method="post" th:action="@{/clients}" hidden>
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="cntul_id" th:value="${cntul_id}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="cnt_id" th:value="${cnt_id}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="req_user_id" th:value="${req_user_id}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="user_id" th:value="${user_id}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="tab_id" th:value="${tab_id}" >
+
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_order_column" th:value="${clients_users_table_order_column}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_order_type" th:value="${clients_users_table_order_type}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_search" th:value="${clients_users_table_search}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_pagelen" th:value="${clients_users_table_pagelen}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_page" th:value="${clients_users_table_page}" >
+
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_list_table_order_column" th:value="${clients_list_table_order_column}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_list_table_order_type" th:value="${clients_list_table_order_type}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_list_table_search" th:value="${clients_list_table_search}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_list_table_pagelen" th:value="${clients_list_table_pagelen}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_list_table_page" th:value="${clients_list_table_page}" >
+</form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'report-employee-clients-link-indexfrm')">Error</span>
+
+<script>
+    $(document).ready(function(){
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#clients_li').addClass('active').removeClass('collapsed');
+        $('#clients_a').attr('aria-expanded',true);
+        $('#clients').addClass('show');
+
+        $('#clients_list_a').addClass('text-primary');
+<!-- Form Start -->
+        $('#cnt_id').prop('readOnly',true);
+        $('#cnt_name').prop('readOnly',true);
+
+<!-- Change Function -->
+        if($('#mode').val() == 0){
+            $('#cntul_id_row').prop('hidden',true);
+        }
+        else if($('#mode').val() == 1){
+            $('#cntul_id').prop('readOnly',true);
+        }
+        else if($('#mode').val() === '2' || $('#mode').val() === '4'){
+            $('#cntul_id').prop('readOnly',true);
+            $('#user_id').attr('readOnly',true);
+            $('#cntul_main_id').attr('disabled','disabled');
+        }
+    });
+</script>
+</body>
+</html>

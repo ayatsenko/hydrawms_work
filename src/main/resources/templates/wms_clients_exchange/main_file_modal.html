@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="wms_clients_exchange_main_file_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="wms_clients_exchange_main_file_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="wms_clients_exchange_main_file_modal_mode">
+            </div>
+
+            <div class="modal-content" id="wms_clients_exchange_main_file_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{clients.files.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mb-1">
+                    <form id="wms_clients_exchange_main_file_modal_form" name="wms_clients_exchange_main_file_modal_form" class="was-validated" novalidate method="post" enctype="multipart/form-data">
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="cnt_id_div">
+                            <label for="wms_clients_exchange_main_file_modal_cnt_id" class="form-label mb-0" th:text="'1. '+#{wms_clients_exchange.cnt_name}"></label>
+                            <div class="flex-fill">
+                                <select type="text" id="wms_clients_exchange_main_file_modal_cnt_id" name="wms_clients_exchange_main_file_modal_cnt_id" class="custom-select select2" aria-describedby="cnt_id_helpBlock">
+                                </select>
+                            </div>
+                        </div>
+                    </div> <!-- Row 3 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="exch_ser_type_id_div">
+                            <label for="exch_ser_type_id" class="form-label mb-0" th:text="'2. '+#{wms_clients_exchange.exch_ser_type_id}"></label>
+                            <div class="flex-fill">
+                                <select type="text" id="exch_ser_type_id" name="exch_ser_type_id" class="custom-select" aria-describedby="exch_ser_type_id_helpBlock">
+                                </select>
+                            </div>
+                        </div>
+                    </div> <!-- Row 3 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-md-3" id="req_store_addfile_row">
+                            <div class="form-group">
+                                <label class="form-label mb-0" for="exch_ser_file_name" th:text="'3. '+#{wms_clients_exchange.file_name}">File</label>
+                                <div>
+                                    <input type="file" class="validation-file btn" id="exch_ser_file_name" name="file">
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Third Row -->
+                    </form>
+                </div><!-- Body -->
+                <div class="modal-footer">
+                    <button type="button" id="wms_clients_exchange_main_file_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="wms_clients_exchange_main_file_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="wms_clients_exchange_main_file_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="wms_clients_exchange_main_file_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+// Clear Fields
+    function clear_wms_clients_exchange_main_file_modal_detail() {
+        $("#wms_clients_exchange_main_file_modal_detail input[type=text]").val('').removeAttr('required').removeAttr('readonly');
+        $("#wms_clients_exchange_main_file_modal_detail input[type=number]").val('').removeAttr('required').removeAttr('readonly');
+        $("#wms_clients_exchange_main_file_modal_detail input[type=checkbox]").removeAttr('required').removeAttr('disabled');
+        $("#wms_clients_exchange_main_file_modal_detail select").empty().removeAttr('required').removeAttr('disabled');
+        $("#wms_clients_exchange_main_file_modal_detail textarea").val('').removeAttr('required').removeAttr('readonly');
+    }
+
+// Block And Required Fields
+    function block_wms_clients_exchange_main_file_modal_detail() {
+
+        $('#wms_clients_exchange_main_file_modal_cnt_id').attr('required', true);
+        $('#exch_ser_type_id').attr('required', true);
+        $('#exch_ser_file_name').attr('required', true);
+
+        if($('#wms_clients_exchange_main_file_modal_mode').val() === "0"){
+
+        }
+        else if($('#wms_clients_exchange_main_file_modal_mode').val() === "1"){
+        }
+        else{
+        }
+    }
+
+//List Function
+function clientChange(vMode, vClientID) {
+    $('#cnt_id').empty();
+    $("select[name='wms_clients_exchange_main_file_modal_cnt_id']").find('option').end().append("<option value=''></option>");
+
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/wms_clients_exchange/get_client_exchange_list'}]]*/ "/wms_clients_exchange/get_client_exchange_list",
+        type: "get",
+        data: {
+            "mode": vMode
+        },
+        success: function (client_list) {
+            for (var i = 0; i < client_list.data.length; i++) {
+                $("select[name='wms_clients_exchange_main_file_modal_cnt_id']").find('option').end().append(
+                    "<option value='" + client_list.data[i].cnt_id + "'>" + client_list.data[i].cnt_name + "</option>");
+            }
+            if(vClientID != null){
+                $('#wms_clients_exchange_main_file_modal_cnt_id').val(vClientID);
+            }
+        }
+    }));
+}
+
+
+let cntPlaceHolder = 'Выберите клиента';
+$('#wms_clients_exchange_main_file_modal_cnt_id')
+    .select2({
+        id: '-1', // the value of the option
+        placeholder: cntPlaceHolder,
+        allowClear: true,
+        width: 'element',
+        dropdownAutoWidth: true
+    });
+
+function clientServiceChange(vMode, vClientID, vServiceID){
+    $('#exch_ser_type_id').empty();
+    $("select[name='exch_ser_type_id']").find('option').end().append("<option value=''></option>");
+
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/wms_clients_exchange/get_client_exchange_service_list'}]]*/ "/wms_clients_exchange/get_client_exchange_service_list",
+        type: "get",
+        data: {
+            "mode": vMode,
+            "cnt_id": vClientID
+        },
+        success: function (client_service_list) {
+            for (var i = 0; i < client_service_list.data.length; i++) {
+                $("select[name='exch_ser_type_id']").find('option').end().append(
+                    "<option value='" + client_service_list.data[i].exch_ser_type_id + "'>" + client_service_list.data[i].exch_ser_type_name + "</option>");
+            }
+            if(vServiceID != null){
+                $('#cnt_id').val(vServiceID);
+            }
+        }
+    }));
+}
+
+// Load Function
+    function fill_wms_clients_exchange_main_file_modal_detail(aMode){
+        clear_wms_clients_exchange_main_file_modal_detail();
+        $('#wms_clients_exchange_main_file_modal_mode').val(aMode);
+        block_wms_clients_exchange_main_file_modal_detail();
+
+        if(aMode > 0){}
+        else if(aMode === 0) {
+            $.when(
+                clientChange(aMode),
+                clientServiceChange(aMode,0)
+            ).then(function () {
+                $('#exch_ser_file_name').val(null);
+
+                $('#wms_clients_exchange_main_file_modal').modal('show');
+            });
+        }
+    }
+
+$("#wms_clients_exchange_main_file_modal_form").on("submit", function (e) {
+    let RowID = vWMSClientsExchangeMainValue.rowdata.exch_ser_file_id;
+    let CntID = $('#wms_clients_exchange_main_file_modal_cnt_id').val();
+    let ServiceID = $('#exch_ser_type_id').val();
+
+    // cancel the default behavior
+    e.preventDefault();
+    let formData = new FormData(this);
+    formData.append('cnt_id', CntID);
+    formData.append('exch_ser_type_id', ServiceID);
+
+    // use $.ajax() to upload file
+    $.ajax({
+        url:/*[[@{'/wms_clients_exchange/add_client_exchange_service_file'}]]*/ "/wms_clients_exchange/add_client_exchange_service_file",
+        type: "POST",
+        data: formData,
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function (res) {
+            $('#wms_clients_exchange_main_file_modal').modal('hide');
+
+            vWMSClientsExchangeMainValue.rowdata.exch_ser_file_id = RowID;
+            $(vWMSClientsExchangeMainValue.table).DataTable().ajax.reload(null, false);
+        },
+        error: function (err) {
+            console.error(err);
+        }
+    });
+});
+
+// Add button script
+    $('#wms_clients_exchange_main_file_modal_addbtn').on('click', function(){
+        $('#wms_clients_exchange_main_file_modal_form').submit();
+    });
+
+    //Validation Form
+    $('#wms_clients_exchange_main_file_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function(error,element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            return false;
+        }
+    });
+
+    // OnChange Functions
+    $('#wms_clients_exchange_main_file_modal_cnt_id').on('change', function () {
+        clientServiceChange($('#wms_clients_exchange_main_file_modal_mode').val(), $('#wms_clients_exchange_main_file_modal_cnt_id').val(), 0);
+    });
+</script>
+
+</body>
+</html>

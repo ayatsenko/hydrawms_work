@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_list_body" th:remove="tag">
+            <form id="clients-list-detail" class="mb-2 mr-1" th:action="@{/clients/list_detail}" method="post" hidden>
+                <input name="mode" value="0" hidden>
+                  <div id="clients-list-detailbtn-large" class="d-none d-sm-block">
+                     <button type="submit" id="clients-list-detailbtn" class="btn btn-sm btn-dark clients_list_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                     <button type="submit" id="clients-list-addbtn" class="btn btn-sm btn-primary clients_list_btn_control" th:text="#{general.addbtn}" th:attr="mode=0">Add</button>
+                     <button type="submit" id="clients-list-editbtn" class="btn btn-sm btn-dark clients_list_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                     <button type="submit" id="clients-list-delbtn" class="btn btn-sm btn-dark clients_list_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+                     <button type="button" id="clients-list-userbtn" class="btn btn-sm btn-dark mr-2" disabled><i data-feather="user-plus"></i></button>
+
+                      <button type="button" id="clients-list-renew" class="btn btn-sm btn-dark" th:text="#{general.renewbtn}" disabled></button>
+                  </div>
+                  <div id="clients-list-detailbtn-small" class="d-block d-sm-none">
+                     <button type="submit" id="clients-list-detailbtn-sx" class="btn btn-sm btn-dark clients_list_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                     <button type="submit" id="clients-list-addbtn-sx" class="btn btn-sm btn-primary clients_list_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                     <button type="submit" id="clients-list-editbtn-sx" class="btn btn-sm btn-dark clients_list_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                     <button type="submit" id="clients-list-delbtn-sx" class="btn btn-sm btn-dark clients_list_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+                     <button type="button" id="clients-list-userbtn-sx" class="btn btn-sm btn-dark mr-2" disabled><i data-feather="user-plus"></i></button>
+
+                      <button type="button" id="clients-list-renew-sx" class="btn btn-sm btn-dark" disabled><i data-feather="delete"></i></button>
+                  </div>
+            </form>
+
+        <div><table id="table-clients-list" class="table table-striped table-sm table-bordered compact" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vClientsListValue;
+    vClientsListValue = {
+        table : '#table-clients-list',
+        button_form: '#clients-list-detail',
+        ajax : {
+            "url": /*[[@{/clients/get_list_table}]]*/ "clients/get_list_table",
+            "type": "post",
+            "data": {
+            }
+        },
+        key : "cnt_id",
+        switchControl : clients_list_switchControl,
+        rowdata:{
+           cnt_id: null,
+           cnt_name: null,
+           cnt_user_main_access: null,
+           cnt_user_access: null,
+           user_name: null,
+           cnt_createdate: null,
+           vt_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).find('td:eq(4)').css('background-color', data["user_status_colour"]);*/
+            $(row).css('background-color', data["cs_color"]);
+        },
+        columnDefs:[
+            {"targets": [5], "visible": false, className: "noExport"},
+            {"targets": [7], "visible": false},
+            {"targets": [8], "visible": false},
+            {"targets": [9], "visible": false},
+            {"targets": [10], "visible": false},
+            {"targets": [11], "visible": false, className: "noExport"}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{clients.list.cnt_id}]]*/ "cnt_id", "data": "cnt_id", "width": "7%"},
+            /*1*/{"title": /*[[#{clients.list.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": "50%", "className": "all"},
+            /*2*/{"title": /*[[#{clients.list.cnt_sname}]]*/ "cnt_sname", "data": "cnt_sname", "width": "8%", "className": "text-center small_size"},
+            /*3*/{"title": /*[[#{clients.list.cnt_identifycode}]]*/ "cnt_identifycode", "data": "cnt_identifycode", "width": "6%", "className": "desktop text-center"},
+            /*4*/{"title": /*[[#{clients.list.cs_sname}]]*/ "cs_sname", "data": "cs_sname", "width": "14%", "className": "desktop text-center"},
+            /*5*/{"title": /*[[#{clients.list.cs_color}]]*/ "cs_color", "data": "cs_color", "width": "1%"},
+            /*6*/{"title": /*[[#{clients.list.user_name}]]*/ "user_name", "data": "user_name", "width": "10%", "className": "min-tablet-l text-center"},
+            /*7*/{"title": /*[[#{clients.list.cnt_user_access}]]*/ "cnt_user_access", "data": "cnt_user_access", "width": "1%"},
+            /*8*/{"title": /*[[#{clients.list.cnt_user_main_access}]]*/ "cnt_user_main_access", "data": "cnt_user_main_access", "width": "1%"},
+            /*9*/{"title": /*[[#{clients.list.cnt_user_show}]]*/ "cnt_user_show", "data": "cnt_user_show", "width": "1%"},
+            /*10*/{"title": /*[[#{clients.list.cnt_createdate}]]*/ "cnt_createdate", "data": "cnt_createdate", "width": "1%"},
+            /*11*/{"title": /*[[#{clients.list.vt_id}]]*/ "vt_id", "data": "vt_id", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function clients_list_switchControl(){
+        var RoleSupString = /*[[ ${#authorization.expression('hasRole("ROLE_SUPOPS")')} ]]*/ null;
+        var RoleSaleString = /*[[ ${#authorization.expression('hasRole("ROLE_SALE")')} ]]*/ null;
+        var RoleChiefSaleString = /*[[ ${#authorization.expression('hasRole("ROLE_CHIEFSALE")')} ]]*/ null;
+        var RoleAllAdmin = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_ADMIN","ROLE_GM","ROLE_SALEDIR")')}]]*/ null;
+
+        if(vClientsListValue.rowdata.cnt_id != null) {
+            if (vClientsListValue.rowdata.cnt_user_main_access === 1) {
+                $("#clients-list-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#clients-list-editbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else {
+                $("#clients-list-editbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-list-editbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+            }
+<!-- Edit Button -->
+            if(RoleAllAdmin){
+                $("#clients-list-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#clients-list-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#clients-list-delbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-list-delbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+            }
+<!-- Delete Button -->
+            $("#clients-list-detailbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            $("#clients-list-detailbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+<!-- Show Button -->
+            if(vClientsListValue.rowdata.user_name === null && (RoleSaleString === true || RoleChiefSaleString === true)) {
+                $("#clients-list-userbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#clients-list-userbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#clients-list-userbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-list-userbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+            }
+<!-- Link Button -->
+<!-- All List Buttons Block-->
+            if (vClientsListValue.rowdata.cnt_user_main_access === 1) {
+                vClientContactsListValue.rowdata.cnt_id = vClientsListValue.rowdata.cnt_id;
+                vClientContactsListValue.rowdata.cnt_name = vClientsListValue.rowdata.cnt_name;
+                vClientContactsListValue.rowdata.cc_id = null;
+                $(vClientContactsListValue.table).DataTable().ajax.reload();
+
+                $("#clients-contacts-addbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#clients-contacts-addbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else if(RoleSupString){
+                vClientContactsListValue.rowdata.cnt_id = vClientsListValue.rowdata.cnt_id;
+                vClientContactsListValue.rowdata.cnt_name = vClientsListValue.rowdata.cnt_name;
+                vClientContactsListValue.rowdata.cc_id = null;
+                $(vClientContactsListValue.table).DataTable().ajax.reload();
+            }
+            else{
+                vClientContactsListValue.rowdata.cc_id = null;
+                $(vClientContactsListValue.table).DataTable().clear().draw();
+
+                $("#clients-contacts-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-contacts-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+<!-- Client Contacts -->
+            vClientDocumentsListValue.rowdata.cnt_id = vClientsListValue.rowdata.cnt_id;
+            vClientDocumentsListValue.rowdata.cnt_name = vClientsListValue.rowdata.cnt_name;
+            vClientDocumentsListValue.rowdata.cnt_doc_id = null;
+            $(vClientDocumentsListValue.table).DataTable().ajax.reload();
+
+            if(vClientsListValue.rowdata.cnt_user_main_access === 1) {
+                $("#clients-documents-addbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#clients-documents-addbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#clients-documents-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-documents-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+<!-- Documents -->
+            vClientDocFilesListValue.rowdata.cnt_id = vClientsListValue.rowdata.cnt_id;
+            vClientDocFilesListValue.rowdata.cnt_name = vClientsListValue.rowdata.cnt_name;
+            vClientDocFilesListValue.rowdata.cnt_doc_id = null;
+            vClientDocFilesListValue.rowdata.cnt_doc_file_id = null;
+            $(vClientDocFilesListValue.table).DataTable().ajax.reload();
+
+            if(vClientsListValue.rowdata.cnt_user_main_access === 1) {
+                $("#clients-files-addbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-files-addbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            else{
+                $("#clients-files-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-files-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+<!-- Document Files -->
+            vClientServicesListValue.rowdata.cnt_id = vClientsListValue.rowdata.cnt_id;
+            vClientServicesListValue.rowdata.cnt_name = vClientsListValue.rowdata.cnt_name;
+            vClientServicesListValue.rowdata.cntserl_id = null;
+            $(vClientServicesListValue.table).DataTable().ajax.reload();
+            if(vClientsListValue.rowdata.cnt_user_main_access === 1) {
+                $("#clients-services-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#clients-services-addbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#clients-services-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-services-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+<!-- Services -->
+            vClientAddressListValue.rowdata.cnt_id = vClientsListValue.rowdata.cnt_id;
+            vClientAddressListValue.rowdata.cnt_name = vClientsListValue.rowdata.cnt_name;
+            vClientAddressListValue.rowdata.cnt_add_id = null;
+            $(vClientAddressListValue.table).DataTable().ajax.reload();
+            if(vClientsListValue.rowdata.cnt_user_main_access === 1) {
+                $("#clients-users-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#clients-users-addbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#clients-users-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-users-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+<!-- Address -->
+            vClientUsersListValue.rowdata.cnt_id = vClientsListValue.rowdata.cnt_id;
+            vClientUsersListValue.rowdata.cnt_name = vClientsListValue.rowdata.cnt_name;
+            vClientUsersListValue.rowdata.cntul_id = null;
+            $(vClientUsersListValue.table).DataTable().ajax.reload();
+            if(vClientsListValue.rowdata.cnt_user_main_access === 1) {
+                $("#clients-address-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#clients-address-addbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#clients-address-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-address-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+<!-- Managers -->
+            $("#clients_statistics_start_date").empty().val('').val(vClientsListValue.rowdata.cnt_createdate);
+            $("#clients_statistics_start_date").data('daterangepicker').setStartDate(vClientsListValue.rowdata.cnt_createdate);
+            $("#clients_statistics_start_date").data('daterangepicker').setEndDate(vClientsListValue.rowdata.cnt_createdate);
+            $("#clients_statistics_show").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+            vClientStatisticsListValue.rowdata.cnt_id = vClientsListValue.rowdata.cnt_id;
+            vClientStatisticsListValue.rowdata.cnts_id = null;
+            $(vClientStatisticsListValue.table).DataTable().ajax.reload();
+<!-- Statistics -->
+            $("#clients-link-actionbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#clients-link-requestbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#clients-link-tenderbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            if(vClientsListValue.rowdata.cnt_user_main_access === 1){
+                $("#clients-link-financebtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#clients-link-financebtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+<!-- Links Button-->
+            if(vClientsListValue.rowdata.vt_id === 1){
+                $("#clients-list-renew").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#clients-list-renew-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#clients-list-renew").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#clients-list-renew-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+<!-- Renew Button -->
+        }
+        else{
+            $("#clients-list-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-list-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-list-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#clients-list-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-list-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-list-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#clients-list-userbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-list-userbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#clients-list-renew").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-list-renew-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+<!-- List Buttons -->
+            vClientContactsListValue.rowdata.cc_id = null;
+            $(vClientContactsListValue.table).DataTable().clear().draw();
+
+            $("#clients-contacts-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-contacts-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Contacts -->
+            vClientServicesListValue.rowdata.cntserl_id = null;
+            $(vClientServicesListValue.table).DataTable().clear().draw();
+
+            $("#clients-services-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-services-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Services -->
+            vClientAddressListValue.rowdata.cnt_add_id = null;
+            $(vClientAddressListValue.table).DataTable().clear().draw();
+
+            $("#clients-address-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-address-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Address -->
+            vClientDocumentsListValue.rowdata.cnt_add_id = null;
+            $(vClientDocumentsListValue.table).DataTable().clear().draw();
+
+            $("#clients-documents-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-documents-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Documents -->
+            vClientDocFilesListValue.rowdata.cnt_doc_file_id = null;
+            $(vClientDocFilesListValue.table).DataTable().clear().draw();
+
+            $("#clients-files-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-files-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Document Files -->
+            vClientUsersListValue.rowdata.cntul_id = null;
+            $(vClientUsersListValue.table).DataTable().clear().draw();
+            $("#clients-users-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-users-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Managers -->
+            $("#clients_statistics_start_date").empty().val('').val();
+            $("#clients_statistics_show").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients_statistics_detail").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            vClientStatisticsListValue.rowdata.cnt_id = null;
+            vClientStatisticsListValue.rowdata.cnts_id = null;
+            $(vClientStatisticsListValue.table).DataTable().clear().draw();
+<!-- Statistics -->
+            $("#clients-link-actionbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-link-requestbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-link-tenderbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-link-financebtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Links Button-->
+        }
+    }
+
+    $('.clients_list_btn_control').on('click', function (){
+        $("#clients-list-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#clients-list-detail').submit(function() {
+        vClientsListValue.rowdata.clients_list_table_order_column = $(vClientsListValue.table).DataTable().order()[0][0];
+        vClientsListValue.rowdata.clients_list_table_order_type = $(vClientsListValue.table).DataTable().order()[0][1];
+        vClientsListValue.rowdata.clients_list_table_search = $(vClientsListValue.table).DataTable().search();
+        vClientsListValue.rowdata.clients_list_table_pagelen = $(vClientsListValue.table).DataTable().page.len();
+        vClientsListValue.rowdata.clients_list_table_page = $(vClientsListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vClientsListValue.rowdata.clients_managers_collapse = $('#clients_managers_div').hasClass('show');
+        vClientsListValue.rowdata.clients_statistics_collapse = $('#clients_statistics_div').hasClass('show');
+        vClientsListValue.rowdata.clients_contacts_collapse = $('#clients_contacts_div').hasClass('show');
+        vClientsListValue.rowdata.clients_services_collapse = $('#clients_services_div').hasClass('show');
+        vClientsListValue.rowdata.clients_address_collapse = $('#clients_address_div').hasClass('show');
+        vClientsListValue.rowdata.clients_documents_collapse = $('#clients_documents_div').hasClass('show');
+        vClientsListValue.rowdata.clients_files_collapse = $('#clients_files_div').hasClass('show');
+
+        Object.keys(vClientsListValue.rowdata).forEach(function (index) {
+            $("#clients-list-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#clients-list-detail input[name=\"" + index + "\"]").val(vClientsListValue.rowdata[index]);
+        });
+    });
+
+    $('#clients-list-userbtn').on('click', function( event ) {
+        if (vClientsListValue.rowdata.cnt_id != null) {
+            var RowID = vClientsListValue.rowdata.cnt_id;
+            var vTable_order_column = $(vClientsListValue.table).DataTable().order()[0][0];
+            var vTable_order_type = $(vClientsListValue.table).DataTable().order()[0][1];
+            var vTable_search = $(vClientsListValue.table).DataTable().search();
+            var vTable_pagelen = $(vClientsListValue.table).DataTable().page.len();
+            var vTable_page = $(vClientsListValue.table).DataTable().page.info().page;
+
+            $.ajax({
+                url: /*[[ @{/clients/list_add_link} ]]*/ "/clients/list_add_link",
+                type: 'POST',
+                data: {"cnt_id": vClientsListValue.rowdata.cnt_id},
+                success: function (result) {
+                    vClientsListValue.rowdata.cnt_id = RowID;
+
+                    vClientsListValue.rowdata.table_order_column = vTable_order_column;
+                    vClientsListValue.rowdata.table_order_type = vTable_order_type;
+                    vClientsListValue.rowdata.table_search = vTable_search;
+                    vClientsListValue.rowdata.table_pagelen = vTable_pagelen;
+                    vClientsListValue.rowdata.table_page = vTable_page;
+
+                    recreateDataTable(vClientsListValue);
+                }
+            });
+        }
+    }); <!-- Link Button -->
+
+    $('#clients-list-userbtn-sx').on('click', function( event ) {
+        if (vClientsListValue.rowdata.cnt_id != null) {
+            var RowID = vClientsListValue.rowdata.cnt_id;
+            $.ajax({
+                url: /*[[ @{/clients/list_add_link} ]]*/ "/clients/list_add_link",
+                type: 'POST',
+                data: {"cnt_id": vClientsListValue.rowdata.cnt_id},
+                success: function (result) {
+                    vClientsListValue.rowdata.cnt_id = RowID;
+                    $(vClientsListValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    }); <!-- Link Button -->
+
+    var RoleAdminString = /*[[ ${#authorization.expression('hasRole("ROLE_ADMIN")')} ]]*/ null;
+    if(RoleAdminString === true){
+         $('#clients_link_card').removeClass('order-2').addClass('order-1');
+        $('#clients_managers_card').removeClass('order-2').addClass('order-1');
+    }else{
+        $('#clients_managers_card').removeClass('order-1').addClass('order-2');
+    }
+
+    $('#clients-list-renew').on('click', function( event ) {
+        if (vClientsListValue.rowdata.cnt_id != null) {
+            var RowID = vClientsListValue.rowdata.cnt_id;
+            $.ajax({
+                url: /*[[ @{/clients/list_renew} ]]*/ "/clients/list_renew",
+                type: 'POST',
+                data: {"cnt_id": vClientsListValue.rowdata.cnt_id},
+                success: function (result) {
+                    vClientsListValue.rowdata.cnt_id = RowID;
+                    $(vClientsListValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    }); <!-- Check Button -->
+
+    $(document).ready(function(){
+        vClientsListValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+
+        vClientsListValue.rowdata.table_order_column = /*[[${clients_list_table_order_column}]]*/ null;
+        vClientsListValue.rowdata.table_order_type = /*[[${clients_list_table_order_type}]]*/ null;
+        vClientsListValue.rowdata.table_search = /*[[${clients_list_table_search}]]*/ null;
+        vClientsListValue.rowdata.table_pagelen = /*[[${clients_list_table_pagelen}]]*/ null;
+        vClientsListValue.rowdata.table_page = /*[[${clients_list_table_page}]]*/ null;
+
+        var clientsManagersCollapse = /*[[${clients_managers_collapse}]]*/ null;
+        vClientsListValue.rowdata.clients_managers_collapse = clientsManagersCollapse;
+        if(clientsManagersCollapse === true){ $('#clients_managers_div').collapse('show');}
+        else if(clientsManagersCollapse === false){ $('#clients_managers_div').removeClass('show').collapse('hide');}
+<!-- Collapse Managers -->
+
+        var clientsStatisticsCollapse = /*[[${clients_statistics_collapse}]]*/ null;
+        vClientsListValue.rowdata.clients_statistics_collapse = clientsStatisticsCollapse;
+        if(clientsStatisticsCollapse === true){ $('#clients_statistics_div').collapse('show');}
+        else if(clientsStatisticsCollapse === false){ $('#clients_statistics_div').removeClass('show').collapse('hide');}
+        else{ $('#clients_statistics_div').removeClass('show').collapse('hide');}
+<!-- Collapse Statistics -->
+
+        var clientsContactsCollapse = /*[[${clients_contacts_collapse}]]*/ null;
+        vClientsListValue.rowdata.clients_contacts_collapse = clientsContactsCollapse;
+        if(clientsContactsCollapse === true){ $('#clients_contacts_div').collapse('show');}
+        else if(clientsContactsCollapse === false){ $('#clients_contacts_div').removeClass('show').collapse('hide');}
+<!-- Collapse Contacts -->
+
+        var clientsServicesCollapse = /*[[${clients_services_collapse}]]*/ null;
+        vClientsListValue.rowdata.clients_services_collapse = clientsServicesCollapse;
+        if(clientsServicesCollapse === true){ $('#clients_services_div').collapse('show');}
+        else if(clientsServicesCollapse === false){ $('#clients_services_div').removeClass('show').collapse('hide');}
+<!-- Collapse Contacts -->
+
+        var clientsAddressCollapse = /*[[${clients_address_collapse}]]*/ null;
+        vClientsListValue.rowdata.clients_address_collapse = clientsAddressCollapse;
+        if(clientsAddressCollapse === true){ $('#clients_address_div').collapse('show');}
+        else if(clientsAddressCollapse === false){ $('#clients_address_div').removeClass('show').collapse('hide');}
+<!-- Collapse Address -->
+
+        var clientsDocumentsCollapse = /*[[${clients_documents_collapse}]]*/ null;
+        vClientsListValue.rowdata.clients_documents_collapse = clientsAddressCollapse;
+        if(clientsDocumentsCollapse === true){ $('#clients_documents_div').collapse('show');}
+        else if(clientsDocumentsCollapse === false){ $('#clients_documents_div').removeClass('show').collapse('hide');}
+<!-- Collapse Documents -->
+
+        var clientsFilesCollapse = /*[[${clients_files_collapse}]]*/ null;
+        vClientsListValue.rowdata.clients_files_collapse = clientsFilesCollapse;
+        if(clientsFilesCollapse === true){ $('#clients_files_div').collapse('show');}
+        else if(clientsFilesCollapse === false){ $('#clients_files_div').removeClass('show').collapse('hide');}
+<!-- Collapse Files -->
+
+        recreateDataTable(vClientsListValue);
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#clients_li').addClass('active').removeClass('collapsed');
+        $('#clients_a').attr('aria-expanded',true);
+        $('#clients').addClass('show');
+
+        $('#clients_list_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

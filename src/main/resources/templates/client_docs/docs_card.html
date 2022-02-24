@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="client_docs_body" th:remove="tag">
+        <form id="client-docs-cnt-detail">
+            <input type="hidden" id="cnt_id">
+            <input type="hidden" id="cnt_name">
+            <input type="hidden" id="cnt_user_access">
+
+            <input type="hidden" id="clients_list_table_order_column">
+            <input type="hidden" id="clients_list_table_order_type">
+            <input type="hidden" id="clients_list_table_search">
+            <input type="hidden" id="clients_list_table_pagelen">
+            <input type="hidden" id="clients_list_table_page">
+        </form>
+
+        <div><table id="table-client-docs" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var vClientDocsValue;
+    vClientDocsValue = {
+        table : '#table-client-docs',
+        ajax : {
+            "url": /*[[@{/client_docs/get_client_doc_table}]]*/ "client_docs/get_client_doc_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.cnt_id = vClientDocsValue.rowdata.cnt_id
+            }
+        },
+        key : "cnt_doc_id",
+        switchControl : client_docs_switchControl,
+        rowdata:{
+            cnt_id: null,
+            cnt_name: null,
+            cnt_user_access: null,
+
+            cnt_doc_id: null,
+            cnt_doc_num: null
+        },
+        ordering: true,
+        order: [
+            [1, "desc"]
+        ],
+        deferRender: true,
+        scroller: true,
+        scrollCollapse: true,
+        dom: 'Blfrtip',
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [1], type: 'de_date'},
+            {"targets": [2], type: 'de_date'}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{clients.documents.cnt_doc_id}]]*/ "cnt_doc_id", "data": "cnt_doc_id", "width": "1%"},
+            /*1*/{"title": /*[[#{clients.documents.cnt_doc_start_date}]]*/ "cnt_doc_start_date", "data": "cnt_doc_start_date", "width": "10%", "className": "min-tablet-p"},
+            /*2*/{"title": /*[[#{clients.documents.cnt_doc_end_date}]]*/ "cnt_doc_end_date", "data": "cnt_doc_end_date", "width": "10%", "className": "min-tablet-p"},
+            /*3*/{"title": /*[[#{clients.documents.cnt_doc_num}]]*/ "cnt_doc_num", "data": "cnt_doc_num", "width": "15%"},
+            /*4*/{"title": /*[[#{clients.documents.empty_column}]]*/ "empty_column", "data": "empty_column", "width": "64%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function client_docs_hide(){
+        $("#client_bills_row").attr('hidden', true);
+        client_bills_hide();
+    }
+
+    function client_docs_switchControl(){
+        client_docs_hide();
+        if(vClientDocsValue.rowdata.cnt_doc_id != null) {
+            $("#client_bills_row").removeAttr('hidden');
+            vClientBillsValue.rowdata.cnt_doc_id = vClientDocsValue.rowdata.cnt_doc_id;
+            $(vClientBillsValue.table).DataTable().ajax.reload();
+        }
+        else{
+            vClientBillsValue.rowdata.cnt_doc_id = null;
+            vClientBillsValue.rowdata.cnt_bill_id = null;
+            $(vClientBillsValue.table).DataTable().clear().draw();
+        }
+    }
+
+    $('.client_docs_btn_control').on('click', function (){
+        $("#client-docs-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#client-docs-detail').submit(function() {
+        vClientDocsValue.rowdata.client_docs_table_order_column = $(vClientDocsValue.table).DataTable().order()[0][0];
+        vClientDocsValue.rowdata.client_docs_table_order_type = $(vClientDocsValue.table).DataTable().order()[0][1];
+        vClientDocsValue.rowdata.client_docs_table_search = $(vClientDocsValue.table).DataTable().search();
+        vClientDocsValue.rowdata.client_docs_table_pagelen = $(vClientDocsValue.table).DataTable().page.len();
+        vClientDocsValue.rowdata.client_docs_table_page = $(vClientDocsValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vClientDocsValue.rowdata.cnt_id = $('#cnt_id').val();
+        vClientDocsValue.rowdata.cnt_name = $('#cnt_name').val();
+        vClientDocsValue.rowdata.cnt_user_access = $('#cnt_user_access').val();
+
+        Object.keys(vClientDocsValue.rowdata).forEach(function (index) {
+            $("#client-docs-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#client-docs-detail input[name=\"" + index + "\"]").val(vClientDocsValue.rowdata[index]);
+        });
+
+        $("#client-docs-detail input[name=clients_list_table_order_column]").val($('#clients_list_table_order_column').val());
+        $("#client-docs-detail input[name=clients_list_table_order_type]").val($('#clients_list_table_order_type').val());
+        $("#client-docs-detail input[name=clients_list_table_search]").val($('#clients_list_table_search').val());
+        $("#client-docs-detail input[name=clients_list_table_pagelen]").val($('#clients_list_table_pagelen').val());
+        $("#client-docs-detail input[name=clients_list_table_page]").val($('#clients_list_table_page').val());
+    });
+
+    $("#client_docs_filter_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#client_docs_filter_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    /*$('#client_docs_filter_check').on('click', function(){
+        if($(this).prop('checked')){
+            $('#client_docs_filter_start_date').removeAttr('disabled');
+            $('#client_docs_filter_end_date').removeAttr('disabled');
+            $("#client_docs_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if (window.screen.width < 1024 && window.screen.height < 768) {
+                $("#client_docs_filter_start_date").attr('readonly',true);
+                $("#client_docs_filter_end_date").attr('readonly',true);
+            }
+        }
+        else{
+            $('#client_docs_filter_start_date').attr('disabled',true);
+            $('#client_docs_filter_end_date').attr('disabled',true);
+            $("#client_docs_filter_show").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            if(vClientDocsValue.rowdata.client_docs_filter_id === 1){
+                vClientDocsValue.rowdata.client_docs_filter_id = 0;
+                $(vClientDocsValue.table).DataTable().ajax.reload();
+            }
+        }
+    });    
+    */
+    /*
+    $('#client_docs_filter_show').on('click', function() {
+        vClientDocsValue.rowdata.client_docs_filter_id = 1;
+        vClientDocsValue.rowdata.client_docs_filter_start_date = $('#client_docs_filter_start_date').val();
+        vClientDocsValue.rowdata.client_docs_filter_end_date = $('#client_docs_filter_end_date').val();
+
+        $(vClientDocsValue.table).DataTable().ajax.reload();
+    });    
+    */
+    $(document).ready(function(){
+        vClientDocsValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+        vClientDocsValue.rowdata.cnt_name = /*[[${cnt_name}]]*/ null;
+        vClientDocsValue.rowdata.cnt_user_access = /*[[${cnt_user_access}]]*/ null;
+
+        vClientDocsValue.rowdata.cnt_doc_id = /*[[${cnt_doc_id}]]*/ null;
+
+        vClientDocsValue.rowdata.table_order_column = /*[[${client_docs_list_table_order_column}]]*/ null;
+        vClientDocsValue.rowdata.table_order_type = /*[[${client_docs_list_table_order_type}]]*/ null;
+        vClientDocsValue.rowdata.table_search = /*[[${client_docs_list_table_search}]]*/ null;
+        vClientDocsValue.rowdata.table_pagelen = /*[[${client_docs_list_table_pagelen}]]*/ null;
+        vClientDocsValue.rowdata.table_page = /*[[${client_docs_list_table_page}]]*/ null;
+
+        vClientDocsValue.rowdata.client_docs_filter_id = /*[[${client_docs_filter_id}]]*/ null;
+
+        var startDate =  /*[[${client_docs_filter_start_date}]]*/ null;
+        vClientDocsValue.rowdata.client_docs_filter_start_date = startDate;
+
+        var endDate = /*[[${client_docs_filter_end_date}]]*/ null;
+        vClientDocsValue.rowdata.client_docs_filter_end_date = endDate;
+
+        if(startDate != null){
+            $('#client_docs_filter_start_date').empty().val(startDate);
+            $('#client_docs_filter_start_date').data('daterangepicker').setStartDate(startDate);
+            $('#client_docs_filter_start_date').data('daterangepicker').setEndDate(startDate);
+        }
+
+        if(endDate != null){
+            $('#client_docs_filter_end_date').empty().val(endDate);
+            $('#client_docs_filter_end_date').data('daterangepicker').setStartDate(endDate);
+            $('#client_docs_filter_end_date').data('daterangepicker').setEndDate(endDate);
+        }
+
+        <!-- Start Filter -->
+        if(vClientDocsValue.rowdata.client_docs_filter_id === 1){
+            $('#client_docs_filter_check').prop('checked', true);
+            $("#client_docs_filter_start_date").removeAttr('disabled').val(vClientDocsValue.rowdata.client_docs_filter_start_date);
+            $("#client_docs_filter_end_date").removeAttr('disabled').val(vClientDocsValue.rowdata.client_docs_filter_end_date);
+            $("#client_docs_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if (window.screen.width < 1024 && window.screen.height < 768) {
+                $("#client_docs_filter_start_date").attr('readonly',true);
+                $("#client_docs_filter_end_date").attr('readonly',true);
+            }
+        }
+        
+        recreateDataTable(vClientDocsValue);
+<!-- Client Detail -->
+        $('#cnt_id').val(/*[[${cnt_id}]]*/);
+        $('#cnt_name').val(/*[[${cnt_name}]]*/);
+        $('#cnt_user_access').val(/*[[${cnt_user_access}]]*/);
+
+        $("#client_docs_back_detail_pretend span[id=cur_cnt_id]").text(/*[[${cnt_id}]]*/);
+        $("#client_docs_back_detail input[name=cur_cnt_name]").val(/*[[${cnt_name}]]*/);
+
+        $('#clients_list_table_order_column').val(/*[[${clients_list_table_order_column}]]*/);
+        $('#clients_list_table_order_type').val(/*[[${clients_list_table_order_type}]]*/);
+        $('#clients_list_table_search').val(/*[[${clients_list_table_search}]]*/);
+        $('#clients_list_table_pagelen').val(/*[[${clients_list_table_pagelen}]]*/);
+        $('#clients_list_table_page').val(/*[[${clients_list_table_page}]]*/);
+
+        $("#client-docs-cnt-detail input[name=clients_list_table_order_column]").val(/*[[${clients_list_table_order_column}]]*/);
+        $("#client-docs-cnt-detail input[name=clients_list_table_order_type]").val(/*[[${clients_list_table_order_type}]]*/);
+        $("#client-docs-cnt-detail input[name=clients_list_table_search]").val(/*[[${clients_list_table_search}]]*/);
+        $("#client-docs-cnt-detail input[name=clients_list_table_pagelen]").val(/*[[${clients_list_table_pagelen}]]*/);
+        $("#client-docs-cnt-detail input[name=clients_list_table_page]").val(/*[[${clients_list_table_page}]]*/);
+<!-- Client Show Detail -->
+        $('#cur_cnt_id').text(/*[[${cnt_id}]]*/);
+        $('#cur_cnt_name').val(/*[[${cnt_name}]]*/);
+
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#clients_li').addClass('active').removeClass('collapsed');
+        $('#clients_a').attr('aria-expanded',true);
+        $('#clients').addClass('show');
+
+        $('#clients_list_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

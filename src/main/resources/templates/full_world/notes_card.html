@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="full_world_notes_body" th:remove="tag">
+        <form id="table-full-world-notes-buttons" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="full-world-notes-btn-large" class="d-none d-sm-block">
+                 <button type="button" id="full-world-notes-detailbtn" class="btn btn-sm btn-dark" th:text="#{general.detailbtn}" disabled>View</button>
+                 <button type="button" id="full-world-notes-addbtn" class="btn btn-sm btn-dark" th:text="#{general.addbtn}" disabled>Add</button>
+                 <button type="button" id="full-world-notes-editbtn" class="btn btn-sm btn-dark" th:text="#{general.editbtn}" disabled>Edit</button>
+                 <button type="button" id="full-world-notes-delbtn" class="btn btn-sm btn-dark mr-2" th:text="#{general.delbtn}" disabled>Delete</button>
+                  
+                 <button type="button" id="full-world-notes-reload" class="btn btn-sm btn-primary mr-2"><i class="fas fa-sync-alt"></i></button>
+              </div>
+              <div id="full-world-notes-btn-small" class="d-block d-sm-none">
+                 <button type="button" id="full-world-notes-detailbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="list"></i></button>
+                 <button type="button" id="full-world-notes-addbtn-sx" class="btn btn-sm btn-dark"><i data-feather="plus"></i></button>
+                 <button type="button" id="full-world-notes-editbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="edit-2"></i></button>
+                 <button type="button" id="full-world-notes-delbtn-sx" class="btn btn-sm btn-dark mr-2" disabled><i data-feather="trash-2"></i></button>
+                  
+                 <button type="button" id="full-world-notes-reload-sx" class="btn btn-sm btn-primary mr-2"><i class="fas fa-sync-alt"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-full-world-notes" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var clmnl_id_width, clm_notes_type_id_width, clm_notes_type_name_width, clm_notes_type_colour_width, clmnl_text_width;
+    var clmnl_id_class, clm_notes_type_id_class, clm_notes_type_name_class, clm_notes_type_colour_class, clmnl_text_class;
+    var clmnl_id_show, clm_notes_type_id_show, clm_notes_type_name_show, clm_notes_type_colour_show, clmnl_text_show;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        clmnl_id_show = false;
+        clmnl_id_width = "";
+        clmnl_id_class = "";
+        clm_notes_type_id_show = false;
+        clm_notes_type_id_width = "";
+        clm_notes_type_id_class = "";
+        clm_notes_type_name_show = true;
+        clm_notes_type_name_width = "20%";
+        clm_notes_type_name_class = "small_size small_head_size small_footer_size";
+        clm_notes_type_colour_show = false;
+        clm_notes_type_colour_width = "";
+        clm_notes_type_colour_class = "";
+        clmnl_text_show = true;
+        clmnl_text_width = "80%";
+        clmnl_text_class = "small_size small_head_size small_footer_size text-center";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        clmnl_id_show = false;
+        clmnl_id_width = "";
+        clmnl_id_class = "";
+        clm_notes_type_id_show = false;
+        clm_notes_type_id_width = "";
+        clm_notes_type_id_class = "";
+        clm_notes_type_name_show = true;
+        clm_notes_type_name_width = "20%";
+        clm_notes_type_name_class = "";
+        clm_notes_type_colour_show = false;
+        clm_notes_type_colour_width = "";
+        clm_notes_type_colour_class = "";
+        clmnl_text_show = true;
+        clmnl_text_width = "80%";
+        clmnl_text_class = "";
+    }
+
+    var vClaimNotesValue;
+    vClaimNotesValue = {
+        table : '#table-full-world-notes',
+        button_form : '#table-full-world-notes-buttons',
+        ajax : {
+            "url": /*[[@{/full_world/get_notes_table}]]*/ "full_world/get_notes_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vClaimNotesValue.rowdata.clm_id;
+            }
+        },
+        key : "clmnl_id",
+        switchControl : full_world_notes_switchControl,
+        rowdata:{
+            clm_id: null,
+            clmnl_id: null,
+            clm_notes_type_id: null,
+            clmnl_text: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: vDomParam,
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["clm_notes_type_colour"]);
+        },
+        columnDefs:[
+            {"targets": [0], "width": clmnl_id_width, "className": clmnl_id_class, "visible": clmnl_id_show},
+            {"targets": [1], "width": clm_notes_type_id_width, "className": clm_notes_type_id_class, "visible": clm_notes_type_id_show},
+            {"targets": [2], "width": clm_notes_type_name_width, "className": clm_notes_type_name_class, "visible": clm_notes_type_name_show},
+            {"targets": [3], "width": clm_notes_type_colour_width, "className": clm_notes_type_colour_class, "visible": clm_notes_type_colour_show},
+            {"targets": [4], "width": clmnl_text_width, "className": clmnl_text_class, "visible": clmnl_text_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{full_world.notes.clmnl_id}]]*/ "clmnl_id", "data": "clmnl_id"},
+            /*1*/{"title": /*[[#{full_world.notes.clm_notes_type_id}]]*/ "clm_notes_type_id", "data": "clm_notes_type_id"},
+            /*2*/{"title": /*[[#{full_world.notes.clm_notes_type_name}]]*/ "clm_notes_type_name", "data": "clm_notes_type_name"},
+            /*3*/{"title": /*[[#{full_world.notes.clm_notes_type_colour}]]*/ "clm_notes_type_colour", "data": "clm_notes_type_colour"},
+            /*4*/{"title": /*[[#{full_world.notes.clmnl_text}]]*/ "clmnl_text", "data": "clmnl_text"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function full_world_notes_switchControl(){
+        if(vClaimNotesValue.rowdata.clmnl_id != null) {
+            $("#full-world-notes-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#full-world-notes-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+            if(RoleChiefOPS || RoleOPS) {
+                $("#full-world-notes-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#full-world-notes-editbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#full-world-notes-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#full-world-notes-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#full-world-notes-editbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-notes-editbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#full-world-notes-delbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-notes-delbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+            }
+        } else{
+            $("#full-world-notes-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-notes-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-notes-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#full-world-notes-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-notes-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-notes-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    //Show Button
+    $('#full-world-notes-detailbtn').click(function() {
+        $('#full_world_notes_modal_addbtn').attr('hidden',true);
+        $('#full_world_notes_modal_editbtn').attr('hidden',true);
+        $('#full_world_notes_modal_delbtn').attr('hidden',true);
+        fill_full_world_notes_modal_detail(4);
+    });
+    //Show Button SX
+    $('#full-world-notes-detailbtn-sx').click(function() {
+        $('#full_world_notes_modal_addbtn').attr('hidden',true);
+        $('#full_world_notes_modal_editbtn').attr('hidden',true);
+        $('#full_world_notes_modal_delbtn').attr('hidden',true);
+        fill_full_world_notes_modal_detail(4);
+    });
+    //Add Button
+    $('#full-world-notes-addbtn').click(function() {
+        $('#full_world_notes_modal_addbtn').removeAttr('hidden');
+        $('#full_world_notes_modal_editbtn').attr('hidden',true);
+        $('#full_world_notes_modal_delbtn').attr('hidden',true);
+        fill_full_world_notes_modal_detail(0);
+    });
+    //Add Button SX
+    $('#full-world-notes-addbtn-sx').click(function() {
+        $('#full_world_notes_modal_addbtn').removeAttr('hidden');
+        $('#full_world_notes_modal_editbtn').attr('hidden',true);
+        $('#full_world_notes_modal_delbtn').attr('hidden',true);
+        fill_full_world_notes_modal_detail(0);
+    });
+    // Edit Button
+    $('#full-world-notes-editbtn').click(function() {
+        $('#full_world_notes_modal_addbtn').attr('hidden',true);
+        $('#full_world_notes_modal_editbtn').removeAttr('hidden');
+        $('#full_world_notes_modal_delbtn').attr('hidden',true);
+        fill_full_world_notes_modal_detail(1);
+    });
+    // Edit Button SX
+    $('#full-world-notes-editbtn-sx').click(function() {
+        $('#full_world_notes_modal_addbtn').attr('hidden',true);
+        $('#full_world_notes_modal_editbtn').removeAttr('hidden');
+        $('#full_world_notes_modal_delbtn').attr('hidden',true);
+        fill_full_world_notes_modal_detail(1);
+    });
+    // Del Button
+    $('#full-world-notes-delbtn').click(function() {
+        $('#full_world_notes_modal_addbtn').attr('hidden',true);
+        $('#full_world_notes_modal_editbtn').attr('hidden',true);
+        $('#full_world_notes_modal_delbtn').removeAttr('hidden');
+        fill_full_world_notes_modal_detail(2);
+    });
+    // Del Button SX
+    $('#full-world-notes-delbtn-sx').click(function() {
+        $('#full_world_notes_modal_addbtn').attr('hidden',true);
+        $('#full_world_notes_modal_editbtn').attr('hidden',true);
+        $('#full_world_notes_modal_delbtn').removeAttr('hidden');
+        fill_full_world_notes_modal_detail(2);
+    });
+
+    function fullWorldNotesReload(){
+        vClaimNotesValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+        $(vClaimNotesValue.table).DataTable().ajax.reload(null, false);
+    }
+    //Reload Button
+    $('#full-world-notes-reload').click(function(){
+        fullWorldNotesReload();
+    });
+    //Reload Button SX
+    $('#full-world-notes-reload-sx').click(function(){
+        fullWorldNotesReload();
+    });
+
+    $(document).ready(function(){
+        vClaimNotesValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vClaimNotesValue.rowdata.clmcl_id = /*[[${clmcl_id}]]*/ null;
+
+        vClaimNotesValue.rowdata.table_order_column = /*[[${full_world_notes_table_order_column}]]*/ null;
+        vClaimNotesValue.rowdata.table_order_type = /*[[${full_world_notes_table_order_type}]]*/ null;
+        vClaimNotesValue.rowdata.table_search = /*[[${full_world_notes_table_search}]]*/ null;
+        vClaimNotesValue.rowdata.table_pagelen = /*[[${full_world_notes_table_pagelen}]]*/ null;
+        vClaimNotesValue.rowdata.table_page = /*[[${full_world_notes_table_page}]]*/ null;
+
+        recreateDataTable(vClaimNotesValue);
+    });
+</script>
+
+</body>
+</html>

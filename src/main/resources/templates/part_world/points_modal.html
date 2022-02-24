@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="part_world_points_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="part_world_points_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="part_world_points_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{part_world.points.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <div class="form-row">
+                        <input type="hidden" id="part_world_points_modal_mode">
+
+                        <div class="col-12 col-md-3 mb-1" id="part_world_points_modal_clm_id_row">
+                            <label for="part_world_points_modal_clm_id" class="form-label" th:text="'1. '+ #{part_world.main.clm_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="part_world_points_modal_clm_id" name="part_world_points_modal_clm_id" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-12 col-md-3 mb-1" id="part_world_points_modal_clm_num_row">
+                            <label for="part_world_points_modal_clm_num" class="form-label" th:text="'2. '+ #{part_world.main.clm_num}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="part_world_points_modal_clm_num" name="part_world_points_modal_clm_num" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-12 col-md-6 mb-1" id="part_world_points_modal_cnt_name_row">
+                            <label for="part_world_points_modal_cnt_name" class="form-label" th:text="'3. '+ #{part_world.main.cnt_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="part_world_points_modal_cnt_name" name="part_world_points_modal_cnt_name" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="part_world_points_modal_clm_point_id_row">
+                            <label for="clm_point_id" class="form-label" th:text="'4. '+ #{part_world.points.clm_point_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="clm_point_id" name="clm_point_id" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-4 mb-1" id="clm_point_add_date_row">
+                            <label for="clm_point_add_date" class="form-label" th:text="'5. '+ #{part_world.points.clm_point_add_date}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="clm_point_add_date" name="clm_point_add_date" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="part_world_costs_modal_clm_point_date_row">
+                            <label for="clm_point_date" class="form-label" th:text="'10. '+ #{part_world.points.clm_point_date}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="clm_point_date" name="clm_point_date">
+                                <button type="button" id="clm_point_date_x" name="clm_point_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div> <!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-12 mb-1">
+                            <label for="clm_point_name" th:text="'7. '+#{part_world.points.clm_point_name}"></label>
+                            <textarea class="form-control" rows="5" maxlength="64" style="resize:none;" id="clm_point_name" name="clm_point_name">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 6 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="part_world_points_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="part_world_points_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="part_world_points_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="part_world_points_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    // Clear Fields
+    function clear_part_world_points_modal_detail() {
+        $("#part_world_points_modal_detail input[type=text]").val('');
+        $("#part_world_points_modal_detail input[type=number]").val('');
+        $("#part_world_points_modal_detail select").empty();
+        $("#part_world_points_modal_detail textarea").val('');
+    }
+
+    // Block And Required Fields
+    function block_part_world_points_modal_detail() {
+        $('#clm_point_date').attr('required', true);
+        $('#clm_point_name').attr('required', true);
+
+        if($('#part_world_points_modal_mode').val() === "0"){
+            $('#clm_point_id_row').prop('hidden',true);
+            $('#clm_point_add_date_row').prop('hidden',true);
+
+            $('#clm_point_date').removeAttr('disabled');
+            $('#clm_point_date_x').attr('disabled', false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#clm_point_name').removeAttr('readonly');
+        }
+        else if($('#part_world_points_modal_mode').val() === "1"){
+            $('#clm_point_id_row').removeAttr('hidden');
+            $('#clm_point_add_date_row').removeAttr('hidden');
+
+            $('#clm_point_date').removeAttr('disabled');
+            $('#clm_point_date_x').attr('disabled', false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#clm_point_name').removeAttr('readonly');
+        }
+        else{
+            $('#clm_point_id_row').removeAttr('hidden');
+            $('#clm_point_add_date_row').removeAttr('hidden');
+
+            $('#clm_point_date').attr('disabled', true);
+            $('#clm_point_date_x').attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#clm_point_name').attr('readonly', true);
+        }
+    }
+
+    // Load Function
+    function fill_part_world_points_modal_detail(aMode){
+        $('#part_world_points_modal_mode').val(aMode);
+        clear_part_world_points_modal_detail();
+        block_part_world_points_modal_detail();
+
+        $('#part_world_points_modal_clm_id').val(vFLGClaimsValue.rowdata.clm_id);
+        $('#part_world_points_modal_clm_num').val(vFLGClaimsValue.rowdata.clm_num);
+        $('#part_world_points_modal_cnt_name').val(vFLGClaimsValue.rowdata.cnt_name);
+
+        if(aMode !== 0) {
+            $('#clm_point_id').val(vFLGClaimPointsValue.rowdata.clm_point_id);
+            $('#clm_point_add_date').val(vFLGClaimPointsValue.rowdata.clm_point_add_date);
+            $('#clm_point_date').val(vFLGClaimPointsValue.rowdata.clm_point_date);
+            $('#clm_point_name').val(vFLGClaimPointsValue.rowdata.clm_point_name);
+        }
+
+        $.when(
+        ).then(function () {
+            $('#part_world_points_modal').modal('show');
+        });
+    }
+
+    //Currency Date
+    $("#clm_point_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#clm_point_date_x').on('click', function() {
+        $('#clm_point_date').empty().val('');
+    });    
+    
+    //Change Functions
+
+    // Add button script
+    $('#part_world_points_modal_addbtn').on('click', function(){
+        var MainRowID = vFLGClaimsValue.rowdata.clm_id;
+        var RowID = vFLGClaimPointsValue.rowdata.clm_point_id;
+        $.ajax({
+            url: /*[[ @{/part_world/add_point} ]]*/ "/clients/add_point",
+            type: 'POST',
+            data: {
+                "clm_id": MainRowID,
+                "clm_point_date":  $('#clm_point_date').val(),
+                "clm_point_name":  $('#clm_point_name').val()
+            },
+            success: function (result) {
+                $('#part_world_points_modal').modal('hide');
+                vFLGClaimPointsValue.rowdata.clm_id = MainRowID;
+                vFLGClaimPointsValue.rowdata.clm_point_id = RowID;
+                $(vFLGClaimPointsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    });
+
+    // Edit button script
+    $('#part_world_points_modal_editbtn').on('click', function(){
+        var MainRowID = vFLGClaimsValue.rowdata.clm_id;
+        var RowID = vFLGClaimPointsValue.rowdata.clm_point_id;
+        $.ajax({
+            url: /*[[ @{/part_world/edit_point} ]]*/ "/clients/edit_point",
+            type: 'POST',
+            data: {
+                "clm_point_id": RowID,
+                "clm_point_date":  $('#clm_point_date').val(),
+                "clm_point_name":  $('#clm_point_name').val()
+            },
+            success: function (result) {
+                $('#part_world_points_modal').modal('hide');
+                vFLGClaimPointsValue.rowdata.clm_id = MainRowID;
+                vFLGClaimPointsValue.rowdata.clm_point_id = RowID;
+                $(vFLGClaimPointsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    });
+
+    // Del button script
+    $('#part_world_points_modal_delbtn').on('click', function(){
+        var MainRowID = vFLGClaimsValue.rowdata.clm_id;
+        var RowID = vFLGClaimPointsValue.rowdata.clm_point_id;
+        $.ajax({
+            url: /*[[ @{/part_world/del_point} ]]*/ "/clients/del_point",
+            type: 'POST',
+            data: {
+                "clm_point_id": RowID
+            },
+            success: function (result) {
+                $('#part_world_points_modal').modal('hide');
+                vFLGClaimPointsValue.rowdata.clm_id = MainRowID;
+                $(vFLGClaimPointsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

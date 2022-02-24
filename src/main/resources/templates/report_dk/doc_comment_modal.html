@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_dk_doc_comment_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="report_dk_doc_comment_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+            <div class="hidden">
+                <input type="hidden" id="report_dk_doc_comment_modal_mode">
+                <input type="hidden" id="report_dk_doc_comment_modal_dk_com_id">
+            </div>
+
+            <div class="modal-content" id="report_dk_doc_comment_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{report_dk.main.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mb-1">
+                    <form id="report_dk_doc_comment_modal_form" name="report_dk_doc_comment_modal_form" class="was-validated" novalidate>
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="report_dk_doc_comment_modal_cnt_name_row">
+                            <label for="report_dk_doc_comment_modal_cnt_name" class="form-label mb-0" th:text="'1. '+ #{report_dk.main.cnt_name}"></label>
+                            <input type="text" class="form-control" id="report_dk_doc_comment_modal_cnt_name" name="report_dk_doc_comment_modal_cnt_name" readonly>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="report_dk_doc_comment_modal_contract_row">
+                            <label for="report_dk_doc_comment_modal_contract" class="form-label mb-0" th:text="'2. '+ #{report_dk.contract.contract}"></label>
+                            <input type="text" class="form-control" id="report_dk_doc_comment_modal_contract" name="report_dk_doc_comment_modal_contract" readonly>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="report_dk_doc_comment_modal_order_row">
+                            <label for="report_dk_doc_comment_modal_order" class="form-label mb-0" th:text="'3. '+ #{report_dk.doc.order_name}"></label>
+                            <input type="text" class="form-control" id="report_dk_doc_comment_modal_order" name="report_dk_doc_comment_modal_order" readonly>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12">
+                            <label for="report_dk_doc_comment_modal_dk_com_text" class="form-label mb-0" th:text="'4. '+#{report_dk.main.dk_com_text}"></label>
+                            <textarea class="form-control" rows="7" maxlength="512" style="resize:none;" id="report_dk_doc_comment_modal_dk_com_text" name="report_dk_doc_comment_modal_dk_com_text">
+                            </textarea>
+                        </div>
+                    </div> <!-- Row 3 -->
+                    </form>
+                </div><!-- Body -->
+                <div class="modal-footer">
+                    <button type="button" id="report_dk_doc_comment_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="report_dk_doc_comment_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="report_dk_doc_comment_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="report_dk_doc_comment_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    // Clear Fields
+    function clear_report_dk_doc_comment_modal_detail() {
+        $("#report_dk_doc_comment_modal_detail input[type=text]").val('');
+        $("#report_dk_doc_comment_modal_detail input[type=number]").val('');
+        $("#report_dk_doc_comment_modal_detail select").empty();
+        $("#report_dk_doc_comment_modal_detail textarea").val('');
+    }
+
+    // Block And Required Fields
+    function block_report_dk_doc_comment_modal_detail() {
+        $('#report_dk_doc_comment_modal_dk_com_text').prop('required',true);
+    }
+
+    // Load Function
+    function fill_report_dk_doc_comment_modal_detail(aMode){
+        clear_report_dk_doc_comment_modal_detail();
+        $('#report_dk_doc_comment_modal_mode').val(aMode);
+        block_report_dk_doc_comment_modal_detail();
+
+        if(aMode >= 0){
+            $.ajax({
+                url:/*[[@{'/report_dk/get_doc_comment'}]]*/ "report_dk/get_doc_comment",
+                type: "get",
+                data: {
+                    "mode": aMode,
+                    "dkm_id": vReportDKMainValue.rowdata.dkm_id,
+                    "dkmd_id": vReportDKContactValue.rowdata.dkmd_id,
+                    "dkmdd_id": vReportDKDocValue.rowdata.dkmdd_id,
+                    "ser_id": vReportDKServiceValue.rowdata.ser_id,
+                    "cnt_id": vReportDKMainValue.rowdata.cnt_id
+                },
+                success: function (report_dk_doc_comment_modal_detail) {
+                    $.when(
+                    ).then(function () {
+                        $('#report_dk_doc_comment_modal_cnt_name').val(vReportDKMainValue.rowdata.cnt_name);
+                        $('#report_dk_doc_comment_modal_contract').val(vReportDKContactValue.rowdata.contract);
+                        $('#report_dk_doc_comment_modal_order').val(vReportDKDocValue.rowdata.order_name);
+
+                        $('#report_dk_doc_comment_modal_dk_com_id').val(report_dk_doc_comment_modal_detail.data[0].dk_com_id);
+                        if(report_dk_doc_comment_modal_detail.data[0].dk_com_id === 0){
+                            $('#report_dk_doc_comment_modal_addbtn').removeAttr('hidden');
+                            $('#report_dk_doc_comment_modal_editbtn').prop('hidden', true);
+                        }
+                        else{
+                            $('#report_dk_doc_comment_modal_addbtn').prop('hidden', true);
+                            $('#report_dk_doc_comment_modal_editbtn').removeAttr('hidden');
+                        }
+
+                        $('#report_dk_doc_comment_modal_dk_com_text').val(report_dk_doc_comment_modal_detail.data[0].dk_com_text);
+
+                        $('#report_dk_doc_comment_modal').modal('show');
+                    });
+                }
+            });
+        }
+    }
+
+    // Add button script
+    $('#report_dk_doc_comment_modal_addbtn').click(function(){
+        $('#report_dk_doc_comment_modal_form').submit();
+    });
+    // Edit button script
+    $('#report_dk_doc_comment_modal_editbtn').click(function(){
+        $('#report_dk_doc_comment_modal_form').submit();
+    });
+    // Del button script
+    $('#report_dk_doc_comment_modal_delbtn').click(function(){
+        $('#report_dk_doc_comment_modal_form').submit();
+    });
+
+    //Add DK Main Comment
+    function addDKDocCommentModal(){
+        let PaidType = $("#report_dk_paid_type_list").val();
+        let MainRowID = vReportDKServiceValue.rowdata.ser_id;
+        let RowID = vReportDKMainValue.rowdata.dkm_id;
+        let ContRowID = vReportDKContactValue.rowdata.dkmd_id;
+        let DocRowID = vReportDKDocValue.rowdata.dkmdd_id;
+        let CntID = vReportDKMainValue.rowdata.cnt_id;
+        let Contract = vReportDKContactValue.rowdata.contract;
+        $.ajax({
+            url: /*[[ @{/report_dk/add_dk_doc_comment} ]]*/ "/report_dk/add_dk_doc_comment",
+            type: 'POST',
+            data: {
+                "dkm_id": RowID,
+                "dkmd_id": ContRowID,
+                "dkmdd_id": DocRowID,
+                "cnt_id": CntID,
+                "ser_id": MainRowID,
+                "cnt_doc_name": Contract,
+                "dk_com_id": $('#report_dk_doc_comment_modal_dk_com_id').val(),
+                "dk_com_text": $('#report_dk_doc_comment_modal_dk_com_text').val()
+            },
+            success: function (result) {
+                vReportDKDocValue.rowdata.dk_paid_type_id = PaidType;
+                vReportDKDocValue.rowdata.dk_ser_id = MainRowID;
+                vReportDKDocValue.rowdata.dkm_id = RowID;
+                vReportDKDocValue.rowdata.dkmd_id = ContRowID;
+                vReportDKDocValue.rowdata.dkmdd_id = DocRowID;
+                $(vReportDKDocValue.table).DataTable().ajax.reload(null, false);
+
+                $('#report_dk_doc_comment_modal').modal('hide');
+            }
+        });
+    }
+
+    //Validation Form
+    $('#report_dk_doc_comment_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function(error,element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            if($('#report_dk_doc_comment_modal_mode').val() === '0') {
+                addDKDocCommentModal();
+            }
+            return false;
+        }
+    });
+</script>
+
+</body>
+</html>

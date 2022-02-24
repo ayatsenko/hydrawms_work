@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="client_lost_body" th:remove="tag">
+            <form id="table-client-lost-users-link-form" th:action="@{/users}" method="post" target="_blank">
+                <input name="user_id" hidden>
+                <input name="users_list_table_order_column" hidden>
+                <input name="users_list_table_order_type" hidden>
+                <input name="users_list_table_search" hidden>
+                <input name="users_list_table_pagelen" hidden>
+                <input name="users_list_table_page" hidden>
+            </form>
+
+            <form id="table-client-lost-clients-link-form" th:action="@{/clients}" method="post" target="_blank">
+                <input name="cnt_id" hidden>
+                <input name="clients_list_table_order_column" hidden>
+                <input name="clients_list_table_order_type" hidden>
+                <input name="clients_list_table_search" hidden>
+                <input name="clients_list_table_pagelen" hidden>
+                <input name="clients_list_table_page" hidden>
+            </form>
+
+            <form id="table-client-lost-finance-link-form" th:action="@{/client_finance}" method="post" target="_blank">
+                <input name="cnt_id" hidden>
+                <input name="cnt_name" hidden>
+                <input name="cnt_user_access" hidden>
+
+                <input name="clients_list_table_order_column" hidden>
+                <input name="clients_list_table_order_type" hidden>
+                <input name="clients_list_table_search" hidden>
+                <input name="clients_list_table_pagelen" hidden>
+                <input name="clients_list_table_page" hidden>
+
+                <input name="client_finance_filter_id" hidden>
+                <input name="client_finance_filter_start_date" hidden>
+                <input name="client_finance_filter_end_date" hidden>
+            </form>
+
+        <div><table id="table-client-lost" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var cnt_id_width, cnt_name_width, user_id_width, user_name_width, fin_1_width, check_1_width, fin_2_width, check_2_width, fin_3_width, check_3_width, fin_4_width, check_4_width,
+        fin_5_width, check_5_width, fin_6_width, check_6_width, fin_7_width, check_7_width, fin_8_width, check_8_width, fin_9_width, check_9_width, fin_10_width, check_10_width,
+        fin_11_width, check_11_width, fin_12_width, check_12_width;
+
+    var cnt_id_class, cnt_name_class, user_id_class, user_name_class, fin_1_class, check_1_class, fin_2_class, check_2_class, fin_3_class, check_3_class, fin_4_class, check_4_class,
+        fin_5_class, check_5_class, fin_6_class, check_6_class, fin_7_class, check_7_class, fin_8_class, check_8_class, fin_9_class, check_9_class, fin_10_class, check_10_class,
+        fin_11_class, check_11_class, fin_12_class, check_12_class;
+
+    var smallScreenSize = window.screen.width > 1024 && window.screen.height <= 768;
+    var mobileScreenSize = window.screen.width < 1024 && window.screen.height < 768;
+
+    var currYear = new Date().getFullYear();
+    var currMonth = new Date().getMonth();
+    var aTableMonth;
+
+    if(mobileScreenSize){
+        vDomParam = "ftp";
+
+        cnt_id_width = "";
+        cnt_id_class = "none";
+
+        cnt_name_width = "20%";
+        cnt_name_class = "all small_size small_head_size small_footer_size cnt_name";
+
+        user_id_width = "";
+        user_id_class = "none";
+
+        user_name_width = "";
+        user_name_class = "none";
+
+        if (currMonth + 1 === 1) {
+            fin_1_width = "6%";
+            fin_1_class = "all text-center small_size small_head_size small_footer_size finance";
+        }
+        else if (currMonth + 1 - 1 > 0 && currMonth + 1 - 1 < 6){
+            fin_1_width = "6%";
+            fin_1_class = "tablet-p text-center small_size small_head_size small_footer_size finance";
+        }
+        else{
+            fin_1_width = "";
+            fin_1_class = "none";
+        }
+        check_1_width = "";
+        check_1_class = "none";
+        if (currMonth + 1 === 2) {
+            fin_2_width = "6%";
+            fin_2_class = "all text-center small_size small_head_size small_footer_size finance";
+        }
+        else if (currMonth + 1 - 2 > 0 && currMonth + 1 - 2 < 6){
+            fin_2_width = "6%";
+            fin_2_class = "tablet-p text-center small_size small_head_size small_footer_size finance";
+        }
+        else{
+            fin_2_width = "";
+            fin_2_class = "none";
+        }
+        check_2_width = "";
+        check_2_class = "none";
+        if (currMonth + 1 === 3) {
+            fin_3_width = "6%";
+            fin_3_class = "all text-center small_size small_head_size small_footer_size finance";
+        }
+        else if (currMonth + 1 - 3 > 0 && currMonth + 1 - 3 < 6){
+            fin_3_width = "6%";
+            fin_3_class = "tablet-p text-center small_size small_head_size small_footer_size finance";
+        }
+        else{
+            fin_3_width = "";
+            fin_3_class = "none";
+        }
+        check_3_width = "";
+        check_3_class = "none";
+        if (currMonth + 1 === 4) {
+            fin_4_width = "6%";
+            fin_4_class = "all text-center small_size small_head_size small_footer_size finance";
+        }
+        else if (currMonth + 1 - 4 > 0 && currMonth + 1 - 4 < 6){
+            fin_4_width = "6%";
+            fin_4_class = "tablet-p text-center small_size small_head_size small_footer_size finance";
+        }
+        else{
+            fin_4_width = "";
+            fin_4_class = "none";
+        }
+        check_4_width = "";
+        check_4_class = "none";
+        if (currMonth + 1 === 5) {
+            fin_5_width = "6%";
+            fin_5_class = "all text-center small_size small_head_size small_footer_size finance";
+        }
+        else if (currMonth + 1 - 5 > 0 && currMonth + 1 - 5 < 6){
+            fin_5_width = "6%";
+            fin_5_class = "tablet-p text-center small_size small_head_size small_footer_size finance";
+        }
+        else{
+            fin_5_width = "";
+            fin_5_class = "none";
+        }
+        check_5_width = "";
+        check_5_class = "none";
+        if (currMonth + 1 === 6) {
+            fin_6_width = "6%";
+            fin_6_class = "all text-center small_size small_head_size small_footer_size finance";
+        }
+        else if (currMonth + 1 - 6 > 0 && currMonth + 1 - 6 < 6){
+            fin_6_width = "6%";
+            fin_6_class = "tablet-p text-center small_size small_head_size small_footer_size finance";
+        }
+        else{
+            fin_6_width = "";
+            fin_6_class = "none";
+        }
+        check_6_width = "";
+        check_6_class = "none";
+        if (currMonth + 1 === 7) {
+            fin_7_width = "6%";
+            fin_7_class = "all text-center small_size small_head_size small_footer_size finance";
+        }
+        else if (currMonth + 1 - 7 > 0 && currMonth + 1 - 7 < 6){
+            fin_7_width = "6%";
+            fin_7_class = "tablet-p text-center small_size small_head_size small_footer_size finance";
+        }
+        else{
+            fin_7_width = "";
+            fin_7_class = "none";
+        }
+        check_7_width = "";
+        check_7_class = "none";
+        if (currMonth + 1 === 8) {
+            fin_8_width = "6%";
+            fin_8_class = "all text-center small_size small_head_size small_footer_size finance";
+        }
+        else if (currMonth + 1 - 8 > 0 && currMonth + 1 - 8 < 6){
+            fin_8_width = "6%";
+            fin_8_class = "tablet-p text-center small_size small_head_size small_footer_size finance";
+        }
+        else{
+            fin_8_width = "";
+            fin_8_class = "none";
+        }
+        check_8_width = "";
+        check_8_class = "none";
+        if (currMonth + 1 === 9) {
+            fin_9_width = "6%";
+            fin_9_class = "all text-center small_size small_head_size small_footer_size finance";
+        }
+        else if (currMonth + 1 - 9 > 0 && currMonth + 1 - 9 < 6){
+            fin_9_width = "6%";
+            fin_9_class = "tablet-p text-center small_size small_head_size small_footer_size finance";
+        }
+        else{
+            fin_9_width = "";
+            fin_9_class = "none";
+        }
+        check_9_width = "";
+        check_9_class = "none";
+        if (currMonth + 1 === 10) {
+            fin_10_width = "6%";
+            fin_10_class = "all text-center small_size small_head_size small_footer_size finance";
+        }
+        else if (currMonth + 1 - 10 > 0 && currMonth + 1 - 10 < 6){
+            fin_10_width = "6%";
+            fin_10_class = "tablet-p text-center small_size small_head_size small_footer_size finance";
+        }
+        else{
+            fin_10_width = "";
+            fin_10_class = "none";
+        }
+        check_10_width = "";
+        check_10_class = "none";
+        if (currMonth + 1 === 11) {
+            fin_11_width = "6%";
+            fin_11_class = "all text-center small_size small_head_size small_footer_size finance";
+        }
+        else if (currMonth + 1 - 11 > 0 && currMonth + 1 - 11 < 6){
+            fin_11_width = "6%";
+            fin_11_class = "tablet-p text-center small_size small_head_size small_footer_size finance";
+        }
+        else{
+            fin_11_width = "";
+            fin_11_class = "none";
+        }
+        check_11_width = "";
+        check_11_class = "none";
+        if (currMonth + 1 === 12) {
+            fin_12_width = "6%";
+            fin_12_class = "all text-center small_size small_head_size small_footer_size finance";
+        }
+        else if (currMonth + 1 - 12 > 0 && currMonth + 1 - 12 < 6){
+            fin_12_width = "6%";
+            fin_12_class = "tablet-p text-center small_size small_head_size small_footer_size finance";
+        }
+        else{
+            fin_12_width = "";
+            fin_12_class = "none";
+        }
+        check_12_width = "";
+        check_12_class = "none";        
+    }
+    else if(smallScreenSize){
+        vDomParam = "ftp";
+
+        cnt_id_width = "";
+        cnt_id_class = "none";
+
+        cnt_name_width = "20%";
+        cnt_name_class = "small_size small_head_size small_footer_size cnt_name";
+
+        user_id_width = "";
+        user_id_class = "none";
+
+        user_name_width = "8%";
+        user_name_class = "small_size small_head_size small_footer_size text-center user_name";
+
+        fin_1_width = "6%";
+        fin_1_class = "small_size small_head_size small_footer_size text-center fin_count";
+        check_1_width = "";
+        check_1_class = "none";
+        fin_2_width = "6%";
+        fin_2_class = "small_size small_head_size small_footer_size text-center fin_count";
+        check_2_width = "";
+        check_2_class = "none";
+        fin_3_width = "6%";
+        fin_3_class = "small_size small_head_size small_footer_size text-center fin_count";
+        check_3_width = "";
+        check_3_class = "none";
+        fin_4_width = "6%";
+        fin_4_class = "small_size small_head_size small_footer_size text-center fin_count";
+        check_4_width = "";
+        check_4_class = "none";
+        fin_5_width = "6%";
+        fin_5_class = "small_size small_head_size small_footer_size text-center fin_count";
+        check_5_width = "";
+        check_5_class = "none";
+        fin_6_width = "6%";
+        fin_6_class = "small_size small_head_size small_footer_size text-center fin_count";
+        check_6_width = "";
+        check_6_class = "none";
+        fin_7_width = "6%";
+        fin_7_class = "small_size small_head_size small_footer_size text-center fin_count";
+        check_7_width = "";
+        check_7_class = "none";
+        fin_8_width = "6%";
+        fin_8_class = "small_size small_head_size small_footer_size text-center fin_count";
+        check_8_width = "";
+        check_8_class = "none";
+        fin_9_width = "6%";
+        fin_9_class = "small_size small_head_size small_footer_size text-center fin_count";
+        check_9_width = "";
+        check_9_class = "none";
+        fin_10_width = "6%";
+        fin_10_class = "small_size small_head_size small_footer_size text-center fin_count";
+        check_10_width = "";
+        check_10_class = "none";
+        fin_11_width = "6%";
+        fin_11_class = "small_size small_head_size small_footer_size text-center fin_count";
+        check_11_width = "";
+        check_11_class = "none";
+        fin_12_width = "6%";
+        fin_12_class = "small_size small_head_size small_footer_size text-center fin_count";
+        check_12_width = "";
+        check_12_class = "none";
+    }
+    else{
+        vDomParam = "ftp";
+
+        cnt_id_width = "";
+        cnt_id_class = "none";
+
+        cnt_name_width = "20%";
+        cnt_name_class = "cnt_name";
+
+        user_id_width = "";
+        user_id_class = "none";
+
+        user_name_width = "8%";
+        user_name_class = "text-center user_name";
+
+        fin_1_width = "6%";
+        fin_1_class = "text-center fin_count";
+        check_1_width = "";
+        check_1_class = "none";
+        fin_2_width = "6%";
+        fin_2_class = "text-center fin_count";
+        check_2_width = "";
+        check_2_class = "none";
+        fin_3_width = "6%";
+        fin_3_class = "text-center fin_count";
+        check_3_width = "";
+        check_3_class = "none";
+        fin_4_width = "6%";
+        fin_4_class = "text-center fin_count";
+        check_4_width = "";
+        check_4_class = "none";
+        fin_5_width = "6%";
+        fin_5_class = "text-center fin_count";
+        check_5_width = "";
+        check_5_class = "none";
+        fin_6_width = "6%";
+        fin_6_class = "text-center fin_count";
+        check_6_width = "";
+        check_6_class = "none";
+        fin_7_width = "6%";
+        fin_7_class = "text-center fin_count";
+        check_7_width = "";
+        check_7_class = "none";
+        fin_8_width = "6%";
+        fin_8_class = "text-center fin_count";
+        check_8_width = "";
+        check_8_class = "none";
+        fin_9_width = "6%";
+        fin_9_class = "text-center fin_count";
+        check_9_width = "";
+        check_9_class = "none";
+        fin_10_width = "6%";
+        fin_10_class = "text-center fin_count";
+        check_10_width = "";
+        check_10_class = "none";
+        fin_11_width = "6%";
+        fin_11_class = "text-center fin_count";
+        check_11_width = "";
+        check_11_class = "none";
+        fin_12_width = "6%";
+        fin_12_class = "text-center fin_count";
+        check_12_width = "";
+        check_12_class = "none";
+    }
+
+    var vClientLostnValue = {
+                table : '#table-client-lost',
+                button_form: '#client_lost_filter_div',
+                ajax : {
+                    "url": /*[[@{/get_lost}]]*/ "/get_lost",
+                    "type": "post",
+                    "data": function ( d ) {
+                        d.year = vClientLostnValue.rowdata.year;
+                        d.month = vClientLostnValue.rowdata.month;
+                    }
+                },
+                key : "cnt_id",
+                switchControl : client_lost_switchControl,
+                rowdata: {
+                        cnt_id: null,
+                        year: null,
+                        month: null,
+
+                        client_lost_table_order_column: null,
+                        client_lost_table_order_type: null,
+                        client_lost_table_search: null,
+                        client_lost_table_pagelen: null,
+                        client_lost_table_page: null
+                },
+                ordering: true,
+                order: [
+                        [0, "desc"]
+                ],
+                scrollX: false,
+                dom: vDomParam,
+                createdRow: function( row, data, dataIndex ) {
+                    if ( data.check_1 === 0 ){ $(row).find('td:eq(4)').css('background-color', '#ff8566');}
+                    if ( data.check_2 === 0 ){ $(row).find('td:eq(6)').css('background-color', '#ff8566');}
+                    if ( data.check_3 === 0 ){ $(row).find('td:eq(8)').css('background-color', '#ff8566');}
+                    if ( data.check_4 === 0 ){ $(row).find('td:eq(10)').css('background-color', '#ff8566');}
+                    if ( data.check_5 === 0 ){ $(row).find('td:eq(12)').css('background-color', '#ff8566');}
+                    if ( data.check_6 === 0 ){ $(row).find('td:eq(14)').css('background-color', '#ff8566');}
+                    if ( data.check_7 === 0 ){ $(row).find('td:eq(16)').css('background-color', '#ff8566');}
+                    if ( data.check_8 === 0 ){ $(row).find('td:eq(18)').css('background-color', '#ff8566');}
+                    if ( data.check_9 === 0 ){ $(row).find('td:eq(20)').css('background-color', '#ff8566');}
+                    if ( data.check_10 === 0 ){ $(row).find('td:eq(22)').css('background-color', '#ff8566');}
+                    if ( data.check_11 === 0 ){ $(row).find('td:eq(24)').css('background-color', '#ff8566');}
+                    if ( data.check_12 === 0 ){ $(row).find('td:eq(26)').css('background-color', '#ff8566');}
+                },
+                columnDefs: [
+                        {"targets": [4,6,8,10,12,14,16,18,20,22,24,26],  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )}
+                        ],
+                columns : [
+                    /*0*/{"title": /*[[#{mainpage.clientlost.cnt_id}]]*/ "cnt_id","data": "cnt_id","width": cnt_id_width,"className": cnt_id_class},
+                    /*1*/{"title": /*[[#{mainpage.clientlost.cnt_name}]]*/ "cnt_name","data": "cnt_name","width": cnt_name_width,"className": cnt_name_class},
+                    /*2*/{"title": /*[[#{mainpage.clientlost.user_id}]]*/ "user_id","data": "user_id","width": user_id_width,"className": user_id_class},
+                    /*3*/{"title": /*[[#{mainpage.clientlost.user_name}]]*/ "user_name","data": "user_name","width": user_name_width,"className": user_name_class},
+                    /*4*/{"title": /*[[#{month.01_short}]]*/ "fin_1","data": "fin_1","width": fin_1_width,"className": fin_1_class},
+                    /*5*/{"title": /*[[#{mainpage.clientlost.check_1}]]*/ "check_1","data": "check_1","width": check_1_width,"className": check_1_class},
+                    /*6*/{"title": /*[[#{month.02_short}]]*/ "fin_2","data": "fin_2","width": fin_2_width,"className": fin_2_class},
+                    /*7*/{"title": /*[[#{mainpage.clientlost.check_2}]]*/ "check_2","data": "check_2","width": check_2_width,"className": check_2_class},
+                    /*8*/{"title": /*[[#{month.03_short}]]*/ "fin_3","data": "fin_3","width": fin_3_width,"className": fin_3_class},
+                    /*9*/{"title": /*[[#{mainpage.clientlost.check_3}]]*/ "check_3","data": "check_3","width": check_3_width,"className": check_3_class},
+                    /*10*/{"title": /*[[#{month.04_short}]]*/ "fin_4","data": "fin_4","width": fin_4_width,"className": fin_4_class},
+                    /*11*/{"title": /*[[#{mainpage.clientlost.check_4}]]*/ "check_4","data": "check_4","width": check_4_width,"className": check_4_class},
+                    /*12*/{"title": /*[[#{month.05_short}]]*/ "fin_5","data": "fin_5","width": fin_5_width,"className": fin_5_class},
+                    /*13*/{"title": /*[[#{mainpage.clientlost.check_5}]]*/ "check_5","data": "check_5","width": check_5_width,"className": check_5_class},
+                    /*14*/{"title": /*[[#{month.06_short}]]*/ "fin_6","data": "fin_6","width": fin_6_width,"className": fin_6_class},
+                    /*15*/{"title": /*[[#{mainpage.clientlost.check_6}]]*/ "check_6","data": "check_6","width": check_6_width,"className": check_6_class},
+                    /*16*/{"title": /*[[#{month.07_short}]]*/ "fin_7","data": "fin_7","width": fin_7_width,"className": fin_7_class},
+                    /*17*/{"title": /*[[#{mainpage.clientlost.check_7}]]*/ "check_7","data": "check_7","width": check_7_width,"className": check_7_class},
+                    /*18*/{"title": /*[[#{month.08_short}]]*/ "fin_8","data": "fin_8","width": fin_8_width,"className": fin_8_class},
+                    /*19*/{"title": /*[[#{mainpage.clientlost.check_8}]]*/ "check_8","data": "check_8","width": check_8_width,"className": check_8_class},
+                    /*20*/{"title": /*[[#{month.09_short}]]*/ "fin_9","data": "fin_9","width": fin_9_width,"className": fin_9_class},
+                    /*21*/{"title": /*[[#{mainpage.clientlost.check_9}]]*/ "check_9","data": "check_9","width": check_9_width,"className": check_9_class},
+                    /*22*/{"title": /*[[#{month.10_short}]]*/ "fin_10","data": "fin_10","width": fin_10_width,"className": fin_10_class},
+                    /*23*/{"title": /*[[#{mainpage.clientlost.check_10}]]*/ "check_10","data": "check_10","width": check_10_width,"className": check_10_class},
+                    /*24*/{"title": /*[[#{month.11_short}]]*/ "fin_11","data": "fin_11","width": fin_11_width,"className": fin_11_class},
+                    /*25*/{"title": /*[[#{mainpage.clientlost.check_11}]]*/ "check_11","data": "check_11","width": check_11_width,"className": check_11_class},
+                    /*26*/{"title": /*[[#{month.12_short}]]*/ "fin_12","data": "fin_12","width": fin_12_width,"className": fin_12_class},
+                    /*27*/{"title": /*[[#{mainpage.clientlost.check_12}]]*/ "check_12","data": "check_12","width": check_12_width,"className": check_12_class}
+                ],
+                pageLength: 25,
+                copy_button: true,
+                excel_button: true,
+                pdf_button: true,
+                print_button: true
+        };
+
+        function client_lost_switchControl(){
+        }
+
+        $('[id=client_lost_year]').val(currYear);
+        $('[id=client_lost_month]').val(currMonth + 1);
+
+        $(document).ready(function() {
+                vClientLostnValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+                vClientLostnValue.rowdata.year = $('#client_lost_year').val();
+                vClientLostnValue.rowdata.month = $('#client_lost_month').val();
+
+                recreateDataTable( vClientLostnValue );
+        });
+<!-- Client Lost Table -->
+    if (window.screen.width < 1024 && window.screen.height < 768) {
+        $("#table-client-lost-users-link-form").prop('target','_parent');
+        $("#table-client-lost-clients-link-form").prop('target','_parent');
+        $("#table-client-lost-finance-link-form").prop('target','_parent');
+    }
+
+    $('#table-client-lost').on('dblclick', '.user_name', function (e) {
+            var selectedRow = this._DT_CellIndex.row;
+            var currentTable = $('#table-client-lost').DataTable();
+
+            $("#table-client-lost-users-link-form input[name=user_id]").val(currentTable.row(selectedRow).data().user_id);
+
+            $("#table-client-lost-users-link-form input[name=users_list_table_order_column]").val(0);
+            $("#table-client-lost-users-link-form input[name=users_list_table_order_type]").val("desc");
+            $("#table-client-lost-users-link-form input[name=users_list_table_search]").val(currentTable.row(selectedRow).data().user_name);
+            $("#table-client-lost-users-link-form input[name=users_list_table_pagelen]").val(25);
+            $("#table-client-lost-users-link-form input[name=users_list_table_page]").val(0);
+            $("#table-client-lost-users-link-form").submit();
+    });
+
+    $('#table-client-lost').on('dblclick', '.cnt_name', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var currentTable = $('#table-client-lost').DataTable();
+
+        $("#table-client-lost-clients-link-form input[name=cnt_id]").val(currentTable.row(selectedRow).data().cnt_id);
+
+        $("#table-client-lost-clients-link-form input[name=clients_list_table_order_column]").val(0);
+        $("#table-client-lost-clients-link-form input[name=clients_list_table_order_type]").val("desc");
+        $("#table-client-lost-clients-link-form input[name=clients_list_table_search]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#table-client-lost-clients-link-form input[name=clients_list_table_pagelen]").val(25);
+        $("#table-client-lost-clients-link-form input[name=clients_list_table_page]").val(0);
+        $("#table-client-lost-clients-link-form").submit();
+    });
+
+    $('#table-client-lost').on('dblclick', '.fin_count', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var selectedCell = this._DT_CellIndex.column;
+        var currentTable = $('#table-client-lost').DataTable();
+        var year = $('#client_lost_year').val();
+        var month;
+
+        if(selectedCell === 4){ month = 0}
+        else if(selectedCell === 6){ month = 1}
+        else if(selectedCell === 8){ month = 2}
+        else if(selectedCell === 10){ month = 3}
+        else if(selectedCell === 12){ month = 4}
+        else if(selectedCell === 14){ month = 5}
+        else if(selectedCell === 16){ month = 6}
+        else if(selectedCell === 18){ month = 7}
+        else if(selectedCell === 20){ month = 8}
+        else if(selectedCell === 22){ month = 9}
+        else if(selectedCell === 24){ month = 10}
+        else if(selectedCell === 26){ month = 11}
+        else if(selectedCell === 28){ month = 12}
+
+        var startDay = new Date(year, month, 1).toLocaleDateString('ru');
+        var endDay = new Date(year, month + 1, 0).toLocaleDateString('ru');
+
+        $("#table-client-lost-finance-link-form input[name=cnt_id]").val(currentTable.row(selectedRow).data().cnt_id);
+        $("#table-client-lost-finance-link-form input[name=cnt_name]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#table-client-lost-finance-link-form input[name=cnt_user_access]").val(1);
+
+        $("#table-client-lost-finance-link-form input[name=clients_list_table_order_column]").val(0);
+        $("#table-client-lost-finance-link-form input[name=clients_list_table_order_type]").val("desc");
+        $("#table-client-lost-finance-link-form input[name=clients_list_table_search]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#table-client-lost-finance-link-form input[name=clients_list_table_pagelen]").val(25);
+        $("#table-client-lost-finance-link-form input[name=clients_list_table_page]").val(0);
+
+        $("#table-client-lost-finance-link-form input[name=client_finance_filter_id]").val(1);
+        $("#table-client-lost-finance-link-form input[name=client_finance_filter_start_date]").val(startDay);
+        $("#table-client-lost-finance-link-form input[name=client_finance_filter_end_date]").val(endDay);
+        $("#table-client-lost-finance-link-form").submit();
+    });
+
+    $('#client_lost_year').change( function (){
+            vClientLostnValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+            vClientLostnValue.rowdata.year = $('#client_lost_year').val();
+            vClientLostnValue.rowdata.month = $('#client_lost_month').val();
+            $(vClientLostnValue.table).DataTable().ajax.reload();
+    });
+
+    $('#client_lost_month').change( function (){
+            vClientLostnValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+            vClientLostnValue.rowdata.year = $('#client_lost_year').val();
+            vClientLostnValue.rowdata.month = $('#client_lost_month').val();
+            $(vClientLostnValue.table).DataTable().ajax.reload();
+    });
+</script>
+
+</body>
+</html>

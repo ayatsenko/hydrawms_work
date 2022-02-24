@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_dk_service_body" th:remove="tag">
+    <div id="table-report-dk-service-buttons">
+        <button type="button" id="report-dk-main-xlsbtn" class="btn btn-dark mr-1" th:text="#{general.reportxls}" disabled></button>
+    </div>
+    <div><table id="table-report-dk-service" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var ser_id_show, ser_name_show, prepaying_sum_show, prepaying_persent_show, expired_sum_show, expired_persent_show, troubl_sum_show,
+        troubl_persent_show, all_sum_show, all_persent_show, empty_column_show, total_persent_show;
+
+    var ser_id_width, ser_name_width, prepaying_sum_width, prepaying_persent_width, expired_sum_width, expired_persent_width, troubl_sum_width,
+        troubl_persent_width, all_sum_width, all_persent_width, empty_column_width, total_persent_width;
+
+    var ser_id_class, ser_name_class, prepaying_sum_class, prepaying_persent_class, expired_sum_class, expired_persent_class, troubl_sum_class,
+        troubl_persent_class, all_sum_class, all_persent_class, empty_column_class, total_persent_class;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+
+        ser_id_width = "";
+        ser_id_class = "none";
+        ser_name_width = "";
+        ser_name_class = "none";
+        paid_premiss_width = "40%";
+        paid_premiss_class = "all small_size small_head_size small_footer_size text-center ser_name";
+        prepaying_sum_width = "15%";
+        prepaying_sum_class = "min-tablet-p small_size small_head_size small_footer_size text-center";
+        prepaying_persent_width = "15%";
+        prepaying_persent_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey text-center";
+        expired_sum_width = "15%";
+        expired_sum_class = "min-tablet-p small_size small_head_size small_footer_size text-center";
+        expired_persent_width = "";
+        expired_persent_class = "none noExport";
+        total_persent_show = "";
+        total_persent_width ="";
+        total_persent_class = "min-tablet-p small_size small_head_size small_footer_size text-center";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        ser_id_show = false;
+        ser_id_width = "";
+        ser_id_class = "";
+        ser_name_show = true;
+        ser_name_width = "20%";
+        ser_name_class = "small_size small_head_size small_footer_size";
+        prepaying_sum_show = true;
+        prepaying_sum_width = "10%";
+        prepaying_sum_class = "small_size small_head_size cell-light-grey head-light-grey text-center";
+        prepaying_persent_show = false;
+        prepaying_persent_width = "5%";
+        prepaying_persent_class = "small_size small_head_size cell-light-grey head-light-grey text-center";
+        expired_sum_show = true;
+        expired_sum_width = "10%";
+        expired_sum_class = "small_size small_head_size text-center";
+        expired_persent_show = false;
+        expired_persent_width = "5%";
+        expired_persent_class = "small_size small_head_size text-center";
+        troubl_sum_show = true;
+        troubl_sum_width = "10%";
+        troubl_sum_class = "small_size small_head_size cell-light-grey head-light-grey text-center";
+        troubl_persent_show = false;
+        troubl_persent_width = "5%";
+        troubl_persent_class = "small_size small_head_size cell-light-grey head-light-grey text-center";
+        all_sum_show = true;
+        all_sum_width = "10%";
+        all_sum_class = "small_size small_head_size text-center";
+        all_persent_show = true;
+        all_persent_width = "5%";
+        all_persent_class = "small_size small_head_size text-center";
+        empty_column_show = false;
+        empty_column_width = "";
+        empty_column_class = "";
+        total_persent_show = true;
+        total_persent_width = "5%";
+        total_persent_class = "small_size small_head_size cell-light-grey head-light-grey text-center";
+    }
+    else{
+        vDomParam = "Blfrtip";
+
+        ser_id_show = false;
+        ser_id_width = "";
+        ser_id_class = "";
+        ser_name_show = true;
+        ser_name_width = "20%";
+        ser_name_class = "md_size md_head_size md_footer_size small_size small_head_size small_footer_size";
+        prepaying_sum_show = true;
+        prepaying_sum_width = "10%";
+        prepaying_sum_class = "md_size md_head_size md_footer_size cell-light-grey head-light-grey text-center";
+        prepaying_persent_show = false;
+        prepaying_persent_width = "5%";
+        prepaying_persent_class = "md_size md_head_size md_footer_size cell-light-grey head-light-grey text-center";
+        expired_sum_show = true;
+        expired_sum_width = "10%";
+        expired_sum_class = "md_size md_head_size md_footer_size text-center";
+        expired_persent_show = false;
+        expired_persent_width = "5%";
+        expired_persent_class = "md_size md_head_size md_footer_size text-center";
+        troubl_sum_show = true;
+        troubl_sum_width = "10%";
+        troubl_sum_class = "md_size md_head_size md_footer_size cell-light-grey head-light-grey text-center";
+        troubl_persent_show = false;
+        troubl_persent_width = "5%";
+        troubl_persent_class = "md_size md_head_size md_footer_size cell-light-grey head-light-grey text-center";
+        all_sum_show = true;
+        all_sum_width = "10%";
+        all_sum_class = "md_size md_head_size md_footer_size text-center";
+        all_persent_show = true;
+        all_persent_width = "5%";
+        all_persent_class = "md_size md_head_size md_footer_size text-center";
+        empty_column_show = true;
+        empty_column_width = "15%";
+        empty_column_class = "md_size md_head_size md_footer_size";
+        total_persent_show = true;
+        total_persent_width = "5%";
+        total_persent_class = "md_size md_head_size md_footer_size cell-light-grey head-light-grey text-center";
+    }
+
+    var vReportDKServiceValue;
+    vReportDKServiceValue = {
+        table : '#table-report-dk-service',
+        button_form: "#table-report-dk-service-buttons",
+        ajax : {
+            "url": /*[[@{/report_dk/get_service_table}]]*/ "report_dk/get_service_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.dk_paid_type_id = vReportDKServiceValue.rowdata.dk_paid_type_id;
+            }
+        },
+        key : "ser_id",
+        switchControl : report_dk_detail_switchControl,
+        rowdata:{
+            ser_id: null,
+            dk_paid_type_id: null
+        },
+        ordering: true,
+        order: [
+            [6, "desc"]
+        ],
+
+        dom: vDomParam,
+        createdRow: function(row, data, index) {
+            $(row).css('background-color', '#ffffff');
+            if(data["ser_id"] === 0){
+                $(row).css('background-color','#d5e1df');
+                $(row).addClass("font-weight-bold text-center");
+            }
+            if ( data.prepaying_sum !== '' ){ $(row).find('td:eq(1)').css('color', '#ff1d00');}
+
+            if ( data.all_persent > 0 ){ $(row).find('td:eq(5)').css('background-color', '#ff8566');}
+        },
+        columnDefs: [
+            {"targets": [0], "width": ser_id_width, "className": ser_id_class, "visible": ser_id_show},
+            {"targets": [1], "width": ser_name_width, "className": ser_name_class, "visible": ser_name_show},
+            {"targets": [2], "width": prepaying_sum_width, "className": prepaying_sum_class, "visible": prepaying_sum_show,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [3], "width": prepaying_persent_width, "className": prepaying_persent_class, "visible": prepaying_persent_show,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [4], "width": expired_sum_width, "className": expired_sum_class, "visible": expired_sum_show,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [5], "width": expired_persent_width, "className": expired_persent_class, "visible": expired_persent_show,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [6], "width": troubl_sum_width, "className": troubl_sum_class, "visible": troubl_sum_show,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [7], "width": troubl_persent_width, "className": troubl_persent_class, "visible": troubl_persent_show,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [8], "width": all_sum_width, "className": all_sum_class, "visible": all_sum_show,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [9], "width": all_persent_width, "className": all_persent_class, "visible": all_persent_show,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [10], "width": total_persent_width, "className": total_persent_class, "visible": total_persent_show,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [11], "width": empty_column_width, "className": empty_column_class, "visible": empty_column_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{report_dk.service.ser_id}]]*/ "ser_id", "data": "ser_id"},
+            /*1*/{"title": /*[[#{report_dk.service.ser_name}]]*/ "ser_name", "data": "ser_name"},
+            /*2*/{"title": /*[[#{report_dk.service.prepaying_sum}]]*/ "prepaying_sum", "data": "prepaying_sum"},
+            /*3*/{"title": /*[[#{report_dk.service.prepaying_persent}]]*/ "prepaying_persent", "data": "prepaying_persent"},
+            /*4*/{"title": /*[[#{report_dk.service.expired_sum}]]*/ "expired_sum", "data": "expired_sum"},
+            /*5*/{"title": /*[[#{report_dk.service.expired_persent}]]*/ "expired_persent", "data": "expired_persent"},
+            /*6*/{"title": /*[[#{report_dk.service.troubl_sum}]]*/ "troubl_sum", "data": "troubl_sum"},
+            /*7*/{"title": /*[[#{report_dk.service.troubl_persent}]]*/ "troubl_persent", "data": "troubl_persent"},
+            /*8*/{"title": /*[[#{report_dk.service.all_sum}]]*/ "all_sum", "data": "all_sum"},
+            /*9*/{"title": /*[[#{report_dk.service.all_persent}]]*/ "all_persent", "data": "all_persent"},
+            /*9*/{"title": /*[[#{report_dk.service.total_persent}]]*/ "total_persent", "data": "total_persent"},
+            /*10*/{"title": /*[[#{report_dk.service.empty_column}]]*/ "empty_column", "data": "empty_column"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function report_dk_detail_switchControl(){
+        if(vReportDKServiceValue.rowdata.ser_id != null) {
+            $('#report_dk_main_card').removeAttr('hidden');
+
+            vReportDKMainValue.rowdata.dk_paid_type_id = $("#report_dk_paid_type_list").val();
+            vReportDKMainValue.rowdata.dk_ser_id = vReportDKServiceValue.rowdata.ser_id;
+            $(vReportDKMainValue.table).DataTable().ajax.reload();
+
+            $('#report_dk_contracts_card').attr('hidden',true);
+            vReportDKContactValue.rowdata.dk_paid_type_id = null;
+            vReportDKContactValue.rowdata.dk_ser_id = null;
+            vReportDKContactValue.rowdata.dkm_id = null;
+            $(vReportDKContactValue.table).DataTable().clear().draw();
+
+            $('#report_dk_doc_card').attr('hidden',true);
+            vReportDKDocValue.rowdata.dk_paid_type_id = null;
+            vReportDKDocValue.rowdata.dkm_id = null;
+            vReportDKDocValue.rowdata.dkmd_id = null;
+            vReportDKDocValue.rowdata.dk_ser_id = null;
+            $(vReportDKDocValue.table).DataTable().clear().draw();
+        }
+        else{
+            $('#report_dk_main_card').attr('hidden',true);
+            vReportDKMainValue.rowdata.dk_paid_type_id = null;
+            vReportDKMainValue.rowdata.dk_ser_id = null;
+            vReportDKMainValue.rowdata.dkm_id = null;
+            $(vReportDKMainValue.table).DataTable().clear().draw();
+
+            $('#report_dk_contracts_card').attr('hidden',true);
+            vReportDKContactValue.rowdata.dk_paid_type_id = null;
+            vReportDKContactValue.rowdata.dk_ser_id = null;
+            vReportDKContactValue.rowdata.dkm_id = null;
+            $(vReportDKContactValue.table).DataTable().clear().draw();
+
+            $('#report_dk_doc_card').attr('hidden',true);
+            vReportDKDocValue.rowdata.dk_paid_type_id = null;
+            vReportDKDocValue.rowdata.dkm_id = null;
+            vReportDKDocValue.rowdata.dkmd_id = null;
+            vReportDKDocValue.rowdata.dk_ser_id = null;
+            $(vReportDKDocValue.table).DataTable().clear().draw();
+        }
+    }
+
+    if(RoleAllAdmin || RoleHR || RoleAccountant){
+        $('#report-dk-main-xlsbtn').prop('disabled',false).removeClass('btn-dark').addClass('btn-outline-primary');
+    }
+    else{
+        $('#report-dk-main-xlsbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-outline-primary');
+    }
+
+    $('.positions_btn_control').on('click', function (){
+        $("#positions-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#report-dk-main-xlsbtn').click(function () {
+        fill_report_dk_modal_detail();
+    });
+
+    $(document).ready(function(){
+        recreateDataTable(vReportDKServiceValue);
+    });
+</script>
+
+</body>
+</html>

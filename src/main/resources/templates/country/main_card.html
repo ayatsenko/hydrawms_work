@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="country_main_body" th:remove="tag">
+        <form id="table-country-main-buttons" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+            <button type="button" id="country-main-detailbtn" class="btn btn-sm btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.detailbtn}" disabled><i class="fa fa-list"></i></button>
+            <button type="button" id="country-main-addbtn" class="btn btn-sm btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.addbtn}" disabled><i class="fa fa-plus"></i></button>
+            <button type="button" id="country-main-editbtn" class="btn btn-sm btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.editbtn}" disabled><i class="fa fa-pencil-alt"></i></button>
+            <button type="button" id="country-main-delbtn" class="btn btn-sm btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.delbtn}" disabled><i class="fa fa-trash-alt"></i></button>
+        </form>
+        
+        <div><table id="table-country-main" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var id_show, country_iso2_show, code_show, country_nameen_show, country_nameua_show, country_namerus_show;
+    var id_width, country_iso2_width, code_width, country_nameen_width, country_nameua_width, country_namerus_width;
+    var id_class, country_iso2_class, code_class, country_nameen_class, country_nameua_class, country_namerus_class;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtip";
+        id_show = false;
+        id_width = "";
+        id_class = "";
+        country_iso2_show = true;
+        country_iso2_width = "15%";
+        country_iso2_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center";
+        code_show = true;
+        code_width = "15%";
+        code_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center";
+        country_nameen_show = true;
+        country_nameen_width = "70%";
+        country_nameen_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center";
+        country_nameua_show = false;
+        country_nameua_width = "";
+        country_nameua_class = "";
+        country_namerus_show = false;
+        country_namerus_width = "";
+        country_namerus_class = "";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        id_show = false;
+        id_width = "";
+        id_class = "";
+        country_iso2_show = true;
+        country_iso2_width = "10%";
+        country_iso2_class = "small_size small_head_size small_footer_size head-center";
+        code_show = true;
+        code_width = "10%";
+        code_class = "small_size small_head_size small_footer_size head-center";
+        country_nameen_show = true;
+        country_nameen_width = "25%";
+        country_nameen_class = "small_size small_head_size small_footer_size head-center";
+        country_nameua_show = true;
+        country_nameua_width = "25%";
+        country_nameua_class = "small_size small_head_size small_footer_size head-center";
+        country_namerus_show = true;
+        country_namerus_width = "30%";
+        country_namerus_class = "small_size small_head_size small_footer_size head-center";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        id_show = false;
+        id_width = "";
+        id_class = "";
+        country_iso2_show = true;
+        country_iso2_width = "10%";
+        country_iso2_class = "head-center";
+        code_show = true;
+        code_width = "10%";
+        code_class = "head-center";
+        country_nameen_show = true;
+        country_nameen_width = "25%";
+        country_nameen_class = "head-center";
+        country_nameua_show = true;
+        country_nameua_width = "25%";
+        country_nameua_class = "head-center";
+        country_namerus_show = true;
+        country_namerus_width = "30%";
+        country_namerus_class = "head-center";
+    }
+
+    var vCountryValue;
+    vCountryValue = {
+        table : '#table-country-main',
+        button_form: (mobileScreenSize) ? null : "#table-country-main-buttons",
+        ajax : {
+            "url": /*[[@{/country/get_main_table}]]*/ "country/get_main_table",
+            "type": "post",
+            "data": {
+            }
+        },
+        key : "id",
+        switchControl : country_main_switchControl,
+        rowdata:{
+           id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+        dom: vDomParam,
+        columnDefs:[
+            {"targets": [0], "width": id_width, "className": id_class, "visible": id_show},
+            {"targets": [1], "width": country_iso2_width, "className": country_iso2_class, "visible": country_iso2_show},
+            {"targets": [2], "width": code_width, "className": code_class, "visible": code_show},
+            {"targets": [3], "width": country_nameen_width, "className": country_nameen_class, "visible": country_nameen_show},
+            {"targets": [4], "width": country_nameua_width, "className": country_nameua_class, "visible": country_nameua_show},
+            {"targets": [5], "width": country_namerus_width, "className": country_namerus_class, "visible": country_namerus_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{country.main.id}]]*/ "id", "data": "id"},
+            /*1*/{"title": /*[[#{country.main.country_iso2}]]*/ "country_iso2", "data": "country_iso2"},
+            /*2*/{"title": /*[[#{country.main.code}]]*/ "code", "data": "code"},
+            /*3*/{"title": /*[[#{country.main.country_nameen}]]*/ "country_nameen", "data": "country_nameen"},
+            /*4*/{"title": /*[[#{country.main.country_nameua}]]*/ "country_nameua", "data": "country_nameua"},
+            /*5*/{"title": /*[[#{country.main.country_namerus}]]*/ "country_namerus", "data": "country_namerus"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function country_main_switchControl(){
+        if(vCountryValue.rowdata.id != null) {
+                //$("#country-main-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                //$("#country-main-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                //$("#country-main-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+                //$("#country-main-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                //$("#country-main-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                //$("#country-main-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $(document).ready(function(){
+        vCountryValue.rowdata.id = /*[[${id}]]*/ null;
+
+        vCountryValue.rowdata.table_order_column = /*[[${country_main_table_order_column}]]*/ null;
+        vCountryValue.rowdata.table_order_type = /*[[${country_main_table_order_type}]]*/ null;
+        vCountryValue.rowdata.table_search = /*[[${country_main_table_search}]]*/ null;
+        vCountryValue.rowdata.table_pagelen = /*[[${country_main_table_pagelen}]]*/ null;
+        vCountryValue.rowdata.table_page = /*[[${country_main_table_page}]]*/ null;
+
+        recreateDataTable(vCountryValue);
+        $('#main_li').removeClass('active');
+
+        $('#dictionaries_li').addClass('active').removeClass('collapsed');
+        $('#dictionaries_a').attr('aria-expanded',true);
+        $('#dictionaries').addClass('show');
+
+        $('#country_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

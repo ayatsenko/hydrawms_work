@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="actions_body" th:remove="tag">
+        <form id="actions-detail" class="mb-2" th:action="@{/actions/detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="actions-btn-large" class="d-none d-sm-block">
+                 <button type="submit" id="actions-detailbtn" class="btn btn-sm btn-dark actions_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="actions-addbtn" class="btn btn-sm btn-primary actions_btn_control" th:text="#{general.addbtn}" th:attr="mode=0">Add</button>
+                 <button type="button" id="actions-clonebtn" class="btn btn-sm btn-dark" th:text="#{general.clonebtn}" disabled>Clone</button>
+                 <button type="submit" id="actions-editbtn" class="btn btn-sm btn-dark actions_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="actions-delbtn" class="btn btn-sm btn-dark actions_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="actions-btn-small" class="d-block d-sm-none">
+                 <button type="submit" id="actions-detailbtn-sx" class="btn btn-sm btn-dark actions_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="actions-addbtn-sx" class="btn btn-sm btn-primary actions_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                 <button type="button" id="actions-clonebtn-sx" class="btn btn-sm btn-dark"><i data-feather="copy" disabled></i></button>
+                 <button type="submit" id="actions-editbtn-sx" class="btn btn-sm btn-dark actions_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="actions-delbtn-sx" class="btn btn-sm btn-dark actions_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+
+        <div><table id="table-actions" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vActionsValue;
+    vActionsValue = {
+        table : '#table-actions',
+        button_form: "#actions-detail",
+        ajax : {
+            "url": /*[[@{/actions/get_menu}]]*/ "actions/get_menu",
+            "type": "post",
+            "data": function ( d ) {
+                d.action_filter_id = vActionsValue.rowdata.action_filter_id;
+                d.action_filter_start_date = vActionsValue.rowdata.action_filter_start_date;
+                d.action_filter_end_date = vActionsValue.rowdata.action_filter_end_date;
+            }
+        },
+        key : "act_id",
+        switchControl : actions_switchControl,
+        rowdata:{
+            act_id: null,
+            user_name: null,
+            act_status_id: null
+        },
+        ordering: true,
+        orderCellsTop: true,
+        fixedHeader: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["act_status_color"]);
+        },
+        columnDefs:[
+            {"targets": [1], type: 'de_date'},
+            {"targets": [6], "visible": false},
+            {"targets": [8], "visible": false, className: "noExport"}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{actions.act_id}]]*/ "act_id", "data": "act_id", "width": "5%", "className": "min-tablet-l"},
+            /*1*/{"title": /*[[#{actions.act_plane_date}]]*/ "act_plane_date", "data": "act_plane_date", "width": "5%", "className": "desktop"},
+            /*2*/{"title": /*[[#{actions.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": "25%"},
+            /*3*/{"title": /*[[#{actions.user_name}]]*/ "user_name", "data": "user_name", "width": "8%", "className": "desktop text-center"},
+            /*4*/{"title": /*[[#{actions.act_plan_type_sname}]]*/ "act_plan_type_sname", "data": "act_plan_type_sname", "width": "5%", "className": "desktop text-center"},
+            /*5*/{"title": /*[[#{actions.act_type_sname}]]*/ "act_type_sname", "data": "act_type_sname", "width": "5%", "className": "text-center"},
+            /*6*/{"title": /*[[#{actions.act_status_id}]]*/ "act_status_id", "data": "act_status_id", "width": "1%"},
+            /*7*/{"title": /*[[#{actions.act_status_sname}]]*/ "act_status_sname", "data": "act_status_sname", "width": "10%", "className": "min-tablet-p text-center"},
+            /*8*/{"title": /*[[#{actions.act_status_color}]]*/ "act_status_color", "data": "act_status_color", "width": "1%"},
+            /*9*/{"title": /*[[#{actions.act_result_sname}]]*/ "act_result_sname", "data": "act_result_sname", "width": "5%", "className": "min-tablet-p text-center"},
+            /*10*/{"title": /*[[#{actions.act_description}]]*/ "act_description", "data": "act_description", "width": "31%", "className": "desktop"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function actions_switchControl(){
+        if(vActionsValue.rowdata.act_id != null) {
+            var NameString =  /*[[${#authentication.name}]]*/ '';
+            var RoleAdminString = /*[[ ${#authorization.expression('hasRole("ROLE_ADMIN")')} ]]*/ null;
+
+            if(NameString === vActionsValue.rowdata.user_name && [0,1].indexOf(vActionsValue.rowdata.act_status_id) >= 0){
+                $("#actions-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#actions-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#actions-editbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#actions-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+<!-- User Edit -->
+            else if(RoleAdminString === true && [0,1].indexOf(vActionsValue.rowdata.act_status_id) >= 0){
+                $("#actions-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#actions-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+<!-- Admin Delete -->
+            else{
+                $("#actions-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#actions-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#actions-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#actions-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            if(NameString === vActionsValue.rowdata.user_name){
+                $("#actions-clonebtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#actions-clonebtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }else{
+                $("#actions-clonebtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#actions-clonebtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            $("#actions-detailbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#actions-detailbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+            $("#actions-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#actions-clonebtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#actions-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#actions-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#actions-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#actions-clonebtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#actions-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#actions-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $("#action_filter_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "disableTouchKeyboard": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#action_filter_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#action_filter_check').on('click', function(){
+        if($(this).prop('checked')){
+            $('#action_filter_start_date').removeAttr('disabled');
+            $('#action_filter_end_date').removeAttr('disabled');
+            $("#action_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if (window.screen.width < 1024 && window.screen.height < 768) {
+                $("#action_filter_start_date").attr('readonly',true);
+                $("#action_filter_end_date").attr('readonly',true);
+            }
+        }
+        else{
+            $('#action_filter_start_date').attr('disabled',true);
+            $('#action_filter_end_date').attr('disabled',true);
+            $("#action_filter_show").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            if(vActionsValue.rowdata.action_filter_id === 1){
+                vActionsValue.rowdata.action_filter_id = 0;
+                $(vActionsValue.table).DataTable().ajax.reload();
+            }
+        }
+    });
+
+    $('#action_filter_show').on('click', function() {
+        vActionsValue.rowdata.action_filter_id = 1;
+        vActionsValue.rowdata.action_filter_start_date = $('#action_filter_start_date').val();
+        vActionsValue.rowdata.action_filter_end_date = $('#action_filter_end_date').val();
+
+        $(vActionsValue.table).DataTable().ajax.reload();
+    });
+
+    $('.actions_btn_control').on('click', function (){
+        $("#actions-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#actions-detail').submit(function() {
+        vActionsValue.rowdata.actions_table_order_column = $(vActionsValue.table).DataTable().order()[0][0];
+        vActionsValue.rowdata.actions_table_order_type = $(vActionsValue.table).DataTable().order()[0][1];
+        vActionsValue.rowdata.actions_table_search = $(vActionsValue.table).DataTable().search();
+        vActionsValue.rowdata.actions_table_pagelen = $(vActionsValue.table).DataTable().page.len();
+        vActionsValue.rowdata.actions_table_page = $(vActionsValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vActionsValue.rowdata).forEach(function (index) {
+            $("#actions-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#actions-detail input[name=\"" + index + "\"]").val(vActionsValue.rowdata[index]);
+        });
+    });
+
+    $('#actions-clonebtn').on('click', function( event ) {
+        if (vActionsValue.rowdata.act_id != null) {
+            var RowID = vActionsValue.rowdata.act_id;
+            var actions_table_order_column = $(vActionsValue.table).DataTable().order()[0][0];
+            var actions_table_order_type = $(vActionsValue.table).DataTable().order()[0][1];
+            var actions_table_search = $(vActionsValue.table).DataTable().search();
+            var actions_table_pagelen = $(vActionsValue.table).DataTable().page.len();
+            var actions_table_page = $(vActionsValue.table).DataTable().page.info().page;
+            $.ajax({
+                url: /*[[ @{/actions/action_clone} ]]*/ "/actions/action_clone",
+                type: 'POST',
+                data: {"act_id": vActionsValue.rowdata.act_id},
+                success: function (result) {
+                    vActionsValue.rowdata.clmtl_id = RowID;
+                    vActionsValue.rowdata.actions_table_order_column = actions_table_order_column;
+                    vActionsValue.rowdata.actions_table_order_type = actions_table_order_type;
+                    vActionsValue.rowdata.actions_table_search = actions_table_search;
+                    vActionsValue.rowdata.actions_table_pagelen = actions_table_pagelen;
+                    vActionsValue.rowdata.actions_table_page = actions_table_page;
+
+                    $(vActionsValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    });
+<!-- Clone Action Button -->
+
+    $('#actions-clonebtn-sx').on('click', function( event ) {
+        if (vActionsValue.rowdata.act_id != null) {
+            var RowID = vActionsValue.rowdata.act_id;
+            var actions_table_order_column = $(vActionsValue.table).DataTable().order()[0][0];
+            var actions_table_order_type = $(vActionsValue.table).DataTable().order()[0][1];
+            var actions_table_search = $(vActionsValue.table).DataTable().search();
+            var actions_table_pagelen = $(vActionsValue.table).DataTable().page.len();
+            var actions_table_page = $(vActionsValue.table).DataTable().page.info().page;
+            $.ajax({
+                url: /*[[ @{/actions/action_clone} ]]*/ "/actions/action_clone",
+                type: 'POST',
+                data: {"act_id": vActionsValue.rowdata.act_id},
+                success: function (result) {
+                    vActionsValue.rowdata.act_id = RowID;
+                    vActionsValue.rowdata.actions_table_order_column = actions_table_order_column;
+                    vActionsValue.rowdata.actions_table_order_type = actions_table_order_type;
+                    vActionsValue.rowdata.actions_table_search = actions_table_search;
+                    vActionsValue.rowdata.actions_table_pagelen = actions_table_pagelen;
+                    vActionsValue.rowdata.actions_table_page = actions_table_page;
+
+                    $(vActionsValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    });
+<!-- Clone Action SX Button -->
+
+    $(document).ready(function(){
+        vActionsValue.rowdata.act_id = /*[[${act_id}]]*/ null;
+
+        vActionsValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vActionsValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vActionsValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vActionsValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vActionsValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        vActionsValue.rowdata.action_filter_id = /*[[${action_filter_id}]]*/ null;
+        vActionsValue.rowdata.action_filter_start_date = /*[[${action_filter_start_date}]]*/ null;
+        vActionsValue.rowdata.action_filter_end_date = /*[[${action_filter_end_date}]]*/ null;
+
+        if(vActionsValue.rowdata.action_filter_id === 1){
+            $('#action_filter_check').prop('checked', true);
+            $("#action_filter_start_date").removeAttr('disabled').val(vActionsValue.rowdata.action_filter_start_date);
+            $("#action_filter_end_date").removeAttr('disabled').val(vActionsValue.rowdata.action_filter_end_date);
+            $("#action_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if (window.screen.width < 1024 && window.screen.height < 768) {
+                $("#action_filter_start_date").attr('readonly',true);
+                $("#action_filter_end_date").attr('readonly',true);
+            }
+        }
+
+        recreateDataTable(vActionsValue);
+
+        <!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#crm_li').addClass('active').removeClass('collapsed');
+        $('#crm_a').attr('aria-expanded',true);
+        $('#crm').addClass('show');
+
+        $('#actions_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

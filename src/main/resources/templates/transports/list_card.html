@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="transports_list_body" th:remove="tag">
+    <form id="table-transports-list-buttons" class="mb-2" hidden>
+        <input name="mode" value="0" hidden>
+        <button type="button" id="transports-list-detailbtn" class="btn btn-sm btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.detailbtn}" disabled><i class="fa fa-list"></i></button>
+        <button type="button" id="transports-list-addbtn" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="bottom" th:title="#{general.addbtn}"><i class="fa fa-plus"></i></button>
+        <button type="button" id="transports-list-editbtn" class="btn btn-sm btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.editbtn}" disabled><i class="fa fa-pencil-alt"></i></button>
+        <button type="button" id="transports-list-delbtn" class="btn btn-sm btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.delbtn}" disabled><i class="fa fa-trash-alt"></i></button>
+    </form>   
+       
+    <div><table id="table-transports-list" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vTransportsListValue;
+    vTransportsListValue = {
+        table : '#table-transports-list',
+        button_form: "#table-transports-list-buttons",
+        ajax : {
+            "url": /*[[@{/transports/get_list_table}]]*/ "transports/get_list_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.req_country_id = vTransportsListValue.rowdata.req_country_id;
+                d.req_address = vTransportsListValue.rowdata.req_address;
+                d.req_tir_check = vTransportsListValue.rowdata.req_tir_check;
+                d.req_adr_check = vTransportsListValue.rowdata.req_adr_check;
+                d.req_ekmt_check = vTransportsListValue.rowdata.req_ekmt_check;
+            }
+        },
+        key : "cnt_id",
+        switchControl : transports_list_switchControl,
+        rowdata:{
+            cnt_id: null,
+            cnt_name: null,
+            cnt_user_access: null,
+
+            req_country_id: null,
+            req_address: null,
+            req_tir_check: null,
+            req_adr_check: null,
+            req_ekmt_check: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            $(row).find('td:eq(1)').css('background-color', data["tms_contt_color"]);
+            $(row).find('td:eq(2)').css('background-color', data["tms_lic_color"]);
+            $(row).find('td:eq(3)').css('background-color', data["tms_ins_color"]);
+            $(row).css('background-color', data["cs_color"]);
+        },
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [2], type: 'de_date'},
+            {"targets": [3], "visible": false},
+            {"targets": [4], type: 'de_date'},
+            {"targets": [5], "visible": false},
+            {"targets": [6], type: 'de_date'},
+            {"targets": [7], "visible": false},
+            {"targets": [9], "visible": false},
+            {"targets": [10], "visible": false},
+            {"targets": [11], "visible": false},
+            {"targets": [12], "visible": false}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{transports.list.cnt_id}]]*/ "cnt_id", "data": "cnt_id", "width": "1%"},
+            /*1*/{"title": /*[[#{transports.list.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": "40%", "className": "trans_list_edit"},
+
+            /*2*/{"title": /*[[#{transports.list.tms_contt_date}]]*/ "tms_contt_date", "data": "tms_contt_date", "width": "10%", "className": "text-center trans_list_edit"},
+            /*3*/{"title": /*[[#{transports.list.tms_contt_color}]]*/ "tms_contt_color", "data": "tms_contt_color", "width": "1%"},
+            /*4*/{"title": /*[[#{transports.list.tms_lic_date}]]*/ "tms_lic_date", "data": "tms_lic_date", "width": "10%", "className": "text-center trans_list_edit"},
+            /*5*/{"title": /*[[#{transports.list.tms_lic_color}]]*/ "tms_lic_color", "data": "tms_lic_color", "width": "1%"},
+            /*6*/{"title": /*[[#{transports.list.tms_ins_date}]]*/ "tms_ins_date", "data": "tms_ins_date", "width": "10%", "className": "text-center trans_list_edit"},
+            /*7*/{"title": /*[[#{transports.list.tms_ins_color}]]*/ "tms_ins_color", "data": "tms_ins_color", "width": "1%"},
+
+            /*8*/{"title": /*[[#{transports.list.cs_sname}]]*/ "cs_sname", "data": "cs_sname", "width": "13%", "className": "desktop text-center trans_list_edit"},
+            /*9*/{"title": /*[[#{transports.list.cs_color}]]*/ "cs_color", "data": "cs_color", "width": "1%", "visible": false},
+            /*10*/{"title": /*[[#{transports.list.user_name}]]*/ "user_name", "data": "user_name", "width": "10%", "className": "min-tablet-p text-center trans_list_edit"},
+            /*11*/{"title": /*[[#{transports.list.cnt_user_access}]]*/ "cnt_user_access", "data": "cnt_user_access", "width": "1%", "visible": false},
+            /*12*/{"title": /*[[#{transports.list.cnt_user_show}]]*/ "cnt_user_show", "data": "cnt_user_show", "width": "1%", "visible": false}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function transports_list_switchControl(){
+        if(vTransportsListValue.rowdata.cnt_id != null) {
+            $("#transports-list-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+            if(vTransportsListValue.rowdata.cnt_user_access === 1){
+                $("#transports-list-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#transports-list-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+<!-- Contacts -->
+            }else{
+                $("#transports-list-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#transports-list-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Contacts -->
+            }
+            vTransportContactsListValue.rowdata.cnt_id = vTransportsListValue.rowdata.cnt_id;
+            vTransportContactsListValue.rowdata.cnt_name = vTransportsListValue.rowdata.cnt_name;
+            vTransportContactsListValue.rowdata.cc_id = null;
+            $(vTransportContactsListValue.table).DataTable().ajax.reload();
+
+            $("#transports-contacts-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+<!-- List Buttons -->
+            vTransportServicesListValue.rowdata.cnt_id = vTransportsListValue.rowdata.cnt_id;
+            vTransportServicesListValue.rowdata.cnt_name = vTransportsListValue.rowdata.cnt_name;
+            vTransportServicesListValue.rowdata.cntserl_id = null;
+            $(vTransportServicesListValue.table).DataTable().ajax.reload();
+
+            $("#transports-services-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#transports-services-addbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+<!-- Services -->
+            vTransportAddressListValue.rowdata.cnt_id = vTransportsListValue.rowdata.cnt_id;
+            vTransportAddressListValue.rowdata.cnt_name = vTransportsListValue.rowdata.cnt_name;
+            vTransportAddressListValue.rowdata.cnt_add_id = null;
+            $(vTransportAddressListValue.table).DataTable().ajax.reload();
+            if(vTransportsListValue.rowdata.cnt_user_access === 1) {
+                $("#transports-address-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#transports-address-addbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#transports-address-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#transports-address-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+<!-- Address -->
+            vTransportAutoListValue.rowdata.cnt_id = vTransportsListValue.rowdata.cnt_id;
+            vTransportAutoListValue.rowdata.cnt_name = vTransportsListValue.rowdata.cnt_name;
+            vTransportAutoListValue.rowdata.cntc_id = null;
+            $(vTransportAutoListValue.table).DataTable().ajax.reload();
+            if(vTransportsListValue.rowdata.cnt_user_access === 1) {
+                $("#transports-auto-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#transports-auto-addbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#transports-auto-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#transports-auto-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+<!-- Auto -->
+            vTransportTrailersListValue.rowdata.cnt_id = vTransportsListValue.rowdata.cnt_id;
+            vTransportTrailersListValue.rowdata.cnt_name = vTransportsListValue.rowdata.cnt_name;
+            vTransportTrailersListValue.rowdata.cntt_id = null;
+            $(vTransportTrailersListValue.table).DataTable().ajax.reload();
+            if(vTransportsListValue.rowdata.cnt_user_access === 1) {
+                $("#transports-trailers-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#transports-trailers-addbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#transports-trailers-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#transports-trailers-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+<!-- Trailers -->
+            vTransportDriversListValue.rowdata.cnt_id = vTransportsListValue.rowdata.cnt_id;
+            vTransportDriversListValue.rowdata.cnt_name = vTransportsListValue.rowdata.cnt_name;
+            vTransportDriversListValue.rowdata.cntd_id = null;
+            $(vTransportDriversListValue.table).DataTable().ajax.reload();
+            if(vTransportsListValue.rowdata.cnt_user_access === 1) {
+                $("#transports-drivers-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#transports-drivers-addbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#transports-drivers-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#transports-drivers-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+<!-- Drivers -->
+            vTransportDocumentsListValue.rowdata.cnt_id = vTransportsListValue.rowdata.cnt_id;
+            vTransportDocumentsListValue.rowdata.cnt_name = vTransportsListValue.rowdata.cnt_name;
+            vTransportDocumentsListValue.rowdata.cnt_doc_id = null;
+            $(vTransportDocumentsListValue.table).DataTable().ajax.reload();
+
+            if(vTransportsListValue.rowdata.cnt_user_access === 1) {
+                $("#transports-documents-addbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#transports-documents-addbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#transports-documents-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#transports-documents-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+<!-- Documents -->
+            vTransportDocFilesListValue.rowdata.cnt_id = vTransportsListValue.rowdata.cnt_id;
+            vTransportDocFilesListValue.rowdata.cnt_name = vTransportsListValue.rowdata.cnt_name;
+            vTransportDocFilesListValue.rowdata.cnt_doc_id = null;
+            vTransportDocFilesListValue.rowdata.cnt_doc_file_id = null;
+            $(vTransportDocFilesListValue.table).DataTable().ajax.reload();
+
+            if(vTransportsListValue.rowdata.cnt_user_access === 1) {
+                $("#transports-files-addbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#transports-files-addbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#transports-files-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#transports-files-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+<!-- Document Files -->
+            vTransportCountryListValue.rowdata.cnt_id = vTransportsListValue.rowdata.cnt_id;
+            vTransportCountryListValue.rowdata.cnt_name = vTransportsListValue.rowdata.cnt_name;
+            vTransportCountryListValue.rowdata.cnt_doc_id = null;
+            $(vTransportCountryListValue.table).DataTable().ajax.reload();
+
+            if(vTransportsListValue.rowdata.cnt_user_access === 1) {
+                $("#transports-country-addbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#transports-country-addbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#transports-country-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#transports-country-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+<!-- Country -->
+        } else{
+            $("#transports-list-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-list-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-list-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+<!-- List Buttons -->
+            vTransportContactsListValue.rowdata.cnt_id = null;
+            vTransportContactsListValue.rowdata.cnt_name = null;
+            vTransportContactsListValue.rowdata.cc_id = null;
+            $(vTransportContactsListValue.table).DataTable().ajax.reload();
+
+            $("#transports-contacts-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Contacts -->
+            vTransportServicesListValue.rowdata.cnt_id = null;
+            vTransportServicesListValue.rowdata.cnt_name = null;
+            vTransportServicesListValue.rowdata.cntserl_id = null;
+            $(vTransportServicesListValue.table).DataTable().ajax.reload();
+
+            $("#transports-services-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-services-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Services -->
+            vTransportAddressListValue.rowdata.cnt_id = null;
+            vTransportAddressListValue.rowdata.cnt_name = null;
+            vTransportAddressListValue.rowdata.cnt_add_id = null;
+            $(vTransportAddressListValue.table).DataTable().ajax.reload();
+
+            $("#transports-address-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-address-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Address -->
+            vTransportAutoListValue.rowdata.cnt_id = null;
+            vTransportAutoListValue.rowdata.cnt_name = null;
+            vTransportAutoListValue.rowdata.cntc_id = null;
+            $(vTransportAutoListValue.table).DataTable().ajax.reload();
+
+            $("#transports-auto-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-auto-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Auto -->
+            vTransportTrailersListValue.rowdata.cnt_id = null;
+            vTransportTrailersListValue.rowdata.cnt_name = null;
+            vTransportTrailersListValue.rowdata.cntt_id = null;
+            $(vTransportTrailersListValue.table).DataTable().ajax.reload();
+
+            $("#transports-trailers-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-trailers-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Trailers -->
+            vTransportDriversListValue.rowdata.cnt_id = null;
+            vTransportDriversListValue.rowdata.cnt_name = null;
+            vTransportDriversListValue.rowdata.cntd_id = null;
+            $(vTransportDriversListValue.table).DataTable().ajax.reload();
+
+            $("#transports-drivers-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-drivers-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Drivers -->
+            vTransportDocumentsListValue.rowdata.cnt_doc_id = null;
+            $(vTransportDocumentsListValue.table).DataTable().clear().draw();
+
+            $("#transports-documents-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-documents-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Documents -->
+            vTransportDocFilesListValue.rowdata.cnt_doc_file_id = null;
+            $(vTransportDocFilesListValue.table).DataTable().clear().draw();
+
+            $("#transports-files-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-files-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Document Files -->
+            vTransportCountryListValue.rowdata.cnt_doc_file_id = null;
+            $(vTransportCountryListValue.table).DataTable().clear().draw();
+
+            $("#transports-country-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-country-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Country Files -->
+        }
+    }
+
+    //Show Function
+    function transportsListShow(){
+        $('#transports_list_modal_addbtn').removeAttr('hidden');
+        $('#transports_list_modal_editbtn').attr('hidden',true);
+        $('#transports_list_modal_delbtn').attr('hidden',true);
+        fill_transports_list_modal_detail(4);
+    }
+    //Show Button
+    $('#transports-list-detailbtn').on('click', function (){
+        transportsListShow();
+    });
+    //Add Function
+    function transportsListAdd(){
+        $('#transports_list_modal_addbtn').removeAttr('hidden');
+        $('#transports_list_modal_editbtn').attr('hidden',true);
+        $('#transports_list_modal_delbtn').attr('hidden',true);
+        fill_transports_list_modal_detail(0);
+    }
+    //Add Button
+    $('#transports-list-addbtn').on('click', function (){
+        transportsListAdd();
+    });
+    //Edit Function
+    function transportsListEdit(){
+        $('#transports_list_modal_addbtn').attr('hidden',true);
+        $('#transports_list_modal_editbtn').removeAttr('hidden');
+        $('#transports_list_modal_delbtn').attr('hidden',true);
+        fill_transports_list_modal_detail(1);
+    }
+    //Edit Button
+    $('#transports-list-editbtn').on('click', function (){
+        transportsListEdit();
+    });
+    //Delete Function
+    function transportsListDelete(){
+        $('#transports_list_modal_addbtn').attr('hidden',true);
+        $('#transports_list_modal_editbtn').attr('hidden',true);
+        $('#transports_list_modal_delbtn').removeAttr('hidden');
+        fill_transports_list_modal_detail(2);
+    }
+    //Delete Button
+    $('#transports-list-delbtn').on('click', function (){
+        transportsListDelete();
+    });
+
+    $(document).ready(function(){
+        vTransportsListValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+        vTransportsListValue.rowdata.req_country_id = /*[[${req_country_id}]]*/ null;
+
+        vTransportsListValue.rowdata.req_address = /*[[${req_address}]]*/ null;
+        vTransportsListValue.rowdata.req_tir_check = /*[[${req_tir_check}]]*/ null;
+        vTransportsListValue.rowdata.req_adr_check = /*[[${req_adr_check}]]*/ null;
+        vTransportsListValue.rowdata.req_ekmt_check = /*[[${req_ekmt_check}]]*/ null;
+
+        vTransportsListValue.rowdata.transports_list_table_order_column = /*[[${transports_list_table_order_column}]]*/ null;
+        vTransportsListValue.rowdata.transports_list_table_order_type = /*[[${transports_list_table_order_type}]]*/ null;
+        vTransportsListValue.rowdata.transports_list_table_search = /*[[${transports_list_table_search}]]*/ null;
+        vTransportsListValue.rowdata.transports_list_table_pagelen = /*[[${transports_list_table_pagelen}]]*/ null;
+        vTransportsListValue.rowdata.transports_list_table_page = /*[[${transports_list_table_page}]]*/ null;
+
+        recreateDataTable(vTransportsListValue);
+
+        $(vTransportsListValue.table).on('dblclick', '.trans_list_edit', function (e) {
+            let selectedClientListRow = this._DT_CellIndex.row;
+            let ClientListTable = $(vTransportsListValue.table).DataTable();
+            vTransportsListValue.rowdata.cnt_id = ClientListTable.row(selectedClientListRow).data().cnt_id;
+            vTransportsListValue.rowdata.cnt_user_access = ClientListTable.row(selectedClientListRow).data().cnt_user_access;
+
+            if (vTransportsListValue.rowdata.cnt_user_access === 1) {
+                transportsListEdit();
+            }
+            else{
+                transportsListShow();
+            }
+        });
+
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#tms_li').addClass('active').removeClass('collapsed');
+        $('#tms_a').attr('aria-expanded',true);
+        $('#tms').addClass('show');
+
+        $('#transports_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

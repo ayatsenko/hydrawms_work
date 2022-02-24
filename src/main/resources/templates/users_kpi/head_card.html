@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="users_kpi_head_body" th:remove="tag">
+		<form class="form-inline">
+		      <div class="form-group mb-2 mr-2">
+				<label for="users_kpi_year" class="mr-2" th:text="#{users_kpi.year}">Year: </label>
+                <select class="form-control" style="width:130px; display:inline-block" id="users_kpi_year" placeholder="Year">
+                  <option>2018</option>
+                  <option selected>2019</option>
+               </select>
+			  </div>
+
+			  <div class="form-group mb-2 mr-2">
+		    	<label for="users_kpi_month" class="mr-2" th:text="#{users_kpi.month}">Month:</label>
+                <select class="form-control" style="width:130px; display:inline-block" id="users_kpi_month" placeholder="Month">
+                            <option value="1">[[#{month.01}]]</option>
+                            <option value="2">[[#{month.02}]]</option>
+                            <option value="3">[[#{month.03}]]</option>
+                            <option value="4">[[#{month.04}]]</option>
+                            <option value="5">[[#{month.05}]]</option>
+                            <option value="6">[[#{month.06}]]</option>
+                            <option value="7">[[#{month.07}]]</option>
+                            <option value="8">[[#{month.08}]]</option>
+                            <option value="9">[[#{month.09}]]</option>
+                            <option value="10">[[#{month.10}]]</option>
+                            <option value="11">[[#{month.11}]]</option>
+                            <option value="12">[[#{month.12}]]</option>
+                 </select>
+			  </div>
+
+			<a class="btn btn-outline-primary mb-2" id="users_kpi_show" th:text="#{general.showbth}">Show</a>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+	$(document).ready(function(){
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#crm_kpi_li').addClass('active').removeClass('collapsed');
+        $('#crm_kpi_a').attr('aria-expanded',true);
+        $('#crm_kpi').addClass('show');
+
+        $('#users_kpi_a').addClass('text-primary');
+
+		var UserID = /*[[${user_id}]]*/ null;
+
+		if(UserID != null){
+			$('#users_kpi_year').val(/*[[${users_kpi_year}]]*/);
+			$('#users_kpi_month').val(/*[[${users_kpi_month}]]*/);
+
+			$('#users_kpi_list_card').removeAttr('hidden');
+
+			vUsersKPIListValue.rowdata.users_kpi_year = $("#users_kpi_year").val();
+			vUsersKPIListValue.rowdata.users_kpi_month = $("#users_kpi_month").val();
+			$(vUsersKPIListValue.table).DataTable().ajax.reload();
+		}else{
+			//var currYear = new Date().getFullYear();
+			var currMonth = new Date().getMonth();
+
+			//$('#users_kpi_year').val(currYear);
+			$('#users_kpi_month').val(currMonth + 1);
+
+			$('#users_kpi_list_card').prop('hidden',true);
+		}
+	});
+
+	$('#users_kpi_show').on('click', function () {
+		$('#users_kpi_list_card').removeAttr('hidden');
+        $('#users_kpi_tabs_div').removeAttr('hidden');
+
+		vUsersKPIListValue.rowdata.users_kpi_year = $("#users_kpi_year").val();
+		vUsersKPIListValue.rowdata.users_kpi_month = $("#users_kpi_month").val();
+		$(vUsersKPIListValue.table).DataTable().ajax.reload();
+	})
+</script>
+
+</body>
+</html>

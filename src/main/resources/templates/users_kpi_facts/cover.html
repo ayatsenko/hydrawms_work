@@ -1,0 +1,356 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{users_kpi_facts.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2">
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#users_kpi_facts_filter_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#users_kpi_facts_filter_div" data-toggle="collapse" th:text="#{users_kpi_facts.filter.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="users_kpi_facts_filter_div">
+                <div>
+                    <div>
+                        <span th:replace="users_kpi_facts/head_card :: users_kpi_facts_head_body"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Header -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="users_kpi_facts_list_card" hidden>
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#users_kpi_facts_list_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title"  href="#users_kpi_facts_list_div" data-toggle="collapse" th:text="#{users_kpi_facts.list.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="users_kpi_facts_list_div">
+                <div>
+                    <span th:replace="users_kpi_facts/list_card :: users_kpi_facts_list_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Detail -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div id="users_kpi_facts_tabs_div" hidden>
+            <div class="tab">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"><a class="nav-link text-primary active" href="#tab-1" data-toggle="tab" role="tab" th:text="#{month.01}">January</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-2" data-toggle="tab" role="tab" th:text="#{month.02}">February</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-3" data-toggle="tab" role="tab" th:text="#{month.03}">March</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-4" data-toggle="tab" role="tab" th:text="#{month.04}">April</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-5" data-toggle="tab" role="tab" th:text="#{month.05}">May</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-6" data-toggle="tab" role="tab" th:text="#{month.06}">June</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-7" data-toggle="tab" role="tab" th:text="#{month.07}">July</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-8" data-toggle="tab" role="tab" th:text="#{month.08}">August</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-9" data-toggle="tab" role="tab" th:text="#{month.09}">September</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-10" data-toggle="tab" role="tab" th:text="#{month.10}">October</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-11" data-toggle="tab" role="tab" th:text="#{month.11}">November</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-12" data-toggle="tab" role="tab" th:text="#{month.12}">December</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-13" data-toggle="tab" role="tab" th:text="#{report_service_balance.tabs.all}">All</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-1" role="tabpanel">
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi_facts.calc.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_calc_card :: users_kpi_facts_calc_month_01_body"></span>
+                            </div>
+                            <div class="col-4" id="users_kpi_facts_crm_result_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi_facts.crm.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_crm_card :: users_kpi_facts_crm_month_01_body"></span>
+                            </div>
+                            <div class="col-6" id="users_kpi_facts_chief_clients_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{dep_kpi_facts.chief_clients.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_chief_clients_card :: users_kpi_facts_chief_clients_month_01_body"></span>
+                            </div>
+                            <div class="col-6" id="users_kpi_facts_chief_bonus_clients_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{dep_kpi_facts.chief_clients.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_chief_bonus_clients_card :: users_kpi_facts_chief_bonus_clients_month_01_body"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12" id="users_kpi_facts_meets_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi.meets.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_meets_card :: users_kpi_facts_meets_month_01"></span>
+                            </div>
+                            <div class="col-12" id="users_kpi_facts_calls_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi.calls.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_calls_card :: users_kpi_facts_calls_month_01"></span>
+                            </div>
+                            <div class="col-12 mb-2" id="users_kpi_facts_requests_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi.requests.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_requests_card :: users_kpi_facts_requests_month_01"></span>
+                            </div>
+                            <div class="col-12" id="users_kpi_facts_tenders_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi.tenders.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_tenders_card :: users_kpi_facts_tenders_month_01"></span>
+                            </div>
+                            <div class="col-12" id="users_kpi_facts_finance_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi.finance.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_finance_card :: users_kpi_facts_finance_month_01"></span>
+                            </div>
+                            <div class="col-7" id="users_kpi_facts_crm_clients_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi_facts.crm_clients.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_crm_clients_card :: users_kpi_facts_crm_clients_month_01"></span>
+                            </div>
+                            <div class="col-12" id="users_kpi_facts_crm_todo_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi_facts.crm_todo.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_crm_todo_card :: users_kpi_facts_crm_todo_month_01"></span>
+                            </div>
+                            <div class="col-12" id="users_kpi_facts_crm_requests_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi_facts.crm_requests.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_crm_requests_card :: users_kpi_facts_crm_requests_month_01"></span>
+                            </div>
+                            <div class="col-12" id="users_kpi_facts_crm_tenders_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi_facts.crm_tenders.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_crm_tenders_card :: users_kpi_facts_crm_tenders_month_01"></span>
+                            </div>
+                            <div class="col-7" id="users_kpi_facts_crm_toplist_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi_facts.crm_toplist.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_crm_toplist_card :: users_kpi_facts_crm_toplist_month_01"></span>
+                            </div>
+                            <div class="col-7" id="users_kpi_facts_crm_general_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi_facts.crm_general.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_crm_general_card :: users_kpi_facts_crm_general_month_01"></span>
+                            </div>
+                            <div class="col-7" id="users_kpi_facts_csops_meetings_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{dep_kpi_facts.csops_meetings.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_csops_meetings_card :: users_kpi_facts_csops_meetings_month_01"></span>
+                            </div>
+                            <div class="col-7" id="users_kpi_facts_cs_meetings_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{dep_kpi_facts.cs_meetings.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_cs_meetings_card :: users_kpi_facts_cs_meetings_month_01"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12" id="users_kpi_facts_clients_notfill_pass_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{dep_kpi_facts.notfill_pass.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_notfill_pass_card :: users_kpi_facts_notfill_pass_month_01_body"></span>
+                            </div>
+                            <div class="col-12" id="users_kpi_facts_clients_notfill_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{dep_kpi_facts.notfill.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_notfill_card :: users_kpi_facts_notfill_month_01_body"></span>
+                            </div>
+                            <div class="col-12" id="users_kpi_facts_clients_lost_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{dep_kpi_facts.lost.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_lost_card :: users_kpi_facts_clients_lost_month_01_body"></span>
+                            </div>
+                            <div class="col-12" id="users_kpi_facts_clients_outtime_month_01" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{dep_kpi_facts.outtime.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_01/month_01_outtime_card :: users_kpi_facts_outtime_month_01_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-2" role="tabpanel">
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi_facts.calc.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_02/month_02_calc_card :: users_kpi_facts_calc_month_02_body"></span>
+                            </div>
+                            <div class="col-4" id="users_kpi_facts_crm_result_month_02" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi_facts.crm.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_02/month_02_crm_card :: users_kpi_facts_crm_month_02_body"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12" id="users_kpi_facts_meets_month_02" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi.meets.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_02/month_02_meets_card :: users_kpi_facts_meets_month_02"></span>
+                            </div>
+                            <div class="col-12" id="users_kpi_facts_calls_month_02" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi.calls.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_02/month_02_calls_card :: users_kpi_facts_calls_month_02"></span>
+                            </div>
+                            <div class="col-12 mb-2" id="users_kpi_facts_requests_month_02" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi.requests.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_02/month_02_requests_card :: users_kpi_facts_requests_month_02"></span>
+                            </div>
+                            <div class="col-12" id="users_kpi_facts_tenders_month_02" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi.tenders.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_02/month_02_tenders_card :: users_kpi_facts_tenders_month_02"></span>
+                            </div>
+                            <div class="col-12" id="users_kpi_facts_finance_month_02" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi.finance.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_02/month_02_finance_card :: users_kpi_facts_finance_month_02"></span>
+                            </div>
+                            <div class="col-7" id="users_kpi_facts_crm_clients_month_02" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi_facts.crm_clients.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_02/month_02_crm_clients_card :: users_kpi_facts_crm_clients_month_02"></span>
+                            </div>
+                            <div class="col-12" id="users_kpi_facts_crm_todo_month_02" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi_facts.crm_todo.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_02/month_02_crm_todo_card :: users_kpi_facts_crm_todo_month_02"></span>
+                            </div>
+                            <div class="col-12" id="users_kpi_facts_crm_requests_month_02" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi_facts.crm_requests.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_02/month_02_crm_requests_card :: users_kpi_facts_crm_requests_month_02"></span>
+                            </div>
+                            <div class="col-12" id="users_kpi_facts_crm_tenders_month_02" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi_facts.crm_tenders.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_02/month_02_crm_tenders_card :: users_kpi_facts_crm_tenders_month_02"></span>
+                            </div>
+                            <div class="col-7" id="users_kpi_facts_crm_toplist_month_02" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi_facts.crm_toplist.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_02/month_02_crm_toplist_card :: users_kpi_facts_crm_toplist_month_02"></span>
+                            </div>
+                            <div class="col-7" id="users_kpi_facts_crm_general_month_02" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{users_kpi_facts.crm_general.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_02/month_02_crm_general_card :: users_kpi_facts_crm_general_month_02"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12" id="users_kpi_facts_clients_notfill_pass_month_02" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{dep_kpi_facts.notfill_pass.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_02/month_02_notfill_pass_card :: users_kpi_facts_notfill_pass_month_02_body"></span>
+                            </div>
+                            <div class="col-12" id="users_kpi_facts_clients_notfill_month_02" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{dep_kpi_facts.notfill.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_02/month_02_notfill_card :: users_kpi_facts_notfill_month_02_body"></span>
+                            </div>
+                            <div class="col-12" id="users_kpi_facts_clients_lost_month_02" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{dep_kpi_facts.lost.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_02/month_02_lost_card :: users_kpi_facts_clients_lost_month_02_body"></span>
+                            </div>
+                            <div class="col-12" id="users_kpi_facts_clients_outtime_month_02" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{dep_kpi_facts.outtime.caption}"></h6>
+                                <span th:replace="users_kpi_facts/month_02/month_02_outtime_card :: users_kpi_facts_outtime_month_02_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-3" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-4" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-5" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-6" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-7" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-8" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-9" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-10" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-11" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-12" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-13" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Tabs -->
+
+</div>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="users_kpi_facts/month_01/month_01_notfill_pass_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_01/month_01_notfill_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_01/month_01_lost_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_01/month_01_outtime_card :: cardscript"></script>
+
+<script th:replace="users_kpi_facts/month_01/month_01_meets_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_01/month_01_calls_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_01/month_01_requests_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_01/month_01_tenders_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_01/month_01_finance_card :: cardscript"></script>
+
+<script th:replace="users_kpi_facts/month_01/month_01_crm_todo_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_01/month_01_crm_requests_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_01/month_01_crm_tenders_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_01/month_01_crm_toplist_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_01/month_01_crm_general_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_01/month_01_crm_clients_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_01/month_01_crm_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_01/month_01_csops_meetings_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_01/month_01_cs_meetings_card :: cardscript"></script>
+
+<script th:replace="users_kpi_facts/month_01/month_01_chief_clients_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_01/month_01_chief_bonus_clients_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_01/month_01_calc_card :: cardscript"></script>
+
+<script th:replace="users_kpi_facts/month_02/month_02_notfill_pass_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_02/month_02_notfill_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_02/month_02_lost_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_02/month_02_outtime_card :: cardscript"></script>
+
+<script th:replace="users_kpi_facts/month_02/month_02_meets_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_02/month_02_calls_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_02/month_02_requests_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_02/month_02_tenders_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_02/month_02_finance_card :: cardscript"></script>
+
+<script th:replace="users_kpi_facts/month_02/month_02_crm_todo_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_02/month_02_crm_requests_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_02/month_02_crm_tenders_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_02/month_02_crm_toplist_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_02/month_02_crm_general_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_02/month_02_crm_clients_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_02/month_02_crm_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/month_02/month_02_calc_card :: cardscript"></script>
+
+<script th:replace="users_kpi_facts/list_card :: cardscript"></script>
+<script th:replace="users_kpi_facts/head_card :: cardscript"></script>
+
+</body>
+</html>

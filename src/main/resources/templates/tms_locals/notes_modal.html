@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_locals_notes_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="tms_locals_notes_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="tms_locals_notes_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{tms_locals.notes.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body m-1">
+                    <form id="tms_locals_notes_modal_form" name="tms_locals_notes_modal_form" class="was-validated" novalidate>
+                    <input type="hidden" id="tms_locals_notes_modal_mode">
+
+                        <div class="form-row mb-1">
+                        <div class="col-12 col-md-2" id="tms_locals_notes_modal_clm_id_row">
+                            <label for="tms_locals_notes_modal_clm_id" class="form-label mb-0" th:text="#{tms_locals.main.clm_id}"></label>
+                            <input type="number" class="form-control" id="tms_locals_notes_modal_clm_id" name="tms_locals_notes_modal_clm_id" readonly>
+                        </div>
+                        <div class="col-12 col-md-3" id="tms_locals_notes_modal_clm_num_row">
+                            <label for="tms_locals_notes_modal_clm_num" class="form-label mb-0" th:text="'1. '+ #{tms_locals.main.clm_num}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="tms_locals_notes_modal_clm_num" name="tms_locals_notes_modal_clm_num" readonly>
+                        </div>
+                        <div class="col-12 col-md-7" id="tms_locals_notes_modal_cnt_name_row">
+                            <label for="tms_locals_notes_modal_cnt_name" class="form-label mb-0" th:text="'2. '+ #{tms_locals.main.cnt_name}"></label>
+                            <input type="text" class="form-control" id="tms_locals_notes_modal_cnt_name" name="tms_locals_notes_modal_cnt_name" readonly>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-2" id="clmnl_id_row">
+                            <label for="clmnl_id" class="form-label mb-0" th:text="#{tms_locals.notes.clmnl_id}"></label>
+                            <input type="number" class="form-control" id="clmnl_id" name="clmnl_id">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-5">
+                            <label for="clm_notes_type_id" class="form-label mb-0" th:text="'3. '+#{tms_locals.notes.clm_notes_type_name}">Types: </label>
+                            <select type="text" id="clm_notes_type_id" name="clm_notes_type_id" class="custom-select">
+                            </select>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12">
+                            <label for="clmnl_text" class="form-label mb-0" th:text="'4. '+#{tms_locals.notes.clmnl_text}"></label>
+                            <textarea class="form-control" rows="5" maxlength="512" style="resize:none;" id="clmnl_text" name="clmnl_text">
+                            </textarea>
+                        </div>
+                    </div>  <!-- Row 3 -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="tms_locals_notes_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="tms_locals_notes_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="tms_locals_notes_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="tms_locals_notes_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    // Clear Fields
+    function clear_tms_locals_notes_modal_detail() {
+        $("#tms_locals_notes_modal_detail input[type=text]").val('');
+        $("#tms_locals_notes_modal_detail input[type=number]").val('');
+        $("#tms_locals_notes_modal_detail select").empty();
+        $("#tms_locals_notes_modal_detail textarea").val('');
+    }
+
+    // Block And Required Fields
+    function block_tms_locals_notes_modal_detail(){
+        $('#clm_notes_type_id').attr('required', true);
+
+        if($('#tms_locals_notes_modal_mode').val() === "0"){
+            $('#tms_locals_notes_modal_clm_id_row').attr('hidden',true);
+
+            $('#clmnl_id_row').attr('hidden',true);
+            $('#clm_notes_type_id').removeAttr('disabled');
+            $('#clmnl_text').removeAttr('readOnly');
+        }
+        else if($('#tms_locals_notes_modal_mode').val() === "1"){
+            $('#tms_locals_notes_modal_clm_id_row').attr('hidden',true);
+
+            $('#clmnl_id_row').attr('hidden',true);
+            $('#clm_notes_type_id').removeAttr('disabled');
+            $('#clmnl_text').removeAttr('readOnly');
+        }
+        else{
+            $('#tms_locals_notes_modal_clm_id_row').attr('hidden',true);
+
+            $('#clmnl_id_row').attr('hidden',true);
+            $('#clm_notes_type_id').attr('disabled',true);
+            $('#clmnl_text').prop('readOnly',true);
+        }
+    }
+    // Service List
+    function notesTypeListChange(vMode,vClmID,vClmNotesTypeID) {
+        $('#clm_notes_type_id').empty();
+        $("select[name='clm_notes_type_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tms_locals/get_notes_type_list'}]]*/ "/tms_locals/get_notes_type_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "clm_id": vClmID,
+                "clm_notes_type_id": vClmNotesTypeID
+            },
+            success: function (notes_type_list) {
+                for (var i = 0; i < notes_type_list.data.length; i++) {
+                    $("select[name='clm_notes_type_id']").find('option').end().append(
+                        "<option value='" + notes_type_list.data[i].clm_notes_type_id
+                        + "'>" + notes_type_list.data[i].clm_notes_type_name + "</option>");
+                }
+                if(vClmNotesTypeID != ''){
+                    $('#clm_notes_type_id').val(vClmNotesTypeID);
+                }
+            }
+        }));
+    }
+    // Load Function
+    function fill_tms_locals_notes_modal_detail(aMode){
+        clear_tms_locals_notes_modal_detail();
+        $('#tms_locals_notes_modal_mode').val(aMode);
+        block_tms_locals_notes_modal_detail();
+
+        let MainRowID = vClaimsValue.rowdata.clm_id;
+        let RowID = vFLDClaimNotesValue.rowdata.clmnl_id;
+
+        $('#tms_locals_notes_modal_clm_id').val(vClaimsValue.rowdata.clm_id);
+        $('#tms_locals_notes_modal_clm_num').val(vClaimsValue.rowdata.clm_num);
+        $('#tms_locals_notes_modal_cnt_name').val(vClaimsValue.rowdata.cnt_name);
+
+        if(aMode === 0) {
+            $.when(
+                notesTypeListChange(aMode,MainRowID)
+            ).then(function () {
+                $('#clmnl_text').val('');
+                $('#tms_locals_notes_modal').modal('show');
+            });
+        }
+        else if(aMode >= 1){
+            $.when(
+                notesTypeListChange(aMode,MainRowID,vFLDClaimNotesValue.rowdata.clm_notes_type_id)
+            ).then(function () {
+                $('#clmnl_id').val(RowID);
+                $('#clmnl_text').val(vFLDClaimNotesValue.rowdata.clmnl_text);
+                $('#tms_locals_notes_modal').modal('show');
+            });
+        }
+    }
+
+// Add button function
+    function addTmsLocalsNotes(){
+        let MainRowID = vClaimsValue.rowdata.clm_id;
+        let RowID = vFLDClaimNotesValue.rowdata.clmnl_id;
+        $.ajax({
+            url: /*[[ @{/tms_locals/add_notes} ]]*/ "/tms_locals/add_notes",
+            type: 'POST',
+            data: {
+                "clm_id": MainRowID,
+                "clm_notes_type_id": $('#clm_notes_type_id').val(),
+                "clmnl_text":  $('#clmnl_text').val()
+            },
+            success: function (result) {
+                $('#tms_locals_notes_modal').modal('hide');
+                vFLDClaimNotesValue.rowdata.clm_id = MainRowID;
+                vFLDClaimNotesValue.rowdata.clmnl_id = RowID;
+                $(vFLDClaimNotesValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+// Edit button function
+    function editTmsLocalsNotes(){
+        let MainRowID = vClaimsValue.rowdata.clm_id;
+        let RowID = vFLDClaimNotesValue.rowdata.clmnl_id;
+        $.ajax({
+            url: /*[[ @{/tms_locals/edit_notes} ]]*/ "/tms_locals/edit_notes",
+            type: 'POST',
+            data: {
+                "clmnl_id": RowID,
+                "clm_notes_type_id": $('#clm_notes_type_id').val(),
+                "clmnl_text":  $('#clmnl_text').val()
+            },
+            success: function (result) {
+                $('#tms_locals_notes_modal').modal('hide');
+                vFLDClaimNotesValue.rowdata.clm_id = MainRowID;
+                vFLDClaimNotesValue.rowdata.clmnl_id = RowID;
+                $(vFLDClaimNotesValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+// Del button function
+    function delTmsLocalsNotes(){
+        let MainRowID = vClaimsValue.rowdata.clm_id;
+        let RowID = vFLDClaimNotesValue.rowdata.clmnl_id;
+        $.ajax({
+            url: /*[[ @{/tms_locals/del_notes} ]]*/ "/tms_locals/del_notes",
+            type: 'POST',
+            data: {
+                "clmnl_id": RowID
+            },
+            success: function (result) {
+                $('#tms_locals_notes_modal').modal('hide');
+                vFLDClaimNotesValue.rowdata.clm_id = MainRowID;
+                vFLDClaimNotesValue.rowdata.clmnl_id = RowID;
+                $(vFLDClaimNotesValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+// Add button script
+    $('#tms_locals_notes_modal_addbtn').click(function(){
+        $('#tms_locals_notes_modal_form').submit();
+    });
+// Edit button script
+    $('#tms_locals_notes_modal_editbtn').click(function(){
+        $('#tms_locals_notes_modal_form').submit();
+    });
+// Del button script
+    $('#tms_locals_notes_modal_delbtn').click(function(){
+        $('#tms_locals_notes_modal_form').submit();
+    });
+
+    //Validation Form
+    $('#tms_locals_notes_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function(error,element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            if($('#tms_locals_notes_modal_mode').val() === '0') {
+                addTmsLocalsNotes();
+            }
+            else if($('#tms_locals_notes_modal_mode').val() === '1') {
+                editTmsLocalsNotes();
+            }
+            else if($('#tms_locals_notes_modal_mode').val() === '2') {
+                delTmsLocalsNotes();
+            }
+            return false;
+        }
+    });
+
+    // OnClick Function
+</script>
+
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{tms_locals.tasks.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{tms_locals.tasks.caption}"></h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <!--/*@thymesVar id="tms_locals_tasks_detail" type="java.util.List"*/-->
+                <form id="tms-locals-tasks-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/tms_locals/tasks_model}">
+                    <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                    <div class="btn-group mb-2">
+                        <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="tms-locals-tasks-indexfrm">Cancel</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="tms-locals-tasks-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                            <button th:case="1" type="submit" id="tms-locals-tasks-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                            <button th:case="2" type="submit" id="tms-locals-tasks-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                        </div>
+                    </div>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clm_id" th:value="${clm_id}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_locals_tasks_table_order_column" th:value="${tms_locals_tasks_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_locals_tasks_table_order_type" th:value="${tms_locals_tasks_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_locals_tasks_table_search" th:value="${tms_locals_tasks_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_locals_tasks_table_pagelen" th:value="${tms_locals_tasks_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_locals_tasks_table_page" th:value="${tms_locals_tasks_table_page}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_locals_tab_name" th:value="${tms_locals_tab_name}" >
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-1" id="clm_id_row">
+                            <label for="clm_id" class="form-label" th:text="'1. '+ #{tms_locals.main.clm_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="clm_id" name="clm_id" th:value="${clm_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-2 mb-1" id="clm_num_row">
+                            <label for="clm_num" class="form-label" th:text="'2. '+ #{tms_locals.main.clm_num}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="clm_num" name="clm_num" th:value="${clm_num}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-4 mb-1" id="cnt_name_row">
+                            <label for="cnt_name" class="form-label" th:text="'3. '+ #{tms_locals.main.cnt_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="cnt_name" name="cnt_name" th:value="${cnt_name}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-1" id="clmtl_id_row">
+                            <label for="clmtl_id" class="form-label" th:text="'4. '+ #{tms_locals.tasks.clmtl_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="clmtl_id" name="clmtl_id" th:value="${clmtl_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-6 mb-1">
+                            <label for="clm_task_id" class="mr-2" th:text="'5. '+#{tms_locals.tasks.clm_task_sname}">Tasks: </label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="clm_task_id" name="clm_task_id" class="form-control p-1" th:value="${clm_task_id}">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="clm_task_list : ${clm_task_list}"
+                                        th:value="${clm_task_list.clm_task_id}"
+                                        th:text="${clm_task_list.clm_task_sname}"
+                                        th:selected="${clm_task_list.clm_task_id == clm_task_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-1" id="start_user_id_row">
+                            <label for="start_user_id" class="mr-2" th:text="'6. '+#{tms_locals.tasks.start_user_name}">Start User: </label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="start_user_id" name="start_user_id" class="form-control p-1" th:value="${start_user_id}">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="start_user_list : ${start_user_list}"
+                                        th:value="${start_user_list.id}"
+                                        th:text="${start_user_list.user_surname}"
+                                        th:selected="${start_user_list.id == start_user_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="deadline_date_row">
+                            <label for="deadline_date" class="form-label" th:text="'7. '+ #{tms_locals.tasks.deadline_date}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="deadline_date" name="deadline_date" th:value="${deadline_date}">
+                                <button type="button" id="deadline_date_x" name="deadline_date_x" class="btn btn-outline-primary"><i data-feather="x"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="start_date_row">
+                            <label for="start_date" class="form-label" th:text="'8. '+ #{tms_locals.tasks.start_date}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="start_date" name="start_date" th:value="${start_date}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-1" id="end_user_id_row">
+                            <label for="end_user_id" th:text="'9. '+#{tms_locals.tasks.end_user_name}">End User: </label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="end_user_id" name="end_user_id" class="form-control p-1" th:value="${end_user_id}">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="end_user_list : ${end_user_list}"
+                                        th:value="${end_user_list.id}"
+                                        th:text="${end_user_list.user_surname}"
+                                        th:selected="${end_user_list.id == end_user_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="end_date_row">
+                            <label for="end_date" class="form-label" th:text="'10. '+ #{tms_locals.tasks.end_date}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="end_date" name="end_date" th:value="${end_date}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 4 -->
+
+                    <div class="form-row">
+                        <div class="col-md-6 mb-2">
+                            <label for="clmtl_note" th:text="'11. '+#{tms_locals.tasks.clmtl_note}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="5" maxlength="512" style="resize:none;" id="clmtl_note" name="clmtl_note" th:text="${clmtl_note}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div>  <!-- Row 5 -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--/*@thymesVar id="tms_locals_tasks_detail" type="java.util.List"*/-->
+    <form id="tms-locals-tasks-indexfrm" method="post" th:action="@{/tms_locals}" hidden>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clmtl_id" th:value="${clmtl_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clm_id" th:value="${clm_id}">
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_order_column" th:value="${tms_locals_tasks_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_order_type" th:value="${tms_locals_tasks_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_search" th:value="${tms_locals_tasks_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_pagelen" th:value="${tms_locals_tasks_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_page" th:value="${tms_locals_tasks_table_page}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="tms_locals_tab_name" th:value="${tms_locals_tab_name}" >
+    </form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'tms-locals-tasks-indexfrm')">Error</span>
+
+<script>
+    var deadLineDate = $('#deadline_date').val();
+    $("#deadline_date").daterangepicker({
+        "singleDatePicker": true,
+        "timePicker" : true,
+        "timePicker24Hour" : true,
+        "locale": {
+            "format": "DD.MM.YYYY HH:mm",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#deadline_date_x').on('click', function() {
+        $('#deadline_date').empty().val('');
+    });
+
+    if(deadLineDate === null || deadLineDate === ''){
+        $('#deadline_date').empty().val('');
+    }
+
+    $(document).ready(function(){
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#tms_li').addClass('active').removeClass('collapsed');
+        $('#tms_a').attr('aria-expanded',true);
+        $('#tms').addClass('show');
+
+        $('#locals_a').addClass('text-primary');
+<!-- Start Objects -->
+        $("#clm_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        $('#cnt_id')
+            .wrap("<div class=\"position-relative\"></div>")
+            .select2({
+                id: '-1', // the value of the option
+                placeholder: /*[[#{report_client_balance.client_placeholder}]]*/ "Select a client",
+                allowClear: true,
+                minimumInputLength: 3
+            });
+
+        <!-- Form Start -->
+        $('#clm_id').prop('readOnly',true);
+
+        $('#clm_id').prop('readOnly',true);
+        $('#clm_num').prop('readOnly',true);
+        $('#cnt_name').prop('readOnly',true);
+
+        $('#clm_task_id').prop('required',true);
+
+        if($('#mode').val() === '0'){
+            $('#clmtl_id_row').prop('hidden',true);
+
+            $('#start_date_row').prop('hidden',true);
+            $('#end_date_row').prop('hidden',true);
+        }
+        else if($('#mode').val() === '1'){
+            $('#clmtl_id').prop('readOnly',true);
+
+            $('#start_user_id').attr('readOnly',true);
+            $('#start_date').prop('readOnly',true);
+
+            $('#end_date_row').prop('hidden',true);
+        }
+        else{
+            $('#clmtl_id').prop('readOnly',true);
+
+            $('#clm_task_id').attr('readOnly',true);
+
+            $('#start_user_id').attr('readOnly',true);
+
+            $('#start_date').prop('readOnly',true);
+
+            $('#end_user_id').attr('readOnly',true);
+
+            $('#end_date').prop('readOnly',true);
+
+            $('#clmtl_note').prop('readOnly',true);
+
+            $('#deadline_date').prop('readOnly',true);
+            $('#deadline_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+        }
+    });
+</script>
+</body>
+</html>

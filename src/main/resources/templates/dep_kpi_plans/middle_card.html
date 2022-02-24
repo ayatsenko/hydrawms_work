@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="dep_kpi_plans_middle_body" th:remove="tag">
+		<form class="form-inline">
+			  <div class="form-group mb-2 mr-2" id="dep_kpi_type_list_row">
+				<label for="user_kpi_type_list" class="mr-2" th:text="#{dep_kpi_plans.middle.user_kpi_type_list}">Param: </label>
+				<select id="user_kpi_type_list" name="user_kpi_type_list" class="form-control">
+				</select>
+			  </div>
+
+			  <div class="form-group mb-2 mr-2" id="department_list_row">
+				<label for="department_users_list" class="mr-2" th:text="#{dep_kpi_plans.middle.department_users_list}">Users: </label>
+				<select id="department_users_list" name="department_users_list" class="form-control">
+				</select>
+			  </div>
+			<a class="btn btn-outline-primary mb-2" id="dep_kpi_middle_show" th:text="#{general.showbth}">Show</a>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+	function depUserChange(vDEPID) {
+		$('#department_users_list').empty();
+		return Promise.resolve($.ajax({
+			url:/*[[@{'/dep_kpi_plans/get_dep_users'}]]*/ "/dep_kpi_plans/get_dep_users",
+			type: "get",
+			data: {
+				"dep_id": vDEPID
+			},
+			success: function (users_list) {
+				for (var i = 0; i < users_list.data.length; i++) {
+					if(i === 0) {
+						$("select[name='department_users_list']").find('option').end().append("<option value='0' selected></option>");
+					}
+					$("select[name='department_users_list']").find('option').end().append(
+							"<option value='" + users_list.data[i].dep_user_id + "'>" + users_list.data[i].dep_user_name + "</option>"
+					);
+				}
+			}
+		}));
+	}
+
+	function depUserParamChange(vDEPID) {
+		$('#user_kpi_type_list').empty();
+		return Promise.resolve($.ajax({
+			url:/*[[@{'/dep_kpi_plans/get_dep_users_param'}]]*/ "/dep_kpi_plans/get_dep_users_param",
+			type: "get",
+			data: {
+					"dep_id": vDEPID
+			},
+			success: function (users_param_list) {
+				for (var i = 0; i < users_param_list.data.length; i++) {
+					$("select[name='user_kpi_type_list']").find('option').end().append(
+							"<option value='" + users_param_list.data[i].user_kpi_type_id + "'>" + users_param_list.data[i].user_kpi_type_name + "</option>"
+					);
+				}
+			}
+		}));
+	}
+
+	$(document).ready(function() {
+		$('#dep_kpi_middle_show').on('click', function () {
+			$('#dep_kpi_plans_users_card').removeAttr('hidden');
+
+			vDepKPIPlanUsersListValue.rowdata.users_kpi_plans_year =  $('#dep_kpi_plans_year').val();
+			vDepKPIPlanUsersListValue.rowdata.user_kpi_type_id = $('#user_kpi_type_list').val();
+			vDepKPIPlanUsersListValue.rowdata.dep_user_id = $('#department_users_list').val();
+			vDepKPIPlanUsersListValue.rowdata.dep_id = $('#department_list').val();
+			$(vDepKPIPlanUsersListValue.table).DataTable().ajax.reload(null, false);
+		});
+	});
+</script>
+
+</body>
+</html>

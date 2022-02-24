@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="projects_desc_main_body" th:remove="tag">
+        <form id="projects-desc-main-detail" class="mb-2" th:action="@{/projects_desc/main_detail}" method="post">
+            <input name="mode" value="0" hidden>
+                  <button type="button" id="projects-desc-main-check-sx" class="btn btn-sm btn-dark" disabled><i data-feather="check-square"></i></button>
+                  <button type="button" id="projects-desc-main-uncheck-sx" class="btn btn-sm btn-dark mr-2" disabled><i data-feather="x-square"></i></button>
+
+                  <button type="button" id="projects-desc-main-prior-hight-sx" class="btn btn-sm btn-dark" disabled><i data-feather="chevron-up"></i></button>
+                  <button type="button" id="projects-desc-main-prior-low-sx" class="btn btn-sm btn-dark mr-2" disabled><i data-feather="chevron-down"></i></button>
+
+                  <button type="submit" id="projects-desc-main-detailbtn-sx" class="btn btn-sm btn-dark projects_desc_main_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                  <button type="submit" id="projects-desc-main-addbtn-sx" class="btn btn-sm btn-primary projects_desc_main_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                  <button type="submit" id="projects-desc-main-editbtn-sx" class="btn btn-sm btn-dark projects_desc_main_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                  <button type="submit" id="projects-desc-main-delbtn-sx" class="btn btn-sm btn-dark projects_desc_main_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+        </form>
+        
+        <div><table id="table-projects-desc-main" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var RoleAdmin = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_ADMIN","ROLE_GM")')}]]*/ null;
+    var RoleUser = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_PR_USER")')}]]*/ null;
+
+    var vProjectsDescMainValue;
+    vProjectsDescMainValue = {
+        table : '#table-projects-desc-main',
+        ajax : {
+            "url": /*[[@{/projects_desc/get_main_table}]]*/ "projects_desc/get_main_table",
+            "type": "post",
+            "data": {
+            }
+        },
+        key : "pr_id",
+        switchControl : projects_desc_main_switchControl,
+        rowdata:{
+            pr_id: null,
+            pr_sname: null,
+            pr_prior_id: null,
+            pr_status_id: null,
+            pr_action_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            $(row).find('td:eq(2)').css('background-color', data["pr_status_colour"]);
+            $(row).find('td:eq(3)').css('background-color', data["pr_prior_colour"]);
+            $(row).css('background-color', data["pr_type_colour"]);
+        },
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [1], "visible": false},
+            {"targets": [3], "visible": false},
+            {"targets": [5], "visible": false},
+            {"targets": [6], "visible": false},
+            {"targets": [8], "visible": false},
+            {"targets": [9], "visible": false},
+            {"targets": [11], "visible": false},
+            {"targets": [12], "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{projects_desc.main.rn}]]*/ "rn", "data": "rn", "width": "1%"},
+                /*1*/{"title": /*[[#{projects_desc.main.pr_id}]]*/ "pr_id", "data": "pr_id", "width": "1%"},
+                /*2*/{"title": /*[[#{projects_desc.main.pr_sname}]]*/ "pr_sname", "data": "pr_sname", "width": "60%"},
+
+                /*3*/{"title": /*[[#{projects_desc.main.pr_type_id}]]*/ "pr_type_id", "data": "pr_type_id", "width": "1%"},
+                /*4*/{"title": /*[[#{projects_desc.main.pr_type_sname}]]*/ "pr_type_sname", "data": "pr_type_sname", "width": "5%", "className": "text-center desktop"},
+                /*5*/{"title": /*[[#{projects_desc.main.pr_type_colour}]]*/ "pr_type_colour", "data": "pr_type_colour", "width": "1%"},
+
+                /*6*/{"title": /*[[#{projects_desc.main.pr_status_id}]]*/ "pr_status_id", "data": "pr_status_id", "width": "1%"},
+                /*7*/{"title": /*[[#{projects_desc.main.pr_status_sname}]]*/ "pr_status_sname", "data": "pr_status_sname", "width": "18%", "className": "text-center desktop"},
+                /*8*/{"title": /*[[#{projects_desc.main.pr_status_colour}]]*/ "pr_status_colour", "data": "pr_status_colour", "width": "1%"},
+
+                /*9*/{"title": /*[[#{projects_desc.main.pr_prior_id}]]*/ "pr_prior_id", "data": "pr_prior_id", "width": "1%"},
+                /*10*/{"title": /*[[#{projects_desc.main.pr_prior_sname}]]*/ "pr_prior_sname", "data": "pr_prior_sname", "width": "10%", "className": "text-center desktop"},
+                /*11*/{"title": /*[[#{projects_desc.main.pr_prior_colour}]]*/ "pr_prior_colour", "data": "pr_prior_colour", "width": "1%"},
+                /*12*/{"title": /*[[#{projects_desc.main.pr_action_id}]]*/ "pr_action_id", "data": "pr_action_id", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function projects_desc_main_switchControl(){
+        if(vProjectsDescMainValue.rowdata.pr_id != null) {
+            $("#projects-desc-main-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            if(RoleAdmin) {
+                $("#projects-desc-main-editbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#projects-desc-main-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#projects-desc-main-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#projects-desc-main-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+
+            if(vProjectsDescMainValue.rowdata.pr_prior_id < 4 && RoleAdmin === true){
+                $("#projects-desc-main-prior-hight-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+            }else{
+                $("#projects-desc-main-prior-hight-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+            }
+
+            if(vProjectsDescMainValue.rowdata.pr_prior_id > 1 && RoleAdmin === true){
+                $("#projects-desc-main-prior-low-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+            }else{
+                $("#projects-desc-main-prior-low-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            }
+
+            if(vProjectsDescMainValue.rowdata.pr_status_id < 3 &&
+                ((RoleUser === true && vProjectsDescMainValue.rowdata.pr_action_id === 1)  || RoleAdmin === true)
+                ){
+                $("#projects-desc-main-check-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+            }else{
+                $("#projects-desc-main-check-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+            }
+
+            if(vProjectsDescMainValue.rowdata.pr_status_id > -1 &&
+                ((RoleUser === true && vProjectsDescMainValue.rowdata.pr_action_id === 1)  || RoleAdmin === true)
+            ){
+                $("#projects-desc-main-uncheck-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+            }else{
+                $("#projects-desc-main-uncheck-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            }
+
+            $.ajax({
+                url:/*[[@{'/projects_desc/get_detail'}]]*/ "/projects_desc/get_detail",
+                type: "get",
+                data: {"pr_id": vProjectsDescMainValue.rowdata.pr_id},
+                success: function (prdetail) {
+                    $('#pr_id').val('').val(prdetail.data[0].pr_id);
+                    $('#pr_number').val('').val(prdetail.data[0].pr_number);
+                    $('#pr_sname').val('').val(prdetail.data[0].pr_sname);
+
+                    $('#pr_type_id').empty().append(new Option(prdetail.data[0].pr_type_name, prdetail.data[0].pr_type_id));
+
+                    $('#pr_description').val('').val(prdetail.data[0].pr_description);
+                    $('#pr_status_id').empty().append(new Option(prdetail.data[0].pr_status_sname, prdetail.data[0].pr_status_id));
+                    $('#pr_prior_id').empty().append(new Option(prdetail.data[0].pr_prior_name, prdetail.data[0].pr_prior_id));
+
+                    $('#pr_create_date').val('').val(prdetail.data[0].pr_create_date);
+                    $('#author_id').empty().append(new Option(prdetail.data[0].author_name, prdetail.data[0].author_id));
+
+                    $('#pr_result').val('').val(prdetail.data[0].pr_result);
+
+                    $('#pr_plan_start_date').val('').val(prdetail.data[0].pr_plan_start_date);
+                    $('#pr_plan_end_date').val('').val(prdetail.data[0].pr_plan_end_date);
+
+                    $('#pr_fact_start_date').val('').val(prdetail.data[0].pr_fact_start_date);
+                    $('#pr_fact_end_date').val('').val(prdetail.data[0].pr_fact_end_date);
+                }
+            });
+<!-- Detail Tab -->
+            vProjectsDescStagesListValue.rowdata.parent_pr_id = vProjectsDescMainValue.rowdata.pr_id;
+            $(vProjectsDescStagesListValue.table).DataTable().ajax.reload();
+<!-- Stages Tab -->
+            vProjectsDescUsersListValue.rowdata.parent_pr_id = vProjectsDescMainValue.rowdata.pr_id;
+            $(vProjectsDescUsersListValue.table).DataTable().ajax.reload();
+<!-- Users Tab -->
+            vProjectsDescChatListValue.rowdata.parent_pr_id = vProjectsDescMainValue.rowdata.pr_id;
+            $(vProjectsDescChatListValue.table).DataTable().ajax.reload();
+<!-- Chat Tab -->
+            vProjectsDescFilesListValue.rowdata.parent_pr_id = vProjectsDescMainValue.rowdata.pr_id;
+            $(vProjectsDescFilesListValue.table).DataTable().ajax.reload();
+<!-- Files Tab -->
+            vProjectsDescPaymentsListValue.rowdata.parent_pr_id = vProjectsDescMainValue.rowdata.pr_id;
+            $(vProjectsDescPaymentsListValue.table).DataTable().ajax.reload();
+<!-- Payments Tab -->
+            vProjectsDescSchemeListValue.rowdata.parent_pr_id = null;
+            vProjectsDescSchemeListValue.rowdata.pr_pay_id = null;
+            $(vProjectsDescSchemeListValue.table).DataTable().clear().draw();
+<!-- Scheme Tab -->
+        } else{
+            $("#projects-desc-main-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#projects-desc-main-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#projects-desc-main-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#projects-desc-main-prior-hight-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+            $("#projects-desc-main-prior-low-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+            $("#projects-desc-main-check-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+            $("#projects-desc-main-uncheck-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+            $('#pr_id').val('');
+            $('#pr_number').val('');
+            $('#pr_sname').val('');
+
+            $('#pr_type_id').empty();
+
+            $('#pr_description').val('');
+            $('#pr_status_id').empty();
+            $('#pr_prior_id').empty();
+
+            $('#pr_create_date').val('');
+            $('#author_id').empty();
+
+            $('#pr_result').val('');
+
+            $('#pr_plan_start_date').val('');
+            $('#pr_plan_end_date').val('');
+
+            $('#pr_fact_start_date').val('');
+            $('#pr_fact_end_date').val('');
+<!-- Detail Tabs -->
+            vProjectsDescStagesListValue.rowdata.parent_pr_id = null;
+            $(vProjectsDescStagesListValue.table).DataTable().clear().draw();
+<!-- Stages Tabs -->
+            vProjectsDescUsersListValue.rowdata.parent_pr_id = null;
+            $(vProjectsDescUsersListValue.table).DataTable().clear().draw();
+<!-- Stages Tab -->
+            vProjectsDescChatListValue.rowdata.parent_pr_id = null;
+            $(vProjectsDescChatListValue.table).DataTable().clear().draw();
+<!-- Chat Tab -->
+            vProjectsDescFilesListValue.rowdata.parent_pr_id = null;
+            $(vProjectsDescFilesListValue.table).DataTable().clear().draw();
+<!-- Files Tab -->
+            vProjectsDescPaymentsListValue.rowdata.parent_pr_id = null;
+            $(vProjectsDescPaymentsListValue.table).DataTable().clear().draw();
+<!-- Payments Tab -->
+            vProjectsDescSchemeListValue.rowdata.parent_pr_id = null;
+            vProjectsDescSchemeListValue.rowdata.pr_pay_id = null;
+            $(vProjectsDescSchemeListValue.table).DataTable().clear().draw();
+<!-- Scheme Tab -->
+        }
+    }
+
+    $('.projects_desc_main_btn_control').on('click', function (){
+        $("#projects-desc-main-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#projects-desc-main-prior-hight-sx').on('click', function( event ) {
+        if (vProjectsDescMainValue.rowdata.pr_id != null) {
+            var RowID = vProjectsDescMainValue.rowdata.pr_id;
+            $.ajax({
+                url: /*[[ @{/projects_desc/main_up_prior} ]]*/ "/projects_desc/main_up_prior",
+                type: 'POST',
+                data: {"pr_id": RowID},
+                success: function (result) {
+                    vProjectsDescMainValue.rowdata.pr_id = RowID;
+                    $(vProjectsDescMainValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    }); <!-- Check Button -->
+
+    $('#projects-desc-main-prior-low-sx').on('click', function( event ) {
+        if (vProjectsDescMainValue.rowdata.pr_id != null) {
+            var RowID = vProjectsDescMainValue.rowdata.pr_id;
+            $.ajax({
+                url: /*[[ @{/projects_desc/main_down_prior} ]]*/ "/projects_desc/main_down_prior",
+                type: 'POST',
+                data: {"pr_id": RowID},
+                success: function (result) {
+                    vProjectsDescMainValue.rowdata.pr_id = RowID;
+                    $(vProjectsDescMainValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    }); <!-- Check Button -->
+
+    $('#projects-desc-main-check-sx').on('click', function( event ) {
+        if (vProjectsDescMainValue.rowdata.pr_id != null) {
+            var RowID = vProjectsDescMainValue.rowdata.pr_id;
+            $.ajax({
+                url: /*[[ @{/projects_desc/main_up_status} ]]*/ "/projects_desc/main_up_status",
+                type: 'POST',
+                data: {"pr_id": RowID},
+                success: function (result) {
+                    vProjectsDescMainValue.rowdata.pr_id = RowID;
+                    $(vProjectsDescMainValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    }); <!-- Check Button -->
+
+    $('#projects-desc-main-uncheck-sx').on('click', function( event ) {
+        if (vProjectsDescMainValue.rowdata.pr_id != null) {
+            var RowID = vProjectsDescMainValue.rowdata.pr_id;
+            $.ajax({
+                url: /*[[ @{/projects_desc/main_down_status} ]]*/ "/projects_desc/main_down_status",
+                type: 'POST',
+                data: {"pr_id": RowID},
+                success: function (result) {
+                    vProjectsDescMainValue.rowdata.pr_id = RowID;
+                    $(vProjectsDescMainValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    }); <!-- UnCheck Button -->
+
+    if(RoleAdmin){
+        $("#projects-desc-main-addbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+    }
+    else{
+        $("#projects-desc-main-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+    }
+
+    $('#projects-desc-main-detail').submit(function() {
+        vProjectsDescMainValue.rowdata.projects_desc_main_table_order_column = $(vProjectsDescMainValue.table).DataTable().order()[0][0];
+        vProjectsDescMainValue.rowdata.projects_desc_main_table_order_type = $(vProjectsDescMainValue.table).DataTable().order()[0][1];
+        vProjectsDescMainValue.rowdata.projects_desc_main_table_search = $(vProjectsDescMainValue.table).DataTable().search();
+        vProjectsDescMainValue.rowdata.projects_desc_main_table_pagelen = $(vProjectsDescMainValue.table).DataTable().page.len();
+        vProjectsDescMainValue.rowdata.projects_desc_main_table_page = $(vProjectsDescMainValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vProjectsDescMainValue.rowdata).forEach(function (index) {
+            $("#projects-desc-main-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#projects-desc-main-detail input[name=\"" + index + "\"]").val(vProjectsDescMainValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vProjectsDescMainValue.rowdata.pr_id = /*[[${pr_id}]]*/ null;
+
+        vProjectsDescMainValue.rowdata.table_order_column = /*[[${projects_desc_main_table_order_column}]]*/ null;
+        vProjectsDescMainValue.rowdata.table_order_type = /*[[${projects_desc_main_table_order_type}]]*/ null;
+        vProjectsDescMainValue.rowdata.table_search = /*[[${projects_desc_main_table_search}]]*/ null;
+        vProjectsDescMainValue.rowdata.table_pagelen = /*[[${projects_desc_main_table_pagelen}]]*/ null;
+        vProjectsDescMainValue.rowdata.table_page = /*[[${projects_desc_main_table_page}]]*/ null;
+
+        recreateDataTable(vProjectsDescMainValue);
+
+        $('#main_li').removeClass('active');
+
+        $('#projects_li').addClass('active').removeClass('collapsed');
+        $('#projects_a').attr('aria-expanded',true);
+        $('#projects').addClass('show');
+
+        $('#projects_desc_a').addClass('text-primary');
+<!-- Hihglight menu -->
+
+        var accTab = /*[[${projects_desc_tab}]]*/ 'tab-1';
+        $('.nav-tabs a[href="#' + accTab + '"]').tab('show');
+    });
+</script>
+
+</body>
+</html>

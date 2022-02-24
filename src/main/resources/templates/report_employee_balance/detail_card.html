@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_employee_balance_detail_body" th:remove="tag">
+    <div id="report-employee-balance-detail-buttons">
+              <div id="report-employee-balance-detail-btn-large" class="d-none d-sm-block text-center mb-1">
+                 <button type="submit" id="report-employee-balance-detail-xlsbtn" form="report-employee-balance-detail-xls-form" class="btn btn-sm btn-outline-primary mr-1" th:text="#{general.reportxls}">Xls</button>
+                 <button type="submit" id="report-employee-balance-detail-pdfbtn" form="report-employee-balance-detail-pdf-form" class="btn btn-sm btn-outline-primary" th:text="#{general.reportpdf}">Pdf</button>
+              </div>
+              <div id="report-employee-balance-call-fail-btn-small" class="d-block d-sm-none text-center mb-1">
+                 <button type="submit" id="report-employee-balance-detail-xlsbtn-sx" form="report-employee-balance-detail-xls-form" class="btn btn-outline-primary mr-1"><i class="far fa-file-excel"></i></button>
+                 <button type="submit" id="report-employee-balance-detail-pdfbtn-sx" form="report-employee-balance-detail-pdf-form" class="btn btn-outline-primary"><i class="far fa-file-pdf"></i></button>
+              </div>
+    </div>
+            <form id="report-employee-balance-detail-pdf-form" th:action="@{/report_employee_balance/pdf_detail}" method="get">
+                <input name="start_date" hidden>
+                <input name="end_date" hidden>
+                <input name="req_user_id" hidden>
+            </form>
+
+            <form id="report-employee-balance-detail-xls-form" th:action="@{/report_employee_balance/xls_detail}" method="get">
+                <input name="start_date" hidden>
+                <input name="end_date" hidden>
+                <input name="req_user_id" hidden>
+            </form>
+
+        <div><table id="table-report-employee-balance-detail" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var user_id_width, user_name_width, user_surname_width, fin_1_width, fin_2_width, fin_3_width, fin_4_width, fin_5_width,
+        fin_6_width, fin_7_width, fin_8_width, fin_9_width, fin_10_width, fin_11_width, fin_12_width, fin_all_width;
+    var user_id_class, user_name_class, user_surname_class, fin_1_class, fin_2_class, fin_3_class, fin_4_class, fin_5_class,
+        fin_6_class, fin_7_class, fin_8_class, fin_9_class, fin_10_class, fin_11_class, fin_12_class, fin_all_class;
+
+    var head_month_1, head_month_2, head_month_3, head_month_4, head_month_5, head_month_6, head_month_7, head_month_8, head_month_9, head_month_10, head_month_11, head_month_12, head_month_all;
+
+    var smallScreenSize = window.screen.width > 1024 && window.screen.height <= 768;
+    var mobileScreenSize = window.screen.width < 1024 && window.screen.height < 768;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+
+        user_id_width = "";
+        user_id_class = "none";
+        user_name_width = "8%";
+        user_name_class = "all extra_small_size extra_small_head_size extra_small_footer_size";
+        user_surname_width = "";
+        user_surname_class = "none";
+        fin_1_width = "7%";
+        fin_1_class = "min-tablet-p extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month";
+        fin_2_width = "7%";
+        fin_2_class = "min-tablet-p extra_small_size extra_small_head_size extra_small_footer_size text-center";
+        fin_3_width = "7%";
+        fin_3_class = "min-tablet-p extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month";
+        fin_4_width = "7%";
+        fin_4_class = "min-tablet-p extra_small_size extra_small_head_size extra_small_footer_size text-center";
+        fin_5_width = "7%";
+        fin_5_class = "min-tablet-p extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month";
+        fin_6_width = "7%";
+        fin_6_class = "min-tablet-p extra_small_size extra_small_head_size extra_small_footer_size text-center";
+        fin_7_width = "7%";
+        fin_7_class = "min-tablet-p extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month";
+        fin_8_width = "7%";
+        fin_8_class = "min-tablet-p extra_small_size extra_small_head_size extra_small_footer_size text-center";
+        fin_9_width = "7%";
+        fin_9_class = "min-tablet-p extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month";
+        fin_10_width = "7%";
+        fin_10_class = "min-tablet-p extra_small_size extra_small_head_size extra_small_footer_size text-center";
+        fin_11_width = "7%";
+        fin_11_class = "min-tablet-p extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month";
+        fin_12_width = "7%";
+        fin_12_class = "min-tablet-p extra_small_size extra_small_head_size extra_small_footer_size text-center";
+        fin_all_width = "8%";
+        fin_all_class = "all min-tablet-p extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month";
+
+        var currentMonth = (new Date()).getMonth();
+        if(currentMonth === 0){
+            fin_1_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month';
+        }
+        else if(currentMonth === 1){
+            fin_1_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month';
+            fin_2_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center';
+        }
+        else if(currentMonth === 2){
+            fin_1_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month';
+            fin_2_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center';
+            fin_3_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month';
+        }
+        else if(currentMonth === 3){
+            fin_2_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center';
+            fin_3_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month';
+            fin_4_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center';
+        }
+        else if(currentMonth === 4){
+            fin_3_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month';
+            fin_4_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center';
+            fin_5_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month';
+        }
+        else if(currentMonth === 5){
+            fin_4_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center';
+            fin_5_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month';
+            fin_6_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center';
+        }
+        else if(currentMonth === 6){
+            fin_5_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month';
+            fin_6_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center';
+            fin_7_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month';
+        }
+        else if(currentMonth === 7){
+            fin_6_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center';
+            fin_7_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month';
+            fin_8_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center';
+        }
+        else if(currentMonth === 8){
+            fin_7_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month';
+            fin_8_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center';
+            fin_9_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month';
+        }
+        else if(currentMonth === 9){
+            fin_8_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center';
+            fin_9_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month';
+            fin_10_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center';
+        }
+        else if(currentMonth === 10){
+            fin_9_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month';
+            fin_10_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center';
+            fin_11_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month';
+        }
+        else if(currentMonth === 11){
+            fin_10_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center';
+            fin_11_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center cell-light-grey head-light-grey finance_month';
+            fin_12_class = 'all extra_small_size extra_small_head_size extra_small_footer_size text-center';
+        }
+
+        sum_head_month_1 = /*[[#{month.01_num}]]*/ null;
+        sum_head_month_2 = /*[[#{month.02_num}]]*/ null;
+        sum_head_month_3 = /*[[#{month.03_num}]]*/ null;
+        sum_head_month_4 = /*[[#{month.04_num}]]*/ null;
+        sum_head_month_5 = /*[[#{month.05_num}]]*/ null;
+        sum_head_month_6 = /*[[#{month.06_num}]]*/ null;
+        sum_head_month_7 = /*[[#{month.07_num}]]*/ null;
+        sum_head_month_8 = /*[[#{month.08_num}]]*/ null;
+        sum_head_month_9 = /*[[#{month.09_num}]]*/ null;
+        sum_head_month_10 = /*[[#{month.10_num}]]*/ null;
+        sum_head_month_11 = /*[[#{month.11_num}]]*/ null;
+        sum_head_month_12 = /*[[#{month.12_num}]]*/ null;
+        sum_head_month_all = /*[[#{month.all_num}]]*/ null;
+
+        $('#report-employee-balance-detail-buttons').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+
+        user_id_width = "";
+        user_id_class = "none";
+
+        user_name_width = "";
+        user_name_class = "none";
+
+        user_surname_width = "22%";
+        user_surname_class = "all small_size small_head_size small_footer_size";
+
+        fin_1_width = "6%";
+        fin_1_class = "small_size small_head_size small_footer_size text-center finance_month cell-light-grey head-light-grey";
+        fin_2_width = "6%";
+        fin_2_class = "small_size small_head_size small_footer_size text-center finance_month";
+        fin_3_width = "6%";
+        fin_3_class = "small_size small_head_size small_footer_size text-center finance_month cell-light-grey head-light-grey";
+        fin_4_width = "6%";
+        fin_4_class = "small_size small_head_size small_footer_size text-center finance_month";
+        fin_5_width = "6%";
+        fin_5_class = "small_size small_head_size small_footer_size text-center finance_month cell-light-grey head-light-grey";
+        fin_6_width = "6%";
+        fin_6_class = "small_size small_head_size small_footer_size text-center finance_month";
+        fin_7_width = "6%";
+        fin_7_class = "small_size small_head_size small_footer_size text-center finance_month cell-light-grey head-light-grey";
+        fin_8_width = "6%";
+        fin_8_class = "small_size small_head_size small_footer_size text-center finance_month";
+        fin_9_width = "6%";
+        fin_9_class = "small_size small_head_size small_footer_size text-center finance_month cell-light-grey head-light-grey";
+        fin_10_width = "6%";
+        fin_10_class = "small_size small_head_size small_footer_size text-center finance_month";
+        fin_11_width = "6%";
+        fin_11_class = "small_size small_head_size small_footer_size text-center finance_month cell-light-grey head-light-grey";
+        fin_12_width = "6%";
+        fin_12_class = "small_size small_head_size small_footer_size text-center finance_month";
+        fin_all_width = "6%";
+        fin_all_class = "small_size small_head_size small_footer_size text-center finance_month cell-light-grey head-light-grey";
+    }
+    else{
+        vDomParam = "Blfrtip";
+
+        user_id_width = "";
+        user_id_class = "none";
+
+        user_name_width = "";
+        user_name_class = "none";
+
+        user_surname_width = "22%";
+        user_surname_class = "all";
+
+        fin_1_width = "6%";
+        fin_1_class = "text-center finance_month cell-light-grey head-light-grey";
+        fin_2_width = "6%";
+        fin_2_class = "text-center finance_month";
+        fin_3_width = "6%";
+        fin_3_class = "text-center finance_month cell-light-grey head-light-grey";
+        fin_4_width = "6%";
+        fin_4_class = "text-center finance_month";
+        fin_5_width = "6%";
+        fin_5_class = "text-center finance_month cell-light-grey head-light-grey";
+        fin_6_width = "6%";
+        fin_6_class = "text-center finance_month";
+        fin_7_width = "6%";
+        fin_7_class = "text-center finance_month cell-light-grey head-light-grey";
+        fin_8_width = "6%";
+        fin_8_class = "text-center finance_month";
+        fin_9_width = "6%";
+        fin_9_class = "text-center finance_month cell-light-grey head-light-grey";
+        fin_10_width = "6%";
+        fin_10_class = "text-center finance_month";
+        fin_11_width = "6%";
+        fin_11_class = "text-center finance_month cell-light-grey head-light-grey";
+        fin_12_width = "6%";
+        fin_12_class = "text-center finance_month";
+        fin_all_width = "6%";
+        fin_all_class = "text-center finance_month cell-light-grey head-light-grey";
+    }
+
+    var vReportEmployeeBalanceDetailValue;
+    vReportEmployeeBalanceDetailValue = {
+        table : '#table-report-employee-balance-detail',
+        button_form: (mobileScreenSize) ? null : "#report-employee-balance-detail-buttons",
+        ajax : {
+            "url": /*[[@{/report_employee_balance/get_detail_table}]]*/ "report_employee_balance/get_detail_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.start_date = vReportEmployeeBalanceDetailValue.rowdata.start_date,
+                d.end_date = vReportEmployeeBalanceDetailValue.rowdata.end_date,
+                d.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.req_user_id
+            }
+        },
+        key : "user_id",
+        switchControl : report_employee_balance_detail_switchControl,
+        rowdata:{
+            user_id: null,
+            start_date: null,
+            end_date: null,
+            req_user_id: null
+        },
+        ordering: true,
+        order: [
+            [15, "desc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function(row, data, index) {
+            $(row).css('background-color','#ffffff');
+
+            if(data["user_id"] === -1){
+                $(row).css('background-color','#e6e2d3');
+                $(row).addClass("font-weight-bold");
+            }
+            else if(data["user_id"] === 0){
+                $(row).css('background-color','#d5e1df');
+                $(row).addClass("font-weight-bold");
+            }
+        },
+        columnDefs: [
+            { "targets": [3,4,5,6,7,8,9,10,11,12,13,14,15],  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{report_employee_balance.detail.user_id}]]*/ "user_id", "data": "user_id", "width": user_id_width , "className": user_id_class},
+            /*1*/{"title": /*[[#{report_employee_balance.detail.user_name}]]*/ "user_name", "data": "user_name", "width": user_name_width , "className": user_name_class},
+            /*2*/{"title": /*[[#{report_employee_balance.detail.user_surname}]]*/ "user_surname", "data": "user_surname", "width": user_surname_width , "className": user_surname_class},
+            /*3*/{"title": /*[[#{month.01_short}]]*/ "fin_1", "data": "fin_1", "width": fin_1_width , "className": fin_1_class},
+            /*4*/{"title": /*[[#{month.02_short}]]*/ "fin_2", "data": "fin_2", "width": fin_2_width , "className": fin_2_class},
+            /*5*/{"title": /*[[#{month.03_short}]]*/ "fin_3", "data": "fin_3", "width": fin_3_width , "className": fin_3_class},
+            /*6*/{"title": /*[[#{month.04_short}]]*/ "fin_4", "data": "fin_4", "width": fin_4_width , "className": fin_4_class},
+            /*7*/{"title": /*[[#{month.05_short}]]*/ "fin_5", "data": "fin_5", "width": fin_5_width , "className": fin_5_class},
+            /*8*/{"title": /*[[#{month.06_short}]]*/ "fin_6", "data": "fin_6", "width": fin_6_width , "className": fin_6_class},
+            /*9*/{"title": /*[[#{month.07_short}]]*/ "fin_7", "data": "fin_7", "width": fin_7_width , "className": fin_7_class},
+            /*10*/{"title": /*[[#{month.08_short}]]*/ "fin_8", "data": "fin_8", "width": fin_8_width , "className": fin_8_class},
+            /*11*/{"title": /*[[#{month.09_short}]]*/ "fin_9", "data": "fin_9",  "width": fin_9_width , "className": fin_9_class},
+            /*12*/{"title": /*[[#{month.10_short}]]*/ "fin_10", "data": "fin_10", "width": fin_10_width , "className": fin_10_class},
+            /*13*/{"title": /*[[#{month.11_short}]]*/ "fin_11", "data": "fin_11", "width": fin_11_width , "className": fin_11_class},
+            /*14*/{"title": /*[[#{month.12_short}]]*/ "fin_12", "data": "fin_12", "width": fin_12_width , "className": fin_12_class},
+            /*15*/{"title": /*[[#{month.all}]]*/ "fin_all", "data": "fin_all", "width": fin_all_width , "className": fin_all_class}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    $('#table-report-employee-balance-detail').on('dblclick', '.finance_month', function (e) {
+        var currentTable = $('#table-report-employee-balance-detail').DataTable();
+        var selectedRow = this._DT_CellIndex.row;
+        var selectedColumn = this._DT_CellIndex.column - 2;
+
+        currentTable.row(selectedRow).select();
+        $('.nav-tabs a[href="#tab-' + selectedColumn + '"]').tab('show');
+    });
+
+    function report_employee_balance_detail_switchControl(){
+        if(vReportEmployeeBalanceDetailValue.rowdata.user_id != null){
+            $('#report_employee_balance_tabs_div').removeAttr('hidden');
+
+            vReportEmployeeBalanceMonth01Value.rowdata.start_date = $("#report_employee_balance_start_date").val();
+            vReportEmployeeBalanceMonth01Value.rowdata.end_date = $("#report_employee_balance_end_date").val();
+            vReportEmployeeBalanceMonth01Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+            $(vReportEmployeeBalanceMonth01Value.table).DataTable().ajax.reload();
+            <!-- 01 -->
+
+            vReportEmployeeBalanceMonth02Value.rowdata.start_date = $("#report_employee_balance_start_date").val();
+            vReportEmployeeBalanceMonth02Value.rowdata.end_date = $("#report_employee_balance_end_date").val();
+            vReportEmployeeBalanceMonth02Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+            $(vReportEmployeeBalanceMonth02Value.table).DataTable().ajax.reload();
+            <!-- 02 -->
+
+            vReportEmployeeBalanceMonth03Value.rowdata.start_date = $("#report_employee_balance_start_date").val();
+            vReportEmployeeBalanceMonth03Value.rowdata.end_date = $("#report_employee_balance_end_date").val();
+            vReportEmployeeBalanceMonth03Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+            $(vReportEmployeeBalanceMonth03Value.table).DataTable().ajax.reload();
+            <!-- 03 -->
+
+            vReportEmployeeBalanceMonth04Value.rowdata.start_date = $("#report_employee_balance_start_date").val();
+            vReportEmployeeBalanceMonth04Value.rowdata.end_date = $("#report_employee_balance_end_date").val();
+            vReportEmployeeBalanceMonth04Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+            $(vReportEmployeeBalanceMonth04Value.table).DataTable().ajax.reload();
+            <!-- 04 -->
+
+            vReportEmployeeBalanceMonth05Value.rowdata.start_date = $("#report_employee_balance_start_date").val();
+            vReportEmployeeBalanceMonth05Value.rowdata.end_date = $("#report_employee_balance_end_date").val();
+            vReportEmployeeBalanceMonth05Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+            $(vReportEmployeeBalanceMonth05Value.table).DataTable().ajax.reload();
+            <!-- 05 -->
+
+            vReportEmployeeBalanceMonth06Value.rowdata.start_date = $("#report_employee_balance_start_date").val();
+            vReportEmployeeBalanceMonth06Value.rowdata.end_date = $("#report_employee_balance_end_date").val();
+            vReportEmployeeBalanceMonth06Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+            $(vReportEmployeeBalanceMonth06Value.table).DataTable().ajax.reload();
+            <!-- 06 -->
+
+            vReportEmployeeBalanceMonth07Value.rowdata.start_date = $("#report_employee_balance_start_date").val();
+            vReportEmployeeBalanceMonth07Value.rowdata.end_date = $("#report_employee_balance_end_date").val();
+            vReportEmployeeBalanceMonth07Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+            $(vReportEmployeeBalanceMonth07Value.table).DataTable().ajax.reload();
+            <!-- 07 -->
+
+            vReportEmployeeBalanceMonth08Value.rowdata.start_date = $("#report_employee_balance_start_date").val();
+            vReportEmployeeBalanceMonth08Value.rowdata.end_date = $("#report_employee_balance_end_date").val();
+            vReportEmployeeBalanceMonth08Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+            $(vReportEmployeeBalanceMonth08Value.table).DataTable().ajax.reload();
+            <!-- 08 -->
+
+            vReportEmployeeBalanceMonth09Value.rowdata.start_date = $("#report_employee_balance_start_date").val();
+            vReportEmployeeBalanceMonth09Value.rowdata.end_date = $("#report_employee_balance_end_date").val();
+            vReportEmployeeBalanceMonth09Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+            $(vReportEmployeeBalanceMonth09Value.table).DataTable().ajax.reload();
+            <!-- 09 -->
+
+            vReportEmployeeBalanceMonth10Value.rowdata.start_date = $("#report_employee_balance_start_date").val();
+            vReportEmployeeBalanceMonth10Value.rowdata.end_date = $("#report_employee_balance_end_date").val();
+            vReportEmployeeBalanceMonth10Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+            $(vReportEmployeeBalanceMonth10Value.table).DataTable().ajax.reload();
+            <!-- 10 -->
+
+            vReportEmployeeBalanceMonth11Value.rowdata.start_date = $("#report_employee_balance_start_date").val();
+            vReportEmployeeBalanceMonth11Value.rowdata.end_date = $("#report_employee_balance_end_date").val();
+            vReportEmployeeBalanceMonth11Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+            $(vReportEmployeeBalanceMonth11Value.table).DataTable().ajax.reload();
+            <!-- 11 -->
+
+            vReportEmployeeBalanceMonth12Value.rowdata.start_date = $("#report_employee_balance_start_date").val();
+            vReportEmployeeBalanceMonth12Value.rowdata.end_date = $("#report_employee_balance_end_date").val();
+            vReportEmployeeBalanceMonth12Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+            $(vReportEmployeeBalanceMonth12Value.table).DataTable().ajax.reload();
+            <!-- 12 -->
+
+            vReportEmployeeBalanceMonthAllValue.rowdata.start_date = $("#report_employee_balance_start_date").val();
+            vReportEmployeeBalanceMonthAllValue.rowdata.end_date = $("#report_employee_balance_end_date").val();
+            vReportEmployeeBalanceMonthAllValue.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+            $(vReportEmployeeBalanceMonthAllValue.table).DataTable().ajax.reload();
+            <!-- All -->
+        } else{
+            $('#report_employee_balance_tabs_div').attr('hidden', true);
+
+            vReportEmployeeBalanceMonth01Value.rowdata.start_date = null;
+            vReportEmployeeBalanceMonth01Value.rowdata.end_date = null;
+            vReportEmployeeBalanceMonth01Value.rowdata.req_user_id = null;
+            $(vReportEmployeeBalanceMonth01Value.table).DataTable().clear().draw();
+            <!-- 01 -->
+
+            vReportEmployeeBalanceMonth02Value.rowdata.start_date = null;
+            vReportEmployeeBalanceMonth02Value.rowdata.end_date = null;
+            vReportEmployeeBalanceMonth02Value.rowdata.req_user_id = null;
+            $(vReportEmployeeBalanceMonth02Value.table).DataTable().clear().draw();
+            <!-- 02 -->
+
+            vReportEmployeeBalanceMonth03Value.rowdata.start_date = null;
+            vReportEmployeeBalanceMonth03Value.rowdata.end_date = null;
+            vReportEmployeeBalanceMonth03Value.rowdata.req_user_id = null;
+            $(vReportEmployeeBalanceMonth03Value.table).DataTable().clear().draw();
+            <!-- 03 -->
+
+            vReportEmployeeBalanceMonth04Value.rowdata.start_date = null;
+            vReportEmployeeBalanceMonth04Value.rowdata.end_date = null;
+            vReportEmployeeBalanceMonth04Value.rowdata.req_user_id = null;
+            $(vReportEmployeeBalanceMonth04Value.table).DataTable().clear().draw();
+            <!-- 04 -->
+
+            vReportEmployeeBalanceMonth05Value.rowdata.start_date = null;
+            vReportEmployeeBalanceMonth05Value.rowdata.end_date = null;
+            vReportEmployeeBalanceMonth05Value.rowdata.req_user_id = null;
+            $(vReportEmployeeBalanceMonth05Value.table).DataTable().clear().draw();
+            <!-- 05 -->
+
+            vReportEmployeeBalanceMonth06Value.rowdata.start_date = null;
+            vReportEmployeeBalanceMonth06Value.rowdata.end_date = null;
+            vReportEmployeeBalanceMonth06Value.rowdata.req_user_id = null;
+            $(vReportEmployeeBalanceMonth06Value.table).DataTable().clear().draw();
+            <!-- 06 -->
+
+            vReportEmployeeBalanceMonth07Value.rowdata.start_date = null;
+            vReportEmployeeBalanceMonth07Value.rowdata.end_date = null;
+            vReportEmployeeBalanceMonth07Value.rowdata.req_user_id = null;
+            $(vReportEmployeeBalanceMonth07Value.table).DataTable().clear().draw();
+            <!-- 07 -->
+
+            vReportEmployeeBalanceMonth08Value.rowdata.start_date = null;
+            vReportEmployeeBalanceMonth08Value.rowdata.end_date = null;
+            vReportEmployeeBalanceMonth08Value.rowdata.req_user_id = null;
+            $(vReportEmployeeBalanceMonth08Value.table).DataTable().clear().draw();
+            <!-- 08 -->
+
+            vReportEmployeeBalanceMonth09Value.rowdata.start_date = null;
+            vReportEmployeeBalanceMonth09Value.rowdata.end_date = null;
+            vReportEmployeeBalanceMonth09Value.rowdata.req_user_id = null;
+            $(vReportEmployeeBalanceMonth09Value.table).DataTable().clear().draw();
+            <!-- 09 -->
+
+            vReportEmployeeBalanceMonth10Value.rowdata.start_date = null;
+            vReportEmployeeBalanceMonth10Value.rowdata.end_date = null;
+            vReportEmployeeBalanceMonth10Value.rowdata.req_user_id = null;
+            $(vReportEmployeeBalanceMonth10Value.table).DataTable().clear().draw();
+            <!-- 10 -->
+
+            vReportEmployeeBalanceMonth11Value.rowdata.start_date = null;
+            vReportEmployeeBalanceMonth11Value.rowdata.end_date = null;
+            vReportEmployeeBalanceMonth11Value.rowdata.req_user_id = null;
+            $(vReportEmployeeBalanceMonth11Value.table).DataTable().clear().draw();
+            <!-- 11 -->
+
+            vReportEmployeeBalanceMonth12Value.rowdata.start_date = null;
+            vReportEmployeeBalanceMonth12Value.rowdata.end_date = null;
+            vReportEmployeeBalanceMonth12Value.rowdata.req_user_id = null;
+            $(vReportEmployeeBalanceMonth12Value.table).DataTable().clear().draw();
+            <!-- 12 -->
+
+            vReportEmployeeBalanceMonthAllValue.rowdata.start_date = null;
+            vReportEmployeeBalanceMonthAllValue.rowdata.end_date = null;
+            vReportEmployeeBalanceMonthAllValue.rowdata.req_user_id = null;
+            $(vReportEmployeeBalanceMonthAllValue.table).DataTable().clear().draw();
+            <!-- All -->
+        }
+    }
+
+    var currMonth = new Date().getMonth()+1;
+    var accTab = 'tab-'+currMonth;
+    $('.nav-tabs a[href="#' + accTab + '"]').tab('show');
+
+    $('.positions_btn_control').on('click', function (){
+        $("#positions-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#report-employee-balance-detail-xls-form').submit(function() {
+        $("#report-employee-balance-detail-xls-form input[name=start_date]").val($("#report_employee_balance_start_date").val());
+        $("#report-employee-balance-detail-xls-form input[name=end_date]").val($("#report_employee_balance_end_date").val());
+        $("#report-employee-balance-detail-xls-form input[name=req_user_id]").val($("#report_employee_balance_employee_list").val());
+    });
+
+    $('#report-employee-balance-detail-pdf-form').submit(function() {
+        $("#report-employee-balance-detail-pdf-form input[name=start_date]").val($("#report_employee_balance_start_date").val());
+        $("#report-employee-balance-detail-pdf-form input[name=end_date]").val($("#report_employee_balance_end_date").val());
+        $("#report-employee-balance-detail-pdf-form input[name=req_user_id]").val($("#report_employee_balance_employee_list").val());
+    });
+
+    $(document).ready(function(){
+        vReportEmployeeBalanceDetailValue.rowdata.start_date = null;
+        vReportEmployeeBalanceDetailValue.rowdata.end_date = null;
+        vReportEmployeeBalanceDetailValue.rowdata.req_user_id = null;
+
+        recreateDataTable(vReportEmployeeBalanceDetailValue);
+        var currentTable = $(vReportEmployeeBalanceDetailValue.table).DataTable();
+
+        if (mobileScreenSize) {
+            head_month_1 = currentTable.columns(3).header();
+            $(head_month_1).html(sum_head_month_1);
+            head_month_2 = currentTable.columns(4).header();
+            $(head_month_2).html(sum_head_month_2);
+            head_month_3 = currentTable.columns(5).header();
+            $(head_month_3).html(sum_head_month_3);
+            head_month_4 = currentTable.columns(6).header();
+            $(head_month_4).html(sum_head_month_4);
+            head_month_5 = currentTable.columns(7).header();
+            $(head_month_5).html(sum_head_month_5);
+            head_month_6 = currentTable.columns(8).header();
+            $(head_month_6).html(sum_head_month_6);
+            head_month_7 = currentTable.columns(9).header();
+            $(head_month_7).html(sum_head_month_7);
+            head_month_8 = currentTable.columns(10).header();
+            $(head_month_8).html(sum_head_month_8);
+            head_month_9 = currentTable.columns(11).header();
+            $(head_month_9).html(sum_head_month_9);
+            head_month_10 = currentTable.columns(12).header();
+            $(head_month_10).html(sum_head_month_10);
+            head_month_11 = currentTable.columns(13).header();
+            $(head_month_11).html(sum_head_month_11);
+            head_month_12 = currentTable.columns(14).header();
+            $(head_month_12).html(sum_head_month_12);
+            head_month_all = currentTable.columns(15).header();
+            $(head_month_all).html(sum_head_month_all);
+
+            $(vReportEmployeeBalanceDetailValue.table+'_length').addClass('float-none');
+            $(vReportEmployeeBalanceDetailValue.table+'_filter').addClass('float-none');
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="client_bills_finance_body" th:remove="tag">
+        <div><table id="table-client-bills-finance" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    $("#table-client-bills-finance").append('<tfoot><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tfoot>');
+
+    var vClientBillsFinanceValue;
+    vClientBillsFinanceValue = {
+        table : '#table-client-bills-finance',
+        ajax : {
+            "url": /*[[@{/client_docs/get_client_bills_finance_table}]]*/ "client_docs/get_client_bills_finance_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.cnt_bill_id = vClientBillsFinanceValue.rowdata.cnt_bill_id;
+            }
+        },
+        key : "fin_id",
+        switchControl : client_bills_finance_switchControl,
+        rowdata:{
+            cnt_bill_id: null,
+            cnt_user_access: null,
+            fin_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        deferRender: true,
+        scroller: true,
+        scrollCollapse: true,
+        dom: 'Blfrtip',
+        footerCallback: function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+            var numFormat = $.fn.dataTable.render.number( '\ ', '.', 2, '').display;
+            // Total over all pages
+            TotalSum = api.column(9, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+            // Update footer
+            $( api.column(4).footer()).hide();
+            $( api.column(6).footer()).hide();
+
+            $( api.column(8).footer()).html('Всего: ');
+            $( api.column(9).footer()).html(numFormat(TotalSum));
+        },
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["act_status_color"]);
+        },
+        columnDefs:[
+            {"targets": [2], type: 'de_date'},
+            {"targets": [4], "visible": false},
+            {"targets": [6], "visible": false},
+            {"targets": [9],  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{finance.list.fin_id}]]*/ "fin_id", "data": "fin_id", "width": "5%", "className":"min-tablet-l"},
+            /*1*/{"title": /*[[#{finance.list.fin_name}]]*/ "fin_name", "data": "fin_name", "width": "10%"},
+            /*2*/{"title": /*[[#{finance.list.fin_date}]]*/ "fin_date", "data": "fin_date", "width": "8%", "className":"min-tablet-l"},
+            /*3*/{"title": /*[[#{finance.list.fin_way_sname}]]*/ "fin_way_sname", "data": "fin_way_sname", "width": "8%", "className":"min-tablet-l"},
+            /*4*/{"title": /*[[#{finance.list.cnt_id}]]*/ "cnt_id", "data": "cnt_id", "width": "1%"},
+            /*5*/{"title": /*[[#{finance.list.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": "21%", "className":"min-tablet-p"},
+            /*6*/{"title": /*[[#{finance.list.user_id}]]*/ "user_id", "data": "user_id", "width": "1%"},
+            /*7*/{"title": /*[[#{finance.list.user_surname}]]*/ "user_surname", "data": "user_surname", "width": "16%", "className":"min-tablet-l"},
+            /*8*/{"title": /*[[#{finance.list.ser_name}]]*/ "ser_name", "data": "ser_name", "width": "20%", "className":"min-tablet-p"},
+            /*9*/{"title": /*[[#{finance.list.fin_sum}]]*/ "fin_sum", "data": "fin_sum", "width": "10%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function client_bills_finance_switchControl(){
+        if(vClientBillsFinanceValue.rowdata.fin_id != null) {
+        }
+    }
+
+    $('.client_bills_finance_btn_control').on('click', function (){
+        $("#client-bills-finance-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#client-bills-finance-detail').submit(function() {
+        vClientBillsFinanceValue.rowdata.client_bills_finance_table_order_column = $(vClientBillsFinanceValue.table).DataTable().order()[0][0];
+        vClientBillsFinanceValue.rowdata.client_bills_finance_table_order_type = $(vClientBillsFinanceValue.table).DataTable().order()[0][1];
+        vClientBillsFinanceValue.rowdata.client_bills_finance_table_search = $(vClientBillsFinanceValue.table).DataTable().search();
+        vClientBillsFinanceValue.rowdata.client_bills_finance_table_pagelen = $(vClientBillsFinanceValue.table).DataTable().page.len();
+        vClientBillsFinanceValue.rowdata.client_bills_finance_table_page = $(vClientBillsFinanceValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vClientBillsFinanceValue.rowdata.cnt_id = $('#cnt_id').val();
+        vClientBillsFinanceValue.rowdata.cnt_name = $('#cnt_name').val();
+        vClientBillsFinanceValue.rowdata.cnt_user_access = $('#cnt_user_access').val();
+
+        Object.keys(vClientBillsFinanceValue.rowdata).forEach(function (index) {
+            $("#client-bills-finance-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#client-bills-finance-detail input[name=\"" + index + "\"]").val(vClientBillsFinanceValue.rowdata[index]);
+        });
+
+        $("#client-bills-finance-detail input[name=clients_list_table_order_column]").val($('#clients_list_table_order_column').val());
+        $("#client-bills-finance-detail input[name=clients_list_table_order_type]").val($('#clients_list_table_order_type').val());
+        $("#client-bills-finance-detail input[name=clients_list_table_search]").val($('#clients_list_table_search').val());
+        $("#client-bills-finance-detail input[name=clients_list_table_pagelen]").val($('#clients_list_table_pagelen').val());
+        $("#client-bills-finance-detail input[name=clients_list_table_page]").val($('#clients_list_table_page').val());
+    });
+
+    $("#client_bills_finance_filter_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#client_bills_finance_filter_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#client_bills_finance_filter_check').on('click', function(){
+        if($(this).prop('checked')){
+            $('#client_bills_finance_filter_start_date').removeAttr('disabled');
+            $('#client_bills_finance_filter_end_date').removeAttr('disabled');
+            $("#client_bills_finance_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if (window.screen.width < 1024 && window.screen.height < 768) {
+                $("#client_bills_finance_filter_start_date").attr('readonly',true);
+                $("#client_bills_finance_filter_end_date").attr('readonly',true);
+            }
+        }
+        else{
+            $('#client_bills_finance_filter_start_date').attr('disabled',true);
+            $('#client_bills_finance_filter_end_date').attr('disabled',true);
+            $("#client_bills_finance_filter_show").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            if(vClientBillsFinanceValue.rowdata.client_bills_finance_filter_id === 1){
+                vClientBillsFinanceValue.rowdata.client_bills_finance_filter_id = 0;
+                $(vClientBillsFinanceValue.table).DataTable().ajax.reload();
+            }
+        }
+    });    
+    
+    $('#client_bills_finance_filter_show').on('click', function() {
+        vClientBillsFinanceValue.rowdata.client_bills_finance_filter_id = 1;
+        vClientBillsFinanceValue.rowdata.client_bills_finance_filter_start_date = $('#client_bills_finance_filter_start_date').val();
+        vClientBillsFinanceValue.rowdata.client_bills_finance_filter_end_date = $('#client_bills_finance_filter_end_date').val();
+
+        $(vClientBillsFinanceValue.table).DataTable().ajax.reload();
+    });    
+    
+    $(document).ready(function(){
+        vClientBillsFinanceValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+        vClientBillsFinanceValue.rowdata.cnt_name = /*[[${cnt_name}]]*/ null;
+        vClientBillsFinanceValue.rowdata.cnt_user_access = /*[[${cnt_user_access}]]*/ null;
+
+        vClientBillsFinanceValue.rowdata.fin_id = /*[[${fin_id}]]*/ null;
+
+        vClientBillsFinanceValue.rowdata.table_order_column = /*[[${client_bills_finance_list_table_order_column}]]*/ null;
+        vClientBillsFinanceValue.rowdata.table_order_type = /*[[${client_bills_finance_list_table_order_type}]]*/ null;
+        vClientBillsFinanceValue.rowdata.table_search = /*[[${client_bills_finance_list_table_search}]]*/ null;
+        vClientBillsFinanceValue.rowdata.table_pagelen = /*[[${client_bills_finance_list_table_pagelen}]]*/ null;
+        vClientBillsFinanceValue.rowdata.table_page = /*[[${client_bills_finance_list_table_page}]]*/ null;
+
+        vClientBillsFinanceValue.rowdata.client_bills_finance_filter_id = /*[[${client_bills_finance_filter_id}]]*/ null;
+
+        var startDate =  /*[[${client_bills_finance_filter_start_date}]]*/ null;
+        vClientBillsFinanceValue.rowdata.client_bills_finance_filter_start_date = startDate;
+
+        var endDate = /*[[${client_bills_finance_filter_end_date}]]*/ null;
+        vClientBillsFinanceValue.rowdata.client_bills_finance_filter_end_date = endDate;
+
+        if(startDate != null){
+            $('#client_bills_finance_filter_start_date').empty().val(startDate);
+            $('#client_bills_finance_filter_start_date').data('daterangepicker').setStartDate(startDate);
+            $('#client_bills_finance_filter_start_date').data('daterangepicker').setEndDate(startDate);
+        }
+
+        if(endDate != null){
+            $('#client_bills_finance_filter_end_date').empty().val(endDate);
+            $('#client_bills_finance_filter_end_date').data('daterangepicker').setStartDate(endDate);
+            $('#client_bills_finance_filter_end_date').data('daterangepicker').setEndDate(endDate);
+        }
+
+        <!-- Start Filter -->
+        if(vClientBillsFinanceValue.rowdata.client_bills_finance_filter_id === 1){
+            $('#client_bills_finance_filter_check').prop('checked', true);
+            $("#client_bills_finance_filter_start_date").removeAttr('disabled').val(vClientBillsFinanceValue.rowdata.client_bills_finance_filter_start_date);
+            $("#client_bills_finance_filter_end_date").removeAttr('disabled').val(vClientBillsFinanceValue.rowdata.client_bills_finance_filter_end_date);
+            $("#client_bills_finance_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if (window.screen.width < 1024 && window.screen.height < 768) {
+                $("#client_bills_finance_filter_start_date").attr('readonly',true);
+                $("#client_bills_finance_filter_end_date").attr('readonly',true);
+            }
+        }
+        
+        recreateDataTable(vClientBillsFinanceValue);
+<!-- Client Detail -->
+        $('#cnt_id').val(/*[[${cnt_id}]]*/);
+        $('#cnt_name').val(/*[[${cnt_name}]]*/);
+        $('#cnt_user_access').val(/*[[${cnt_user_access}]]*/);
+
+        $("#clients_finance_back_detail_pretend span[id=cur_cnt_id]").text(/*[[${cnt_id}]]*/);
+        $("#clients_finance_back_detail input[name=cur_cnt_name]").val(/*[[${cnt_name}]]*/);
+
+        $('#clients_list_table_order_column').val(/*[[${clients_list_table_order_column}]]*/);
+        $('#clients_list_table_order_type').val(/*[[${clients_list_table_order_type}]]*/);
+        $('#clients_list_table_search').val(/*[[${clients_list_table_search}]]*/);
+        $('#clients_list_table_pagelen').val(/*[[${clients_list_table_pagelen}]]*/);
+        $('#clients_list_table_page').val(/*[[${clients_list_table_page}]]*/);
+
+        $("#client-bills-finance-cnt-detail input[name=clients_list_table_order_column]").val(/*[[${clients_list_table_order_column}]]*/);
+        $("#client-bills-finance-cnt-detail input[name=clients_list_table_order_type]").val(/*[[${clients_list_table_order_type}]]*/);
+        $("#client-bills-finance-cnt-detail input[name=clients_list_table_search]").val(/*[[${clients_list_table_search}]]*/);
+        $("#client-bills-finance-cnt-detail input[name=clients_list_table_pagelen]").val(/*[[${clients_list_table_pagelen}]]*/);
+        $("#client-bills-finance-cnt-detail input[name=clients_list_table_page]").val(/*[[${clients_list_table_page}]]*/);
+<!-- Client Show Detail -->
+        $('#cur_cnt_id').text(/*[[${cnt_id}]]*/);
+        $('#cur_cnt_name').val(/*[[${cnt_name}]]*/);
+
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#clients_li').addClass('active').removeClass('collapsed');
+        $('#clients_a').attr('aria-expanded',true);
+        $('#clients').addClass('show');
+
+        $('#clients_list_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

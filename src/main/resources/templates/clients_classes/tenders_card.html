@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_classes_tenders_body" th:remove="tag">
+        <div><table id="table-clients-classes-tenders-list" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vClientsClassesTenderListValue;
+    vClientsClassesTenderListValue = {
+        table : '#table-clients-classes-tenders-list',
+        ajax : {
+            "url": /*[[@{/clients_classes/get_tenders_table}]]*/ "clients_classes/get_tenders_table",
+            "type": "post",
+            "data": function ( d ) {
+                    d.cnt_id = vClientsClassesTenderListValue.rowdata.cnt_id;
+                    d.clients_classes_tenders_filter_start_date = vClientsClassesTenderListValue.rowdata.clients_classes_tenders_filter_start_date;
+                    d.clients_classes_tenders_filter_end_date = vClientsClassesTenderListValue.rowdata.clients_classes_tenders_filter_end_date;
+
+                    d.filter_check = vClientsClassesTenderListValue.rowdata.filter_check;
+                    d.filters_user_id = vClientsClassesTenderListValue.rowdata.filters_user_id;
+                    d.filters_status_id = vClientsClassesTenderListValue.rowdata.filters_status_id;
+                    d.filters_class_id = vClientsClassesTenderListValue.rowdata.filters_class_id;
+            }
+        },
+        key : "req_id",
+        switchControl : clients_classes_tenders_list_switchControl,
+        rowdata:{
+            cnt_id: null,
+            cnt_name: null,
+            cnt_user_access: null,
+
+           req_id: null,
+           req_name: null,
+           user_id: null,
+           user_name: null,
+           req_ops_username: null,
+           tend_status_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).find('td:eq(4)').css('background-color', data["user_status_colour"]);*/
+            $(row).css('background-color', data["tend_status_colour"]);
+        },
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [3], "visible": false},
+            {"targets": [9], "visible": false},
+            {"targets": [11], "visible": false},
+            {"targets": [13], "visible": false},
+            {"targets": [14], "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{clients_classes.tenders.req_id}]]*/ "req_id", "data": "req_id", "width": "1%"},
+                /*1*/{"title": /*[[#{clients_classes.tenders.req_name}]]*/ "req_name", "data": "req_name", "width": "28%"},
+                /*2*/{"title": /*[[#{clients_classes.tenders.user_name}]]*/ "user_name", "data": "user_name", "width": "8%", "className":"text-center"},
+                /*3*/{"title": /*[[#{clients_classes.tenders.user_id}]]*/ "user_id", "data": "user_id", "width": "1%"},
+                /*4*/{"title": /*[[#{clients_classes.tenders.req_date}]]*/ "req_date", "data": "req_date", "width": "8%", "className":"text-center"},
+                /*5*/{"title": /*[[#{clients_classes.tenders.req_tend_date}]]*/ "req_tend_date", "data": "req_tend_date", "width": "5%", "className":"text-center"},
+                /*6*/{"title": /*[[#{clients_classes.tenders.req_tend_end_date}]]*/ "req_tend_end_date", "data": "req_tend_end_date", "width": "5%", "className":"text-center"},
+                /*7*/{"title": /*[[#{clients_classes.tenders.req_ops_username}]]*/ "req_ops_username", "data": "req_ops_username", "width": "8%", "className": "desktop text-center"},
+                /*8*/{"title": /*[[#{clients_classes.tenders.req_ops_answer}]]*/ "req_ops_answer", "data": "req_ops_answer", "width": "18%"},
+                /*9*/{"title": /*[[#{clients_classes.tenders.tend_status_id}]]*/ "tend_status_id", "data": "tend_status_id", "width": "1%"},
+                /*10*/{"title": /*[[#{clients_classes.tenders.tend_status_sname}]]*/ "tend_status_sname", "data": "tend_status_sname", "width": "8%", "className":"text-center"},
+                /*11*/{"title": /*[[#{clients_classes.tenders.tend_status_colour}]]*/ "tend_status_colour", "data": "tend_status_colour", "width": "1%"},
+                /*12*/{"title": /*[[#{clients_classes.tenders.req_tend_status_sname}]]*/ "req_tend_status_sname", "data": "req_tend_status_sname", "width": "8%", "className":"text-center"},
+                /*13*/{"title": /*[[#{clients_classes.tenders.req_action}]]*/ "req_action", "data": "req_action", "width": "1%"},
+                /*14*/{"title": /*[[#{clients_classes.tenders.req_show}]]*/ "req_show", "data": "req_show", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function clients_classes_tenders_list_switchControl(){
+    }
+    
+    $('.clients_classes_tenders_list_btn_control').on('click', function (){
+        $("#clients-classes-tenders-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#clients-classes-tenders-detail').submit(function() {
+        vClientsClassesTenderListValue.rowdata.clients_classes_tenders_list_table_order_column = $(vClientsClassesTenderListValue.table).DataTable().order()[0][0];
+        vClientsClassesTenderListValue.rowdata.clients_classes_tenders_list_table_order_type = $(vClientsClassesTenderListValue.table).DataTable().order()[0][1];
+        vClientsClassesTenderListValue.rowdata.clients_classes_tenders_list_table_search = $(vClientsClassesTenderListValue.table).DataTable().search();
+        vClientsClassesTenderListValue.rowdata.clients_classes_tenders_list_table_pagelen = $(vClientsClassesTenderListValue.table).DataTable().page.len();
+        vClientsClassesTenderListValue.rowdata.clients_classes_tenders_list_table_page = $(vClientsClassesTenderListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        
+        Object.keys(vClientsClassesTenderListValue.rowdata).forEach(function (index) {
+            $("#clients-classes-tenders-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#clients-classes-tenders-detail input[name=\"" + index + "\"]").val(vClientsClassesTenderListValue.rowdata[index]);
+        });
+
+    });
+
+    $(document).ready(function(){
+        vClientsClassesTenderListValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+        vClientsClassesTenderListValue.rowdata.cnt_name = /*[[${cnt_name}]]*/ null;
+        vClientsClassesTenderListValue.rowdata.cnt_user_access = /*[[${cnt_user_access}]]*/ null;
+
+        vClientsClassesTenderListValue.rowdata.req_id = /*[[${req_id}]]*/ null;
+
+        vClientsClassesTenderListValue.rowdata.table_order_column = /*[[${clients_classes_tenders_list_table_order_column}]]*/ null;
+        vClientsClassesTenderListValue.rowdata.table_order_type = /*[[${clients_classes_tenders_list_table_order_type}]]*/ null;
+        vClientsClassesTenderListValue.rowdata.table_search = /*[[${clients_classes_tenders_list_table_search}]]*/ null;
+        vClientsClassesTenderListValue.rowdata.table_pagelen = /*[[${clients_classes_tenders_list_table_pagelen}]]*/ null;
+        vClientsClassesTenderListValue.rowdata.table_page = /*[[${clients_classes_tenders_list_table_page}]]*/ null;
+
+        var startDate =  /*[[${clients_classes_tenders_filter_start_date}]]*/ null;
+        vClientsClassesTenderListValue.rowdata.clients_classes_tenders_filter_start_date = startDate;
+
+        var endDate = /*[[${clients_classes_tenders_filter_end_date}]]*/ null;
+        vClientsClassesTenderListValue.rowdata.clients_classes_tenders_filter_end_date = endDate;
+
+        vClientsClassesTenderListValue.rowdata.filter_check = /*[[${filter_check}]]*/ null;
+        vClientsClassesTenderListValue.rowdata.filters_user_id = /*[[${filters_user_id}]]*/ null;
+        vClientsClassesTenderListValue.rowdata.filters_status_id = /*[[${filters_status_id}]]*/ null;
+        vClientsClassesTenderListValue.rowdata.filters_class_id = /*[[${filters_class_id}]]*/ null;
+
+        recreateDataTable(vClientsClassesTenderListValue);
+    });
+</script>
+
+</body>
+</html>

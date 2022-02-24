@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{projects_timetable.header})"></head>
+
+<body class="theme-dark"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="projects_timetable_head_card">
+        <div class="card-header pb-0 mb-0">
+            <div class="card-actions float-right">
+                <a href="#projects_timetable_head_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+            </div>
+            <h5 class="card-title" th:text="#{projects_timetable.caption}"></h5>
+        </div>
+        <div class="card-body pt-0 collapse show" href="#projects_timetable_head_div" data-toggle="collapse" id="projects_timetable_head_div">
+            <div>
+                <span th:replace="projects_timetable/head_card :: projects_timetable_head_body"></span>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="projects_timetable_detail_div" hidden>
+        <div class="card-header pb-0 mb-0">
+            <h5 class="card-title" th:text="#{projects_timetable.detail.caption}"></h5>
+        </div>
+        <div class="card-body pt-0">
+            <div>
+                <span th:replace="projects_timetable/detail_card :: projects_timetable_detail_body"></span>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+<!-- Header -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<script th:replace="projects_timetable/detail_card :: cardscript"></script>
+<script th:replace="projects_timetable/head_card :: cardscript"></script>
+
+</body>
+</html>

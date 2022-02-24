@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="wms_sale_orders_detail_body" th:remove="tag">
+    <div class="row mb-1">
+        <div class="col-12 col-lg-12">
+            <label for="shipping" class="form-label mb-0" th:text="#{wms_sale_orders.main.shipping}"></label>
+            <textarea class="form-control text-dark font-weight-bold" id="shipping" name="shipping" disabled></textarea>
+        </div>
+    </div><!-- SHIPPING Row -->
+
+    <div class="row mb-1">
+        <div class="col-12 col-lg-12">
+            <label for="instructions" class="form-label mb-0" th:text="#{wms_sale_orders.main.instructions}"></label>
+            <textarea class="form-control text-dark font-weight-bold" id="instructions" name="instructions" disabled></textarea>
+        </div>
+    </div><!-- INSTRUCTIONS Row -->
+
+    <div class="row mb-1">
+        <div class="col-12 col-lg-12">
+            <label for="reciver_name" class="form-label mb-0" th:text="#{wms_sale_orders.main.reciver_name}"></label>
+            <input type="text" maxlength="128" class="form-control text-dark font-weight-bold" id="reciver_name" name="reciver_name" disabled>
+        </div>
+    </div><!-- INSTRUCTIONS Row -->
+
+    <div class="row mb-1">
+        <div class="col-12 col-lg-12">
+            <label for="reciver_tel_num" class="form-label mb-0" th:text="#{wms_sale_orders.main.reciver_tel_num}"></label>
+            <input type="text" maxlength="128" class="form-control text-dark font-weight-bold" id="reciver_tel_num" name="reciver_tel_num" disabled>
+        </div>
+    </div><!-- INSTRUCTIONS Row -->
+
+    <div class="row mb-1">
+        <div class="col-12 col-lg-12">
+            <label for="reciver_email" class="form-label mb-0" th:text="#{wms_sale_orders.main.reciver_email}"></label>
+            <input type="text" maxlength="128" class="form-control text-dark font-weight-bold" id="reciver_email" name="reciver_email" disabled>
+        </div>
+    </div><!-- EMAIL Row -->
+
+    <div class="row mb-1">
+        <div class="col-12 col-lg-12">
+            <label for="reciver_address_1" class="form-label mb-0" th:text="#{wms_sale_orders.main.reciver_address_1}"></label>
+            <textarea class="form-control text-dark font-weight-bold" id="reciver_address_1" name="reciver_address_1" disabled></textarea>
+        </div>
+    </div><!-- Address 1 Row -->
+
+    <div class="row mb-1">
+        <div class="col-12 col-lg-12">
+            <label for="reciver_address_2" class="form-label mb-0" th:text="#{wms_sale_orders.main.reciver_address_2}"></label>
+            <textarea class="form-control text-dark font-weight-bold" id="reciver_address_2" name="reciver_address_2" disabled></textarea>
+        </div>
+    </div><!-- Address 2 Row -->
+
+    <div class="row mb-1">
+        <div class="col-12 col-lg-12">
+            <label for="reciver_city" class="form-label mb-0" th:text="#{wms_sale_orders.main.reciver_city}"></label>
+            <input type="text" maxlength="128" class="form-control text-dark font-weight-bold" id="reciver_city" name="reciver_city" disabled>
+        </div>
+    </div><!-- City Row -->
+
+    <div class="row mb-1">
+        <div class="col-12 col-lg-12">
+            <label for="reciver_state" class="form-label mb-0" th:text="#{wms_sale_orders.main.reciver_state}"></label>
+            <input type="text" maxlength="128" class="form-control text-dark font-weight-bold" id="reciver_state" name="reciver_state" disabled>
+        </div>
+    </div><!-- State Row -->
+
+    <div class="row mb-1">
+        <div class="col-12 col-lg-12">
+            <label for="reciver_zip_code" class="form-label mb-0" th:text="#{wms_sale_orders.main.reciver_zip_code}"></label>
+            <input type="text" maxlength="128" class="form-control text-dark font-weight-bold" id="reciver_zip_code" name="reciver_zip_code" disabled>
+        </div>
+    </div><!-- Zip Code Row -->
+
+    <div class="row mb-1">
+        <div class="col-12 col-lg-12">
+            <label for="reciver_zip_country" class="form-label mb-0" th:text="#{wms_sale_orders.main.reciver_zip_country}"></label>
+            <input type="text" maxlength="128" class="form-control text-dark font-weight-bold" id="reciver_zip_country" name="reciver_zip_country" disabled>
+        </div>
+    </div><!-- Zip Country Row -->
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+</script>
+</body>
+</html>

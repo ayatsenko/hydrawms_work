@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="full_world_loads_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="full_world_loads_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="full_world_loads_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{full_world.loads.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <form id="full_world_loads_modal_form" name="full_world_loads_modal_form" class="was-validated" novalidate>
+                    <input type="hidden" id="full_world_loads_modal_mode">
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="full_world_loads_modal_clm_id_row">
+                            <label for="full_world_loads_modal_clm_id" class="form-label" th:text="#{full_world.main.clm_id}"></label>
+                            <input type="number" class="form-control" id="full_world_loads_modal_clm_id" name="full_world_loads_modal_clm_id" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-3 mb-1" id="full_world_loads_modal_clm_num_row">
+                            <label for="full_world_loads_modal_clm_num" class="form-label" th:text="'1. '+ #{full_world.main.clm_num}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="full_world_loads_modal_clm_num" name="full_world_loads_modal_clm_num" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 mb-1" id="cnt_name_row">
+                            <label for="full_world_loads_modal_cnt_name" class="form-label" th:text="'2. '+ #{full_world.main.cnt_name}"></label>
+                            <input type="text" class="form-control" id="full_world_loads_modal_cnt_name" name="full_world_loads_modal_cnt_name" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="clmll_id_row">
+                            <label for="clmll_id" class="form-label" th:text="#{full_world.loads.clmll_id}"></label>
+                            <input type="number" class="form-control" id="clmll_id" name="clmll_id" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-3 mb-1" id="clmll_client_order_num_row">
+                            <label for="clmll_client_order_num" class="form-label" th:text="'3. '+ #{full_world.loads.clmll_client_order_num}"></label>
+                            <input type="text" class="form-control" id="clmll_client_order_num" name="clmll_client_order_num">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 mb-1" id="clm_load_name_row">
+                            <label for="clm_load_name" class="form-label" th:text="'4. '+ #{full_world.loads.clm_load_name}"></label>
+                            <input type="text" maxlength="32" class="form-control" id="clm_load_name" name="clm_load_name">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>                        
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="clm_load_weight_row">
+                            <label for="clm_load_weight" class="form-label" th:text="'5. '+ #{full_world.loads.clm_load_weight}"></label>
+                            <input type="text" class="form-control" id="clm_load_weight" name="clm_load_weight">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 mb-1" id="weight_type_id_row">
+                            <label for="weight_type_id" class="mr-2" th:text="'6. '+#{full_world.loads.weight_type_id}">Weight Type: </label>
+                            <select type="text" id="weight_type_id" name="weight_type_id" class="form-control p-1">
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="clmll_space_count_row">
+                            <label for="clmll_space_count" class="form-label" th:text="'7. '+ #{full_world.loads.clmll_space_count}"></label>
+                            <input type="number" class="form-control" id="clmll_space_count" name="clmll_space_count">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-3 mb-1" id="clmll_load_meters_row">
+                            <label for="clmll_load_meters" class="form-label" th:text="'8. '+ #{full_world.loads.clmll_load_meters}"></label>
+                            <input type="text" class="form-control" id="clmll_load_meters" name="clmll_load_meters">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-3 mb-1" id="clm_load_dims_row">
+                            <label for="clm_load_dims" class="form-label" th:text="'9. '+ #{full_world.loads.clm_load_dims}"></label>
+                            <input type="text" class="form-control" id="clm_load_dims" name="clm_load_dims">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 4 -->
+                    
+                    <div class="form-row">
+                        <div class="col-12 mb-2">
+                            <label for="clm_load_notes" th:text="'10. '+#{full_world.loads.clm_load_notes}"></label>
+                            <textarea class="form-control" rows="5" maxlength="512" minlength="10" style="resize:none;" id="clm_load_notes" name="clm_load_notes">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div>  <!-- Row 5 -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="full_world_loads_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="full_world_loads_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="full_world_loads_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="full_world_loads_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+// Clear Fields
+    function clear_full_world_loads_modal_detail() {
+        $("#full_world_loads_modal_detail input[type=text]").val('');
+        $("#full_world_loads_modal_detail input[type=number]").val('');
+        $("#full_world_loads_modal_detail select").empty();
+        $("#full_world_loads_modal_detail textarea").val('');
+    }
+
+// Block And Required Fields
+    function block_full_world_loads_modal_detail(){
+        $('#clm_load_name').attr('required', true);
+        $('#clm_load_weight').attr('required', true);
+        $('#clm_load_notes').attr('required', true);
+
+        if($('#full_world_loads_modal_mode').val() === "0"){
+            $('#full_world_loads_modal_clm_id_row').attr('hidden',true);
+            $('#clmll_id_row').attr('hidden',true);
+
+            $('#clm_load_name').removeAttr('readonly');
+            $('#clm_load_weight').removeAttr('readonly');
+            $('#clm_load_dims').removeAttr('readonly');
+            $('#clm_load_notes').removeAttr('readonly');
+            $('#weight_type_id').removeAttr('disabled');
+
+            $('#clmll_space_count').removeAttr('readonly');
+            $('#clmll_load_meters').removeAttr('readonly');
+            $('#clmll_client_order_num').removeAttr('readonly');
+        }
+        else if($('#full_world_loads_modal_mode').val() === "1"){
+            $('#full_world_loads_modal_clm_id_row').attr('hidden',true);
+            $('#clmll_id_row').attr('hidden',true);
+
+            $('#clm_load_name').removeAttr('readonly');
+            $('#clm_load_weight').removeAttr('readonly');
+            $('#clm_load_dims').removeAttr('readonly');
+            $('#clm_load_notes').removeAttr('readonly');
+            $('#weight_type_id').removeAttr('disabled');
+
+            $('#clmll_space_count').removeAttr('readonly');
+            $('#clmll_load_meters').removeAttr('readonly');
+            $('#clmll_client_order_num').removeAttr('readonly');
+        }
+        else{
+            $('#full_world_loads_modal_clm_id_row').attr('hidden',true);
+            $('#clmll_id_row').attr('hidden',true);
+
+            $('#clm_load_name').attr('readonly',true);
+            $('#clm_load_weight').attr('readonly',true);
+            $('#clm_load_dims').attr('readonly',true);
+            $('#clm_load_notes').attr('readonly',true);
+            $('#weight_type_id').attr('disabled',true);
+
+            $('#clmll_space_count').attr('readonly',true);
+            $('#clmll_load_meters').attr('readonly',true);
+            $('#clmll_client_order_num').attr('readonly',true);
+        }
+    }
+// Loads List
+    function loadWeightChange(vMode, vWeightTypeID) {
+        $('#weight_type_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/full_world/get_loads_weights_list'}]]*/ "/full_world/get_loads_weights_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (weight_type_list) {
+                for (var i = 0; i < weight_type_list.data.length; i++) {
+                    $("select[name='weight_type_id']").find('option').end().append(
+                        "<option value='" + weight_type_list.data[i].weight_type_id
+                        + "'>" + weight_type_list.data[i].weight_type_name + "</option>");
+                    if(vWeightTypeID !== ''){
+                        $('#weight_type_id').val(vWeightTypeID);
+                    }
+                }
+            }
+        }));
+    }
+
+// Load Function
+    function fill_full_world_loads_modal_detail(aMode){
+        clear_full_world_loads_modal_detail();
+            $('#full_world_loads_modal_mode').val(aMode);
+        block_full_world_loads_modal_detail();
+
+        $('#full_world_loads_modal_clm_id').val(vClaimsValue.rowdata.clm_id);
+        $('#full_world_loads_modal_clm_num').val(vClaimsValue.rowdata.clm_num);
+        $('#full_world_loads_modal_cnt_name').val(vClaimsValue.rowdata.cnt_name);
+
+        if(aMode !== 0){
+            $.ajax({
+                url:/*[[@{'/full_world/get_loads_detail'}]]*/ "full_world/get_loads_detail",
+                type: "get",
+                data: {
+                    "mode": aMode,
+                    "clmll_id": vClaimLoadsValue.rowdata.clmll_id
+                },
+                success: function (full_world_loads_modal_detail) {
+                    $.when(
+                        loadWeightChange(aMode,full_world_loads_modal_detail.data[0].weight_type_id)
+                    ).then(function () {
+                        $('#clmll_id').val(full_world_loads_modal_detail.data[0].clmll_id);
+                        $('#clm_load_name').val(full_world_loads_modal_detail.data[0].clm_load_name);
+                        $('#clm_load_weight').val(full_world_loads_modal_detail.data[0].clm_load_weight);
+                        $('#clm_load_dims').val(full_world_loads_modal_detail.data[0].clm_load_dims);
+                        $('#clm_load_notes').val(full_world_loads_modal_detail.data[0].clm_load_notes);
+
+                        $('#clmll_space_count').val(full_world_loads_modal_detail.data[0].clmll_space_count);
+                        $('#clmll_load_meters').val(full_world_loads_modal_detail.data[0].clmll_load_meters);
+                        $('#clmll_client_order_num').val(full_world_loads_modal_detail.data[0].clmll_client_order_num);
+
+                        $('#full_world_loads_modal').modal('show');
+                    });
+                }
+            });
+        }
+        else{
+            $.when(
+                loadWeightChange(aMode,1)
+            ).then(function(){
+                $('#clmll_space_count').val(0);
+                $('#clmll_load_meters').val('0,00');
+                $('#full_world_loads_modal').modal('show');
+            });
+        }
+    }
+
+// Add button script
+function addFullWorldLoads(){
+    let MainRowID = vClaimsValue.rowdata.clm_id;
+    let RowID = vClaimLoadsValue.rowdata.clmll_id;
+    $.ajax({
+        url: /*[[ @{/full_world/add_loads} ]]*/ "/full_world/add_loads",
+        type: 'POST',
+        data: {
+            "clm_id": MainRowID,
+            "clm_load_name": $('#clm_load_name').val(),
+            "clm_load_weight":  $('#clm_load_weight').val(),
+            "clm_load_dims":  $('#clm_load_dims').val(),
+            "clm_load_notes":  $('#clm_load_notes').val(),
+            "weight_type_id":  $('#weight_type_id').val(),
+            "clmll_space_count":  $('#clmll_space_count').val(),
+            "clmll_load_meters":  $('#clmll_load_meters').val(),
+            "clmll_client_order_num":  $('#clmll_client_order_num').val()
+        },
+        success: function (result) {
+            $('#full_world_loads_modal').modal('hide');
+            vClaimLoadsValue.rowdata.clm_id = MainRowID;
+            vClaimLoadsValue.rowdata.clmll_id = RowID;
+            $(vClaimLoadsValue.table).DataTable().ajax.reload(null, false);
+            vClaimErrorsValue.rowdata.clm_id = MainRowID;
+            $(vClaimErrorsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+}
+
+// Edit button script
+function editFullWorldLoads(){
+    let MainRowID = vClaimsValue.rowdata.clm_id;
+    let RowID = vClaimLoadsValue.rowdata.clmll_id;
+    $.ajax({
+        url: /*[[ @{/full_world/edit_loads} ]]*/ "/full_world/edit_loads",
+        type: 'POST',
+        data: {
+            "clmll_id": RowID,
+            "clm_load_name": $('#clm_load_name').val(),
+            "clm_load_weight":  $('#clm_load_weight').val(),
+            "clm_load_dims":  $('#clm_load_dims').val(),
+            "clm_load_notes":  $('#clm_load_notes').val(),
+            "weight_type_id":  $('#weight_type_id').val(),
+            "clmll_space_count":  $('#clmll_space_count').val(),
+            "clmll_load_meters":  $('#clmll_load_meters').val(),
+            "clmll_client_order_num":  $('#clmll_client_order_num').val()
+        },
+        success: function (result) {
+            $('#full_world_loads_modal').modal('hide');
+            vClaimLoadsValue.rowdata.clm_id = MainRowID;
+            vClaimLoadsValue.rowdata.clmll_id = RowID;
+            $(vClaimLoadsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+}
+
+// Del button script
+function delFullWorldLoads(){
+    let MainRowID = vClaimsValue.rowdata.clm_id;
+    let RowID = vClaimLoadsValue.rowdata.clmll_id;
+    $.ajax({
+        url: /*[[ @{/full_world/del_loads} ]]*/ "/full_world/del_loads",
+        type: 'POST',
+        data: {
+            "clmll_id": RowID
+        },
+        success: function (result) {
+            $('#full_world_loads_modal').modal('hide');
+            vClaimLoadsValue.rowdata.clm_id = MainRowID;
+            $(vClaimLoadsValue.table).DataTable().ajax.reload(null, false);
+            vClaimErrorsValue.rowdata.clm_id = MainRowID;
+            $(vClaimErrorsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+}
+
+// Add button script
+$('#full_world_loads_modal_addbtn').click(function(){
+    $('#full_world_loads_modal_form').submit();
+});
+// Edit button script
+$('#full_world_loads_modal_editbtn').click(function(){
+    $('#full_world_loads_modal_form').submit();
+});
+// Del button script
+$('#full_world_loads_modal_delbtn').click(function(){
+    $('#full_world_loads_modal_form').submit();
+});
+
+//Validation Form
+$('#full_world_loads_modal_form').validate({
+    rules: {
+        // amount: {
+        //     //money: true, // not a valid rule
+        //     required: true
+        // },
+        // comment: {
+        //     required: false
+        // }
+    },
+    errorPlacement: function(error,element) {
+        return true;
+    },
+    submitHandler: function (form) {
+        if($('#full_world_loads_modal_mode').val() === '0') {
+            addFullWorldLoads();
+        }
+        else if($('#full_world_loads_modal_mode').val() === '1') {
+            editFullWorldLoads();
+        }
+        else if($('#full_world_loads_modal_mode').val() === '2') {
+            delFullWorldLoads();
+        }
+        return false;
+    }
+});
+
+// OnClick Function
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+
+<span th:fragment="top" th:remove="tag">
+<!--/* top fragment */-->
+    <div class="splash active">
+        <div class="splash-icon"></div>
+    </div>
+
+<div class="wrapper">
+    <nav th:replace="fragments/leftmenu :: leftmenu">left menu</nav>
+
+    <div class="main">
+
+        <nav th:replace="fragments/navigation :: navigation">navigation</nav>
+
+        <main class="page-content">
+            <div class="container-fluid flex-fill w-100 pl-2 pr-2 pt-0" id="layout_div">
+            <a onclick="topFunction()" class="btn btn-outline-primary" id="myBtn" title="Go to top">UP</a>
+</span>
+
+<span th:fragment="bottom" th:remove="tag">
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <footer th:replace="fragments/footer :: footer"></footer>
+    <footer th:replace="layout/footer :: footer"></footer>
+</span>
+
+</body>
+</html>

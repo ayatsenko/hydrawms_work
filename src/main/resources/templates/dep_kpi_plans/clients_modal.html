@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="dep_kpi_plans_clients_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="dep_kpi_plans_clients_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{dep_kpi_plans.clients.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                        <input type="text" class="form-control" id="dep_kpi_plans_clients_modal_mode" name="dep_kpi_plans_clients_modal_mode" hidden>
+                        <div class="row mb-1">
+                            <div class="col-12" id="dep_kpi_plans_clients_modal_cnt_name_row">
+                                <label for="dep_kpi_plans_clients_modal_cnt_name" class="form-label" th:text="'1. '+ #{dep_kpi_plans.clients.cnt_name}"></label>
+                                <div class="input-group">
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <input type="hidden" class="form-control" id="dep_kpi_plans_clients_modal_cnt_id" name="dep_kpi_plans_clients_modal_cnt_id">
+                                    <input type="text" class="form-control" id="dep_kpi_plans_clients_modal_cnt_name" name="dep_kpi_plans_clients_modal_cnt_name" readonly>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                                </div>
+                            </div>                            
+                        </div><!-- Client -->
+
+                        <div class="form-row">
+                            <div class="col-12 col-md-4 mb-1" id="cnt_filter_row">
+                                <label for="cnt_filter" class="form-label" th:text="'1. '+ #{part_world.main.cnt_filter}"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="cnt_filter" name="cnt_filter">
+                                    <button type="button" id="cnt_filter_check" name="cnt_filter_check" class="btn btn-outline-primary"><i class="fas fa-database"></i></button>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-8 mb-1" id="dep_kpi_plans_clients_modal_new_cnt_id_row">
+                                <label for="dep_kpi_plans_clients_modal_new_cnt_id" th:text="#{dep_kpi_plans.clients.cnt_name}"></label>
+                                <div class="input-group d-flex">
+                                    <select type="text" id="dep_kpi_plans_clients_modal_new_cnt_id" name="dep_kpi_plans_clients_modal_new_cnt_id" class="form-control p-1" aria-describedby="dep_kpi_plans_clients_modal_new_cnt_id_helpBlock">
+                                    </select>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                                </div>
+                            </div>
+                        </div> <!-- Row 2 -->                    
+                    
+                        <div class="row mb-1">
+                            <div class="col-12" id="dep_kpi_plans_clients_modal_dep_kpi_type_id_row">
+                                <label for="dep_kpi_plans_clients_modal_dep_kpi_type_name" class="form-label" th:text="'2. '+ #{dep_kpi_plans.main.dep_kpi_type_id}"></label>
+                                <div class="input-group">
+                                    <input type="hidden" class="form-control" id="dep_kpi_plans_clients_modal_dep_kpi_type_id" name="dep_kpi_plans_clients_modal_dep_kpi_type_id">
+                                    <input type="text" class="form-control" id="dep_kpi_plans_clients_modal_dep_kpi_type_name" name="dep_kpi_plans_clients_modal_dep_kpi_type_name" readonly>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                                </div>
+                            </div>
+                        </div><!-- Parameter -->
+
+                        <div class="row mb-1">
+                            <div class="col-12 col-md-4">
+                                <label for="dep_kpi_plans_clients_modal_month_1" th:text="'3. '+#{month.01}"></label>
+                                <input type="number" class="form-control" id="dep_kpi_plans_clients_modal_month_1" name="dep_kpi_plans_clients_modal_month_1">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <label for="dep_kpi_plans_clients_modal_month_2" th:text="'4. '+#{month.02}"></label>
+                                <input type="number" class="form-control" id="dep_kpi_plans_clients_modal_month_2" name="dep_kpi_plans_clients_modal_month_2">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <label for="dep_kpi_plans_clients_modal_month_3" th:text="'5. '+#{month.03}"></label>
+                                <input type="number" class="form-control" id="dep_kpi_plans_clients_modal_month_3" name="dep_kpi_plans_clients_modal_month_3">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div><!-- Month 1,2,3 -->
+
+                        <div class="row mb-1">
+                            <div class="col-12 col-md-4">
+                                <label for="dep_kpi_plans_clients_modal_month_4" th:text="'6. '+#{month.04}"></label>
+                                <input type="number" class="form-control" id="dep_kpi_plans_clients_modal_month_4" name="dep_kpi_plans_clients_modal_month_4">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <label for="dep_kpi_plans_clients_modal_month_5" th:text="'7. '+#{month.05}"></label>
+                                <input type="number" class="form-control" id="dep_kpi_plans_clients_modal_month_5" name="dep_kpi_plans_clients_modal_month_5">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <label for="dep_kpi_plans_clients_modal_month_6" th:text="'8. '+#{month.06}"></label>
+                                <input type="number" class="form-control" id="dep_kpi_plans_clients_modal_month_6" name="dep_kpi_plans_clients_modal_month_6">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div><!-- Month 4,5,6 -->
+
+                        <div class="row mb-1">
+                            <div class="col-12 col-md-4">
+                                <label for="dep_kpi_plans_clients_modal_month_7" th:text="'9. '+#{month.07}"></label>
+                                <input type="number" class="form-control" id="dep_kpi_plans_clients_modal_month_7" name="dep_kpi_plans_clients_modal_month_7">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <label for="dep_kpi_plans_clients_modal_month_8" th:text="'10. '+#{month.08}"></label>
+                                <input type="number" class="form-control" id="dep_kpi_plans_clients_modal_month_8" name="dep_kpi_plans_clients_modal_month_8">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <label for="dep_kpi_plans_clients_modal_month_9" th:text="'11. '+#{month.09}"></label>
+                                <input type="number" class="form-control" id="dep_kpi_plans_clients_modal_month_9" name="dep_kpi_plans_clients_modal_month_9">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div><!-- Month 7,8,9 -->
+
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <label for="dep_kpi_plans_clients_modal_month_10" th:text="'12. '+#{month.10}"></label>
+                                <input type="number" class="form-control" id="dep_kpi_plans_clients_modal_month_10" name="dep_kpi_plans_clients_modal_month_10">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <label for="dep_kpi_plans_clients_modal_month_11" th:text="'13. '+#{month.11}"></label>
+                                <input type="number" class="form-control" id="dep_kpi_plans_clients_modal_month_11" name="dep_kpi_plans_clients_modal_month_11">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <label for="dep_kpi_plans_clients_modal_month_12" th:text="'14. '+#{month.12}"></label>
+                                <input type="number" class="form-control" id="dep_kpi_plans_clients_modal_month_12" name="dep_kpi_plans_clients_modal_month_12">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div><!-- Month 10,11,12 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="dep_kpi_plans_clients_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="dep_kpi_plans_clients_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="dep_kpi_plans_clients_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="dep_kpi_plans_clients_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    // Clear Fields
+    function clear_dep_kpi_plans_clients_modal_detail() {
+        $("#dep_kpi_plans_clients_modal_detail input[type=text]").val('');
+        $("#dep_kpi_plans_clients_modal_detail input[type=number]").val('');
+        $("#dep_kpi_plans_clients_modal_detail select").empty();
+        $("#dep_kpi_plans_clients_modal_detail textarea").val('');
+    }
+
+    // Block And Required Fields
+    function block_dep_kpi_plans_clients_modal_detail() {
+        if($('#dep_kpi_plans_clients_modal_mode').val() === '0'){
+            $('#dep_kpi_plans_clients_modal_month_1').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_2').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_3').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_4').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_5').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_6').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_7').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_8').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_9').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_10').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_11').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_12').removeAttr('readonly');
+        }
+        else if($('#dep_kpi_plans_clients_modal_mode').val() === '1'){
+            $('#dep_kpi_plans_clients_modal_month_1').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_2').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_3').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_4').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_5').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_6').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_7').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_8').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_9').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_10').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_11').removeAttr('readonly');
+            $('#dep_kpi_plans_clients_modal_month_12').removeAttr('readonly');
+        }
+        else{
+            $('#dep_kpi_plans_clients_modal_month_1').attr('readonly',true);
+            $('#dep_kpi_plans_clients_modal_month_2').attr('readonly',true);
+            $('#dep_kpi_plans_clients_modal_month_3').attr('readonly',true);
+            $('#dep_kpi_plans_clients_modal_month_4').attr('readonly',true);
+            $('#dep_kpi_plans_clients_modal_month_5').attr('readonly',true);
+            $('#dep_kpi_plans_clients_modal_month_6').attr('readonly',true);
+            $('#dep_kpi_plans_clients_modal_month_7').attr('readonly',true);
+            $('#dep_kpi_plans_clients_modal_month_8').attr('readonly',true);
+            $('#dep_kpi_plans_clients_modal_month_9').attr('readonly',true);
+            $('#dep_kpi_plans_clients_modal_month_10').attr('readonly',true);
+            $('#dep_kpi_plans_clients_modal_month_11').attr('readonly',true);
+            $('#dep_kpi_plans_clients_modal_month_12').attr('readonly',true);
+        }
+    }
+
+    // Client List
+    function planClientChange(vCNTID,vCNTFILTER) {
+        $('#dep_kpi_plans_clients_modal_new_cnt_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/dep_kpi_plans/get_client_list'}]]*/ "/dep_kpi_plans/get_client_list",
+            type: "get",
+            data: {
+                "mode": $('#dep_kpi_plans_clients_modal_mode').val(),
+                "dep_kpi_type_year": $('#dep_kpi_plans_year').val(),
+                "dep_id": vUsersKPIDepPlanMainValue.rowdata.dep_id,
+                "cnt_filter": vCNTFILTER
+            },
+            success: function (client_list) {
+                for (var i = 0; i < client_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='dep_kpi_plans_clients_modal_new_cnt_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='dep_kpi_plans_clients_modal_new_cnt_id']").find('option').end().append(
+                        "<option value='" + client_list.data[i].cnt_id
+                        + "'>" + client_list.data[i].cnt_name + "</option>");
+                }
+                if(vCNTID != null){
+                    $("#dep_kpi_plans_clients_modal_new_cnt_id").val(vCNTID);
+                }
+            }
+        }));
+    }
+
+    // Load Function
+    function fill_dep_kpi_plans_clients_modal_detail(aMode) {
+        $('#dep_kpi_plans_clients_modal_mode').val(aMode);
+        clear_dep_kpi_plans_clients_modal_detail();
+        block_dep_kpi_plans_clients_modal_detail();
+
+        $('#dep_kpi_plans_clients_modal_dep_kpi_type_id').val($('#dep_kpi_type_list').val());
+        $('#dep_kpi_plans_clients_modal_dep_kpi_type_name').val($("#dep_kpi_type_list option:selected").text());
+
+        if($('#dep_kpi_plans_clients_modal_mode').val() > 0) {
+            $('#cnt_filter_row').attr('hidden',true);
+            $('#dep_kpi_plans_clients_modal_new_cnt_id_row').attr('hidden',true);
+
+            $('#dep_kpi_plans_clients_modal_cnt_name_row').removeAttr('hidden');
+            $('#dep_kpi_plans_clients_modal_cnt_id').val(vUsersKPIDepPlanClientsValue.rowdata.cnt_id);
+            $('#dep_kpi_plans_clients_modal_cnt_name').val(vUsersKPIDepPlanClientsValue.rowdata.cnt_name);
+
+            $('#dep_kpi_plans_clients_modal_month_1').attr('required', true).val(vUsersKPIDepPlanClientsValue.rowdata.month_1);
+            $('#dep_kpi_plans_clients_modal_month_2').attr('required', true).val(vUsersKPIDepPlanClientsValue.rowdata.month_2);
+            $('#dep_kpi_plans_clients_modal_month_3').attr('required', true).val(vUsersKPIDepPlanClientsValue.rowdata.month_3);
+            $('#dep_kpi_plans_clients_modal_month_4').attr('required', true).val(vUsersKPIDepPlanClientsValue.rowdata.month_4);
+            $('#dep_kpi_plans_clients_modal_month_5').attr('required', true).val(vUsersKPIDepPlanClientsValue.rowdata.month_5);
+            $('#dep_kpi_plans_clients_modal_month_6').attr('required', true).val(vUsersKPIDepPlanClientsValue.rowdata.month_6);
+            $('#dep_kpi_plans_clients_modal_month_7').attr('required', true).val(vUsersKPIDepPlanClientsValue.rowdata.month_7);
+            $('#dep_kpi_plans_clients_modal_month_8').attr('required', true).val(vUsersKPIDepPlanClientsValue.rowdata.month_8);
+            $('#dep_kpi_plans_clients_modal_month_9').attr('required', true).val(vUsersKPIDepPlanClientsValue.rowdata.month_9);
+            $('#dep_kpi_plans_clients_modal_month_10').attr('required', true).val(vUsersKPIDepPlanClientsValue.rowdata.month_10);
+            $('#dep_kpi_plans_clients_modal_month_11').attr('required', true).val(vUsersKPIDepPlanClientsValue.rowdata.month_11);
+            $('#dep_kpi_plans_clients_modal_month_12').attr('required', true).val(vUsersKPIDepPlanClientsValue.rowdata.month_12);
+        }
+        else{
+            $('#cnt_filter_row').removeAttr('hidden');
+            $('#dep_kpi_plans_clients_modal_new_cnt_id_row').removeAttr('hidden');
+            $('#dep_kpi_plans_clients_modal_cnt_name_row').attr('hidden',true);
+
+            $('#dep_kpi_plans_clients_modal_month_1').attr('required', true).val(0);
+            $('#dep_kpi_plans_clients_modal_month_2').attr('required', true).val(0);
+            $('#dep_kpi_plans_clients_modal_month_3').attr('required', true).val(0);
+            $('#dep_kpi_plans_clients_modal_month_4').attr('required', true).val(0);
+            $('#dep_kpi_plans_clients_modal_month_5').attr('required', true).val(0);
+            $('#dep_kpi_plans_clients_modal_month_6').attr('required', true).val(0);
+            $('#dep_kpi_plans_clients_modal_month_7').attr('required', true).val(0);
+            $('#dep_kpi_plans_clients_modal_month_8').attr('required', true).val(0);
+            $('#dep_kpi_plans_clients_modal_month_9').attr('required', true).val(0);
+            $('#dep_kpi_plans_clients_modal_month_10').attr('required', true).val(0);
+            $('#dep_kpi_plans_clients_modal_month_11').attr('required', true).val(0);
+            $('#dep_kpi_plans_clients_modal_month_12').attr('required', true).val(0);
+        }
+        $('#dep_kpi_plans_clients_modal').modal('show');
+    }
+
+// Addbutton script
+    $('#dep_kpi_plans_clients_modal_addbtn').click(function(){
+        var MainRowID = vUsersKPIDepPlanMainValue.rowdata.dep_id;
+        var CntRowID = vUsersKPIDepPlanClientsValue.rowdata.cnt_id;
+        var DepKPIOPlansYear = $('#dep_kpi_plans_year').val();
+        var DepKPITypeID = $('#dep_kpi_type_list').val();
+        $.ajax({
+            url: /*[[ @{/dep_kpi_plans/add_kpi_clients_plans} ]]*/ "/dep_kpi_plans/add_kpi_clients_plans",
+            type: 'POST',
+            data: {
+                "dep_id": MainRowID,
+                "dep_kpi_year": DepKPIOPlansYear,
+                "cnt_id": $('#dep_kpi_plans_clients_modal_new_cnt_id').val(),
+                "month_1": $('#dep_kpi_plans_clients_modal_month_1').val(),
+                "month_2": $('#dep_kpi_plans_clients_modal_month_2').val(),
+                "month_3": $('#dep_kpi_plans_clients_modal_month_3').val(),
+                "month_4": $('#dep_kpi_plans_clients_modal_month_4').val(),
+                "month_5": $('#dep_kpi_plans_clients_modal_month_5').val(),
+                "month_6": $('#dep_kpi_plans_clients_modal_month_6').val(),
+                "month_7": $('#dep_kpi_plans_clients_modal_month_7').val(),
+                "month_8": $('#dep_kpi_plans_clients_modal_month_8').val(),
+                "month_9": $('#dep_kpi_plans_clients_modal_month_9').val(),
+                "month_10": $('#dep_kpi_plans_clients_modal_month_10').val(),
+                "month_11": $('#dep_kpi_plans_clients_modal_month_11').val(),
+                "month_12": $('#dep_kpi_plans_clients_modal_month_12').val()
+            },
+            success: function (result) {
+                $('#dep_kpi_plans_clients_modal').modal('hide');
+                vUsersKPIDepPlanClientsValue.rowdata.cnt_id = CntRowID;
+                vUsersKPIDepPlanClientsValue.rowdata.dep_kpi_plans_year = DepKPIOPlansYear;
+                vUsersKPIDepPlanClientsValue.rowdata.dep_kpi_type_id = DepKPITypeID;
+                $(vUsersKPIDepPlanClientsValue.table).DataTable().ajax.reload(null, false);
+                vUsersKPIDepPlanMainValue.rowdata.dep_id = MainRowID;
+                vUsersKPIDepPlanMainValue.rowdata.dep_kpi_plans_year = DepKPIOPlansYear;
+                vUsersKPIDepPlanMainValue.rowdata.dep_kpi_type_id = DepKPITypeID;
+                $(vUsersKPIDepPlanMainValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    });
+
+    // Edit button script
+    $('#dep_kpi_plans_clients_modal_editbtn').click(function(){
+        var MainRowID = vUsersKPIDepPlanMainValue.rowdata.dep_id;
+        var CntRowID = vUsersKPIDepPlanClientsValue.rowdata.cnt_id;
+        var DepKPIOPlansYear = $('#dep_kpi_plans_year').val();
+        var DepKPITypeID = $('#dep_kpi_type_list').val();
+        $.ajax({
+            url: /*[[ @{/dep_kpi_plans/edit_kpi_clients_plans} ]]*/ "/dep_kpi_plans/edit_kpi_clients_plans",
+            type: 'POST',
+            data: {
+                "dep_id": MainRowID,
+                "dep_kpi_year": DepKPIOPlansYear,
+                "cnt_id": CntRowID,
+                "month_1": $('#dep_kpi_plans_clients_modal_month_1').val(),
+                "month_2": $('#dep_kpi_plans_clients_modal_month_2').val(),
+                "month_3": $('#dep_kpi_plans_clients_modal_month_3').val(),
+                "month_4": $('#dep_kpi_plans_clients_modal_month_4').val(),
+                "month_5": $('#dep_kpi_plans_clients_modal_month_5').val(),
+                "month_6": $('#dep_kpi_plans_clients_modal_month_6').val(),
+                "month_7": $('#dep_kpi_plans_clients_modal_month_7').val(),
+                "month_8": $('#dep_kpi_plans_clients_modal_month_8').val(),
+                "month_9": $('#dep_kpi_plans_clients_modal_month_9').val(),
+                "month_10": $('#dep_kpi_plans_clients_modal_month_10').val(),
+                "month_11": $('#dep_kpi_plans_clients_modal_month_11').val(),
+                "month_12": $('#dep_kpi_plans_clients_modal_month_12').val()
+            },
+            success: function (result) {
+                $('#dep_kpi_plans_clients_modal').modal('hide');
+                vUsersKPIDepPlanClientsValue.rowdata.cnt_id = CntRowID;
+                vUsersKPIDepPlanClientsValue.rowdata.dep_kpi_plans_year = DepKPIOPlansYear;
+                vUsersKPIDepPlanClientsValue.rowdata.dep_kpi_type_id = DepKPITypeID;
+                $(vUsersKPIDepPlanClientsValue.table).DataTable().ajax.reload(null, false);
+                vUsersKPIDepPlanMainValue.rowdata.dep_id = MainRowID;
+                vUsersKPIDepPlanMainValue.rowdata.dep_kpi_plans_year = DepKPIOPlansYear;
+                vUsersKPIDepPlanMainValue.rowdata.dep_kpi_type_id = DepKPITypeID;
+                $(vUsersKPIDepPlanMainValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    });
+    //On Change
+    $('#cnt_filter_check').click(function() {
+        planClientChange(
+            $('#dep_kpi_plans_clients_modal_new_cnt_id').val(),
+            $('#cnt_filter').val()
+        );
+    });
+</script>
+
+</body>
+</html>

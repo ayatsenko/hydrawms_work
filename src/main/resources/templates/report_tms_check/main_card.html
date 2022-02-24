@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_tms_check_main_body" th:remove="tag">
+        <div><table id="table_report_tms_check_main" class="table new_table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+        var ser_id_show, ser_name_show,
+                crm_count_month_1_show, crm_fin_month_1_show, system_count_month_1_show, system_fin_month_1_show,
+                crm_count_month_2_show, crm_fin_month_2_show, system_count_month_2_show, system_fin_month_2_show,
+                crm_count_month_3_show, crm_fin_month_3_show, system_count_month_3_show, system_fin_month_3_show,
+                crm_count_month_4_show, crm_fin_month_4_show, system_count_month_4_show, system_fin_month_4_show,
+                crm_count_month_5_show, crm_fin_month_5_show, system_count_month_5_show, system_fin_month_5_show,
+                crm_count_month_6_show, crm_fin_month_6_show, system_count_month_6_show, system_fin_month_6_show,
+                crm_count_month_7_show, crm_fin_month_7_show, system_count_month_7_show, system_fin_month_7_show,
+                crm_count_month_8_show, crm_fin_month_8_show, system_count_month_8_show, system_fin_month_8_show,
+                crm_count_month_9_show, crm_fin_month_9_show, system_count_month_9_show, system_fin_month_9_show,
+                crm_count_month_10_show, crm_fin_month_10_show, system_count_month_10_show, system_fin_month_10_show,
+                crm_count_month_11_show, crm_fin_month_11_show, system_count_month_11_show, system_fin_month_11_show,
+                crm_count_month_12_show, crm_fin_month_12_show, system_count_month_12_show, system_fin_month_12_show,
+                crm_count_month_13_show, crm_fin_month_13_show, system_count_month_13_show, system_fin_month_13_show;
+
+        var ser_id_width, ser_name_width,
+                crm_count_month_1_width, crm_fin_month_1_width, system_count_month_1_width, system_fin_month_1_width,
+                crm_count_month_2_width, crm_fin_month_2_width, system_count_month_2_width, system_fin_month_2_width,
+                crm_count_month_3_width, crm_fin_month_3_width, system_count_month_3_width, system_fin_month_3_width,
+                crm_count_month_4_width, crm_fin_month_4_width, system_count_month_4_width, system_fin_month_4_width,
+                crm_count_month_5_width, crm_fin_month_5_width, system_count_month_5_width, system_fin_month_5_width,
+                crm_count_month_6_width, crm_fin_month_6_width, system_count_month_6_width, system_fin_month_6_width,
+                crm_count_month_7_width, crm_fin_month_7_width, system_count_month_7_width, system_fin_month_7_width,
+                crm_count_month_8_width, crm_fin_month_8_width, system_count_month_8_width, system_fin_month_8_width,
+                crm_count_month_9_width, crm_fin_month_9_width, system_count_month_9_width, system_fin_month_9_width,
+                crm_count_month_10_width, crm_fin_month_10_width, system_count_month_10_width, system_fin_month_10_width,
+                crm_count_month_11_width, crm_fin_month_11_width, system_count_month_11_width, system_fin_month_11_width,
+                crm_count_month_12_width, crm_fin_month_12_width, system_count_month_12_width, system_fin_month_12_width,
+                crm_count_month_13_width, crm_fin_month_13_width, system_count_month_13_width, system_fin_month_13_width;
+
+        var ser_id_class, ser_name_class,
+                crm_count_month_1_class, crm_fin_month_1_class, system_count_month_1_class, system_fin_month_1_class,
+                crm_count_month_2_class, crm_fin_month_2_class, system_count_month_2_class, system_fin_month_2_class,
+                crm_count_month_3_class, crm_fin_month_3_class, system_count_month_3_class, system_fin_month_3_class,
+                crm_count_month_4_class, crm_fin_month_4_class, system_count_month_4_class, system_fin_month_4_class,
+                crm_count_month_5_class, crm_fin_month_5_class, system_count_month_5_class, system_fin_month_5_class,
+                crm_count_month_6_class, crm_fin_month_6_class, system_count_month_6_class, system_fin_month_6_class,
+                crm_count_month_7_class, crm_fin_month_7_class, system_count_month_7_class, system_fin_month_7_class,
+                crm_count_month_8_class, crm_fin_month_8_class, system_count_month_8_class, system_fin_month_8_class,
+                crm_count_month_9_class, crm_fin_month_9_class, system_count_month_9_class, system_fin_month_9_class,
+                crm_count_month_10_class, crm_fin_month_10_class, system_count_month_10_class, system_fin_month_10_class,
+                crm_count_month_11_class, crm_fin_month_11_class, system_count_month_11_class, system_fin_month_11_class,
+                crm_count_month_12_class, crm_fin_month_12_class, system_count_month_12_class, system_fin_month_12_class,
+                crm_count_month_13_class, crm_fin_month_13_class, system_count_month_13_class, system_fin_month_13_class;
+
+        vJanHeader = /*[[#{month.01}]]*/ null;
+        vFebHeader = /*[[#{month.02}]]*/ null;
+        vMarchHeader = /*[[#{month.03}]]*/ null;
+        vAprlHeader = /*[[#{month.04}]]*/ null;
+        vMayHeader = /*[[#{month.05}]]*/ null;
+        vJuneHeader = /*[[#{month.06}]]*/ null;
+        vJulyHeader = /*[[#{month.07}]]*/ null;
+        vAugHeader = /*[[#{month.08}]]*/ null;
+        vSepHeader = /*[[#{month.09}]]*/ null;
+        vOctHeader = /*[[#{month.10}]]*/ null;
+        vNovHeader = /*[[#{month.11}]]*/ null;
+        vDecHeader = /*[[#{month.12}]]*/ null;
+        vAllHeader = /*[[#{month.all}]]*/ null;
+
+        if(mobileScreenSize){
+                vDomParam = "Blfrtip";
+        }
+        else if(smallScreenSize){
+                vDomParam = "Blfrtip";
+                ser_id_show = false;
+                ser_id_width = "";
+                ser_id_class = "";
+                ser_name_show = true;
+                ser_name_width = "100px";
+                ser_name_class = "small_size small_head_size small_footer_size head-center text-center";
+                crm_count_month_1_show = true;
+                crm_count_month_1_width = "30px";
+                crm_count_month_1_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                crm_fin_month_1_show = true;
+                crm_fin_month_1_width = "70px";
+                crm_fin_month_1_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center";
+                system_count_month_1_show = true;
+                system_count_month_1_width = "30px";
+                system_count_month_1_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                system_fin_month_1_show = true;
+                system_fin_month_1_width = "70px";
+                system_fin_month_1_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center";
+
+                crm_count_month_2_show = true;
+                crm_count_month_2_width = "30px";
+                crm_count_month_2_class = "small_size small_head_size small_footer_size head-center text-center";
+                crm_fin_month_2_show = true;
+                crm_fin_month_2_width = "70px";
+                crm_fin_month_2_class = "small_size small_head_size small_footer_size head-center";
+                system_count_month_2_show = true;
+                system_count_month_2_width = "30px";
+                system_count_month_2_class = "small_size small_head_size small_footer_size head-center text-center";
+                system_fin_month_2_show = true;
+                system_fin_month_2_width = "70px";
+                system_fin_month_2_class = "small_size small_head_size small_footer_size head-center";
+
+                crm_count_month_3_show = true;
+                crm_count_month_3_width = "30px";
+                crm_count_month_3_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                crm_fin_month_3_show = true;
+                crm_fin_month_3_width = "70px";
+                crm_fin_month_3_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+                system_count_month_3_show = true;
+                system_count_month_3_width = "30px";
+                system_count_month_3_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                system_fin_month_3_show = true;
+                system_fin_month_3_width = "70px";
+                system_fin_month_3_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+
+                crm_count_month_4_show = true;
+                crm_count_month_4_width = "30px";
+                crm_count_month_4_class = "small_size small_head_size small_footer_size head-center text-center";
+                crm_fin_month_4_show = true;
+                crm_fin_month_4_width = "70px";
+                crm_fin_month_4_class = "small_size small_head_size small_footer_size head-center";
+                system_count_month_4_show = true;
+                system_count_month_4_width = "30px";
+                system_count_month_4_class = "small_size small_head_size small_footer_size head-center text-center";
+                system_fin_month_4_show = true;
+                system_fin_month_4_width = "70px";
+                system_fin_month_4_class = "small_size small_head_size small_footer_size head-center";
+
+                crm_count_month_5_show = true;
+                crm_count_month_5_width = "30px";
+                crm_count_month_5_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                crm_fin_month_5_show = true;
+                crm_fin_month_5_width = "70px";
+                crm_fin_month_5_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+                system_count_month_5_show = true;
+                system_count_month_5_width = "30px";
+                system_count_month_5_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                system_fin_month_5_show = true;
+                system_fin_month_5_width = "70px";
+                system_fin_month_5_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+
+                crm_count_month_6_show = true;
+                crm_count_month_6_width = "30px";
+                crm_count_month_6_class = "small_size small_head_size small_footer_size head-center text-center";
+                crm_fin_month_6_show = true;
+                crm_fin_month_6_width = "70px";
+                crm_fin_month_6_class = "small_size small_head_size small_footer_size head-center";
+                system_count_month_6_show = true;
+                system_count_month_6_width = "30px";
+                system_count_month_6_class = "small_size small_head_size small_footer_size head-center text-center";
+                system_fin_month_6_show = true;
+                system_fin_month_6_width = "70px";
+                system_fin_month_6_class = "small_size small_head_size small_footer_size head-center";
+
+                crm_count_month_7_show = true;
+                crm_count_month_7_width = "30px";
+                crm_count_month_7_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                crm_fin_month_7_show = true;
+                crm_fin_month_7_width = "70px";
+                crm_fin_month_7_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+                system_count_month_7_show = true;
+                system_count_month_7_width = "30px";
+                system_count_month_7_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                system_fin_month_7_show = true;
+                system_fin_month_7_width = "70px";
+                system_fin_month_7_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+
+                crm_count_month_8_show = true;
+                crm_count_month_8_width = "30px";
+                crm_count_month_8_class = "small_size small_head_size small_footer_size head-center text-center";
+                crm_fin_month_8_show = true;
+                crm_fin_month_8_width = "70px";
+                crm_fin_month_8_class = "small_size small_head_size small_footer_size head-center";
+                system_count_month_8_show = true;
+                system_count_month_8_width = "30px";
+                system_count_month_8_class = "small_size small_head_size small_footer_size head-center text-center";
+                system_fin_month_8_show = true;
+                system_fin_month_8_width = "70px";
+                system_fin_month_8_class = "small_size small_head_size small_footer_size head-center";
+
+                crm_count_month_9_show = true;
+                crm_count_month_9_width = "30px";
+                crm_count_month_9_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                crm_fin_month_9_show = true;
+                crm_fin_month_9_width = "70px";
+                crm_fin_month_9_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+                system_count_month_9_show = true;
+                system_count_month_9_width = "30px";
+                system_count_month_9_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                system_fin_month_9_show = true;
+                system_fin_month_9_width = "70px";
+                system_fin_month_9_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+
+                crm_count_month_10_show = true;
+                crm_count_month_10_width = "30px";
+                crm_count_month_10_class = "small_size small_head_size small_footer_size head-center text-center";
+                crm_fin_month_10_show = true;
+                crm_fin_month_10_width = "70px";
+                crm_fin_month_10_class = "small_size small_head_size small_footer_size head-center";
+                system_count_month_10_show = true;
+                system_count_month_10_width = "30px";
+                system_count_month_10_class = "small_size small_head_size small_footer_size head-center text-center";
+                system_fin_month_10_show = true;
+                system_fin_month_10_width = "70px";
+                system_fin_month_10_class = "small_size small_head_size small_footer_size head-center";
+
+                crm_count_month_11_show = true;
+                crm_count_month_11_width = "30px";
+                crm_count_month_11_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                crm_fin_month_11_show = true;
+                crm_fin_month_11_width = "70px";
+                crm_fin_month_11_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+                system_count_month_11_show = true;
+                system_count_month_11_width = "30px";
+                system_count_month_11_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                system_fin_month_11_show = true;
+                system_fin_month_11_width = "70px";
+                system_fin_month_11_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+
+                crm_count_month_12_show = true;
+                crm_count_month_12_width = "30px";
+                crm_count_month_12_class = "small_size small_head_size small_footer_size head-center text-center";
+                crm_fin_month_12_show = true;
+                crm_fin_month_12_width = "70px";
+                crm_fin_month_12_class = "small_size small_head_size small_footer_size head-center";
+                system_count_month_12_show = true;
+                system_count_month_12_width = "30px";
+                system_count_month_12_class = "small_size small_head_size small_footer_size head-center text-center";
+                system_fin_month_12_show = true;
+                system_fin_month_12_width = "70px";
+                system_fin_month_12_class = "small_size small_head_size small_footer_size head-center";
+
+                crm_count_month_13_show = true;
+                crm_count_month_13_width = "30px";
+                crm_count_month_13_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                crm_fin_month_13_show = true;
+                crm_fin_month_13_width = "70px";
+                crm_fin_month_13_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+                system_count_month_13_show = true;
+                system_count_month_13_width = "30px";
+                system_count_month_13_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                system_fin_month_13_show = true;
+                system_fin_month_13_width = "70px";
+                system_fin_month_13_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+
+                vCountHeader = /*[[#{report_tms_check.main.count_header_short}]]*/ null;
+                vFinanceHeader = /*[[#{report_tms_check.main.finance_header_short}]]*/ null;
+                vSerHeader = /*[[#{report_tms_check.main.ser_header_short}]]*/ null;
+                vCRMHeader = /*[[#{report_tms_check.main.crm_header_short}]]*/ null;
+                crm_header_class_grey = "text_small_size text-center head-light-grey";
+                crm_header_class_white = "text_small_size text-center";
+                vSystemHeader = /*[[#{report_tms_check.main.system_header_short}]]*/ null;
+                system_header_class_grey = "text_small_size text-center head-light-grey";
+                system_header_class_white = "text_small_size text-center";
+
+                jan_col_header_class = "text_small_size text-center head-light-grey";
+                feb_col_header_class = "text_small_size text-center";
+                march_col_header_class = "text_small_size text-center head-light-grey";
+                aprl_col_header_class = "text_small_size text-center";
+                may_col_header_class = "text_small_size text-center head-light-grey";
+                june_col_header_class = "text_small_size text-center";
+                july_col_header_class = "text_small_size text-center head-light-grey";
+                aug_col_header_class = "text_small_size text-center";
+                sep_col_header_class = "text_small_size text-center head-light-grey";
+                oct_col_header_class = "text_small_size text-center";
+                nov_col_header_class = "text_small_size text-center head-light-grey";
+                dec_col_header_class = "text_small_size text-center";
+                all_col_header_class = "text_small_size text-center head-light-grey";
+        }
+        else{
+                vDomParam = "Blfrtip";
+                ser_id_show = false;
+                ser_id_width = "";
+                ser_id_class = "";
+                ser_name_show = true;
+                ser_name_width = "100px";
+                ser_name_class = "small_size small_head_size small_footer_size head-center text-center";
+                crm_count_month_1_show = true;
+                crm_count_month_1_width = "30px";
+                crm_count_month_1_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                crm_fin_month_1_show = true;
+                crm_fin_month_1_width = "70px";
+                crm_fin_month_1_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center";
+                system_count_month_1_show = true;
+                system_count_month_1_width = "30px";
+                system_count_month_1_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                system_fin_month_1_show = true;
+                system_fin_month_1_width = "70px";
+                system_fin_month_1_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center";
+
+                crm_count_month_2_show = true;
+                crm_count_month_2_width = "30px";
+                crm_count_month_2_class = "small_size small_head_size small_footer_size head-center text-center";
+                crm_fin_month_2_show = true;
+                crm_fin_month_2_width = "70px";
+                crm_fin_month_2_class = "small_size small_head_size small_footer_size head-center";
+                system_count_month_2_show = true;
+                system_count_month_2_width = "30px";
+                system_count_month_2_class = "small_size small_head_size small_footer_size head-center text-center";
+                system_fin_month_2_show = true;
+                system_fin_month_2_width = "70px";
+                system_fin_month_2_class = "small_size small_head_size small_footer_size head-center";
+
+                crm_count_month_3_show = true;
+                crm_count_month_3_width = "30px";
+                crm_count_month_3_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                crm_fin_month_3_show = true;
+                crm_fin_month_3_width = "70px";
+                crm_fin_month_3_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+                system_count_month_3_show = true;
+                system_count_month_3_width = "30px";
+                system_count_month_3_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                system_fin_month_3_show = true;
+                system_fin_month_3_width = "70px";
+                system_fin_month_3_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+
+                crm_count_month_4_show = true;
+                crm_count_month_4_width = "30px";
+                crm_count_month_4_class = "small_size small_head_size small_footer_size head-center text-center";
+                crm_fin_month_4_show = true;
+                crm_fin_month_4_width = "70px";
+                crm_fin_month_4_class = "small_size small_head_size small_footer_size head-center";
+                system_count_month_4_show = true;
+                system_count_month_4_width = "30px";
+                system_count_month_4_class = "small_size small_head_size small_footer_size head-center text-center";
+                system_fin_month_4_show = true;
+                system_fin_month_4_width = "70px";
+                system_fin_month_4_class = "small_size small_head_size small_footer_size head-center";
+
+                crm_count_month_5_show = true;
+                crm_count_month_5_width = "30px";
+                crm_count_month_5_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                crm_fin_month_5_show = true;
+                crm_fin_month_5_width = "70px";
+                crm_fin_month_5_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+                system_count_month_5_show = true;
+                system_count_month_5_width = "30px";
+                system_count_month_5_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                system_fin_month_5_show = true;
+                system_fin_month_5_width = "70px";
+                system_fin_month_5_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+
+                crm_count_month_6_show = true;
+                crm_count_month_6_width = "30px";
+                crm_count_month_6_class = "small_size small_head_size small_footer_size head-center text-center";
+                crm_fin_month_6_show = true;
+                crm_fin_month_6_width = "70px";
+                crm_fin_month_6_class = "small_size small_head_size small_footer_size head-center";
+                system_count_month_6_show = true;
+                system_count_month_6_width = "30px";
+                system_count_month_6_class = "small_size small_head_size small_footer_size head-center text-center";
+                system_fin_month_6_show = true;
+                system_fin_month_6_width = "70px";
+                system_fin_month_6_class = "small_size small_head_size small_footer_size head-center";
+
+                crm_count_month_7_show = true;
+                crm_count_month_7_width = "30px";
+                crm_count_month_7_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                crm_fin_month_7_show = true;
+                crm_fin_month_7_width = "70px";
+                crm_fin_month_7_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+                system_count_month_7_show = true;
+                system_count_month_7_width = "30px";
+                system_count_month_7_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                system_fin_month_7_show = true;
+                system_fin_month_7_width = "70px";
+                system_fin_month_7_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+
+                crm_count_month_8_show = true;
+                crm_count_month_8_width = "30px";
+                crm_count_month_8_class = "small_size small_head_size small_footer_size head-center text-center";
+                crm_fin_month_8_show = true;
+                crm_fin_month_8_width = "70px";
+                crm_fin_month_8_class = "small_size small_head_size small_footer_size head-center";
+                system_count_month_8_show = true;
+                system_count_month_8_width = "30px";
+                system_count_month_8_class = "small_size small_head_size small_footer_size head-center text-center";
+                system_fin_month_8_show = true;
+                system_fin_month_8_width = "70px";
+                system_fin_month_8_class = "small_size small_head_size small_footer_size head-center";
+
+                crm_count_month_9_show = true;
+                crm_count_month_9_width = "30px";
+                crm_count_month_9_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                crm_fin_month_9_show = true;
+                crm_fin_month_9_width = "70px";
+                crm_fin_month_9_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+                system_count_month_9_show = true;
+                system_count_month_9_width = "30px";
+                system_count_month_9_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                system_fin_month_9_show = true;
+                system_fin_month_9_width = "70px";
+                system_fin_month_9_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+
+                crm_count_month_10_show = true;
+                crm_count_month_10_width = "30px";
+                crm_count_month_10_class = "small_size small_head_size small_footer_size head-center text-center";
+                crm_fin_month_10_show = true;
+                crm_fin_month_10_width = "70px";
+                crm_fin_month_10_class = "small_size small_head_size small_footer_size head-center";
+                system_count_month_10_show = true;
+                system_count_month_10_width = "30px";
+                system_count_month_10_class = "small_size small_head_size small_footer_size head-center text-center";
+                system_fin_month_10_show = true;
+                system_fin_month_10_width = "70px";
+                system_fin_month_10_class = "small_size small_head_size small_footer_size head-center";
+
+                crm_count_month_11_show = true;
+                crm_count_month_11_width = "30px";
+                crm_count_month_11_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                crm_fin_month_11_show = true;
+                crm_fin_month_11_width = "70px";
+                crm_fin_month_11_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+                system_count_month_11_show = true;
+                system_count_month_11_width = "30px";
+                system_count_month_11_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                system_fin_month_11_show = true;
+                system_fin_month_11_width = "70px";
+                system_fin_month_11_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+
+                crm_count_month_12_show = true;
+                crm_count_month_12_width = "30px";
+                crm_count_month_12_class = "small_size small_head_size small_footer_size head-center text-center";
+                crm_fin_month_12_show = true;
+                crm_fin_month_12_width = "70px";
+                crm_fin_month_12_class = "small_size small_head_size small_footer_size head-center";
+                system_count_month_12_show = true;
+                system_count_month_12_width = "30px";
+                system_count_month_12_class = "small_size small_head_size small_footer_size head-center text-center";
+                system_fin_month_12_show = true;
+                system_fin_month_12_width = "70px";
+                system_fin_month_12_class = "small_size small_head_size small_footer_size head-center";
+
+                crm_count_month_13_show = true;
+                crm_count_month_13_width = "30px";
+                crm_count_month_13_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                crm_fin_month_13_show = true;
+                crm_fin_month_13_width = "70px";
+                crm_fin_month_13_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+                system_count_month_13_show = true;
+                system_count_month_13_width = "30px";
+                system_count_month_13_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey text-center";
+                system_fin_month_13_show = true;
+                system_fin_month_13_width = "70px";
+                system_fin_month_13_class = "small_size small_head_size small_footer_size head-center cell-light-grey head-light-grey";
+
+                vCountHeader = /*[[#{report_tms_check.main.count_header_short}]]*/ null;
+                vFinanceHeader = /*[[#{report_tms_check.main.finance_header_short}]]*/ null;
+                vSerHeader = /*[[#{report_tms_check.main.ser_header_short}]]*/ null;
+                vCRMHeader = /*[[#{report_tms_check.main.crm_header_short}]]*/ null;
+                crm_header_class_grey = "text_small_size text-center head-light-grey";
+                crm_header_class_white = "text_small_size text-center";
+                vSystemHeader = /*[[#{report_tms_check.main.system_header_short}]]*/ null;
+                system_header_class_grey = "text_small_size text-center head-light-grey";
+                system_header_class_white = "text_small_size text-center";
+
+                jan_col_header_class = "text_small_size text-center head-light-grey";
+                feb_col_header_class = "text_small_size text-center";
+                march_col_header_class = "text_small_size text-center head-light-grey";
+                aprl_col_header_class = "text_small_size text-center";
+                may_col_header_class = "text_small_size text-center head-light-grey";
+                june_col_header_class = "text_small_size text-center";
+                july_col_header_class = "text_small_size text-center head-light-grey";
+                aug_col_header_class = "text_small_size text-center";
+                sep_col_header_class = "text_small_size text-center head-light-grey";
+                oct_col_header_class = "text_small_size text-center";
+                nov_col_header_class = "text_small_size text-center head-light-grey";
+                dec_col_header_class = "text_small_size text-center";
+                all_col_header_class = "text_small_size text-center head-light-grey";
+        }
+
+        var vReportTMSCheckMain;
+        vReportTMSCheckMain = {
+                table : '#table_report_tms_check_main',
+                header : 'table_report_tms_check_main_header',
+                ajax : {
+                        "url": /*[[@{/report_tms_check/get_main_table}]]*/ "report_tms_check/get_main_table",
+                        "type": "post",
+                        "data": function ( d ) {
+                                d.report_tms_check_start_date = vReportTMSCheckMain.rowdata.report_tms_check_start_date;
+                                d.report_tms_check_end_date = vReportTMSCheckMain.rowdata.report_tms_check_end_date;
+                        }
+                },
+                key : "ser_id",
+                switchControl : report_tms_check_main_switchControl,
+                rowdata:{
+                        ser_id: null,
+                        report_tms_check_start_date: null,
+                        report_tms_check_end_date: null
+                },
+                ordering: true,
+                order: [
+                        [0, "asc"]
+                ],
+                autoWidth: false,
+                scrollY: "500px",
+                scrollX: true,
+                scrollCollapse: true,
+                responsive: false,
+                paging: true,
+                orderCellsTop: true,
+                dom: vDomParam,
+                createdRow: function(row, data, index) {
+                        $(row).css('background-color', '#ffffff');
+                },
+                columnDefs:[
+                        {"targets": [0], "width": ser_id_width, "className": ser_id_class, "visible": ser_id_show},
+                        {"targets": [1], "width": ser_name_width, "className": ser_name_class, "visible": ser_name_show},
+                        {"targets": [2], "width": crm_count_month_1_width, "className": crm_count_month_1_class, "visible": crm_count_month_1_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [3], "width": crm_fin_month_1_width, "className": crm_fin_month_1_class, "visible": crm_fin_month_1_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [4], "width": system_count_month_1_width, "className": system_count_month_1_class, "visible": system_count_month_1_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [5], "width": system_fin_month_1_width, "className": system_fin_month_1_class, "visible": system_fin_month_1_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+
+                        {"targets": [6], "width": crm_count_month_2_width, "className": crm_count_month_2_class, "visible": crm_count_month_2_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [7], "width": crm_fin_month_2_width, "className": crm_fin_month_2_class, "visible": crm_fin_month_2_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [8], "width": system_count_month_2_width, "className": system_count_month_2_class, "visible": system_count_month_2_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [9], "width": system_fin_month_2_width, "className": system_fin_month_2_class, "visible": system_fin_month_2_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+
+                        {"targets": [10], "width": crm_count_month_3_width, "className": crm_count_month_3_class, "visible": crm_count_month_3_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [11], "width": crm_fin_month_3_width, "className": crm_fin_month_3_class, "visible": crm_fin_month_3_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [12], "width": system_count_month_3_width, "className": system_count_month_3_class, "visible": system_count_month_3_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [13], "width": system_fin_month_3_width, "className": system_fin_month_3_class, "visible": system_fin_month_3_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+
+                        {"targets": [14], "width": crm_count_month_4_width, "className": crm_count_month_4_class, "visible": crm_count_month_4_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [15], "width": crm_fin_month_4_width, "className": crm_fin_month_4_class, "visible": crm_fin_month_4_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [16], "width": system_count_month_4_width, "className": system_count_month_4_class, "visible": system_count_month_4_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [17], "width": system_fin_month_4_width, "className": system_fin_month_4_class, "visible": system_fin_month_4_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+
+                        {"targets": [18], "width": crm_count_month_5_width, "className": crm_count_month_5_class, "visible": crm_count_month_5_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [19], "width": crm_fin_month_5_width, "className": crm_fin_month_5_class, "visible": crm_fin_month_5_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [20], "width": system_count_month_5_width, "className": system_count_month_5_class, "visible": system_count_month_5_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [21], "width": system_fin_month_5_width, "className": system_fin_month_5_class, "visible": system_fin_month_5_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+
+                        {"targets": [22], "width": crm_count_month_6_width, "className": crm_count_month_6_class, "visible": crm_count_month_6_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [23], "width": crm_fin_month_6_width, "className": crm_fin_month_6_class, "visible": crm_fin_month_6_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [24], "width": system_count_month_6_width, "className": system_count_month_6_class, "visible": system_count_month_6_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [25], "width": system_fin_month_6_width, "className": system_fin_month_6_class, "visible": system_fin_month_6_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+
+                        {"targets": [26], "width": crm_count_month_7_width, "className": crm_count_month_7_class, "visible": crm_count_month_7_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [27], "width": crm_fin_month_7_width, "className": crm_fin_month_7_class, "visible": crm_fin_month_7_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [28], "width": system_count_month_7_width, "className": system_count_month_7_class, "visible": system_count_month_7_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [29], "width": system_fin_month_7_width, "className": system_fin_month_7_class, "visible": system_fin_month_7_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+
+                        {"targets": [30], "width": crm_count_month_8_width, "className": crm_count_month_8_class, "visible": crm_count_month_8_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [31], "width": crm_fin_month_8_width, "className": crm_fin_month_8_class, "visible": crm_fin_month_8_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [32], "width": system_count_month_8_width, "className": system_count_month_8_class, "visible": system_count_month_8_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [33], "width": system_fin_month_8_width, "className": system_fin_month_8_class, "visible": system_fin_month_8_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+
+                        {"targets": [34], "width": crm_count_month_9_width, "className": crm_count_month_9_class, "visible": crm_count_month_9_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [35], "width": crm_fin_month_9_width, "className": crm_fin_month_9_class, "visible": crm_fin_month_9_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [36], "width": system_count_month_9_width, "className": system_count_month_9_class, "visible": system_count_month_9_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [37], "width": system_fin_month_9_width, "className": system_fin_month_9_class, "visible": system_fin_month_9_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+
+                        {"targets": [38], "width": crm_count_month_10_width, "className": crm_count_month_10_class, "visible": crm_count_month_10_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [39], "width": crm_fin_month_10_width, "className": crm_fin_month_10_class, "visible": crm_fin_month_10_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [40], "width": system_count_month_10_width, "className": system_count_month_10_class, "visible": system_count_month_10_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [41], "width": system_fin_month_10_width, "className": system_fin_month_10_class, "visible": system_fin_month_10_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+
+                        {"targets": [42], "width": crm_count_month_11_width, "className": crm_count_month_11_class, "visible": crm_count_month_11_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [43], "width": crm_fin_month_11_width, "className": crm_fin_month_11_class, "visible": crm_fin_month_11_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [44], "width": system_count_month_11_width, "className": system_count_month_11_class, "visible": system_count_month_11_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [45], "width": system_fin_month_11_width, "className": system_fin_month_11_class, "visible": system_fin_month_11_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+
+                        {"targets": [46], "width": crm_count_month_12_width, "className": crm_count_month_12_class, "visible": crm_count_month_12_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [47], "width": crm_fin_month_12_width, "className": crm_fin_month_12_class, "visible": crm_fin_month_12_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [48], "width": system_count_month_12_width, "className": system_count_month_12_class, "visible": system_count_month_12_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [49], "width": system_fin_month_12_width, "className": system_fin_month_12_class, "visible": system_fin_month_12_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+
+                        {"targets": [50], "width": crm_count_month_13_width, "className": crm_count_month_13_class, "visible": crm_count_month_13_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [51], "width": crm_fin_month_13_width, "className": crm_fin_month_13_class, "visible": crm_fin_month_13_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [52], "width": system_count_month_13_width, "className": system_count_month_13_class, "visible": system_count_month_13_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [53], "width": system_fin_month_13_width, "className": system_fin_month_13_class, "visible": system_fin_month_13_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )}
+                ],
+                columns : [
+                        /*0*/{"title": /*[[#{report_tms_check.main.ser_id}]]*/ "ser_id", "data": "ser_id"},
+                        /*1*/{"title": vSerHeader, "data": "ser_name"},
+                        /*2*/{"title": vCountHeader, "data": "crm_count_month_1"},
+                        /*3*/{"title": vFinanceHeader, "data": "crm_fin_month_1"},
+                        /*4*/{"title": vCountHeader, "data": "system_count_month_1"},
+                        /*5*/{"title": vFinanceHeader, "data": "system_fin_month_1"},
+
+                        /*6*/{"title": vCountHeader, "data": "crm_count_month_2"},
+                        /*7*/{"title": vFinanceHeader, "data": "crm_fin_month_2"},
+                        /*8*/{"title": vCountHeader, "data": "system_count_month_2"},
+                        /*9*/{"title": vFinanceHeader, "data": "system_fin_month_2"},
+
+                        /*10*/{"title": vCountHeader, "data": "crm_count_month_3"},
+                        /*11*/{"title": vFinanceHeader, "data": "crm_fin_month_3"},
+                        /*12*/{"title": vCountHeader, "data": "system_count_month_3"},
+                        /*13*/{"title": vFinanceHeader, "data": "system_fin_month_3"},
+
+                        /*14*/{"title": vCountHeader, "data": "crm_count_month_4"},
+                        /*15*/{"title": vFinanceHeader, "data": "crm_fin_month_4"},
+                        /*16*/{"title": vCountHeader, "data": "system_count_month_4"},
+                        /*17*/{"title": vFinanceHeader, "data": "system_fin_month_4"},
+
+                        /*18*/{"title": vCountHeader, "data": "crm_count_month_5"},
+                        /*19*/{"title": vFinanceHeader, "data": "crm_fin_month_5"},
+                        /*20*/{"title": vCountHeader, "data": "system_count_month_5"},
+                        /*21*/{"title": vFinanceHeader, "data": "system_fin_month_5"},
+
+                        /*22*/{"title": vCountHeader, "data": "crm_count_month_6"},
+                        /*23*/{"title": vFinanceHeader, "data": "crm_fin_month_6"},
+                        /*24*/{"title": vCountHeader, "data": "system_count_month_6"},
+                        /*25*/{"title": vFinanceHeader, "data": "system_fin_month_6"},
+
+                        /*26*/{"title": vCountHeader, "data": "crm_count_month_7"},
+                        /*27*/{"title": vFinanceHeader, "data": "crm_fin_month_7"},
+                        /*28*/{"title": vCountHeader, "data": "system_count_month_7"},
+                        /*29*/{"title": vFinanceHeader, "data": "system_fin_month_7"},
+
+                        /*30*/{"title": vCountHeader, "data": "crm_count_month_8"},
+                        /*31*/{"title": vFinanceHeader, "data": "crm_fin_month_8"},
+                        /*32*/{"title": vCountHeader, "data": "system_count_month_8"},
+                        /*33*/{"title": vFinanceHeader, "data": "system_fin_month_8"},
+
+                        /*34*/{"title": vCountHeader, "data": "crm_count_month_9"},
+                        /*35*/{"title": vFinanceHeader, "data": "crm_fin_month_9"},
+                        /*36*/{"title": vCountHeader, "data": "system_count_month_9"},
+                        /*37*/{"title": vFinanceHeader, "data": "system_fin_month_9"},
+
+                        /*40*/{"title": vCountHeader, "data": "crm_count_month_10"},
+                        /*41*/{"title": vFinanceHeader, "data": "crm_fin_month_10"},
+                        /*42*/{"title": vCountHeader, "data": "system_count_month_10"},
+                        /*43*/{"title": vFinanceHeader, "data": "system_fin_month_10"},
+
+                        /*44*/{"title": vCountHeader, "data": "crm_count_month_11"},
+                        /*45*/{"title": vFinanceHeader, "data": "crm_fin_month_11"},
+                        /*46*/{"title": vCountHeader, "data": "system_count_month_11"},
+                        /*47*/{"title": vFinanceHeader, "data": "system_fin_month_11"},
+
+                        /*48*/{"title": vCountHeader, "data": "crm_count_month_12"},
+                        /*49*/{"title": vFinanceHeader, "data": "crm_fin_month_12"},
+                        /*50*/{"title": vCountHeader, "data": "system_count_month_12"},
+                        /*51*/{"title": vFinanceHeader, "data": "system_fin_month_12"},
+
+                        /*52*/{"title": vCountHeader, "data": "crm_count_month_13"},
+                        /*53*/{"title": vFinanceHeader, "data": "crm_fin_month_13"},
+                        /*54*/{"title": vCountHeader, "data": "system_count_month_13"},
+                        /*55*/{"title": vFinanceHeader, "data": "system_fin_month_13"}
+                ],
+                pageLength: 25,
+                copy_button: true,
+                excel_button: true,
+                pdf_button: true,
+                print_button: true
+        };
+
+        function report_tms_check_main_hide(){
+                $('#report_tms_check_tabs_div').attr('hidden',true);
+        }
+
+        function report_tms_check_month_change(){
+                vReportTMSCheckDetail.rowdata.req_ser_id = vReportTMSCheckMain.rowdata.ser_id;
+                vReportTMSCheckDetail.rowdata.req_month = $('#report_tms_check_month').val();
+                $(vReportTMSCheckDetail.table).DataTable().ajax.reload();
+        }
+
+        function report_tms_check_main_switchControl(){
+                report_tms_check_main_hide();
+                if(vReportTMSCheckMain.rowdata.ser_id != null){
+                        $('#report_tms_check_tabs_div').removeAttr('hidden');
+                        report_tms_check_month_change();
+                }
+                else{
+                        vReportTMSCheckDetail.rowdata.req_ser_id = null;
+                        vReportTMSCheckDetail.rowdata.req_month = null;
+                        vReportTMSCheckDetail.rowdata.doc_id = null;
+                        $(vReportTMSCheckDetail.table).DataTable().clear().draw();
+                }
+        }
+
+        $(document).ready(function(){
+                vReportTMSCheckMain.rowdata.ser_id = /*[[${ser_id}]]*/ null;
+                vReportTMSCheckMain.rowdata.report_tms_check_year = /*[[${report_tms_check_year}]]*/ null;
+
+                vReportTMSCheckMain.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+                vReportTMSCheckMain.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+                vReportTMSCheckMain.rowdata.table_search = /*[[${table_search}]]*/ null;
+                vReportTMSCheckMain.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+                vReportTMSCheckMain.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+                recreateDataTable(vReportTMSCheckMain);
+
+                var depTable = $(vReportTMSCheckMain.table).DataTable();
+                $(depTable.table().header()).attr('id',vReportTMSCheckMain.header);
+
+                if(mobileScreenSize){
+                }
+                else if(smallScreenSize) {
+                        $(vReportTMSCheckMain.table + "_header tr:first").before(
+                                '<tr role="row">' +
+                                '<th></th>' +
+                                '<th colspan="4" id="jan_col_header" width="200px" class="' + jan_col_header_class + '">' + vJanHeader + '</th>' +
+                                '<th colspan="4" id="feb_col_header" width="200px" class="' + feb_col_header_class + '">' + vFebHeader + '</th>' +
+                                '<th colspan="4" id="march_col_header" width="200px" class="' + march_col_header_class + '">' + vMarchHeader + '</th>' +
+                                '<th colspan="4" id="aprl_col_header" width="200px" class="' + aprl_col_header_class + '">' + vAprlHeader + '</th>' +
+                                '<th colspan="4" id="may_col_header" width="200px" class="' + may_col_header_class + '">' + vMayHeader + '</th>' +
+                                '<th colspan="4" id="june_col_header" width="200px" class="' + june_col_header_class + '">' + vJuneHeader + '</th>' +
+                                '<th colspan="4" id="july_col_header" width="200px" class="' + july_col_header_class + '">' + vJulyHeader + '</th>' +
+                                '<th colspan="4" id="aug_col_header" width="200px" class="' + aug_col_header_class + '">' + vAugHeader + '</th>' +
+                                '<th colspan="4" id="sep_col_header" width="200px" class="' + sep_col_header_class + '">' + vSepHeader + '</th>' +
+                                '<th colspan="4" id="oct_col_header" width="200px" class="' + oct_col_header_class + '">' + vOctHeader + '</th>' +
+                                '<th colspan="4" id="nov_col_header" width="200px" class="' + nov_col_header_class + '">' + vNovHeader + '</th>' +
+                                '<th colspan="4" id="dec_col_header" width="200px" class="' + dec_col_header_class + '">' + vDecHeader + '</th>' +
+                                '<th colspan="4" id="all_col_header" width="200px" class="' + all_col_header_class + '">' + vAllHeader + '</th>' +
+                                '</tr>'+
+
+                                '<tr role="row">' +
+                                '<th></th>' +
+                                '<th colspan="2" id="crm_month_1_header" width="100px" class="' + crm_header_class_grey + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_1_header" width="100px" class="' + system_header_class_grey + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_2_header" width="100px" class="' + crm_header_class_white + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_2_header" width="100px" class="' + system_header_class_white + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_3_header" width="100px" class="' + crm_header_class_grey + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_3_header" width="100px" class="' + system_header_class_grey + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_4_header" width="100px" class="' + crm_header_class_white + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_4_header" width="100px" class="' + system_header_class_white + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_5_header" width="100px" class="' + crm_header_class_grey + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_5_header" width="100px" class="' + system_header_class_grey + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_6_header" width="100px" class="' + crm_header_class_white + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_6_header" width="100px" class="' + system_header_class_white + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_7_header" width="100px" class="' + crm_header_class_grey + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_7_header" width="100px" class="' + system_header_class_grey + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_8_header" width="100px" class="' + crm_header_class_white + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_8_header" width="100px" class="' + system_header_class_white + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_9_header" width="100px" class="' + crm_header_class_grey + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_9_header" width="100px" class="' + system_header_class_grey + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_10_header" width="100px" class="' + crm_header_class_white + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_10_header" width="100px" class="' + system_header_class_white + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_11_header" width="100px" class="' + crm_header_class_grey + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_11_header" width="100px" class="' + system_header_class_grey + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_12_header" width="100px" class="' + crm_header_class_white + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_12_header" width="100px" class="' + system_header_class_white + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_13_header" width="100px" class="' + crm_header_class_grey + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_13_header" width="100px" class="' + system_header_class_grey + '">' + vSystemHeader + '</th>' +
+                                '</tr>'
+                        );
+                }
+                else {
+                        $(vReportTMSCheckMain.table + "_header tr:first").before(
+                                '<tr role="row">' +
+                                '<th></th>' +
+                                '<th colspan="4" id="jan_col_header" width="200px" class="' + jan_col_header_class + '">' + vJanHeader + '</th>' +
+                                '<th colspan="4" id="feb_col_header" width="200px" class="' + feb_col_header_class + '">' + vFebHeader + '</th>' +
+                                '<th colspan="4" id="march_col_header" width="200px" class="' + march_col_header_class + '">' + vMarchHeader + '</th>' +
+                                '<th colspan="4" id="aprl_col_header" width="200px" class="' + aprl_col_header_class + '">' + vAprlHeader + '</th>' +
+                                '<th colspan="4" id="may_col_header" width="200px" class="' + may_col_header_class + '">' + vMayHeader + '</th>' +
+                                '<th colspan="4" id="june_col_header" width="200px" class="' + june_col_header_class + '">' + vJuneHeader + '</th>' +
+                                '<th colspan="4" id="july_col_header" width="200px" class="' + july_col_header_class + '">' + vJulyHeader + '</th>' +
+                                '<th colspan="4" id="aug_col_header" width="200px" class="' + aug_col_header_class + '">' + vAugHeader + '</th>' +
+                                '<th colspan="4" id="sep_col_header" width="200px" class="' + sep_col_header_class + '">' + vSepHeader + '</th>' +
+                                '<th colspan="4" id="oct_col_header" width="200px" class="' + oct_col_header_class + '">' + vOctHeader + '</th>' +
+                                '<th colspan="4" id="nov_col_header" width="200px" class="' + nov_col_header_class + '">' + vNovHeader + '</th>' +
+                                '<th colspan="4" id="dec_col_header" width="200px" class="' + dec_col_header_class + '">' + vDecHeader + '</th>' +
+                                '<th colspan="4" id="all_col_header" width="200px" class="' + all_col_header_class + '">' + vAllHeader + '</th>' +
+                                '</tr>'+
+                                '<tr role="row">' +
+                                '<th></th>' +
+                                '<th colspan="2" id="crm_month_1_header" width="100px" class="' + crm_header_class_grey + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_1_header" width="100px" class="' + system_header_class_grey + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_2_header" width="100px" class="' + crm_header_class_white + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_2_header" width="100px" class="' + system_header_class_white + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_3_header" width="100px" class="' + crm_header_class_grey + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_3_header" width="100px" class="' + system_header_class_grey + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_4_header" width="100px" class="' + crm_header_class_white + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_4_header" width="100px" class="' + system_header_class_white + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_5_header" width="100px" class="' + crm_header_class_grey + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_5_header" width="100px" class="' + system_header_class_grey + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_6_header" width="100px" class="' + crm_header_class_white + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_6_header" width="100px" class="' + system_header_class_white + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_7_header" width="100px" class="' + crm_header_class_grey + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_7_header" width="100px" class="' + system_header_class_grey + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_8_header" width="100px" class="' + crm_header_class_white + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_8_header" width="100px" class="' + system_header_class_white + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_9_header" width="100px" class="' + crm_header_class_grey + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_9_header" width="100px" class="' + system_header_class_grey + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_10_header" width="100px" class="' + crm_header_class_white + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_10_header" width="100px" class="' + system_header_class_white + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_11_header" width="100px" class="' + crm_header_class_grey + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_11_header" width="100px" class="' + system_header_class_grey + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_12_header" width="100px" class="' + crm_header_class_white + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_12_header" width="100px" class="' + system_header_class_white + '">' + vSystemHeader + '</th>' +
+                                '<th colspan="2" id="crm_month_13_header" width="100px" class="' + crm_header_class_grey + '">' + vCRMHeader + '</th>' +
+                                '<th colspan="2" id="system_month_13_header" width="100px" class="' + system_header_class_grey + '">' + vSystemHeader + '</th>' +
+                                '</tr>'
+                        );
+                }
+
+                $(vReportTMSCheckMain.table).DataTable().columns.adjust().draw();
+        });
+</script>
+
+</body>
+</html>

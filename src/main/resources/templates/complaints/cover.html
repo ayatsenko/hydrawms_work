@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:include="layout/header :: header(title = #{complaints.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 col-md-12 pl-2 pr-1 pt-0">
+        <div class="card order-1 mb-2" id="complaints_list_card">
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#complaints_list_div" data-toggle="collapse"><i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" id="complaints_list_header" th:text="#{complaints.main.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="complaints_list_div">
+                <div>
+                    <span th:replace="complaints/main_modal :: complaints_main_modal_body"></span>
+                    <span th:replace="complaints/main_card :: complaints_main_body"></span>
+                </div>
+            </div>
+        </div><!-- Main List Table -->
+    </div>
+</div><!-- Complaints -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="complaints/main_modal :: cardscript"></script>
+<script th:replace="complaints/main_card :: cardscript"></script>
+</body>
+</html>

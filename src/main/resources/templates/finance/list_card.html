@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="finance_list_body" th:remove="tag">
+        <div><table id="table-finance" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+   $("#table-finance").append('<tfoot><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tfoot>');
+
+    var vFinanceListValue;
+    vFinanceListValue = {
+        table : '#table-finance',
+        ajax : {
+            "url": /*[[@{/finance/get_list_table}]]*/ "finance/get_list_table", 
+            "type": "post",
+            "data": function ( d ) {
+                        d.finance_filter_id = vFinanceListValue.rowdata.finance_filter_id;
+                        d.finance_filter_start_date = vFinanceListValue.rowdata.finance_filter_start_date;
+                        d.finance_filter_end_date = vFinanceListValue.rowdata.finance_filter_end_date;
+            }
+        },
+        key : "fin_id",
+        switchControl : finance_switchControl,
+        rowdata:{
+           fin_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        footerCallback: function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
+
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                            return typeof i === 'string' ?
+                                    i.replace(/[\$,]/g, '')*1 :
+                                    typeof i === 'number' ?
+                                            i : 0;
+                    };
+                    var numFormat = $.fn.dataTable.render.number( '\ ', '.', 2, '').display;
+                    // Total over all pages
+                    TotalSum = api.column(9, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+                    // Update footer
+                    $( api.column(4).footer()).hide();
+                    $( api.column(6).footer()).hide();
+
+                    $( api.column(8).footer()).html('Всего: ');
+                    $( api.column(9).footer()).html(numFormat(TotalSum));
+        },
+        columnDefs:[
+                {"targets": [2], type: 'de_date'},
+                {"targets": [4], "visible": false},
+                {"targets": [6], "visible": false},
+                {"targets": [9],  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{finance.list.fin_id}]]*/ "fin_id", "data": "fin_id", "width": "5%", "className":"min-tablet-l"},
+                /*1*/{"title": /*[[#{finance.list.fin_name}]]*/ "fin_name", "data": "fin_name", "width": "10%"},
+                /*2*/{"title": /*[[#{finance.list.fin_date}]]*/ "fin_date", "data": "fin_date", "width": "8%", "className":"min-tablet-l"},
+                /*3*/{"title": /*[[#{finance.list.fin_way_sname}]]*/ "fin_way_sname", "data": "fin_way_sname", "width": "8%", "className":"min-tablet-l"},
+                /*4*/{"title": /*[[#{finance.list.cnt_id}]]*/ "cnt_id", "data": "cnt_id", "width": "1%"},
+                /*5*/{"title": /*[[#{finance.list.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": "21%", "className":"min-tablet-p"},
+                /*6*/{"title": /*[[#{finance.list.user_id}]]*/ "user_id", "data": "user_id", "width": "1%"},
+                /*7*/{"title": /*[[#{finance.list.user_surname}]]*/ "user_surname", "data": "user_surname", "width": "16%", "className":"min-tablet-l"},
+                /*8*/{"title": /*[[#{finance.list.ser_name}]]*/ "ser_name", "data": "ser_name", "width": "20%", "className":"min-tablet-p"},
+                /*9*/{"title": /*[[#{finance.list.fin_sum}]]*/ "fin_sum", "data": "fin_sum", "width": "10%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function finance_switchControl(){
+        if(vFinanceListValue.rowdata.fin_id != null) {
+                $("#finance-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#finance-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#finance-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#finance-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#finance-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#finance-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');                
+        } else{
+                $("#finance-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#finance-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#finance-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#finance-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#finance-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#finance-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.finance_btn_control').on('click', function (){
+        $("#finance-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#finance-detail').submit(function() {
+        vFinanceListValue.rowdata.finance_table_order_column = $(vFinanceListValue.table).DataTable().order()[0][0];
+        vFinanceListValue.rowdata.finance_table_order_type = $(vFinanceListValue.table).DataTable().order()[0][1];
+        vFinanceListValue.rowdata.finance_table_search = $(vFinanceListValue.table).DataTable().search();
+        vFinanceListValue.rowdata.finance_table_pagelen = $(vFinanceListValue.table).DataTable().page.len();
+        vFinanceListValue.rowdata.finance_table_page = $(vFinanceListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vFinanceListValue.rowdata).forEach(function (index) {
+            $("#finance-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#finance-detail input[name=\"" + index + "\"]").val(vFinanceListValue.rowdata[index]);
+        });
+    });
+
+    $("#finance_filter_start_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                    "format": "DD.MM.YYYY",
+                    "separator": " - ",
+                    "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                    "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                    "fromLabel": "From",
+                    "toLabel": "To",
+                    "customRangeLabel": "Custom",
+                    "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                    "daysOfWeek": [
+                            /*[[#{weekdays.07_short}]]*/ "Su",
+                            /*[[#{weekdays.01_short}]]*/ "Mo",
+                            /*[[#{weekdays.02_short}]]*/ "Tu",
+                            /*[[#{weekdays.03_short}]]*/ "We",
+                            /*[[#{weekdays.04_short}]]*/ "Th",
+                            /*[[#{weekdays.05_short}]]*/ "Fr",
+                            /*[[#{weekdays.06_short}]]*/ "Sa"
+                    ],
+                    "monthNames": [
+                            /*[[#{month.01}]]*/ "January",
+                            /*[[#{month.02}]]*/ "February",
+                            /*[[#{month.03}]]*/ "March",
+                            /*[[#{month.04}]]*/ "April",
+                            /*[[#{month.05}]]*/ "May",
+                            /*[[#{month.06}]]*/ "June",
+                            /*[[#{month.07}]]*/ "July",
+                            /*[[#{month.08}]]*/ "August",
+                            /*[[#{month.09}]]*/ "September",
+                            /*[[#{month.10}]]*/ "October",
+                            /*[[#{month.11}]]*/ "November",
+                            /*[[#{month.12}]]*/ "December"
+                    ],
+                    "firstDay": 1
+            }
+    });
+
+    $("#finance_filter_end_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                    "format": "DD.MM.YYYY",
+                    "separator": " - ",
+                    "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                    "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                    "fromLabel": "From",
+                    "toLabel": "To",
+                    "customRangeLabel": "Custom",
+                    "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                    "daysOfWeek": [
+                            /*[[#{weekdays.07_short}]]*/ "Su",
+                            /*[[#{weekdays.01_short}]]*/ "Mo",
+                            /*[[#{weekdays.02_short}]]*/ "Tu",
+                            /*[[#{weekdays.03_short}]]*/ "We",
+                            /*[[#{weekdays.04_short}]]*/ "Th",
+                            /*[[#{weekdays.05_short}]]*/ "Fr",
+                            /*[[#{weekdays.06_short}]]*/ "Sa"
+                    ],
+                    "monthNames": [
+                            /*[[#{month.01}]]*/ "January",
+                            /*[[#{month.02}]]*/ "February",
+                            /*[[#{month.03}]]*/ "March",
+                            /*[[#{month.04}]]*/ "April",
+                            /*[[#{month.05}]]*/ "May",
+                            /*[[#{month.06}]]*/ "June",
+                            /*[[#{month.07}]]*/ "July",
+                            /*[[#{month.08}]]*/ "August",
+                            /*[[#{month.09}]]*/ "September",
+                            /*[[#{month.10}]]*/ "October",
+                            /*[[#{month.11}]]*/ "November",
+                            /*[[#{month.12}]]*/ "December"
+                    ],
+                    "firstDay": 1
+            }
+    });
+
+    $('#finance_filter_check').on('click', function(){
+            if($(this).prop('checked')){
+                    $('#finance_filter_start_date').removeAttr('disabled');
+                    $('#finance_filter_end_date').removeAttr('disabled');
+                    $("#finance_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                    if (window.screen.width < 1024 && window.screen.height < 768) {
+                        $("#finance_filter_start_date").attr('readonly',true);
+                        $("#finance_filter_end_date").attr('readonly',true);
+                    }
+            }
+            else{
+                    $('#finance_filter_start_date').attr('disabled',true);
+                    $('#finance_filter_end_date').attr('disabled',true);
+                    $("#finance_filter_show").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                    if(vFinanceListValue.rowdata.finance_filter_id === 1){
+                            vFinanceListValue.rowdata.finance_filter_id = 0;
+                            $(vFinanceListValue.table).DataTable().ajax.reload();
+                            $('#finance_filter_div').removeClass('show').collapse('hide');
+                    }
+            }
+    });
+
+    $('#finance_filter_show').on('click', function() {
+            vFinanceListValue.rowdata.finance_filter_id = 1;
+            vFinanceListValue.rowdata.finance_filter_start_date = $('#finance_filter_start_date').val();
+            vFinanceListValue.rowdata.finance_filter_end_date = $('#finance_filter_end_date').val();
+
+            $(vFinanceListValue.table).DataTable().ajax.reload();
+            $('#finance_filter_div').removeClass('show').collapse('hide');
+    });    
+    
+    $(document).ready(function(){
+        vFinanceListValue.rowdata.fin_id = /*[[${fin_id}]]*/ null;
+
+        vFinanceListValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vFinanceListValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vFinanceListValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vFinanceListValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vFinanceListValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        vFinanceListValue.rowdata.finance_filter_id = /*[[${finance_filter_id}]]*/ null;
+        vFinanceListValue.rowdata.finance_filter_start_date = /*[[${finance_filter_start_date}]]*/ null;
+        vFinanceListValue.rowdata.finance_filter_end_date = /*[[${finance_filter_end_date}]]*/ null;
+
+        if(vFinanceListValue.rowdata.finance_filter_id === 1){
+            $('#finance_filter_check').prop('checked', true);
+            $("#finance_filter_start_date").removeAttr('disabled').val(vFinanceListValue.rowdata.finance_filter_start_date);
+            $("#finance_filter_end_date").removeAttr('disabled').val(vFinanceListValue.rowdata.finance_filter_end_date);
+            $("#finance_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if (window.screen.width < 1024 && window.screen.height < 768) {
+                $("#finance_filter_start_date").attr('readonly',true);
+                $("#finance_filter_end_date").attr('readonly',true);
+            }
+        }
+
+        recreateDataTable(vFinanceListValue);
+
+            $('#main_li').removeClass('active');
+
+            $('#crm_li').addClass('active').removeClass('collapsed');
+            $('#crm_a').attr('aria-expanded',true);
+            $('#crm').addClass('show');
+
+            $('#finance_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

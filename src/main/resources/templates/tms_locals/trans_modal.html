@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_locals_trans_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="tms_locals_trans_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="tms_locals_trans_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{tms_locals.trans.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <input type="hidden" id="tms_locals_trans_modal_mode">
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="tms_locals_trans_modal_clm_id_row">
+                            <label for="tms_locals_trans_modal_clm_id" class="form-label mb-0" th:text="'1. '+ #{tms_locals.main.clm_id}"></label>
+                            <input type="number" class="form-control" id="tms_locals_trans_modal_clm_id" name="tms_locals_trans_modal_clm_id" readonly>
+                        </div>
+
+                        <div class="col-12 col-md-3" id="tms_locals_trans_modal_clm_num_row">
+                            <label for="tms_locals_trans_modal_clm_num" class="form-label mb-0" th:text="'2. '+ #{tms_locals.main.clm_num}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="tms_locals_trans_modal_clm_num" name="tms_locals_trans_modal_clm_num" readonly>
+                        </div>
+
+                        <div class="col-12 col-md-6" id="cnt_name_row">
+                            <label for="tms_locals_trans_modal_cnt_name" class="form-label mb-0" th:text="'3. '+ #{tms_locals.main.cnt_name}"></label>
+                            <input type="text" class="form-control" id="tms_locals_trans_modal_cnt_name" name="tms_locals_trans_modal_cnt_name" readonly>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="tms_locals_trans_modal_clmtrl_id_row">
+                            <label for="tms_locals_trans_modal_clmtrl_id" class="form-label mb-0" th:text="'4. '+ #{tms_locals.trans.clmtrl_id}"></label>
+                            <input type="number" class="form-control" id="tms_locals_trans_modal_clmtrl_id" name="tms_locals_trans_modal_clmtrl_id" readonly>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="tms_locals_trans_modal_cnt_id_div">
+                            <label for="tms_locals_trans_modal_cnt_id" class="form-label mb-0" th:text="'5. '+#{tms_locals.trans.cnt_name}"></label>
+                            <div class="input-group d-flex">
+                                <div class="flex-fill">
+                                    <select type="text" id="tms_locals_trans_modal_cnt_id" name="tms_locals_trans_modal_cnt_id" class="custom-select select2" aria-describedby="cnt_id_helpBlock">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- Row 3 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12">
+                            <label for="tms_locals_trans_modal_cntc_id" class="form-label mb-0" th:text="'6. '+#{tms_locals.trans.cntc_type_brand}">Car: </label>
+                            <div class="input-group d-flex">
+                                <div class="flex-fill">
+                                    <select type="text" id="tms_locals_trans_modal_cntc_id" name="tms_locals_trans_modal_cntc_id" class="custom-select select2" aria-describedby="cnt_id_helpBlock">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- Row 4 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12">
+                            <label for="tms_locals_trans_modal_cntt_id" class="form-label mb-0" th:text="'7. '+#{tms_locals.trans.cntc_type_brand}">SemiCar: </label>
+                            <div class="input-group d-flex">
+                                <div class="flex-fill">
+                                    <select type="text" id="tms_locals_trans_modal_cntt_id" name="tms_locals_trans_modal_cntt_id" class="custom-select select2" aria-describedby="tms_locals_trans_modal_cntt_id_helpBlock">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- Row 5 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12">
+                            <label for="tms_locals_trans_modal_cntd_id" class="form-label mb-0" th:text="'8. '+#{tms_locals.trans.cntd_name}">Driver: </label>
+                            <div class="input-group d-flex">
+                                <div class="flex-fill">
+                                    <select type="text" id="tms_locals_trans_modal_cntd_id" name="tms_locals_trans_modal_cntd_id" class="custom-select select2" aria-describedby="tms_locals_trans_modal_cntd_id_helpBlock">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- Row 6 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="tms_locals_trans_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="tms_locals_trans_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="tms_locals_trans_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="tms_locals_trans_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+// Clear Fields
+    function clear_tms_locals_trans_modal_detail() {
+        $("#tms_locals_trans_modal_detail input[type=text]").val('');
+        $("#tms_locals_trans_modal_detail input[type=number]").val('');
+        $("#tms_locals_trans_modal_detail select").empty();
+        $("#tms_locals_trans_modal_detail textarea").val('');
+    }
+// Block And Required Fields
+    function block_tms_locals_trans_modal_detail(){
+        $('#tms_locals_trans_modal_cnt_id').attr('required', true);
+
+        if($('#tms_locals_trans_modal_mode').val() === "0"){
+            $('#tms_locals_trans_modal_clm_id_row').attr('hidden',true);
+            $('#tms_locals_trans_modal_clmtrl_id_row').attr('hidden',true);
+            $('#tms_locals_trans_modal_cnt_id').removeAttr('disabled');
+            $('#tms_locals_trans_modal_cntc_id').removeAttr('disabled');
+            $('#tms_locals_trans_modal_cntt_id').removeAttr('disabled');
+            $('#tms_locals_trans_modal_cntd_id').removeAttr('disabled');
+        }
+        else if($('#tms_locals_trans_modal_mode').val() === "1"){
+            $('#tms_locals_trans_modal_clm_id_row').attr('hidden',true);
+            $('#tms_locals_trans_modal_clmtrl_id_row').attr('hidden',true);
+            $('#tms_locals_trans_modal_cnt_id').removeAttr('disabled');
+            $('#tms_locals_trans_modal_cntc_id').removeAttr('disabled');
+            $('#tms_locals_trans_modal_cntt_id').removeAttr('disabled');
+            $('#tms_locals_trans_modal_cntd_id').removeAttr('disabled');
+        }
+        else{
+            $('#tms_locals_trans_modal_clm_id_row').attr('hidden',true);
+            $('#tms_locals_trans_modal_clmtrl_id_row').attr('hidden',true);
+            $('#tms_locals_trans_modal_cnt_id').attr('disabled',true);
+            $('#tms_locals_trans_modal_cntc_id').attr('disabled',true);
+            $('#tms_locals_trans_modal_cntt_id').attr('disabled',true);
+            $('#tms_locals_trans_modal_cntd_id').attr('disabled',true);
+        }
+    }
+// Clients List
+    function editTransClientChange(vMode, vTransCntID) {
+        $('#tms_locals_trans_modal_cnt_id').empty();
+        $("select[name='tms_locals_trans_modal_cnt_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tms_locals/get_trans_clients_list'}]]*/ "/tms_locals/get_trans_clients_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (trans_client_list) {
+                for (var i = 0; i < trans_client_list.data.length; i++) {
+                    $("select[name='tms_locals_trans_modal_cnt_id']").find('option').end().append(
+                        "<option value='" + trans_client_list.data[i].cnt_id
+                        + "'>" + trans_client_list.data[i].cnt_name + "</option>");
+                }
+                if(vTransCntID !== ''){
+                    $('#tms_locals_trans_modal_cnt_id').val(vTransCntID);
+                }
+            }
+        }));
+    }
+//Cars List
+function editCarsListChange(vTransCntID, vCarID){
+    $('#tms_locals_trans_modal_cntc_id').empty();
+    $("select[name='tms_locals_trans_modal_cntc_id']").find('option').end().append("<option value=''></option>");
+
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/tms_locals/get_cars'}]]*/ "/tms_locals/get_cars",
+        type: "get",
+        data: {
+            "cnt_id": vTransCntID
+        },
+        success: function (cars_list) {
+            for (var i = 0; i < cars_list.data.length; i++) {
+                $("select[name='tms_locals_trans_modal_cntc_id']").find('option').end().append(
+                    "<option value='" + cars_list.data[i].cntc_id
+                    + "'>" + cars_list.data[i].cntc_fullname + "</option>");
+            }
+            if(vCarID !== ''){
+                $('#tms_locals_trans_modal_cntc_id').val(vCarID);
+            }
+        }
+    }));
+}
+//Trailers List
+function editTrailersListChange(vTransCntID, vTraileID){
+    $('#tms_locals_trans_modal_cntt_id').empty();
+    $("select[name='tms_locals_trans_modal_cntt_id']").find('option').end().append("<option value=''></option>");
+
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/tms_locals/get_trailers'}]]*/ "/tms_locals/get_trailers",
+        type: "get",
+        data: {
+            "cnt_id": vTransCntID
+        },
+        success: function (trailers_list) {
+            for (var i = 0; i < trailers_list.data.length; i++) {
+                $("select[name='tms_locals_trans_modal_cntt_id']").find('option').end().append(
+                    "<option value='" + trailers_list.data[i].cntt_id
+                    + "'>" + trailers_list.data[i].cntt_fullname + "</option>");
+            }
+            if(vTraileID !== ''){
+                $('#tms_locals_trans_modal_cntt_id').val(vTraileID);
+            }
+        }
+    }));
+}
+//Drivers List
+function editDriversListChange(vTransCntID,vDriverID){
+    $('#tms_locals_trans_modal_cntd_id').empty();
+    $("select[name='tms_locals_trans_modal_cntd_id']").find('option').end().append("<option value=''></option>");
+
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/tms_locals/get_drivers'}]]*/ "/tms_locals/get_drivers",
+        type: "get",
+        data: {
+            "cnt_id": vTransCntID
+        },
+        success: function (drivers_list) {
+            for (var i = 0; i < drivers_list.data.length; i++) {
+                $("select[name='tms_locals_trans_modal_cntd_id']").find('option').end().append(
+                    "<option value='" + drivers_list.data[i].cntd_id
+                    + "'>" + drivers_list.data[i].cntd_fullname + "</option>");
+            }
+            if(vDriverID !== ''){
+                $('#tms_locals_trans_modal_cntd_id').val(vDriverID);
+            }
+        }
+    }));
+}
+//Select2 Options
+var editCntName =  "Выберите перевозчика";
+
+$('#tms_locals_trans_modal_cnt_id')
+    .select2({
+        id: '-1', // the value of the option
+        placeholder: editCntName,
+        allowClear: true,
+        width: 'element',
+        dropdownAutoWidth: true
+    });
+
+//Select2 Car List
+var editCarName =  "Выберите машину";
+
+$('#tms_locals_trans_modal_cntc_id')
+    .select2({
+        id: '-1', // the value of the option
+        placeholder: editCarName,
+        allowClear: true,
+        width: 'element',
+        dropdownAutoWidth: true
+    });
+
+//Select2 Trailer List
+var editTrailerName =  "Выберите прицеп";
+
+$('#tms_locals_trans_modal_cntt_id')
+    .select2({
+        id: '-1', // the value of the option
+        placeholder: editTrailerName,
+        allowClear: true,
+        width: 'element',
+        dropdownAutoWidth: true
+    });
+
+//Select2 Driver List
+var editDriverName =  "Выберите водителя";
+
+$('#tms_locals_trans_modal_cntd_id')
+    .select2({
+        id: '-1', // the value of the option
+        placeholder: editDriverName,
+        allowClear: true,
+        width: 'element',
+        dropdownAutoWidth: true
+    });
+
+// Load Function
+    function fill_tms_locals_trans_modal_detail(aMode){
+        $('#tms_locals_trans_modal_mode').val(aMode);
+        clear_tms_locals_trans_modal_detail();
+        block_tms_locals_trans_modal_detail();
+
+        $('#tms_locals_trans_modal_clm_id').val(vClaimsValue.rowdata.clm_id);
+        $('#tms_locals_trans_modal_clm_num').val(vClaimsValue.rowdata.clm_num);
+        $('#tms_locals_trans_modal_cnt_name').val(vClaimsValue.rowdata.cnt_name);
+
+        if(aMode !== 0){
+            $.ajax({
+                url:/*[[@{'/tms_locals/get_trans_detail'}]]*/ "tms_locals/get_trans_detail",
+                type: "get",
+                data: {
+                    "mode": aMode,
+                    "clmtrl_id": vFLDClaimTransValue.rowdata.clmtrl_id
+                },
+                success: function (tms_locals_trans_modal_detail_result) {
+                    $.when(
+                        editTransClientChange(aMode,tms_locals_trans_modal_detail_result.data[0].cnt_id),
+                        editCarsListChange(tms_locals_trans_modal_detail_result.data[0].cnt_id,tms_locals_trans_modal_detail_result.data[0].cntc_id),
+                        editTrailersListChange(tms_locals_trans_modal_detail_result.data[0].cnt_id,tms_locals_trans_modal_detail_result.data[0].cntt_id),
+                        editDriversListChange(tms_locals_trans_modal_detail_result.data[0].cnt_id,tms_locals_trans_modal_detail_result.data[0].cntd_id)
+                    ).then(function () {
+                        $('#tms_locals_trans_modal_clmtrl_id').val(tms_locals_trans_modal_detail_result.data[0].clmtrl_id);
+                        $('#tms_locals_trans_modal').modal('show');
+                    });
+                }
+            });
+        }
+        else{
+            $.when(
+                editTransClientChange(aMode,0)
+            ).then(function () {
+                $('#tms_locals_trans_modal').modal('show');
+            });
+        }
+    }
+
+// Add button script
+$('#tms_locals_trans_modal_addbtn').click(function(){
+    var MainRowID = vClaimsValue.rowdata.clm_id;
+    var RowID = vFLDClaimTransValue.rowdata.clmtrl_id;
+    $.ajax({
+        url: /*[[ @{/tms_locals/add_transport} ]]*/ "/tms_locals/add_transport",
+        type: 'POST',
+        data: {
+            "clm_id": MainRowID,
+            "cnt_id": $('#tms_locals_trans_modal_cnt_id').val(),
+            "cntc_id":  $('#tms_locals_trans_modal_cntc_id').val(),
+            "cntt_id":  $('#tms_locals_trans_modal_cntt_id').val(),
+            "cntd_id":  $('#tms_locals_trans_modal_cntd_id').val()
+        },
+        success: function (result) {
+            vClaimsValue.rowdata.clm_id = MainRowID;
+            $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+            vFLDClaimTransValue.rowdata.clm_id = MainRowID;
+            vFLDClaimTransValue.rowdata.clmtrl_id = RowID;
+            $(vFLDClaimTransValue.table).DataTable().ajax.reload(null, false);
+            vClaimsValue.rowdata.clm_id = MainRowID;
+            $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+            $('#tms_locals_trans_modal').modal('hide');
+        }
+    });
+});
+
+// Edit button script
+$('#tms_locals_trans_modal_editbtn').click(function(){
+    var MainRowID = vClaimsValue.rowdata.clm_id;
+    var RowID = vFLDClaimTransValue.rowdata.clmtrl_id;
+    $.ajax({
+        url: /*[[ @{/tms_locals/edit_transport} ]]*/ "/tms_locals/edit_transport",
+        type: 'POST',
+        data: {
+            "clmtrl_id": RowID,
+            "cnt_id": $('#tms_locals_trans_modal_cnt_id').val(),
+            "cntc_id":  $('#tms_locals_trans_modal_cntc_id').val(),
+            "cntt_id":  $('#tms_locals_trans_modal_cntt_id').val(),
+            "cntd_id":  $('#tms_locals_trans_modal_cntd_id').val()
+        },
+        success: function (result) {
+            vClaimsValue.rowdata.clm_id = MainRowID;
+            $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+            vFLDClaimTransValue.rowdata.clm_id = MainRowID;
+            vFLDClaimTransValue.rowdata.clmtrl_id = RowID;
+            $(vFLDClaimTransValue.table).DataTable().ajax.reload(null, false);
+            $('#tms_locals_trans_modal').modal('hide');
+        }
+    });
+});
+
+// Del button script
+$('#tms_locals_trans_modal_delbtn').click(function(){
+    var MainRowID = vClaimsValue.rowdata.clm_id;
+    var RowID = vFLDClaimTransValue.rowdata.clmtrl_id;
+    $.ajax({
+        url: /*[[ @{/tms_locals/del_transport} ]]*/ "/tms_locals/del_transport",
+        type: 'POST',
+        data: {
+            "clmtrl_id": RowID
+        },
+        success: function (result) {
+            vClaimsValue.rowdata.clm_id = MainRowID;
+            $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+            vFLDClaimTransValue.rowdata.clm_id = MainRowID;
+            $(vFLDClaimTransValue.table).DataTable().ajax.reload(null, false);
+            vClaimsValue.rowdata.clm_id = MainRowID;
+            $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+            $('#tms_locals_trans_modal').modal('hide');
+        }
+    });
+});
+// OnClick Function
+$('#tms_locals_trans_modal_cnt_id').change(function () {
+    var vTransClientID = $('#tms_locals_trans_modal_cnt_id').val();
+    $.when(
+        editCarsListChange(vTransClientID),
+        editTrailersListChange(vTransClientID),
+        editDriversListChange(vTransClientID)
+    ).then(function () {
+    });
+});
+</script>
+
+</body>
+</html>

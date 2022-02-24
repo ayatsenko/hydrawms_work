@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="user_result_body" th:remove="tag">
+            <form id="table-user-result-link-form" th:action="@{/report_employee_balance}" method="post" target="_blank">
+                <input name="user_id" hidden>
+                <input name="employee_balance_show_id" hidden>
+                <input name="employee_balance_start_date" hidden>
+                <input name="employee_balance_end_date" hidden>
+                <input name="employee_tab_id" hidden>
+            </form>
+
+        <div><table id="table-user-result" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var currYear = new Date().getFullYear();
+    var currMonth = new Date().getMonth();
+    var smallScreenSize = window.screen.width > 1024 && window.screen.height <= 768;
+
+    var vUserResultValue = {
+            table : '#table-user-result',
+            button_form: '#user_result_filter_div',
+            ajax : {
+                    "url": /*[[@{/get_user_result}]]*/ "/get_user_result",
+                    "type": "post",
+                    "data": function ( d ) {
+                            d.year = vUserResultValue.rowdata.year
+                    }
+            },
+            key : "user_id",
+            switchControl : user_result_switchControl,
+            rowdata: {
+                    user_id: null,
+                    year: null,
+                    month: null,
+
+                    user_result_table_order_column: null,
+                    user_result_table_order_type: null,
+                    user_result_table_search: null,
+                    user_result_table_pagelen: null,
+                    user_result_table_page: null
+            },
+            ordering: true,
+            order: [
+                    [0, "desc"]
+            ],
+            scrollX: false,
+            dom: 'ftp',
+            createdRow: function( row, data, dataIndex ) {
+                            $(row).find('td:eq(2)').css('background-color', data["fin_1_color"]);
+                            $(row).find('td:eq(3)').css('background-color', data["fin_2_color"]);
+                            $(row).find('td:eq(4)').css('background-color', data["fin_3_color"]);
+                            $(row).find('td:eq(5)').css('background-color', data["fin_4_color"]);
+                            $(row).find('td:eq(6)').css('background-color', data["fin_5_color"]);
+                            $(row).find('td:eq(7)').css('background-color', data["fin_6_color"]);
+                            $(row).find('td:eq(8)').css('background-color', data["fin_7_color"]);
+                            $(row).find('td:eq(9)').css('background-color', data["fin_8_color"]);
+                            $(row).find('td:eq(10)').css('background-color', data["fin_9_color"]);
+                            $(row).find('td:eq(11)').css('background-color', data["fin_10_color"]);
+                            $(row).find('td:eq(12)').css('background-color', data["fin_11_color"]);
+                            $(row).find('td:eq(13)').css('background-color', data["fin_12_color"]);
+                            $(row).find('td:eq(14)').css('background-color', data["fin_all_color"]);
+                    if (smallScreenSize) {
+                            $(row).find('td:eq(1)').addClass('text_small_size');
+                            $(row).find('td:eq(2)').addClass('text_small_size');
+                            $(row).find('td:eq(3)').addClass('text_small_size');
+                            $(row).find('td:eq(4)').addClass('text_small_size');
+                            $(row).find('td:eq(5)').addClass('text_small_size');
+                            $(row).find('td:eq(6)').addClass('text_small_size');
+                            $(row).find('td:eq(7)').addClass('text_small_size');
+                            $(row).find('td:eq(8)').addClass('text_small_size');
+                            $(row).find('td:eq(9)').addClass('text_small_size');
+                            $(row).find('td:eq(10)').addClass('text_small_size');
+                            $(row).find('td:eq(11)').addClass('text_small_size');
+                            $(row).find('td:eq(12)').addClass('text_small_size');
+                            $(row).find('td:eq(13)').addClass('text_small_size');
+                            $(row).find('td:eq(14)').addClass('text_small_size');
+                    }
+            },
+            footerCallback: function ( row, data, start, end, display ) {
+                    var api = this.api(), data;
+
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function ( i ) {
+                            return typeof i === 'string' ?
+                                    i.replace(/[\$,]/g, '')*1 :
+                                    typeof i === 'number' ?
+                                            i : 0;
+                    };
+
+                    var numFormat = $.fn.dataTable.render.number( '\ ', '.', 0, '').display;
+                    // Total over all pages
+                    TotalJan = api.column(3).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+                    TotalFeb = api.column(4).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+
+                    TotalMarch = api.column(5).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+                    TotalAprl = api.column(6).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+                    TotalMay = api.column(7).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+
+                    TotalJune = api.column(8).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+                    TotalJuly = api.column(9).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+                    TotalAug = api.column(10).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+
+                    TotalSep = api.column(11).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+                    TotalOct = api.column(12).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+                    TotalNov = api.column(13).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+
+                    TotalDec = api.column(14).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+                    TotalAll = api.column(15).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+
+                    // Update footer
+                    $( api.column(0).footer()).hide();
+                    $( api.column(1).footer()).hide();
+
+                    $( api.column(2).footer()).html('Всего: ');
+                    $( api.column(3).footer()).html(numFormat(TotalJan));
+                    $( api.column(4).footer()).html(numFormat(TotalFeb));
+
+                    $( api.column(5).footer()).html(numFormat(TotalMarch));
+                    $( api.column(6).footer()).html(numFormat(TotalAprl));
+                    $( api.column(7).footer()).html(numFormat(TotalMay));
+
+                    $( api.column(8).footer()).html(numFormat(TotalJune));
+                    $( api.column(9).footer()).html(numFormat(TotalJuly));
+                    $( api.column(10).footer()).html(numFormat(TotalAug));
+
+                    $( api.column(11).footer()).html(numFormat(TotalSep));
+                    $( api.column(12).footer()).html(numFormat(TotalOct));
+                    $( api.column(13).footer()).html(numFormat(TotalNov));
+
+                    $( api.column(14).footer()).html(numFormat(TotalDec));
+                    $( api.column(15).footer()).html(numFormat(TotalAll));
+            },
+            columnDefs: [
+                    { "targets": 0, "visible": false},
+                    { "targets": 1, "visible": false},
+                    { "targets": 2, "className": "tablet-l desktop"},
+                    { "targets": 3, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), className: function() {
+                                    aTableMonth  = 1;
+                                    if (currMonth + 1 === aTableMonth){ if(smallScreenSize){return "all text-center small_footer_size";} else{return "all text-center";}}
+                                    else if (currMonth + 1 - aTableMonth > 0 && currMonth + 1 - aTableMonth < 5){if(smallScreenSize){return "tablet-p desktop text-center small_footer_size";} else{return "tablet-p desktop text-center";}}
+                                    else{if(smallScreenSize){return "desktop text-center small_footer_size";} else{return "desktop text-center";}}
+                                    finance
+                            }},
+                    { "targets": 4,  "visible": false},
+                    { "targets": 5,  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), className: function() {
+                                    aTableMonth  = 2;
+                                    if (currMonth + 1 === aTableMonth){ if(smallScreenSize){return "all text-center small_footer_size";} else{return "all text-center";}}
+                                    else if (currMonth + 1 - aTableMonth > 0 && currMonth + 1 - aTableMonth < 5){if(smallScreenSize){return "tablet-p desktop text-center small_footer_size";} else{return "tablet-p desktop text-center";}}
+                                    else{ if(smallScreenSize){return "desktop text-center small_footer_size";} else{return "desktop text-center";}}
+                                    finance
+                            }},
+                    { "targets": 6,  "visible": false},
+                    { "targets": 7,  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), className: function() {
+                                    aTableMonth  = 3;
+                                    if (currMonth + 1 === aTableMonth){ if(smallScreenSize){return "all text-center small_footer_size";} else{return "all text-center";}}
+                                    else if (currMonth + 1 - aTableMonth > 0 && currMonth + 1 - aTableMonth < 5){if(smallScreenSize){return "tablet-p desktop text-center small_footer_size";} else{return "tablet-p desktop text-center";}}
+                                    else{ if(smallScreenSize){return "desktop text-center small_footer_size";} else{return "desktop text-center";}}
+                                    finance
+                            }},
+                    { "targets": 8,  "visible": false},
+                    { "targets": 9,  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), className: function() {
+                                    aTableMonth  = 4;
+                                    if (currMonth + 1 === aTableMonth){ if(smallScreenSize){return "all text-center small_footer_size";} else{return "all text-center";}}
+                                    else if (currMonth + 1 - aTableMonth > 0 && currMonth + 1 - aTableMonth < 5){if(smallScreenSize){return "tablet-p desktop text-center small_footer_size";} else{return "tablet-p desktop text-center";}}
+                                    else{ if(smallScreenSize){return "desktop text-center small_footer_size";} else{return "desktop text-center";}}
+                                    finance
+                            }},
+                    { "targets": 10,  "visible": false},
+                    { "targets": 11,  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), className: function() {
+                                    aTableMonth  = 5;
+                                    if (currMonth + 1 === aTableMonth){ if(smallScreenSize){return "all text-center small_footer_size";} else{return "all text-center";}}
+                                    else if (currMonth + 1 - aTableMonth > 0 && currMonth + 1 - aTableMonth < 5){if(smallScreenSize){return "tablet-p desktop text-center small_footer_size";} else{return "tablet-p desktop text-center";}}
+                                    else{ if(smallScreenSize){return "desktop text-center small_footer_size";} else{return "desktop text-center";}}
+                                    finance
+                            }},
+                    { "targets": 12,  "visible": false},
+                    { "targets": 13,  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), className: function() {
+                                    aTableMonth  = 6;
+                                    if (currMonth + 1 === aTableMonth){ if(smallScreenSize){return "all text-center small_footer_size";} else{return "all text-center";}}
+                                    else if (currMonth + 1 - aTableMonth > 0 && currMonth + 1 - aTableMonth < 5){if(smallScreenSize){return "tablet-p desktop text-center small_footer_size";} else{return "tablet-p desktop text-center";}}
+                                    else{ if(smallScreenSize){return "desktop text-center small_footer_size";} else{return "desktop text-center";}}
+                                    finance
+                            }},
+                    { "targets": 14,  "visible": false},
+                    { "targets": 15,  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), className: function() {
+                                    aTableMonth  = 7;
+                                    if (currMonth + 1 === aTableMonth){ if(smallScreenSize){return "all text-center small_footer_size";} else{return "all text-center";}}
+                                    else if (currMonth + 1 - aTableMonth > 0 && currMonth + 1 - aTableMonth < 5){if(smallScreenSize){return "tablet-p desktop text-center small_footer_size";} else{return "tablet-p desktop text-center";}}
+                                    else{ if(smallScreenSize){return "desktop text-center small_footer_size";} else{return "desktop text-center";}}
+                                    finance
+                            }},
+                    { "targets": 16,  "visible": false},
+                    { "targets": 17,  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), className: function() {
+                                    aTableMonth  = 8;
+                                    if (currMonth + 1 === aTableMonth){ if(smallScreenSize){return "all text-center small_footer_size";} else{return "all text-center";}}
+                                    else if (currMonth + 1 - aTableMonth > 0 && currMonth + 1 - aTableMonth < 5){if(smallScreenSize){return "tablet-p desktop text-center small_footer_size";} else{return "tablet-p desktop text-center";}}
+                                    else{ if(smallScreenSize){return "desktop text-center small_footer_size";} else{return "desktop text-center";}}
+                                    finance
+                            }},
+                    { "targets": 18,  "visible": false},
+                    { "targets": 19,  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), className: function() {
+                                    aTableMonth  = 9;
+                                    if (currMonth + 1 === aTableMonth){ if(smallScreenSize){return "all text-center small_footer_size";} else{return "all text-center";}}
+                                    else if (currMonth + 1 - aTableMonth > 0 && currMonth + 1 - aTableMonth < 5){if(smallScreenSize){return "tablet-p desktop text-center small_footer_size";} else{return "tablet-p desktop text-center";}}
+                                    else{ if(smallScreenSize){return "desktop text-center small_footer_size";} else{return "desktop text-center";}}
+                                    finance
+                            }},
+                    { "targets": 20,  "visible": false},
+                    { "targets": 21,  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), className: function() {
+                                    aTableMonth  = 10;
+                                    if (currMonth + 1 === aTableMonth){ if(smallScreenSize){return "all text-center small_footer_size";} else{return "all text-center";}}
+                                    else if (currMonth + 1 - aTableMonth > 0 && currMonth + 1 - aTableMonth < 5){if(smallScreenSize){return "tablet-p desktop text-center small_footer_size";} else{return "tablet-p desktop text-center";}}
+                                    else{ if(smallScreenSize){return "desktop text-center small_footer_size";} else{return "desktop text-center";}}
+                                    finance
+                            }},
+                    { "targets": 22,  "visible": false},
+                    { "targets": 23,  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), className: function() {
+                                    aTableMonth  = 11;
+                                    if (currMonth + 1 === aTableMonth){ if(smallScreenSize){return "all text-center small_footer_size";} else{return "all text-center";}}
+                                    else if (currMonth + 1 - aTableMonth > 0 && currMonth + 1 - aTableMonth < 5){if(smallScreenSize){return "tablet-p desktop text-center small_footer_size";} else{return "tablet-p desktop text-center";}}
+                                    else{ if(smallScreenSize){return "desktop text-center small_footer_size";} else{return "desktop text-center";}}
+                                    finance
+                            }},
+                    { "targets": 24,  "visible": false},
+                    { "targets": 25,  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), className: function() {
+                                    aTableMonth  = 12;
+                                    if (currMonth + 1 === aTableMonth){ if(smallScreenSize){return "all text-center small_footer_size";} else{return "all text-center";}}
+                                    else if (currMonth + 1 - aTableMonth > 0 && currMonth + 1 - aTableMonth < 5){if(smallScreenSize){return "tablet-p desktop text-center small_footer_size";} else{return "tablet-p desktop text-center";}}
+                                    else{ if(smallScreenSize){return "desktop text-center small_footer_size";} else{return "desktop text-center";}}
+                                    finance
+                            }},
+                    { "targets": 26, "visible": false},
+                    { "targets": 27, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), "className": "all text-cente finance"},
+                    { "targets": 28, "visible": false}
+            ],
+            columns : [
+                    /*0*/{"title": /*[[#{mainpage.userresult.user_id}]]*/ "user_id", "data": "user_id", "width": "1%"},
+                    /*1*/{"title": /*[[#{mainpage.userresult.user_name}]]*/ "user_name", "data": "user_name", "width": "1%"},
+                    /*2*/{"title": /*[[#{mainpage.userresult.user_surname}]]*/ "user_surname", "data": "user_surname", "width": "20%"},
+
+                    /*3*/{"title": /*[[#{month.01_short}]]*/ "fin_1", "data": "fin_1", "width": "5%"},
+                    /*4*/{"title": /*[[#{month.01_short}]]*/ "fin_1_color", "data": "fin_1_color", "width": "1%"},
+
+                    /*5*/{"title": /*[[#{month.02_short}]]*/ "fin_2", "data": "fin_2", "width": "5%"},
+                    /*6*/{"title": /*[[#{month.02_short}]]*/ "fin_2_color", "data": "fin_2_color", "width": "1%"},
+
+                    /*7*/{"title": /*[[#{month.03_short}]]*/ "fin_3", "data": "fin_3", "width": "5%"},
+                    /*8*/{"title": /*[[#{month.03_short}]]*/ "fin_3_color", "data": "fin_3_color", "width": "1%"},
+
+                    /*9*/{"title": /*[[#{month.04_short}]]*/ "fin_4", "data": "fin_4", "width": "5%"},
+                    /*10*/{"title": /*[[#{month.04_short}]]*/ "fin_4_color", "data": "fin_4_color", "width": "1%"},
+
+                    /*11*/{"title": /*[[#{month.05_short}]]*/ "fin_5", "data": "fin_5", "width": "5%"},
+                    /*12*/{"title": /*[[#{month.05_short}]]*/ "fin_5_color", "data": "fin_5_color", "width": "1%"},
+
+                    /*13*/{"title": /*[[#{month.06_short}]]*/ "fin_6", "data": "fin_6", "width": "5%"},
+                    /*14*/{"title": /*[[#{month.06_short}]]*/ "fin_6_color", "data": "fin_6_color", "width": "1%"},
+
+                    /*15*/{"title": /*[[#{month.07_short}]]*/ "fin_7", "data": "fin_7", "width": "5%"},
+                    /*16*/{"title": /*[[#{month.07_short}]]*/ "fin_7_color", "data": "fin_7_color", "width": "1%"},
+
+                    /*17*/{"title": /*[[#{month.08_short}]]*/ "fin_8", "data": "fin_8", "width": "5%"},
+                    /*18*/{"title": /*[[#{month.08_short}]]*/ "fin_8_color", "data": "fin_8_color", "width": "1%"},
+
+                    /*19*/{"title": /*[[#{month.09_short}]]*/ "fin_9", "data": "fin_9", "width": "5%"},
+                    /*20*/{"title": /*[[#{month.09_short}]]*/ "fin_9_color", "data": "fin_9_color", "width": "1%"},
+
+                    /*21*/{"title": /*[[#{month.10_short}]]*/ "fin_10", "data": "fin_10", "width": "5%"},
+                    /*22*/{"title": /*[[#{month.10_short}]]*/ "fin_10_color", "data": "fin_10_color", "width": "1%"},
+
+                    /*23*/{"title": /*[[#{month.11_short}]]*/ "fin_11", "data": "fin_11", "width": "5%"},
+                    /*24*/{"title": /*[[#{month.11_short}]]*/ "fin_11_color", "data": "fin_11_color", "width": "1%"},
+
+                    /*25*/{"title": /*[[#{month.12_short}]]*/ "fin_12", "data": "fin_12", "width": "5%"},
+                    /*26*/{"title": /*[[#{month.12_short}]]*/ "fin_12_color", "data": "fin_12_color", "width": "1%"},
+
+                    /*27*/{"title": /*[[#{mainpage.userresult.fin_all}]]*/ "fin_all", "data": "fin_all", "width": "5%"},
+                    /*28*/{"title": /*[[#{month.12_short}]]*/ "fin_all_color", "data": "fin_all_color", "width": "1%"}
+
+            ],
+                pageLength: 25,
+                copy_button: true,
+                excel_button: true,
+                pdf_button: true,
+                print_button: true
+        };
+
+        function user_result_switchControl(){
+        }
+
+    $('#table-user-result').on('dblclick', '.finance', function (e) {
+            var selectedRow = this._DT_CellIndex.row;
+            var currentTable = $('#table-user-result').DataTable();
+            var firstYearDay = new Date(new Date().getFullYear(), 0, 1).toLocaleDateString('ru');
+            var LastYearDay = new Date(new Date().getFullYear(), 11, 31).toLocaleDateString('ru');
+
+            $("#table-user-result-link-form input[name=user_id]").val(currentTable.row(selectedRow).data().user_id);
+
+            $("#table-user-result-link-form input[name=employee_balance_show_id]").val(1);
+            $("#table-user-result-link-form input[name=employee_balance_start_date]").val(firstYearDay);
+            $("#table-user-result-link-form input[name=employee_balance_end_date]").val(LastYearDay);
+            $("#table-user-result-link-form input[name=employee_tab_id]").val(2);
+            $("#table-user-result-link-form").submit();
+    });
+
+        $('[id=user_result_year]').val(currYear);
+
+        $(document).ready(function() {
+                vUserResultValue.rowdata.user_id = /*[[${user_id}]]*/ null;
+                vUserResultValue.rowdata.year = $('#user_result_year').val();
+
+                recreateDataTable( vUserResultValue );
+            <!-- Hihglight menu -->
+        });
+
+    <!-- User Result Table -->
+    $('#user_result_year').change( function (){
+            vUserResultValue.rowdata.user_id = /*[[${user_id}]]*/ null;
+            vUserResultValue.rowdata.year = $('#user_result_year').val();
+            $(vUserResultValue.table).DataTable().ajax.reload();
+    });
+</script>
+
+</body>
+</html>

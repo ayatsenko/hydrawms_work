@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="wms_report_1_main_filter_modal_body" th:remove="tag">
+    <div class="modal fade" id="wms_report_1_main_filter_modal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{actions.filter.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <input type="hidden" id="wms_report_1_main_filter_id" name="wms_report_1_main_filter_id">
+
+                    <div class="row mb-1">
+                        <div class="col-6" id="wms_report_1_main_filter_start_date_row">
+                            <label for="wms_report_1_main_filter_start_date" class="form-label mb-0" th:text="#{actions.filter.start_date}+':'"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="wms_report_1_main_filter_start_date" name="wms_report_1_main_filter_start_date">
+                                <button type="button" id="wms_report_1_main_filter_start_date_x" name="wms_report_1_main_filter_start_date_x" data-parent="wms_report_1_main_filter_start_date" class="btn btn-outline-primary date_clear_default" data-parent-default=""><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div><!-- Start Date -->
+                    
+                    <div class="row mb-1">
+                        <div class="col-6" id="wms_report_1_main_filter_end_date_row">
+                            <label for="wms_report_1_main_filter_end_date" class="form-label mb-0" th:text="#{actions.filter.end_date}+':'"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="wms_report_1_main_filter_end_date" name="wms_report_1_main_filter_end_date">
+                                <button type="button" id="wms_report_1_main_filter_end_date_x" name="wms_report_1_main_filter_end_date_x" data-parent="wms_report_1_main_filter_end_date" class="btn btn-outline-primary date_clear_default" data-parent-default=""><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div><!-- End Date -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="wms_report_1_main_filter_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="wms_report_1_main_filter_modal_searchbtn" class="btn btn-outline-info mr-1" th:text="#{general.searchbtn}"></button>
+                    <button type="button" id="wms_report_1_main_filter_modal_clearbtn" class="btn btn-outline-danger" th:text="#{general.clearbtn}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+//Start Date
+    $("#wms_report_1_main_filter_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "showWeekNumbers": true,
+        "autoApply": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+//End Date
+    $("#wms_report_1_main_filter_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "showWeekNumbers": true,
+        "autoApply": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+//Show Filter
+    $('#wms_report_1_main_filter_btn').on('click', function () {
+        $('#wms_report_1_main_filter_modal').modal('show');
+    });
+//Employ Filter
+    $('#wms_report_1_main_filter_modal_searchbtn').on('click', function () {
+        $('#wms_report_1_main_filter_modal').modal('hide');
+        $('#wms_report_1_main_filter_id').val(1);
+
+        $('#wms_report_1_main_filter_btn_div').removeClass('text-dark').addClass('text-info');
+        reloadWmsReport1Main();
+    });
+//Clear Filter
+    $('#wms_report_1_main_filter_modal_clearbtn').on('click', function () {
+        $('#wms_report_1_main_filter_modal').modal('hide');
+
+        $('#wms_report_1_main_filter_btn_div').addClass('text-dark').removeClass('text-info');
+        $('#wms_report_1_main_filter_id').val(0);
+
+        $('#wms_report_1_main_filter_start_date_x').click();
+        $('#wms_report_1_main_filter_end_date_x').click();
+
+        reloadWmsReport1Main();
+    });
+
+    $(document).ready(function() {
+        $.when(
+        ).then(function() {
+            vWMSSaleDocsMainValue.rowdata.row_id = /*[[${row_id}]]*/ null;
+
+            vWMSSaleDocsMainValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+            vWMSSaleDocsMainValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+            vWMSSaleDocsMainValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+            vWMSSaleDocsMainValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+            vWMSSaleDocsMainValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+            let WmsReport1MainFilterID = /*[[${wms_report_1_main_filter_id}]]*/ null;
+            $('#wms_report_1_main_filter_id').val(WmsReport1MainFilterID);
+            vWMSSaleDocsMainValue.rowdata.wms_report_1_main_filter_id = WmsReport1MainFilterID;
+
+            let WmsReport1MainFilterStartDate = /*[[${wms_report_1_main_filter_start_date}]]*/ null;
+            if(WmsReport1MainFilterStartDate !== null){
+                $('#wms_report_1_main_filter_start_date').empty().val(WmsReport1MainFilterStartDate);
+                $('#wms_report_1_main_filter_start_date').data('daterangepicker').setStartDate(WmsReport1MainFilterStartDate);
+                $('#wms_report_1_main_filter_start_date').data('daterangepicker').setEndDate(WmsReport1MainFilterStartDate);
+                $('#wms_report_1_main_filter_start_date').trigger("apply.daterangepicker");
+
+                $('#wms_report_1_main_filter_start_date_x').attr('data-parent-default',WmsReport1MainFilterStartDate);
+                
+                vWMSSaleDocsMainValue.rowdata.wms_report_1_main_filter_start_date = WmsReport1MainFilterStartDate;
+            }
+            else{
+                $('#wms_report_1_main_filter_start_date').empty().val(currentFirstMonthDay);
+                $('#wms_report_1_main_filter_start_date').data('daterangepicker').setStartDate(currentFirstMonthDay);
+                $('#wms_report_1_main_filter_start_date').data('daterangepicker').setEndDate(currentFirstMonthDay);
+                $('#wms_report_1_main_filter_start_date').trigger("apply.daterangepicker");
+
+                $('#wms_report_1_main_filter_start_date_x').attr('data-parent-default',currentFirstMonthDay);
+
+                vWMSSaleDocsMainValue.rowdata.wms_report_1_main_filter_start_date = currentFirstMonthDay;
+            }
+
+            let WmsReport1MainFilterEndDate = /*[[${wms_report_1_main_filter_end_date}]]*/ null;
+            if(WmsReport1MainFilterEndDate !== null){
+                $('#wms_report_1_main_filter_end_date').empty().val(WmsReport1MainFilterEndDate);
+                $('#wms_report_1_main_filter_end_date').data('daterangepicker').setStartDate(WmsReport1MainFilterEndDate);
+                $('#wms_report_1_main_filter_end_date').data('daterangepicker').setEndDate(WmsReport1MainFilterEndDate);
+                $('#wms_report_1_main_filter_end_date').trigger("apply.daterangepicker");
+
+                $('#wms_report_1_main_filter_end_date_x').attr('data-parent-default',WmsReport1MainFilterEndDate);
+
+                vWMSSaleDocsMainValue.rowdata.wms_report_1_main_filter_end_date = WmsReport1MainFilterEndDate;
+            }
+            else{
+                $('#wms_report_1_main_filter_end_date').empty().val(currentLastMonthDay);
+                $('#wms_report_1_main_filter_end_date').data('daterangepicker').setStartDate(currentLastMonthDay);
+                $('#wms_report_1_main_filter_end_date').data('daterangepicker').setEndDate(currentLastMonthDay);
+                $('#wms_report_1_main_filter_end_date').trigger("apply.daterangepicker");
+
+                $('#wms_report_1_main_filter_end_date_x').attr('data-parent-default',currentLastMonthDay);
+                vWMSSaleDocsMainValue.rowdata.wms_report_1_main_filter_end_date = currentLastMonthDay;
+            }
+
+            recreateDataTable(vWMSSaleDocsMainValue);
+            //$('#wms_report_1_main_filter_modal').modal('show');
+        });
+
+        <!-- Filter and Search -->
+        if(mobileScreenSize) {
+            $('#table-actions_length').addClass('float-none');
+            $('#table-actions_filter').addClass('float-none');
+        }
+        <!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#reports_li').addClass('active').removeClass('collapsed');
+        $('#reports_a').attr('aria-expanded',true);
+        $('#reports').addClass('show');
+
+        $('#wms_report_1_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

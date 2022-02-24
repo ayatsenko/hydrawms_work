@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_requests_detail_body" th:remove="tag">
+    <div id="table-report-requests-buttons">
+              <div id="report-requests-detail-btn-large" class="d-none d-sm-block mb-1">
+                 <button type="submit" id="report-requests-detail-xlsbtn" form="report-requests-detail-xls-form" class="btn btn-sm btn-outline-primary mr-1" th:text="#{general.reportxls}">Xls</button>
+              </div>
+              <div id="report-requests-detail-btn-small" class="d-block d-sm-none mb-1">
+                 <button type="submit" id="report-requests-detail-xlsbtn-sx" form="report-requests-detail-xls-form" class="btn btn-sm btn-outline-primary mr-1"><i class="far fa-file-excel"></i></button>
+              </div>
+    </div>
+
+            <form id="report-requests-detail-xls-form" th:action="@{/report_requests/xls_detail}" method="get">
+                <input name="start_date" hidden>
+                <input name="end_date" hidden>
+                <input name="req_ser_id" hidden>
+                <input name="req_user_id" hidden>
+            </form>
+
+        <div><table id="table-report-requests-detail" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var ser_id_width, ser_name_width, all_summ_width, succ_summ_width, succ_color_width, contract_summ_width, contract_color_width, start_summ_width, start_color_width, lose_summ_width,
+        lose_color_width, can_summ_width, can_color_width, fail_summ_width, fail_color_width, not_fill_sum_width, not_fill_color_width, new_sum_width, new_color_width, work_sum_width,
+        work_color_width, complete_sum_width, complete_color_width, send_sum_width, send_color_width, user_del_sum_width, user_del_color_width, admin_del_sum_width, admin_del_color_width,
+        contract_can_sum_width, contract_can_color_width, start_can_sum_width, start_can_color_width;
+
+    var ser_id_class, ser_name_class, all_summ_class, succ_summ_class, succ_color_class, contract_summ_class, contract_color_class, start_summ_class, start_color_class, lose_summ_class,
+        lose_color_class, can_summ_class, can_color_class, fail_summ_class, fail_color_class, not_fill_sum_class, not_fill_color_class, new_sum_class, new_color_class, work_sum_class,
+        work_color_class, complete_sum_class, complete_color_class, send_sum_class, send_color_class, user_del_sum_class, user_del_color_class, admin_del_sum_class, admin_del_color_class,
+        contract_can_sum_class, contract_can_color_class, start_can_sum_class, start_can_color_class;
+
+    var smallScreenSize = window.screen.width > 1024 && window.screen.height <= 768;
+    var mobileScreenSize = window.screen.width < 1024 && window.screen.height < 768;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtip";
+        $('#report-service-balance-detail-buttons').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        ser_id_width = "";
+        ser_id_class = "none";
+        ser_name_width = "16%";
+        ser_name_class = "small_size small_head_size small_footer_size text-center";
+        all_summ_width = "4%";
+        all_summ_class = "small_size small_head_size small_footer_size text-center";
+        succ_summ_width = "4%";
+        succ_summ_class = "small_size small_head_size small_footer_size text-center";
+        succ_color_width = "";
+        succ_color_class = "none";
+        contract_summ_width = "4%";
+        contract_summ_class = "small_size small_head_size small_footer_size text-center";
+        contract_color_width = "";
+        contract_color_class = "none";
+        start_summ_width = "4%";
+        start_summ_class = "small_size small_head_size small_footer_size text-center";
+        start_color_width = "";
+        start_color_class = "none";
+        lose_summ_width = "4%";
+        lose_summ_class = "small_size small_head_size small_footer_size text-center";
+        lose_color_width = "";
+        lose_color_class = "none";
+        can_summ_width = "4%";
+        can_summ_class = "small_size small_head_size small_footer_size text-center";
+        can_color_width = "";
+        can_color_class = "none";
+        fail_summ_width = "4%";
+        fail_summ_class = "small_size small_head_size small_footer_size text-center";
+        fail_color_width = "";
+        fail_color_class = "none";
+        not_fill_sum_width = "16%";
+        not_fill_sum_class = "small_size small_head_size small_footer_size text-center";
+        not_fill_color_width = "";
+        not_fill_color_class = "none";
+        new_sum_width = "4%";
+        new_sum_class = "small_size small_head_size small_footer_size text-center";
+        new_color_width = "";
+        new_color_class = "none";
+        work_sum_width = "12%";
+        work_sum_class = "small_size small_head_size small_footer_size text-center";
+        work_color_width = "";
+        work_color_class = "none";
+        complete_sum_width = "4%";
+        complete_sum_class = "small_size small_head_size small_footer_size text-center";
+        complete_color_width = "";
+        complete_color_class = "none";
+        send_sum_width = "4%";
+        send_sum_class = "small_size small_head_size small_footer_size text-center";
+        send_color_width = "";
+        send_color_class = "none";
+        user_del_sum_width = "4%";
+        user_del_sum_class = "small_size small_head_size small_footer_size text-center";
+        user_del_color_width = "";
+        user_del_color_class = "none";
+        admin_del_sum_width = "4%";
+        admin_del_sum_class = "small_size small_head_size small_footer_size text-center";
+        admin_del_color_width = "";
+        admin_del_color_class = "none";
+        contract_can_sum_width = "4%";
+        contract_can_sum_class = "small_size small_head_size small_footer_size text-center";
+        contract_can_color_width = "";
+        contract_can_color_class = "none";
+        start_can_sum_width = "4%";
+        start_can_sum_class = "small_size small_head_size small_footer_size text-center";
+        start_can_color_width = "";
+        start_can_color_class = "none";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        ser_id_width = "";
+        ser_id_class = "none";
+        ser_name_width = "16%";
+        ser_name_class = "text-center";
+        all_summ_width = "4%";
+        all_summ_class = "text-center";
+        succ_summ_width = "4%";
+        succ_summ_class = "text-center";
+        succ_color_width = "";
+        succ_color_class = "none";
+        contract_summ_width = "4%";
+        contract_summ_class = "text-center";
+        contract_color_width = "";
+        contract_color_class = "none";
+        start_summ_width = "4%";
+        start_summ_class = "text-center";
+        start_color_width = "";
+        start_color_class = "none";
+        lose_summ_width = "4%";
+        lose_summ_class = "text-center";
+        lose_color_width = "";
+        lose_color_class = "none";
+        can_summ_width = "4%";
+        can_summ_class = "text-center";
+        can_color_width = "";
+        can_color_class = "none";
+        fail_summ_width = "4%";
+        fail_summ_class = "text-center";
+        fail_color_width = "";
+        fail_color_class = "none";
+        not_fill_sum_width = "16%";
+        not_fill_sum_class = "text-center";
+        not_fill_color_width = "";
+        not_fill_color_class = "none";
+        new_sum_width = "4%";
+        new_sum_class = "text-center";
+        new_color_width = "";
+        new_color_class = "none";
+        work_sum_width = "12%";
+        work_sum_class = "text-center";
+        work_color_width = "";
+        work_color_class = "none";
+        complete_sum_width = "4%";
+        complete_sum_class = "text-center";
+        complete_color_width = "";
+        complete_color_class = "none";
+        send_sum_width = "4%";
+        send_sum_class = "text-center";
+        send_color_width = "";
+        send_color_class = "none";
+        user_del_sum_width = "4%";
+        user_del_sum_class = "text-center";
+        user_del_color_width = "";
+        user_del_color_class = "none";
+        admin_del_sum_width = "4%";
+        admin_del_sum_class = "text-center";
+        admin_del_color_width = "";
+        admin_del_color_class = "none";
+        contract_can_sum_width = "4%";
+        contract_can_sum_class = "text-center";
+        contract_can_color_width = "";
+        contract_can_color_class = "none";
+        start_can_sum_width = "4%";
+        start_can_sum_class = "text-center";
+        start_can_color_width = "";
+        start_can_color_class = "none";
+    }
+
+    var vReportRequestsDetailValue;
+    vReportRequestsDetailValue = {
+        table : '#table-report-requests-detail',
+        button_form: "#table-report-requests-buttons",
+        ajax : {
+            "url": /*[[@{/report_requests/get_detail_table}]]*/ "report_requests/get_detail_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.start_date = vReportRequestsDetailValue.rowdata.start_date;
+                d.end_date = vReportRequestsDetailValue.rowdata.end_date;
+                d.req_ser_id = vReportRequestsDetailValue.rowdata.req_ser_id;
+                d.req_user_id = vReportRequestsDetailValue.rowdata.req_user_id;
+            }
+        },
+        key : "ser_id",
+        switchControl : report_requests_detail_switchControl,
+        rowdata:{
+            ser_id: null,
+            start_date: null,
+            end_date: null,
+            req_ser_id: null,
+            req_user_id: null
+        },
+        ordering: true,
+        order: [
+            [1, "asc"]
+        ],
+
+        dom: vDomParam,
+        createdRow: function( row, data, dataIndex ) {
+            $(row).find('td:eq(3)').css('background-color', data["succ_color"]);
+            $(row).find('td:eq(5)').css('background-color', data["contract_color"]);
+            $(row).find('td:eq(7)').css('background-color', data["start_color"]);
+            $(row).find('td:eq(9)').css('background-color', data["lose_color"]);
+            $(row).find('td:eq(11)').css('background-color', data["can_color"]);
+            $(row).find('td:eq(13)').css('background-color', data["fail_color"]);
+            $(row).find('td:eq(15)').css('background-color', data["not_fill_color"]);
+            $(row).find('td:eq(17)').css('background-color', data["new_color"]);
+            $(row).find('td:eq(19)').css('background-color', data["work_color"]);
+            $(row).find('td:eq(21)').css('background-color', data["complete_color"]);
+            $(row).find('td:eq(23)').css('background-color', data["send_color"]);
+            $(row).find('td:eq(25)').css('background-color', data["admin_del_color"]);
+            $(row).find('td:eq(27)').css('background-color', data["user_del_color"]);
+            $(row).find('td:eq(29)').css('background-color', data["contract_can_color"]);
+            $(row).find('td:eq(31)').css('background-color', data["start_can_color"]);
+
+            if(data["ser_id"] === 0){
+                $(row).css('background-color','#d5e1df');
+                $(row).addClass("font-weight-bold");
+            }
+        },
+        columnDefs: [
+            { "targets": [2,3,5,7,9,11,13,15,17,21,23,25,27,29,31], render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{report_requests.detail.ser_id}]]*/ "ser_id", "data": "ser_id", "width": ser_id_width, "className": ser_id_class},
+            /*1*/{"title": /*[[#{report_requests.detail.ser_name}]]*/ "ser_name", "data": "ser_name", "width": ser_name_width, "className": ser_name_class},
+            /*2*/{"title": /*[[#{report_requests.detail.all_summ}]]*/ "all_summ", "data": "all_summ", "width": all_summ_width, "className": all_summ_class},
+
+            /*3*/{"title": /*[[#{report_requests.detail.succ_summ}]]*/ "succ_summ", "data": "succ_summ", "width": succ_summ_width, "className": succ_summ_class},
+            /*4*/{"title": /*[[#{report_requests.detail.succ_color}]]*/ "succ_color", "data": "succ_color", "width": succ_color_width, "className": succ_color_class},
+
+            /*5*/{"title": /*[[#{report_requests.detail.contract_summ}]]*/ "contract_summ", "data": "contract_summ", "width": contract_summ_width, "className": contract_summ_class},
+            /*6*/{"title": /*[[#{report_requests.detail.contract_color}]]*/ "contract_color", "data": "contract_color", "width": contract_color_width, "className": contract_color_class},
+
+            /*7*/{"title": /*[[#{report_requests.detail.start_summ}]]*/ "start_summ", "data": "start_summ", "width": start_summ_width, "className": start_summ_class},
+            /*8*/{"title": /*[[#{report_requests.detail.start_color}]]*/ "start_color", "data": "start_color", "width": start_color_width, "className": start_color_class},
+
+            /*9*/{"title": /*[[#{report_requests.detail.lose_summ}]]*/ "lose_summ", "data": "lose_summ", "width": lose_summ_width, "className": lose_summ_class},
+            /*10*/{"title": /*[[#{report_requests.detail.lose_color}]]*/ "lose_color", "data": "lose_color", "width": lose_color_width, "className": lose_color_class},
+
+            /*11*/{"title": /*[[#{report_requests.detail.can_summ}]]*/ "can_summ", "data": "can_summ", "width": can_summ_width, "className": can_summ_class},
+            /*12*/{"title": /*[[#{report_requests.detail.can_color}]]*/ "can_color", "data": "can_color", "width": can_color_width, "className": can_color_class},
+
+            /*13*/{"title": /*[[#{report_requests.detail.fail_summ}]]*/ "fail_summ", "data": "fail_summ", "width": fail_summ_width, "className": fail_summ_class},
+            /*14*/{"title": /*[[#{report_requests.detail.fail_color}]]*/ "fail_color", "data": "fail_color", "width": fail_color_width, "className": fail_color_class},
+
+            /*15*/{"title": /*[[#{report_requests.detail.not_fill_sum}]]*/ "not_fill_sum", "data": "not_fill_sum", "width": not_fill_sum_width, "className": not_fill_sum_class},
+            /*16*/{"title": /*[[#{report_requests.detail.not_fill_color}]]*/ "not_fill_color", "data": "not_fill_color", "width": not_fill_color_width, "className": not_fill_color_class},
+
+            /*17*/{"title": /*[[#{report_requests.detail.new_sum}]]*/ "new_sum", "data": "new_sum", "width": new_sum_width, "className": new_sum_class},
+            /*18*/{"title": /*[[#{report_requests.detail.new_color}]]*/ "new_color", "data": "new_color", "width": new_color_width, "className": new_color_class},
+
+            /*19*/{"title": /*[[#{report_requests.detail.work_sum}]]*/ "work_sum", "data": "work_sum", "width": work_sum_width, "className": work_sum_class},
+            /*20*/{"title": /*[[#{report_requests.detail.work_color}]]*/ "work_color", "data": "work_color", "width": work_color_width, "className": work_color_class},
+
+            /*21*/{"title": /*[[#{report_requests.detail.complete_sum}]]*/ "complete_sum", "data": "complete_sum", "width": complete_sum_width, "className": complete_sum_class},
+            /*22*/{"title": /*[[#{report_requests.detail.complete_color}]]*/ "complete_color", "data": "complete_color", "width": complete_color_width, "className": complete_color_class},
+
+            /*23*/{"title": /*[[#{report_requests.detail.send_sum}]]*/ "send_sum", "data": "send_sum", "width": send_sum_width, "className": send_sum_class},
+            /*24*/{"title": /*[[#{report_requests.detail.send_color}]]*/ "send_color", "data": "send_color", "width": send_color_width, "className": send_color_class},
+
+            /*25*/{"title": /*[[#{report_requests.detail.user_del_sum}]]*/ "user_del_sum", "data": "user_del_sum", "width": user_del_sum_width, "className": user_del_sum_class},
+            /*26*/{"title": /*[[#{report_requests.detail.user_del_color}]]*/ "user_del_color", "data": "user_del_color", "width": user_del_color_width, "className": user_del_color_class},
+
+            /*27*/{"title": /*[[#{report_requests.detail.admin_del_sum}]]*/ "admin_del_sum", "data": "admin_del_sum", "width": admin_del_sum_width, "className": admin_del_sum_class},
+            /*28*/{"title": /*[[#{report_requests.detail.admin_del_color}]]*/ "admin_del_color", "data": "admin_del_color", "width": admin_del_color_width, "className": admin_del_color_class},
+
+            /*29*/{"title": /*[[#{report_requests.detail.contract_can_sum}]]*/ "contract_can_sum", "data": "contract_can_sum", "width": contract_can_sum_width, "className": contract_can_sum_class},
+            /*30*/{"title": /*[[#{report_requests.detail.contract_can_color}]]*/ "contract_can_color", "data": "contract_can_color", "width": contract_can_color_width, "className": contract_can_color_class},
+
+            /*31*/{"title": /*[[#{report_requests.detail.start_can_sum}]]*/ "start_can_sum", "data": "start_can_sum", "width": start_can_sum_width, "className": start_can_sum_class},
+            /*32*/{"title": /*[[#{report_requests.detail.start_can_color}]]*/ "start_can_color", "data": "start_can_color", "width": start_can_color_width, "className": start_can_color_class}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function report_requests_detail_switchControl(){
+        if(vReportRequestsDetailValue.rowdata.ser_id != null){
+            $('#report_requests_tabs_div').removeAttr('hidden');
+
+            vReportReportsAllValue.rowdata.start_date = $("#report_requests_start_date").val();
+            vReportReportsAllValue.rowdata.end_date = $("#report_requests_end_date").val();
+            vReportReportsAllValue.rowdata.req_ser_id = vReportRequestsDetailValue.rowdata.ser_id;
+            vReportReportsAllValue.rowdata.req_user_id = $("#report_requests_user_list").val();
+            $(vReportReportsAllValue.table).DataTable().ajax.reload();
+<!-- All -->
+            vReportReportsSucValue.rowdata.start_date = $("#report_requests_start_date").val();
+            vReportReportsSucValue.rowdata.end_date = $("#report_requests_end_date").val();
+            vReportReportsSucValue.rowdata.req_ser_id = vReportRequestsDetailValue.rowdata.ser_id;
+            vReportReportsSucValue.rowdata.req_user_id = $("#report_requests_user_list").val();
+            $(vReportReportsSucValue.table).DataTable().ajax.reload();
+<!-- Success -->
+            vReportReportsContractValue.rowdata.start_date = $("#report_requests_start_date").val();
+            vReportReportsContractValue.rowdata.end_date = $("#report_requests_end_date").val();
+            vReportReportsContractValue.rowdata.req_ser_id = vReportRequestsDetailValue.rowdata.ser_id;
+            vReportReportsContractValue.rowdata.req_user_id = $("#report_requests_user_list").val();
+            $(vReportReportsContractValue.table).DataTable().ajax.reload();
+<!-- Contract -->
+            vReportReportsStartValue.rowdata.start_date = $("#report_requests_start_date").val();
+            vReportReportsStartValue.rowdata.end_date = $("#report_requests_end_date").val();
+            vReportReportsStartValue.rowdata.req_ser_id = vReportRequestsDetailValue.rowdata.ser_id;
+            vReportReportsStartValue.rowdata.req_user_id = $("#report_requests_user_list").val();
+            $(vReportReportsStartValue.table).DataTable().ajax.reload();
+<!-- Start -->
+            vReportReportsLoseValue.rowdata.start_date = $("#report_requests_start_date").val();
+            vReportReportsLoseValue.rowdata.end_date = $("#report_requests_end_date").val();
+            vReportReportsLoseValue.rowdata.req_ser_id = vReportRequestsDetailValue.rowdata.ser_id;
+            vReportReportsLoseValue.rowdata.req_user_id = $("#report_requests_user_list").val();
+            $(vReportReportsLoseValue.table).DataTable().ajax.reload();
+<!-- Lose -->
+            vReportReportsCanValue.rowdata.start_date = $("#report_requests_start_date").val();
+            vReportReportsCanValue.rowdata.end_date = $("#report_requests_end_date").val();
+            vReportReportsCanValue.rowdata.req_ser_id = vReportRequestsDetailValue.rowdata.ser_id;
+            vReportReportsCanValue.rowdata.req_user_id = $("#report_requests_user_list").val();
+            $(vReportReportsCanValue.table).DataTable().ajax.reload();
+<!-- Canceled -->
+            vReportReportsFailValue.rowdata.start_date = $("#report_requests_start_date").val();
+            vReportReportsFailValue.rowdata.end_date = $("#report_requests_end_date").val();
+            vReportReportsFailValue.rowdata.req_ser_id = vReportRequestsDetailValue.rowdata.ser_id;
+            vReportReportsFailValue.rowdata.req_user_id = $("#report_requests_user_list").val();
+            $(vReportReportsFailValue.table).DataTable().ajax.reload();
+<!-- Failed -->
+            vReportReportsNotFillValue.rowdata.start_date = $("#report_requests_start_date").val();
+            vReportReportsNotFillValue.rowdata.end_date = $("#report_requests_end_date").val();
+            vReportReportsNotFillValue.rowdata.req_ser_id = vReportRequestsDetailValue.rowdata.ser_id;
+            vReportReportsNotFillValue.rowdata.req_user_id = $("#report_requests_user_list").val();
+            $(vReportReportsNotFillValue.table).DataTable().ajax.reload();
+<!-- Not Fill -->
+            vReportReportsNewValue.rowdata.start_date = $("#report_requests_start_date").val();
+            vReportReportsNewValue.rowdata.end_date = $("#report_requests_end_date").val();
+            vReportReportsNewValue.rowdata.req_ser_id = vReportRequestsDetailValue.rowdata.ser_id;
+            vReportReportsNewValue.rowdata.req_user_id = $("#report_requests_user_list").val();
+            $(vReportReportsNewValue.table).DataTable().ajax.reload();
+<!-- New -->
+            vReportReportsWorkValue.rowdata.start_date = $("#report_requests_start_date").val();
+            vReportReportsWorkValue.rowdata.end_date = $("#report_requests_end_date").val();
+            vReportReportsWorkValue.rowdata.req_ser_id = vReportRequestsDetailValue.rowdata.ser_id;
+            vReportReportsWorkValue.rowdata.req_user_id = $("#report_requests_user_list").val();
+            $(vReportReportsWorkValue.table).DataTable().ajax.reload();
+<!-- Work -->
+            vReportReportsCompleteValue.rowdata.start_date = $("#report_requests_start_date").val();
+            vReportReportsCompleteValue.rowdata.end_date = $("#report_requests_end_date").val();
+            vReportReportsCompleteValue.rowdata.req_ser_id = vReportRequestsDetailValue.rowdata.ser_id;
+            vReportReportsCompleteValue.rowdata.req_user_id = $("#report_requests_user_list").val();
+            $(vReportReportsCompleteValue.table).DataTable().ajax.reload();
+<!-- Complete -->
+            vReportReportsSendValue.rowdata.start_date = $("#report_requests_start_date").val();
+            vReportReportsSendValue.rowdata.end_date = $("#report_requests_end_date").val();
+            vReportReportsSendValue.rowdata.req_ser_id = vReportRequestsDetailValue.rowdata.ser_id;
+            vReportReportsSendValue.rowdata.req_user_id = $("#report_requests_user_list").val();
+            $(vReportReportsSendValue.table).DataTable().ajax.reload();
+<!-- Send -->
+            vReportReportsUserDelValue.rowdata.start_date = $("#report_requests_start_date").val();
+            vReportReportsUserDelValue.rowdata.end_date = $("#report_requests_end_date").val();
+            vReportReportsUserDelValue.rowdata.req_ser_id = vReportRequestsDetailValue.rowdata.ser_id;
+            vReportReportsUserDelValue.rowdata.req_user_id = $("#report_requests_user_list").val();
+            $(vReportReportsUserDelValue.table).DataTable().ajax.reload();
+<!-- User Del -->
+            vReportReportsAdminDelValue.rowdata.start_date = $("#report_requests_start_date").val();
+            vReportReportsAdminDelValue.rowdata.end_date = $("#report_requests_end_date").val();
+            vReportReportsAdminDelValue.rowdata.req_ser_id = vReportRequestsDetailValue.rowdata.ser_id;
+            vReportReportsAdminDelValue.rowdata.req_user_id = $("#report_requests_user_list").val();
+            $(vReportReportsAdminDelValue.table).DataTable().ajax.reload();
+<!-- Admin Del -->
+            vReportReportsContractCanValue.rowdata.start_date = $("#report_requests_start_date").val();
+            vReportReportsContractCanValue.rowdata.end_date = $("#report_requests_end_date").val();
+            vReportReportsContractCanValue.rowdata.req_ser_id = vReportRequestsDetailValue.rowdata.ser_id;
+            vReportReportsContractCanValue.rowdata.req_user_id = $("#report_requests_user_list").val();
+            $(vReportReportsContractCanValue.table).DataTable().ajax.reload();
+<!-- Start Can -->
+            vReportReportsStartCanValue.rowdata.start_date = $("#report_requests_start_date").val();
+            vReportReportsStartCanValue.rowdata.end_date = $("#report_requests_end_date").val();
+            vReportReportsStartCanValue.rowdata.req_ser_id = vReportRequestsDetailValue.rowdata.ser_id;
+            vReportReportsStartCanValue.rowdata.req_user_id = $("#report_requests_user_list").val();
+            $(vReportReportsStartCanValue.table).DataTable().ajax.reload();
+<!-- Start Can -->
+        } else{
+            $('#report_requests_tabs_div').attr('hidden',true);
+
+            vReportReportsAllValue.rowdata.start_date = null;
+            vReportReportsAllValue.rowdata.end_date = null;
+            vReportReportsAllValue.rowdata.req_ser_id = null;
+            vReportReportsAllValue.rowdata.req_user_id = null;
+            $(vReportReportsAllValue.table).DataTable().clear().draw();
+<!-- All -->
+            vReportReportsSucValue.rowdata.start_date = null;
+            vReportReportsSucValue.rowdata.end_date = null;
+            vReportReportsSucValue.rowdata.req_ser_id = null;
+            vReportReportsSucValue.rowdata.req_user_id = null;
+            $(vReportReportsSucValue.table).DataTable().clear().draw();
+<!-- Success -->
+            vReportReportsContractValue.rowdata.start_date = null;
+            vReportReportsContractValue.rowdata.end_date = null;
+            vReportReportsContractValue.rowdata.req_ser_id = null;
+            vReportReportsContractValue.rowdata.req_user_id = null;
+            $(vReportReportsContractValue.table).DataTable().clear().draw();
+<!-- Contract -->
+            vReportReportsStartValue.rowdata.start_date = null;
+            vReportReportsStartValue.rowdata.end_date = null;
+            vReportReportsStartValue.rowdata.req_ser_id = null;
+            vReportReportsStartValue.rowdata.req_user_id = null;
+            $(vReportReportsStartValue.table).DataTable().clear().draw();
+<!-- Start -->
+            vReportReportsLoseValue.rowdata.start_date = null;
+            vReportReportsLoseValue.rowdata.end_date = null;
+            vReportReportsLoseValue.rowdata.req_ser_id = null;
+            vReportReportsLoseValue.rowdata.req_user_id = null;
+            $(vReportReportsLoseValue.table).DataTable().clear().draw();
+<!-- Lose -->
+            vReportReportsCanValue.rowdata.start_date = null;
+            vReportReportsCanValue.rowdata.end_date = null;
+            vReportReportsCanValue.rowdata.req_ser_id = null;
+            vReportReportsCanValue.rowdata.req_user_id = null;
+            $(vReportReportsCanValue.table).DataTable().clear().draw();
+<!-- Canceled -->
+            vReportReportsFailValue.rowdata.start_date = null;
+            vReportReportsFailValue.rowdata.end_date = null;
+            vReportReportsFailValue.rowdata.req_ser_id = null;
+            vReportReportsFailValue.rowdata.req_user_id = null;
+            $(vReportReportsFailValue.table).DataTable().clear().draw();
+<!-- Canceled -->
+            vReportReportsNotFillValue.rowdata.start_date = null;
+            vReportReportsNotFillValue.rowdata.end_date = null;
+            vReportReportsNotFillValue.rowdata.req_ser_id = null;
+            vReportReportsNotFillValue.rowdata.req_user_id = null;
+            $(vReportReportsNotFillValue.table).DataTable().clear().draw();
+<!-- Not Fill -->
+            vReportReportsNewValue.rowdata.start_date = null;
+            vReportReportsNewValue.rowdata.end_date = null;
+            vReportReportsNewValue.rowdata.req_ser_id = null;
+            vReportReportsNewValue.rowdata.req_user_id = null;
+            $(vReportReportsNewValue.table).DataTable().clear().draw();
+<!--New -->
+            vReportReportsWorkValue.rowdata.start_date = null;
+            vReportReportsWorkValue.rowdata.end_date = null;
+            vReportReportsWorkValue.rowdata.req_ser_id = null;
+            vReportReportsWorkValue.rowdata.req_user_id = null;
+            $(vReportReportsWorkValue.table).DataTable().clear().draw();
+<!--Work -->
+            vReportReportsCompleteValue.rowdata.start_date = null;
+            vReportReportsCompleteValue.rowdata.end_date = null;
+            vReportReportsCompleteValue.rowdata.req_ser_id = null;
+            vReportReportsCompleteValue.rowdata.req_user_id = null;
+            $(vReportReportsCompleteValue.table).DataTable().clear().draw();
+<!--Complete -->
+            vReportReportsSendValue.rowdata.start_date = null;
+            vReportReportsSendValue.rowdata.end_date = null;
+            vReportReportsSendValue.rowdata.req_ser_id = null;
+            vReportReportsSendValue.rowdata.req_user_id = null;
+            $(vReportReportsSendValue.table).DataTable().clear().draw();
+<!--Send -->
+            vReportReportsUserDelValue.rowdata.start_date = null;
+            vReportReportsUserDelValue.rowdata.end_date = null;
+            vReportReportsUserDelValue.rowdata.req_ser_id = null;
+            vReportReportsUserDelValue.rowdata.req_user_id = null;
+            $(vReportReportsUserDelValue.table).DataTable().clear().draw();
+<!--User Del -->
+            vReportReportsAdminDelValue.rowdata.start_date = null;
+            vReportReportsAdminDelValue.rowdata.end_date = null;
+            vReportReportsAdminDelValue.rowdata.req_ser_id = null;
+            vReportReportsAdminDelValue.rowdata.req_user_id = null;
+            $(vReportReportsAdminDelValue.table).DataTable().clear().draw();
+<!--Admin Del -->
+            vReportReportsContractCanValue.rowdata.start_date = null;
+            vReportReportsContractCanValue.rowdata.end_date = null;
+            vReportReportsContractCanValue.rowdata.req_ser_id = null;
+            vReportReportsContractCanValue.rowdata.req_user_id = null;
+            $(vReportReportsContractCanValue.table).DataTable().clear().draw();
+<!--Contract Can -->
+            vReportReportsStartCanValue.rowdata.start_date = null;
+            vReportReportsStartCanValue.rowdata.end_date = null;
+            vReportReportsStartCanValue.rowdata.req_ser_id = null;
+            vReportReportsStartCanValue.rowdata.req_user_id = null;
+            $(vReportReportsStartCanValue.table).DataTable().clear().draw();
+<!--Start Can -->
+        }
+    }
+
+    $('.positions_btn_control').on('click', function (){
+        $("#positions-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#report-requests-detail-xls-form').submit(function() {
+        $("#report-requests-detail-xls-form input[name=start_date]").val($("#report_requests_start_date").val());
+        $("#report-requests-detail-xls-form input[name=end_date]").val($("#report_requests_end_date").val());
+        $("#report-requests-detail-xls-form input[name=req_ser_id]").val($("#report_requests_ser_list").val());
+        $("#report-requests-detail-xls-form input[name=req_user_id]").val($("#report_requests_user_list").val());
+    });
+
+    $(document).ready(function(){
+        vReportRequestsDetailValue.rowdata.start_date = null;
+        vReportRequestsDetailValue.rowdata.end_date = null;
+        vReportRequestsDetailValue.rowdata.req_ser_id = null;
+        vReportRequestsDetailValue.rowdata.req_user_id = null;
+
+        recreateDataTable(vReportRequestsDetailValue);
+
+        if (smallScreenSize) {
+            var currentTable = $('#table-report-requests-detail').DataTable();
+            var head_succ = currentTable.columns(3).header();
+            $(head_succ).html('Выигр.');
+            var head_contr= currentTable.columns(5).header();
+            $(head_contr).html('Контр.');
+            var head_start = currentTable.columns(7).header();
+            $(head_start).html('Старт');
+            var head_lose = currentTable.columns(9).header();
+            $(head_lose).html('Проигр.');
+            var head_cancel = currentTable.columns(11).header();
+            $(head_cancel).html('Отмен.');
+            var head_failed = currentTable.columns(13).header();
+            $(head_failed).html('Пров.');
+            var head_not_fill = currentTable.columns(15).header();
+            $(head_not_fill).html('Не зап.');
+            var head_new = currentTable.columns(17).header();
+            $(head_new).html('Нов.');
+            var head_work = currentTable.columns(19).header();
+            $(head_work).html('В раб.');
+            var head_ops = currentTable.columns(21).header();
+            $(head_ops).html('Обраб.');
+            var head_send = currentTable.columns(23).header();
+            $(head_send).html('Отпр.');
+            var head_user_del = currentTable.columns(25).header();
+            $(head_user_del).html('Уд. Пол.');
+            var head_adm_del = currentTable.columns(27).header();
+            $(head_adm_del).html('Уд. Адм.');
+            var head_cont_fail = currentTable.columns(29).header();
+            $(head_cont_fail).html('Конт. Пр.');
+            var head_start_fail = currentTable.columns(31).header();
+            $(head_start_fail).html('Старт. Пр.');
+        }
+        });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="kpi_facts_filter_body" th:remove="tag">
+		<form class="form-inline">
+		      <div class="form-group mb-2 mr-2">
+				<label for="kpi_facts_year" class="mr-2" th:text="#{kpi_facts.filter.year}">Year: </label>
+                <select class="custom-select" style="width:130px; display:inline-block" id="kpi_facts_year" placeholder="Year">
+					<option selected>2020</option>
+					<option>2021</option>
+					<option>2022</option>
+               </select>
+			  </div>
+
+			<a class="btn btn-outline-primary mb-2" id="kpi_facts_show" th:text="#{general.showbth}" hidden>Show</a>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+	$(document).ready(function(){
+		<!-- Highlight menu -->
+		$('#main_li').removeClass('active');
+
+		$('#crm_kpi_li').addClass('active').removeClass('collapsed');
+		$('#crm_kpi_a').attr('aria-expanded',true);
+		$('#crm_kpi').addClass('show');
+
+		$('#kpi_facts_a').addClass('text-primary');
+		$('#kpi_facts_show').removeAttr('hidden');
+	});
+
+	$('#kpi_facts_show').click(function () {
+		if(RoleAllAdmin || RoleHR || RoleAccountant || RoleChiefOPS || RoleChiefSale || RoleSuperOPS) {
+			$('#kpi_facts_main_card').removeAttr('hidden');
+			kpi_facts_main_hide();
+			vKPIFactListValue.rowdata.kpi_facts_year = $("#kpi_facts_year").val();
+			$(vKPIFactListValue.table).DataTable().ajax.reload();
+			$('#kpi_facts_filter_div').removeClass('show').collapse('hide');
+		}
+		else if(RoleSale ||RoleOPS) {
+			kpi_facts_branch_hide();
+			$('#kpi_facts_users_card').removeAttr('hidden');
+			vKPIFactUsersValue.rowdata.kpi_facts_year = $("#kpi_facts_year").val();
+			vKPIFactUsersValue.rowdata.kpi_main_dep_id = 0;
+			vKPIFactUsersValue.rowdata.kpi_dep_id = 0;
+			$(vKPIFactUsersValue.table).DataTable().ajax.reload();
+			$('#kpi_facts_filter_div').removeClass('show').collapse('hide');
+		}
+	});
+
+	$('#kpi_facts_month_tabs_ul a').on('shown.bs.tab', function (e) {
+		e.target; // newly activated tab
+		e.relatedTarget; // previous active tab
+		$('#kpi_facts_month').val($(this).attr("data-current-month"));
+		month_calc_change();
+	});
+</script>
+
+</body>
+</html>

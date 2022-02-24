@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_wh_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="clients_wh_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="clients_wh_mode">
+            </div>
+
+            <div class="modal-content" id="clients_wh_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{clients.list.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body m-1">
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="cnt_id_row">
+                            <label for="clients_wh_cnt_id" class="form-label mb-0" th:text="'1. '+ #{clients.list.cnt_id}"></label>
+                            <input type="number" class="form-control" id="clients_wh_cnt_id" name="clients_wh_cnt_id" readonly>
+                        </div>
+                        <div class="col-12 col-md-9" id="cnt_name_row">
+                            <label for="clients_wh_cnt_name" class="form-label mb-0" th:text="'2. '+#{clients.list.cnt_name}"></label>
+                            <input type="text" maxlength="120" class="form-control" id="clients_wh_cnt_name" name="clients_wh_cnt_name" readonly>
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-12" id="country_id_row">
+                            <label for="wh_client_id" class="form-label mb-0" th:text="'3. '+#{clients.wh.wh_client_name}"></label>
+                            <div class="flex-fill">
+                                <select type="text" id="wh_client_id" name="wh_client_id" class="custom-select select2" aria-describedby="wh_client_id_helpBlock">
+                                </select>
+                            </div>
+                        </div>
+                    </div><!-- Row 2 -->
+                </div><!-- Body -->
+                <div class="modal-footer">
+                    <button type="button" id="clients_wh_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="clients_wh_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="clients_wh_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="clients_wh_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+// Clear Fields
+    function clear_clients_wh_modal_detail() {
+        $("#clients_wh_modal_detail input[type=text]").val('');
+        $("#clients_wh_modal_detail input[type=number]").val('');
+        $("#clients_wh_modal_detail select").empty();
+        $("#clients_wh_modal_detail textarea").val('');
+    }
+
+// Block And Required Fields
+    function block_clients_wh_modal_detail() {
+    }
+
+    function whUserChange(vMode,vCNTID) {
+        $('#wh_client_id').empty();
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/clients/get_wh_client_list'}]]*/ "/clients/get_wh_client_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "cnt_id": vCNTID
+            },
+            success: function (wh_clients_list) {
+                for (var i = 0; i < wh_clients_list.data.length; i++) {
+                    $("select[name='wh_client_id']").find('option').end().append(
+                        "<option value='" + wh_clients_list.data[i].wh_client_id
+                        + "'>" + wh_clients_list.data[i].wh_client_name + "</option>");
+                }
+            }
+        }));
+    }
+
+let whClientName =  "Выберите клиента";
+$('#wh_client_id')
+    .select2({
+        id: '-1', // the value of the option
+        placeholder: whClientName,
+        allowClear: true,
+        width: 'resolve',
+        dropdownAutoWidth: true
+    });
+
+// Load Function
+    function fill_clients_wh_modal_detail(aMode){
+        $('#clients_wh_mode').val(aMode);
+        clear_clients_wh_modal_detail();
+        block_clients_wh_modal_detail();
+
+        $('#clients_wh_cnt_id').val(vClientsListValue.rowdata.cnt_id);
+        $('#clients_wh_cnt_name').val(vClientsListValue.rowdata.cnt_name);
+
+        $.when(
+            whUserChange(aMode,vClientsListValue.rowdata.cnt_id)
+        ).then(function() {
+            $('#clients_wh_modal').modal('show');
+        });
+    }
+
+// Add button script
+$('#clients_wh_modal_addbtn').click(function(){
+    var MainRowID = vClientsListValue.rowdata.cnt_id;
+    var RowID = vClientWHListValue.rowdata.wh_client_link_id;
+    $.ajax({
+        url: /*[[ @{/clients/add_wh_client_list} ]]*/ "/clients/add_wh_client_list",
+        type: 'POST',
+        data: {
+            "cnt_id": MainRowID,
+            "wh_client_id": $('#wh_client_id').val()
+        },
+        success: function (result) {
+            $('#clients_wh_modal').modal('hide');
+            vClientWHListValue.rowdata.cnt_id = MainRowID;
+            vClientWHListValue.rowdata.wh_client_link_id = RowID;
+            $(vClientWHListValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+</script>
+
+</body>
+</html>

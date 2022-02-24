@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="dashboard_employee_balance_clients05_body" th:remove="tag">
+        <div><table id="table-dashboard-employee-balance-client05" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+        
+            <form id="table-dashboard-employee-balance-client05-form" th:action="@{/clients}" method="post" target="_blank">
+                <input name="cnt_id" hidden>
+                <input name="clients_list_table_order_column" hidden>
+                <input name="clients_list_table_order_type" hidden>
+                <input name="clients_list_table_search" hidden>
+                <input name="clients_list_table_pagelen" hidden>
+                <input name="clients_list_table_page" hidden>
+            </form>        
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+        var clientCurrentMonth05 = 5;
+
+        var cnt_id_width, cnt_name_width, fin_sum_width, fin_persent_width;
+        var cnt_id_class, cnt_name_class, fin_sum_class, fin_persent_class;
+
+        if(mobileScreenSize){
+                vDomParam = "Blfrtp";
+
+                cnt_id_width = "";
+                cnt_id_class = "none";
+                cnt_name_width = "80%";
+                cnt_name_class = "client_name_link";
+                fin_sum_width = "10%";
+                fin_sum_class = "text-center";
+                fin_persent_width = "10%";
+                fin_persent_class = "text-center";
+
+                $('#table-dashboard-employee-balance-client05-form').prop('target','_self');
+        }
+        else if(smallScreenSize){
+                vDomParam = "Blfrtip";
+
+                cnt_id_width = "10%";
+                cnt_id_class = "";
+                cnt_name_width = "70%";
+                cnt_name_class = "client_name_link";
+                fin_sum_width = "10%";
+                fin_sum_class = "text-center";
+                fin_persent_width = "10%";
+                fin_persent_class = "text-center";
+
+                $('#table-dashboard-employee-balance-client05-form').prop('target','_blank');
+        }
+        else{
+                vDomParam = "Blfrtip";
+
+                cnt_id_width = "10%";
+                cnt_id_class = "";
+                cnt_name_width = "70%";
+                cnt_name_class = "client_name_link";
+                fin_sum_width = "10%";
+                fin_sum_class = "text-center";
+                fin_persent_width = "10%";
+                fin_persent_class = "text-center";
+
+                $('#table-dashboard-employee-balance-client05-form').prop('target','_blank');
+        }
+
+        var vDashboardClients05Value;
+        vDashboardClients05Value = {
+                table : '#table-dashboard-employee-balance-client05',
+                ajax : {
+                        "url": /*[[@{/dashboard_employee_balance/get_clients_table}]]*/ "dashboard_employee_balance/get_clients_table",
+                        "type": "post",
+                        "data": function ( d ) {
+                                d.req_user_id = vDashboardClients05Value.rowdata.req_user_id;
+                                d.req_ser_id = vDashboardClients05Value.rowdata.req_ser_id;
+                                d.month = clientCurrentMonth05;
+                        }
+                },
+                key : "cnt_id",
+                switchControl : dashboard_employee_balance_client05_switchControl,
+                rowdata:{
+                        cnt_id: null,
+                        req_user_id: null,
+                        req_ser_id: null,
+                        month: null
+                },
+                ordering: true,
+                order: [
+                        [2, "desc"]
+                ],
+
+                dom: 'Blfrtip',
+                createdRow: function(row, data, index) {
+                        if(data["cnt_id"] === 0){
+                                $(row).css('background-color','#d5e1df');
+                                $(row).addClass("font-weight-bold");
+                        }
+                },
+                columnDefs: [
+                        { "targets": [2],  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        { "targets": [3],  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )}
+                ],
+                columns : [
+                        /*0*/{"title": /*[[#{dashboard_employee_balance.clients.cnt_id}]]*/ "cnt_id", "data": "cnt_id", "width": cnt_id_width , "className": cnt_id_class},
+                        /*1*/{"title": /*[[#{dashboard_employee_balance.clients.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": cnt_name_width , "className": cnt_name_class},
+                        /*2*/{"title": /*[[#{dashboard_employee_balance.clients.fin_sum}]]*/ "fin_sum", "data": "fin_sum", "width": fin_sum_width , "className": fin_sum_class},
+                        /*3*/{"title": /*[[#{dashboard_employee_balance.clients.fin_persent}]]*/ "fin_persent", "data": "fin_persent", "width": fin_persent_width , "className": fin_persent_class}
+                ],
+                pageLength: 10,
+                copy_button: true,
+                excel_button: true,
+                pdf_button: true,
+                print_button: true
+        };
+
+        function dashboard_employee_balance_client05_switchControl(){
+            if(vDashboardClients05Value.rowdata.cnt_id != null){
+                $('#dashboard_employee_balance_finance_card').removeAttr('hidden');
+                vDashboardFinanceValue.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+                vDashboardFinanceValue.rowdata.req_ser_id = vDashboardService05Value.rowdata.ser_id;
+                vDashboardFinanceValue.rowdata.req_cnt_id = vDashboardClients05Value.rowdata.cnt_id;
+                vDashboardFinanceValue.rowdata.req_month = clientCurrentMonth05;
+                $(vDashboardFinanceValue.table).DataTable().ajax.reload();
+            }
+            else{
+                $('#dashboard_employee_balance_finance_card').attr('hidden',true);
+                vDashboardFinanceValue.rowdata.req_user_id = null;
+                vDashboardFinanceValue.rowdata.req_ser_id = null;
+                vDashboardFinanceValue.rowdata.req_cnt_id = null;
+                vDashboardFinanceValue.rowdata.req_month = null;
+                $(vDashboardFinanceValue.table).DataTable().clear().draw();
+            }
+        }
+
+        $('#table-dashboard-employee-balance-client05').on('dblclick', '.client_name_link', function (e) {
+                var selectedRow = this._DT_CellIndex.row;
+                var currentTable = $('#table-dashboard-employee-balance-client05').DataTable();
+
+                $("#table-dashboard-employee-balance-client05-form input[name=cnt_id]").val(currentTable.row(selectedRow).data().cnt_id);
+
+                $("#table-dashboard-employee-balance-client05-form input[name=clients_list_table_order_column]").val(0);
+                $("#table-dashboard-employee-balance-client05-form input[name=clients_list_table_order_type]").val("desc");
+                $("#table-dashboard-employee-balance-client05-form input[name=clients_list_table_search]").val(currentTable.row(selectedRow).data().cnt_name);
+                $("#table-dashboard-employee-balance-client05-form input[name=clients_list_table_pagelen]").val(25);
+                $("#table-dashboard-employee-balance-client05-form input[name=clients_list_table_page]").val(0);
+                $("#table-dashboard-employee-balance-client05-form").submit();
+        });
+
+        $('.positions_btn_control').on('click', function (){
+                $("#positions-client05 input[name=mode]").val($(this).attr("mode"));
+        });
+
+        $(document).ready(function(){
+                vDashboardClients05Value.rowdata.req_user_id = null;
+                vDashboardClients05Value.rowdata.req_ser_id = null;
+                vDashboardClients05Value.rowdata.month = null;
+
+                recreateDataTable(vDashboardClients05Value);
+        });
+</script>
+
+</body>
+</html>

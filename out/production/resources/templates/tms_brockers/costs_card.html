@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_brockers_costs_body" th:remove="tag">
+        <form id="tms-brockers-costs-detail" class="mb-2" th:action="@{/tms_brockers/costs_detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="tms-brockers-costs-btn-large" class="d-none d-sm-block">
+                 <button type="submit" id="tms-brockers-costs-detailbtn" class="btn btn-sm btn-dark tms_brockers_costs_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="tms-brockers-costs-addbtn" class="btn btn-sm btn-dark tms_brockers_costs_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="submit" id="tms-brockers-costs-editbtn" class="btn btn-sm btn-dark tms_brockers_costs_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="tms-brockers-costs-delbtn" class="btn btn-sm btn-dark tms_brockers_costs_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="tms-brockers-costs-btn-small" class="d-block d-sm-none">
+                 <button type="submit" id="tms-brockers-costs-detailbtn-sx" class="btn btn-sm btn-dark tms_brockers_costs_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="tms-brockers-costs-addbtn-sx" class="btn btn-sm btn-dark tms_brockers_costs_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                 <button type="submit" id="tms-brockers-costs-editbtn-sx" class="btn btn-sm btn-dark tms_brockers_costs_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="tms-brockers-costs-delbtn-sx" class="btn btn-sm btn-dark tms_brockers_costs_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-tms-brockers-costs" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vClaimCostsValue;
+    vClaimCostsValue = {
+        table : '#table-tms-brockers-costs',
+        button_form: "#tms-brockers-costs-detail",
+        ajax : {
+            "url": /*[[@{/tms_brockers/get_costs_table}]]*/ "tms_brockers/get_costs_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vClaimCostsValue.rowdata.clm_id
+            }
+        },
+        key : "clmcl_id",
+        switchControl : tms_brockers_costs_switchControl,
+        rowdata:{
+            clm_id: null,
+            clmcl_id: null,
+            clmc_type_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+        scrollX: true,
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["clmc_source_color"]);
+        },
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [1], "visible": false},
+            {"targets": [3], "visible": false},
+            {"targets": [4], "visible": false},
+            {"targets": [5], "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{tms_brockers.costs.rn}]]*/ "rn", "data": "rn", "width": "1%"},
+                /*1*/{"title": /*[[#{tms_brockers.costs.clmc_source_id}]]*/ "clmc_source_id", "data": "clmc_source_id", "width": "1%"},
+                /*2*/{"title": /*[[#{tms_brockers.costs.clmc_source_sname}]]*/ "clmc_source_sname", "data": "clmc_source_sname", "width": "10%"},
+                /*3*/{"title": /*[[#{tms_brockers.costs.clmc_source_color}]]*/ "clmc_source_color", "data": "clmc_source_color", "width": "1%"},
+                /*4*/{"title": /*[[#{tms_brockers.costs.clmcl_id}]]*/ "clmcl_id", "data": "clmcl_id", "width": "1%"},
+                /*5*/{"title": /*[[#{tms_brockers.costs.clmc_type_id}]]*/ "clmc_type_id", "data": "clmc_type_id", "width": "1%"},
+                /*6*/{"title": /*[[#{tms_brockers.costs.clmc_type_sname}]]*/ "clmc_type_sname", "data": "clmc_type_sname", "width": "15%", "className": "desktop" },
+                /*7*/{"title": /*[[#{tms_brockers.costs.currency_name}]]*/ "currency_name", "data": "currency_name", "width": "15%", "className": "desktop"},
+                /*8*/{"title": /*[[#{tms_brockers.costs.clmcl_sum}]]*/ "clmcl_sum", "data": "clmcl_sum", "width": "10%"},
+                /*9*/{"title": /*[[#{tms_brockers.costs.currency_date}]]*/ "currency_date", "data": "currency_date", "width": "10%", "className": "desktop"},
+                /*10*/{"title": /*[[#{tms_brockers.costs.clmcl_note}]]*/ "clmcl_note", "data": "clmcl_note", "width": "36%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function tms_brockers_costs_switchControl(){
+        if(vClaimCostsValue.rowdata.clmcl_id != null) {
+            if(vClaimCostsValue.rowdata.clmc_type_id === 1 || vClaimCostsValue.rowdata.clmc_type_id === 8){
+                $("#tms-brockers-costs-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#tms-brockers-costs-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            else{
+                $("#tms-brockers-costs-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#tms-brockers-costs-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            }
+                $("#tms-brockers-costs-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-costs-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#tms-brockers-costs-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-costs-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+                $("#tms-brockers-costs-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-costs-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-costs-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#tms-brockers-costs-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-costs-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-costs-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.tms_brockers_costs_btn_control').on('click', function (){
+        $("#tms-brockers-costs-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#tms-brockers-costs-detail').submit(function() {
+        vClaimCostsValue.rowdata.tms_brockers_costs_table_order_column = $(vClaimCostsValue.table).DataTable().order()[0][0];
+        vClaimCostsValue.rowdata.tms_brockers_costs_table_order_type = $(vClaimCostsValue.table).DataTable().order()[0][1];
+        vClaimCostsValue.rowdata.tms_brockers_costs_table_search = $(vClaimCostsValue.table).DataTable().search();
+        vClaimCostsValue.rowdata.tms_brockers_costs_table_pagelen = $(vClaimCostsValue.table).DataTable().page.len();
+        vClaimCostsValue.rowdata.tms_brockers_costs_table_page = $(vClaimCostsValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vClaimCostsValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+        vClaimCostsValue.rowdata.clm_num = vClaimsValue.rowdata.clm_num;
+        vClaimCostsValue.rowdata.cnt_name = vClaimsValue.rowdata.cnt_name;
+
+        Object.keys(vClaimCostsValue.rowdata).forEach(function (index) {
+            $("#tms-brockers-costs-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#tms-brockers-costs-detail input[name=\"" + index + "\"]").val(vClaimCostsValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vClaimCostsValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vClaimCostsValue.rowdata.clmcl_id = /*[[${clmcl_id}]]*/ null;
+
+        vClaimCostsValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vClaimCostsValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vClaimCostsValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vClaimCostsValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vClaimCostsValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vClaimCostsValue);
+    });
+</script>
+
+</body>
+</html>

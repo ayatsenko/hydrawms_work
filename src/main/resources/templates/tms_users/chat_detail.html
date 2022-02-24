@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{tms_users.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{tms_users.caption}"></h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <!--/*@thymesVar id="tms_users_detail" type="java.util.List"*/-->
+                <form id="tms-cars-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/tms_users/chat_model}">
+                    <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="tms-cars-indexfrm">Cancel</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="tms-cars-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                            <button th:case="1" type="submit" id="tms-cars-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                            <button th:case="2" type="submit" id="tms-cars-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                        </div>
+                    </div>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_users_chat_table_order_column" th:value="${tms_users_chat_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_users_chat_table_order_type" th:value="${tms_users_chat_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_users_chat_table_search" th:value="${tms_users_chat_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_users_chat_table_pagelen" th:value="${tms_users_chat_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_users_chat_table_page" th:value="${tms_users_chat_table_page}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_users_list_table_order_column" th:value="${tms_users_list_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_users_list_table_order_type" th:value="${tms_users_list_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_users_list_table_search" th:value="${tms_users_list_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_users_list_table_pagelen" th:value="${tms_users_list_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_users_list_table_page" th:value="${tms_users_list_table_page}" >
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="req_user_id_row">
+                            <label for="req_user_id" class="form-label" th:text="'1. '+ #{tms_users.chat.user_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="req_user_id" name="req_user_id" th:value="${req_user_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-5 mb-1">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="req_user_name" class="form-label" th:text="'2. '+#{tms_users.chat.user_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="req_user_name" name="req_user_name" th:value="${req_user_name}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="tms_chat_id_row">
+                            <label for="tms_chat_id" class="form-label" th:text="'3. '+ #{tms_users.chat.tms_chat_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="tms_chat_id" name="tms_chat_id" th:value="${tms_chat_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-5 mb-1" id="tms_car_id_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="tms_car_id" class="form-label" th:text="'4. '+#{tms_users.chat.tms_car_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="tms_car_id" name="tms_car_id" class="form-control p-1" aria-describedby="tms_car_id_helpBlock" th:value="${tms_car_id}">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="tms_cars : ${tms_car_list}"
+                                        th:value="${tms_cars.tms_car_id}"
+                                        th:text="${tms_cars.tms_car_name}"
+                                        th:selected="${tms_cars.tms_car_id == tms_car_id}"
+                                ></option>
+                            </select>
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-md-12 mb-1">
+                            <label for="tms_chat_text" th:text="'5. '+#{tms_users.chat.tms_chat_text}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="512" style="resize:none;" id="tms_chat_text" name="tms_chat_text" th:text="${tms_chat_text}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 3 -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--/*@thymesVar id="tms_users_detail" type="java.util.List"*/-->
+    <form id="tms-cars-indexfrm" method="post" th:action="@{/tms_users}" hidden>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="user_id" th:value="${req_user_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="tms_car_id" th:value="${tms_car_id}">
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="tms_users_chat_table_order_column" th:value="${tms_users_chat_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="tms_users_chat_table_order_type" th:value="${tms_users_chat_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="tms_users_chat_table_search" th:value="${tms_users_chat_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="tms_users_chat_table_pagelen" th:value="${tms_users_chat_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="tms_users_chat_table_page" th:value="${tms_users_chat_table_page}" >
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="tms_users_list_table_order_column" th:value="${tms_users_list_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="tms_users_list_table_order_type" th:value="${tms_users_list_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="tms_users_list_table_search" th:value="${tms_users_list_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="tms_users_list_table_pagelen" th:value="${tms_users_list_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="tms_users_list_table_page" th:value="${tms_users_list_table_page}" >
+    </form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'tms-cars-indexfrm')">Error</span>
+
+<script>
+    $(document).ready(function(){
+<!-- Hihglight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#tms_poland_li').addClass('active').removeClass('collapsed');
+        $('#tms_poland_a').attr('aria-expanded',true);
+        $('#tms_poland').addClass('show');
+
+        $('#tms_poland_cars_a').addClass('text-primary');
+<!-- Form Start -->
+        $('#req_user_id').prop('readOnly',true);
+        $('#req_user_name').prop('readOnly',true);
+<!-- Change Function -->
+        if($('#mode').val() === '0'){
+            $('#tms_chat_id_row').prop('hidden',true);
+        }
+        else if($('#mode').val() === '1'){
+            $('#tms_chat_id').prop('readOnly',true);
+        }
+        else if($('#mode').val() === '2' || $('#mode').val() === '4'){
+            $('#tms_chat_id').prop('readOnly',true);
+            $('#tms_car_id').attr('readOnly',true);
+            $('#tms_chat_text').prop('readOnly',true);
+        }
+    });
+</script>
+</body>
+</html>

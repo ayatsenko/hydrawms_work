@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_notes_types_body" th:remove="tag">
+        <form id="tms-notes-types-detail" class="mb-2" th:action="@{/tms_notes_types/detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="tms-notes-types-btn-large" class="d-none d-sm-block">
+                 <button type="submit" id="tms-notes-types-detailbtn" class="btn btn-sm btn-dark tms_notes_types_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="tms-notes-types-addbtn" class="btn btn-sm btn-primary tms_notes_types_btn_control" th:text="#{general.addbtn}" th:attr="mode=0">Add</button>
+                 <button type="submit" id="tms-notes-types-editbtn" class="btn btn-sm btn-dark tms_notes_types_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="tms-notes-types-delbtn" class="btn btn-sm btn-dark tms_notes_types_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="tms-notes-types-btn-small" class="d-block d-sm-none">
+                 <button type="submit" id="tms-notes-types-detailbtn-sx" class="btn btn-sm btn-dark tms_notes_types_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="tms-notes-types-addbtn-sx" class="btn btn-sm btn-primary tms_notes_types_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                 <button type="submit" id="tms-notes-types-editbtn-sx" class="btn btn-sm btn-dark tms_notes_types_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="tms-notes-types-delbtn-sx" class="btn btn-sm btn-dark tms_notes_types_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-tms-notes-types" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vTmsNotesTypesValue;
+    vTmsNotesTypesValue = {
+        table : '#table-tms-notes-types',
+        button_form: "#tms-notes-types-detail",
+        ajax : {
+            "url": /*[[@{/tms_notes_types/gettable}]]*/ "tms_notes_types/gettable",
+            "type": "post",
+            "data": {
+            }
+        },
+        key : "clm_notes_type_id",
+        switchControl : tms_notes_types_switchControl,
+        rowdata:{
+           clm_notes_type_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["clm_notes_type_colour"]);
+        },
+        columnDefs:[
+                    {"targets": [4], "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{tms_notes_types.clm_notes_type_id}]]*/ "clm_notes_type_id", "data": "clm_notes_type_id", "width": "3%"},
+                /*1*/{"title": /*[[#{tms_notes_types.clm_notes_type_sname}]]*/ "clm_notes_type_sname", "data": "clm_notes_type_sname", "width": "13%", "className": "desktop"},
+                /*2*/{"title": /*[[#{tms_notes_types.clm_notes_type_name}]]*/ "clm_notes_type_name", "data": "clm_notes_type_name", "width": "20%"},
+                /*3*/{"title": /*[[#{tms_notes_types.clm_notes_type_description}]]*/ "clm_notes_type_description", "data": "clm_notes_type_description", "width": "63%", "className": "desktop"},
+                /*4*/{"title": /*[[#{tms_notes_types.clm_notes_type_colour}]]*/ "clm_notes_type_colour", "data": "clm_notes_type_colour", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function tms_notes_types_switchControl(){
+        if(vTmsNotesTypesValue.rowdata.clm_notes_type_id != null) {
+                $("#tms-notes-types-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-notes-types-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#tms-notes-types-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-notes-types-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+                $("#tms-notes-types-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-notes-types-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#tms-notes-types-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-notes-types-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.tms_notes_types_btn_control').on('click', function (){
+        $("#tms-notes-types-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#tms-notes-types-detail').submit(function() {
+        vTmsNotesTypesValue.rowdata.tms_notes_types_table_order_column = $(vTmsNotesTypesValue.table).DataTable().order()[0][0];
+        vTmsNotesTypesValue.rowdata.tms_notes_types_table_order_type = $(vTmsNotesTypesValue.table).DataTable().order()[0][1];
+        vTmsNotesTypesValue.rowdata.tms_notes_types_table_search = $(vTmsNotesTypesValue.table).DataTable().search();
+        vTmsNotesTypesValue.rowdata.tms_notes_types_table_pagelen = $(vTmsNotesTypesValue.table).DataTable().page.len();
+        vTmsNotesTypesValue.rowdata.tms_notes_types_table_page = $(vTmsNotesTypesValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vTmsNotesTypesValue.rowdata).forEach(function (index) {
+            $("#tms-notes-types-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#tms-notes-types-detail input[name=\"" + index + "\"]").val(vTmsNotesTypesValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vTmsNotesTypesValue.rowdata.clm_notes_type_id = /*[[${clm_notes_type_id}]]*/ null;
+
+        vTmsNotesTypesValue.rowdata.table_order_column = /*[[${tms_notes_types_table_order_column}]]*/ null;
+        vTmsNotesTypesValue.rowdata.table_order_type = /*[[${tms_notes_types_table_order_type}]]*/ null;
+        vTmsNotesTypesValue.rowdata.table_search = /*[[${tms_notes_types_table_search}]]*/ null;
+        vTmsNotesTypesValue.rowdata.table_pagelen = /*[[${tms_notes_types_table_pagelen}]]*/ null;
+        vTmsNotesTypesValue.rowdata.table_page = /*[[${tms_notes_types_table_page}]]*/ null;
+
+        recreateDataTable(vTmsNotesTypesValue);
+        $('#main_li').removeClass('active');
+
+        $('#dictionaries_li').addClass('active').removeClass('collapsed');
+        $('#dictionaries_a').attr('aria-expanded',true);
+        $('#dictionaries').addClass('show');
+
+        $('#tms_notes_types_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="users_kpi_list_body" th:remove="tag">
+        <form id="users-kpi-list-detail" class="mb-2" th:action="@{/users_kpi/list_detail}" method="post">
+            <input name="mode" value="0" hidden>
+              <div id="users-kpi-list-detailbtn-large" class="d-none d-sm-block">
+                 <button type="submit" id="users-kpi-list-detailbtn" class="btn btn-sm btn-dark users_kpi_list_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="users-kpi-list-editbtn" class="btn btn-sm btn-dark users_kpi_list_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="users-kpi-list-delbtn" class="btn btn-sm btn-dark users_kpi_list_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="users-kpi-list-detailbtn-small" class="d-block d-sm-none">
+                 <button type="submit" id="users-kpi-list-detailbtn-sx" class="btn btn-sm btn-dark users_kpi_list_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="users-kpi-list-editbtn-sx" class="btn btn-sm btn-dark users_kpi_list_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="users-kpi-list-delbtn-sx" class="btn btn-sm btn-dark users_kpi_list_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+
+        <div><table id="table-users-kpi-list" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var vUsersKPIListValue;
+    vUsersKPIListValue = {
+        table : '#table-users-kpi-list',
+        button_form: '#users-kpi-list-detail',
+        ajax : {
+            "url": /*[[@{/users_kpi/get_list_table}]]*/ "users_kpi/get_list_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.users_kpi_year = vUsersKPIListValue.rowdata.users_kpi_year;
+                d.users_kpi_month = vUsersKPIListValue.rowdata.users_kpi_month;
+            }
+        },
+        key : "user_id",
+        switchControl : users_kpi_list_switchControl,
+        rowdata:{
+           user_id: null,
+           users_kpi_year: null,
+           users_kpi_month: null
+        },
+        ordering: true,
+        order: [
+            [1, "asc"]
+        ],
+        scrollX: true,
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            $(row).find('td:eq(3)').css('background-color', data["meets_color"]);
+            $(row).find('td:eq(4)').css('background-color', data["meets_color"]);
+
+            $(row).find('td:eq(7)').css('background-color', data["calls_color"]);
+            $(row).find('td:eq(8)').css('background-color', data["calls_color"]);
+
+            $(row).find('td:eq(11)').css('background-color', data["req_color"]);
+            $(row).find('td:eq(12)').css('background-color', data["req_color"]);
+
+            $(row).find('td:eq(15)').css('background-color', data["fin_color"]);
+            $(row).find('td:eq(16)').css('background-color', data["fin_color"]);
+        },
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [1], className: 'head-center'},
+
+            {"targets": [2], className: 'head-center head-grey text-center desktop'},
+            {"targets": [3], className: 'head-center head-grey text-center desktop'},
+            {"targets": [4], className: 'head-center head-grey text-center min-tablet-p'},
+            {"targets": [5], className: 'head-center head-grey th-border-black text-center min-tablet-l'},
+            {"targets": [6], "visible": false, className: "noExport"},
+
+            {"targets": [7], className: 'head-center head-yellow text-center desktop'},
+            {"targets": [8], className: 'head-center head-yellow text-center desktop'},
+            {"targets": [9], className: 'head-center head-yellow text-center min-tablet-p'},
+            {"targets": [10], className: 'head-center head-yellow th-border-black text-center min-tablet-l'},
+            {"targets": [11], "visible": false, className: "noExport"},
+
+            {"targets": [12], className: 'head-center head-brown text-center desktop'},
+            {"targets": [13], className: 'head-center head-brown text-center desktop'},
+            {"targets": [14], className: 'head-center head-brown text-center min-tablet-p'},
+            {"targets": [15], className: 'head-center head-brown th-border-black text-center min-tablet-l'},
+            {"targets": [16], "visible": false, className: "noExport"},
+
+            {"targets": [17], render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), className: 'head-center head-blue text-center desktop'},
+            {"targets": [18], render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), className: 'head-center head-blue text-center desktop'},
+            {"targets": [19], render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), className: 'head-center head-blue text-center'},
+            {"targets": [20], className: 'head-center head-blue th-border-black text-center min-tablet-l'},
+            {"targets": [21], "visible": false, className: "noExport"}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{users_kpi.list.user_id}]]*/ "user_id", "data": "user_id", "width": "1%"},
+                /*1*/{"title": /*[[#{users_kpi.list.user_surname}]]*/ "user_surname", "data": "user_surname", "width": "23%"},
+
+                /*2*/{"title": /*[[#{users_kpi.list.meets_plan}]]*/ "meets_plan", "data": "meets_plan", "width": "5%"},
+                /*3*/{"title": /*[[#{users_kpi.list.meets_fact}]]*/ "meets_fact", "data": "meets_fact", "width": "5%"},
+                /*4*/{"title": /*[[#{users_kpi.list.meets_result}]]*/ "meets_result", "data": "meets_result", "width": "5%"},
+                /*5*/{"title": /*[[#{users_kpi.list.meets_percent}]]*/ "meets_percent", "data": "meets_percent", "width": "3%"},
+                /*6*/{"title": /*[[#{users_kpi.list.meets_color}]]*/ "meets_color", "data": "meets_color", "width": "1%"},
+
+                /*7*/{"title": /*[[#{users_kpi.list.calls_plan}]]*/ "calls_plan", "data": "calls_plan", "width": "5%"},
+                /*8*/{"title": /*[[#{users_kpi.list.calls_fact}]]*/ "calls_fact", "data": "calls_fact", "width": "5%"},
+                /*9*/{"title": /*[[#{users_kpi.list.calls_result}]]*/ "calls_result", "data": "calls_result", "width": "5%"},
+                /*10*/{"title": /*[[#{users_kpi.list.calls_percent}]]*/ "calls_percent", "data": "calls_percent", "width": "3%"},
+                /*11*/{"title": /*[[#{users_kpi.list.calls_color}]]*/ "calls_color", "data": "calls_color", "width": "1%"},
+
+                /*12*/{"title": /*[[#{users_kpi.list.req_plan}]]*/ "req_plan", "data": "req_plan", "width": "5%"},
+                /*13*/{"title": /*[[#{users_kpi.list.req_fact}]]*/ "req_fact", "data": "req_fact", "width": "5%"},
+                /*14*/{"title": /*[[#{users_kpi.list.req_result}]]*/ "req_result", "data": "req_result", "width": "5%"},
+                /*15*/{"title": /*[[#{users_kpi.list.req_percent}]]*/ "req_percent", "data": "req_percent", "width": "3%"},
+                /*16*/{"title": /*[[#{users_kpi.list.req_color}]]*/ "req_color", "data": "req_color", "width": "1%"},
+
+                /*17*/{"title": /*[[#{users_kpi.list.fin_plan}]]*/ "fin_plan", "data": "fin_plan", "width": "5%"},
+                /*18*/{"title": /*[[#{users_kpi.list.fin_fact}]]*/ "fin_fact", "data": "fin_fact", "width": "5%"},
+                /*19*/{"title": /*[[#{users_kpi.list.fin_result}]]*/ "fin_result", "data": "fin_result", "width": "5%"},
+                /*20*/{"title": /*[[#{users_kpi.list.fin_percent}]]*/ "fin_percent", "data": "fin_percent", "width": "3%"},
+                /*21*/{"title": /*[[#{users_kpi.list.fin_color}]]*/ "fin_color", "data": "fin_color", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    var RoleAdminString = /*[[ ${#authorization.expression('hasRole("ROLE_ADMIN")')} ]]*/ null;
+    var RoleGMString = /*[[ ${#authorization.expression('hasRole("ROLE_GM")')} ]]*/ null;
+    var RoleSaleDirString = /*[[ ${#authorization.expression('hasRole("ROLE_SALEDIR")')} ]]*/ null;
+
+    function users_kpi_list_switchControl(){
+        if(vUsersKPIListValue.rowdata.user_id != null){
+            if(RoleAdminString === true || RoleGMString === true || RoleSaleDirString === true) {
+                $("#users-kpi-list-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#users-kpi-list-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#users-kpi-list-detailbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#users-kpi-list-editbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#users-kpi-list-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }else{
+                $("#users-kpi-list-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#users-kpi-list-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#users-kpi-list-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#users-kpi-list-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            $("#users-kpi-list-detailbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#users-kpi-list-detailbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+<!-- List Buttons -->
+                vUserKpiMeetsValue.rowdata.user_id = vUsersKPIListValue.rowdata.user_id;
+                vUserKpiMeetsValue.rowdata.users_kpi_year = $("#users_kpi_year").val();
+                vUserKpiMeetsValue.rowdata.users_kpi_month = $("#users_kpi_month").val();
+                $(vUserKpiMeetsValue.table).DataTable().ajax.reload();
+<!-- Meetings -->
+                vUserKpiCallsValue.rowdata.user_id = vUsersKPIListValue.rowdata.user_id;
+                vUserKpiCallsValue.rowdata.users_kpi_year = $("#users_kpi_year").val();
+                vUserKpiCallsValue.rowdata.users_kpi_month = $("#users_kpi_month").val();
+                $(vUserKpiCallsValue.table).DataTable().ajax.reload();
+<!-- Calls -->
+                vUserKpiRequestsValue.rowdata.user_id = vUsersKPIListValue.rowdata.user_id;
+                vUserKpiRequestsValue.rowdata.users_kpi_year = $("#users_kpi_year").val();
+                vUserKpiRequestsValue.rowdata.users_kpi_month = $("#users_kpi_month").val();
+                $(vUserKpiRequestsValue.table).DataTable().ajax.reload();
+<!-- Requests -->
+                vUserKpiTendersValue.rowdata.user_id = vUsersKPIListValue.rowdata.user_id;
+                vUserKpiTendersValue.rowdata.users_kpi_year = $("#users_kpi_year").val();
+                vUserKpiTendersValue.rowdata.users_kpi_month = $("#users_kpi_month").val();
+                $(vUserKpiTendersValue.table).DataTable().ajax.reload();
+<!-- Tenders -->
+                vUserKpiFinanceValue.rowdata.user_id = vUsersKPIListValue.rowdata.user_id;
+                vUserKpiFinanceValue.rowdata.users_kpi_year = $("#users_kpi_year").val();
+                vUserKpiFinanceValue.rowdata.users_kpi_month = $("#users_kpi_month").val();
+                $(vUserKpiFinanceValue.table).DataTable().ajax.reload();
+<!-- Finance -->
+        } else{
+                $("#users-kpi-list-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#users-kpi-list-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#users-kpi-list-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#users-kpi-list-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#users-kpi-list-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#users-kpi-list-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- List Buttons -->
+                vUserKpiMeetsValue.rowdata.user_id = null;
+                vUserKpiMeetsValue.rowdata.users_kpi_year = null;
+                vUserKpiMeetsValue.rowdata.users_kpi_month = null;
+                $(vUserKpiMeetsValue.table).DataTable().clear().draw();
+<!-- Meetings -->
+                vUserKpiCallsValue.rowdata.user_id = null;
+                vUserKpiCallsValue.rowdata.users_kpi_year = null;
+                vUserKpiCallsValue.rowdata.users_kpi_month = null;
+                $(vUserKpiCallsValue.table).DataTable().clear().draw();
+<!-- Calls -->
+                vUserKpiRequestsValue.rowdata.user_id = null;
+                vUserKpiRequestsValue.rowdata.users_kpi_year = null;
+                vUserKpiRequestsValue.rowdata.users_kpi_month = null;
+                $(vUserKpiRequestsValue.table).DataTable().clear().draw();
+<!-- Requests -->
+                vUserKpiTendersValue.rowdata.user_id = null;
+                vUserKpiTendersValue.rowdata.users_kpi_year = null;
+                vUserKpiTendersValue.rowdata.users_kpi_month = null;
+                $(vUserKpiTendersValue.table).DataTable().clear().draw();
+<!-- Tenders -->
+                vUserKpiFinanceValue.rowdata.user_id = null;
+                vUserKpiFinanceValue.rowdata.users_kpi_year = null;
+                vUserKpiFinanceValue.rowdata.users_kpi_month = null;
+                $(vUserKpiFinanceValue.table).DataTable().clear().draw();
+<!-- Finance -->
+        }
+    }
+
+    $('.users_kpi_list_btn_control').on('click', function (){
+        $("#users-kpi-list-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#users-kpi-list-detail').submit(function() {
+        vUsersKPIListValue.rowdata.users_kpi_list_table_order_column = $(vUsersKPIListValue.table).DataTable().order()[0][0];
+        vUsersKPIListValue.rowdata.users_kpi_list_table_order_type = $(vUsersKPIListValue.table).DataTable().order()[0][1];
+        vUsersKPIListValue.rowdata.users_kpi_list_table_search = $(vUsersKPIListValue.table).DataTable().search();
+        vUsersKPIListValue.rowdata.users_kpi_list_table_pagelen = $(vUsersKPIListValue.table).DataTable().page.len();
+        vUsersKPIListValue.rowdata.users_kpi_list_table_page = $(vUsersKPIListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vUsersKPIListValue.rowdata.users_kpi_year = $("#users_kpi_year").val();
+        vUsersKPIListValue.rowdata.users_kpi_month = $("#users_kpi_month").val();
+
+        Object.keys(vUsersKPIListValue.rowdata).forEach(function (index) {
+            $("#users-kpi-list-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#users-kpi-list-detail input[name=\"" + index + "\"]").val(vUsersKPIListValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vUsersKPIListValue.rowdata.user_id = /*[[${user_id}]]*/ null;
+        vUsersKPIListValue.rowdata.users_kpi_year = /*[[${users_kpi_year}]]*/ null;
+        vUsersKPIListValue.rowdata.users_kpi_month = /*[[${users_kpi_month}]]*/ null;
+
+        vUsersKPIListValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vUsersKPIListValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vUsersKPIListValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vUsersKPIListValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vUsersKPIListValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vUsersKPIListValue);
+        var vMeetsName = /*[[#{users_kpi.list.meets_category}]]*/ null;
+        var vCallsName = /*[[#{users_kpi.list.calls_category}]]*/ null;
+        var vReqName = /*[[#{users_kpi.list.req_category}]]*/ null;
+        var vFinName = /*[[#{users_kpi.list.fin_category}]]*/ null;
+
+        if (window.screen.width > 1024 && window.screen.height >= 768) {
+            $("#table-users-kpi-list thead tr:first").before(
+                '<tr role="row">' +
+                '<th></th>' +
+                '<th colspan="4" class="text-center th-grey th-border-black">' + vMeetsName + '</th>' +
+                '<th colspan="4" class="text-center th-yellow th-border-black">' + vCallsName + '</th>' +
+                '<th colspan="4" class="text-center th-brown th-border-black">' + vReqName + '</th>' +
+                '<th colspan="4" class="text-center th-blue th-border-black">' + vFinName + '</th>' +
+                '</tr>');
+        }
+    });
+</script>
+
+</body>
+</html>

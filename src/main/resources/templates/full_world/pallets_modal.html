@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="full_world_pallets_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="full_world_pallets_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="full_world_pallets_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{full_world.pallets.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <div class="form-row">
+                        <input type="hidden" id="full_world_pallets_modal_mode">
+
+                        <div class="col-12 col-md-3 mb-1" id="full_world_pallets_modal_clm_id_row">
+                            <label for="full_world_pallets_modal_clm_id" class="form-label" th:text="'1. '+ #{full_world.main.clm_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="full_world_pallets_modal_clm_id" name="full_world_pallets_modal_clm_id" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-12 col-md-3 mb-1" id="full_world_pallets_modal_clm_num_row">
+                            <label for="full_world_pallets_modal_clm_num" class="form-label" th:text="'2. '+ #{full_world.main.clm_num}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="full_world_pallets_modal_clm_num" name="full_world_pallets_modal_clm_num" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-12 col-md-6 mb-1" id="full_world_pallets_modal_cnt_name_row">
+                            <label for="full_world_pallets_modal_cnt_name" class="form-label" th:text="'3. '+ #{full_world.main.cnt_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="full_world_pallets_modal_cnt_name" name="full_world_pallets_modal_cnt_name" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="full_world_pallets_modal_clmll_id_row">
+                            <label for="full_world_pallets_modal_clmll_id" class="form-label" th:text="'4. '+ #{full_world.loads.clmll_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="full_world_pallets_modal_clmll_id" name="full_world_pallets_modal_clmll_id" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-4 mb-1" id="full_world_pallets_modal_clm_load_name_row">
+                            <label for="full_world_pallets_modal_clm_load_name" class="form-label" th:text="'5. '+ #{full_world.loads.clm_load_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="full_world_pallets_modal_clm_load_name" name="full_world_pallets_modal_clm_load_name" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="clmpl_id_row">
+                            <label for="clmpl_id" class="form-label" th:text="'6. '+ #{full_world.pallets.clmpl_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="clmpl_id" name="clmpl_id" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 mb-2" id="pal_type_id_row">
+                            <label for="pal_type_id" th:text="'7. '+#{full_world.loads.pal_type_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" class="form-control" id="pal_type_id" name="pal_type_id">
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="clmpl_lenght_row">
+                            <label for="clmpl_lenght" class="form-label" th:text="'8. '+ #{full_world.pallets.clmpl_lenght}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" min="0" class="form-control" id="clmpl_lenght" name="clmpl_lenght">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-3 mb-1" id="clmpl_width_row">
+                            <label for="clmpl_width" class="form-label" th:text="'9. '+ #{full_world.pallets.clmpl_width}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" min="0" class="form-control" id="clmpl_width" name="clmpl_width">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-3 mb-1" id="clmpl_height_row">
+                            <label for="clmpl_height" class="form-label" th:text="'10. '+ #{full_world.pallets.clmpl_height}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" min="0" class="form-control" id="clmpl_height" name="clmpl_height">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 5 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="clmpl_count_row">
+                            <label for="clmpl_count" class="form-label" th:text="'11. '+ #{full_world.pallets.clmpl_count}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" min="0" class="form-control" id="clmpl_count" name="clmpl_count">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>                    
+                    </div><!-- Row 6 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="full_world_pallets_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="full_world_pallets_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="full_world_pallets_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="full_world_pallets_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+// Clear Fields
+    function clear_full_world_pallets_modal_detail() {
+        $("#full_world_pallets_modal_detail input[type=text]").val('');
+        $("#full_world_pallets_modal_detail input[type=number]").val('');
+        $("#full_world_pallets_modal_detail select").empty();
+        $("#full_world_pallets_modal_detail textarea").val('');
+    }
+
+// Block And Required Fields
+    function block_full_world_pallets_modal_detail() {
+        $('#clmpl_lenght').attr('required', true);
+        $('#clmpl_width').attr('required', true);
+        $('#clmpl_height').attr('required', true);
+        $('#clmpl_count').attr('required', true);
+
+        if($('#full_world_pallets_modal_mode').val() === "0"){
+            $('#clmpl_id_row').prop('hidden',true);
+
+            $('#clmpl_lenght').removeAttr('readonly');
+            $('#clmpl_width').removeAttr('readonly');
+            $('#clmpl_height').removeAttr('readonly');
+            $('#clmpl_count').removeAttr('readonly').val(1);
+
+            $('#pal_type_id').removeAttr('disabled');
+        }
+        else if($('#full_world_pallets_modal_mode').val() === "1"){
+            $('#clmpl_id_row').removeAttr('hidden');
+
+            $('#clmpl_lenght').removeAttr('readonly');
+            $('#clmpl_width').removeAttr('readonly');
+            $('#clmpl_height').removeAttr('readonly');
+            $('#clmpl_count').removeAttr('readonly');
+
+            $('#pal_type_id').removeAttr('disabled');
+        }
+        else{
+            $('#clmpl_lenght').attr('readonly', true);
+            $('#clmpl_width').attr('readonly', true);
+            $('#clmpl_height').attr('readonly', true);
+            $('#clmpl_count').attr('readonly', true);
+
+            $('#pal_type_id').attr('disabled', true);
+        }
+    }
+
+    function palletsChange(vMode) {
+        $('#pal_type_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/full_world/get_pallets_list'}]]*/ "/full_world/get_pallets_list",
+            type: "get",
+            data: {"mode": vMode
+            },
+            success: function (pallets_list) {
+                for (var i = 0; i < pallets_list.data.length; i++) {
+                    if(i === 0) {
+                            $("select[name='pal_type_id']").find('option').end().append("<option value=''></option>");
+                        }
+                    $("select[name='pal_type_id']").find('option').end().append(
+                        "<option value='" + pallets_list.data[i].pal_type_id
+                        + "'pal_type_height='" + pallets_list.data[i].pal_type_height
+                        + "'pal_type_width='" + pallets_list.data[i].pal_type_width
+                        + "'pal_type_leight='" + pallets_list.data[i].pal_type_leight
+                        + "'>" + pallets_list.data[i].pal_type_name + "</option>");
+                }
+            }
+        }));
+    }
+
+// Load Function
+    function fill_full_world_pallets_modal_detail(aMode){
+        $('#full_world_pallets_modal_mode').val(aMode);
+        clear_full_world_pallets_modal_detail();
+        block_full_world_pallets_modal_detail();
+
+        $('#full_world_pallets_modal_clm_id').val(vClaimsValue.rowdata.clm_id);
+        $('#full_world_pallets_modal_clm_num').val(vClaimsValue.rowdata.clm_num);
+        $('#full_world_pallets_modal_cnt_name').val(vClaimsValue.rowdata.cnt_name);
+
+        $('#full_world_pallets_modal_clmll_id').val(vClaimLoadsValue.rowdata.clmll_id);
+        $('#full_world_pallets_modal_clm_load_name').val(vClaimLoadsValue.rowdata.clm_load_name);
+
+        if(aMode != 0) {
+            $('#clmpl_id').val(vClaimPalletsValue.rowdata.clmpl_id);
+            $('#clmpl_lenght').val(vClaimPalletsValue.rowdata.clmpl_lenght);
+            $('#clmpl_width').val(vClaimPalletsValue.rowdata.clmpl_width);
+            $('#clmpl_height').val(vClaimPalletsValue.rowdata.clmpl_height);
+            $('#clmpl_count').val(vClaimPalletsValue.rowdata.clmpl_count);
+        }
+
+        $.when(
+            palletsChange(aMode)
+        ).then(function () {
+            $('#full_world_pallets_modal').modal('show');
+        });
+    }
+
+//Change Functions
+$('#pal_type_id').change(function (){
+    if($('#pal_type_id').val() !== ''){
+        var length = $('option:selected', this).attr('pal_type_leight');
+        var width = $('option:selected', this).attr('pal_type_width');
+        var height = $('option:selected', this).attr('pal_type_height');
+        $('#clmpl_lenght').val(length);
+        $('#clmpl_width').val(width);
+        $('#clmpl_height').val(height);
+    }
+});
+
+// Add button script
+$('#full_world_pallets_modal_addbtn').on('click', function(){
+    var MainRowID = vClaimsValue.rowdata.clm_id;
+    var LoadRowID = vClaimLoadsValue.rowdata.clmll_id;
+    var RowID = vClaimPalletsValue.rowdata.clmpl_id;
+
+    $.ajax({
+        url: /*[[ @{/full_world/add_load_pallets} ]]*/ "/clients/add_load_pallets",
+        type: 'POST',
+        data: {
+            "clm_id": MainRowID,
+            "clmll_id": LoadRowID,
+            "clmpl_height":  $('#clmpl_height').val(),
+            "clmpl_width":  $('#clmpl_width').val(),
+            "clmpl_lenght":  $('#clmpl_lenght').val(),
+            "clmpl_count":  $('#clmpl_count').val()
+        },
+        success: function (result) {
+            $('#full_world_pallets_modal').modal('hide');
+            vClaimPalletsValue.rowdata.clm_id = MainRowID;
+            vClaimPalletsValue.rowdata.clmll_id = LoadRowID;
+            vClaimPalletsValue.rowdata.clmpl_id = RowID;
+            $(vClaimPalletsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// Edit button script
+$('#full_world_pallets_modal_editbtn').on('click', function(){
+    var MainRowID = vClaimsValue.rowdata.clm_id;
+    var LoadRowID = vClaimLoadsValue.rowdata.clmll_id;
+    var RowID = vClaimPalletsValue.rowdata.clmpl_id;
+
+    $.ajax({
+        url: /*[[ @{/full_world/edit_load_pallets} ]]*/ "/clients/edit_load_pallets",
+        type: 'POST',
+        data: {
+            "clmpl_id": RowID,
+            "clmpl_height":  $('#clmpl_height').val(),
+            "clmpl_width":  $('#clmpl_width').val(),
+            "clmpl_lenght":  $('#clmpl_lenght').val(),
+            "clmpl_count":  $('#clmpl_count').val()
+        },
+        success: function (result) {
+            $('#full_world_pallets_modal').modal('hide');
+            vClaimPalletsValue.rowdata.clm_id = MainRowID;
+            vClaimPalletsValue.rowdata.clmll_id = LoadRowID;
+            vClaimPalletsValue.rowdata.clmpl_id = RowID;
+            $(vClaimPalletsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// Del button script
+$('#full_world_pallets_modal_delbtn').on('click', function(){
+    var MainRowID = vClaimsValue.rowdata.clm_id;
+    var LoadRowID = vClaimLoadsValue.rowdata.clmll_id;
+    var RowID = vClaimPalletsValue.rowdata.clmpl_id;
+
+    $.ajax({
+        url: /*[[ @{/full_world/del_load_pallets} ]]*/ "/clients/del_load_pallets",
+        type: 'POST',
+        data: {
+            "clmpl_id": RowID
+        },
+        success: function (result) {
+            $('#full_world_pallets_modal').modal('hide');
+            vClaimPalletsValue.rowdata.clm_id = MainRowID;
+            vClaimPalletsValue.rowdata.clmll_id = LoadRowID;
+            vClaimPalletsValue.rowdata.clmpl_id = RowID;
+            $(vClaimPalletsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+</script>
+
+</body>
+</html>

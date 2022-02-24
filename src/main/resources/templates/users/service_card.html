@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="user_services_body" th:remove="tag">
+        <form id="user-services" class="mb-2" th:action="@{/users/service_detail}" method="post">
+            <input name="mode" value="0" hidden>
+              <div id="user-services-detailbtn-large" class="d-none d-sm-block">
+                 <button type="submit" id="user-services-detailbtn" class="btn btn-sm btn-dark user_services_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="user-services-addbtn" class="btn btn-sm btn-dark user_services_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="submit" id="user-services-editbtn" class="btn btn-sm btn-dark user_services_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="user-services-delbtn" class="btn btn-sm btn-dark user_services_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="user-services-detailbtn-small" class="d-block d-sm-none">
+                 <button type="submit" id="user-services-detailbtn-sx" class="btn btn-sm btn-dark user_services_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="user-services-addbtn-sx" class="btn btn-sm btn-dark user_services_btn_control" th:attr="mode=0" disabled><i data-feather="plus"></i></button>
+                 <button type="submit" id="user-services-editbtn-sx" class="btn btn-sm btn-dark user_services_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="user-services-delbtn-sx" class="btn btn-sm btn-dark user_services_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-user-services" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vUsersServiceListValue;
+    vUsersServiceListValue = {
+        table : '#table-user-services',
+        ajax : {
+            "url": /*[[@{/users/get_service_table}]]*/ "users/get_service_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.user_id = vUsersServiceListValue.rowdata.user_id
+            }
+        },
+        key : "usrserl_id",
+        switchControl : user_services_switchControl,
+        rowdata:{
+           user_id: null,
+           usrserl_id: null
+        },
+        ordering: true,
+        order: [
+            [2, "asc"]
+        ],
+
+        dom: 'lfrtip',
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [1], "visible": false},
+            {"targets": [2], type: 'de_date'}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{users.services.usrserl_id}]]*/ "usrserl_id", "data": "usrserl_id", "width": "1%"},
+            /*1*/{"title": /*[[#{users.services.ser_id}]]*/ "ser_id", "data": "ser_id", "width": "15%"},
+            /*2*/{"title": /*[[#{users.services.usrserl_add_date}]]*/ "usrserl_add_date", "data": "usrserl_add_date", "width": "10%", "className": "text-center desktop"},
+            /*3*/{"title": /*[[#{users.services.ser_name}]]*/ "ser_name", "data": "ser_name", "width": "74%"}
+        ],
+        pageLength: 10,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function user_services_switchControl(){
+        if(vUsersServiceListValue.rowdata.usrserl_id != null) {
+            if(RoleAllAdmin) {
+                $("#user-services-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#user-services-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#user-services-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#user-services-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+        } else{
+                $("#user-services-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#user-services-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.user_services_btn_control').on('click', function (){
+        $("#user-services input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#user-services').submit(function() {
+        vUsersServiceListValue.rowdata.user_services_table_order_column = $(vUsersServiceListValue.table).DataTable().order()[0][0];
+        vUsersServiceListValue.rowdata.user_services_table_order_type = $(vUsersServiceListValue.table).DataTable().order()[0][1];
+        vUsersServiceListValue.rowdata.user_services_table_search = $(vUsersServiceListValue.table).DataTable().search();
+        vUsersServiceListValue.rowdata.user_services_table_pagelen = $(vUsersServiceListValue.table).DataTable().page.len();
+        vUsersServiceListValue.rowdata.user_services_table_page = $(vUsersServiceListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vUsersServiceListValue.rowdata.user_id = vUsersListValue.rowdata.user_id;
+
+        Object.keys(vUsersServiceListValue.rowdata).forEach(function (index) {
+            $("#user-services").append("<input name=\"" + index + "\" hidden>");
+            $("#user-services input[name=\"" + index + "\"]").val(vUsersServiceListValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vUsersServiceListValue.rowdata.usrserl_id = /*[[${usrserl_id}]]*/ null;
+
+        vUsersServiceListValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vUsersServiceListValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vUsersServiceListValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vUsersServiceListValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vUsersServiceListValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vUsersServiceListValue);
+    });
+</script>
+
+</body>
+</html>

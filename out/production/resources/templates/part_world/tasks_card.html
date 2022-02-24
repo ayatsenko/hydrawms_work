@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="part_world_tasks_body" th:remove="tag">
+        <form id="part-world-tasks-detail" class="mb-2" th:action="@{/part_world/tasks_detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="part-world-tasks-btn-large" class="d-none d-sm-block">
+                 <button type="submit" id="part-world-tasks-detailbtn" class="btn btn-sm btn-dark part_world_tasks_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="part-world-tasks-addbtn" class="btn btn-sm btn-dark part_world_tasks_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="submit" id="part-world-tasks-editbtn" class="btn btn-sm btn-dark part_world_tasks_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="part-world-tasks-delbtn" class="btn btn-sm btn-dark part_world_tasks_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="part-world-tasks-btn-small" class="d-block d-sm-none">
+                 <button type="submit" id="part-world-tasks-detailbtn-sx" class="btn btn-sm btn-dark part_world_tasks_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="part-world-tasks-addbtn-sx" class="btn btn-sm btn-dark part_world_tasks_btn_control" th:attr="mode=0" disabled><i data-feather="plus"></i></button>
+                 <button type="submit" id="part-world-tasks-editbtn-sx" class="btn btn-sm btn-dark part_world_tasks_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="part-world-tasks-delbtn-sx" class="btn btn-sm btn-dark part_world_tasks_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-part-world-tasks" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+
+        <button type="submit" id="part-world-tasks-check" class="btn btn-dark" disabled><i data-feather="check-square"></i></button>
+        <button type="submit" id="part-world-tasks-uncheck" class="btn btn-dark" disabled><i data-feather="x-square"></i></button>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vClaimTasksValue;
+    vClaimTasksValue = {
+        table : '#table-part-world-tasks',
+        button_form: "#part-world-tasks-detail",
+        ajax : {
+            "url": /*[[@{/part_world/get_tasks_table}]]*/ "part_world/get_tasks_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vClaimTasksValue.rowdata.clm_id
+            }
+        },
+        key : "clmtl_id",
+        switchControl : part_world_tasks_switchControl,
+        rowdata:{
+            clm_id: null,
+            clmtl_id: null,
+            clm_task_check: null,
+            clm_task_uncheck: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+        scrollX: true,
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).css('background-color', data["act_type_colour"]);*/
+        },
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [3], type: 'de_datetime'},
+            {"targets": [4], type: 'de_datetime'},
+            {"targets": [6], type: 'de_datetime'},
+            {"targets": [7], "visible": false},
+            {"targets": [8], "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{part_world.tasks.clmtl_id}]]*/ "clmtl_id", "data": "clmtl_id", "width": "1%"},
+                /*1*/{"title": /*[[#{part_world.tasks.clm_task_sname}]]*/ "clm_task_sname", "data": "clm_task_sname", "width": "15%", "className": "desktop" },
+                /*2*/{"title": /*[[#{part_world.tasks.start_user_name}]]*/ "start_user_name", "data": "start_user_name", "width": "10%"},
+                /*3*/{"title": /*[[#{part_world.tasks.deadline_date}]]*/ "deadline_date", "data": "deadline_date", "width": "10%", "className": "desktop"},
+                /*4*/{"title": /*[[#{part_world.tasks.start_date}]]*/ "start_date", "data": "start_date", "width": "10%", "className": "desktop"},
+                /*5*/{"title": /*[[#{part_world.tasks.end_user_name}]]*/ "end_user_name", "data": "end_user_name", "width": "10%"},
+                /*6*/{"title": /*[[#{part_world.tasks.end_date}]]*/ "end_date", "data": "end_date", "width": "42%"},
+                /*7*/{"title": /*[[#{part_world.tasks.clm_task_check}]]*/ "clm_task_check", "data": "clm_task_check", "width": "1%"},
+                /*8*/{"title": /*[[#{part_world.tasks.clm_task_uncheck}]]*/ "clm_task_uncheck", "data": "clm_task_uncheck", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function part_world_tasks_switchControl(){
+        if(vClaimTasksValue.rowdata.clmtl_id != null) {
+                $("#part-world-tasks-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#part-world-tasks-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#part-world-tasks-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#part-world-tasks-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#part-world-tasks-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#part-world-tasks-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                if(vClaimTasksValue.rowdata.clm_task_check === 1){
+                    $("#part-world-tasks-check").prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+                }
+                else{
+                    $("#part-world-tasks-check").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                }
+
+                if(vClaimTasksValue.rowdata.clm_task_uncheck === 1){
+                    $("#part-world-tasks-uncheck").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+                }
+                else{
+                    $("#part-world-tasks-uncheck").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+                }
+        } else{
+                $("#part-world-tasks-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#part-world-tasks-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#part-world-tasks-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#part-world-tasks-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#part-world-tasks-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#part-world-tasks-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#part-world-tasks-check").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                $("#part-world-tasks-uncheck").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+        }
+    }
+
+    $('.part_world_tasks_btn_control').on('click', function (){
+        $("#part-world-tasks-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#part-world-tasks-detail').submit(function() {
+        vClaimTasksValue.rowdata.part_world_tasks_table_order_column = $(vClaimTasksValue.table).DataTable().order()[0][0];
+        vClaimTasksValue.rowdata.part_world_tasks_table_order_type = $(vClaimTasksValue.table).DataTable().order()[0][1];
+        vClaimTasksValue.rowdata.part_world_tasks_table_search = $(vClaimTasksValue.table).DataTable().search();
+        vClaimTasksValue.rowdata.part_world_tasks_table_pagelen = $(vClaimTasksValue.table).DataTable().page.len();
+        vClaimTasksValue.rowdata.part_world_tasks_table_page = $(vClaimTasksValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vClaimTasksValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+        vClaimTasksValue.rowdata.clm_num = vClaimsValue.rowdata.clm_num;
+        vClaimTasksValue.rowdata.cnt_name = vClaimsValue.rowdata.cnt_name;
+
+        Object.keys(vClaimTasksValue.rowdata).forEach(function (index) {
+            $("#part-world-tasks-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#part-world-tasks-detail input[name=\"" + index + "\"]").val(vClaimTasksValue.rowdata[index]);
+        });
+    });
+
+    $('#part-world-tasks-check').on('click', function( event ) {
+        if (vClaimTasksValue.rowdata.clmtl_id != null) {
+            var RowID = vClaimTasksValue.rowdata.clmtl_id;
+            $.ajax({
+                url: /*[[ @{/part_world/task_check} ]]*/ "/part_world/task_check",
+                type: 'POST',
+                data: {"clmtl_id": vClaimTasksValue.rowdata.clmtl_id},
+                success: function (result) {
+                    vClaimTasksValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+
+                    vClaimTasksValue.rowdata.clmtl_id = RowID;
+                    $(vClaimTasksValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    }); <!-- Check Task Button -->
+
+    $('#part-world-tasks-uncheck').on('click', function( event ) {
+        if (vClaimTasksValue.rowdata.clmtl_id != null) {
+            var RowID = vClaimTasksValue.rowdata.clmtl_id;
+            $.ajax({
+                url: /*[[ @{/part_world/task_uncheck} ]]*/ "/part_world/task_uncheck",
+                type: 'POST',
+                data: {"clmtl_id": vClaimTasksValue.rowdata.clmtl_id},
+                success: function (result) {
+                    vClaimTasksValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+
+                    vClaimTasksValue.rowdata.clmtl_id = RowID;
+                    $(vClaimTasksValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    }); <!-- Check Task Button -->
+
+    $(document).ready(function(){
+        vClaimTasksValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vClaimTasksValue.rowdata.clmtl_id = /*[[${clmtl_id}]]*/ null;
+
+        vClaimTasksValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vClaimTasksValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vClaimTasksValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vClaimTasksValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vClaimTasksValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vClaimTasksValue);
+    });
+</script>
+
+</body>
+</html>

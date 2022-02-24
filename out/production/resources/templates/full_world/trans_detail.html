@@ -1,0 +1,416 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{full_world.trans.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{full_world.trans.caption}"></h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <!--/*@thymesVar id="full_world_trans_detail" type="java.util.List"*/-->
+                <form id="full-world-trans-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/full_world/trans_model}">
+                    <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                    <div class="btn-group mb-2">
+                        <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="full-world-trans-indexfrm">Cancel</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="full-world-trans-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                            <button th:case="1" type="submit" id="full-world-trans-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                            <button th:case="2" type="submit" id="full-world-trans-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                        </div>
+                    </div>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clm_id" th:value="${clm_id}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="full_world_tab_name" th:value="${full_world_tab_name}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="full_world_trans_table_order_column" th:value="${full_world_trans_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="full_world_trans_table_order_type" th:value="${full_world_trans_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="full_world_trans_table_search" th:value="${full_world_trans_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="full_world_trans_table_pagelen" th:value="${full_world_trans_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="full_world_trans_table_page" th:value="${full_world_trans_table_page}" >
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-1" id="clm_id_row">
+                            <label for="clm_id" class="form-label" th:text="'1. '+ #{full_world.main.clm_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="clm_id" name="clm_id" th:value="${clm_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-2 mb-1" id="clm_num_row">
+                            <label for="clm_num" class="form-label" th:text="'2. '+ #{full_world.main.clm_num}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="clm_num" name="clm_num" th:value="${clm_num}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-5 mb-1" id="cnt_name_row">
+                            <label for="cnt_name" class="form-label" th:text="'3. '+ #{full_world.main.cnt_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="cnt_name" name="cnt_name" th:value="${cnt_name}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-1" id="clmtrl_id_row">
+                            <label for="clmtrl_id" class="form-label" th:text="'4. '+ #{full_world.trans.clmtrl_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="clmtrl_id" name="clmtrl_id" th:value="${clmtrl_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-md-6 mb-1" id="cnt_id_div">
+                            <label for="cnt_id" th:text="'5. '+ #{full_world.trans.cnt_name}"></label>
+                            <div class="input-group d-flex">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <select id="cnt_id" name="cnt_id" class="form-control select2" data-toggle="select2" th:value="${cnt_id}">
+                                    <option value=""></option>
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <option
+                                            th:each="transport_list : ${transport_list}"
+                                            th:value="${transport_list.cnt_id}"
+                                            th:text="${transport_list.cnt_name}"
+                                            th:selected="${transport_list.cnt_id == cnt_id}"
+                                    ></option>
+                                </select>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                                <span class="input-group-append">
+                                    <button type="button" class="btn btn-outline-primary" id="cnt_id_show" name="cnt_id_show"><i data-feather="clipboard"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div><!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-2">
+                            <label for="cntc_type_id" class="mr-2" th:text="'6. '+#{full_world.trans.cntc_type_id}">Car Type: </label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select id="cntc_type_id" name="cntc_type_id" class="form-control p-1" th:value="${cntc_type_id}">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="cntc_type : ${cntc_type_list}"
+                                        th:value="${cntc_type.cntc_type_id}"
+                                        th:text="${cntc_type.cntc_type_sname}"
+                                        th:selected="${cntc_type.cntc_type_id == cntc_type_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label for="cntc_id" class="mr-2" th:text="'7. '+#{full_world.trans.cntc_type_brand}">Car: </label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select id="cntc_id" name="cntc_id" class="form-control p-1" th:value="${cntc_id}">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="auto_list : ${auto_list}"
+                                        th:value="${auto_list.cntc_id}"
+                                        th:text="${auto_list.cntc_fullname}"
+                                        th:selected="${auto_list.cntc_id == cntc_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 4 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-2">
+                            <label for="cntt_type_id" class="mr-2" th:text="'8. '+#{full_world.trans.cntt_type_id}">Trailers Type: </label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select id="cntt_type_id" name="cntt_type_id" class="form-control p-1" th:value="${cntt_type_id}">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="cntt_type : ${cntt_type_list}"
+                                        th:value="${cntt_type.cntt_type_id}"
+                                        th:text="${cntt_type.cntt_type_sname}"
+                                        th:selected="${cntt_type.cntt_type_id == cntt_type_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label for="cntt_id" class="mr-2" th:text="'9. '+#{full_world.trans.cntc_type_brand}">SemiCar: </label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select id="cntt_id" name="cntt_id" class="form-control p-1" th:value="${cntt_id}">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="trailers_list : ${trailers_list}"
+                                        th:value="${trailers_list.cntt_id}"
+                                        th:text="${trailers_list.cntt_fullname}"
+                                        th:selected="${trailers_list.cntt_id == cntt_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 5 -->
+
+                    <div class="form-row">
+                        <div class="col-md-6 mb-2">
+                            <label for="cntd_id" class="mr-2" th:text="'10. '+#{full_world.trans.cntd_name}">Driver: </label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select id="cntd_id" name="cntd_id" class="form-control p-1" th:value="${cntd_id}">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="drivers_list : ${drivers_list}"
+                                        th:value="${drivers_list.cntd_id}"
+                                        th:text="${drivers_list.cntd_fullname}"
+                                        th:selected="${drivers_list.cntd_id == cntd_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 6 -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--/*@thymesVar id="full_world_trans_detail" type="java.util.List"*/-->
+    <form id="full-world-trans-indexfrm" method="post" th:action="@{/full_world}" hidden>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clmtrl_id" th:value="${clmtrl_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clm_id" th:value="${clm_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="full_world_tab_name" th:value="${full_world_tab_name}">
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_order_column" th:value="${full_world_trans_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_order_type" th:value="${full_world_trans_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_search" th:value="${full_world_trans_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_pagelen" th:value="${full_world_trans_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_page" th:value="${full_world_trans_table_page}" >
+    </form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'full-world-trans-indexfrm')">Error</span>
+
+<script>
+    $(document).ready(function(){
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#tms_li').addClass('active').removeClass('collapsed');
+        $('#tms_a').attr('aria-expanded',true);
+        $('#tms').addClass('show');
+
+        $('#full_world_a').addClass('text-primary');
+
+<!-- Start Objects -->
+
+        <!-- Form Start -->
+        $('#clm_id').prop('readOnly',true);
+        $('#clm_num').prop('readOnly',true);
+        $('#cnt_name').prop('readOnly',true);
+
+        $('#clm_load_name').prop('required',true);
+
+        if($('#mode').val() === '0'){
+            $('#clmtrl_id_row').prop('hidden',true);
+        }
+        else if($('#mode').val() === '1'){
+            $('#clmtrl_id').prop('readOnly',true);
+        }
+        else{
+            $('#clmtrl_id').prop('readOnly',true);
+
+            $('#cnt_id').attr('readOnly',true);
+            $('#cnt_id_show').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#cntc_type_id').prop('disabled',true);
+
+            $('#cntc_id').attr('readOnly',true);
+
+            $('#cntt_type_id').prop('disabled',true);
+
+            $('#cntt_id').attr('readOnly',true);
+
+            $('#cntd_id').attr('readOnly',true);
+        }
+
+        var cntName =  "Выберите перевозчика";
+        var cntFindText = "Введите от 2-х символов";
+
+        $('#cnt_id')
+            .wrap("<div class=\"position-relative\"></div>")
+            .select2({
+                id: '-1', // the value of the option
+                placeholder: cntName,
+                allowClear: true,
+                minimumInputLength: 2,
+                language: {
+                    inputTooShort: function() {
+                        return cntFindText;
+                    }}
+            });
+
+        $('#cnt_id_show').on('click', function () {
+            if($('#cnt_id_show').hasClass('btn-outline-primary')) {
+                $('#cnt_id_show').removeClass('btn-outline-primary').addClass('btn-primary');
+                var options_zero = {
+                    id: '-1', // the value of the option
+                    placeholder: cntName,
+                    allowClear: true,
+                    width: 'element',
+                    dropdownAutoWidth: true
+                };
+                $("#cnt_id").select2("destroy").select2(options_zero);
+            }
+            else if($('#cnt_id_show').hasClass('btn-primary')){
+                $('#cnt_id_show').addClass('btn-outline-primary').removeClass('btn-primary');
+                var options_two = {
+                    id: '-1', // the value of the option
+                    placeholder: cntName,
+                    allowClear: true,
+                    minimumInputLength: 2,
+                    language: {
+                        inputTooShort: function() {
+                            return cntFindText;
+                        }},
+                    width: 'element',
+                    dropdownAutoWidth: true
+                };
+                $("#cnt_id").select2("destroy").select2(options_two);
+            }
+        });
+
+        function carsTypeChange() {
+            $('#cntc_type_id').empty();
+            $.ajax({
+                url:/*[[@{'/hydrawms_new/full_world/get_cars_type'}]]*/ "/hydrawms_new/full_world/get_cars_type",
+                type: "get",
+                data: {"cnt_id": $('#cnt_id').val()},
+                success: function (cntc_type_detail) {
+                    for (var i = 0; i < cntc_type_detail.data.length; i++) {
+                        if(i === 0) {
+                            $("select[name='cntc_type_id']").find('option').end().append("<option value=''></option>");
+                        }
+                        $("select[name='cntc_type_id']").find('option').end().append("<option value='" + cntc_type_detail.data[i].cntc_type_id + "'>" + cntc_type_detail.data[i].cntc_type_sname + "</option>");
+                    }
+                }
+            });
+        }
+
+        function carsChange() {
+            $('#cntc_id').empty();
+            $.ajax({
+                url:/*[[@{'/hydrawms_new/full_world/get_cars'}]]*/ "/hydrawms_new/full_world/get_cars",
+                type: "get",
+                data: {"cnt_id": $('#cnt_id').val(),
+                       "cntc_type_id": $('#cntc_type_id').val()
+                },
+                success: function (reqdetail) {
+                    for (var i = 0; i < reqdetail.data.length; i++) {
+                        if(i === 0) {
+                            $("select[name='cntc_id']").find('option').end().append("<option value=''></option>");
+                        }
+                        $("select[name='cntc_id']").find('option').end().append("<option value='" + reqdetail.data[i].cntc_id + "'>" + reqdetail.data[i].cntc_fullname + "</option>");
+                    }
+                }
+            });
+        }
+
+        function trailersTypeChange() {
+            $('#cntt_type_id').empty();
+            $.ajax({
+                url:/*[[@{'/hydrawms_new/full_world/get_trailers_type'}]]*/ "/hydrawms_new/full_world/get_trailers_type",
+                type: "get",
+                data: {"cnt_id": $('#cnt_id').val()},
+                success: function (cntt_type_detail) {
+                    for (var i = 0; i < cntt_type_detail.data.length; i++) {
+                        if(i === 0) {
+                            $("select[name='cntt_type_id']").find('option').end().append("<option value=''></option>");
+                        }
+                        $("select[name='cntt_type_id']").find('option').end().append("<option value='" + cntt_type_detail.data[i].cntt_type_id + "'>" + cntt_type_detail.data[i].cntt_type_sname + "</option>");
+                    }
+                }
+            });
+        }
+
+        function trailersChange() {
+            $('#cntt_id').empty();
+            $.ajax({
+                url:/*[[@{'/hydrawms_new/full_world/get_trailers'}]]*/ "/hydrawms_new/full_world/get_trailers",
+                type: "get",
+                data: {"cnt_id": $('#cnt_id').val(),
+                       "cntt_type_id": $('#cntt_type_id').val()
+                },
+                success: function (reqdetail) {
+                    for (var i = 0; i < reqdetail.data.length; i++) {
+                        if(i === 0) {
+                            $("select[name='cntt_id']").find('option').end().append("<option value=''></option>");
+                        }
+                        $("select[name='cntt_id']").find('option').end().append("<option value='" + reqdetail.data[i].cntt_id + "'>" + reqdetail.data[i].cntt_fullname + "</option>");
+                    }
+                }
+            });
+        }
+
+        function driversChange() {
+            $('#cntd_id').empty();
+            $.ajax({
+                url:/*[[@{'/hydrawms_new/full_world/get_drivers'}]]*/ "/hydrawms_new/full_world/get_drivers",
+                type: "get",
+                data: {"cnt_id": $('#cnt_id').val()},
+                success: function (reqdetail) {
+                    for (var i = 0; i < reqdetail.data.length; i++) {
+                        if(i === 0) {
+                            $("select[name='cntd_id']").find('option').end().append("<option value=''></option>");
+                        }
+                        $("select[name='cntd_id']").find('option').end().append("<option value='" + reqdetail.data[i].cntd_id + "'>" + reqdetail.data[i].cntd_fullname + "</option>");
+                    }
+                }
+            });
+        }
+<!-- Change -->
+        $('#cnt_id').change(function () {
+            carsTypeChange();
+            carsChange();
+            trailersTypeChange();
+            trailersChange();
+            driversChange();
+        });
+
+        $('#cntc_type_id').change(function () {
+            carsChange();
+        });
+
+        $('#cntt_type_id').change(function () {
+            trailersChange();
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="client_bills_body" th:remove="tag">
+        <div><table id="table-client-bills" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+        var vClientBillsValue;
+        vClientBillsValue = {
+                table : '#table-client-bills',
+                ajax : {
+                        "url": /*[[@{/client_docs/get_client_bills_table}]]*/ "client_docs/get_client_bills_table",
+                        "type": "post",
+                        "data": function ( d ) {
+                                d.cnt_doc_id = vClientBillsValue.rowdata.cnt_doc_id
+                        }
+                },
+                key : "cnt_bill_id",
+                switchControl : client_bills_switchControl,
+                rowdata:{
+                        cnt_doc_id: null,
+
+                        cnt_bill_id: null
+                },
+                ordering: true,
+                order: [
+                        [2, "desc"]
+                ],
+                deferRender: true,
+                scroller: true,
+                scrollCollapse: true,
+                dom: 'Blfrtip',
+                columnDefs:[
+                        {"targets": [0], "visible": false},
+                        {"targets": [2], type: 'de_date'},
+                        {"targets": [3], type: 'de_date'},
+                        {"targets": [4], type: 'de_date'},
+                        {"targets": [5], "visible": false},
+                        {"targets": [7],  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+                        {"targets": [8],  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+                        {"targets": [9], type: 'de_date'}
+                ],
+                columns : [
+                        /*0*/{"title": /*[[#{clients.docs.bills.cnt_bill_id}]]*/ "cnt_bill_id", "data": "cnt_bill_id", "width": "1%"},
+                        /*1*/{"title": /*[[#{clients.docs.bills.cnt_bill_num}]]*/ "cnt_bill_num", "data": "cnt_bill_num", "width": "5%"},
+                        /*2*/{"title": /*[[#{clients.docs.bills.cnt_bill_date}]]*/ "cnt_bill_date", "data": "cnt_bill_date", "width": "10%", "className": "text-center"},
+                        /*3*/{"title": /*[[#{clients.docs.bills.cnt_bill_act_date}]]*/ "cnt_bill_act_date", "data": "cnt_bill_act_date", "width": "10%", "className": "text-center"},
+                        /*4*/{"title": /*[[#{clients.docs.bills.cnt_bill_plan_pay_date}]]*/ "cnt_bill_plan_pay_date", "data": "cnt_bill_plan_pay_date", "width": "10%", "className": "text-center"},
+                        /*5*/{"title": /*[[#{clients.docs.bills.currency_id}]]*/ "currency_id", "data": "currency_id", "width": "1%"},
+                        /*6*/{"title": /*[[#{clients.docs.bills.currency_name}]]*/ "currency_name", "data": "currency_name", "width": "5%", "className": "text-center"},
+                        /*7*/{"title": /*[[#{clients.docs.bills.cnt_bill_cur_sum}]]*/ "cnt_bill_cur_sum", "data": "cnt_bill_cur_sum", "width": "10%"},
+                        /*8*/{"title": /*[[#{clients.docs.bills.cnt_bill_sum}]]*/ "cnt_bill_sum", "data": "cnt_bill_sum", "width": "10%"},
+                        /*9*/{"title": /*[[#{clients.docs.bills.cnt_bill_close_date}]]*/ "cnt_bill_close_date", "data": "cnt_bill_close_date", "width": "10%", "className": "text-center"},
+                        /*9*/{"title": /*[[#{clients.docs.bills.empty_column}]]*/ "empty_column", "data": "empty_column", "width": "28%", "className": "text-center"}
+                ],
+                pageLength: 25,
+                copy_button: true,
+                excel_button: true,
+                pdf_button: true,
+                print_button: true
+        };
+
+        function client_bills_hide(){
+                $("#client_bills_tabs_row").attr('hidden', true);
+        }
+
+        function client_bills_switchControl(){
+                client_bills_hide();
+                if(vClientBillsValue.rowdata.cnt_bill_id != null) {
+                        $("#client_bills_tabs_row").removeAttr('hidden');
+
+                        vClientBillsPaymentsValue.rowdata.cnt_bill_id = vClientBillsValue.rowdata.cnt_bill_id;
+                        $(vClientBillsPaymentsValue.table).DataTable().ajax.reload();
+
+                        vClientBillsFinanceValue.rowdata.cnt_bill_id = vClientBillsValue.rowdata.cnt_bill_id;
+                        $(vClientBillsFinanceValue.table).DataTable().ajax.reload();
+                }
+                else{
+                        vClientBillsPaymentsValue.rowdata.cnt_bill_id = null;
+                        vClientBillsPaymentsValue.rowdata.cnt_bill_pay_id = null;
+                        $(vClientBillsPaymentsValue.table).DataTable().clear().draw();
+
+                        vClientBillsFinanceValue.rowdata.cnt_bill_id = null;
+                        vClientBillsFinanceValue.rowdata.fin_id = null;
+                        $(vClientBillsFinanceValue.table).DataTable().clear().draw();
+                }
+        }
+
+        $('.client_bills_btn_control').on('click', function (){
+                $("#client-bills-detail input[name=mode]").val($(this).attr("mode"));
+        });
+
+        $('#client-bills-detail').submit(function() {
+        });
+
+        $(document).ready(function(){
+                recreateDataTable(vClientBillsValue);
+        });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="projects_desc_chat_body" th:remove="tag">
+        <form id="projects-desc-chat-detail" class="mb-2" th:action="@{/projects_desc/chat_detail}" method="post">
+            <input name="mode" value="0" hidden>
+              <div id="projects-desc-chat-btn-large" class="d-none d-sm-block">
+                  <button type="submit" id="projects-desc-chat-detailbtn" class="btn btn-sm btn-dark projects_desc_chat_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                  <button type="submit" id="projects-desc-chat-addbtn" class="btn btn-sm btn-primary projects_desc_chat_btn_control" th:text="#{general.addbtn}" th:attr="mode=0">Add</button>
+                  <button type="submit" id="projects-desc-chat-editbtn" class="btn btn-sm btn-dark projects_desc_chat_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                  <button type="submit" id="projects-desc-chat-delbtn" class="btn btn-sm btn-dark projects_desc_chat_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="projects-desc-chat-btn-small" class="d-block d-sm-none">
+                  <button type="submit" id="projects-desc-chat-detailbtn-sx" class="btn btn-sm btn-dark projects_desc_chat_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                  <button type="submit" id="projects-desc-chat-addbtn-sx" class="btn btn-sm btn-primary projects_desc_chat_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                  <button type="submit" id="projects-desc-chat-editbtn-sx" class="btn btn-sm btn-dark projects_desc_chat_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                  <button type="submit" id="projects-desc-chat-delbtn-sx" class="btn btn-sm btn-dark projects_desc_chat_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-projects-desc-chat" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vProjectsDescChatListValue;
+    vProjectsDescChatListValue = {
+        table : '#table-projects-desc-chat',
+        button_form: "#projects-desc-chat-detail",
+        ajax : {
+            "url": /*[[@{/projects_desc/get_chat_table}]]*/ "projects_desc/get_chat_table",
+            "type": "post",
+            "data": function ( d ) {
+                    d.parent_pr_id = vProjectsDescChatListValue.rowdata.parent_pr_id;
+            }
+        },
+        key : "pr_chat_id",
+        switchControl : projects_desc_chat_switchControl,
+        rowdata:{
+            pr_chat_id: null,
+            parent_pr_id: null
+        },
+        ordering: true,
+        order: [
+            [1, "desc"]
+        ],
+
+        dom: 'Blfrtip',
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [1], type: 'de_datetime'},
+            {"targets": [2],
+                render: function ( data, type, row ) {
+                    if ( type === 'display' ) {             //if column data is 1 then set attr to checked, use row id as input id (plus prefix)
+                        return '<input type="checkbox" ' + ((data == 1) ? 'checked' : '') + ' id="input' + row.id + '" class="filter-ck text-center" disabled="true"/>';
+                    }
+                    return data;
+                },
+                "className": "dt-body-center text-center"
+            },
+            {"targets": [3], "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{projects_desc.chat.pr_chat_id}]]*/ "pr_chat_id", "data": "pr_chat_id", "width": "1%"},
+
+                /*1*/{"title": /*[[#{projects_desc.chat.pr_chat_create_date}]]*/ "pr_chat_create_date", "data": "pr_chat_create_date", "width": "15%", "className": "text-center"},
+                /*2*/{"title": /*[[#{projects_desc.chat.edit_check_id}]]*/ "edit_check_id", "data": "edit_check_id", "width": "5%"},
+
+                /*3*/{"title": /*[[#{projects_desc.chat.user_id}]]*/ "user_id", "data": "user_id", "width": "1%"},
+                /*4*/{"title": /*[[#{projects_desc.chat.user_name}]]*/ "user_name", "data": "user_name", "width": "15%", "className": "text-center"},
+
+                /*5*/{"title": /*[[#{projects_desc.chat.pr_chat_text}]]*/ "pr_chat_text", "data": "pr_chat_text", "width": "63%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function projects_desc_chat_switchControl(){
+        if(vProjectsDescChatListValue.rowdata.pr_chat_id != null) {
+                $("#projects-desc-chat-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#projects-desc-chat-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#projects-desc-chat-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#projects-desc-chat-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#projects-desc-chat-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#projects-desc-chat-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+                $("#projects-desc-chat-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#projects-desc-chat-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#projects-desc-chat-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#projects-desc-chat-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#projects-desc-chat-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#projects-desc-chat-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.projects_desc_chat_btn_control').on('click', function (){
+        $("#projects-desc-chat-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#projects-desc-chat-detail').submit(function() {
+        vProjectsDescChatListValue.rowdata.projects_desc_chat_table_order_column = $(vProjectsDescChatListValue.table).DataTable().order()[0][0];
+        vProjectsDescChatListValue.rowdata.projects_desc_chat_table_order_type = $(vProjectsDescChatListValue.table).DataTable().order()[0][1];
+        vProjectsDescChatListValue.rowdata.projects_desc_chat_table_search = $(vProjectsDescChatListValue.table).DataTable().search();
+        vProjectsDescChatListValue.rowdata.projects_desc_chat_table_pagelen = $(vProjectsDescChatListValue.table).DataTable().page.len();
+        vProjectsDescChatListValue.rowdata.projects_desc_chat_table_page = $(vProjectsDescChatListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+        vProjectsDescChatListValue.rowdata.parent_pr_id = vProjectsDescMainValue.rowdata.pr_id;
+
+        vProjectsDescChatListValue.rowdata.projects_desc_main_table_order_column = $(vProjectsDescMainValue.table).DataTable().order()[0][0];
+        vProjectsDescChatListValue.rowdata.projects_desc_main_table_order_type = $(vProjectsDescMainValue.table).DataTable().order()[0][1];
+        vProjectsDescChatListValue.rowdata.projects_desc_main_table_search = $(vProjectsDescMainValue.table).DataTable().search();
+        vProjectsDescChatListValue.rowdata.projects_desc_main_table_pagelen = $(vProjectsDescMainValue.table).DataTable().page.len();
+        vProjectsDescChatListValue.rowdata.projects_desc_main_table_page = $(vProjectsDescMainValue.table).DataTable().page.info().page;        
+        
+        Object.keys(vProjectsDescChatListValue.rowdata).forEach(function (index) {
+            $("#projects-desc-chat-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#projects-desc-chat-detail input[name=\"" + index + "\"]").val(vProjectsDescChatListValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vProjectsDescChatListValue.rowdata.pr_chat_id = /*[[${pr_chat_id}]]*/ null;
+
+        vProjectsDescChatListValue.rowdata.table_order_column = /*[[${projects_desc_chat_table_order_column}]]*/ null;
+        vProjectsDescChatListValue.rowdata.table_order_type = /*[[${projects_desc_chat_table_order_type}]]*/ null;
+        vProjectsDescChatListValue.rowdata.table_search = /*[[${projects_desc_chat_table_search}]]*/ null;
+        vProjectsDescChatListValue.rowdata.table_pagelen = /*[[${projects_desc_chat_table_pagelen}]]*/ null;
+        vProjectsDescChatListValue.rowdata.table_page = /*[[${projects_desc_chat_table_page}]]*/ null;
+
+        recreateDataTable(vProjectsDescChatListValue);
+    });
+</script>
+
+</body>
+</html>

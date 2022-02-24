@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="part_world_trans_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="part_world_trans_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="part_world_trans_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{full_world.trans.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <input type="hidden" id="part_world_trans_modal_mode">
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="part_world_trans_modal_clm_id_row">
+                            <label for="part_world_trans_modal_clm_id" class="form-label" th:text="'1. '+ #{part_world.main.clm_id}"></label>
+                            <input type="number" class="form-control" id="part_world_trans_modal_clm_id" name="part_world_trans_modal_clm_id" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-3 mb-1" id="part_world_trans_modal_clm_num_row">
+                            <label for="part_world_trans_modal_clm_num" class="form-label" th:text="'2. '+ #{part_world.main.clm_num}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="part_world_trans_modal_clm_num" name="part_world_trans_modal_clm_num" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 mb-1" id="cnt_name_row">
+                            <label for="part_world_trans_modal_cnt_name" class="form-label" th:text="'3. '+ #{part_world.main.cnt_name}"></label>
+                            <input type="text" class="form-control" id="part_world_trans_modal_cnt_name" name="part_world_trans_modal_cnt_name" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="clmtrl_id_row">
+                            <label for="clmtrl_id" class="form-label" th:text="'4. '+ #{part_world.trans.clmtrl_id}"></label>
+                            <input type="number" class="form-control" id="clmtrl_id" name="clmtrl_id" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-12 mb-1" id="trans_cnt_id_div">
+                            <label for="trans_cnt_id" th:text="'5. '+#{part_world.trans.cnt_name}"></label>
+                            <div class="input-group d-flex">
+                                <select type="text" id="trans_cnt_id" name="trans_cnt_id" class="form-control p-1" aria-describedby="cnt_id_helpBlock">
+                                </select>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                                <span class="input-group-append">
+                                    <button type="button" class="btn btn-outline-primary" id="trans_cnt_id_show" name="trans_cnt_id_show"><i class="fas fa-clipboard-list"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div> <!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-4 mb-2" id="cntc_type_id_row">
+                            <label for="cntc_type_id" class="mr-2" th:text="'6. '+#{part_world.trans.cntc_type_id}">Car Type: </label>
+                            <select id="cntc_type_id" name="cntc_type_id" class="form-control p-1">
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-8 mb-2">
+                            <label for="cntc_id" class="mr-2" th:text="'7. '+#{part_world.trans.cntc_type_brand}">Car: </label>
+                            <select id="cntc_id" name="cntc_id" class="form-control p-1">
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 4 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-4 mb-2">
+                            <label for="cntt_type_id" class="mr-2" th:text="'8. '+#{part_world.trans.cntt_type_id}">Trailers Type: </label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select id="cntt_type_id" name="cntt_type_id" class="form-control p-1">
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-8 mb-2">
+                            <label for="cntt_id" class="mr-2" th:text="'9. '+#{part_world.trans.cntc_type_brand}">SemiCar: </label>
+                            <select id="cntt_id" name="cntt_id" class="form-control p-1">
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 5 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-8 mb-2">
+                            <label for="cntd_id" class="mr-2" th:text="'10. '+#{part_world.trans.cntd_name}">Driver: </label>
+                            <select id="cntd_id" name="cntd_id" class="form-control p-1">
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 6 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="part_world_trans_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="part_world_trans_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="part_world_trans_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="part_world_trans_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+// Clear Fields
+    function clear_part_world_trans_modal_detail() {
+        $("#part_world_trans_modal_detail input[type=text]").val('');
+        $("#part_world_trans_modal_detail input[type=number]").val('');
+        $("#part_world_trans_modal_detail select").empty();
+        $("#part_world_trans_modal_detail textarea").val('');
+    }
+// Block And Required Fields
+    function block_part_world_trans_modal_detail(){
+        $('#trans_cnt_id').attr('required', true);
+
+        if($('#part_world_trans_modal_mode').val() === "0"){
+            $('#clmtrl_id_row').attr('hidden',true);
+            $('#trans_cnt_id').removeAttr('disabled');
+            $('#trans_cnt_id_show').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#cntc_type_id').removeAttr('disabled');
+            $('#cntc_id').removeAttr('disabled');
+            $('#cntt_type_id').removeAttr('disabled');
+            $('#cntt_id').removeAttr('disabled');
+            $('#cntd_id').removeAttr('disabled');
+        }
+        else if($('#part_world_trans_modal_mode').val() === "1"){
+            $('#clmtrl_id_row').removeAttr('hidden');
+            $('#trans_cnt_id').removeAttr('disabled');
+            $('#trans_cnt_id_show').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#cntc_type_id').removeAttr('disabled');
+            $('#cntc_id').removeAttr('disabled');
+            $('#cntt_type_id').removeAttr('disabled');
+            $('#cntt_id').removeAttr('disabled');
+            $('#cntd_id').removeAttr('disabled');
+        }
+        else{
+            $('#clmtrl_id_row').removeAttr('hidden');
+            $('#trans_cnt_id').attr('disabled',true);
+            $('#trans_cnt_id_show').attr('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+            $('#cntc_type_id').attr('disabled',true);
+            $('#cntc_id').attr('disabled',true);
+            $('#cntt_type_id').attr('disabled',true);
+            $('#cntt_id').attr('disabled',true);
+            $('#cntd_id').attr('disabled',true);
+        }
+    }
+// Clients List
+    function transClientChange(vMode, vTransCntID) {
+        $('#trans_cnt_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/part_world/get_trans_clients_list'}]]*/ "/part_world/get_trans_clients_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (trans_client_list) {
+                for (var i = 0; i < trans_client_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='trans_cnt_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='trans_cnt_id']").find('option').end().append(
+                        "<option value='" + trans_client_list.data[i].cnt_id
+                        + "'>" + trans_client_list.data[i].cnt_name + "</option>");
+                }
+                if(vTransCntID !== ''){
+                    $('#trans_cnt_id').val(vTransCntID);
+                }
+            }
+        }));
+    }
+//Cars Types
+function carsTypeChange(vTransCntID,vCarsTypeID) {
+    $('#cntc_type_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/part_world/get_cars_type'}]]*/ "/part_world/get_cars_type",
+        type: "get",
+        data: {
+            "cnt_id": vTransCntID
+        },
+        success: function (cars_type_list) {
+            for (var i = 0; i < cars_type_list.data.length; i++) {
+                if(i === 0) {
+                    $("select[name='cntc_type_id']").find('option').end().append("<option value=''></option>");
+                }
+                $("select[name='cntc_type_id']").find('option').end().append(
+                    "<option value='" + cars_type_list.data[i].cntc_type_id
+                    + "'>" + cars_type_list.data[i].cntc_type_sname + "</option>");
+            }
+            if(vCarsTypeID > 0){
+                $('#cntc_type_id').val(vCarsTypeID);
+            }
+        }
+    }));
+}
+//Cars List
+function carsListChange(vTransCntID,vCarsTypeID){
+    $('#cntc_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/part_world/get_cars'}]]*/ "/part_world/get_cars",
+        type: "get",
+        data: {
+            "cnt_id": vTransCntID,
+            "cntc_type_id": vCarsTypeID
+        },
+        success: function (cars_list) {
+            for (var i = 0; i < cars_list.data.length; i++) {
+                if(i === 0) {
+                    $("select[name='cntc_id']").find('option').end().append("<option value=''></option>");
+                }
+                $("select[name='cntc_id']").find('option').end().append(
+                    "<option value='" + cars_list.data[i].cntc_id
+                    + "'>" + cars_list.data[i].cntc_fullname + "</option>");
+            }
+        }
+    }));
+}
+//Trailers Types
+function trailersTypeChange(vTransCntID,vTrailersTypeID){
+    $('#cntt_type_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/part_world/get_trailers_type'}]]*/ "/part_world/get_trailers_type",
+        type: "get",
+        data: {
+            "cnt_id": vTransCntID
+        },
+        success: function (trailers_type_list) {
+            for (var i = 0; i < trailers_type_list.data.length; i++) {
+                if(i === 0) {
+                    $("select[name='cntt_type_id']").find('option').end().append("<option value=''></option>");
+                }
+                $("select[name='cntt_type_id']").find('option').end().append(
+                    "<option value='" + trailers_type_list.data[i].cntt_type_id
+                    + "'>" + trailers_type_list.data[i].cntt_type_sname + "</option>");
+            }
+            if(vTrailersTypeID > 0){
+               $('#cntt_type_id').val(vTrailersTypeID);
+            }
+        }
+    }));
+}
+//Trailers List
+function trailersListChange(vTransCntID,vTrailersTypeID){
+    $('#cntt_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/part_world/get_trailers'}]]*/ "/part_world/get_trailers",
+        type: "get",
+        data: {
+            "cnt_id": vTransCntID,
+            "cntt_type_id": vTrailersTypeID
+        },
+        success: function (trailers_list) {
+            for (var i = 0; i < trailers_list.data.length; i++) {
+                if(i === 0) {
+                    $("select[name='cntt_id']").find('option').end().append("<option value=''></option>");
+                }
+                $("select[name='cntt_id']").find('option').end().append(
+                    "<option value='" + trailers_list.data[i].cntt_id
+                    + "'>" + trailers_list.data[i].cntt_fullname + "</option>");
+            }
+        }
+    }));
+}
+//Drivers List
+function driversListChange(vTransCntID){
+    $('#cntd_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/part_world/get_drivers'}]]*/ "/part_world/get_drivers",
+        type: "get",
+        data: {
+            "cnt_id": vTransCntID
+        },
+        success: function (drivers_list) {
+            for (var i = 0; i < drivers_list.data.length; i++) {
+                if(i === 0) {
+                    $("select[name='cntd_id']").find('option').end().append("<option value=''></option>");
+                }
+                $("select[name='cntd_id']").find('option').end().append(
+                    "<option value='" + drivers_list.data[i].cntd_id
+                    + "'>" + drivers_list.data[i].cntd_fullname + "</option>");
+            }
+        }
+    }));
+}
+//Select2 Options
+var cntName =  "Выберите перевозчика";
+var cntFindText = "Введите от 2-х символов";
+
+$('#trans_cnt_id')
+    .wrap("<div class=\"position-relative\"></div>")
+    .select2({
+        id: '-1', // the value of the option
+        placeholder: cntName,
+        allowClear: true,
+        minimumInputLength: 2,
+        language: {
+            inputTooShort: function() {
+                return cntFindText;
+            }}
+    });
+
+$('#trans_cnt_id_show').on('click', function () {
+    if($('#trans_cnt_id_show').hasClass('btn-outline-primary')) {
+        $('#trans_cnt_id_show').removeClass('btn-outline-primary').addClass('btn-primary');
+        var options_zero = {
+            id: '-1', // the value of the option
+            placeholder: cntName,
+            allowClear: true,
+            width: 'element',
+            dropdownAutoWidth: true
+        };
+        $("#trans_cnt_id").select2("destroy").select2(options_zero);
+    }
+    else if($('#trans_cnt_id_show').hasClass('btn-primary')){
+        $('#trans_cnt_id_show').addClass('btn-outline-primary').removeClass('btn-primary');
+        var options_two = {
+            id: '-1', // the value of the option
+            placeholder: cntName,
+            allowClear: true,
+            minimumInputLength: 2,
+            language: {
+                inputTooShort: function() {
+                    return cntFindText;
+                }},
+            width: 'element',
+            dropdownAutoWidth: true
+        };
+        $("#trans_cnt_id").select2("destroy").select2(options_two);
+    }
+});    
+    
+// Load Function
+    function fill_part_world_trans_modal_detail(aMode){
+        $('#part_world_trans_modal_mode').val(aMode);
+        clear_part_world_trans_modal_detail();
+        block_part_world_trans_modal_detail();
+
+        $('#part_world_trans_modal_clm_id').val(vFLGClaimsValue.rowdata.clm_id);
+        $('#part_world_trans_modal_clm_num').val(vFLGClaimsValue.rowdata.clm_num);
+        $('#part_world_trans_modal_cnt_name').val(vFLGClaimsValue.rowdata.cnt_name);
+
+        if(aMode !== 0){
+            $.ajax({
+                url:/*[[@{'/part_world/get_trans_detail'}]]*/ "part_world/get_trans_detail",
+                type: "get",
+                data: {
+                    "mode": aMode,
+                    "clmtrl_id": vFLGClaimTransValue.rowdata.clmtrl_id
+                },
+                success: function (part_world_trans_modal_detail) {
+                    $.when(
+                        transClientChange(aMode,part_world_trans_modal_detail.data[0].cnt_id),
+                        carsTypeChange(part_world_trans_modal_detail.data[0].cnt_id,part_world_trans_modal_detail.data[0].cntc_type_id),
+                        carsListChange(part_world_trans_modal_detail.data[0].cnt_id,part_world_trans_modal_detail.data[0].cntc_type_id),
+                        trailersTypeChange(part_world_trans_modal_detail.data[0].cnt_id,part_world_trans_modal_detail.data[0].cntt_type_id),
+                        trailersListChange(part_world_trans_modal_detail.data[0].cnt_id,part_world_trans_modal_detail.data[0].cntt_type_id),
+                        driversListChange(part_world_trans_modal_detail.data[0].cnt_id)
+                    ).then(function () {
+                        $('#clmtrl_id').val(part_world_trans_modal_detail.data[0].clmtrl_id);
+                        $('#cntc_id').val(part_world_trans_modal_detail.data[0].cntc_id);
+                        $('#cntt_id').val(part_world_trans_modal_detail.data[0].cntt_id);
+                        $('#cntd_id').val(part_world_trans_modal_detail.data[0].cntd_id);
+
+                        $('#part_world_trans_modal').modal('show');
+                    });
+                }
+            });
+        }
+        else{
+            $.when(
+                transClientChange(aMode,0)
+            ).then(function () {
+                $('#part_world_trans_modal').modal('show');
+            });
+        }
+    }
+
+// Add button script
+$('#part_world_trans_modal_addbtn').click(function(){
+    var MainRowID = vFLGClaimsValue.rowdata.clm_id;
+    var RowID = vFLGClaimTransValue.rowdata.clmtrl_id;
+    var CostsGroupRowID = vFLGClaimCostsGroupsValue.rowdata.clmcgl_id;
+    $.ajax({
+        url: /*[[ @{/part_world/add_transport} ]]*/ "/part_world/add_transport",
+        type: 'POST',
+        data: {
+            "clm_id": MainRowID,
+            "cnt_id": $('#trans_cnt_id').val(),
+            "cntc_id":  $('#cntc_id').val(),
+            "cntt_id":  $('#cntt_id').val(),
+            "cntd_id":  $('#cntd_id').val()
+        },
+        success: function (result) {
+            $('#part_world_trans_modal').modal('hide');
+            vFLGClaimTransValue.rowdata.clm_id = MainRowID;
+            vFLGClaimTransValue.rowdata.clmtrl_id = RowID;
+            $(vFLGClaimTransValue.table).DataTable().ajax.reload(null, false);
+            vFLGClaimCostsGroupsValue.rowdata.clm_id = MainRowID;
+            vFLGClaimCostsGroupsValue.rowdata.clmcgl_id = CostsGroupRowID;
+            $(vFLGClaimCostsGroupsValue.table).DataTable().ajax.reload(null, false);
+            vFLGClaimErrorsValue.rowdata.clm_id = MainRowID;
+            $(vFLGClaimErrorsValue.table).DataTable().ajax.reload(null, false);
+            vFLGClaimsValue.rowdata.clm_id = MainRowID;
+            $(vFLGClaimsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// Edit button script
+$('#part_world_trans_modal_editbtn').click(function(){
+    var MainRowID = vFLGClaimsValue.rowdata.clm_id;
+    var RowID = vFLGClaimTransValue.rowdata.clmtrl_id;
+    var CostsGroupRowID = vFLGClaimCostsGroupsValue.rowdata.clmcgl_id;
+    $.ajax({
+        url: /*[[ @{/part_world/edit_transport} ]]*/ "/part_world/edit_transport",
+        type: 'POST',
+        data: {
+            "clmtrl_id": RowID,
+            "cnt_id": $('#trans_cnt_id').val(),
+            "cntc_id":  $('#cntc_id').val(),
+            "cntt_id":  $('#cntt_id').val(),
+            "cntd_id":  $('#cntd_id').val()
+        },
+        success: function (result) {
+            $('#part_world_trans_modal').modal('hide');
+            vFLGClaimTransValue.rowdata.clm_id = MainRowID;
+            vFLGClaimTransValue.rowdata.clmtrl_id = RowID;
+            $(vFLGClaimTransValue.table).DataTable().ajax.reload(null, false);
+            vFLGClaimCostsGroupsValue.rowdata.clm_id = MainRowID;
+            vFLGClaimCostsGroupsValue.rowdata.clmcgl_id = CostsGroupRowID;
+            $(vFLGClaimCostsGroupsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// Del button script
+$('#part_world_trans_modal_delbtn').click(function(){
+    var MainRowID = vFLGClaimsValue.rowdata.clm_id;
+    var RowID = vFLGClaimTransValue.rowdata.clmtrl_id;
+    var CostsGroupRowID = vFLGClaimCostsGroupsValue.rowdata.clmcgl_id;
+    $.ajax({
+        url: /*[[ @{/part_world/del_transport} ]]*/ "/part_world/del_transport",
+        type: 'POST',
+        data: {
+            "clmtrl_id": RowID
+        },
+        success: function (result) {
+            $('#part_world_trans_modal').modal('hide');
+            vFLGClaimTransValue.rowdata.clm_id = MainRowID;
+            $(vFLGClaimTransValue.table).DataTable().ajax.reload(null, false);
+            vFLGClaimCostsGroupsValue.rowdata.clm_id = MainRowID;
+            vFLGClaimCostsGroupsValue.rowdata.clmcgl_id = CostsGroupRowID;
+            $(vFLGClaimCostsGroupsValue.table).DataTable().ajax.reload(null, false);
+            $(vFLGClaimCostsValue.table).DataTable().ajax.reload(null, false);
+            vFLGClaimErrorsValue.rowdata.clm_id = MainRowID;
+            $(vFLGClaimErrorsValue.table).DataTable().ajax.reload(null, false);
+            vFLGClaimsValue.rowdata.clm_id = MainRowID;
+            $(vFLGClaimsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+// OnClick Function
+$('#trans_cnt_id').change(function () {
+    var vTransClientID = $('#trans_cnt_id').val();
+    $.when(
+        carsTypeChange(vTransClientID,0),
+        carsListChange(vTransClientID,$('#cntc_type_id').val()),
+        trailersTypeChange(vTransClientID,0),
+        trailersListChange(vTransClientID,$('#cntt_type_id').val()),
+        driversListChange(vTransClientID)
+    ).then(function () {
+    });
+});
+
+$('#cntc_type_id').change(function () {
+    carsListChange($('#trans_cnt_id').val(),$('#cntc_type_id').val());
+});
+
+$('#cntt_type_id').change(function () {
+    trailersListChange($('#trans_cnt_id').val(),$('#cntt_type_id').val());
+});
+</script>
+
+</body>
+</html>

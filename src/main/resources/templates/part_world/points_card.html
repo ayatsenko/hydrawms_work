@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="part_world_points_body" th:remove="tag">
+        <form id="part-world-points-detail" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="part-world-points-btn-large" class="d-none d-sm-block">
+                 <button type="button" id="part-world-points-addbtn" class="btn btn-sm btn-dark" th:text="#{general.addbtn}" disabled>Add</button>
+                 <button type="button" id="part-world-points-editbtn" class="btn btn-sm btn-dark" th:text="#{general.editbtn}" disabled>Edit</button>
+                 <button type="button" id="part-world-points-delbtn" class="btn btn-sm btn-dark" th:text="#{general.delbtn}" disabled>Delete</button>
+              </div>
+              <div id="part-world-points-btn-small" class="d-block d-sm-none">
+                 <button type="button" id="part-world-points-addbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="plus"></i></button>
+                 <button type="button" id="part-world-points-editbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="edit-2"></i></button>
+                 <button type="button" id="part-world-points-delbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-part-world-points" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var clm_point_id_width, user_id_width, user_name_width, clm_point_add_date_width, clm_point_date_width, clm_point_name_width;
+
+    var clm_point_id_class, user_id_class, user_name_class, clm_point_add_date_class, clm_point_date_class, clm_point_name_class;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        clm_point_id_width = "";
+        clm_point_id_class = "none";
+        user_id_width = "";
+        user_id_class = "none";
+        user_name_width = "15%";
+        user_name_class = "mall_size small_head_size small_footer_size";
+        clm_point_add_date_width = "15%";
+        clm_point_add_date_class = "mall_size small_head_size small_footer_size text-center";
+        clm_point_date_width = "10%";
+        clm_point_date_class = "mall_size small_head_size small_footer_size text-center";
+        clm_point_name_width = "70%";
+        clm_point_name_class = "mall_size small_head_size small_footer_size";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        clm_point_id_width = "";
+        clm_point_id_class = "none";
+        user_id_width = "";
+        user_id_class = "none";
+        user_name_width = "15%";
+        user_name_class = "points_id_shift";
+        clm_point_add_date_width = "15%";
+        clm_point_add_date_class = "text-center";
+        clm_point_date_width = "10%";
+        clm_point_date_class = "text-center";
+        clm_point_name_width = "70%";
+        clm_point_name_class = "";
+    }
+
+    var vFLGClaimPointsValue;
+    vFLGClaimPointsValue = {
+        table : '#table-part-world-points',
+        button_form: "#part-world-points-detail",
+        ajax : {
+            "url": /*[[@{/part_world/get_points_table}]]*/ "part_world/get_points_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vFLGClaimPointsValue.rowdata.clm_id;
+            }
+        },
+        key : "clm_point_id",
+        switchControl : part_world_points_switchControl,
+        rowdata:{
+            clm_id: null,
+            clm_point_id: null,
+            user_name: null,
+            clm_point_add_date: null,
+            clm_point_date: null,
+            clm_point_name: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+        },
+        columnDefs:[
+            
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{part_world.points.clm_point_id}]]*/ "clm_point_id", "data": "clm_point_id", "width": clm_point_id_width, "className": clm_point_id_class},
+                /*1*/{"title": /*[[#{part_world.points.user_id}]]*/ "user_id", "data": "user_id", "width": user_id_width, "className": user_id_class},
+                /*2*/{"title": /*[[#{part_world.points.user_name}]]*/ "user_name", "data": "user_name", "width": user_name_width, "className": user_name_class},
+                /*3*/{"title": /*[[#{part_world.points.clm_point_add_date}]]*/ "clm_point_add_date", "data": "clm_point_add_date", "width": clm_point_add_date_width, "className": clm_point_add_date_class},
+                /*4*/{"title": /*[[#{part_world.points.clm_point_date}]]*/ "clm_point_date", "data": "clm_point_date", "width": clm_point_date_width, "className": clm_point_date_class},
+                /*5*/{"title": /*[[#{part_world.points.clm_point_name}]]*/ "clm_point_name", "data": "clm_point_name", "width": clm_point_name_width, "className": clm_point_name_class}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function part_world_points_switchControl(){
+        if(vFLGClaimPointsValue.rowdata.clm_point_id != null && (RoleOPS || RoleChiefOPS)) {
+                $("#part-world-points-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#part-world-points-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#part-world-points-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#part-world-points-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+        } else{
+                $("#part-world-points-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#part-world-points-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#part-world-points-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#part-world-points-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.part_world_points_btn_control').on('click', function (){
+        $("#part-world-points-detail input[name=mode]").val($(this).attr("mode"));
+    });
+    // Detail Button
+    $('#part-world-points-detailbtn').click( function () {
+        $('#part_world_points_modal_addbtn').attr('hidden',true);
+        $('#part_world_points_modal_editbtn').attr('hidden',true);
+        $('#part_world_points_modal_delbtn').attr('hidden',true);
+        fill_part_world_points_modal_detail(4);
+    });
+    // Detail Button SX
+    $('#part-world-points-detailbtn-sx').click( function () {
+        $('#part_world_points_modal_addbtn').attr('hidden',true);
+        $('#part_world_points_modal_editbtn').attr('hidden',true);
+        $('#part_world_points_modal_delbtn').attr('hidden',true);
+        fill_part_world_points_modal_detail(4);
+    });
+    // Add Button
+    $('#part-world-points-addbtn').click( function () {
+        $('#part_world_points_modal_addbtn').removeAttr('hidden');
+        $('#part_world_points_modal_editbtn').attr('hidden',true);
+        $('#part_world_points_modal_delbtn').attr('hidden',true);
+        fill_part_world_points_modal_detail(0);
+    });
+    // Add Button SX
+    $('#part-world-points-addbtn-sx').click( function () {
+        $('#part_world_points_modal_addbtn').removeAttr('hidden');
+        $('#part_world_points_modal_editbtn').attr('hidden',true);
+        $('#part_world_points_modal_delbtn').attr('hidden',true);
+        fill_part_world_points_modal_detail(0);
+    });
+    // Edit Button
+    $('#part-world-points-editbtn').click( function () {
+        $('#part_world_points_modal_addbtn').attr('hidden',true);
+        $('#part_world_points_modal_editbtn').removeAttr('hidden');
+        $('#part_world_points_modal_delbtn').attr('hidden',true);
+        fill_part_world_points_modal_detail(1);
+    });
+    // Edit Button SX
+    $('#part-world-points-editbtn-sx').click( function () {
+        $('#part_world_points_modal_addbtn').attr('hidden',true);
+        $('#part_world_points_modal_editbtn').removeAttr('hidden');
+        $('#part_world_points_modal_delbtn').attr('hidden',true);
+        fill_part_world_points_modal_detail(1);
+    });
+    // Del Button
+    $('#part-world-points-delbtn').click( function () {
+        $('#part_world_points_modal_addbtn').attr('hidden',true);
+        $('#part_world_points_modal_editbtn').attr('hidden',true);
+        $('#part_world_points_modal_delbtn').removeAttr('hidden');
+        fill_part_world_points_modal_detail(2);
+    });
+    // Del Button SX
+    $('#part-world-points-delbtn-sx').click( function () {
+        $('#part_world_points_modal_addbtn').attr('hidden',true);
+        $('#part_world_points_modal_editbtn').attr('hidden',true);
+        $('#part_world_points_modal_delbtn').removeAttr('hidden');
+        fill_part_world_points_modal_detail(2);
+    });
+    //Shift click
+    $('#table-part-world-points').on('click','.points_id_shift', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var loadTable = $("#table-part-world-points").DataTable();
+
+        if (e.shiftKey) {
+            loadTable.row(selectedRow).select();
+            $('#part_world_points_modal_addbtn').attr('hidden',true);
+            $('#part_world_points_modal_editbtn').attr('hidden',true);
+            $('#part_world_points_modal_delbtn').attr('hidden',true);
+            fill_part_world_points_modal_detail(4);
+        }
+    });
+
+    $(document).ready(function(){
+        vFLGClaimPointsValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vFLGClaimPointsValue.rowdata.clm_point_id = /*[[${clm_point_id}]]*/ null;
+
+        vFLGClaimPointsValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vFLGClaimPointsValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vFLGClaimPointsValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vFLGClaimPointsValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vFLGClaimPointsValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vFLGClaimPointsValue);
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_locals_main_load_point_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="tms_locals_main_load_point_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="tms_locals_main_load_point_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{tms_locals.main.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body m-1">
+                    <form id="tms_locals_main_load_point_modal_form" name="tms_locals_main_load_point_modal_form" class="was-validated" novalidate>
+                    <input type="hidden" id="tms_locals_main_load_point_modal_mode">
+                        <div class="form-row mb-1">
+                            <div class="col-12 col-md-2" id="tms_locals_main_load_point_modal_clm_id_row">
+                                <label for="tms_locals_main_load_point_modal_clm_id" class="form-label mb-0" th:text="'1. '+ #{tms_locals.main.clm_id}"></label>
+                                <input type="number" class="form-control" id="tms_locals_main_load_point_modal_clm_id" name="tms_locals_main_load_point_modal_clm_id" readonly>
+                            </div>
+                            <div class="col-12 col-md-3" id="tms_locals_main_load_point_modal_clm_num_row">
+                                <label for="tms_locals_main_load_point_modal_clm_num" class="form-label mb-0" th:text="'2. '+ #{tms_locals.main.clm_num}"></label>
+                                <input type="text" maxlength="16" class="form-control" id="tms_locals_main_load_point_modal_clm_num" name="tms_locals_main_load_point_modal_clm_num" readonly>
+                            </div>
+                        </div> <!-- Row 1 -->
+
+                        <div class="form-row mb-1">
+                            <div class="col-12 col-md-3" id="cnt_way_date_row">
+                                <label for="cnt_way_date" class="form-label mb-0 text-dark" th:text="'3. '+ #{tms_locals.main.ways.cnt_way_date}"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="cnt_way_date" name="cnt_way_date">
+                                    <button type="button" id="cnt_way_date_x" name="cnt_way_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div><!-- Row 2 -->
+
+                        <div class="form-row mb-1">
+                            <div class="col-12 col-md-6" id="tms_locals_main_load_detail_modal_city_id_row">
+                                <label for="tms_locals_main_load_detail_modal_city_id" class="form-label mb-0 text-dark" th:text="'4. '+#{tms_locals.main.ways.cnt_way_city}">Weight Type: </label>
+                                <select type="text" id="tms_locals_main_load_detail_modal_city_id" name="tms_locals_main_load_detail_modal_city_id" class="custom-select">
+                                </select>
+                            </div>
+
+                            <div class="col-12 col-md-6" id="tms_locals_main_load_detail_modal_city_new_name_row">
+                                <label for="tms_locals_main_load_detail_modal_city_new_name" class="form-label mb-0" th:text="'4.1. '+ #{tms_locals.main.new_name}"></label>
+                                <input type="text" maxlength="64" class="form-control" id="tms_locals_main_load_detail_modal_city_new_name" name="tms_locals_main_load_detail_modal_city_new_name">
+                            </div>
+                        </div><!-- Row 3 -->
+
+                        <div class="form-row mb-1">
+                            <div class="col-12 col-md-6" id="tms_locals_main_load_detail_modal_street_id_row">
+                                <label for="tms_locals_main_load_detail_modal_street_id" class="form-label mb-0 text-dark" th:text="'5. '+#{tms_locals.main.ways.cnt_way_street}">Weight Type: </label>
+                                <select type="text" id="tms_locals_main_load_detail_modal_street_id" name="tms_locals_main_load_detail_modal_street_id" class="custom-select">
+                                </select>
+                            </div>
+
+                            <div class="col-12 col-md-6" id="tms_locals_main_load_detail_modal_street_new_name_row">
+                                <label for="tms_locals_main_load_detail_modal_street_new_name" class="form-label mb-0" th:text="'5.1. '+ #{tms_locals.main.new_name}"></label>
+                                <input type="text" maxlength="64" class="form-control" id="tms_locals_main_load_detail_modal_street_new_name" name="tms_locals_main_load_detail_modal_street_new_name">
+                            </div>
+                        </div><!-- Row 4 -->
+
+                        <div class="form-row mb-1">
+                            <div class="col-12 col-md-3" id="tms_locals_main_load_detail_modal_house_id_row">
+                                <label for="tms_locals_main_load_detail_modal_house_id" class="form-label mb-0 text-dark" th:text="'6. '+#{tms_locals.main.ways.cnt_way_home}">Weight Type: </label>
+                                <select type="text" id="tms_locals_main_load_detail_modal_house_id" name="tms_locals_main_load_detail_modal_house_id" class="custom-select">
+                                </select>
+                            </div>
+
+                            <div class="col-12 col-md-3" id="tms_locals_main_load_detail_modal_house_new_name_row">
+                                <label for="tms_locals_main_load_detail_modal_house_new_name" class="form-label mb-0" th:text="'6.1. '+ #{tms_locals.main.new_name}"></label>
+                                <input type="text" maxlength="64" class="form-control" id="tms_locals_main_load_detail_modal_house_new_name" name="tms_locals_main_load_detail_modal_house_new_name">
+                            </div>
+                        </div><!-- Row 5 -->
+
+                        <div class="form-row mb-1">
+                            <div class="col-12">
+                                <label for="clm_way_notes" class="form-label mb-0 text-dark" th:text="'7. '+#{tms_locals.main.clm_way_notes}"></label>
+                                <textarea class="form-control" rows="5" maxlength="512" minlength="10" style="resize:none;" id="clm_way_notes" name="clm_way_notes">
+                                </textarea>
+                            </div>
+                        </div> <!-- Row 6 -->
+
+                        <h6 class="text-primary mb-1" id="cnt_way_result_header" th:text="#{tms_locals.main.ways.cnt_way_result_header}"></h6>
+                        <div class="row">
+                            <div class="col-12 text-dark" id="main_loads_modal_row">
+                                <span th:replace="tms_locals/main_modals/main_load_point_temp_modal :: tms_locals_load_point_temp_modal_body"></span>
+                            </div>
+                        </div><!-- Row 7 -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="tms_locals_main_load_point_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="tms_locals_main_load_point_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    // Clear Fields
+    function clear_tms_locals_main_load_point_modal_detail() {
+        $("#tms_locals_main_load_point_modal_detail input[type=text]").val('');
+        $("#tms_locals_main_load_point_modal_detail input[type=number]").val('');
+        $("#tms_locals_main_load_point_modal_detail select").empty();
+        $("#tms_locals_main_load_point_modal_detail textarea").val('');
+    }
+
+    // Block And Required Fields
+    function block_tms_locals_main_load_point_modal_detail(){
+        $('#tms_locals_main_load_detail_modal_city_new_name').attr('readonly',true);
+        $('#tms_locals_main_load_detail_modal_street_new_name').attr('readonly',true);
+        $('#tms_locals_main_load_detail_modal_house_new_name').attr('readonly',true);
+    }
+
+    // City List
+    function loadPointTempModalCityChange(vMode, vCityID) {
+        $('#tms_locals_main_load_detail_modal_city_id').empty();
+        $("select[name='tms_locals_main_load_detail_modal_city_id']").find('option').end().append("<option value=''></option>");
+        $("select[name='tms_locals_main_load_detail_modal_city_id']").find('option').end().append("<option value='0' class='bg-success text-white' style='color: lightgreen'>New</option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tms_locals/get_city_list'}]]*/ "/tms_locals/get_city_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (weight_type_list) {
+                for (var i = 0; i < weight_type_list.data.length; i++) {
+                    $("select[name='tms_locals_main_load_detail_modal_city_id']").find('option').end().append(
+                        "<option value='" + weight_type_list.data[i].city_id
+                        + "'>" + weight_type_list.data[i].city_name + "</option>");
+                    if(vCityID !== ''){
+                        $('#tms_locals_main_load_detail_modal_city_id').val(vCityID);
+                    }
+                }
+            }
+        }));
+    }
+
+    // Street List
+    function loadPointTempModalStreetChange(vMode, vCityID, vStreetID) {
+        $('#tms_locals_main_load_detail_modal_street_id').empty();
+        $("select[name='tms_locals_main_load_detail_modal_street_id']").find('option').end().append("<option value=''></option>");
+        $("select[name='tms_locals_main_load_detail_modal_street_id']").find('option').end().append("<option value='0' class='bg-success text-white' style='color: lightgreen'>New</option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tms_locals/get_city_street_list'}]]*/ "/tms_locals/get_city_street_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "city_id": vCityID
+            },
+            success: function (street_list) {
+                for (var i = 0; i < street_list.data.length; i++) {
+                    $("select[name='tms_locals_main_load_detail_modal_street_id']").find('option').end().append(
+                        "<option value='" + street_list.data[i].street_id
+                        + "'>" + street_list.data[i].street_name + "</option>");
+
+                    if(vStreetID !== ''){
+                        $('#tms_locals_main_load_detail_modal_street_id').val(vStreetID);
+                    }
+                }
+            }
+        }));
+    }
+
+    // House List
+    function loadPointTempModalStreetHouseChange(vMode, vCityID, vStreetID, vHouseID) {
+        $('#tms_locals_main_load_detail_modal_house_id').empty();
+        $("select[name='tms_locals_main_load_detail_modal_house_id']").find('option').end().append("<option value=''></option>");
+        $("select[name='tms_locals_main_load_detail_modal_house_id']").find('option').end().append("<option value='0' class='bg-success text-white' style='color: lightgreen'>New</option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tms_locals/get_city_street_house_list'}]]*/ "/tms_locals/get_city_street_house_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "city_id": vCityID,
+                "street_id": vStreetID
+            },
+            success: function (house_list) {
+                for (var i = 0; i < house_list.data.length; i++) {
+                    $("select[name='tms_locals_main_load_detail_modal_house_id']").find('option').end().append(
+                        "<option value='" + house_list.data[i].house_id
+                        + "'>" + house_list.data[i].house_name + "</option>");
+
+                    if(vHouseID !== ''){
+                        $('#tms_locals_main_load_detail_modal_house_id').val(vHouseID);
+                    }
+                }
+            }
+        }));
+    }
+
+    let startCityName =  "Выберите город";
+    $('#tms_locals_main_load_detail_modal_city_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: startCityName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    let startStreetName =  "Выберите улицу";
+    $('#tms_locals_main_load_detail_modal_street_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: startStreetName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    let startHouseName =  "Выберите дом";
+    $('#tms_locals_main_load_detail_modal_house_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: startHouseName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    // Load Function
+    function fill_tms_locals_main_load_point_modal_detail(aMode){
+        clear_tms_locals_main_load_point_modal_detail();
+        $('#tms_locals_main_load_point_modal_mode').val(aMode);
+        block_tms_locals_main_load_point_modal_detail();
+        $.ajax({
+            url:/*[[@{'/tms_locals/fill_main_loads_point_temp'}]]*/ "tms_locals/fill_main_loads_point_temp",
+            type: "post",
+            data: {
+                "mode": aMode,
+                "clm_id": aMode === 0 ? 0 : vClaimsValue.rowdata.clm_id,
+                "clm_way_id": 1
+            },
+            success: function () {
+                $.ajax({
+                    url:/*[[@{'/tms_locals/get_main_detail'}]]*/ "tms_locals/get_main_detail",
+                    type: "get",
+                    data: {
+                        "mode": aMode,
+                        "clm_id": aMode === 0 ? 0 : vClaimsValue.rowdata.clm_id
+                    },
+                    success: function (tms_locals_main_load_point_modal_value_detail) {
+                        if (aMode >= 1) {
+                            loadPointTempModalCityChange(aMode)
+                            $.when(
+                            ).then(function () {
+                                $('#tms_locals_main_load_point_modal_clm_id').val(tms_locals_main_load_point_modal_value_detail.data[0].clm_id);
+                                $('#tms_locals_main_load_point_modal_clm_num').val(tms_locals_main_load_point_modal_value_detail.data[0].clm_num);
+
+                                tms_locals_main_load_detail_temp_modal_clear();
+                                tmsLocalLoadTempDetailModalReload();
+                                $('#tms_locals_main_load_point_modal').modal('show');
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+// Edit button function
+    function editTmsLocalsLoadPointMain(){
+        let RowID = vClaimsValue.rowdata.clm_id;
+        $.ajax({
+            url: /*[[ @{/tms_locals/edit_main_loads} ]]*/ "/tms_locals/edit_main_loads",
+            type: 'POST',
+            data: {
+                "clm_id": $('#tms_locals_main_load_point_modal_clm_id').val()
+            },
+            success: function (result) {
+                $('#tms_locals_main_load_point_modal').modal('hide');
+                vClaimsValue.rowdata.clm_id = RowID;
+                $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+// Edit button script
+    $('#tms_locals_main_load_point_modal_editbtn').click(function(){
+        $('#tms_locals_main_load_point_modal_form').submit();
+    });
+
+//Validation Form
+    $('#tms_locals_main_load_point_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function(error,element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            if($('#tms_locals_main_load_point_modal_mode').val() === '1') {
+                editTmsLocalsLoadPointMain();
+            }
+            return false;
+        }
+    });
+//On Change
+    function cityChange(){
+        if($('#tms_locals_main_load_detail_modal_city_id').val() === '0'){
+            $('#tms_locals_main_load_detail_modal_city_new_name').prop('readonly',false).prop('required',true);
+            loadPointTempModalStreetChange($('#tms_locals_main_load_point_modal_mode').val(),$('#tms_locals_main_load_detail_modal_city_id').val());
+            $('#tms_locals_main_load_detail_modal_house_id').empty();
+        }
+        else{
+            $('#tms_locals_main_load_detail_modal_city_new_name').prop('readonly',true).prop('required',false);
+        }
+    }
+
+    $('#tms_locals_main_load_detail_modal_city_id').on('change', function() {
+        cityChange();
+    });
+
+    function streetChange(){
+        if($('#tms_locals_main_load_detail_modal_street_id').val() === '0'){
+            $('#tms_locals_main_load_detail_modal_street_new_name').prop('readonly',false).prop('required',true);
+            loadPointTempModalStreetHouseChange($('#tms_locals_main_load_point_modal_mode').val(),$('#tms_locals_main_load_detail_modal_city_id').val(),$('#tms_locals_main_load_detail_modal_street_id').val());
+        }
+        else{
+            $('#tms_locals_main_load_detail_modal_street_id').prop('readonly',true).prop('required',false);
+        }
+    }
+
+    $('#tms_locals_main_load_detail_modal_street_id').on('change', function() {
+        streetChange();
+    });
+
+    function houseChange(){
+        if($('#tms_locals_main_load_detail_modal_house_id').val() === '0'){
+            $('#tms_locals_main_load_detail_modal_house_new_name').prop('readonly',false).prop('required',true);
+        }
+        else{
+            $('#tms_locals_main_load_detail_modal_house_id').prop('readonly',true).prop('required',false);
+        }
+    }
+
+    $('#tms_locals_main_load_detail_modal_house_id').on('change', function() {
+        houseChange();
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="users_time_detail_body" th:remove="tag">
+       <div class="row">
+           <div class="col-md-3 mb-2" id="users-time-detail-show-row">
+               <div class="custom-control custom-switch centered">
+                    <div class="custom-control custom-switch">
+                       <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input class="custom-control-input" type="checkbox" id="users_time_detail_show" name="users_time_detail_show" checked>
+                        <label class="custom-control-label" for="users_time_detail_show">Активные</label>
+                    </div>
+               </div>
+           </div>
+        </div>
+        
+        <div><table id="table-users-time-detail" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vUsersTimeValue;
+    vUsersTimeValue = {
+        table : '#table-users-time-detail',
+        button_form: "#users-time-detail-buttons",
+        ajax : {
+            "url": /*[[@{/users_time/get_detail_table}]]*/ "users_time/get_detail_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.start_date = vUsersTimeValue.rowdata.start_date;
+                d.end_date = vUsersTimeValue.rowdata.end_date;
+                d.req_user_id = vUsersTimeValue.rowdata.req_user_id;
+                d.check_id = vUsersTimeValue.rowdata.check_id;
+            }
+        },
+        key : "user_id",
+        switchControl : users_time_detail_switchControl,
+        rowdata:{
+            user_id: null,
+            start_date: null,
+            end_date: null,
+            check_id: null,
+            req_user_id: null
+        },
+        ordering: true,
+        order: [
+            [1, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        columnDefs: [
+                {"targets": [2],  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                {"targets": [3], type: 'de_datetime'}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{users_time.detail.user_id}]]*/ "user_id", "data": "user_id", "width": "5%"},
+            /*1*/{"title": /*[[#{users_time.detail.user_surname}]]*/ "user_surname", "data": "user_surname", "width": "25%"},
+            /*2*/{"title": /*[[#{users_time.detail.log_count}]]*/ "log_count", "data": "log_count", "width": "10%"},
+            /*3*/{"title": /*[[#{users_time.detail.last_in_date}]]*/ "last_in_date", "data": "last_in_date", "width": "60%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function users_time_detail_switchControl(){
+      if(vUsersTimeValue.rowdata.user_id != null){
+              vUserSessionsValue.rowdata.req_user_id = vUsersTimeValue.rowdata.user_id;
+              vUserSessionsValue.rowdata.start_date = $("#users_time_start_date").val();
+              vUserSessionsValue.rowdata.end_date = $("#users_time_end_date").val();
+              $(vUserSessionsValue.table).DataTable().ajax.reload();
+      }else {
+              vUserSessionsValue.rowdata.req_user_id = null;
+              vUserSessionsValue.rowdata.start_date = null;
+              vUserSessionsValue.rowdata.end_date = null;
+              $(vUserSessionsValue.table).DataTable().clear().draw();
+     }
+    }
+
+    $('.positions_btn_control').on('click', function (){
+        $("#positions-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#users_time_detail_show').click(function() {
+            if ($('#users_time_detail_show').is(':checked')) {
+                    vUsersTimeValue.rowdata.check_id = 1;
+                    $(vUsersTimeValue.table).DataTable().ajax.reload();
+            }
+            else {
+                    vUsersTimeValue.rowdata.check_id = 0;
+                    $(vUsersTimeValue.table).DataTable().ajax.reload();
+            }
+    });
+
+    $(document).ready(function(){
+        vUsersTimeValue.rowdata.start_date = null;
+        vUsersTimeValue.rowdata.end_date = null;
+        vUsersTimeValue.rowdata.req_user_id = null;
+        vUsersTimeValue.rowdata.check_id =  /*[[${check_id}]]*/ 1;
+
+        recreateDataTable(vUsersTimeValue);
+    });
+</script>
+
+</body>
+</html>

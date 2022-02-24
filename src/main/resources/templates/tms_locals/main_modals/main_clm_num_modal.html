@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_locals_main_clm_num_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="tms_locals_main_clm_num_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="tms_locals_main_clm_num_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{tms_locals.main.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body m-1">
+                    <form id="tms_locals_main_clm_num_modal_form" name="tms_locals_main_clm_num_modal_form" class="was-validated" novalidate>
+                    <input type="hidden" id="tms_locals_main_clm_num_modal_mode">
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-2" id="tms_locals_main_clm_num_modal_clm_id_row">
+                            <label for="tms_locals_main_clm_num_modal_clm_id" class="form-label mb-0" th:text="'1. '+ #{tms_locals.main.clm_id}"></label>
+                            <input type="number" class="form-control" id="tms_locals_main_clm_num_modal_clm_id" name="tms_locals_main_clm_num_modal_clm_id" readonly>
+                        </div>
+                        <div class="col-12 col-md-3" id="tms_locals_main_clm_num_modal_clm_num_row">
+                            <label for="tms_locals_main_clm_num_modal_clm_num" class="form-label mb-0" th:text="'2. '+ #{tms_locals.main.clm_num}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="tms_locals_main_clm_num_modal_clm_num" name="tms_locals_main_clm_num_modal_clm_num">
+                        </div>
+                    </div> <!-- Row 1 -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="tms_locals_main_clm_num_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="tms_locals_main_clm_num_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    // Clear Fields
+    function clear_tms_locals_main_clm_num_modal_detail() {
+        $("#tms_locals_main_clm_num_modal_detail input[type=text]").val('');
+        $("#tms_locals_main_clm_num_modal_detail input[type=number]").val('');
+        $("#tms_locals_main_clm_num_modal_detail select").empty();
+        $("#tms_locals_main_clm_num_modal_detail textarea").val('');
+    }
+
+    // Block And Required Fields
+    function block_tms_locals_main_clm_num_modal_detail(){
+    }
+
+    // Load Function
+    function fill_tms_locals_main_clm_num_modal_detail(aMode){
+        clear_tms_locals_main_clm_num_modal_detail();
+        $('#tms_locals_main_clm_num_modal_mode').val(aMode);
+        block_tms_locals_main_clm_num_modal_detail();
+
+        $.ajax({
+            url:/*[[@{'/tms_locals/get_main_detail'}]]*/ "tms_locals/get_main_detail",
+            type: "get",
+            data: {
+                "mode": aMode,
+                "clm_id": aMode === 0 ? 0 : vClaimsValue.rowdata.clm_id
+            },
+            success: function (tms_locals_main_clm_num_modal_value_detail) {
+                if (aMode >= 1) {
+                    $.when(
+                    ).then(function () {
+                        $('#tms_locals_main_clm_num_modal_clm_id').val(tms_locals_main_clm_num_modal_value_detail.data[0].clm_id);
+                        $('#tms_locals_main_clm_num_modal_clm_num').val(tms_locals_main_clm_num_modal_value_detail.data[0].clm_num);
+
+                        $('#tms_locals_main_clm_num_modal').modal('show');
+                    });
+                }
+            }
+        });
+    }
+
+// Edit button function
+    function editTmsLocalsNumMain(){
+        let RowID = vClaimsValue.rowdata.clm_id;
+        $.ajax({
+            url: /*[[ @{/tms_locals/edit_main_clm_num} ]]*/ "/tms_locals/edit_main_clm_num",
+            type: 'POST',
+            data: {
+                "clm_id": $('#tms_locals_main_clm_num_modal_clm_id').val(),
+                "clm_num": $('#tms_locals_main_clm_num_modal_clm_num').val()
+            },
+            success: function (result) {
+                $('#tms_locals_main_clm_num_modal').modal('hide');
+                vClaimsValue.rowdata.clm_id = RowID;
+                $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+// Edit button script
+    $('#tms_locals_main_clm_num_modal_editbtn').click(function(){
+        $('#tms_locals_main_clm_num_modal_form').submit();
+    });
+
+//Validation Form
+    $('#tms_locals_main_clm_num_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function(error,element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            if($('#tms_locals_main_clm_num_modal_mode').val() === '1') {
+                editTmsLocalsNumMain();
+            }
+            return false;
+        }
+    });
+</script>
+
+</body>
+</html>

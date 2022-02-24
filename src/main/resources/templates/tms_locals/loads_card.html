@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_locals_loads_body" th:remove="tag">
+        <form id="table-tms-locals-loads-buttons" class="mb-2" hidden>
+            <input type="hidden" name="mode" value="0">
+            <button type="button" id="tms-locals-loads-detailbtn" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.detailbtn}" disabled><i class="fa fa-list"></i></button>
+            <button type="button" id="tms-locals-loads-addbtn" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" th:title="#{general.addbtn}"><i class="fa fa-plus"></i></button>
+            <button type="button" id="tms-locals-loads-editbtn" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.editbtn}" disabled><i class="fa fa-pencil-alt"></i></button>
+            <button type="button" id="tms-locals-loads-delbtn" class="btn btn-dark mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.delbtn}" disabled><i class="fa fa-trash-alt"></i></button>
+
+            <button type="button" id="tms-locals-loads-reload" class="btn btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.refreshbtn}"><i class="fa fa-sync"></i></button>
+        </form>
+        
+        <div><table id="table-tms-locals-loads" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var clmll_id_width, clmll_client_order_num_width, clm_load_name_width, clm_load_weight_width, clm_load_dims_width, clmll_space_count_width, clmll_load_meters_width, clm_load_notes_width;
+    var clmll_id_class, clmll_client_order_num_class, clm_load_name_class, clm_load_weight_class, clm_load_dims_class, clmll_space_count_class, clmll_load_meters_class, clm_load_notes_class;
+    var clmll_id_show, clmll_client_order_num_show, clm_load_name_show, clm_load_weight_show, clm_load_dims_show, clmll_space_count_show, clmll_load_meters_show, clm_load_notes_show;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        clmll_id_show = false;
+        clmll_id_width = "";
+        clmll_id_class = "";
+        clmll_client_order_num_show = true;
+        clmll_client_order_num_width = "7%";
+        clmll_client_order_num_class = "small_size small_head_size small_footer_size";
+        clm_load_name_show = true;
+        clm_load_name_width = "14%";
+        clm_load_name_class = "small_size small_head_size small_footer_size";
+        clm_load_weight_show = true;
+        clm_load_weight_width = "5%";
+        clm_load_weight_class = "small_size small_head_size small_footer_size text-center";
+        clm_load_dims_show = false;
+        clm_load_dims_width = "";
+        clm_load_dims_class = "";
+        clmll_space_count_show = true;
+        clmll_space_count_width = "8%";
+        clmll_space_count_class = "small_size small_head_size small_footer_size text-center";
+        clmll_load_meters_show = true;
+        clmll_load_meters_width = "8%";
+        clmll_load_meters_class = "small_size small_head_size small_footer_size text-center";
+        clm_load_notes_show = true;
+        clm_load_notes_width = "58%";
+        clm_load_notes_class = "small_size small_head_size small_footer_size";
+
+        $('#table-tms-locals-loads-buttons').removeAttr('hidden');
+    }
+    else{
+        vDomParam = "Blfrtip";
+        clmll_id_show = false;
+        clmll_id_width = "";
+        clmll_id_class = "";
+        clmll_client_order_num_show = true;
+        clmll_client_order_num_width = "7%";
+        clmll_client_order_num_class = "small_size small_head_size small_footer_size";
+        clm_load_name_show = true;
+        clm_load_name_width = "14%";
+        clm_load_name_class = "small_size small_head_size small_footer_size";
+        clm_load_weight_show = true;
+        clm_load_weight_width = "5%";
+        clm_load_weight_class = "small_size small_head_size small_footer_size text-center";
+        clm_load_dims_show = false;
+        clm_load_dims_width = "";
+        clm_load_dims_class = "";
+        clmll_space_count_show = true;
+        clmll_space_count_width = "8%";
+        clmll_space_count_class = "small_size small_head_size small_footer_size text-center";
+        clmll_load_meters_show = true;
+        clmll_load_meters_width = "8%";
+        clmll_load_meters_class = "small_size small_head_size small_footer_size text-center";
+        clm_load_notes_show = true;
+        clm_load_notes_width = "58%";
+        clm_load_notes_class = "small_size small_head_size small_footer_size";
+
+        $('#table-tms-locals-loads-buttons').removeAttr('hidden');
+    }
+
+    var vFLDClaimLoadsValue;
+    vFLDClaimLoadsValue = {
+        table : '#table-tms-locals-loads',
+        button_form: (mobileScreenSize ) ? null : "#table-tms-locals-loads-buttons",
+        ajax : {
+            "url": /*[[@{/tms_locals/get_loads_table}]]*/ "tms_locals/get_loads_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vFLDClaimLoadsValue.rowdata.clm_id
+            }
+        },
+        key : "clmll_id",
+        switchControl : tms_locals_loads_switchControl,
+        rowdata:{
+            clm_id: null,
+            clmll_id: null,
+            clm_load_name: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).css('background-color', data["act_type_colour"]);*/
+        },
+        columnDefs:[
+            {"targets": [0], "width": clmll_id_width, "className": clmll_id_class, "visible": clmll_id_show},
+            {"targets": [1], "width": clmll_client_order_num_width, "className": clmll_client_order_num_class, "visible": clmll_client_order_num_show},
+            {"targets": [2], "width": clm_load_name_width, "className": clm_load_name_class, "visible": clm_load_name_show},
+            {"targets": [3], "width": clm_load_weight_width, "className": clm_load_weight_class, "visible": clm_load_weight_show},
+            {"targets": [4], "width": clm_load_dims_width, "className": clm_load_dims_class, "visible": clm_load_dims_show},
+            {"targets": [5], "width": clmll_space_count_width, "className": clmll_space_count_class, "visible": clmll_space_count_show},
+            {"targets": [6], "width": clmll_load_meters_width, "className": clmll_load_meters_class, "visible": clmll_load_meters_show},
+            {"targets": [7], "width": clm_load_notes_width, "className": clm_load_notes_class, "visible": clm_load_notes_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{tms_locals.loads.clmll_id}]]*/ "clmll_id", "data": "clmll_id"},
+            /*1*/{"title": /*[[#{tms_locals.loads.clmll_client_order_num}]]*/ "clmll_client_order_num", "data": "clmll_client_order_num"},
+            /*2*/{"title": /*[[#{tms_locals.loads.clm_load_name}]]*/ "clm_load_name", "data": "clm_load_name"},
+            /*3*/{"title": /*[[#{tms_locals.loads.clm_load_weight}]]*/ "clm_load_weight", "data": "clm_load_weight"},
+            /*4*/{"title": /*[[#{tms_locals.loads.clm_load_dims}]]*/ "clm_load_dims", "data": "clm_load_dims",},
+            /*5*/{"title": /*[[#{tms_locals.loads.clmll_space_count}]]*/ "clmll_space_count", "data": "clmll_space_count"},
+            /*6*/{"title": /*[[#{tms_locals.loads.clmll_load_meters}]]*/ "clmll_load_meters", "data": "clmll_load_meters"},
+            /*7*/{"title": /*[[#{tms_locals.loads.clm_load_notes}]]*/ "clm_load_notes", "data": "clm_load_notes"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function tms_locals_loads_switchControl(){
+        if(vFLDClaimLoadsValue.rowdata.clmll_id != null) {
+            $("#tms-locals-loads-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+            if(RoleOPS || RoleChiefOPS || RoleSuperOPS) {
+                $("#tms-locals-loads-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-locals-loads-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-danger');
+            }
+        } else{
+            $("#tms-locals-loads-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tms-locals-loads-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tms-locals-loads-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+        }
+    }
+
+    // Detail Button
+    $('#tms-locals-loads-detailbtn').click( function () {
+        $('#tms_locals_loads_modal_addbtn').attr('hidden',true);
+        $('#tms_locals_loads_modal_editbtn').attr('hidden',true);
+        $('#tms_locals_loads_modal_delbtn').attr('hidden',true);
+        fill_tms_locals_loads_modal_detail(4);
+    });
+
+    // Add Button
+    $('#tms-locals-loads-addbtn').click( function () {
+        $('#tms_locals_loads_modal_addbtn').removeAttr('hidden');
+        $('#tms_locals_loads_modal_editbtn').attr('hidden',true);
+        $('#tms_locals_loads_modal_delbtn').attr('hidden',true);
+        fill_tms_locals_loads_modal_detail(0);
+    });
+
+    // Edit Button
+    $('#tms-locals-loads-editbtn').click( function () {
+        $('#tms_locals_loads_modal_addbtn').attr('hidden',true);
+        $('#tms_locals_loads_modal_editbtn').removeAttr('hidden');
+        $('#tms_locals_loads_modal_delbtn').attr('hidden',true);
+        fill_tms_locals_loads_modal_detail(1);
+    });
+
+    // Del Button
+    $('#tms-locals-loads-delbtn').click( function () {
+        $('#tms_locals_loads_modal_addbtn').attr('hidden',true);
+        $('#tms_locals_loads_modal_editbtn').attr('hidden',true);
+        $('#tms_locals_loads_modal_delbtn').removeAttr('hidden');
+        fill_tms_locals_loads_modal_detail(2);
+    });
+
+    //Shift click
+    $('#table-tms-locals-loads').on('click','.loads_id_shift', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var loadTable = $("#table-tms-locals-loads").DataTable();
+
+        if (e.shiftKey) {
+            loadTable.row(selectedRow).select();
+            $('#tms_locals_loads_modal_addbtn').attr('hidden',true);
+            $('#tms_locals_loads_modal_editbtn').attr('hidden',true);
+            $('#tms_locals_loads_modal_delbtn').attr('hidden',true);
+            fill_tms_locals_loads_modal_detail(4);
+        }
+    });
+
+    function tmsLocalsLoadsReload(){
+        if(vClaimsValue.rowdata.clm_id > 0) {
+            vFLDClaimLoadsValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+            $(vFLDClaimLoadsValue.table).DataTable().ajax.reload(null, false);
+        }
+    }
+    //Reload Button
+    $('#tms-locals-loads-reload').click(function(){
+        tmsLocalsLoadsReload();
+    });
+    
+    $(document).ready(function(){
+        vFLDClaimLoadsValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vFLDClaimLoadsValue.rowdata.clmll_id = /*[[${clmll_id}]]*/ null;
+
+        vFLDClaimLoadsValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vFLDClaimLoadsValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vFLDClaimLoadsValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vFLDClaimLoadsValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vFLDClaimLoadsValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vFLDClaimLoadsValue);
+    });
+</script>
+
+</body>
+</html>

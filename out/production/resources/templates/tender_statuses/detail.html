@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{tender_statuses.caption})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{tender_statuses.caption}"></h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <!--/*@thymesVar id="tender_statuses_detail" type="java.util.List"*/-->
+                <form id="tender-statuses-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/tender_statuses/model}">
+                    <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="tender-statuses-indexfrm">Cancel</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="tender-statuses-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                            <button th:case="1" type="submit" id="tender-statuses-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                            <button th:case="2" type="submit" id="tender-statuses-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                        </div>
+                    </div>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="req_tend_status_id" th:value="${req_tend_status_id}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tender_statuses_table_order_column" th:value="${tender_statuses_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tender_statuses_table_order_type" th:value="${tender_statuses_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tender_statuses_table_search" th:value="${tender_statuses_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tender_statuses_table_pagelen" th:value="${tender_statuses_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tender_statuses_table_page" th:value="${tender_statuses_table_page}" >
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-1" id="req_tend_status_id_row">
+                            <label for="req_tend_status_id" class="form-label" th:text="'1. '+ #{tender_statuses.req_tend_status_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="req_tend_status_id" name="req_tend_status_id" th:value="${req_tend_status_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="req_tend_status_sname" class="form-label" th:text="'2. '+#{tender_statuses.req_tend_status_sname}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="req_tend_status_sname" name="req_tend_status_sname" th:value="${req_tend_status_sname}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-9 mb-9">
+                            <label for="req_tend_status_name" class="form-label" th:text="'3. '+#{tender_statuses.req_tend_status_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="48" class="form-control" id="req_tend_status_name" name="req_tend_status_name" th:value="${req_tend_status_name}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-12 mb-12">
+                            <label for="req_tend_status_description" th:text="'4. '+#{tender_statuses.req_tend_status_description}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="512" style="resize:none;" id="req_tend_status_description" name="req_tend_status_description" th:text="${req_tend_status_description}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-12 mb-12" id="req_tend_status_colour_row">
+                            <label for="req_tend_status_colour" class="form-label" th:text="'6. '+#{tender_statuses.req_tend_status_colour}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="color" class="form-control color" id="req_tend_status_colour" name="req_tend_status_colour" th:value="${req_tend_status_colour}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--/*@thymesVar id="tender_statuses_detail" type="java.util.List"*/-->
+    <form id="tender-statuses-indexfrm" method="post" th:action="@{/tender_statuses}" hidden>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="req_tend_status_id" th:value="${req_tend_status_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_order_column" th:value="${tender_statuses_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_order_type" th:value="${tender_statuses_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_search" th:value="${tender_statuses_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_pagelen" th:value="${tender_statuses_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_page" th:value="${tender_statuses_table_page}" >
+    </form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'tender-statuses-indexfrm')">Error</span>
+
+<script>
+    $(document).ready(function(){
+<!-- Hihglight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#dictionaries_li').addClass('active').removeClass('collapsed');
+        $('#dictionaries_a').attr('aria-expanded',true);
+        $('#dictionaries').addClass('show');
+
+        $('#tender_statuses_a').addClass('text-primary');
+<!-- Form Start -->
+        $('#req_tend_status_id').prop('readOnly',true);
+        $('#req_tend_status_sname').prop('required',true);
+
+<!-- Change Function -->
+        if($('#mode').val() === '0'){
+            $('#req_tend_status_id_row').prop('hidden',true);
+            $('#req_tend_status_name').prop('required',true);
+        }
+        else if($('#mode').val() === '2' || $('#mode').val() === '4'){
+            $('#req_tend_status_id').prop('readOnly',true);
+            $('#req_tend_status_sname').prop('readOnly',true);
+            $('#req_tend_status_name').prop('readOnly',true);
+            $('#req_tend_status_description').prop('readOnly',true);
+            $('#req_tend_status_colour').prop('readOnly',true);
+        }
+    });
+</script>
+</body>
+</html>

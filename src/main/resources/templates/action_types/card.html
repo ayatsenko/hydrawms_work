@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="action_types_body" th:remove="tag">
+        <form id="action-types-detail" class="mb-2" th:action="@{/action_types/detail}" method="post">
+            <input name="mode" value="0" hidden>
+              <div id="action-types-btn-large" class="d-none d-sm-block">
+                 <button type="submit" id="action-types-detailbtn" class="btn btn-sm btn-dark action_types_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="action-types-addbtn" class="btn btn-sm btn-primary action_types_btn_control" th:text="#{general.addbtn}" th:attr="mode=0">Add</button>
+                 <button type="submit" id="action-types-editbtn" class="btn btn-sm btn-dark action_types_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="action-types-delbtn" class="btn btn-sm btn-dark action_types_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="action-types-btn-small" class="d-block d-sm-none">
+                 <button type="submit" id="action-types-detailbtn-sx" class="btn btn-sm btn-dark action_types_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="action-types-addbtn-sx" class="btn btn-sm btn-primary action_types_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                 <button type="submit" id="action-types-editbtn-sx" class="btn btn-sm btn-dark action_types_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="action-types-delbtn-sx" class="btn btn-sm btn-dark action_types_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-action-types" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vActionTypesValue;
+    vActionTypesValue = {
+        table : '#table-action-types',
+        ajax : {
+            "url": /*[[@{/action_types/gettable}]]*/ "action_types/gettable",
+            "type": "post",
+            "data": {
+            }
+        },
+        key : "act_type_id",
+        switchControl : action_types_switchControl,
+        rowdata:{
+           act_type_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["act_type_colour"]);
+        },
+        columnDefs:[
+                    {"targets": [4], "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{action_types.act_type_id}]]*/ "act_type_id", "data": "act_type_id", "width": "3%"},
+                /*1*/{"title": /*[[#{action_types.act_type_sname}]]*/ "act_type_sname", "data": "act_type_sname", "width": "13%", "className": "desktop" },
+                /*2*/{"title": /*[[#{action_types.act_type_name}]]*/ "act_type_name", "data": "act_type_name", "width": "20%"},
+                /*3*/{"title": /*[[#{action_types.act_type_description}]]*/ "act_type_description", "data": "act_type_description", "width": "60%", "className": "desktop"},
+                /*4*/{"title": /*[[#{action_types.act_type_colour}]]*/ "act_type_colour", "data": "act_type_colour", "width": "1%"},
+                /*5*/{"title": /*[[#{action_types.act_type_short}]]*/ "act_type_short", "data": "act_type_short", "width": "3%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function action_types_switchControl(){
+        if(vActionTypesValue.rowdata.act_type_id != null) {
+                $("#action-types-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#action-types-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#action-types-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#action-types-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+                $("#action-types-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#action-types-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#action-types-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#action-types-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.action_types_btn_control').on('click', function (){
+        $("#action-types-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#action-types-detail').submit(function() {
+        vActionTypesValue.rowdata.action_types_table_order_column = $(vActionTypesValue.table).DataTable().order()[0][0];
+        vActionTypesValue.rowdata.action_types_table_order_type = $(vActionTypesValue.table).DataTable().order()[0][1];
+        vActionTypesValue.rowdata.action_types_table_search = $(vActionTypesValue.table).DataTable().search();
+        vActionTypesValue.rowdata.action_types_table_pagelen = $(vActionTypesValue.table).DataTable().page.len();
+        vActionTypesValue.rowdata.action_types_table_page = $(vActionTypesValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vActionTypesValue.rowdata).forEach(function (index) {
+            $("#action-types-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#action-types-detail input[name=\"" + index + "\"]").val(vActionTypesValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vActionTypesValue.rowdata.act_type_id = /*[[${act_type_id}]]*/ null;
+
+        vActionTypesValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vActionTypesValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vActionTypesValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vActionTypesValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vActionTypesValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vActionTypesValue);
+        $('#main_li').removeClass('active');
+
+        $('#dictionaries_li').addClass('active').removeClass('collapsed');
+        $('#dictionaries_a').attr('aria-expanded',true);
+        $('#dictionaries').addClass('show');
+
+        $('#action_types_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

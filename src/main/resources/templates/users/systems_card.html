@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="user_systems_body" th:remove="tag">
+        <form id="user-systems" class="mb-2" th:action="@{/users/subuser_detail}" method="post">
+            <input name="mode" value="0" hidden>
+              <div id="user-systems-detailbtn-large" class="d-none d-sm-block">
+                 <button type="submit" id="user-systems-detailbtn" class="btn btn-sm btn-dark user_systems_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="user-systems-addbtn" class="btn btn-sm btn-dark user_systems_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="submit" id="user-systems-editbtn" class="btn btn-sm btn-dark user_systems_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="user-systems-delbtn" class="btn btn-sm btn-dark user_systems_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="user-systems-detailbtn-small" class="d-block d-sm-none">
+                 <button type="submit" id="user-systems-detailbtn-sx" class="btn btn-sm btn-dark user_systems_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="user-systems-addbtn-sx" class="btn btn-sm btn-dark user_systems_btn_control" th:attr="mode=0" disabled><i data-feather="plus"></i></button>
+                 <button type="submit" id="user-systems-editbtn-sx" class="btn btn-sm btn-dark user_systems_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="user-systems-delbtn-sx" class="btn btn-sm btn-dark user_systems_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-user-systems" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vUsersSubUsersListValue;
+    vUsersSubUsersListValue = {
+        table : '#table-user-systems',
+        ajax : {
+            "url": /*[[@{/users/get_systems_table}]]*/ "users/get_systems_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.user_id = vUsersSubUsersListValue.rowdata.user_id
+            }
+        },
+        key : "usrsl_id",
+        switchControl : user_systems_switchControl,
+        rowdata:{
+           user_id: null,
+           cur_role_id: null,
+           usrsl_id: null
+        },
+        ordering: true,
+        order: [
+            [3, "asc"]
+        ],
+
+        dom: 'lfrtip',
+        columnDefs:[
+            {"targets": [0], "visible": false}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{users.systems.usrsl_id}]]*/ "usrsl_id", "data": "usrsl_id", "width": "1%"},
+            /*1*/{"title": /*[[#{users.systems.usrsl_name}]]*/ "usrsl_name", "data": "usrsl_name", "width": "70%"},
+            /*2*/{"title": /*[[#{users.systems.usrsl_date}]]*/ "usrsl_date", "data": "usrsl_date", "width": "29%", "className": "desktop"},
+        ],
+        pageLength: 10,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function user_systems_switchControl(){
+        if(vUsersSubUsersListValue.rowdata.usrsl_id != null) {
+        }
+    }
+
+    $('.user_systems_btn_control').on('click', function (){
+        $("#user-systems input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#user-systems').submit(function() {
+        vUsersSubUsersListValue.rowdata.user_systems_table_order_column = $(vUsersSubUsersListValue.table).DataTable().order()[0][0];
+        vUsersSubUsersListValue.rowdata.user_systems_table_order_type = $(vUsersSubUsersListValue.table).DataTable().order()[0][1];
+        vUsersSubUsersListValue.rowdata.user_systems_table_search = $(vUsersSubUsersListValue.table).DataTable().search();
+        vUsersSubUsersListValue.rowdata.user_systems_table_pagelen = $(vUsersSubUsersListValue.table).DataTable().page.len();
+        vUsersSubUsersListValue.rowdata.user_systems_table_page = $(vUsersSubUsersListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vUsersSubUsersListValue.rowdata.user_id = vUsersListValue.rowdata.user_id;
+
+        Object.keys(vUsersSubUsersListValue.rowdata).forEach(function (index) {
+            $("#user-systems").append("<input name=\"" + index + "\" hidden>");
+            $("#user-systems input[name=\"" + index + "\"]").val(vUsersSubUsersListValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vUsersSubUsersListValue.rowdata.usrsl_id = /*[[${usrsl_id}]]*/ null;
+
+        vUsersSubUsersListValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vUsersSubUsersListValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vUsersSubUsersListValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vUsersSubUsersListValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vUsersSubUsersListValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vUsersSubUsersListValue);
+    });
+</script>
+
+</body>
+</html>

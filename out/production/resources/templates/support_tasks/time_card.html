@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="support_tasks_time_body" th:remove="tag">
+        <div><table id="table-support-tasks-time" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vSupportTasksTimeValue;
+    vSupportTasksTimeValue = {
+        table : '#table-support-tasks-time',
+        ajax : {
+            "url": /*[[@{/support_tasks/get_time_table}]]*/ "support_tasks/get_time_table",
+            "type": "post",
+            "data": function ( d ){
+                d.start_date = vSupportTasksTimeValue.rowdata.start_date;
+                d.end_date = vSupportTasksTimeValue.rowdata.end_date;
+            }
+        },
+        key : "rn",
+        switchControl : support_tasks_time_switchControl,
+        rowdata:{
+            spt_id: null,
+            cnt_name: null,
+            req_user_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 't',
+        createdRow: function( row, data, dataIndex ) {
+            $(row).find('td:eq(0)').css('background-color', data["new_color"]);
+            $(row).find('td:eq(1)').css('background-color', data["new_color"]);
+            
+            $(row).find('td:eq(2)').css('background-color', data["supp_color"]);
+            $(row).find('td:eq(3)').css('background-color', data["supp_color"]);
+
+            $(row).find('td:eq(4)').css('background-color', data["tech_color"]);
+            $(row).find('td:eq(5)').css('background-color', data["tech_color"]);
+        },
+        columnDefs: [
+            { "targets": 0,  "visible": false},
+            { "targets": 3,  "visible": false},
+            { "targets": 6,  "visible": false},
+            { "targets": 9,  "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{support_tasks.time.rn}]]*/ "rn", "data": "rn", "width": "1%"},
+
+                /*1*/{"title": /*[[#{support_tasks.time.new_count}]]*/ "new_count", "data": "new_count", "width": "16%", "className":"text-center min-tablet"},
+                /*2*/{"title": /*[[#{support_tasks.time.new_persent}]]*/ "new_persent", "data": "new_persent", "width": "10%", "className":"text-center not-tablet-p"},
+                /*3*/{"title": /*[[#{support_tasks.time.new_color}]]*/ "new_color", "data": "new_color", "width": "1%"},
+
+                /*4*/{"title": /*[[#{support_tasks.time.supp_count}]]*/ "supp_count", "data": "supp_count", "width": "16%", "className":"text-center min-tablet"},
+                /*5*/{"title": /*[[#{support_tasks.time.supp_persent}]]*/ "supp_persent", "data": "supp_persent", "width": "10%", "className":"text-center not-tablet-p"},
+                /*6*/{"title": /*[[#{support_tasks.time.supp_color}]]*/ "supp_color", "data": "supp_color", "width": "1%"},
+
+                /*7*/{"title": /*[[#{support_tasks.time.tech_count}]]*/ "tech_count", "data": "tech_count", "width": "16%", "className":"text-center min-tablet"},
+                /*8*/{"title": /*[[#{support_tasks.time.tech_persent}]]*/ "tech_persent", "data": "tech_persent", "width": "10%", "className":"text-center not-tablet-p"},
+                /*9*/{"title": /*[[#{support_tasks.time.tech_color}]]*/ "tech_color", "data": "tech_color", "width": "1%"},
+
+                /*10*/{"title": /*[[#{support_tasks.time.all_count}]]*/ "all_count", "data": "all_count", "width": "18%", "className":"text-center desktop"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function support_tasks_time_switchControl(){
+    }
+
+    $('.support_tasks_time_btn_control').on('click', function (){
+            $("#support-tasks-time-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#support-tasks-time-detail').submit(function() {
+            vSupportTasksTimeValue.rowdata.support_tasks_time_table_order_column = $(vSupportTasksTimeValue.table).DataTable().order()[0][0];
+            vSupportTasksTimeValue.rowdata.support_tasks_time_table_order_type = $(vSupportTasksTimeValue.table).DataTable().order()[0][1];
+            vSupportTasksTimeValue.rowdata.support_tasks_time_table_search = $(vSupportTasksTimeValue.table).DataTable().search();
+            vSupportTasksTimeValue.rowdata.support_tasks_time_table_pagelen = $(vSupportTasksTimeValue.table).DataTable().page.len();
+            vSupportTasksTimeValue.rowdata.support_tasks_time_table_page = $(vSupportTasksTimeValue.table).DataTable().page.info().page;
+            <!-- Recreate Contragent Ajax Filter Value -->
+
+            Object.keys(vSupportTasksTimeValue.rowdata).forEach(function (index) {
+                    $("#support-tasks-time-detail").append("<input name=\"" + index + "\" hidden>");
+                    $("#support-tasks-time-detail input[name=\"" + index + "\"]").val(vSupportTasksTimeValue.rowdata[index]);
+            });
+    });
+
+    $(document).ready(function(){
+        vSupportTasksTimeValue.rowdata.start_date = null;
+        vSupportTasksTimeValue.rowdata.end_date = null;
+
+        recreateDataTable(vSupportTasksTimeValue);
+    });
+</script>
+
+</body>
+</html>

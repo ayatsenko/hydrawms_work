@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_tms_trans_cities_head_body" th:remove="tag">
+		<form class="form-inline">
+		      <div class="form-group mr-2 mb-1">
+				<label for="report_tms_trans_cities_start_date" class="mr-2" th:text="#{report_tms_trans_cities.start_date}">StartDate:</label>
+				<input class="form-control" type="text" id="report_tms_trans_cities_start_date" name="report_tms_trans_cities_start_date" />
+			  </div>
+
+			  <div class="form-group mr-2 mb-1">
+		    	<label for="report_tms_trans_cities_end_date" class="mr-2" th:text="#{report_tms_trans_cities.end_date}">EndDate:</label>
+				<input class="form-control" type="text" id="report_tms_trans_cities_end_date" name="report_tms_trans_cities_end_date" />
+			  </div>
+
+			  <div class="form-group mr-2 mb-1">
+				<label for="report_tms_trans_cities_trans_list" class="mr-2" th:text="#{report_tms_trans_cities.trans_list}">Client: </label>
+				<select id="report_tms_trans_cities_trans_list" class="form-control select2" data-toggle="select2">
+                    <option value=""></option>
+					<!--suppress ThymeleafVariablesResolveInspection -->
+					<option class="p-1"
+							th:each="trans_list : ${trans_list}"
+							th:value="${trans_list.cnt_id}"
+							th:text="${trans_list.cnt_name}"
+							th:selected="${trans_list.cnt_id == cnt_id}"
+					></option>
+				</select>
+              <span class="input-group-append">
+                <button type="button" class="btn btn-outline-primary" id="report_tms_trans_cities_trans_show" name="report_trans_balance_trans_show"><i class="fas fa-clipboard-list"></i></button>
+              </span>
+			  </div>
+
+			  <div class="form-group mr-2">
+				<label for="report_tms_trans_cities_trans_list" class="mr-2" th:text="#{report_tms_trans_cities.ops_list}">OPS: </label>
+				<select id="report_tms_trans_cities_ops_list" class="form-control select2" data-toggle="select2">
+                    <option value=""></option>
+					<!--suppress ThymeleafVariablesResolveInspection -->
+					<option class="p-1"
+							th:each="ops_list : ${ops_list}"
+							th:value="${ops_list.id}"
+							th:text="${ops_list.user_surname}"
+							th:selected="${ops_list.id == user_id}"
+					></option>
+				</select>
+              <span class="input-group-append">
+                <button type="button" class="btn btn-outline-primary" id="report_tms_trans_cities_ops_show" name="report_tms_trans_cities_ops_show"><i class="fas fa-clipboard-list"></i></button>
+              </span>
+			  </div>
+
+			<a class="btn btn-outline-primary" id="report_tms_trans_cities_show" th:text="#{general.reportshow}">Show</a>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+	$('#report_tms_trans_cities_trans_show').on('click', function () {
+		if($('#report_tms_trans_cities_trans_show').hasClass('btn-outline-primary')) {
+			$('#report_tms_trans_cities_trans_show').removeClass('btn-outline-primary').addClass('btn-primary');
+			var options_zero = {
+				id: '-1', // the value of the option
+				placeholder: /*[[#{report_tms_trans_cities.trans_placeholder}]]*/ "Select a trans",
+				allowClear: true,
+				width: 'element',
+				dropdownAutoWidth: true
+			};
+			$("#report_tms_trans_cities_trans_list").select2("destroy").select2(options_zero);
+		}
+		else if($('#report_tms_trans_cities_trans_show').hasClass('btn-primary')){
+			$('#report_tms_trans_cities_trans_show').addClass('btn-outline-primary').removeClass('btn-primary');
+			var options_two = {
+				id: '-1', // the value of the option
+				placeholder: /*[[#{report_tms_trans_cities.trans_placeholder}]]*/ "Select a trans",
+				allowClear: true,
+				minimumInputLength: 2,
+				width: 'element',
+				dropdownAutoWidth: true
+			};
+			$("#report_tms_trans_cities_trans_list").select2("destroy").select2(options_two);
+		}
+	});
+
+	$(document).ready(function(){
+		var firstYearDay = new Date(new Date().getFullYear(), 0, 1).toLocaleDateString('ru');
+		var LastYearDay = new Date(new Date().getFullYear(), 11, 31).toLocaleDateString('ru');
+
+		$("#report_tms_trans_cities_start_date").daterangepicker({
+			"singleDatePicker": true,
+			"startDate": firstYearDay,
+			"locale": {
+				"format": "DD.MM.YYYY",
+				"separator": " - ",
+				"applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+				"cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+				"fromLabel": "From",
+				"toLabel": "To",
+				"customRangeLabel": "Custom",
+				"weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+				"daysOfWeek": [
+					/*[[#{weekdays.07_short}]]*/ "Su",
+					/*[[#{weekdays.01_short}]]*/ "Mo",
+					/*[[#{weekdays.02_short}]]*/ "Tu",
+					/*[[#{weekdays.03_short}]]*/ "We",
+					/*[[#{weekdays.04_short}]]*/ "Th",
+					/*[[#{weekdays.05_short}]]*/ "Fr",
+					/*[[#{weekdays.06_short}]]*/ "Sa"
+				],
+				"monthNames": [
+					/*[[#{month.01}]]*/ "January",
+					/*[[#{month.02}]]*/ "February",
+					/*[[#{month.03}]]*/ "March",
+					/*[[#{month.04}]]*/ "April",
+					/*[[#{month.05}]]*/ "May",
+					/*[[#{month.06}]]*/ "June",
+					/*[[#{month.07}]]*/ "July",
+					/*[[#{month.08}]]*/ "August",
+					/*[[#{month.09}]]*/ "September",
+					/*[[#{month.10}]]*/ "October",
+					/*[[#{month.11}]]*/ "November",
+					/*[[#{month.12}]]*/ "December"
+				],
+				"firstDay": 1
+			}
+		});
+
+		$("#report_tms_trans_cities_end_date").daterangepicker({
+			"singleDatePicker": true,
+			"startDate": LastYearDay,
+			"locale": {
+				"format": "DD.MM.YYYY",
+				"separator": " - ",
+				"applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+				"cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+				"fromLabel": "From",
+				"toLabel": "To",
+				"customRangeLabel": "Custom",
+				"weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+				"daysOfWeek": [
+					/*[[#{weekdays.07_short}]]*/ "Su",
+					/*[[#{weekdays.01_short}]]*/ "Mo",
+					/*[[#{weekdays.02_short}]]*/ "Tu",
+					/*[[#{weekdays.03_short}]]*/ "We",
+					/*[[#{weekdays.04_short}]]*/ "Th",
+					/*[[#{weekdays.05_short}]]*/ "Fr",
+					/*[[#{weekdays.06_short}]]*/ "Sa"
+				],
+				"monthNames": [
+					/*[[#{month.01}]]*/ "January",
+					/*[[#{month.02}]]*/ "February",
+					/*[[#{month.03}]]*/ "March",
+					/*[[#{month.04}]]*/ "April",
+					/*[[#{month.05}]]*/ "May",
+					/*[[#{month.06}]]*/ "June",
+					/*[[#{month.07}]]*/ "July",
+					/*[[#{month.08}]]*/ "August",
+					/*[[#{month.09}]]*/ "September",
+					/*[[#{month.10}]]*/ "October",
+					/*[[#{month.11}]]*/ "November",
+					/*[[#{month.12}]]*/ "December"
+				],
+				"firstDay": 1
+			}
+		});
+
+		if (window.screen.width < 1024 && window.screen.height < 768) {
+			$("#report_tms_trans_cities_start_date").attr('readonly',true);
+			$("#report_tms_trans_cities_end_date").attr('readonly',true);
+		}
+
+		$('#report_tms_trans_cities_trans_list')
+				.wrap("<div class=\"position-relative\"></div>")
+				.select2({
+					id: '-1', // the value of the option
+					placeholder: /*[[#{report_tms_trans_cities.trans_placeholder}]]*/ "Select a trans",
+					allowClear: true,
+					minimumInputLength: 2,
+					width: 'element',
+					dropdownAutoWidth: true
+		});
+
+		$('#main_li').removeClass('active');
+
+		$('#reports_tms_li').addClass('active').removeClass('collapsed');
+		$('#reports_tms_a').attr('aria-expanded',true);
+		$('#reports_tms').addClass('show');
+
+		$('#report_tms_trans_cities_a').addClass('text-primary');
+
+		$('#report_tms_trans_cities_show').on('click', function () {
+			$('#report_tms_trans_cities_legend_card').removeAttr('hidden');
+
+			$('#report_tms_trans_cities_detail_card').removeAttr('hidden');
+
+			vReportTMSTransCitiesDetailValue.rowdata.start_date = $("#report_tms_trans_cities_start_date").val();
+			vReportTMSTransCitiesDetailValue.rowdata.end_date = $("#report_tms_trans_cities_end_date").val();
+			vReportTMSTransCitiesDetailValue.rowdata.req_cnt_id = $("#report_tms_trans_cities_trans_list").val();
+			vReportTMSTransCitiesDetailValue.rowdata.req_user_id = $("#report_tms_trans_cities_ops_list").val();
+			$(vReportTMSTransCitiesDetailValue.table).DataTable().ajax.reload();
+			$('#report_tms_trans_cities_filter_div').removeClass('show').collapse('hide');
+		});
+	});
+</script>
+
+</body>
+</html>

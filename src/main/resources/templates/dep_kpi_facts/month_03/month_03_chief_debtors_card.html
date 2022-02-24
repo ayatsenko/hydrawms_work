@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="dep_kpi_facts_chief_debtors_month_03" th:remove="tag">
+        <div id="dep-kpi-facts-chief-debtors-month-03-button">
+              <div id="dep-kpi-facts-chief-debtors-btn-large" class="d-none d-sm-block">
+              </div>
+              <div id="dep-kpi-facts-chief-debtors-btn-small" class="d-block d-sm-none">
+              </div>
+        </div>
+
+        <div><table id="table-dep-kpi-chief-debtors-month-03" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    $("#table-dep-kpi-chief-debtors-month-03").append('<tfoot class="font-weight-bold" style="background-color: #d5e1df">' +
+        '<th></th><th></th><th></th><th></th><th></th>' +
+        '<th></th><th></th><th></th><th></th>' +
+        '</tfoot>');
+
+    var block_check_width, fin_id_width, fin_name_width, fin_date_width, fin_way_name_width, cnt_id_width, cnt_name_width, ser_name_width, fin_sum_width;
+    var block_check_class, fin_id_class, fin_name_class, fin_date_class, fin_way_name_class, cnt_id_class, cnt_name_class, ser_name_class, fin_sum_class;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        block_check_width = "5%";
+        block_check_class = "small_size small_head_size small_footer_size text-center";
+        fin_id_width ="";
+        fin_id_class ="none";
+        fin_name_width ="8%";
+        fin_name_class ="small_size small_head_size small_footer_size";
+        fin_date_width ="8%";
+        fin_date_class ="small_size small_head_size small_footer_size text-center";
+        fin_way_name_width ="5%";
+        fin_way_name_class ="small_size small_head_size small_footer_size";
+        cnt_id_width ="";
+        cnt_id_class ="none";
+        cnt_name_width ="40%";
+        cnt_name_class ="small_size small_head_size small_footer_size";
+        ser_name_width ="24%";
+        ser_name_class ="small_size small_head_size small_footer_size";
+        fin_sum_width ="10%";
+        fin_sum_class ="small_size small_head_size small_footer_size";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        block_check_width = "5%";
+        block_check_class = "text-center";
+        fin_id_width ="";
+        fin_id_class ="none";
+        fin_name_width ="10%";
+        fin_name_class ="";
+        fin_date_width ="10%";
+        fin_date_class ="text-center";
+        fin_way_name_width ="5%";
+        fin_way_name_class ="";
+        cnt_id_width ="";
+        cnt_id_class ="none";
+        cnt_name_width ="40%";
+        cnt_name_class ="";
+        ser_name_width ="20%";
+        ser_name_class ="";
+        fin_sum_width ="10%";
+        fin_sum_class ="";
+    }
+
+    var vDepKPIChiefDebtorsMonth03Value;
+    vDepKPIChiefDebtorsMonth03Value = {
+        table : '#table-dep-kpi-chief-debtors-month-03',
+        button_form: '#dep-kpi-facts-chief-debtors-month-03-button',
+        ajax : {
+            "url": /*[[@{/dep_kpi_facts/chief_debtors_menu}]]*/ "dep_kpi_facts/chief_debtors_menu",
+            "type": "post",
+            "data": function ( d ) {
+                d.dep_kpi_param_id = vDepKPIChiefDebtorsMonth03Value.rowdata.dep_kpi_param_id;
+                d.dep_kpi_user_id = vDepKPIChiefDebtorsMonth03Value.rowdata.dep_kpi_user_id;
+                d.dep_kpi_year = vDepKPIChiefDebtorsMonth03Value.rowdata.dep_kpi_year;
+                d.dep_kpi_month = vDepKPIChiefDebtorsMonth03Value.rowdata.dep_kpi_month;
+            }
+        },
+        key : "fin_id",
+        switchControl : dep_kpi_chief_debtors_month_03_switchControl,
+        rowdata:{
+            fin_id: null,
+            user_id: null,
+            dep_kpi_year: null,
+            dep_kpi_month: null,
+            block_check: null
+        },
+        ordering: true,
+        order: [
+            [1, "desc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            if ( data.block_check === 1 ){
+                $(row).css('background-color', '#ff8566');
+            }
+        },
+        footerCallback: function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+            var numFormat = $.fn.dataTable.render.number( '\ ', '.', 2, '').display;
+            // Total over all pages
+            Total = api.column(8, {filter:'applied'}).data().reduce( function (a, b){ return intVal(a) + intVal(b);}, 0 );
+
+            $( api.column(7).footer()).html('Всего: ');
+            $( api.column(8).footer()).html(numFormat(Total));
+        },
+        columnDefs:[
+            {"targets": [0],
+                render: function ( data, type, row ) {
+                    if ( type === 'display' ) {             //if column data is 1 then set attr to checked, use row id as input id (plus prefix)
+                        return '<input type="checkbox" ' + ((data == 1) ? 'checked' : '') + ' id="input' + row.id + '" class="filter-ck text-center" disabled="true"/>';
+                    }
+                    return data;
+                }
+            },
+            {"targets": [3], type: 'de_date'}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{dep_kpi_facts.finance.block_check}]]*/ "block_check", "data": "block_check", "width": block_check_width, "className": block_check_class},
+            /*1*/{"title": /*[[#{dep_kpi_facts.finance.fin_id}]]*/ "fin_id", "data": "fin_id", "width": fin_id_width, "className": fin_id_class},
+            /*2*/{"title": /*[[#{dep_kpi_facts.finance.fin_name}]]*/ "fin_name", "data": "fin_name", "width": fin_name_width, "className": fin_name_class},
+            /*3*/{"title": /*[[#{dep_kpi_facts.finance.fin_date}]]*/ "fin_date", "data": "fin_date", "width": fin_date_width, "className": fin_date_class},
+            /*4*/{"title": /*[[#{dep_kpi_facts.finance.fin_way_name}]]*/ "fin_way_name", "data": "fin_way_name", "width": fin_way_name_width, "className": fin_way_name_class},
+            /*5*/{"title": /*[[#{dep_kpi_facts.finance.cnt_id}]]*/ "cnt_id", "data": "cnt_id", "width": cnt_id_width, "className": cnt_id_class},
+            /*6*/{"title": /*[[#{dep_kpi_facts.finance.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": cnt_name_width, "className": cnt_name_class},
+            /*7*/{"title": /*[[#{dep_kpi_facts.finance.ser_name}]]*/ "ser_name", "data": "ser_name", "width": ser_name_width, "className": ser_name_class},
+            /*8*/{"title": /*[[#{dep_kpi_facts.finance.fin_sum}]]*/ "fin_sum", "data": "fin_sum", "width": fin_sum_width, "className": fin_sum_class}                ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function dep_kpi_chief_debtors_month_03_switchControl(){
+        if(vDepKPIChiefDebtorsMonth03Value.rowdata.fin_id != null) {
+            $("#dep-kpi-facts-chief-debtors-month-03-link").prop('disabled',false).removeClass('btn-outline-dark').addClass('btn-outline-primary');
+            $("#dep-kpi-facts-chief-debtors-month-03-link-sx").prop('disabled',false).removeClass('btn-outline-dark').addClass('btn-outline-primary');
+        } else{
+            $("#dep-kpi-facts-chief-debtors-month-03-link").prop('disabled',true).addClass('btn-outline-dark').removeClass('btn-outline-primary');
+            $("#dep-kpi-facts-chief-debtors-month-03-link-sx").prop('disabled',true).addClass('btn-outline-dark').removeClass('btn-outline-primary');
+        }
+    }
+
+    $(document).ready(function(){
+        vDepKPIChiefDebtorsMonth03Value.rowdata.fin_id = /*[[${fin_id}]]*/ null;
+
+        vDepKPIChiefDebtorsMonth03Value.rowdata.user_id = /*[[${user_id}]]*/ null;
+        vDepKPIChiefDebtorsMonth03Value.rowdata.dep_kpi_year = /*[[${dep_kpi_year}]]*/ null;
+        vDepKPIChiefDebtorsMonth03Value.rowdata.dep_kpi_month = /*[[${dep_kpi_month}]]*/ null;
+
+        vDepKPIChiefDebtorsMonth03Value.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vDepKPIChiefDebtorsMonth03Value.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vDepKPIChiefDebtorsMonth03Value.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vDepKPIChiefDebtorsMonth03Value.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vDepKPIChiefDebtorsMonth03Value.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vDepKPIChiefDebtorsMonth03Value);
+    });
+</script>
+
+</body>
+</html>

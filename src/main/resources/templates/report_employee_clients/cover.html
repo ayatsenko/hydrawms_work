@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{report_employee_clients.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2">
+            <div class="card-header mb-0 pb-0" id="report_employee_clients_filter_card">
+                <div class="card-actions float-right">
+                    <a href="#report_employee_clients_filter_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#report_employee_clients_filter_div" data-toggle="collapse" th:text="#{report_employee_clients.filter}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="report_employee_clients_filter_div">
+                <div>
+                    <span th:replace="report_employee_clients/head_card :: report_employee_clients_head_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Header -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="report_employee_clients_detail_card" hidden>
+            <div class="card-header mb-0 pb-0">
+                <div class="card-actions float-right">
+                    <a href="#report_employee_clients_detail_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#report_employee_clients_detail_div" data-toggle="collapse" th:text="#{report_employee_clients.detail.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="report_employee_clients_detail_div">
+                <div>
+                    <span th:replace="report_employee_clients/detail_card :: report_employee_clients_detail_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Detail -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div id="report_employee_clients_tabs_div" hidden>
+            <div class="tab">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"><a class="nav-link text-primary active" href="#tab-1" data-toggle="tab" role="tab" th:text="#{report_employee_clients.tabs.tab1}">Not Filled</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-2" data-toggle="tab" role="tab" th:text="#{report_employee_clients.tabs.tab6}">Not Filled Pass</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-3" data-toggle="tab" role="tab" th:text="#{report_employee_clients.tabs.tab2}">Lost</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-4" data-toggle="tab" role="tab" th:text="#{report_employee_clients.tabs.tab7}">Lost Service</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-5" data-toggle="tab" role="tab" th:text="#{report_employee_clients.tabs.tab3}">OutTime</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-6" data-toggle="tab" role="tab" th:text="#{report_employee_clients.tabs.tab4}">Debit</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-7" data-toggle="tab" role="tab" th:text="#{report_employee_clients.tabs.tab5}">Credit</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-1" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="report_employee_clients/notfill_card :: report_employee_clients_notfill_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-2" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="report_employee_clients/notfill_pass_card :: report_employee_clients_notfill_pass_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-3" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="report_employee_clients/lost_card :: report_employee_clients_lost_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-4" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="report_employee_clients/service_card :: report_employee_clients_service_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-5" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="report_employee_clients/outtime_card :: report_employee_clients_outtime_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-6" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-7" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Tabs -->
+</div>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="report_employee_clients/notfill_card :: cardscript"></script>
+<script th:replace="report_employee_clients/notfill_pass_card :: cardscript"></script>
+<script th:replace="report_employee_clients/lost_card :: cardscript"></script>
+<script th:replace="report_employee_clients/service_card :: cardscript"></script>
+<script th:replace="report_employee_clients/outtime_card :: cardscript"></script>
+
+<script th:replace="report_employee_clients/detail_card :: cardscript"></script>
+<script th:replace="report_employee_clients/head_card :: cardscript"></script>
+
+</body>
+</html>

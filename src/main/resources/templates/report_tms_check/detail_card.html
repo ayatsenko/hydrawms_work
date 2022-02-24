@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_tms_check_detail_body" th:remove="tag">
+        
+        <div><table id="table-report-tms-check-detail-detail" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+        var doc_id_show, all_doc_check_show, crm_doc_check_show, system_doc_check_show, doc_date_show, doc_num_show, cnt_id_show, cnt_name_show,
+                ser_id_show, ser_sname_show, user_id_show, user_name_show, ops_user_id_show, ops_user_name_show, crm_profit_show, system_profit_show,
+                all_result_show, all_result_color_show;
+        var doc_id_width, all_doc_check_width, crm_doc_check_width, system_doc_check_width, doc_date_width, doc_num_width, cnt_id_width, cnt_name_width,
+                ser_id_width, ser_sname_width, user_id_width, user_name_width, ops_user_id_width, ops_user_name_width, crm_profit_width, system_profit_width,
+                all_result_width, all_result_color_width;
+        var doc_id_class, all_doc_check_class, crm_doc_check_class, system_doc_check_class, doc_date_class, doc_num_class, cnt_id_class, cnt_name_class,
+                ser_id_class, ser_sname_class, user_id_class, user_name_class, ops_user_id_class, ops_user_name_class, crm_profit_class, system_profit_class,
+                all_result_class, all_result_color_class;
+
+        if(mobileScreenSize){
+                vDomParam = "Blfrtp";
+        }
+        else if(smallScreenSize){
+                vDomParam = "Blfrtip";
+                doc_id_show = false;
+                doc_id_width = "";
+                doc_id_class = "";
+                all_doc_check_show = true;
+                all_doc_check_width ="5%";
+                crm_doc_check_class ="small_size small_head_size small_footer_size text-center";
+                crm_doc_check_show = true;
+                crm_doc_check_width ="5%";
+                all_doc_check_class ="small_size small_head_size small_footer_size text-center";
+                system_doc_check_show = true;
+                system_doc_check_width ="5%";
+                system_doc_check_class ="small_size small_head_size small_footer_size text-center";
+                doc_date_show = true;
+                doc_date_width ="8%";
+                doc_date_class ="small_size small_head_size small_footer_size text-center";
+                doc_num_show = true;
+                doc_num_width ="8%";
+                doc_num_class ="small_size small_head_size small_footer_size text-center";
+                cnt_id_show = false;
+                cnt_id_width ="";
+                cnt_id_class ="";
+                cnt_name_show = true;
+                cnt_name_width ="40%";
+                cnt_name_class ="small_size small_head_size small_footer_size";
+                ser_id_show = false;
+                ser_id_width ="";
+                ser_id_class ="";
+                ser_sname_show = true;
+                ser_sname_width ="10%";
+                ser_sname_class ="small_size small_head_size small_footer_size text-center";
+                user_id_show = false;
+                user_id_width ="";
+                user_id_class ="";
+                user_name_show = true;
+                user_name_width ="10%";
+                user_name_class ="small_size small_head_size small_footer_size text-center";
+                ops_user_id_show = false;
+                ops_user_id_width ="";
+                ops_user_id_class ="";
+                ops_user_name_show = true;
+                ops_user_name_width ="10%";
+                ops_user_name_class ="small_size small_head_size small_footer_size text-center";
+                crm_profit_show = true;
+                crm_profit_width ="10%";
+                crm_profit_class ="small_size small_head_size small_footer_size text-center";
+                system_profit_show = true;
+                system_profit_width ="10%";
+                system_profit_class ="small_size small_head_size small_footer_size text-center";
+                all_result_show = true;
+                all_result_width ="5%";
+                all_result_class ="small_size small_head_size small_footer_size text-center";
+                all_result_color_show = false;
+                all_result_color_width ="";
+                all_result_color_class ="";
+        }
+        else{
+                vDomParam = "Blfrtip";
+                doc_id_show = false;
+                doc_id_width = "";
+                doc_id_class = "";
+                all_doc_check_show = true;
+                all_doc_check_width ="5%";
+                crm_doc_check_class ="small_size small_head_size small_footer_size text-center";
+                crm_doc_check_show = true;
+                crm_doc_check_width ="5%";
+                all_doc_check_class ="small_size small_head_size small_footer_size text-center";
+                system_doc_check_show = true;
+                system_doc_check_width ="5%";
+                system_doc_check_class ="small_size small_head_size small_footer_size text-center";
+                doc_date_show = true;
+                doc_date_width ="8%";
+                doc_date_class ="small_size small_head_size small_footer_size text-center";
+                doc_num_show = true;
+                doc_num_width ="8%";
+                doc_num_class ="small_size small_head_size small_footer_size text-center";
+                cnt_id_show = false;
+                cnt_id_width ="";
+                cnt_id_class ="";
+                cnt_name_show = true;
+                cnt_name_width ="24%";
+                cnt_name_class ="small_size small_head_size small_footer_size";
+                ser_id_show = false;
+                ser_id_width ="";
+                ser_id_class ="";
+                ser_sname_show = true;
+                ser_sname_width ="10%";
+                ser_sname_class ="small_size small_head_size small_footer_size text-center";
+                user_id_show = false;
+                user_id_width ="";
+                user_id_class ="";
+                user_name_show = true;
+                user_name_width ="10%";
+                user_name_class ="small_size small_head_size small_footer_size text-center";
+                ops_user_id_show = false;
+                ops_user_id_width ="";
+                ops_user_id_class ="";
+                ops_user_name_show = true;
+                ops_user_name_width ="10%";
+                ops_user_name_class ="small_size small_head_size small_footer_size text-center";
+                crm_profit_show = true;
+                crm_profit_width ="5%";
+                crm_profit_class ="small_size small_head_size small_footer_size text-center";
+                system_profit_show = true;
+                system_profit_width ="5%";
+                system_profit_class ="small_size small_head_size small_footer_size text-center";
+                all_result_show = true;
+                all_result_width ="5%";
+                all_result_class ="small_size small_head_size small_footer_size text-center";
+                all_result_color_show = false;
+                all_result_color_width ="";
+                all_result_color_class ="";
+        }
+
+        var vReportTMSCheckDetail;
+        vReportTMSCheckDetail = {
+                table : '#table-report-tms-check-detail-detail',
+                ajax : {
+                        "url": /*[[@{/report_tms_check/get_detail_table}]]*/ "/report_tms_check/get_detail_table",
+                        "type": "post",
+                        "data": function ( d ) {
+                                d.req_ser_id = vReportTMSCheckDetail.rowdata.req_ser_id;
+                                d.req_month = vReportTMSCheckDetail.rowdata.req_month;
+                        }
+                },
+                key : "doc_id",
+                switchControl : report_tms_check_detail_switchControl,
+                rowdata:{
+                        doc_id: null,
+
+                        req_ser_id: null,
+                        req_month: null
+                },
+                ordering: true,
+                order: [
+                        [2, "desc"]
+                ],
+                dom: vDomParam,
+                createdRow: function( row, data, dataIndex ) {
+                        if ( data.doc_id === 1 ){
+                                $(row).css('background-color', '#ff8566');
+                        }
+                        $(row).find('td:eq(11)').css('background-color', data["all_result_color"]);
+                },
+                columnDefs:[
+                        {"targets": [0], "width": doc_id_width, "className": doc_id_class, "visible": doc_id_show},
+                        {"targets": [1], "width": all_doc_check_width, "className": all_doc_check_class, "visible": all_doc_check_show,
+                                render: function ( data, type, row ) {
+                                        if (type === 'display') {
+                                                if(data === 1){
+                                                        return '<button  id="input' + row.id + '" class="btn btn-sm btn-success" disabled><i class="fas fa-check"></i></button>'
+                                                }
+                                                else if(data === 0){
+                                                        return '<button  id="input' + row.id + '" class="btn btn-sm btn-danger" disabled><i class="fas fa-times"></i></button>'
+                                                }
+                                        }return data;}
+                        },
+                        {"targets": [2], "width": crm_doc_check_width, "className": crm_doc_check_class, "visible": crm_doc_check_show,
+                                render: function ( data, type, row ) {
+                                        if (type === 'display') {
+                                                if(data === 1){
+                                                        return '<button  id="input' + row.id + '" class="btn btn-sm btn-success" disabled><i class="fas fa-check"></i></button>'
+                                                }
+                                                else if(data === 0){
+                                                        return '<button  id="input' + row.id + '" class="btn btn-sm btn-danger" disabled><i class="fas fa-times"></i></button>'
+                                                }
+                                        }return data;}
+                        },
+                        {"targets": [3], "width": system_doc_check_width, "className": system_doc_check_class, "visible": system_doc_check_show,
+                                render: function ( data, type, row ) {
+                                        if (type === 'display') {
+                                                if(data === 1){
+                                                        return '<button  id="input' + row.id + '" class="btn btn-sm btn-success" disabled><i class="fas fa-check"></i></button>'
+                                                }
+                                                else if(data === 0){
+                                                        return '<button  id="input' + row.id + '" class="btn btn-sm btn-danger" disabled><i class="fas fa-times"></i></button>'
+                                                }
+                                        }return data;}
+                        },
+                        {"targets": [4], "width": doc_date_width, "className": doc_date_class, "visible": doc_date_show, type: 'de_date'},
+                        {"targets": [5], "width": doc_num_width, "className": doc_num_class, "visible": doc_num_show},
+                        {"targets": [6], "width": cnt_id_width, "className": cnt_id_class, "visible": cnt_id_show},
+                        {"targets": [7], "width": cnt_name_width, "className": cnt_name_class, "visible": cnt_name_show},
+                        {"targets": [8], "width": ser_id_width, "className": ser_id_class, "visible": ser_id_show},
+                        {"targets": [9], "width": ser_sname_width, "className": ser_sname_class, "visible": ser_sname_show},
+                        {"targets": [10], "width": user_id_width, "className": user_id_class, "visible": user_id_show},
+                        {"targets": [11], "width": user_name_width, "className": user_name_class, "visible": user_name_show},
+                        {"targets": [12], "width": ops_user_id_width, "className": ops_user_id_class, "visible": ops_user_id_show},
+                        {"targets": [13], "width": ops_user_name_width, "className": ops_user_name_class, "visible": ops_user_name_show},
+                        {"targets": [14], "width": crm_profit_width, "className": crm_profit_class, "visible": crm_profit_show,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+                        {"targets": [15], "width": system_profit_width, "className": system_profit_class, "visible": system_profit_show,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+                        {"targets": [16], "width": all_result_width, "className": all_result_class, "visible": all_result_show,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+                        {"targets": [17], "width": all_result_color_width, "className": all_result_color_class, "visible": all_result_color_show}
+                ],
+                columns : [
+                        /*0*/{"title": /*[[#{report_tms_check.detail.doc_id}]]*/ "doc_id", "data": "doc_id",},
+                        /*1*/{"title": /*[[#{report_tms_check.detail.all_doc_check}]]*/ "all_doc_check", "data": "all_doc_check"},
+                        /*2*/{"title": /*[[#{report_tms_check.detail.crm_doc_check}]]*/ "crm_doc_check", "data": "crm_doc_check"},
+                        /*3*/{"title": /*[[#{report_tms_check.detail.system_doc_check}]]*/ "system_doc_check", "data": "system_doc_check"},
+                        /*4*/{"title": /*[[#{report_tms_check.detail.doc_date}]]*/ "doc_date", "data": "doc_date"},
+                        /*5*/{"title": /*[[#{report_tms_check.detail.doc_num}]]*/ "doc_num", "data": "doc_num"},
+                        /*6*/{"title": /*[[#{report_tms_check.detail.cnt_id}]]*/ "cnt_id", "data": "cnt_id"},
+                        /*7*/{"title": /*[[#{report_tms_check.detail.cnt_name}]]*/ "cnt_name", "data": "cnt_name"},
+                        /*8*/{"title": /*[[#{report_tms_check.detail.ser_id}]]*/ "ser_id", "data": "ser_id"},
+                        /*9*/{"title": /*[[#{report_tms_check.detail.ser_sname}]]*/ "ser_sname", "data": "ser_sname"},
+                        /*10*/{"title": /*[[#{report_tms_check.detail.user_id}]]*/ "user_id", "data": "user_id"},
+                        /*11*/{"title": /*[[#{report_tms_check.detail.user_name}]]*/ "user_name", "data": "user_name"},
+                        /*12*/{"title": /*[[#{report_tms_check.detail.ops_user_id}]]*/ "ops_user_id", "data": "ops_user_id"},
+                        /*13*/{"title": /*[[#{report_tms_check.detail.ops_user_name}]]*/ "ops_user_name", "data": "ops_user_name"},
+                        /*14*/{"title": /*[[#{report_tms_check.detail.crm_profit}]]*/ "crm_profit", "data": "crm_profit"},
+                        /*15*/{"title": /*[[#{report_tms_check.detail.system_profit}]]*/ "system_profit", "data": "system_profit"},
+                        /*16*/{"title": /*[[#{report_tms_check.detail.all_result}]]*/ "all_result", "data": "all_result"},
+                        /*17*/{"title": /*[[#{report_tms_check.detail.all_result_color}]]*/ "all_result_color", "data": "all_result_color"}
+                ],
+                pageLength: 25,
+                copy_button: true,
+                excel_button: true,
+                pdf_button: true,
+                print_button: true
+        };
+
+        function report_tms_check_detail_switchControl(){
+
+        }
+
+        function addCsDebtorsBlock(){
+                var RowID = vReportTMSCheckDetail.rowdata.all_doc_check;
+                var YearID =  $("#kpi_facts_year").val();
+                var MainDepID = vKPIFactListValue.rowdata.dep_id;
+                var DepID = vKPIFactBranchValue.rowdata.dep_id;
+                var UserID = vKPIFactUsersValue.rowdata.user_id;
+                var MonthID = $("#kpi_facts_month").val();
+                $.ajax({
+                        url: /*[[ @{/kpi_facts/add_cs_clients_debtors_detail_block} ]]*/ "/kpi_facts/add_cs_clients_debtors_detail_block",
+                        type: 'POST',
+                        data: {
+                                "block_all_doc_check": RowID,
+                                "block_user_id": UserID,
+                                "block_year": YearID,
+                                "block_month": MonthID
+                        },
+                        success: function (result) {
+                                vKPIFactListValue.rowdata.kpi_facts_year = YearID;
+                                $(vKPIFactListValue.table).DataTable().ajax.reload(null, false);
+                        }
+                });
+        }
+        //Add Block
+        $('#report-tms-check-detail-detail-check').click(function () {
+                addCsDebtorsBlock();
+        });
+        //Add Block SX
+        $('#report-tms-check-detail-detail-check-sx').click(function () {
+                addCsDebtorsBlock();
+        });
+
+        function delCsDebtorsBlock(){
+                var RowID = vReportTMSCheckDetail.rowdata.all_doc_check;
+                var YearID =  $("#kpi_facts_year").val();
+                var UserID = vKPIFactUsersValue.rowdata.user_id;
+                var MonthID = $("#kpi_facts_month").val();
+                $.ajax({
+                        url: /*[[ @{/kpi_facts/del_cs_clients_debtors_detail_block} ]]*/ "/kpi_facts/del_cs_clients_debtors_detail_block",
+                        type: 'POST',
+                        data: {
+                                "block_all_doc_check": RowID,
+                                "block_user_id": UserID,
+                                "block_year": YearID,
+                                "block_month": MonthID
+                        },
+                        success: function (result) {
+                                vKPIFactListValue.rowdata.kpi_facts_year = YearID;
+                                $(vKPIFactListValue.table).DataTable().ajax.reload(null, false);
+                        }
+                });
+        }
+        //Del Block
+        $('#report-tms-check-detail-detail-uncheck').click(function () {
+                delCsDebtorsBlock();
+        });
+        //Del Block SX
+        $('#report-tms-check-detail-detail-uncheck-sx').click(function () {
+                delCsDebtorsBlock();
+        });
+
+        $(document).ready(function(){
+                vReportTMSCheckDetail.rowdata.all_doc_check = /*[[${all_doc_check}]]*/ null;
+
+                vReportTMSCheckDetail.rowdata.user_id = /*[[${user_id}]]*/ null;
+                vReportTMSCheckDetail.rowdata.dep_kpi_year = /*[[${dep_kpi_year}]]*/ null;
+                vReportTMSCheckDetail.rowdata.dep_kpi_month = /*[[${dep_kpi_month}]]*/ null;
+
+                vReportTMSCheckDetail.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+                vReportTMSCheckDetail.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+                vReportTMSCheckDetail.rowdata.table_search = /*[[${table_search}]]*/ null;
+                vReportTMSCheckDetail.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+                vReportTMSCheckDetail.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+                recreateDataTable(vReportTMSCheckDetail);
+        });
+</script>
+
+</body>
+</html>

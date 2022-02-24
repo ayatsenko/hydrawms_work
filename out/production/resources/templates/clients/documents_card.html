@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_documents_body" th:remove="tag">
+        <form id="clients-documents-detail" class="mb-2" th:action="@{/clients/documents_detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="clients-documents-detailbtn-large" class="d-none d-sm-block">
+                 <button type="submit" id="clients-documents-detailbtn" class="btn btn-sm btn-dark clients_documents_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="clients-documents-addbtn" class="btn btn-sm btn-dark clients_documents_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="submit" id="clients-documents-editbtn" class="btn btn-sm btn-dark clients_documents_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="clients-documents-delbtn" class="btn btn-sm btn-dark clients_documents_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="clients-documents-detailbtn-small" class="d-block d-sm-none">
+                 <button type="submit" id="clients-documents-detailbtn-sx" class="btn btn-sm btn-dark clients_documents_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="clients-documents-addbtn-sx" class="btn btn-sm btn-dark clients_documents_btn_control" th:attr="mode=0" disabled><i data-feather="plus"></i></button>
+                 <button type="submit" id="clients-documents-editbtn-sx" class="btn btn-sm btn-dark clients_documents_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="clients-documents-delbtn-sx" class="btn btn-sm btn-dark clients_documents_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+
+        <div><table id="table-clients-documents" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vClientDocumentsListValue;
+    vClientDocumentsListValue = {
+        table : '#table-clients-documents',
+        button_form: "#clients-documents-detail",
+        ajax : {
+            "url": /*[[@{/clients/get_documents_table}]]*/ "clients/get_documents_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.cnt_id = vClientDocumentsListValue.rowdata.cnt_id
+            }
+        },
+        key : "cnt_doc_id",
+        switchControl : clients_documents_switchControl,
+        rowdata:{
+            cnt_doc_id: null,
+            cnt_doc_num: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 'ftp',
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [1], type: 'de_date'},
+            {"targets": [2], type: 'de_date'}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{clients.documents.cnt_doc_id}]]*/ "cnt_doc_id", "data": "cnt_doc_id", "width": "1%"},
+            /*1*/{"title": /*[[#{clients.documents.cnt_doc_start_date}]]*/ "cnt_doc_start_date", "data": "cnt_doc_start_date", "width": "10%", "className": "min-tablet-p"},
+            /*2*/{"title": /*[[#{clients.documents.cnt_doc_end_date}]]*/ "cnt_doc_end_date", "data": "cnt_doc_end_date", "width": "10%", "className": "min-tablet-p"},
+            /*3*/{"title": /*[[#{clients.documents.cnt_doc_num}]]*/ "cnt_doc_num", "data": "cnt_doc_num", "width": "79%"}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function clients_documents_switchControl(){
+        if(vClientDocumentsListValue.rowdata.cnt_doc_id != null) {
+            if(vClientsListValue.rowdata.cnt_user_main_access === 1) {
+                $("#clients-documents-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#clients-documents-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#clients-documents-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#clients-documents-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            }else{
+                $("#clients-documents-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-documents-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#clients-documents-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-documents-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            $("#clients-documents-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#clients-documents-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+            vClientDocFilesListValue.rowdata.cnt_id = vClientsListValue.rowdata.cnt_id;
+            vClientDocFilesListValue.rowdata.cnt_doc_id = vClientDocumentsListValue.rowdata.cnt_doc_id;
+            vClientDocFilesListValue.rowdata.cnt_doc_file_id = null;
+            $(vClientDocFilesListValue.table).DataTable().ajax.reload();
+
+            if(vClientsListValue.rowdata.cnt_user_access === 1) {
+                $("#clients-files-addbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#clients-files-addbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }else{
+                $("#clients-files-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-files-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+
+        } else{
+            $("#clients-documents-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-documents-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-documents-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#clients-documents-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-documents-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-documents-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            vClientDocFilesListValue.rowdata.cnt_id = null;
+            vClientDocFilesListValue.rowdata.cnt_doc_id = null;
+            vClientDocFilesListValue.rowdata.cnt_doc_file_id = null;
+            $(vClientDocFilesListValue.table).DataTable().clear().draw();
+
+            $("#clients-files-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-files-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.clients_documents_btn_control').on('click', function (){
+        $("#clients-documents-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#clients-documents-detail').submit(function(){
+        vClientDocumentsListValue.rowdata.clients_documents_table_order_column = $(vClientDocumentsListValue.table).DataTable().order()[0][0];
+        vClientDocumentsListValue.rowdata.clients_documents_table_order_type = $(vClientDocumentsListValue.table).DataTable().order()[0][1];
+        vClientDocumentsListValue.rowdata.clients_documents_table_search = $(vClientDocumentsListValue.table).DataTable().search();
+        vClientDocumentsListValue.rowdata.clients_documents_table_pagelen = $(vClientDocumentsListValue.table).DataTable().page.len();
+        vClientDocumentsListValue.rowdata.clients_documents_table_page = $(vClientDocumentsListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vClientDocumentsListValue.rowdata.cnt_id = vClientsListValue.rowdata.cnt_id;
+        vClientDocumentsListValue.rowdata.cnt_name = vClientsListValue.rowdata.cnt_name;
+
+        vClientDocumentsListValue.rowdata.clients_list_table_order_column = $(vClientsListValue.table).DataTable().order()[0][0];
+        vClientDocumentsListValue.rowdata.clients_list_table_order_type = $(vClientsListValue.table).DataTable().order()[0][1];
+        vClientDocumentsListValue.rowdata.clients_list_table_search = $(vClientsListValue.table).DataTable().search();
+        vClientDocumentsListValue.rowdata.clients_list_table_pagelen = $(vClientsListValue.table).DataTable().page.len();
+        vClientDocumentsListValue.rowdata.clients_list_table_page = $(vClientsListValue.table).DataTable().page.info().page;
+
+        Object.keys(vClientDocumentsListValue.rowdata).forEach(function (index) {
+            $("#clients-documents-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#clients-documents-detail input[name=\"" + index + "\"]").val(vClientDocumentsListValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vClientDocumentsListValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+        vClientDocumentsListValue.rowdata.cnt_doc_id = /*[[${cnt_doc_id}]]*/ null;
+
+        vClientDocumentsListValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vClientDocumentsListValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vClientDocumentsListValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vClientDocumentsListValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vClientDocumentsListValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vClientDocumentsListValue);
+    });
+</script>
+
+</body>
+</html>

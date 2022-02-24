@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/2001/xhtml">
+<head th:include="layout/header :: header(title = #{projects_desc.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 col-md-5 pl-2 pr-1 pt-0">
+        <div class="card mb-2" id="projects_desc_main_card">
+            <div class="card-header">
+                <div class="card-actions float-right">
+                    <a href="#projects_desc_main_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title mb-0 pb-0" href="#projects_desc_main_div" data-toggle="collapse" th:text="#{projects_desc.stages.caption}"></h5>
+            </div>
+            <div class="card-body pt-0" id="projects_desc_main_div">
+                <div>
+                    <span th:replace="projects_desc/main_card :: projects_desc_main_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Stage -->
+    <div class="col-12 col-md-7 pl-1 pr-2 pt-0">
+        <div id="projects_tabs_div">
+            <div class="tab">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"><a class="nav-link text-primary active" href="#tab-1" data-toggle="tab" role="tab"><i class="align-middle" data-feather="info"></i></a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-2" data-toggle="tab" role="tab"><i class="align-middle" data-feather="folder"></i></a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-3" data-toggle="tab" role="tab"><i class="align-middle" data-feather="users"></i></a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-4" data-toggle="tab" role="tab"><i class="align-middle" data-feather="message-square"></i></a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-5" data-toggle="tab" role="tab"><i class="align-middle" data-feather="database"></i></a></li>
+                    <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a class="nav-link text-primary" href="#tab-6" data-toggle="tab" role="tab"><i class="align-middle" data-feather="dollar-sign"></i></a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-1" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="projects_desc/detail_card :: projects_desc_detail_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-2" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="projects_desc/stages_card :: projects_desc_stages_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-3" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="projects_desc/users_card :: projects_desc_users_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-4" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="projects_desc/chat_card :: projects_desc_chat_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-5" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="projects_desc/files_card :: projects_desc_files_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-6" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="projects_desc/payments_card :: projects_desc_payments_body"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="projects_desc/scheme_card :: projects_desc_scheme_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Tabs -->
+</div>
+<!-- Row 1-->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<script th:replace="projects_desc/stages_card :: cardscript"></script>
+<script th:replace="projects_desc/users_card :: cardscript"></script>
+<script th:replace="projects_desc/chat_card :: cardscript"></script>
+<script th:replace="projects_desc/files_card :: cardscript"></script>
+<script th:replace="projects_desc/payments_card :: cardscript"></script>
+<script th:replace="projects_desc/scheme_card :: cardscript"></script>
+
+<script th:replace="projects_desc/main_card :: cardscript"></script>
+</body>
+</html>

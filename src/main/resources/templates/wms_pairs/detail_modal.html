@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="wms_pairs_detail_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="wms_pairs_detail_modal" data-toggle="validator" tabindex="-1" role="dialog"
+         data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="wms_pairs_detail_modal_mode">
+            </div>
+
+            <div class="modal-content" id="wms_pairs_detail_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{users_kpi_meets.users.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mb-1">
+                    <form id="wms_pairs_detail_modal_form" name="wms_pairs_detail_modal_form" class="was-validated" novalidate>
+                        <div class="form-row mb-1">
+                            <div class="col-12 col-md-6" id="wms_pairs_detail_modal_user_id_div">
+                                <label for="wms_pairs_detail_modal_user_id" class="form-label mb-0" th:text="'1. '+#{wms_pairs.detail.user_name}"></label>
+                                <div class="input-group">
+                                    <select type="text" id="wms_pairs_detail_modal_user_id" name="wms_pairs_detail_modal_user_id" class="custom-select" aria-describedby="wms_pairs_detail_modal_user_id_helpBlock"></select>
+                                    <button type="button" id="wms_pairs_detail_modal_user_id_x" name="wms_pairs_detail_modal_user_id_x" class="btn btn-outline-primary select_clear" data-parent="wms_pairs_detail_modal_user_id"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div> <!-- Row 1 -->
+
+                        <div class="row mb-1">
+                            <div class="col-12 col-md-3" id="wms_pairs_detail_modal_start_date_row">
+                                <label class="form-label mb-0 text-dark" th:text="'2. '+ #{wms_pairs.detail.add_date}"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="wms_pairs_detail_modal_start_date" name="wms_pairs_detail_modal_start_date">
+                                    <button type="button" id="wms_pairs_detail_modal_start_date_x" name="wms_pairs_detail_modal_start_date_x" data-parent="wms_pairs_detail_modal_start_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-3" id="wms_pairs_detail_modal_start_time_row">
+                                <label class="form-label mb-0 text-dark"></label>
+                                <div class="input-group date" id="wms_pairs_detail_modal_start_time" data-target-input="nearest">
+                                    <input type="text" class="form-control datetimepicker-input" id="wms_pairs_detail_modal_start_time_value" data-target="#wms_pairs_detail_modal_start_time" />
+                                    <div class="input-group-append" data-target="#wms_pairs_detail_modal_start_time" data-toggle="datetimepicker">
+                                        <div class="input-group-text btn-outline-primary"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                    <button type="button" id="wms_pairs_detail_modal_start_time_x" name="wms_pairs_detail_modal_start_time_x" data-parent="wms_pairs_detail_modal_start_time_value" class="btn btn-outline-primary datetime_clear"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div> <!-- Row 2 -->
+
+                        <div class="row mb-1">
+                            <div class="col-12 col-md-3" id="wms_pairs_detail_modal_end_date_row">
+                                <label class="form-label mb-0 text-dark" th:text="'3. '+ #{wms_pairs.detail.close_date}"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="wms_pairs_detail_modal_end_date" name="wms_pairs_detail_modal_end_date">
+                                    <button type="button" id="wms_pairs_detail_modal_end_date_x" name="wms_pairs_detail_modal_end_date_x" data-parent="wms_pairs_detail_modal_end_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-3" id="wms_pairs_detail_modal_end_time_row">
+                                <label class="form-label mb-0 text-dark"></label>
+                                <div class="input-group date" id="wms_pairs_detail_modal_end_time" data-target-input="nearest">
+                                    <input type="text" class="form-control datetimepicker-input" id="wms_pairs_detail_modal_end_time_value" data-target="#wms_pairs_detail_modal_end_time" />
+                                    <div class="input-group-append" data-target="#wms_pairs_detail_modal_end_time" data-toggle="datetimepicker">
+                                        <div class="input-group-text btn-outline-primary"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                    <button type="button" id="wms_pairs_detail_modal_end_time_x" name="wms_pairs_detail_modal_end_time_x" data-parent="wms_pairs_detail_modal_end_time_value" class="btn btn-outline-primary datetime_clear"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div> <!-- Row 3 -->
+                    </form>
+                </div><!-- Body -->
+                <div class="modal-footer">
+                    <button type="button" id="wms_pairs_detail_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="wms_pairs_detail_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="wms_pairs_detail_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="wms_pairs_detail_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+// Clear Fields
+    function clear_wms_pairs_detail_modal_detail() {
+        $("#wms_pairs_detail_modal_detail input[type=text]").val('');
+        $("#wms_pairs_detail_modal_detail input[type=number]").val('');
+        $("#wms_pairs_detail_modal_detail select").empty();
+        $("#wms_pairs_detail_modal_detail textarea").val('');
+    }
+
+// Block And Required Fields
+    function block_wms_pairs_detail_modal_detail() {
+        $('#wms_pairs_detail_modal_user_id').attr('required', true);
+
+        if ($('#wms_pairs_detail_modal_mode').val() === "0") {
+            $('#wms_pairs_detail_modal_user_id').removeAttr('disabled');
+            $("#wms_pairs_detail_modal_user_id_x").attr('disabled', false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+        }
+        else if ($('#wms_pairs_detail_modal_mode').val() === "1") {
+            $('#wms_pairs_detail_modal_user_id').attr('disabled',true);
+            $("#user_id_x").attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+        }
+        else {
+            $('#wms_pairs_detail_modal_user_id').attr('disabled',true);
+            $("#user_id_x").attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+        }
+    }
+//Start Date
+$("#wms_pairs_detail_modal_start_date").daterangepicker({
+    "singleDatePicker": true,
+    "showWeekNumbers": true,
+    "autoApply": true,
+    "locale": {
+        "format": "DD.MM.YYYY",
+        "separator": " - ",
+        "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+        "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+        "daysOfWeek": [
+            /*[[#{weekdays.07_short}]]*/ "Su",
+            /*[[#{weekdays.01_short}]]*/ "Mo",
+            /*[[#{weekdays.02_short}]]*/ "Tu",
+            /*[[#{weekdays.03_short}]]*/ "We",
+            /*[[#{weekdays.04_short}]]*/ "Th",
+            /*[[#{weekdays.05_short}]]*/ "Fr",
+            /*[[#{weekdays.06_short}]]*/ "Sa"
+        ],
+        "monthNames": [
+            /*[[#{month.01}]]*/ "January",
+            /*[[#{month.02}]]*/ "February",
+            /*[[#{month.03}]]*/ "March",
+            /*[[#{month.04}]]*/ "April",
+            /*[[#{month.05}]]*/ "May",
+            /*[[#{month.06}]]*/ "June",
+            /*[[#{month.07}]]*/ "July",
+            /*[[#{month.08}]]*/ "August",
+            /*[[#{month.09}]]*/ "September",
+            /*[[#{month.10}]]*/ "October",
+            /*[[#{month.11}]]*/ "November",
+            /*[[#{month.12}]]*/ "December"
+        ],
+        "firstDay": 1
+    }
+});
+//Start Time
+$('#wms_pairs_detail_modal_start_time').datetimepicker({
+    format: 'HH:mm',
+    locale: 'ru'
+});
+//End Date
+$("#wms_pairs_detail_modal_end_date").daterangepicker({
+    "singleDatePicker": true,
+    "showWeekNumbers": true,
+    "autoApply": true,
+    "locale": {
+        "format": "DD.MM.YYYY",
+        "separator": " - ",
+        "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+        "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+        "daysOfWeek": [
+            /*[[#{weekdays.07_short}]]*/ "Su",
+            /*[[#{weekdays.01_short}]]*/ "Mo",
+            /*[[#{weekdays.02_short}]]*/ "Tu",
+            /*[[#{weekdays.03_short}]]*/ "We",
+            /*[[#{weekdays.04_short}]]*/ "Th",
+            /*[[#{weekdays.05_short}]]*/ "Fr",
+            /*[[#{weekdays.06_short}]]*/ "Sa"
+        ],
+        "monthNames": [
+            /*[[#{month.01}]]*/ "January",
+            /*[[#{month.02}]]*/ "February",
+            /*[[#{month.03}]]*/ "March",
+            /*[[#{month.04}]]*/ "April",
+            /*[[#{month.05}]]*/ "May",
+            /*[[#{month.06}]]*/ "June",
+            /*[[#{month.07}]]*/ "July",
+            /*[[#{month.08}]]*/ "August",
+            /*[[#{month.09}]]*/ "September",
+            /*[[#{month.10}]]*/ "October",
+            /*[[#{month.11}]]*/ "November",
+            /*[[#{month.12}]]*/ "December"
+        ],
+        "firstDay": 1
+    }
+});
+//End Time
+$('#wms_pairs_detail_modal_end_time').datetimepicker({
+    format: 'HH:mm',
+    locale: 'ru'
+});
+//Сотрудник
+function userPairChange(vMode, vPairID, vUSERID) {
+    $('#wms_pairs_detail_modal_user_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/wms_pairs/get_pair_users'}]]*/ "/wms_pairs/get_pair_users",
+        type: "get",
+        data: {"mode": vMode,
+               "pair_id": vPairID
+        },
+        success: function (users_list) {
+            for (var i = 0; i < users_list.data.length; i++) {
+                $("select[name='wms_pairs_detail_modal_user_id']").find('option').end().append(
+                    "<option value='" + users_list.data[i].id + "'>" + users_list.data[i].user_surname + "</option>");
+            }
+            if(vUSERID != null){
+                $('#wms_pairs_detail_modal_user_id').val(vUSERID);
+            }
+        }
+    }));
+}
+// Load Function
+    function fill_wms_pairs_detail_modal_detail(aMode) {
+        clear_wms_pairs_detail_modal_detail();
+            $('#wms_pairs_detail_modal_mode').val(aMode);
+        block_wms_pairs_detail_modal_detail();
+
+        let paidID = vWMSPairMainValue.rowdata.pair_id;
+        if(aMode === 0) {
+            $.when(
+                userPairChange(aMode, paidID, 0),
+            ).then(function () {
+                $('#wms_pairs_detail_modal_start_date').val(currentDayRu).change();
+                $('#wms_pairs_detail_modal_start_time_x').click();
+                $('#wms_pairs_detail_modal_end_date_x').click();
+
+                $('#wms_pairs_detail_modal').modal('show');
+            });
+        }
+        else if(aMode === 1){
+            let UserID = vWMSPairUsersValue.rowdata.user_id;
+            let addDate = vWMSPairUsersValue.rowdata.add_date;
+            let addTime = vWMSPairUsersValue.rowdata.add_time;
+            let closeDate = vWMSPairUsersValue.rowdata.close_date;
+            let closeTime = vWMSPairUsersValue.rowdata.close_time;
+
+            $.when(
+                userPairChange(aMode, paidID, UserID),
+            ).then(function () {
+                $('#wms_pairs_detail_modal_start_date').val(addDate).change();
+                $('#wms_pairs_detail_modal_start_time').datetimepicker('date', moment(addTime, 'HH:mm'));
+                $('#wms_pairs_detail_modal_end_date').val(closeDate).change();
+                $('#wms_pairs_detail_modal_end_time').datetimepicker('date', moment(closeTime, 'HH:mm'));
+
+                $('#wms_pairs_detail_modal').modal('show');
+            });
+        }
+    }
+
+// Add button script
+    $('#wms_pairs_detail_modal_addbtn').click(function () {
+        $('#wms_pairs_detail_modal_form').submit();
+    });
+// Edit button script
+    $('#wms_pairs_detail_modal_editbtn').click(function () {
+        $('#wms_pairs_detail_modal_form').submit();
+    });
+// Del button script
+    $('#wms_pairs_detail_modal_delbtn').click(function () {
+        $('#wms_pairs_detail_modal_form').submit();
+    });
+
+//Add KPI Meets User
+    function addWMSSaleOrdersMainModal() {
+        let MainRowID = vWMSPairMainValue.rowdata.pair_id
+
+        $.ajax({
+            url: /*[[ @{/wms_pairs/add_detail_pair} ]]*/ "/wms_pairs/add_detail_pair",
+            type: 'POST',
+            data: {
+                "pair_id": MainRowID,
+                "user_id": $('#wms_pairs_detail_modal_user_id').val(),
+                "add_date": $('#wms_pairs_detail_modal_start_date').val(),
+                "add_time": $('#wms_pairs_detail_modal_start_time_value').val(),
+                "close_date": $('#wms_pairs_detail_modal_end_date').val(),
+                "close_time": $('#wms_pairs_detail_modal_end_time_value').val()
+            },
+            success: function (result) {
+                $('#wms_pairs_detail_modal').modal('hide');
+                reloadPairDetail();
+            }
+        });
+    }
+
+//Edit KPI Meets User
+    function editWMSSaleOrdersMainModal() {
+        let RowID = vWMSPairUsersValue.rowdata.pair_user_link_id;
+
+        $.ajax({
+            url: /*[[ @{/wms_pairs/edit_detail_pair} ]]*/ "/wms_pairs/edit_detail_pair",
+            type: 'POST',
+            data: {
+                "pair_user_link_id": RowID,
+                "user_id": $('#wms_pairs_detail_modal_user_id').val(),
+                "add_date": $('#wms_pairs_detail_modal_start_date').val(),
+                "add_time": $('#wms_pairs_detail_modal_start_time_value').val(),
+                "close_date": $('#wms_pairs_detail_modal_end_date').val(),
+                "close_time": $('#wms_pairs_detail_modal_end_time_value').val()
+            },
+            success: function (result) {
+                $('#wms_pairs_detail_modal').modal('hide');
+                reloadPairDetail();
+            }
+        });
+    }
+
+//Del KPI Meets User
+    function delWMSSaleOrdersMainModal() {
+    }
+
+//Validation Form
+    $('#wms_pairs_detail_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function (error, element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            if ($('#wms_pairs_detail_modal_mode').val() === '0') {
+                addWMSSaleOrdersMainModal();
+            } else if ($('#wms_pairs_detail_modal_mode').val() === '1') {
+                editWMSSaleOrdersMainModal();
+            } else if ($('#wms_pairs_detail_modal_mode').val() === '2') {
+                delWMSSaleOrdersMainModal();
+            }
+            return false;
+        }
+    });
+// OnChange Functions
+$("#wms_pairs_detail_modal_start_date").on('change', function () {
+    if($("#wms_pairs_detail_modal_start_date").val() !== null && $("#wms_pairs_detail_modal_start_date").val() !== ''){
+        $("#wms_pairs_detail_modal_start_time_value").attr('required',true);
+    }
+    else{
+        $("#wms_pairs_detail_modal_start_time_value").removeAttr('required');
+    }
+});
+
+$("#wms_pairs_detail_modal_start_date_x").on('click', function () {
+    $("#wms_pairs_detail_modal_start_time_value").removeAttr('required');
+});
+
+$("#wms_pairs_detail_modal_end_date").on('change', function () {
+    if($("#wms_pairs_detail_modal_end_date").val() !== null && $("#wms_pairs_detail_modal_end_date").val() !== ''){
+        $("#wms_pairs_detail_modal_end_time_value").attr('required',true);
+    }
+    else{
+        $("#wms_pairs_detail_modal_end_time_value").removeAttr('required');
+    }
+});
+
+$("#wms_pairs_detail_modal_end_date_x").on('click', function () {
+    $("#wms_pairs_detail_modal_end_time_value").removeAttr('required');
+});
+</script>
+
+</body>
+</html>

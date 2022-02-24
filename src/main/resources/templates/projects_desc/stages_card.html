@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="projects_desc_stages_body" th:remove="tag">
+        <form id="projects-desc-stages-detail" class="mb-2" th:action="@{/projects_desc/stages_detail}" method="post">
+            <input name="mode" value="0" hidden>
+              <div id="projects-desc-stages-btn-large" class="d-none d-sm-block">
+                  <button type="submit" id="projects-desc-stages-check" class="btn btn-sm btn-dark" disabled><i data-feather="check-square"></i></button>
+                  <button type="submit" id="projects-desc-stages-uncheck" class="btn btn-sm btn-dark mr-2" disabled><i data-feather="x-square"></i></button>
+
+                  <button type="submit" id="projects-desc-stages-prior-hight" class="btn btn-sm btn-dark" disabled><i data-feather="chevron-up"></i></button>
+                  <button type="submit" id="projects-desc-stages-prior-low" class="btn btn-sm btn-dark mr-2" disabled><i data-feather="chevron-down"></i></button>
+
+                  <button type="submit" id="projects-desc-stages-detailbtn" class="btn btn-sm btn-dark projects_desc_stages_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                  <button type="submit" id="projects-desc-stages-addbtn" class="btn btn-sm btn-primary projects_desc_stages_btn_control" th:text="#{general.addbtn}" th:attr="mode=0">Add</button>
+                  <button type="submit" id="projects-desc-stages-editbtn" class="btn btn-sm btn-dark projects_desc_stages_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                  <button type="submit" id="projects-desc-stages-delbtn" class="btn btn-sm btn-dark projects_desc_stages_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="projects-desc-stages-btn-small" class="d-block d-sm-none">
+                  <button type="submit" id="projects-desc-stages-check-sx" class="btn btn-sm btn-dark" disabled><i data-feather="check-square"></i></button>
+                  <button type="submit" id="projects-desc-stages-uncheck-sx" class="btn btn-sm btn-dark mr-2" disabled><i data-feather="x-square"></i></button>
+
+                  <button type="submit" id="projects-desc-stages-prior-hight-sx" class="btn btn-sm btn-dark" disabled><i data-feather="chevron-up"></i></button>
+                  <button type="submit" id="projects-desc-stages-prior-low-sx" class="btn btn-sm btn-dark mr-2" disabled><i data-feather="chevron-down"></i></button>
+
+                  <button type="submit" id="projects-desc-stages-detailbtn-sx" class="btn btn-sm btn-dark projects_desc_stages_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                  <button type="submit" id="projects-desc-stages-addbtn-sx" class="btn btn-sm btn-primary projects_desc_stages_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                  <button type="submit" id="projects-desc-stages-editbtn-sx" class="btn btn-sm btn-dark projects_desc_stages_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                  <button type="submit" id="projects-desc-stages-delbtn-sx" class="btn btn-sm btn-dark projects_desc_stages_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-projects-desc-stages" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var RoleAdmin = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_ADMIN","ROLE_GM")')}]]*/ null;
+
+    var vProjectsDescStagesListValue;
+    vProjectsDescStagesListValue = {
+        table : '#table-projects-desc-stages',
+        ajax : {
+            "url": /*[[@{/projects_desc/get_stages_table}]]*/ "projects_desc/get_stages_table",
+            "type": "post",
+            "data": function ( d ) {
+                    d.parent_pr_id = vProjectsDescStagesListValue.rowdata.parent_pr_id;
+            }
+        },
+        key : "child_pr_id",
+        switchControl : projects_desc_stages_switchControl,
+        rowdata:{
+            child_pr_id: null,
+            parent_pr_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            $(row).find('td:eq(1)').css('background-color', data["pr_type_colour"]);
+            $(row).find('td:eq(3)').css('background-color', data["pr_prior_colour"]);
+            $(row).css('background-color', data["pr_status_colour"]);
+        },
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [2], "visible": false},
+            {"targets": [4], "visible": false},
+            {"targets": [5], "visible": false},
+            {"targets": [7], "visible": false},
+            {"targets": [8], "visible": false},
+            {"targets": [10], "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{projects_desc.stages.pr_id}]]*/ "child_pr_id", "data": "child_pr_id", "width": "1%"},
+                /*1*/{"title": /*[[#{projects_desc.stages.pr_sname}]]*/ "pr_sname", "data": "pr_sname", "width": "60%"},
+
+                /*2*/{"title": /*[[#{projects_desc.stages.pr_type_id}]]*/ "pr_type_id", "data": "pr_type_id", "width": "1%"},
+                /*3*/{"title": /*[[#{projects_desc.stages.pr_type_sname}]]*/ "pr_type_sname", "data": "pr_type_sname", "width": "5%", "className": "text-center desktop"},
+                /*4*/{"title": /*[[#{projects_desc.stages.pr_type_colour}]]*/ "pr_type_colour", "data": "pr_type_colour", "width": "1%"},
+
+                /*5*/{"title": /*[[#{projects_desc.stages.pr_status_id}]]*/ "pr_status_id", "data": "pr_status_id", "width": "1%"},
+                /*6*/{"title": /*[[#{projects_desc.stages.pr_status_sname}]]*/ "pr_status_sname", "data": "pr_status_sname", "width": "18%", "className": "text-center desktop"},
+                /*7*/{"title": /*[[#{projects_desc.stages.pr_status_colour}]]*/ "pr_status_colour", "data": "pr_status_colour", "width": "1%"},
+
+                /*8*/{"title": /*[[#{projects_desc.stages.pr_prior_id}]]*/ "pr_prior_id", "data": "pr_prior_id", "width": "1%"},
+                /*9*/{"title": /*[[#{projects_desc.stages.pr_prior_sname}]]*/ "pr_prior_sname", "data": "pr_prior_sname", "width": "10%", "className": "text-center desktop"},
+                /*10*/{"title": /*[[#{projects_desc.stages.pr_prior_colour}]]*/ "pr_prior_colour", "data": "pr_prior_colour", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function projects_desc_stages_switchControl(){
+        if(vProjectsDescStagesListValue.rowdata.child_pr_id != null) {
+                $("#projects-desc-stages-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#projects-desc-stages-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                if(RoleAdmin) {
+                    $("#projects-desc-stages-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                    $("#projects-desc-stages-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                    $("#projects-desc-stages-editbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                    $("#projects-desc-stages-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                }
+                else{
+                    $("#projects-desc-stages-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                    $("#projects-desc-stages-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                    $("#projects-desc-stages-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                    $("#projects-desc-stages-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                }
+        } else{
+                $("#projects-desc-stages-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#projects-desc-stages-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#projects-desc-stages-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#projects-desc-stages-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#projects-desc-stages-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#projects-desc-stages-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.projects_desc_stages_btn_control').on('click', function (){
+        $("#projects-desc-stages-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    if(RoleAdmin){
+        $("#projects-desc-stages-addbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        $("#projects-desc-stages-addbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+    }
+    else{
+        $("#projects-desc-stages-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        $("#projects-desc-stages-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+    }
+
+    $('#projects-desc-stages-detail').submit(function() {
+        vProjectsDescStagesListValue.rowdata.projects_desc_stages_table_order_column = $(vProjectsDescStagesListValue.table).DataTable().order()[0][0];
+        vProjectsDescStagesListValue.rowdata.projects_desc_stages_table_order_type = $(vProjectsDescStagesListValue.table).DataTable().order()[0][1];
+        vProjectsDescStagesListValue.rowdata.projects_desc_stages_table_search = $(vProjectsDescStagesListValue.table).DataTable().search();
+        vProjectsDescStagesListValue.rowdata.projects_desc_stages_table_pagelen = $(vProjectsDescStagesListValue.table).DataTable().page.len();
+        vProjectsDescStagesListValue.rowdata.projects_desc_stages_table_page = $(vProjectsDescStagesListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vProjectsDescStagesListValue.rowdata.projects_desc_main_table_order_column = $(vProjectsDescMainValue.table).DataTable().order()[0][0];
+        vProjectsDescStagesListValue.rowdata.projects_desc_main_table_order_type = $(vProjectsDescMainValue.table).DataTable().order()[0][1];
+        vProjectsDescStagesListValue.rowdata.projects_desc_main_table_search = $(vProjectsDescMainValue.table).DataTable().search();
+        vProjectsDescStagesListValue.rowdata.projects_desc_main_table_pagelen = $(vProjectsDescMainValue.table).DataTable().page.len();
+        vProjectsDescStagesListValue.rowdata.projects_desc_main_table_page = $(vProjectsDescMainValue.table).DataTable().page.info().page;        
+        
+        Object.keys(vProjectsDescStagesListValue.rowdata).forEach(function (index) {
+            $("#projects-desc-stages-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#projects-desc-stages-detail input[name=\"" + index + "\"]").val(vProjectsDescStagesListValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vProjectsDescStagesListValue.rowdata.child_pr_id = /*[[${child_pr_id}]]*/ null;
+
+        vProjectsDescStagesListValue.rowdata.table_order_column = /*[[${projects_desc_stages_table_order_column}]]*/ null;
+        vProjectsDescStagesListValue.rowdata.table_order_type = /*[[${projects_desc_stages_table_order_type}]]*/ null;
+        vProjectsDescStagesListValue.rowdata.table_search = /*[[${projects_desc_stages_table_search}]]*/ null;
+        vProjectsDescStagesListValue.rowdata.table_pagelen = /*[[${projects_desc_stages_table_pagelen}]]*/ null;
+        vProjectsDescStagesListValue.rowdata.table_page = /*[[${projects_desc_stages_table_page}]]*/ null;
+
+        recreateDataTable(vProjectsDescStagesListValue);
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tenders_list_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="tenders_list_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="hidden">
+                <input type="hidden" id="tenders_list_modal_mode" name="tenders_list_modal_mode">
+                <input type="hidden" name="edit_type_id" id="edit_type_id">
+            </div>
+
+            <div class="modal-content" id="tenders_list_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{tenders.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body m-1">
+                    <form id="tenders_list_modal_form">
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="req_id_row">
+                            <label for="req_id" class="form-label mb-0" th:text="'1. '+ #{tenders.list.req_id}"></label>
+                            <input type="number" class="form-control" id="req_id" name="req_id">
+                        </div>
+
+                        <div class="col-12 col-md-7" id="req_name_row">
+                            <label for="req_name" class="form-label mb-0" th:text="'2. '+ #{tenders.list.req_name}"></label>
+                            <input type="text" maxlength="120" class="form-control" id="req_name" name="req_name">
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3">
+                            <label for="req_type_id" class="form-label mb-0" th:text="'3. '+#{tenders.list.req_type_id}"></label>
+                            <select type="text" id="req_type_id" name="req_type_id" class="custom-select" aria-describedby="req_type_id_helpBlock" readonly>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="tenders_list_modal_user_id" class="form-label mb-0" th:text="'4. '+#{tenders.list.user_name}"></label>
+                            <div class="flex-fill">
+                                <select type="text" id="tenders_list_modal_user_id" name="tenders_list_modal_user_id" class="custom-select" aria-describedby="user_id_helpBlock">
+                                </select>
+                            </div>
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-8" id="cnt_id_div">
+                            <label for="tenders_list_modal_cnt_id" class="form-label mb-0" th:text="'5. '+#{requests.list.cnt_id}"></label>
+                            <div class="flex-fill">
+                                <select type="text" id="tenders_list_modal_cnt_id" name="tenders_list_modal_cnt_id" class="custom-select select2" aria-describedby="cnt_id_helpBlock">
+                                </select>
+                            </div>
+                        </div>
+                    </div> <!-- Row 3 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-6" id="tenders_list_modal_ser_id_row">
+                            <label for="tenders_list_modal_ser_id" class="form-label mb-0" th:text="'6. '+#{tenders.list.ser_id}"></label>
+                            <select type="text" id="tenders_list_modal_ser_id" name="tenders_list_modal_ser_id" class="custom-select" aria-describedby="ser_id_helpBlock">
+                            </select>
+                        </div>
+                    </div><!-- Row 4 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="req_start_date_row">
+                            <label for="req_start_date" class="form-label mb-0" th:text="'7. '+ #{tenders.list.req_start_date}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="req_start_date" name="req_start_date">
+                                <button type="button" id="req_start_date_x" name="req_start_date_x" data-parent="req_start_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-3" id="req_end_date_row">
+                            <label for="req_end_date" class="form-label mb-0" th:text="'8. '+ #{tenders.list.req_end_date}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="req_end_date" name="req_end_date">
+                                <button type="button" id="req_end_date_x" name="req_end_date_x" data-parent="req_end_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div><!-- Row 5 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-5" id="req_tend_autotype_row">
+                            <label for="req_tend_autotype" class="form-label mb-0" th:text="'9. '+ #{tenders.list.req_tend_autotype}"></label>
+                            <input type="text" maxlength="32" class="form-control" id="req_tend_autotype" name="req_tend_autotype">
+                        </div>
+                    </div><!-- Row 6 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-6" id="req_tend_runway_row">
+                            <label for="req_tend_runway" class="form-label mb-0" th:text="'10. '+#{tenders.list.req_tend_runway}"></label>
+                            <textarea class="form-control" rows="3" maxlength="64" style="resize:none;" id="req_tend_runway" name="req_tend_runway">
+                            </textarea>
+                        </div>
+
+                        <div class="col-12 col-md-6" id="req_tend_count_row">
+                            <label for="req_tend_count" class="form-label mb-0" th:text="'11. '+#{tenders.list.req_tend_count}"></label>
+                            <textarea class="form-control" rows="3" maxlength="64" style="resize:none;" id="req_tend_count" name="req_tend_count">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 7 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-6" id="req_note_row">
+                            <label for="req_note" class="form-label mb-0" th:text="'12. '+#{tenders.list.req_note}"></label>
+                            <textarea class="form-control" rows="3" maxlength="128" style="resize:none;" id="req_note" name="req_note">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 8 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="req_ops_id_row">
+                            <label for="req_ops_id" class="form-label mb-0" th:text="'13. '+ #{tenders.list.req_ops_id}"></label>
+                            <input type="number" class="form-control" id="req_ops_id" name="req_ops_id">
+                        </div>
+
+                        <div class="col-12 col-md-3" id="req_ops_date_row">
+                            <label for="req_ops_date" class="form-label mb-0" th:text="'14. '+ #{tenders.list.req_ops_date}"></label>
+                            <input type="text" class="form-control" id="req_ops_date" name="req_ops_date">
+                        </div>
+
+                        <div class="col-12 col-md-6" id="req_ops_user_id_row">
+                            <label for="req_ops_user_id" class="form-label mb-0" th:text="'15. '+ #{tenders.list.req_ops_username}"></label>
+                            <select type="text" id="req_ops_user_id" name="req_ops_user_id" class="custom-select" aria-describedby="user_id_helpBlock">
+                            </select>
+                        </div>
+                    </div><!-- Row 9 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="req_ops_answer_row">
+                            <label for="req_ops_answer" class="form-label mb-0" th:text="'16. '+#{tenders.list.req_ops_answer}"></label>
+                            <textarea class="form-control" rows="3" minlength="10" maxlength="128" style="resize:none;" id="req_ops_answer" name="req_ops_answer">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 10 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="req_ops_note_row">
+                            <label for="req_ops_note" class="form-label mb-0" th:text="'17. '+#{tenders.list.req_ops_note}"></label>
+                            <textarea class="form-control" rows="5" maxlength="612" style="resize:none;" id="req_ops_note" name="req_ops_note">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 11 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-4" id="tend_status_id_row">
+                            <label for="tend_status_id" class="form-label mb-0" th:text="'18. '+#{tenders.list.tend_status_sname}"></label>
+                            <select type="text" id="tend_status_id" name="tend_status_id" class="custom-select" aria-describedby="tend_status_id_helpBlock">
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-3" id="req_profit_predict_row">
+                            <label for="req_profit_predict" class="form-label mb-0" th:text="'19. '+ #{tenders.list.req_profit_predict}"></label>
+                            <input type="number" class="form-control" id="req_profit_predict" name="req_profit_predict">
+                        </div>
+                    </div><!-- Row 12 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-4" id="req_result_status_id_row">
+                            <label for="req_result_status_id" class="form-label mb-0" th:text="'20. '+#{tenders.list.req_result_status_id}"></label>
+                            <select type="text" id="req_result_status_id" name="req_result_status_id" class="custom-select" aria-describedby="req_result_status_helpBlock">
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-4" id="tend_fia_status_id_row">
+                            <label for="tend_fia_status_id" class="label mb-0" th:text="'21. '+#{tenders.list.tend_fia_status_id}"></label>
+                            <select type="text" id="tend_fia_status_id" name="tend_fia_status_id" class="custom-select" aria-describedby="tend_fia_status_id_helpBlock">
+                            </select>
+                        </div>
+                    </div><!-- Row 13 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="req_result_text_row">
+                            <label for="req_result_text" class="form-label mb-0" th:text="'22. '+#{tenders.list.req_result_text}"></label>
+                            <textarea class="form-control" rows="3" maxlength="64" style="resize:none;" id="req_result_text" name="req_result_text">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 14 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="req_result_note_row">
+                            <label for="req_result_note" class="form-label mb-0" th:text="'23. '+#{tenders.list.req_result_note}"></label>
+                            <textarea class="form-control" rows="5" maxlength="612" style="resize:none;" id="req_result_note" name="req_result_note">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 15 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="req_doc_number_row">
+                            <label for="req_doc_number" class="form-label mb-0" th:text="'24. '+ #{requests.list.req_doc_number}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="req_doc_number" name="req_doc_number">
+                        </div>
+
+                        <div class="col-12 col-md-3" id="req_doc_start_date_row">
+                            <label for="req_doc_start_date" class="form-label mb-0" th:text="'25. '+ #{requests.list.req_doc_start_date}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="req_doc_start_date" name="req_doc_start_date">
+                                <button type="button" id="req_doc_start_date_x" name="req_doc_start_date_x" data-parent="req_doc_start_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-3" id="req_doc_end_date_row">
+                            <label for="req_doc_end_date" class="form-label mb-0" th:text="'26. '+ #{requests.list.req_doc_end_date}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="req_doc_end_date" name="req_doc_end_date">
+                                <button type="button" id="req_doc_end_date_x" name="req_doc_end_date_x" data-parent="req_doc_end_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div><!-- Row 16 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="req_work_start_date_row">
+                            <label for="req_work_start_date" class="form-label mb-0" th:text="'27. '+ #{requests.list.req_work_start_date}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="req_work_start_date" name="req_work_start_date">
+                                <button type="button" id="req_work_start_date_x" name="req_work_start_date_x" data-parent="req_work_start_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div><!-- Row 17 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="req_work_note_row">
+                            <label for="req_work_note" class="form-label mb-0" th:text="'28. '+#{requests.list.req_work_note}"></label>
+                            <textarea class="form-control" rows="5" maxlength="612" style="resize:none;" id="req_work_note" name="req_work_note">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 18 -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="tenders_list_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="tenders_list_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="tenders_list_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="tenders_list_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    function TypeChange(){
+        let serid = $('#tenders_list_modal_ser_id').val();
+        if(serid === '10'){
+            $('#req_tend_date_row').removeAttr('hidden');
+            $('#req_tend_date').attr('required', true);
+
+            $('#req_tend_end_date_row').removeAttr('hidden');
+
+            $('#req_tend_runway_row').removeAttr('hidden');
+            $('#req_tend_runway').attr('required', true);
+
+            $('#req_tend_autotype_row').attr('hidden',true);
+            $('#req_tend_autotype').removeAttr('required');
+
+            $('#req_tend_count_row').removeAttr('hidden');
+            $('#req_tend_count').attr('required', true);
+        }
+        else if(serid === '11'){
+            $('#req_tend_date_row').removeAttr('hidden');
+            $('#req_tend_date').attr('required', true);
+
+            $('#req_tend_end_date_row').removeAttr('hidden');
+
+            $('#req_tend_runway_row').attr('hidden',true);
+            $('#req_tend_runway').removeAttr('required');
+
+            $('#req_tend_autotype_row').attr('hidden',true);
+            $('#req_tend_autotype').removeAttr('required');
+
+            $('#req_tend_count_row').removeAttr('hidden');
+            $('#req_tend_count').attr('required', true);
+        }
+        else if(serid === '12'){
+            $('#req_tend_date_row').removeAttr('hidden');
+            $('#req_tend_date').attr('required', true);
+
+            $('#req_tend_end_date_row').removeAttr('hidden');
+
+            $('#req_tend_runway_row').attr('hidden',true);
+            $('#req_tend_runway').removeAttr('required');
+
+            $('#req_tend_autotype_row').attr('hidden',true);
+            $('#req_tend_autotype').removeAttr('required');
+
+            $('#req_tend_count_row').removeAttr('hidden');
+            $('#req_tend_count').attr('required', true);
+        }
+        else {
+            $('#req_tend_date_row').removeAttr('hidden');
+            $('#req_tend_date').attr('required', true);
+
+            $('#req_tend_end_date_row').removeAttr('hidden');
+
+            $('#req_tend_runway_row').removeAttr('hidden');
+            $('#req_tend_runway').attr('required', true);
+
+            $('#req_tend_autotype_row').removeAttr('hidden');
+            $('#req_tend_autotype').attr('required', true);
+
+            $('#req_tend_count_row').removeAttr('hidden');
+            $('#req_tend_count').attr('required', true);
+        }
+    }
+
+    function tenderFormResultStatusChange() {
+        if ($('#req_result_status_id').val() === '-2') {
+            $('#tend_fia_status_id').removeAttr('required').attr('disabled', true);
+
+            $('#req_doc_number').attr('required', true);
+
+            $('#req_work_start_date').removeAttr('required');
+
+            $('#req_work_note').attr('required', true);
+        }
+        else if ($('#req_result_status_id').val() === '-1') {
+            $('#tend_fia_status_id').removeAttr('required').attr('disabled', true);
+
+            $('#req_doc_number').attr('required', true);
+
+            $('#req_work_start_date').removeAttr('required');
+
+            $('#req_work_note').attr('required', true);
+        }
+        else if($('#req_result_status_id').val() === '2') {
+            $('#tend_fia_status_id').attr('required', true).removeAttr('disabled');
+
+            $('#req_doc_number').removeAttr('required');
+
+            $('#req_work_start_date').removeAttr('required');
+
+            $('#req_work_note_row').attr('hidden', false);
+            $('#req_work_note').attr('required', true);
+        }
+        else if($('#req_result_status_id').val() === '3') {
+            $('#tend_fia_status_id').removeAttr('required').attr('disabled', true);
+
+            $('#req_doc_number').removeAttr('required');
+
+            $('#req_work_start_date').removeAttr('required');
+
+            $('#req_work_note_row').attr('hidden', false);
+            $('#req_work_note').attr('required', true)
+        }
+        else if($('#req_result_status_id').val() === '4') {
+            $('#tend_fia_status_id').attr('required', true).removeAttr('disabled');
+
+            $('#req_doc_number').removeAttr('required');
+
+            $('#req_work_start_date').removeAttr('required');
+
+            $('#req_work_note_row').attr('hidden', false);
+            $('#req_work_note').attr('required', true);
+        }
+        else if($('#req_result_status_id').val() === '5') {
+            $('#tend_fia_status_id').removeAttr('required').attr('disabled', true);
+
+            $('#req_doc_number').attr('required', true);
+
+            $('#req_work_start_date').removeAttr('required');
+
+            $('#req_work_note').removeAttr('required');
+        }
+        else if($('#req_result_status_id').val() === '6') {
+            $('#tend_fia_status_id').removeAttr('required').attr('disabled', true);
+
+            $('#req_doc_number').attr('required', true);
+
+            $('#req_work_start_date').attr('required', true);
+
+            $('#req_work_note_row').attr('hidden', false);
+        } else {
+            $('#tend_fia_status_id').removeAttr('required').attr('disabled', true);
+
+            $('#req_doc_number').removeAttr('required');
+
+            $('#req_work_start_date').removeAttr('required');
+
+            $('#req_work_note').removeAttr('required');
+        }
+    }
+
+    function tenderFormStatusChange(){
+        if ($('#edit_type_id').val() === '2' && ['4'].indexOf($('#tend_status_id').val()) >= 0) {
+            $('#req_ops_answer').attr('required', true);
+        } else if ($('#edit_type_id').val() === '3' && ['5'].indexOf($('#tend_status_id').val()) >= 0) {
+            $('#req_result_status_id').attr('required', true).removeAttr('disabled');
+            $('#tend_fia_status_id').removeAttr('required').attr('disabled', true);
+            tenderFormResultStatusChange();
+        } else if ($('#edit_type_id').val() === '3' && ['4'].indexOf($('#tend_status_id').val()) >= 0) {
+            $('#req_result_status_id').removeAttr('required').attr('disabled', true);
+            $('#tend_fia_status_id').removeAttr('required');
+
+            $('#req_doc_number').removeAttr('required');
+
+            $('#req_work_start_date').removeAttr('required');
+
+            $('#req_work_note').removeAttr('required');
+        } else if ($('#edit_type_id').val() === '3' && ['6'].indexOf($('#tend_status_id').val()) >= 0) {
+            $('#req_result_status_id').removeAttr('required').attr('disabled', true);
+            $('#tend_fia_status_id').removeAttr('required').attr('disabled', true);
+
+            $('#req_doc_number').removeAttr('required');
+
+            $('#req_work_start_date').removeAttr('required');
+
+            $('#req_work_note').removeAttr('required');
+        } else {
+            $('#req_tend_end_date').removeAttr('required');
+            $('#req_ops_answer').removeAttr('required');
+            $('#req_result_text').removeAttr('required');
+
+            $('#req_result_status_id_row').attr('hidden', true);
+            $('#req_result_status_id').removeAttr('required').attr('disabled', true);
+
+            $('#tend_fia_status_id').removeAttr('required');
+        }
+    }
+    function editFiledsShow() {
+        TypeChange();
+//Работа с Тендером до OPS
+        if($('#tenders_list_modal_mode').val() === '1' && $('#edit_type_id').val() === '1'){
+            $('#req_id_row').attr('hidden', true);
+            $('#req_name_row').attr('hidden', true);
+
+            $('#req_result_text_row').attr('hidden',true);
+            $('#req_result_note_row').attr('hidden',true);
+            $('#req_ops_id_row').attr('hidden',true);
+            $('#req_ops_date_row').attr('hidden',true);
+            $('#req_ops_user_id_row').attr('hidden',true);
+            $('#req_ops_answer_row').attr('hidden',true);
+            $('#req_ops_note_row').attr('hidden',true);
+
+            $('#req_type_id_row').removeAttr('hidden');
+            $('#req_type_id').removeAttr('required').removeAttr('disabled');
+
+            $('#req_result_status_id_row').attr('hidden',true);
+            $('#tend_fia_status_id_row').attr('hidden',true);
+
+            $('#req_profit_predict').attr('required', true).prop('min',50);
+
+            $('#req_doc_number_row').attr('hidden', true);
+            $('#req_doc_end_date_row').attr('hidden', true);
+            $('#req_doc_start_date_row').attr('hidden', true);
+            $('#req_work_start_date_row').attr('hidden', true);
+
+            $('#req_work_note_row').attr('hidden', true);
+        }
+//Работа с Тендером OPS
+        else if($('#tenders_list_modal_mode').val() === '1' && $('#edit_type_id').val() === '2') {
+            $('#tenders_list_modal_cnt_id').attr('disabled',true);
+            $('#tenders_list_modal_ser_id').attr('disabled', true);
+
+            $('#req_type_id').removeAttr('required').attr('disabled', true);
+
+            $('#tenders_list_modal_user_id').attr('disabled', true);
+
+            $('#req_start_date').attr('disabled',true);
+            $('#req_start_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_end_date').attr('disabled',true);
+            $('#req_end_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_note').attr('readonly',true);
+
+            $('#req_tend_date').attr('disabled',true);
+            $('#req_tend_end_date').attr('disabled',true);
+            $('#req_tend_runway').attr('readonly',true);
+            $('#req_tend_autotype').attr('readonly',true);
+            $('#req_tend_count').attr('readonly',true);
+
+            $('#req_result_text_row').attr('hidden',true);
+            $('#req_result_note_row').attr('hidden',true);
+
+            $('#req_ops_id_row').attr('hidden',true);
+            $('#req_ops_date_row').attr('hidden',true);
+            $('#req_ops_user_id_row').attr('hidden',true);
+
+            $('#req_result_status_id_row').attr('hidden',true);
+            $('#req_result_status_id').attr('disabled',true);
+
+            $('#tend_fia_status_id_row').attr('hidden',true);
+            $('#tend_fia_status_id').attr('disabled',true);
+
+            $('#req_profit_predict').attr('readonly',true);
+
+            $('#req_doc_number_row').attr('hidden', true);
+            $('#req_doc_end_date_row').attr('hidden', true);
+            $('#req_doc_start_date_row').attr('hidden', true);
+            $('#req_work_start_date_row').attr('hidden', true);
+
+            $('#req_work_note_row').attr('hidden', true);
+        }
+//Работа с Тендером после OPS
+        else if($('#tenders_list_modal_mode').val() === '1' && $('#edit_type_id').val() === '3') {
+            $('#tenders_list_modal_cnt_id').attr('disabled',true);
+            $('#tenders_list_modal_ser_id').attr('disabled', true);
+
+            $('#req_type_id').removeAttr('required').attr('disabled', true);
+
+            $('#tenders_list_modal_user_id').attr('disabled', true);
+
+            $('#req_start_date').attr('disabled',true);
+            $('#req_start_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_end_date').attr('disabled',true);
+            $('#req_end_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_note').attr('readonly',true);
+
+            $('#req_tend_date').attr('disabled',true);
+            $('#req_tend_end_date').attr('disabled',true);
+            $('#req_tend_runway').attr('readonly',true);
+            $('#req_tend_autotype').attr('readonly',true);
+            $('#req_tend_count').attr('readonly',true);
+
+            $('#req_result_text_row').removeAttr('hidden');
+            $('#req_result_text').removeAttr('readonly');
+
+            $('#req_result_note_row').removeAttr('hidden');
+            $('#req_result_note').removeAttr('readonly');
+
+            $('#req_ops_id_row').removeAttr('hidden');
+            $('#req_ops_id').attr('readonly',true);
+
+            $('#req_ops_date_row').removeAttr('hidden');
+            $('#req_ops_date').attr('readonly',true);
+
+            $('#req_ops_user_id_row').removeAttr('hidden');
+            $('#req_ops_user_id').attr('disabled',true);
+
+            $('#req_ops_answer').attr('readonly',true);
+            $('#req_ops_note').attr('readonly',true);
+
+            $('#req_result_status_id_row').removeAttr('hidden');
+            $('#req_result_status_id').removeAttr('disabled');
+
+            $('#tend_fia_status_id_row').removeAttr('hidden');
+            $('#tend_fia_status_id').removeAttr('disabled');
+
+            $('#req_profit_predict').attr('min',50);
+            tenderFormStatusChange();
+            tenderFormResultStatusChange();
+
+            $('#req_doc_number_row').removeAttr('hidden');
+            $('#req_doc_end_date_row').removeAttr('hidden');
+            $('#req_doc_start_date_row').removeAttr('hidden');
+            $('#req_work_start_date_row').removeAttr('hidden');
+
+            $('#req_work_note_row').removeAttr('hidden');
+        }
+    }
+    //Get Requests Type
+    function tendersTypeChange(vMode, vTypeID) {
+        $('#req_type_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tenders/get_tender_type'}]]*/ "/tenders/get_tender_type",
+            type: "get",
+            data: {"mode": vMode
+            },
+            success: function (req_type_result) {
+                for (var i = 0; i < req_type_result.data.length; i++) {
+                    $("select[name='req_type_id']").find('option').end().append(
+                        "<option value='" + req_type_result.data[i].req_type_id + "'>" + req_type_result.data[i].req_type_sname + "</option>");
+                }
+                if(vTypeID != null){
+                    $('#req_type_id').val(vTypeID);
+                }
+            }
+        }));
+    }
+    //Get Users
+    let userPlaceHolder = 'Выберите сотрудника';
+    $('#tenders_list_modal_user_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: userPlaceHolder,
+            allowClear: true,
+            width: 'element',
+            dropdownAutoWidth: true
+        });
+
+    function tenderUserChange(vMode, vUSERID) {
+        $('#tenders_list_modal_user_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tenders/get_users'}]]*/ "/tenders/get_users",
+            type: "get",
+            data: {"mode": vMode,
+                "user_id": vUSERID
+            },
+            success: function (tenders_list_users_list_result) {
+                for (var i = 0; i < tenders_list_users_list_result.data.length; i++) {
+                    $("select[name='tenders_list_modal_user_id']").find('option').end().append(
+                        "<option value='" + tenders_list_users_list_result.data[i].id + "'>" + tenders_list_users_list_result.data[i].user_surname + "</option>");
+                }
+                if(vUSERID != null){
+                    $('#tenders_list_modal_user_id').val(vUSERID);
+                }
+            }
+        }));
+    }
+
+    //Client List
+    let clientsPlaceHolder = 'Выберите клиента';
+    $('#tenders_list_modal_cnt_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: clientsPlaceHolder,
+            allowClear: true,
+            width: 'element',
+            dropdownAutoWidth: true
+        });
+
+    function tenderClientChange(vMode, vClientID) {
+        $('#tenders_list_modal_cnt_id').empty();
+        $("select[name='tenders_list_modal_cnt_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tenders/get_client_list'}]]*/ "/tenders/get_client_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "cnt_id": vClientID
+            },
+            success: function (tenders_list_modal_client_list_result) {
+                for (var i = 0; i < tenders_list_modal_client_list_result.data.length; i++) {
+                    $("select[name='tenders_list_modal_cnt_id']").find('option').end().append(
+                        "<option value='" + tenders_list_modal_client_list_result.data[i].cnt_id + "'>" + tenders_list_modal_client_list_result.data[i].cnt_name + "</option>");
+                }
+                if(vClientID != null){
+                    $('#tenders_list_modal_cnt_id').val(vClientID);
+                }
+            }
+        }));
+    }
+
+    //Services
+    function tenderServiceChange(vMode, vServiceID) {
+        $('#tenders_list_modal_ser_id').empty();
+        $("select[name='tenders_list_modal_ser_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tenders/get_service_type'}]]*/ "/tenders/get_service_type",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (tenders_list_modal_ser_list_result) {
+                for (var i = 0; i < tenders_list_modal_ser_list_result.data.length; i++) {
+                    $("select[name='tenders_list_modal_ser_id']").find('option').end().append(
+                        "<option value='" + tenders_list_modal_ser_list_result.data[i].ser_id + "'>" + tenders_list_modal_ser_list_result.data[i].ser_name + "</option>");
+                }
+                if(vServiceID != null){
+                    $('#tenders_list_modal_ser_id').val(vServiceID);
+                }
+            }
+        }));
+    }
+
+    //Status
+    function tenderStatusChange(vMode, vEditTypeID, vStatusID) {
+        $('#tend_status_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tenders/get_status_list'}]]*/ "/tenders/get_status_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "edit_type_id": vEditTypeID
+            },
+            success: function (tend_status_list) {
+                for (var i = 0; i < tend_status_list.data.length; i++) {
+                    $("select[name='tend_status_id']").find('option').end().append(
+                        "<option value='" + tend_status_list.data[i].tend_status_id + "'>" + tend_status_list.data[i].tend_status_sname + "</option>");
+                }
+                if(vStatusID != null){
+                    $('#tend_status_id').val(vStatusID);
+                }
+            }
+        }));
+    }
+
+    function requestsOPSUserChange(vMode, vEditTypeID, vOPSUserID) {
+        $('#req_ops_user_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tenders/get_ops_users'}]]*/ "/tenders/get_ops_users",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "edit_type_id": vEditTypeID
+            },
+            success: function (tenders_list_ops_users_list_result) {
+                for (var i = 0; i < tenders_list_ops_users_list_result.data.length; i++) {
+                    $("select[name='req_ops_user_id']").find('option').end().append(
+                        "<option value='" + tenders_list_ops_users_list_result.data[i].id + "'>" + tenders_list_ops_users_list_result.data[i].user_surname + "</option>");
+                }
+                if(vOPSUserID != null){
+                    $('#req_ops_user_id').val(vOPSUserID);
+                }
+            }
+        }));
+    }
+
+    //Result Status
+    function tenderResultStatusChange(vMode, vResultStatusID) {
+        $('#req_result_status_id').empty();
+        $("select[name='req_result_status_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tenders/get_result_status_list'}]]*/ "/tenders/get_result_status_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (tend_result_status_list) {
+                for (var i = 0; i < tend_result_status_list.data.length; i++) {
+                    $("select[name='req_result_status_id']").find('option').end().append(
+                        "<option value='" + tend_result_status_list.data[i].req_tend_status_id + "'>" + tend_result_status_list.data[i].req_tend_status_sname + "</option>");
+                }
+                if(vResultStatusID != null){
+                    $('#req_result_status_id').val(vResultStatusID);
+                }
+            }
+        }));
+    }
+
+    //Fiasco Status
+    function tenderFiascoChange(vMode, vFiascoStatusID) {
+        $('#tend_fia_status_id').empty();
+        $("select[name='tend_fia_status_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tenders/get_fiasco_status'}]]*/ "/tenders/get_fiasco_status",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (req_fia_status_list_result) {
+                for (var i = 0; i < req_fia_status_list_result.data.length; i++) {
+                    $("select[name='tend_fia_status_id']").find('option').end().append(
+                        "<option value='" + req_fia_status_list_result.data[i].req_fia_status_id + "'>" + req_fia_status_list_result.data[i].req_fia_status_name + "</option>");
+                }
+                if(vFiascoStatusID != null){
+                    $('#tend_fia_status_id').val(vFiascoStatusID);
+                }
+            }
+        }));
+    }
+
+    // Clear Fields
+    function clear_tenders_list_modal_detail() {
+        $("#tenders_list_modal_detail input[type=text]").val('').removeAttr('required').removeAttr('readonly');
+        $("#tenders_list_modal_detail input[type=number]").val('').removeAttr('required').removeAttr('readonly');
+        $("#tenders_list_modal_detail select").empty().removeAttr('required').removeAttr('disabled');
+        $("#tenders_list_modal_detail textarea").val('').removeAttr('required').removeAttr('readonly');
+    }
+
+    // Block And Required Fields
+    function block_tenders_list_modal_detail() {
+        let TenderDay = new Date().toLocaleDateString('ru');
+        $('#tenders_list_modal_cnt_id').attr('required', true);
+        $('#tenders_list_modal_ser_id').attr('required', true);
+        $('#tenders_list_modal_user_id').attr('required', true);
+        $('#req_tend_runway').attr('required',true);
+        $('#req_tend_autotype').attr('required',true);
+        $('#req_tend_count').attr('required',true);
+
+        $('#req_id').attr('readonly',true);
+        $('#req_name').attr('readonly',true);
+
+        $('#req_ops_id').attr('readonly',true);
+        $('#req_ops_date').attr('readonly',true);
+        $('#req_ops_user_id').attr('disabled',true);
+
+        if($('#tenders_list_modal_mode').val() === '0'){
+            $('#req_id_row').attr('hidden', true);
+            $('#req_name_row').attr('hidden', true);
+
+            $('#req_start_date').empty().val(TenderDay);
+
+            $('#req_end_date').empty().val('');
+
+            $('#req_result_text_row').attr('hidden',true);
+            $('#req_result_note_row').attr('hidden',true);
+            $('#req_ops_id_row').attr('hidden',true);
+            $('#req_ops_date_row').attr('hidden',true);
+            $('#req_ops_user_id_row').attr('hidden',true);
+            $('#req_ops_answer_row').attr('hidden',true);
+            $('#req_ops_note_row').attr('hidden',true);
+
+            $('#req_type_id_row').attr('hidden',true);
+
+            $('#req_result_status_id_row').attr('hidden',true);
+            $('#tend_fia_status_id_row').attr('hidden',true);
+
+            $('#req_profit_predict').attr('required', true).prop('min',50);
+
+            $('#req_doc_number_row').attr('hidden', true);
+            $('#req_doc_end_date_row').attr('hidden', true);
+            $('#req_doc_start_date_row').attr('hidden', true);
+            $('#req_work_start_date_row').attr('hidden', true);
+
+            $('#req_work_note_row').attr('hidden', true);
+        }
+        /*Редактирование Тендера*/
+        else if($('#tenders_list_modal_mode').val() === '1'){
+            TypeChange();
+            $('#tenders_list_modal_cnt_id').removeAttr('disabled');
+
+            $('#tenders_list_modal_ser_id').removeAttr('disabled');
+            $('#req_type_id').removeAttr('disabled');
+            $('#tenders_list_modal_user_id').removeAttr('disabled');
+
+            $('#req_start_date').removeAttr('disabled');
+            $('#req_start_date_x').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#req_end_date').removeAttr('disabled');
+            $('#req_end_date_x').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#req_note').removeAttr('readonly');
+
+            $('#req_tend_runway').removeAttr('disabled');
+
+            $('#req_tend_autotype').removeAttr('readonly');
+            $('#req_tend_count').removeAttr('readonly');
+
+            $('#req_ops_id').removeAttr('readonly');
+            $('#req_ops_date').removeAttr('readonly');
+            $('#req_ops_user_id').removeAttr('disabled');
+            $('#req_ops_answer').removeAttr('readonly');
+            $('#req_ops_note').removeAttr('readonly');
+
+            $('#tend_status_id').removeAttr('disabled');
+            $('#req_result_text').removeAttr('readonly');
+            $('#req_result_note').removeAttr('readonly');
+
+            $('#req_result_status_id').prop('disabled', false);
+            $('#tend_fia_status_id').prop('disabled', false);
+
+            $('#req_profit_predict').removeAttr('readonly');
+
+            $('#req_doc_number_row').removeAttr('hidden');
+            $('#req_doc_number').removeAttr('readonly');
+
+            $('#req_doc_start_date_row').removeAttr('hidden');
+            $('#req_doc_start_date').removeAttr('disabled');
+            $('#req_doc_start_date_x').prop('disabled', false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#req_doc_end_date_row').removeAttr('hidden');
+            $('#req_doc_end_date').removeAttr('disabled');
+            $('#req_doc_end_date_x').prop('disabled', false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#req_work_start_date_row').removeAttr('hidden');
+            $('#req_work_start_date').removeAttr('disabled');
+            $('#req_work_start_date_x').prop('disabled', false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#req_work_note_row').removeAttr('hidden');
+            $('#req_work_note').removeAttr('readonly');
+        }
+        /*Удаление Тендера*/
+        else if($('#tenders_list_modal_mode').val() === '2'){
+            TypeChange();
+            $('#tenders_list_modal_cnt_id').attr('disabled',true);
+
+            $('#tenders_list_modal_ser_id').attr('disabled', true);
+            $('#req_type_id').attr('disabled',true);
+            $('#req_id').attr('readonly',true);
+            $('#tenders_list_modal_user_id').attr('disabled',true);
+
+            $('#req_name').attr('readonly',true);
+
+            $('#req_start_date').attr('disabled',true);
+            $('#req_start_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_end_date').attr('disabled',true);
+            $('#req_end_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_note').attr('readonly',true);
+
+            $('#req_tend_runway').attr('disabled',true);
+
+            $('#req_tend_autotype').attr('readonly',true);
+            $('#req_tend_count').attr('readonly',true);
+
+            $('#req_ops_id').attr('readonly',true);
+            $('#req_ops_date').attr('readonly',true);
+            $('#req_ops_user_id').attr('disabled',true);
+            $('#req_ops_answer').attr('readonly',true);
+            $('#req_ops_note').attr('readonly',true);
+
+            $('#tend_status_id').attr('disabled',true);
+            $('#req_result_text').attr('readonly', true);
+            $('#req_result_note').attr('readonly', true);
+
+            $('#req_result_status_id').prop('disabled', true);
+            $('#tend_fia_status_id').prop('disabled', true);
+
+            $('#req_profit_predict').attr('readonly', true);
+
+            $('#req_doc_number').attr('readonly', true);
+
+            $('#req_doc_start_date').attr('disabled', true);
+            $('#req_doc_start_date_x').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_doc_end_date').attr('disabled', true);
+            $('#req_doc_end_date_x').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_work_start_date').attr('disabled', true);
+            $('#req_work_start_date_x').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_work_note').attr('readonly', true);
+        }
+        /*Просмотр Тендера*/
+        else if($('#tenders_list_modal_mode').val() === '4'){
+            TypeChange();
+            $('#tenders_list_modal_cnt_id').attr('disabled',true);
+
+            $('#tenders_list_modal_ser_id').attr('disabled', true);
+            $('#req_type_id').attr('disabled',true);
+            $('#req_id').attr('disabled',true);
+            $('#tenders_list_modal_user_id').attr('disabled',true);
+
+            $('#req_name').attr('readonly',true);
+
+            $('#req_note').attr('disabled',true);
+
+            $('#req_start_date').attr('disabled',true);
+            $('#req_start_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_end_date').attr('disabled',true);
+            $('#req_end_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_tend_runway').attr('disabled',true);
+            $('#req_tend_autotype').attr('disabled',true);
+            $('#req_tend_count').attr('disabled',true);
+
+            $('#req_ops_id').attr('readonly',true);
+            $('#req_ops_date').attr('readonly',true);
+            $('#req_ops_user_id').attr('disabled',true);
+            $('#req_ops_answer').attr('readonly',true);
+            $('#req_ops_note').attr('readonly',true);
+
+            $('#tend_status_id').attr('disabled',true);
+            $('#req_result_text').attr('readonly', true);
+            $('#req_result_note').attr('readonly', true);
+
+            $('#req_result_status_id').prop('disabled', true);
+            $('#tend_fia_status_id').prop('disabled', true);
+
+            $('#req_profit_predict').attr('readonly', true);
+
+            $('#req_doc_number').attr('readonly', true);
+
+            $('#req_doc_start_date').attr('disabled', true);
+            $('#req_doc_start_date_x').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_doc_end_date').attr('disabled', true);
+            $('#req_doc_end_date_x').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_work_start_date').attr('disabled', true);
+            $('#req_work_start_date_x').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_work_note').attr('readonly', true);
+        }
+    }
+
+    // Load Function
+    function fill_tenders_list_modal_detail(aMode) {
+        clear_tenders_list_modal_detail();
+        $('#tenders_list_modal_mode').val(aMode);
+        block_tenders_list_modal_detail();
+
+        if (aMode !== 0) {
+            $.ajax({
+                url:/*[[@{'/tenders/get_tender_detail'}]]*/ "tenders/get_tender_detail",
+                type: "get",
+                data: {
+                    "mode": aMode,
+                    "req_id": vTenderListValue.rowdata.req_id
+                },
+                success: function (tenders_list_modal_detail_result) {
+                    $.when(
+                        tendersTypeChange(aMode),
+                        tenderUserChange(aMode, tenders_list_modal_detail_result.data[0].user_id),
+                        tenderClientChange(aMode, tenders_list_modal_detail_result.data[0].cnt_id),
+                        tenderServiceChange(aMode, tenders_list_modal_detail_result.data[0].ser_id),
+                        tenderStatusChange(aMode, tenders_list_modal_detail_result.data[0].edit_type_id, tenders_list_modal_detail_result.data[0].tend_status_id),
+                        requestsOPSUserChange(aMode, tenders_list_modal_detail_result.data[0].edit_type_id, tenders_list_modal_detail_result.data[0].req_ops_user_id),
+                        tenderResultStatusChange(aMode, tenders_list_modal_detail_result.data[0].req_result_status_id),
+                        tenderFiascoChange(aMode, tenders_list_modal_detail_result.data[0].tend_fia_status_id)
+                    ).then(function () {
+                        $('#edit_type_id').val(tenders_list_modal_detail_result.data[0].edit_type_id);
+                        $('#req_id').val(tenders_list_modal_detail_result.data[0].req_id);
+                        $('#req_name').val(tenders_list_modal_detail_result.data[0].req_name);
+
+                        $('#req_note').val(tenders_list_modal_detail_result.data[0].req_note);
+                        $('#req_start_date').val(tenders_list_modal_detail_result.data[0].req_tend_date);
+                        $('#req_end_date').val(tenders_list_modal_detail_result.data[0].req_tend_end_date);
+                        $('#req_tend_runway').val(tenders_list_modal_detail_result.data[0].req_tend_runway);
+                        $('#req_tend_autotype').val(tenders_list_modal_detail_result.data[0].req_tend_autotype);
+                        $('#req_tend_count').val(tenders_list_modal_detail_result.data[0].req_tend_count);
+                        $('#req_profit_predict').val(tenders_list_modal_detail_result.data[0].req_profit_predict);
+
+                        $('#req_ops_id').val(tenders_list_modal_detail_result.data[0].req_ops_id);
+                        $('#req_ops_date').val(tenders_list_modal_detail_result.data[0].req_ops_date);
+                        $('#req_ops_answer').val(tenders_list_modal_detail_result.data[0].req_ops_answer);
+                        $('#req_ops_note').val(tenders_list_modal_detail_result.data[0].req_ops_note);
+
+                        $('#req_result_text').val(tenders_list_modal_detail_result.data[0].req_result_text);
+                        $('#req_result_note').val(tenders_list_modal_detail_result.data[0].req_result_note);
+                        $('#req_doc_number').val(tenders_list_modal_detail_result.data[0].req_doc_number);
+                        $('#req_doc_start_date').val(tenders_list_modal_detail_result.data[0].req_doc_start_date);
+                        $('#req_doc_end_date').val(tenders_list_modal_detail_result.data[0].req_doc_end_date);
+                        $('#req_work_start_date').val(tenders_list_modal_detail_result.data[0].req_work_start_date);
+                        $('#req_work_note').val(tenders_list_modal_detail_result.data[0].req_work_note);
+
+                        editFiledsShow();
+                        $('#tenders_list_modal').modal('show');
+                    });
+                }
+            });
+        } else {
+            $.when(
+                tendersTypeChange(aMode),
+                tenderUserChange(aMode),
+                tenderClientChange(aMode),
+                tenderServiceChange(aMode),
+                tenderStatusChange(aMode, 0, 2)
+            ).then(function () {
+                $('#tenders_list_modal').modal('show');
+            });
+        }
+    }
+
+    $("#req_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "showWeekNumbers": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#req_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "showWeekNumbers": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#req_doc_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#req_doc_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#req_work_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    //Validation Form
+    $('#tenders_list_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function(error,element) {
+            return true;
+        },
+        submitHandler: function (form) {
+//Добавление
+            if($('#tenders_list_modal_mode').val() === '0') {
+                addTendersModal();
+            }
+//Редактирование Менеджером
+            else if($('#tenders_list_modal_mode').val() === '1' && $('#edit_type_id').val()  === '1') {
+                editUserTendersModal();
+            }
+//Редактирование OPS
+            else if($('#tenders_list_modal_mode').val() === '1' && $('#edit_type_id').val()  === '2') {
+                editOPSTendersModal();
+            }
+//Редактирование после OPS
+            else if($('#tenders_list_modal_mode').val() === '1' && $('#edit_type_id').val()  === '3') {
+                editAfterOPSTendersModal();
+            }
+//Удаление
+            else if($('#tenders_list_modal_mode').val() === '2') {
+                delTendersModal();
+            }
+            return false;
+        }
+    });
+
+    // Add Function
+    function addTendersModal(){
+        let RowID = vTenderListValue.rowdata.req_id;
+        $.ajax({
+            url: /*[[ @{/tenders/add_tender} ]]*/ "/tenders/add_tender",
+            type: 'POST',
+            data: {
+                "cnt_id": $('#tenders_list_modal_cnt_id').val(),
+                "req_type_id":  $('#req_type_id').val(),
+                "user_id":  $('#tenders_list_modal_user_id').val(),
+                "ser_id":  $('#tenders_list_modal_ser_id').val(),
+                "req_note":  $('#req_note').val(),
+                "req_start_date":  $('#req_start_date').val(),
+                "req_end_date":  $('#req_end_date').val(),
+                "req_tend_runway":  $('#req_tend_runway').val(),
+                "req_tend_autotype":  $('#req_tend_autotype').val(),
+                "req_tend_count":  $('#req_tend_count').val(),
+                "tend_status_id":  $('#tend_status_id').val(),
+                "req_profit_predict":  $('#req_profit_predict').val()
+            },
+            success: function (result) {
+                $('#tenders_list_modal').modal('hide');
+                vTenderListValue.rowdata.req_id = RowID;
+                $(vTenderListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    // Edit User Function
+    function editUserTendersModal(){
+        let RowID = vTenderListValue.rowdata.req_id;
+        $.ajax({
+            url: /*[[ @{/tenders/edit_user_tender} ]]*/ "/tenders/edit_user_tender",
+            type: 'POST',
+            data: {
+                "req_id": RowID,
+                "cnt_id": $('#tenders_list_modal_cnt_id').val(),
+                "req_type_id":  $('#req_type_id').val(),
+                "user_id":  $('#tenders_list_modal_user_id').val(),
+                "ser_id":  $('#tenders_list_modal_ser_id').val(),
+                "req_note":  $('#req_note').val(),
+                "req_start_date":  $('#req_start_date').val(),
+                "req_end_date":  $('#req_end_date').val(),
+                "req_tend_runway":  $('#req_tend_runway').val(),
+                "req_tend_autotype":  $('#req_tend_autotype').val(),
+                "req_tend_count":  $('#req_tend_count').val(),
+                "tend_status_id":  $('#tend_status_id').val(),
+                "req_profit_predict":  $('#req_profit_predict').val()
+            },
+            success: function (result) {
+                $('#tenders_list_modal').modal('hide');
+                vTenderListValue.rowdata.req_id = RowID;
+                $(vTenderListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    // Edit OPS Function
+    function editOPSTendersModal(){
+        let RowID = vTenderListValue.rowdata.req_id;
+        $.ajax({
+            url: /*[[ @{/tenders/edit_ops_tender} ]]*/ "/tenders/edit_ops_tender",
+            type: 'POST',
+            data: {
+                "req_id": RowID,
+                "req_ops_answer": $('#req_ops_answer').val(),
+                "req_ops_note":  $('#req_ops_note').val(),
+                "tend_status_id":  $('#tend_status_id').val()
+            },
+            success: function (result) {
+                $('#tenders_list_modal').modal('hide');
+                vTenderListValue.rowdata.req_id = RowID;
+                $(vTenderListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    // Edit After OPS Function
+    function editAfterOPSTendersModal(){
+        let RowID = vTenderListValue.rowdata.req_id;
+        $.ajax({
+            url: /*[[ @{/tenders/edit_after_ops_tender} ]]*/ "/tenders/edit_after_ops_tender",
+            type: 'POST',
+            data: {
+                "req_id": RowID,
+                "tend_status_id": $('#tend_status_id').val(),
+                "req_end_date":  $('#req_end_date').val(),
+                "req_result_text":  $('#req_result_text').val(),
+                "req_result_status_id":  $('#req_result_status_id').val(),
+                "req_profit_predict":  $('#req_profit_predict').val(),
+                "req_result_note":  $('#req_result_note').val(),
+                "req_start_date":  $('#req_start_date').val(),
+                "user_id":  $('#user_id').val(),
+                "req_work_note":  $('#req_work_note').val(),
+                "req_doc_number":  $('#req_doc_number').val(),
+                "req_doc_start_date":  $('#req_doc_start_date').val(),
+                "req_doc_end_date":  $('#req_doc_end_date').val(),
+                "req_work_start_date":  $('#req_work_start_date').val(),
+                "tend_fia_status_id":  $('#tend_fia_status_id').val()
+            },
+            success: function (result) {
+                $('#tenders_list_modal').modal('hide');
+                vTenderListValue.rowdata.req_id = RowID;
+                $(vTenderListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    // Edit After OPS Function
+    function delTendersModal(){
+        let RowID = vTenderListValue.rowdata.req_id;
+        $.ajax({
+            url: /*[[ @{/tenders/del_tender} ]]*/ "/tenders/del_tender",
+            type: 'POST',
+            data: {
+                "req_id": RowID
+            },
+            success: function (result) {
+                $('#tenders_list_modal').modal('hide');
+                vTenderListValue.rowdata.req_id = RowID;
+                $(vTenderListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    // Add button script
+    $('#tenders_list_modal_addbtn').on('click', function(){
+        $('#tenders_list_modal_form').submit();
+    });
+
+    // Edit button script
+    $('#tenders_list_modal_editbtn').on('click', function(){
+        $('#tenders_list_modal_form').submit();
+    });
+
+    // Del button script
+    $('#tenders_list_modal_delbtn').on('click', function(){
+        $('#tenders_list_modal_form').submit();
+    });
+
+
+
+    //Change Function
+    $("#tend_status_id").change( function() {
+        tenderFormStatusChange();
+    });
+
+    $("#req_result_status_id").change( function() {
+        tenderFormResultStatusChange();
+    });
+
+    $("#tenders_list_modal_ser_id").on('change', function() {
+        //var ddl = document.getElementById('ser_id');
+        //$("#req_name").val( $("#cnt_name").val()+": "+ ddl.options[ddl.options.selectedIndex].text);
+        TypeChange();
+    });
+</script>
+
+</body>
+</html>

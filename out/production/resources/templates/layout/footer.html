@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+  <body>
+
+    <span th:fragment="footer" th:remove="tag">
+      <!--/* Footer fragment */-->
+      <script th:src="@{/spark/dist/js/app.js}"></script>
+
+      <!-- Bootstrap Selectpicker -->
+      <script th:src="@{/js/bootstrap/bootstrap-select.min.js}"></script>
+
+      <!-- Optional JS modules -->
+      <script th:src="@{/js/datatables/datatables.min.js}"></script>
+      <script th:src="@{/js/datatables/moment-with-locales.min.js}"></script>
+      <script th:src="@{/js/datatables/date-de.js}"></script>
+
+      <!-- Optional JS modules -->
+      <script th:src="@{/js/idltd/datatable_template_1.js}"></script>
+
+      <!-- Chart JS -->
+      <script th:src="@{/js/chartjs/chart.funnel.js}"></script>
+
+
+      <script th:inline="javascript">
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+          if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("myBtn").style.display = "block";
+          } else {
+            document.getElementById("myBtn").style.display = "none";
+          }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+        }
+
+        document.addEventListener("DOMContentLoaded", function(event) {
+          var today=new Date().toLocaleDateString('ru');
+
+          var day = new Date().getDay();
+          var diff = new Date().getDate() - day + (day == 0 ? -6 : 1);
+          var monday = new Date(new Date().setDate(diff)).toLocaleDateString('ru');
+
+          $('#daterange').daterangepicker({
+            "showWeekNumbers": true,
+            "locale": {
+              "format": "DD.MM.YYYY",
+              "separator": " - ",
+              "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+              "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+              "fromLabel": "From",
+              "toLabel": "To",
+              "customRangeLabel": "Custom",
+              "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+              "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+              ],
+              "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+              ],
+              "firstDay": 1
+            },
+            "linkedCalendars": false,
+            "showCustomRangeLabel": false,
+            "startDate": monday,
+            "endDate": today,
+            "opens": "left"
+          });
+
+          $.ajax({
+            url: /*[[ @{/get_menu_content} ]]*/ "/get_menu_content",
+            type: 'GET',
+            data: {"menu_id": 1},
+            success: function (data){
+
+              function opsMenuChange() {
+                var RoleAllOps = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_SALEOPS","ROLE_CHIEFOPS","ROLE_SUPOPS","ROLE_OPEROPS")')}]]*/ null;
+                var RoleAdminOps = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_ADMIN","ROLE_GM","ROLE_SALEDIR")')}]]*/ null;
+                var RoleChiefOps = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_CHIEFOPS","ROLE_OPEROPS")')}]]*/ null;
+
+                if(RoleAllOps){
+                  $('#tms_menu').prop('hidden',false);
+                  $('#tms_li').prop('hidden',false);
+                  $('#transports_li').prop('hidden',false);
+
+                  $('#full_world_li').prop('hidden',false);
+                  $('#part_world_li').prop('hidden',false);
+                  $('#sea_ships_li').prop('hidden',false);
+                  $('#locals_li').prop('hidden',false);
+                  $('#brockers_li').prop('hidden',false);
+                }else{
+                  $('#full_world_li').prop('hidden',true);
+                  $('#part_world_li').prop('hidden',true);
+                  $('#sea_ships_li').prop('hidden',true);
+                  $('#locals_li').prop('hidden',true);
+                  $('#brockers_li').prop('hidden',true);
+                }
+
+              if(RoleChiefOps) {
+                $('#tms_costs_li').prop('hidden', false);
+                $('#tms_tasks_li').prop('hidden', false);
+                $('#tms_cars_li').prop('hidden', false);
+                $('#tms_trailers_li').prop('hidden', false);
+              }
+              else {
+                $('#tms_costs_li').prop('hidden', true);
+                $('#tms_tasks_li').prop('hidden', true);
+                $('#tms_cars_li').prop('hidden', true);
+                $('#tms_trailers_li').prop('hidden', true);
+              }
+
+                if(RoleAdminOps){
+                  $('#tms_menu').prop('hidden',false);
+                  $('#tms_li').prop('hidden',false);
+                  $('#transports_li').prop('hidden',false);
+                  $('#full_world_li').prop('hidden',false);
+
+                  $('#part_world_li').prop('hidden',false);
+                  $('#sea_ships_li').prop('hidden',false);
+                  $('#locals_li').prop('hidden',false);
+                  $('#brockers_li').prop('hidden',false);
+
+                  $('#tms_costs_li').prop('hidden', false);
+                  $('#tms_tasks_li').prop('hidden', false);
+                  $('#tms_cars_li').prop('hidden', false);
+                  $('#tms_trailers_li').prop('hidden', false);
+                }
+              }
+
+              $.each(data, function(key, value){
+                if(value.hidden === 1){
+                  $('#'+value.mc_int_name).removeClass('d-flex').addClass('d-none');
+                }
+
+                $('#'+value.mc_int_name).addClass('order-'+value.order_num);
+                /*Костыль*/
+                if(value.hidden === 1 && value.mc_int_name == 'product_bar_div'){
+                  $('#sale_funnel_div').removeClass('d-flex').addClass('d-none');
+                }
+                if(value.mc_int_name == 'product_bar_div'){
+                  $('#sale_funnel_div').addClass('order-'+value.order_num);
+                }
+              });
+
+              opsMenuChange();
+            }
+          });
+        });
+<!-- Data Range -->
+
+        $(document).ready(function (){
+          $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            $($.fn.dataTable.tables(true)).DataTable().columns.adjust().draw();
+          });
+
+          $(".collapse").on('show.bs.collapse', function(e) {
+            if ($(this).is(e.target)) {
+              if($($.fn.dataTable.tables(true)).length > 0) {
+                $($.fn.dataTable.tables(true)).DataTable().columns.adjust().draw();
+              }
+            }
+          });
+
+          $.fn.setCursorPosition = function(pos) {
+            this.each(function(index, elem) {
+              if (elem.setSelectionRange) {
+                elem.setSelectionRange(pos, pos);
+              } else if (elem.createTextRange) {
+                var range = elem.createTextRange();
+                range.collapse(true);
+                range.moveEnd('character', pos);
+                range.moveStart('character', pos);
+                range.select();
+              }
+            });
+            return this;
+          };
+
+          var csrf = {
+            header: /*[[ ${_csrf.headerName} ]]*/ 'fake-csrf-header-name',
+            token: /*[[ ${_csrf.token} ]]*/ 'fake-csrf-token'
+          };
+          var headers = {};
+          headers[csrf.header] = csrf.token;
+          $.ajaxSetup({
+            headers: headers
+          });
+
+          $(".workplaceSwitcher a").on('click', function( event ) {
+            $.ajax({
+              url: /*[[ @{/api/set_workplace} ]]*/ "api/set_workplace",
+              data: {
+                wp_id: $(this).attr("wp_id")
+              },
+              type: 'POST',
+              success: function (result) {
+                location.reload();
+              }
+            });
+            return false;
+          });
+
+          $(".languageSwitcher a").on({
+            click: function () {
+              $.ajax({
+                url: /*[[ @{/} ]]*/ ".",
+                data: {
+                  lang: $(this).attr("data-lang")
+                },
+                type: 'POST',
+                success: function (result) {
+                  location.reload();
+                }
+              });
+              return false;
+            }
+          });
+
+          //check session
+          var timerId = setTimeout(function tick() {
+            $.ajax({
+              url: /*[[ @{/sessioncheck} ]]*/ "/sessioncheck",
+              type: 'POST',
+              dataType: "text",
+              success : function (data, textStatus){
+                if (data == "Active") timerId = setTimeout(tick, 300000);
+                else location.reload();
+              },
+              error: function(XMLHttpRequest, textStatus, errorThrown) {
+//          alert("Status: " + textStatus); alert("Error: " + errorThrown);
+                document.location.assign(/*[[ @{/logout} ]]*/ "/logout");
+              }
+            });
+          }, 300000);
+
+          var currYear = new Date().getFullYear();
+          var date = new Date();
+          var today = date.toLocaleDateString('ru');
+
+          var day = date.getDay();
+          var diff = date.getDate() - day + (day == 0 ? -6 : 1);
+          var monday = new Date(date.setDate(diff)).toLocaleDateString('ru');
+
+          if (window.screen.width < 1024 && window.screen.height < 768) {
+            $('#daterange').attr('readonly',true);
+          }
+<!-- /# Data Range Create -->
+
+        function CreateMainIndex (aStartDate, aEndDate) {
+            $.ajax({
+              url: /*[[ @{/get_main_index} ]]*/ "/get_main_index",
+              type: 'GET',
+              data: {
+                "start_date": aStartDate,
+                "end_date": aEndDate
+              },
+              success: function (data) {
+                if(data[0].act_sign === 1){
+                  $('#action_card').addClass('bg-success').removeClass('bg-danger').removeClass('bg-dark');
+                  $('#action_icon').addClass('icon-success').removeClass('icon-danger').removeClass('icon-dark');
+                  $('#action_text').empty().append(data[0].act_count);
+                  $('#action_priv_text').empty().append(data[0].act_sec_count);
+                }
+                else if(data[0].act_sign === -1){
+                  $('#action_card').addClass('bg-danger').removeClass('bg-success').removeClass('bg-dark');
+                  $('#action_icon').addClass('icon-danger').removeClass('icon-success').removeClass('icon-dark');
+                  $('#action_text').empty().append(data[0].act_count);
+                  $('#action_priv_text').empty().append(data[0].act_sec_count);
+                }
+                else{
+                  $('#action_card').addClass('bg-dark').removeClass('bg-success').removeClass('bg-danger');
+                  $('#action_icon').addClass('icon-dark').removeClass('icon-success').removeClass('icon-danger');
+                  $('#action_text').empty().append(data[0].act_count);
+                  $('#action_priv_text').empty().append(data[0].act_sec_count);
+                }<!-- Actions -->
+
+                if(data[0].req_sign === 1){
+                  $('#request_card').addClass('bg-success').removeClass('bg-danger').removeClass('bg-dark');
+                  $('#request_icon').addClass('icon-success').removeClass('icon-danger').removeClass('icon-dark');
+                  $('#request_text').empty().append(data[0].req_count);
+                  $('#request_priv_text').empty().append(data[0].req_sec_count);
+                }
+                else if(data[0].req_sign === -1){
+                  $('#request_card').addClass('bg-danger').removeClass('bg-success').removeClass('bg-dark');
+                  $('#request_icon').addClass('icon-danger').removeClass('icon-success').removeClass('icon-dark');
+                  $('#request_text').empty().append(data[0].req_count);
+                  $('#request_priv_text').empty().append(data[0].req_sec_count);
+                }
+                else{
+                  $('#request_card').addClass('bg-dark').removeClass('bg-success').removeClass('bg-danger');
+                  $('#request_icon').addClass('icon-dark').removeClass('icon-success').removeClass('icon-danger');
+                  $('#request_text').empty().append(data[0].req_count);
+                  $('#request_priv_text').empty().append(data[0].req_sec_count);
+                }<!-- Requests -->
+
+                if(data[0].tend_sign === 1){
+                  $('#tender_card').addClass('bg-success').removeClass('bg-danger').removeClass('bg-dark');
+                  $('#tender_icon').addClass('icon-success').removeClass('icon-danger').removeClass('icon-dark');
+                  $('#tender_text').empty().append(data[0].tend_count);
+                  $('#tender_priv_text').empty().append(data[0].tend_sec_count);
+                }
+                else if(data[0].tend_sign === -1){
+                  $('#tender_card').addClass('bg-danger').removeClass('bg-success').removeClass('bg-dark');
+                  $('#tender_icon').addClass('icon-danger').removeClass('icon-success').removeClass('icon-dark');
+                  $('#tender_text').empty().append(data[0].tend_count);
+                  $('#tender_priv_text').empty().append(data[0].tend_sec_count);
+                }
+                else{
+                  $('#tender_card').addClass('bg-dark').removeClass('bg-success').removeClass('bg-danger');
+                  $('#tender_icon').addClass('icon-dark').removeClass('icon-success').removeClass('icon-danger');
+                  $('#tender_text').empty().append(data[0].tend_count);
+                  $('#tender_priv_text').empty().append(data[0].tend_sec_count);
+                }<!-- Tenders -->
+
+                if(data[0].prod_sign === 1){
+                  $('#product_card').addClass('bg-success').removeClass('bg-danger').removeClass('bg-dark');
+                  $('#product_icon').addClass('icon-success').removeClass('icon-danger').removeClass('icon-dark');
+                  $('#product_text').empty().append(data[0].prod_count);
+                  $('#product_priv_text').empty().append(data[0].prod_sec_count);
+                }
+                else if(data[0].prod_sign === -1){
+                  $('#product_card').addClass('bg-danger').removeClass('bg-success').removeClass('bg-dark');
+                  $('#product_icon').addClass('icon-danger').removeClass('icon-success').removeClass('icon-dark');
+                  $('#product_text').empty().append(data[0].prod_count);
+                  $('#product_priv_text').empty().append(data[0].prod_sec_count);
+                }
+                else {
+                  $('#product_card').addClass('bg-dark').removeClass('bg-success').removeClass('bg-danger');
+                  $('#product_icon').addClass('icon-dark').removeClass('icon-success').removeClass('icon-danger');
+                  $('#product_text').empty().append(data[0].prod_count);
+                  $('#product_priv_text').empty().append(data[0].prod_sec_count);
+                }<!-- Products -->
+
+                if(data[0].profit_sign === 1){
+                  $('#profit_card').addClass('bg-success').removeClass('bg-danger').removeClass('bg-dark');
+                  $('#profit_icon').addClass('icon-success').removeClass('icon-danger').removeClass('icon-dark');
+                  $('#profit_text').empty().append(data[0].profit_count);
+                  $('#profit_priv_text').empty().append(data[0].profit_sec_count);
+                }
+                else if(data[0].profit_sign === -1){
+                  $('#profit_card').addClass('bg-danger').removeClass('bg-success').removeClass('bg-dark');
+                  $('#profit_icon').addClass('icon-danger').removeClass('icon-success').removeClass('icon-dark');
+                  $('#profit_text').empty().append(data[0].profit_count);
+                  $('#profit_priv_text').empty().append(data[0].profit_sec_count);
+                }
+                else {
+                  $('#profit_card').addClass('bg-dark').removeClass('bg-success').removeClass('bg-danger');
+                  $('#profit_icon').addClass('icon-dark').removeClass('icon-success').removeClass('icon-danger');
+                  $('#profit_text').empty().append(data[0].profit_count);
+                  $('#profit_priv_text').empty().append(data[0].profit_sec_count);
+                }<!-- Profit -->
+
+                if(data[0].tms_sign === 1){
+                  $('#tms_card').addClass('bg-success').removeClass('bg-danger').removeClass('bg-dark');
+                  $('#tms_icon').addClass('icon-success').removeClass('icon-danger').removeClass('icon-dark');
+                  $('#tms_text').empty().append(data[0].tms_count);
+                  $('#tms_priv_text').empty().append(data[0].tms_sec_count);
+                }
+                else if(data[0].profit_sign === -1){
+                  $('#tms_card').addClass('bg-danger').removeClass('bg-success').removeClass('bg-dark');
+                  $('#tms_icon').addClass('icon-danger').removeClass('icon-success').removeClass('icon-dark');
+                  $('#tms_text').empty().append(data[0].tms_count);
+                  $('#tms_priv_text').empty().append(data[0].tms_sec_count);
+                }
+                else {
+                  $('#tms_card').addClass('bg-dark').removeClass('bg-success').removeClass('bg-danger');
+                  $('#tms_icon').addClass('icon-dark').removeClass('icon-success').removeClass('icon-danger');
+                  $('#tms_text').empty().append(data[0].tms_count);
+                  $('#tms_priv_text').empty().append(data[0].tms_sec_count);
+                }<!-- TMS -->
+              }
+            });
+          }
+<!-- /#Main Index-->
+        function CreateIndexChart (aID, aStartDate, aEndDate) {
+            $('#index-list-graph').remove();
+            $('#par-index-list-graph').append('<canvas id="index-list-graph"></canvas>');
+
+            var labelPoints = [];
+            var dataPoints1 = [];
+
+            $.ajax({
+              url: /*[[ @{/get_index_list_graph} ]]*/ "/get_index_list_graph",
+              type: 'GET',
+              data: {
+                "id": aID,
+                "start_date": aStartDate,
+                "end_date": aEndDate
+              },
+              success: function (data) {
+                $.each(data, function(key, value){
+                  labelPoints.push(value.labels);
+                  dataPoints1.push(value.data1);
+                });
+
+                new Chart($("#index-list-graph"), {
+                  type: "line",
+                  data: {
+                    labels: labelPoints,
+                    datasets: [{
+                      label:  'value',
+                      steppedLine: false,
+                      data: dataPoints1,
+                      borderColor: "#0a6ebd",
+                      backgroundColor: "#55b0f6",
+                      fill: true
+                    }
+                    ]
+                  },
+                  options: {
+                    maintainAspectRatio: false,
+                    legend: {
+                      display: false
+                    },
+                    tooltips: {
+                      intersect: false
+                    },
+                    hover: {
+                      intersect: true
+                    },
+                    plugins: {
+                      filler: {
+                        propagate: false
+                      }
+                    },
+                    scales: {
+                      xAxes: [{
+                        reverse: true,
+                        gridLines: {
+                          color: "rgba(0,0,0,0.05)"
+                        }
+                      }],
+                      yAxes: [{
+                        display: true,
+                        borderDash: [5, 5],
+                        gridLines: {
+                          color: "rgba(0,0,0,0)",
+                          fontColor: "#fff"
+                        }
+                      }]
+                    }
+                  }
+                });
+              }
+            });
+          }
+<!-- /#Index Chart-->
+        function CreateSaleChart (aSaleChartYear) {
+          $('#chart-profit').remove();
+          $('#par-chart-profit').append('<canvas id="chart-profit"></canvas>');
+
+          var labelPoints = [
+            /*[[#{month.01_short}]]*/ "Jan",
+            /*[[#{month.02_short}]]*/ "Feb",
+            /*[[#{month.03_short}]]*/ "Mar",
+            /*[[#{month.04_short}]]*/ "Apr",
+            /*[[#{month.05_short}]]*/ "May",
+            /*[[#{month.06_short}]]*/ "Jun",
+            /*[[#{month.07_short}]]*/ "Jul",
+            /*[[#{month.08_short}]]*/ "Aug",
+            /*[[#{month.09_short}]]*/ "Sep",
+            /*[[#{month.10_short}]]*/ "Oct",
+            /*[[#{month.11_short}]]*/ "Nov",
+            /*[[#{month.12_short}]]*/ "Dec"
+          ];
+          var dataPoints1 = [];
+          var dataPoints2 = [];
+          var dataPoints3 = [];
+          var dataPoints4 = [];
+          var dataPoints5 = [];
+          var dataPoints6 = [];
+
+          $.ajax({
+            url: /*[[ @{/get_sale_result_chart} ]]*/ "/get_sale_result_chart",
+            type: 'GET',
+            data: { "year": aSaleChartYear},
+            success: function (data) {
+              $.each(data, function(key, value){
+                dataPoints1.push(value.data1);
+                dataPoints2.push(value.data2);
+                dataPoints3.push(value.data3);
+                dataPoints4.push(value.data4);
+                dataPoints5.push(value.data5);
+                dataPoints6.push(value.data6);
+              });
+
+              new Chart($("#chart-profit"), {
+                type: "line",
+                data: {
+                  labels: labelPoints,
+                  datasets: [
+                  {
+                    label: /*[[#{mainpage.salechart.label1}]]*/ 'Sale',
+                    steppedLine: false,
+                    data: dataPoints1,
+                    borderColor: "rgba(10,110,189,1)",
+                    backgroundColor:"rgba(85,176,246,0.5)"
+                  },
+                  {
+                      label: /*[[#{mainpage.salechart.label2}]]*/ 'Other',
+                      steppedLine: false,
+                      data: dataPoints2,
+                      borderColor: "rgba(178,178,178,1)",
+                      backgroundColor:"rgba(230,230,230,0.5)"
+                  },
+                    {
+                      label: /*[[#{mainpage.salechart.label3}]]*/  'Priv Sale',
+                      data: dataPoints3,
+                      borderColor: "rgba(61,165,245,0.8)",
+                      backgroundColor:"rgba(61,165,245,0.8)",
+                      fill: false,
+                      borderDash: [5, 5],
+                      hidden: true
+                    },
+                    {
+                      label: /*[[#{mainpage.salechart.label4}]]*/ 'Priv Other',
+                      data: dataPoints4,
+                      borderColor: "rgba(166,166,166,0.8)",
+                      backgroundColor:"rgba(166,166,166,0.8)",
+                      fill: false,
+                      borderDash: [5, 5],
+                      hidden: true
+                    },
+                    {
+                      label: /*[[#{mainpage.salechart.label5}]]*/ 'All',
+                      data: dataPoints5,
+                      borderColor: "rgba(255,191,0,0.8)",
+                      backgroundColor: "rgba(255,191,0,0.8)",
+                      fill: false,
+                      borderDash: [5, 5],
+                      hidden: true
+                    },
+                    {
+                      label: /*[[#{mainpage.salechart.label6}]]*/ 'Priv All',
+                      data: dataPoints6,
+                      borderColor: "rgba(204,163,0,0.8)",
+                      backgroundColor: "rgba(204,163,0,0.8)",
+                      fill: false,
+                      borderDash: [5, 5],
+                      hidden: true
+                    }
+                  ]
+                },
+                options: {
+                  maintainAspectRatio: false,
+                  legend: {
+                    position: 'top'
+                  },
+                  tooltips: {
+                    intersect: false
+                  },
+                  hover: {
+                    intersect: true
+                  },
+                  plugins: {
+                    filler: {
+                      propagate: false
+                    }
+                  },
+                  scales: {
+                    xAxes: [{
+                      reverse: true,
+                      gridLines: {
+                        color: "rgba(0,0,0,0.05)"
+                      }
+                    }],
+                    yAxes: [{
+                      display: true,
+                      borderDash: [5, 5],
+                      gridLines: {
+                        color: "rgba(0,0,0,0)",
+                        fontColor: "#fff"
+                      }
+                    }]
+                  }
+                }
+              });
+            }
+          });
+        }
+        $('#chart_profit_year').val(currYear);
+<!-- /#Sale Prod Graph -->
+        function CreateProdBar (aProdBarYear) {
+          $('#product-bar').remove();
+          $('#par-product-bar').append('<canvas id="product-bar"></canvas>');
+
+          var labelPoints = [];
+          var dataPoints1 = [];
+          var dataPoints2 = [];
+
+          $.ajax({
+            url: /*[[ @{/get_prod_result_bar} ]]*/ "/get_prod_result_bar",
+            type: 'GET',
+            data: { "year": aProdBarYear},
+            success: function (data) {
+              $.each(data, function(key, value){
+                labelPoints.push(value.labels);
+                dataPoints1.push(value.data1);
+                dataPoints2.push(value.data2);
+              });
+
+              new Chart($("#product-bar"), {
+                type: 'bar',
+                data: {
+                  labels: labelPoints,
+                  datasets: [{
+                    label: /*[[#{mainpage.prodbar.label1}]]*/ 'This Year',
+                    backgroundColor: window.theme.primary,
+                    borderColor: window.theme.primary,
+                    hoverBackgroundColor: window.theme.primary,
+                    hoverBorderColor: window.theme.primary,
+                    data: dataPoints1
+                  }, {
+                    label: /*[[#{mainpage.prodbar.label2}]]*/ 'Last Year',
+                    backgroundColor: "#E8EAED",
+                    borderColor: "#E8EAED",
+                    hoverBackgroundColor: "#E8EAED",
+                    hoverBorderColor: "#E8EAED",
+                    data: dataPoints2
+                  }]
+                },
+                options: {
+                  maintainAspectRatio: false,
+                  legend: {
+                    display: false
+                  },
+                  scales: {
+                    yAxes: [{
+                      gridLines: {
+                        display: false
+                      },
+                      stacked: false,
+                      ticks: {
+                        stepSize: 20
+                      }
+                    }],
+                    xAxes: [{
+                      barPercentage: .75,
+                      categoryPercentage: .5,
+                      stacked: false,
+                      gridLines: {
+                        color: "transparent"
+                      }
+                    }]
+                  }
+                }
+              });
+            }
+          });
+        }
+
+        $('#product_bar_year').val(currYear);
+<!-- /#Prod Bar Graph -->
+        function CreateSaleFunnel (aStartDate, aEndDate) {
+            $('#sale_funnel').remove();
+            $('#par-sale-funnel').append('<canvas id="sale_funnel"></canvas>');
+
+            var saleLabelPoints = [];
+            var saleDataPoints1 = [];
+
+            $.ajax({
+              url: /*[[ @{/get_sale_funnel} ]]*/ "/get_sale_funnel",
+              type: 'GET',
+              data: {
+                "start_date": aStartDate,
+                "end_date": aEndDate
+              },
+              success: function (data) {
+                $.each(data, function(key, value){
+                  saleLabelPoints.push(value.labels);
+                  saleDataPoints1.push(value.data1);
+                });
+
+                new Chart($("#sale_funnel"), {
+                  type: 'funnel',
+                  data: {
+                    labels: saleLabelPoints,
+                    datasets: [{
+                      data: saleDataPoints1,
+                      backgroundColor: [
+                        "#55b0f6",
+                        "#f4a688",
+                        "#ff6f69",
+                        "#41D492"
+                      ],
+                      hoverBackgroundColor: [
+                        "#55b0f6",
+                        "#f4a688",
+                        "#ff6f69",
+                        "#41D492"
+                      ]
+                    }]
+                  },
+                  options: {
+                    responsive: true,
+                    sort: 'desc',
+                    legend: {
+                      position: 'top'
+                    },
+                    animation: {
+                      animateScale: true,
+                      animateRotate: true
+                    }
+                  },
+                  callbacks: {
+                    title: function (tooltipItem, data) {
+                      return '';
+                    },
+                    label: function (tooltipItem, data) {
+                      return data.labels[tooltipItem.index] + ': ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                    }
+                  }
+                });
+              }
+            });
+          }
+<!-- /#Sale Funnel -->
+        function CreateRequestBar (aStartDate, aEndDate) {
+            $('#request_bar').remove();
+            $('#request-bar').append('<div id="request_bar"></div>');
+
+            var labelPoints = [];
+            var dataPoints1 = [];
+            var dataPoints2 = [];
+            var dataPoints3 = [];
+            var dataPoints4 = [];
+            var dataPoints5 = [];
+
+            $.ajax({
+              url: /*[[ @{/get_request_bar} ]]*/ "/get_request_bar",
+              type: 'GET',
+              data: {
+                "start_date": aStartDate,
+                "end_date": aEndDate
+              },
+              success: function (data) {
+                $.each(data, function (key, value) {
+                  labelPoints.push(value.labels);
+                  dataPoints1.push(value.data1);
+                  dataPoints2.push(value.data2);
+                  dataPoints3.push(value.data3);
+                  dataPoints4.push(value.data4);
+                  dataPoints5.push(value.data5);
+                });
+                // Bar chart
+                var options = {
+                  chart: {
+                    height: 350,
+                    type: "bar",
+                    stacked: true
+                  },
+                  plotOptions: {
+                    bar: {
+                      horizontal: true
+                    }
+                  },
+                  stroke: {
+                    width: 1,
+                    colors: ["#fff"]
+                  },
+                  series: [{
+                    name: /*[[#{mainpage.requestbar.succ}]]*/ 'Successed',
+                    data: dataPoints2
+                  }, {
+                    name: /*[[#{mainpage.requestbar.lose}]]*/ 'Losed',
+                    data: dataPoints3
+                  }, {
+                    name: /*[[#{mainpage.requestbar.can}]]*/ 'Canceled',
+                    data: dataPoints4
+                  }, {
+                    name:  /*[[#{mainpage.requestbar.fail}]]*/ 'Failed',
+                    data: dataPoints5
+                  }],
+                  xaxis: {
+                    categories: labelPoints,
+                    labels: {
+                      formatter: function(val) {
+                        return val
+                      }
+                    }
+                  },
+                  yaxis: {
+                    title: {
+                      text: undefined
+                    }
+                  },
+                  tooltip: {
+                    y: {
+                      formatter: function(val) {
+                        return val
+                      }
+                    }
+                  },
+                  fill: {
+                    opacity: 1
+                  },
+                  legend: {
+                    position: "top",
+                    horizontalAlign: "left",
+                    offsetX: 40
+                  },
+                  colors: [
+                    window.theme.success,
+                    window.theme.danger,
+                    window.theme.info,
+                    window.theme.warning
+                  ]
+                };
+                var chart = new ApexCharts(
+                        document.querySelector("#request_bar"),
+                        options
+                );
+                chart.render();
+              }
+            });
+          }
+<!-- /#Requests Bar -->
+        function CreateTenderBar (aStartDate, aEndDate) {
+            $('#tender_bar').remove();
+            $('#tender-bar').append('<div id="tender_bar"></div>');
+
+            var labelPoints = [];
+            var dataPoints1 = [];
+            var dataPoints2 = [];
+            var dataPoints3 = [];
+            var dataPoints4 = [];
+            var dataPoints5 = [];
+
+            $.ajax({
+              url: /*[[ @{/get_tender_bar} ]]*/ "/get_tender_bar",
+              type: 'GET',
+              data: {
+                "start_date": aStartDate,
+                "end_date": aEndDate
+              },
+              success: function (data) {
+                $.each(data, function (key, value) {
+                  labelPoints.push(value.labels);
+                  dataPoints1.push(value.data1);
+                  dataPoints2.push(value.data2);
+                  dataPoints3.push(value.data3);
+                  dataPoints4.push(value.data4);
+                  dataPoints5.push(value.data5);
+                });
+                // Bar chart
+                var options = {
+                  chart: {
+                    height: 350,
+                    type: "bar",
+                    stacked: true
+                  },
+                  plotOptions: {
+                    bar: {
+                      horizontal: true
+                    }
+                  },
+                  stroke: {
+                    width: 1,
+                    colors: ["#fff"]
+                  },
+                  series: [{
+                    name: /*[[#{mainpage.tenderbar.succ}]]*/ 'Successed',
+                    data: dataPoints2
+                  }, {
+                    name: /*[[#{mainpage.tenderbar.lose}]]*/ 'Losed',
+                    data: dataPoints3
+                  }, {
+                    name: /*[[#{mainpage.tenderbar.can}]]*/ 'Canceled',
+                    data: dataPoints4
+                  }, {
+                    name:  /*[[#{mainpage.tenderbar.fail}]]*/ 'Failed',
+                    data: dataPoints5
+                  }],
+                  xaxis: {
+                    categories: labelPoints,
+                    labels: {
+                      formatter: function(val) {
+                        return val
+                      }
+                    }
+                  },
+                  yaxis: {
+                    title: {
+                      text: undefined
+                    }
+                  },
+                  tooltip: {
+                    y: {
+                      formatter: function(val) {
+                        return val
+                      }
+                    }
+                  },
+                  fill: {
+                    opacity: 1
+                  },
+                  legend: {
+                    position: "top",
+                    horizontalAlign: "left",
+                    offsetX: 40
+                  },
+                  colors: [
+                    window.theme.success,
+                    window.theme.danger,
+                    window.theme.info,
+                    window.theme.warning
+                  ]
+                };
+                var chart = new ApexCharts(
+                        document.querySelector("#tender_bar"),
+                        options
+                );
+                chart.render();
+              }
+            });
+          }
+<!-- /#Tenders Bar -->
+        function CreateContWorldMap() {
+            $.ajax({
+              url: /*[[ @{/get_cont_world_map} ]]*/ "/get_cont_world_map",
+              type: 'GET',
+              data: {},
+              success: function (data) {
+                var mapValues = JSON.parse(data[0].labels);
+
+                $('#contragent_world_map').vectorMap({
+                  map: 'world_mill',
+                  backgroundColor: "transparent",
+                  zoomOnScroll: false,
+                  regionStyle: {
+                    initial: {
+                      fill: '#e4e4e4',
+                      "fill-opacity": 0.9,
+                      stroke: 'none',
+                      "stroke-width": 0,
+                      "stroke-opacity": 0
+                    }
+                  },
+                  series: {
+                    regions: [{
+                      values: mapValues,
+                      scale: ["#0a6ebd", "#55b0f6"],
+                      normalizeFunction: 'polynomial'
+                    }]
+                  },
+                  onRegionTipShow: function(e, el, code){
+                    var LabelName;
+                    if(mapValues[code] === undefined){ LabelName = '0'}
+                    else{LabelName = mapValues[code]}
+                    el.html(el.html()+' ('+/*[[#{mainpage.contworldmap.count}]]*/
+                            +': '+  LabelName
+                            + ')');
+                  }
+                });
+              }
+            });
+          }
+<!-- /#World Map -->
+
+<!-- **Create Function** -->
+          if($('#daterange').val()){
+            CreateMainIndex(monday,today);
+          }
+<!--Main Index-->
+          if($('#daterange').val()){
+            CreateIndexChart(1, monday, today);
+          }
+<!-- Index List Chart-->
+          if($('#chart_profit_year').val()) {
+            CreateSaleChart($('#chart_profit_year').val());
+          }
+<!-- Sale Prod Graph -->
+          if($('#product_bar_year').val()) {
+            CreateProdBar($('#product_bar_year').val());
+          }
+<!-- Prod Bar Graph -->
+          if($('#daterange').val()){
+            CreateSaleFunnel(monday, today);
+          }
+<!-- Sale Funel-->
+          if($('#daterange').val()){
+            CreateRequestBar(monday, today);
+          }
+<!-- Request Bar-->
+          if($('#daterange').val()){
+            CreateTenderBar(monday, today);
+          }
+<!-- Tender Bar-->
+          if($('#chart_profit_year').val()) {
+            CreateContWorldMap();
+          }
+<!-- Contragent World Map-->
+          <!-- Change Function -->
+          $('#index-list-actbtn').click( function () {
+            $('#titel-index-list-graph').text(/*[[#{mainpage.index1}]]*/);
+            $('#index-list-actbtn').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-reqbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-prodbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-profbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-salebtn').removeClass('btn-primary').addClass('btn-dark');
+
+            $('#index-list-actbtn-sx').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-reqbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-prodbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-profbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-salebtn-sx').removeClass('btn-primary').addClass('btn-dark');
+
+            CreateIndexChart(1,$('#daterange').val().slice(0,10),$('#daterange').val().slice(13,23));
+          });
+
+          $('#index-list-reqbtn').click( function () {
+            $('#titel-index-list-graph').text(/*[[#{mainpage.index2}]]*/);
+            $('#index-list-reqbtn').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-actbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-prodbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-profbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-salebtn').removeClass('btn-primary').addClass('btn-dark');
+
+            $('#index-list-reqbtn-sx').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-actbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-prodbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-profbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-salebtn-sx').removeClass('btn-primary').addClass('btn-dark');
+
+            CreateIndexChart(2,$('#daterange').val().slice(0,10),$('#daterange').val().slice(13,23));
+          });
+
+          $('#index-list-prodbtn').click( function () {
+            $('#titel-index-list-graph').text(/*[[#{mainpage.index3}]]*/);
+            $('#index-list-prodbtn').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-actbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-reqbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-profbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-salebtn').removeClass('btn-primary').addClass('btn-dark');
+
+            $('#index-list-prodbtn-sx').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-actbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-reqbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-profbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-salebtn-sx').removeClass('btn-primary').addClass('btn-dark');
+
+            CreateIndexChart(3,$('#daterange').val().slice(0,10),$('#daterange').val().slice(13,23));
+          });
+
+          $('#index-list-profbtn').click( function () {
+            $('#titel-index-list-graph').text(/*[[#{mainpage.index4}]]*/);
+            $('#index-list-profbtn').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-actbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-reqbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-prodbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-salebtn').removeClass('btn-primary').addClass('btn-dark');
+
+            $('#index-list-profbtn-sx').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-actbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-reqbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-prodbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-salebtn-sx').removeClass('btn-primary').addClass('btn-dark');
+
+            CreateIndexChart(4,$('#daterange').val().slice(0,10),$('#daterange').val().slice(13,23));
+          });
+
+          $('#index-list-salebtn').click( function () {
+            $('#titel-index-list-graph').text(/*[[#{mainpage.index5}]]*/);
+            $('#index-list-salebtn').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-actbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-reqbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-prodbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-profbtn').removeClass('btn-primary').addClass('btn-dark');
+
+            $('#index-list-salebt-sx').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-actbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-reqbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-prodbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-profbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+
+            CreateIndexChart(5,$('#daterange').val().slice(0,10),$('#daterange').val().slice(13,23));
+          });
+
+          $('#index-list-actbtn-sx').click( function () {
+            $('#titel-index-list-graph').text(/*[[#{mainpage.index1}]]*/);
+            $('#index-list-actbtn').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-reqbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-prodbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-profbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-salebtn').removeClass('btn-primary').addClass('btn-dark');
+
+            $('#index-list-actbtn-sx').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-reqbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-prodbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-profbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-salebtn-sx').removeClass('btn-primary').addClass('btn-dark');
+
+            CreateIndexChart(1,$('#daterange').val().slice(0,10),$('#daterange').val().slice(13,23));
+          });
+
+          $('#index-list-reqbtn-sx').click( function () {
+            $('#titel-index-list-graph').text(/*[[#{mainpage.index2}]]*/);
+            $('#index-list-reqbtn').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-actbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-prodbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-profbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-salebtn').removeClass('btn-primary').addClass('btn-dark');
+
+            $('#index-list-reqbtn-sx').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-actbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-prodbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-profbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-salebtn-sx').removeClass('btn-primary').addClass('btn-dark');
+
+            CreateIndexChart(2,$('#daterange').val().slice(0,10),$('#daterange').val().slice(13,23));
+          });
+
+          $('#index-list-prodbtn-sx').click( function () {
+            $('#titel-index-list-graph').text(/*[[#{mainpage.index3}]]*/);
+            $('#index-list-prodbtn').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-actbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-reqbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-profbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-salebtn').removeClass('btn-primary').addClass('btn-dark');
+
+            $('#index-list-prodbtn-sx').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-actbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-reqbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-profbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-salebtn-sx').removeClass('btn-primary').addClass('btn-dark');
+
+            CreateIndexChart(3,$('#daterange').val().slice(0,10),$('#daterange').val().slice(13,23));
+          });
+
+          $('#index-list-profbtn-sx').click( function () {
+            $('#titel-index-list-graph').text(/*[[#{mainpage.index4}]]*/);
+            $('#index-list-profbtn').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-actbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-reqbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-prodbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-salebtn').removeClass('btn-primary').addClass('btn-dark');
+
+            $('#index-list-profbtn-sx').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-actbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-reqbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-prodbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-salebtn-sx').removeClass('btn-primary').addClass('btn-dark');
+
+            CreateIndexChart(4,$('#daterange').val().slice(0,10),$('#daterange').val().slice(13,23));
+          });
+
+          $('#index-list-salebtn-sx').click( function () {
+            $('#titel-index-list-graph').text(/*[[#{mainpage.index5}]]*/);
+            $('#index-list-salebtn').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-actbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-reqbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-prodbtn').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-profbtn').removeClass('btn-primary').addClass('btn-dark');
+
+            $('#index-list-salebtn-sx').removeClass('btn-dark').addClass('btn-primary');
+            $('#index-list-actbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-reqbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-prodbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+            $('#index-list-profbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+
+            CreateIndexChart(5,$('#daterange').val().slice(0,10),$('#daterange').val().slice(13,23));
+          });
+<!-- Index Chart Change Function -->
+
+          $('#daterange').on('apply.daterangepicker', function(ev, picker) {
+            CreateMainIndex(picker.startDate.format('DD.MM.YYYY'), picker.endDate.format('DD.MM.YYYY'));
+            if( $('#index-list-actbtn').hasClass('btn-primary') || $('#index-list-actbtn-sx').hasClass('btn-primary')) {
+              $('#titel-index-list-graph').text(/*[[#{mainpage.index1}]]*/);
+              $('#index-list-actbtn').removeClass('btn-dark').addClass('btn-primary');
+              $('#index-list-reqbtn').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-prodbtn').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-profbtn').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-salebtn').removeClass('btn-primary').addClass('btn-dark');
+
+              $('#index-list-actbtn-sx').removeClass('btn-dark').addClass('btn-primary');
+              $('#index-list-reqbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-prodbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-profbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-salebtn-sx').removeClass('btn-primary').addClass('btn-dark');
+
+              CreateIndexChart(1, picker.startDate.format('DD.MM.YYYY'), picker.endDate.format('DD.MM.YYYY'));
+            }
+            else if($('#index-list-reqbtn').hasClass('btn-primary') || $('#index-list-reqbtn-sx').hasClass('btn-primary')){
+              $('#titel-index-list-graph').text(/*[[#{mainpage.index2}]]*/);
+              $('#index-list-reqbtn').removeClass('btn-dark').addClass('btn-primary');
+              $('#index-list-actbtn').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-prodbtn').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-profbtn').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-salebtn').removeClass('btn-primary').addClass('btn-dark');
+
+              $('#index-list-reqbtn-sx').removeClass('btn-dark').addClass('btn-primary');
+              $('#index-list-actbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-prodbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-profbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-salebtn-sx').removeClass('btn-primary').addClass('btn-dark');
+
+              CreateIndexChart(2, picker.startDate.format('DD.MM.YYYY'), picker.endDate.format('DD.MM.YYYY'));
+            }
+            else if($('#index-list-prodbtn').hasClass('btn-primary') || $('#index-list-prodbtn-sx').hasClass('btn-primary')){
+              $('#titel-index-list-graph').text(/*[[#{mainpage.index2}]]*/);
+              $('#index-list-reqbtn').removeClass('btn-dark').addClass('btn-primary');
+              $('#index-list-actbtn').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-prodbtn').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-profbtn').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-salebtn').removeClass('btn-primary').addClass('btn-dark');
+
+              $('#index-list-reqbtn-sx').removeClass('btn-dark').addClass('btn-primary');
+              $('#index-list-actbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-prodbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-profbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-salebtn-sx').removeClass('btn-primary').addClass('btn-dark');
+
+              CreateIndexChart(3, picker.startDate.format('DD.MM.YYYY'), picker.endDate.format('DD.MM.YYYY'));
+            }
+            else if($('#index-list-profbtn').hasClass('btn-primary') || $('#index-list-profbtn-sx').hasClass('btn-primary')){
+              $('#titel-index-list-graph').text(/*[[#{mainpage.index4}]]*/);
+              $('#index-list-profbtn').removeClass('btn-dark').addClass('btn-primary');
+              $('#index-list-actbtn').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-reqbtn').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-prodbtn').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-salebtn').removeClass('btn-primary').addClass('btn-dark');
+
+              $('#index-list-profbtn-sx').removeClass('btn-dark').addClass('btn-primary');
+              $('#index-list-actbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-reqbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-prodbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-salebtn-sx').removeClass('btn-primary').addClass('btn-dark');
+
+              CreateIndexChart(4, picker.startDate.format('DD.MM.YYYY'), picker.endDate.format('DD.MM.YYYY'));
+            }
+            else if($('#index-list-salebtn').hasClass('btn-primary') || $('#index-list-salebtn-sx').hasClass('btn-primary')){
+              $('#titel-index-list-graph').text(/*[[#{mainpage.index5}]]*/);
+              $('#index-list-profbtn').removeClass('btn-dark').addClass('btn-primary');
+              $('#index-list-actbtn').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-reqbtn').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-prodbtn').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-profbtn').removeClass('btn-primary').addClass('btn-dark');
+
+              $('#index-list-profbtn-sx').removeClass('btn-dark').addClass('btn-primary');
+              $('#index-list-actbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-reqbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-prodbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+              $('#index-list-profbtn-sx').removeClass('btn-primary').addClass('btn-dark');
+
+              CreateIndexChart(5, picker.startDate.format('DD.MM.YYYY'), picker.endDate.format('DD.MM.YYYY'));
+            }
+
+            CreateSaleFunnel(picker.startDate.format('DD.MM.YYYY'), picker.endDate.format('DD.MM.YYYY'));
+            CreateRequestBar(picker.startDate.format('DD.MM.YYYY'), picker.endDate.format('DD.MM.YYYY'));
+            CreateTenderBar(picker.startDate.format('DD.MM.YYYY'), picker.endDate.format('DD.MM.YYYY'));
+          });
+<!--DataPicer Change -->
+
+          $('#action_card_div').on('click', function(){
+            $("#action-div-link-form input[name=action_filter_id]").val(1);
+            $("#action-div-link-form input[name=action_filter_start_date]").val($('#daterange').val().slice(0,10));
+            $("#action-div-link-form input[name=action_filter_end_date]").val($('#daterange').val().slice(13,23));
+            $('#action-div-link-form').submit();
+          });
+<!-- Action Div -->
+          $('#request_card_div').on('click', function(){
+            $("#request-div-link-form input[name=requests_filter_id]").val(1);
+            $("#request-div-link-form input[name=requests_filter_start_date]").val($('#daterange').val().slice(0,10));
+            $("#request-div-link-form input[name=requests_filter_end_date]").val($('#daterange').val().slice(13,23));
+            $('#request-div-link-form').submit();
+          });
+<!-- Request Div -->
+          $('#tender_card_div').on('click', function(){
+            $("#tender-div-link-form input[name=tender_filter_id]").val(1);
+            $("#tender-div-link-form input[name=tender_filter_start_date]").val($('#daterange').val().slice(0,10));
+            $("#tender-div-link-form input[name=tender_filter_end_date]").val($('#daterange').val().slice(13,23));
+            $('#tender-div-link-form').submit();
+          });
+<!-- Tender Div -->
+          $('#profit_card_div').on('click', function(){
+            $("#finance-div-link-form input[name=finance_filter_id]").val(1);
+            $("#finance-div-link-form input[name=finance_filter_start_date]").val($('#daterange').val().slice(0,10));
+            $("#finance-div-link-form input[name=finance_filter_end_date]").val($('#daterange').val().slice(13,23));
+            $('#finance-div-link-form').submit();
+          });
+<!-- Finance Div -->
+
+          $('#tms_card_div').on('click', function(){
+            $("#tms-div-link-form input[name=full_world_filter_id]").val(1);
+            $("#tms-div-link-form input[name=full_world_filter_start_date]").val($('#daterange').val().slice(0,10));
+            $("#tms-div-link-form input[name=full_world_filter_end_date]").val($('#daterange').val().slice(13,23));
+            $('#tms-div-link-form').submit();
+          });
+<!-- TMS Div -->
+
+          <!-- Data Picker Change Function -->
+          $('#chart_profit_year').change( function (){
+            CreateSaleChart($('#chart_profit_year').val());
+          });
+          <!-- Sale Prod Graph -->
+          $('#product_bar_year').change( function (){
+            CreateProdBar($('#product_bar_year').val());
+          });
+          <!-- Prod Bar Graph -->
+          var smallScreenSize = window.screen.width > 1024 && window.screen.height <= 768;
+          if(smallScreenSize){
+            $('#action_card_div').removeClass('col-xl-2').addClass('col-xl-4');
+            $('#request_card_div').removeClass('col-xl-2').addClass('col-xl-4');
+            $('#tender_card_div').removeClass('col-xl-2').addClass('col-xl-4');
+            $('#product_card_div').removeClass('col-xl-2').addClass('col-xl-4');
+            $('#profit_card_div').removeClass('col-xl-2').addClass('col-xl-4');
+            $('#tms_card_div').removeClass('col-xl-2').addClass('col-xl-4');
+            $('#data_card_div').removeClass('col-xl-2').addClass('col-xl-4');
+          }else{
+            $('#action_card_div').removeClass('col-xl-4').addClass('col-xl-2');
+            $('#request_card_div').removeClass('col-xl-4').addClass('col-xl-2');
+            $('#tender_card_div').removeClass('col-xl-4').addClass('col-xl-2');
+            $('#product_card_div').removeClass('col-xl-4').addClass('col-xl-2');
+            $('#profit_card_div').removeClass('col-xl-4').addClass('col-xl-2');
+            $('#tms_card_div').removeClass('col-xl-4').addClass('col-xl-2');
+            $('#data_card_div').removeClass('col-xl-4').addClass('col-xl-2');
+          }
+
+
+        });
+<!-- Document Function-->
+
+      </script>
+    </span>
+
+  </body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="sea_ships_costs_groups_body" th:remove="tag">
+        <form id="sea-ships-costs-groups-detail" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+        </form>
+        
+        <div><table id="table-sea-ships-costs-groups" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var clmcgl_id_show, clmcg_type_id_show, clmcg_type_name_show, cnt_id_show, trans_costs_group_show;
+    var clmcgl_id_width, clmcg_type_id_width, clmcg_type_name_width, cnt_id_width, trans_costs_group_width;
+    var clmcgl_id_class, clmcg_type_id_class, clmcg_type_name_class, cnt_id_class, trans_costs_group_class;
+
+    if(mobileScreenSize){
+        vDomParam = "ft";
+    }
+    else if(smallScreenSize){
+        vDomParam = "ft";
+        clmcgl_id_show = false;
+        clmcgl_id_width = "";
+        clmcgl_id_class = "";
+        clmcg_type_id_show = false;
+        clmcg_type_id_width = "";
+        clmcg_type_id_class = "";
+        clmcg_type_name_show = true;
+        clmcg_type_name_width = "100%";
+        clmcg_type_name_class = "small_size small_head_size small_footer_size";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "none";
+        trans_costs_group_show = false;
+        trans_costs_group_width = "";
+        trans_costs_group_class = "none";
+    }
+    else{
+        vDomParam = "ft";
+        clmcgl_id_show = false;
+        clmcgl_id_width = "";
+        clmcgl_id_class = "";
+        clmcg_type_id_show = false;
+        clmcg_type_id_width = "";
+        clmcg_type_id_class = "";
+        clmcg_type_name_show = true;
+        clmcg_type_name_width = "100%";
+        clmcg_type_name_class = "small_size small_head_size small_footer_size";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "none";
+        trans_costs_group_show = false;
+        trans_costs_group_width = "";
+        trans_costs_group_class = "none";
+    }
+
+    var vFSClaimCostsGroupsValue;
+    vFSClaimCostsGroupsValue = {
+        table : '#table-sea-ships-costs-groups',
+        button_form: "#sea-ships-costs-groups-detail",
+        ajax : {
+            "url": /*[[@{/sea_ships/get_costs_groups_table}]]*/ "sea_ships/get_costs_groups_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vFSClaimCostsGroupsValue.rowdata.clm_id;
+            }
+        },
+        key : "clmcgl_id",
+        switchControl : sea_ships_costs_groups_switchControl,
+        rowdata:{
+            clm_id: null,
+            clmcgl_id: null,
+            clmcg_type_id: null,
+            clmcg_type_name: null,
+            trans_costs_group: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: vDomParam,
+        columnDefs:[
+            {"targets": [0], "width": clmcgl_id_width, "className": clmcgl_id_class, "visible": clmcgl_id_show},
+            {"targets": [1], "width": clmcg_type_id_width, "className": clmcg_type_id_class, "visible": clmcg_type_id_show},
+            {"targets": [2], "width": clmcg_type_name_width, "className": clmcg_type_name_class, "visible": clmcg_type_name_show},
+            {"targets": [3], "width": cnt_id_width, "className": cnt_id_class, "visible": cnt_id_show},
+            {"targets": [4], "width": trans_costs_group_width, "className": trans_costs_group_class, "visible": trans_costs_group_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{sea_ships.costs_groups.clmcgl_id}]]*/ "clmcgl_id", "data": "clmcgl_id"},
+            /*1*/{"title": /*[[#{sea_ships.costs_groups.clmcg_type_id}]]*/ "clmcg_type_id", "data": "clmcg_type_id"},
+            /*2*/{"title": /*[[#{sea_ships.costs_groups.clmcg_type_name}]]*/ "clmcg_type_name", "data": "clmcg_type_name"},
+            /*3*/{"title": /*[[#{sea_ships.costs_groups.cnt_id}]]*/ "cnt_id", "data": "cnt_id"},
+            /*4*/{"title": /*[[#{sea_ships.costs_groups.trans_costs_group}]]*/ "trans_costs_group", "data": "trans_costs_group"}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function sea_ships_costs_groups_switchControl(){
+        if(vFSClaimCostsGroupsValue.rowdata.clmcgl_id != null) {
+            vFSClaimCostsValue.rowdata.clm_id = vFSClaimsValue.rowdata.clm_id;
+            vFSClaimCostsValue.rowdata.clmcgl_id = vFSClaimCostsGroupsValue.rowdata.clmcgl_id;
+            $(vFSClaimCostsValue.table).DataTable().ajax.reload();
+            $("#sea-ships-costs-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        }
+        else{
+            vFSClaimCostsValue.rowdata.clm_id = null;
+            vFSClaimCostsValue.rowdata.clmcgl_id = null;
+            vFSClaimCostsValue.rowdata.clmcl_id = null;
+            $(vFSClaimCostsValue.table).DataTable().clear().draw();
+            $("#sea-ships-costs-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.sea_ships_costs_groups_btn_control').on('click', function (){
+        $("#sea-ships-costs-groups-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $(document).ready(function(){
+        vFSClaimCostsGroupsValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vFSClaimCostsGroupsValue.rowdata.clmcgl_id = /*[[${clmcgl_id}]]*/ null;
+
+        vFSClaimCostsGroupsValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vFSClaimCostsGroupsValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vFSClaimCostsGroupsValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vFSClaimCostsGroupsValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vFSClaimCostsGroupsValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vFSClaimCostsGroupsValue);
+    });
+</script>
+
+</body>
+</html>

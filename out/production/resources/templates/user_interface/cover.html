@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:include="layout/header :: header(title = #{menu.admin.userinterface})"></head>
+
+<body> <!-- right-to-left -->
+
+<div class="splash active">
+    <div class="splash-icon"></div>
+</div>
+
+<div th:replace="fragments/navigation :: navigation">navigation</div>
+<div class="header">
+    <div class="container">
+        <div class="media text-white">
+            <div class="media-body">
+                <span class="font-weight-normal"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div th:replace="fragments/leftmenu :: leftmenu">left menu</div>
+
+            <div class="col-12 col-md-8 col-lg-9 col-xl-10 pl-lg-4">
+                <div class="row">
+                    <div class="col-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0" th:text="#{user_interface_roles.caption}"></h5>
+                                </div>
+                                <div class="card-body">
+                                    <div>
+                                        <span th:replace="user_interface_roles/card :: user_interface_roles_body"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0" th:text="#{user_interface_menu.caption}"></h5>
+                            </div>
+                            <div class="card-body">
+                                <div>
+                                    <span th:replace="user_interface_menu/card :: user_interface_menu_body"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- First Column -->
+
+                    <div class="col-6 col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0" th:text="#{user_interface_context.caption}"></h5>
+                            </div>
+                            <div class="card-body">
+                                <div>
+                                    <span th:replace="user_interface_context/card :: user_interface_context_body"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Second Column -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer th:replace="fragments/footer :: footer"></footer>
+</main>
+
+<footer th:replace="layout/footer :: footer"></footer>
+
+<script th:replace="user_interface_roles/card :: cardscript"></script>
+<script th:replace="user_interface_menu/card :: cardscript"></script>
+<script th:replace="user_interface_context/card :: cardscript"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{clients_managers.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row" id="clients_managers_main_row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2">
+            <div class="card-header mb-0 pb-0" id="clients_managers_filter_card">
+                <div class="card-actions float-right">
+                    <a href="#clients_managers_filter_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#clients_managers_filter_div" data-toggle="collapse" th:text="#{clients_managers.filter}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="clients_managers_filter_div">
+                <div>
+                    <span th:replace="clients_managers/filter_card :: clients_managers_filter_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Filter -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="clients_managers_main_card" hidden>
+            <div class="card-header pb-0 mb-0">
+                <div class="card-actions float-right">
+                    <a href="#clients_managers_main_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#clients_managers_main_div" data-toggle="collapse" th:text="#{clients_managers.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="clients_managers_main_div">
+                <div>
+                    <span th:replace="clients_managers/main_link_modal :: clients_managers_main_link_modal_body"></span>
+                    <span th:replace="clients_managers/main_cs_modal :: clients_managers_main_cs_modal_body"></span>
+                    <span th:replace="clients_managers/main_card :: clients_managers_main_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="clients_managers/main_link_modal :: cardscript"></script>
+<script th:replace="clients_managers/main_cs_modal :: cardscript"></script>
+<script th:replace="clients_managers/main_card :: cardscript"></script>
+
+<script th:replace="clients_managers/filter_card :: cardscript"></script>
+</body>
+</html>

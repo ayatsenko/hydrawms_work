@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="full_world_reports_body" th:remove="tag">  
+    <div id="table-full-world-reports-buttons">
+        <div id="full-world-reports-btn-large" class="d-none d-sm-block mb-1">
+           <button type="button" id="full-world-reports-pdfbtn" class="btn btn-sm btn-dark" th:text="#{general.reportpdf}" disabled>Pdf</button>
+        </div>
+        <div id="report-actions-call-fail-btn-small" class="d-block d-sm-none mb-1">
+           <button type="button" id="full-world-reports-pdfbtn-sx" class="btn btn-sm btn-dark" disabled><i class="far fa-file-pdf"></i></button>
+        </div>
+    </div>
+
+    <form id="full-world-reports-pdf-first-form" th:action="@{/full_world/pdf_first}" method="get">
+          <input name="clm_id" hidden>
+    </form>
+
+    <form id="full-world-reports-pdf-second-form" th:action="@{/full_world/pdf_second}" method="get">
+          <input name="clm_id" hidden>
+    </form>        
+        <div><table id="table-full-world-reports" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var report_id_width, report_name_width;
+    var report_id_class, report_name_class;
+    var report_id_show, report_name_show;
+
+    if(mobileScreenSize){
+        vDomParam = "tip";
+    }
+    else if(smallScreenSize){
+        vDomParam = "tip";
+        report_id_show = true;
+        report_id_width = "10%";
+        report_id_class = "small_size small_head_size small_footer_size";
+        report_name_show = true;
+        report_name_width = "90%";
+        report_name_class = "small_size small_head_size small_footer_size";
+    }
+    else{
+        vDomParam = "tip";
+        report_id_show = true;
+        report_id_width = "10%";
+        report_id_class = "";
+        report_name_show = true;
+        report_name_width = "90%";
+        report_name_class = "";
+    }
+
+    var vClaimReportsValue;
+    vClaimReportsValue = {
+        table : '#table-full-world-reports',
+        ajax : {
+            "url": /*[[@{/full_world/get_reports_table}]]*/ "full_world/get_reports_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vClaimReportsValue.rowdata.clm_id
+            }
+        },
+        key : "clm_status_id",
+        switchControl : full_world_reports_switchControl,
+        rowdata:{
+            clm_id: null,
+            report_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: vDomParam,
+        columnDefs:[
+            {"targets": [0], "width": report_id_width, "className": report_id_class, "visible": report_id_show},
+            {"targets": [1], "width": report_name_width, "className": report_name_class, "visible": report_name_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{full_world.reports.report_id}]]*/ "report_id", "data": "report_id", "width": report_id_width, "className": report_id_class},
+            /*1*/{"title": /*[[#{full_world.reports.report_name}]]*/ "report_name", "data": "report_name", "width": report_name_width, "className": report_name_class}
+        ],
+        pageLength: 50,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function full_world_reports_switchControl(){
+        if(vClaimReportsValue.rowdata.report_id != null && (RoleChiefOPS || RoleOPS)) {
+            $("#full-world-reports-pdfbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-outline-primary');
+            $("#full-world-reports-pdfbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-outline-primary');
+
+            vClaimReportParamsValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+            vClaimReportParamsValue.rowdata.report_id = vClaimReportsValue.rowdata.report_id;
+            $(vClaimReportParamsValue.table).DataTable().ajax.reload();
+            $("#full-world-report-params-downbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#full-world-report-params-downbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#full-world-report-params-clearbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#full-world-report-params-clearbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        }
+        else{
+            $("#full-world-reports-pdfbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-outline-primary');
+            $("#full-world-reports-pdfbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-outline-primary');
+
+            vClaimReportParamsValue.rowdata.clm_id = null;
+            vClaimReportParamsValue.rowdata.report_id = null;
+            vClaimReportParamsValue.rowdata.clm_rep_link_id = null;
+            $(vClaimReportParamsValue.table).DataTable().clear().draw();
+            $("#full-world-report-params-downbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-report-params-downbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#full-world-report-params-clearbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-report-params-clearbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('#full-world-reports-pdfbtn').on('click', function () {
+        if(vClaimReportsValue.rowdata.report_id === 132){
+            $("#full-world-reports-pdf-first-form input[name=clm_id]").val(vClaimsValue.rowdata.clm_id);
+            $("#full-world-reports-pdf-first-form").submit();
+        }
+        else if(vClaimReportsValue.rowdata.report_id === 133){
+            $("#full-world-reports-pdf-second-form input[name=clm_id]").val(vClaimsValue.rowdata.clm_id);
+            $("#full-world-reports-pdf-second-form").submit();
+        }
+    });
+
+    $(document).ready(function(){
+        vClaimReportsValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vClaimReportsValue.rowdata.clm_status_id = /*[[${clm_status_id}]]*/ null;
+
+        vClaimReportsValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vClaimReportsValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vClaimReportsValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vClaimReportsValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vClaimReportsValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vClaimReportsValue);
+    });
+</script>
+
+</body>
+</html>

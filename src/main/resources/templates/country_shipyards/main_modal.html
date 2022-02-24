@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="country_shipyards_main_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="country_shipyards_main_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="country_shipyards_main_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{country_shipyards.main.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="shipyard_id_row">
+                            <label for="shipyard_id" class="form-label mb-0" th:text="'1. '+ #{country_shipyards.main.shipyard_id}"></label>
+                            <input type="number" class="form-control" id="shipyard_id" name="shipyard_id">
+                        </div>
+                        <div class="col-12 col-md-5" id="shipyard_name_row">
+                            <label for="shipyard_name" class="form-label mb-0" th:text="'2. '+#{country_shipyards.main.shipyard_name}"></label>
+                            <input type="text" maxlength="120" class="form-control" id="shipyard_name" name="shipyard_name">
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-5" id="shipyard_namerus_row">
+                            <label for="shipyard_namerus" class="form-label mb-0" th:text="'3. '+#{country_shipyards.main.shipyard_namerus}"></label>
+                            <input type="text" maxlength="64" class="form-control" id="shipyard_namerus" name="shipyard_namerus">
+                        </div>
+
+                        <div class="col-12 col-md-3" id="shipyard_code_row">
+                            <label for="shipyard_code" class="form-label mb-0" th:text="'4. '+#{country_shipyards.main.shipyard_code}"></label>
+                            <input type="text" maxlength="8" class="form-control" id="shipyard_code" name="shipyard_code">
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-6" id="country_id_row">
+                            <label for="country_id" class="form-label mb-0" th:text="'5. '+#{country_shipyards.main.country_id}"></label>
+                            <div class="input-group d-flex">
+                                <div class="flex-fill">
+                                    <select type="text" id="country_id" name="country_id" class="custom-select select2" aria-describedby="country_id_helpBlock">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 3 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="country_shipyards_main_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="country_shipyards_main_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="country_shipyards_main_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="country_shipyards_main_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    // Clear Fields
+    function clear_country_shipyards_main_modal_detail() {
+        $("#country_shipyards_main_modal_detail input[type=text]").val('');
+        $("#country_shipyards_main_modal_detail input[type=number]").val('');
+        $("#country_shipyards_main_modal_detail select").empty();
+        $("#country_shipyards_main_modal_detail textarea").val('');
+    }
+
+    // Block And Required Fields
+    function block_country_shipyards_main_modal_detail() {
+        $('#shipyard_name').attr('required', true);
+
+        if($('#mode').val() === "0"){
+            $('#shipyard_id_row').attr('hidden', true);
+            $('#shipyard_name').removeAttr('readonly');
+
+            $('#shipyard_namerus').removeAttr('readonly');
+            $('#shipyard_code').removeAttr('readonly');
+
+            $('#country_id').removeAttr('disabled');
+        }
+        else if($('#mode').val() === "1"){
+            $('#shipyard_id_row').removeAttr('hidden');
+            $('#shipyard_id').attr('readonly', true);
+
+            $('#shipyard_name').removeAttr('readonly');
+            $('#shipyard_namerus').removeAttr('readonly');
+            $('#shipyard_code').removeAttr('readonly');
+
+            $('#country_id').removeAttr('disabled');
+        }
+        else{
+            $('#shipyard_id_row').removeAttr('hidden');
+            $('#shipyard_id').attr('readonly', true);
+
+            $('#shipyard_name').attr('readonly', true);
+            $('#shipyard_namerus').attr('readonly', true);
+            $('#shipyard_code').attr('readonly', true);
+
+            $('#country_id').attr('disabled', true);
+        }
+    }
+
+    function countryChange(vMode, vCountryID) {
+        $('#country_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/country_shipyards/get_country'}]]*/ "/country_shipyards/get_country",
+            type: "get",
+            data: {"mode": vMode,
+                "country_id": vCountryID
+            },
+            success: function (country_list) {
+                for (var i = 0; i < country_list.data.length; i++) {
+                    $("select[name='country_id']").find('option').end().append(
+                        "<option value='" + country_list.data[i].country_id + "'>" + country_list.data[i].country_nameua + "</option>"
+                    );
+                }
+                if (vCountryID !== ''){
+                    $('#country_id').val(vCountryID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    // Load Function
+    function fill_country_shipyards_main_modal_detail(aMode){
+        clear_country_shipyards_main_modal_detail();
+        $('#mode').val(aMode);
+        block_country_shipyards_main_modal_detail();
+
+        if(aMode > 0) {
+            $.ajax({
+                url:/*[[@{'/country_shipyards/get_main_detail'}]]*/ "country_shipyards/get_main_detail",
+                type: "get",
+                data: {
+                    "shipyard_id": vCountryShipyardsValue.rowdata.shipyard_id,
+                    "mode": aMode
+                },
+                success: function (client_list_modal_detail) {
+                    $.when(
+                        countryChange(aMode, client_list_modal_detail.data[0].country_id)
+                    ).then(function () {
+                        $('#shipyard_id').val(client_list_modal_detail.data[0].shipyard_id);
+                        $('#shipyard_name').val(client_list_modal_detail.data[0].shipyard_name);
+                        $('#shipyard_namerus').val(client_list_modal_detail.data[0].shipyard_namerus);
+                        $('#shipyard_code').val(client_list_modal_detail.data[0].shipyard_code);
+                        $('#country_shipyards_main_modal').modal('show');
+                    });
+                }
+            });
+        }
+        else if (aMode === 0){
+            $.when(
+                countryChange(aMode, 2)
+            ).then(function () {
+                $('#country_shipyards_main_modal').modal('show');
+            });
+        }
+    }
+
+    var countryName =   /*[[#{country_shipyards.main.country_placeholder}]]*/ "Select a country";
+    $('#country_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: countryName,
+            allowClear: true,
+            dropdownAutoWidth: true
+        });
+
+    // Add button script
+    $('#country_shipyards_main_modal_addbtn').on('click', function(){
+        var RowID = vCountryShipyardsValue.rowdata.shipyard_id;
+        $.ajax({
+            url: /*[[ @{/country_shipyards/add_country_shipyard} ]]*/ "/country_shipyards/add_country_shipyard",
+            type: 'POST',
+            data: {
+                "shipyard_name": $('#shipyard_name').val(),
+                "shipyard_namerus": $('#shipyard_namerus').val(),
+                "shipyard_code": $('#shipyard_code').val(),
+                "country_id":  $('#country_id').val()
+            },
+            success: function (result) {
+                $('#country_shipyards_main_modal').modal('hide');
+                vCountryShipyardsValue.rowdata.shipyard_id = RowID;
+                $(vCountryShipyardsValue.table).DataTable().ajax.reload(null, false);
+
+            }
+        });
+    });
+
+    // Edit button script
+    $('#country_shipyards_main_modal_editbtn').on('click', function(){
+        var RowID = vCountryShipyardsValue.rowdata.shipyard_id;
+        $.ajax({
+            url: /*[[ @{/country_shipyards/edit_country_shipyard} ]]*/ "/country_shipyards/edit_country_shipyard",
+            type: 'POST',
+            data: {
+                "shipyard_id": RowID,
+                "shipyard_name": $('#shipyard_name').val(),
+                "shipyard_namerus": $('#shipyard_namerus').val(),
+                "shipyard_code": $('#shipyard_code').val(),
+                "country_id":  $('#country_id').val()
+            },
+            success: function (result) {
+                $('#country_shipyards_main_modal').modal('hide');
+                vCountryShipyardsValue.rowdata.shipyard_id = RowID;
+                $(vCountryShipyardsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    });
+
+    // Del button script
+    $('#country_shipyards_main_modal_delbtn').on('click', function(){
+        var RowID = vCountryShipyardsValue.rowdata.shipyard_id;
+        $.ajax({
+            url: /*[[ @{/country_shipyards/del_country_shipyard} ]]*/ "/country_shipyards/del_country_shipyard",
+            type: 'POST',
+            data: {
+                "shipyard_id": RowID
+            },
+            success: function (result) {
+                $('#country_shipyards_main_modal').modal('hide');
+                $(vCountryShipyardsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

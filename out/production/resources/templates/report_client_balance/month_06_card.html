@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_client_balance_month_06_body" th:remove="tag">
+    <div id="table-report-client-balance-month-06-buttons">
+              <div id="report-client-balance-month-06-btn-large" class="d-none d-sm-block mb-1">
+                 <button type="submit" id="report-client-balance-month-06-xlsbtn" form="report-client-balance-month-06-xls-form" class="btn btn-sm btn-outline-primary mr-1" th:text="#{general.reportxls}">Xls</button>
+                 <button type="submit" id="report-client-balance-month-06-pdfbtn" form="report-client-balance-month-06-pdf-form" class="btn btn-sm btn-outline-primary" th:text="#{general.reportpdf}">Pdf</button>
+              </div>
+              <div id="report-client-balance-month-06-btn-small" class="d-block d-sm-none mb-1">
+                 <button type="submit" id="report-client-balance-month-06-xlsbtn-sx" form="report-client-balance-month-06-xls-form" class="btn btn-sm btn-outline-primary mr-1"><i class="far fa-file-excel"></i></button>
+                 <button type="submit" id="report-client-balance-month-06-pdfbtn-sx" form="report-client-balance-month-06-pdf-form" class="btn btn-sm btn-outline-primary"><i class="far fa-file-pdf"></i></button>
+              </div>
+    </div>
+            <form id="report-client-balance-month-06-pdf-form" th:action="@{/report_client_balance/pdf_month}" method="get">
+                <input name="start_date" hidden>
+                <input name="end_date" hidden>
+                <input name="req_cnt_id" hidden>
+                <input name="req_ser_id" hidden>
+                <input name="month_id" hidden>
+            </form>
+
+            <form id="report-client-balance-month-06-xls-form" th:action="@{/report_client_balance/xls_month}" method="get">
+                <input name="start_date" hidden>
+                <input name="end_date" hidden>
+                <input name="req_cnt_id" hidden>
+                <input name="req_ser_id" hidden>
+                <input name="month_id" hidden>
+            </form>
+
+        <div><table id="table-report-client-balance-month-06" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    $("#table-report-client-balance-month-06").append('<tfoot>' +
+        '<th></th><th></th><th></th><th></th><th></th>' +
+        '<th></th><th></th><th></th><th></th><th></th>' +
+        '<th></th><th></th><th></th><th></th><th></th>' +
+        '<th></th>' +
+        '</tfoot>');
+
+    var vReportClientBalanceMonth06Value;
+    vReportClientBalanceMonth06Value = {
+        table : '#table-report-client-balance-month-06',
+        button_form: "#table-report-client-balance-month-06-buttons",
+        ajax : {
+            "url": /*[[@{/report_client_balance/get_month}]]*/ "report_client_balance/get_month",
+            "type": "post",
+            "data": function ( d ) {
+                d.start_date = vReportClientBalanceMonth06Value.rowdata.start_date;
+                d.end_date = vReportClientBalanceMonth06Value.rowdata.end_date;
+                d.req_cnt_id = vReportClientBalanceMonth06Value.rowdata.req_cnt_id;
+                d.req_ser_id = vReportClientBalanceMonth06Value.rowdata.req_ser_id;
+                d.month_id = 6;
+            }
+        },
+        key : "fin_id",
+        switchControl : report_client_balance_month_06_switchControl,
+        rowdata:{
+            act_id: null,
+            start_date: null,
+            end_date: null,
+            req_cnt_id: null
+        },
+        ordering: true,
+        order: [
+            [13, "desc"]
+        ],
+        scrollX: true,
+        dom: 'Blfrtip',
+        footerCallback: function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+            var numFormat = $.fn.dataTable.render.number( '\ ', '.', 2, '').display;
+            // Total over all pages
+            Total = api.column(13, {filter:'applied'}).data().reduce( function (a, b){ return intVal(a) + intVal(b);}, 0 );
+
+            // Update footer
+            $( api.column(3).footer()).hide();
+            $( api.column(4).footer()).hide();
+            $( api.column(6).footer()).hide();
+            $( api.column(8).footer()).hide();
+            $( api.column(9).footer()).hide();
+            $( api.column(10).footer()).hide();
+            $( api.column(11).footer()).hide();
+
+            $( api.column(12).footer()).html('Всего: ');
+            $( api.column(13).footer()).html(numFormat(Total));
+
+            $( api.column(14).footer()).hide();
+            $( api.column(15).footer()).hide();
+        },
+        columnDefs:[
+            {"targets": 2, render:function(data){return (data === null) ? data : moment(data).format('DD.MM.YYYY');}, type: 'de_date'},
+            {"targets": 3, "visible": false},
+            {"targets": 4, "visible": false},
+            {"targets": 6, "visible": false},
+            {"targets": 8, "visible": false},
+            {"targets": 9, "visible": false},
+            {"targets": 10, "visible": false},
+            {"targets": 11, "visible": false},
+            {"targets": 13,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": 14, "visible": false},
+            {"targets": 15, "visible": false}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{report_client_balance.tabs.fin_id}]]*/ "fin_id","data": "fin_id","width": "5%"},
+            /*1*/{"title": /*[[#{report_client_balance.tabs.fin_name}]]*/ "fin_name","data": "fin_name","width": "7%"},
+            /*2*/{"title": /*[[#{report_client_balance.tabs.fin_date}]]*/ "fin_date","data": "fin_date","width": "5%"},
+            /*3*/{"title": /*[[#{report_client_balance.tabs.fin_month}]]*/ "fin_month","data": "fin_month","width": "1%"},
+            /*4*/{"title": /*[[#{report_client_balance.tabs.fin_way_id}]]*/ "fin_way_id","data": "fin_way_id","width": "1%"},
+            /*5*/{"title": /*[[#{report_client_balance.tabs.fin_way_name}]]*/ "fin_way_name","data": "fin_way_name","width": "6%", "className": "text-center"},
+            /*6*/{"title": /*[[#{report_client_balance.tabs.cnt_id}]]*/ "cnt_id","data": "cnt_id","width": "5%"},
+            /*7*/{"title": /*[[#{report_client_balance.tabs.cnt_name}]]*/ "cnt_name","data": "cnt_name","width": "29%"},
+            /*8*/{"title": /*[[#{report_client_balance.tabs.cnt_identifycode}]]*/ "cnt_identifycode","data": "cnt_identifycode","width": "1%"},
+            /*9*/{"title": /*[[#{report_client_balance.tabs.user_id}]]*/ "user_id","data": "user_id","width": "1%"},
+            /*10*/{"title": /*[[#{report_client_balance.tabs.username}]]*/ "username","data": "username","width": "1%"},
+            /*11*/{"title": /*[[#{report_client_balance.tabs.branch_id}]]*/ "branch_id","data": "branch_id","width": "1%"},
+            /*12*/{"title": /*[[#{report_client_balance.tabs.branch_name}]]*/ "branch_name","data": "branch_name","width": "20%"},
+            /*13*/{"title": /*[[#{report_client_balance.tabs.fin_sum}]]*/ "fin_sum","data": "fin_sum","width": "5%"},
+            /*14*/{"title": /*[[#{report_client_balance.tabs.fa_id}]]*/ "fa_id","data": "fa_id","width": "1%"},
+            /*15*/{"title": /*[[#{report_client_balance.tabs.fad_id}]]*/ "fad_id","data": "fad_id","width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function report_client_balance_month_06_switchControl(){
+        if(vReportClientBalanceMonth06Value.rowdata.fin_id != null) {
+        } else{
+        }
+    }
+
+    $('.report_client_balance_month_06_btn_control').on('click', function (){
+        $("#report-client-balance-month-06-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#report-client-balance-month-06-detail').submit(function() {
+        vReportClientBalanceMonth06Value.rowdata.report_client_balance_month_06_table_order_column = $(vReportClientBalanceMonth06Value.table).DataTable().order()[0][0];
+        vReportClientBalanceMonth06Value.rowdata.report_client_balance_month_06_table_order_type = $(vReportClientBalanceMonth06Value.table).DataTable().order()[0][1];
+        vReportClientBalanceMonth06Value.rowdata.report_client_balance_month_06_table_search = $(vReportClientBalanceMonth06Value.table).DataTable().search();
+        vReportClientBalanceMonth06Value.rowdata.report_client_balance_month_06_table_pagelen = $(vReportClientBalanceMonth06Value.table).DataTable().page.len();
+        vReportClientBalanceMonth06Value.rowdata.report_client_balance_month_06_table_page = $(vReportClientBalanceMonth06Value.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vReportClientBalanceMonth06Value.rowdata).forEach(function (index) {
+            $("#report-client-balance-month-06-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#report-client-balance-month-06-detail input[name=\"" + index + "\"]").val(vReportClientBalanceMonth06Value.rowdata[index]);
+        });
+    });
+
+    $('#report-client-balance-month-06-xls-form').submit(function() {
+        $("#report-client-balance-month-06-xls-form input[name=start_date]").val($("#report_client_balance_start_date").val());
+        $("#report-client-balance-month-06-xls-form input[name=end_date]").val($("#report_client_balance_end_date").val());
+        $("#report-client-balance-month-06-xls-form input[name=req_cnt_id]").val(vReportClientBalanceDetailValue.rowdata.cnt_id);
+        $("#report-client-balance-month-06-xls-form input[name=req_ser_id]").val(vReportClientBalanceDetailValue.rowdata.ser_id);
+        $("#report-client-balance-month-06-xls-form input[name=month_id]").val(6);
+    });
+
+    $('#report-client-balance-month-06-pdf-form').submit(function() {
+        $("#report-client-balance-month-06-pdf-form input[name=start_date]").val($("#report_client_balance_start_date").val());
+        $("#report-client-balance-month-06-pdf-form input[name=end_date]").val($("#report_client_balance_end_date").val());
+        $("#report-client-balance-month-06-pdf-form input[name=req_cnt_id]").val(vReportClientBalanceDetailValue.rowdata.cnt_id);
+        $("#report-client-balance-month-06-pdf-form input[name=req_ser_id]").val(vReportClientBalanceDetailValue.rowdata.ser_id);
+        $("#report-client-balance-month-06-pdf-form input[name=month_id]").val(6);
+    });
+
+    $(document).ready(function(){
+        vReportClientBalanceMonth06Value.rowdata.act_id = /*[[${act_id}]]*/ null;
+        vReportClientBalanceMonth06Value.rowdata.start_date = null;
+        vReportClientBalanceMonth06Value.rowdata.end_date = null;
+        vReportClientBalanceMonth06Value.rowdata.req_cnt_id = null;
+        vReportClientBalanceMonth06Value.rowdata.req_ser_id = null;
+
+        vReportClientBalanceMonth06Value.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vReportClientBalanceMonth06Value.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vReportClientBalanceMonth06Value.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vReportClientBalanceMonth06Value.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vReportClientBalanceMonth06Value.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vReportClientBalanceMonth06Value);
+    });
+</script>
+
+</body>
+</html>

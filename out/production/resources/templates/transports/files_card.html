@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="transports_files_body" th:remove="tag">
+        <form id="transports-files-detail" class="mb-2" th:action="@{/transports/files_detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="transports-files-detailbtn-large" class="d-none d-sm-block">
+                 <button id="transports-files-downloadbtn" class="btn btn-sm btn-dark transports_files_btn_control" form="frmdownload" th:text="#{general.download}" disabled>View</button>
+                 <button type="submit" id="transports-files-addbtn" class="btn btn-sm btn-dark transports_files_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="submit" id="transports-files-delbtn" class="btn btn-sm btn-dark transports_files_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="transports-files-detailbtn-small" class="d-block d-sm-none">
+                 <button id="transports-files-downloadbtn-sx" class="btn btn-sm btn-dark transports_files_btn_control" form="frmdownload" disabled><i data-feather="save"></i></button>
+                 <button type="submit" id="transports-files-addbtn-sx" class="btn btn-sm btn-dark transports_files_btn_control" th:attr="mode=0" disabled><i data-feather="plus"></i></button>
+                 <button type="submit" id="transports-files-delbtn-sx" class="btn btn-sm btn-dark transports_files_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+
+        <form id="frmdownload" method="post" th:action="@{/transports/files_download}">
+            <input type="hidden" name="cnt_doc_file_id">
+        </form>
+
+        <div><table id="table-transports-files" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vTransportDocFilesListValue;
+    vTransportDocFilesListValue = {
+        table : '#table-transports-files',
+        button_form: "#transports-files-detail",
+        ajax : {
+            "url": /*[[@{/transports/get_files_table}]]*/ "transports/get_files_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.cnt_id = vTransportDocFilesListValue.rowdata.cnt_id;
+                d.cnt_doc_id = vTransportDocFilesListValue.rowdata.cnt_doc_id;
+            }
+        },
+        key : "cnt_doc_file_id",
+        switchControl : transports_files_switchControl,
+        rowdata:{
+            cnt_doc_file_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 'ftp',
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [1], type: 'de_date'}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{transports.files.cnt_doc_file_id}]]*/ "cnt_doc_file_id", "data": "cnt_doc_file_id", "width": "1%"},
+            /*1*/{"title": /*[[#{transports.files.cnt_doc_file_date}]]*/ "cnt_doc_file_date", "data": "cnt_doc_file_date", "width": "10%", "className": "min-tablet-p"},
+            /*2*/{"title": /*[[#{transports.files.cnt_doc_file_name}]]*/ "cnt_doc_file_name", "data": "cnt_doc_file_name", "width": "89%"}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function transports_files_switchControl(){
+        if(vTransportDocFilesListValue.rowdata.cnt_doc_file_id != null) {
+            if(vTransportsListValue.rowdata.cnt_user_access === 1) {
+                $("#transports-files-downloadbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#transports-files-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#transports-files-downloadbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#transports-files-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }else{
+                $("#transports-files-downloadbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#transports-files-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#transports-files-downloadbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#transports-files-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+        } else{
+            $("#transports-files-downloadbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-files-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#transports-files-downloadbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-files-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.transports_files_btn_control').on('click', function (){
+        $("#transports-files-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#frmdownload').submit(function(){
+        $("#frmdownload input[name=cnt_doc_file_id]").val(vTransportDocFilesListValue.rowdata.cnt_doc_file_id);
+    });
+
+    $('#transports-files-detail').submit(function(){
+        vTransportDocFilesListValue.rowdata.transports_files_table_order_column = $(vTransportDocFilesListValue.table).DataTable().order()[0][0];
+        vTransportDocFilesListValue.rowdata.transports_files_table_order_type = $(vTransportDocFilesListValue.table).DataTable().order()[0][1];
+        vTransportDocFilesListValue.rowdata.transports_files_table_search = $(vTransportDocFilesListValue.table).DataTable().search();
+        vTransportDocFilesListValue.rowdata.transports_files_table_pagelen = $(vTransportDocFilesListValue.table).DataTable().page.len();
+        vTransportDocFilesListValue.rowdata.transports_files_table_page = $(vTransportDocFilesListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vTransportDocFilesListValue.rowdata.cnt_id = vTransportsListValue.rowdata.cnt_id;
+        vTransportDocFilesListValue.rowdata.cnt_name = vTransportsListValue.rowdata.cnt_name;
+
+        vTransportDocFilesListValue.rowdata.transports_list_table_order_column = $(vTransportsListValue.table).DataTable().order()[0][0];
+        vTransportDocFilesListValue.rowdata.transports_list_table_order_type = $(vTransportsListValue.table).DataTable().order()[0][1];
+        vTransportDocFilesListValue.rowdata.transports_list_table_search = $(vTransportsListValue.table).DataTable().search();
+        vTransportDocFilesListValue.rowdata.transports_list_table_pagelen = $(vTransportsListValue.table).DataTable().page.len();
+        vTransportDocFilesListValue.rowdata.transports_list_table_page = $(vTransportsListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+        vTransportDocFilesListValue.rowdata.req_country_id = $('#transport_country_list').val();
+
+        vTransportDocFilesListValue.rowdata.req_address = $('#req_address').val();
+        if($('#req_tir_check').is(':checked')) {
+            vTransportDocFilesListValue.rowdata.req_tir_check = 1;
+        }
+
+        if($('#req_adr_check').is(':checked')) {
+            vTransportDocFilesListValue.rowdata.req_adr_check = 1;
+        }
+
+        if($('#req_ekmt_check').is(':checked')) {
+            vTransportDocFilesListValue.rowdata.req_ekmt_check = 1;
+        }
+
+        vTransportDocFilesListValue.rowdata.clients_transports_collapse = $('#transports_auto_div').hasClass('show');
+        vTransportDocFilesListValue.rowdata.clients_trailers_collapse = $('#transports_trailers_div').hasClass('show');
+        vTransportDocFilesListValue.rowdata.clients_drivers_collapse = $('#transports_drivers_div').hasClass('show');
+        vTransportDocFilesListValue.rowdata.clients_contacts_collapse = $('#transports_contacts_div').hasClass('show');
+        vTransportDocFilesListValue.rowdata.clients_country_collapse = $('#transports_country_div').hasClass('show');
+        vTransportDocFilesListValue.rowdata.clients_services_collapse = $('#transports_services_div').hasClass('show');
+        vTransportDocFilesListValue.rowdata.clients_address_collapse = $('#transports_address_div').hasClass('show');
+        vTransportDocFilesListValue.rowdata.clients_documents_collapse = $('#transports_documents_div').hasClass('show');
+        vTransportDocFilesListValue.rowdata.clients_files_collapse = $('#transports_files_div').hasClass('show');        
+        
+        vTransportDocFilesListValue.rowdata.transports_list_table_order_column = $(vTransportDocFilesListValue.table).DataTable().order()[0][0];
+        vTransportDocFilesListValue.rowdata.transports_list_table_order_type = $(vTransportDocFilesListValue.table).DataTable().order()[0][1];
+        vTransportDocFilesListValue.rowdata.transports_list_table_search = $(vTransportDocFilesListValue.table).DataTable().search();
+        vTransportDocFilesListValue.rowdata.transports_list_table_pagelen = $(vTransportDocFilesListValue.table).DataTable().page.len();
+        vTransportDocFilesListValue.rowdata.transports_list_table_page = $(vTransportDocFilesListValue.table).DataTable().page.info().page;
+
+        vTransportDocFilesListValue.rowdata.cnt_doc_id = vTransportDocumentsListValue.rowdata.cnt_doc_id;
+        vTransportDocFilesListValue.rowdata.cnt_doc_num = vTransportDocumentsListValue.rowdata.cnt_doc_num;
+
+        Object.keys(vTransportDocFilesListValue.rowdata).forEach(function (index) {
+            $("#transports-files-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#transports-files-detail input[name=\"" + index + "\"]").val(vTransportDocFilesListValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vTransportDocFilesListValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+        vTransportDocFilesListValue.rowdata.cnt_doc_id = /*[[${cnt_id}]]*/ null;
+        vTransportDocFilesListValue.rowdata.cnt_doc_file_id = /*[[${cnt_doc_file_id}]]*/ null;
+
+        vTransportDocFilesListValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vTransportDocFilesListValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vTransportDocFilesListValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vTransportDocFilesListValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vTransportDocFilesListValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vTransportDocFilesListValue);
+    });
+</script>
+
+</body>
+</html>

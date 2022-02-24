@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_dk_filter_body" th:remove="tag">
+		<form class="form-inline">
+			  <div class="form-group mb-2 mr-3">
+				<label for="report_dk_paid_type_list" class="mr-2" th:text="#{report_dk.filter.dk_paid_type_id}">Employee: </label>
+				<select id="report_dk_paid_type_list" class="form-control select2" data-toggle="select2">
+					<option value=""></option>
+					<!--suppress ThymeleafVariablesResolveInspection -->
+					<option
+							 th:each="dk_paid_type_list : ${dk_paid_type_list}"
+							 th:value="${dk_paid_type_list.dk_paid_type_id}"
+							 th:text="${dk_paid_type_list.dk_paid_type_name}"
+							 th:selected="${dk_paid_type_list.dk_paid_type_id == dk_paid_type_id}"
+					 ></option>
+				</select>
+			  </div>
+
+			 <div class="d-none d-sm-block">
+				<a class="btn btn-outline-primary mb-2" id="report_action_show" th:text="#{general.reportshow}">Show</a>
+			 </div>
+		</form>
+		<div class="d-block d-sm-none">
+			<button type="button" class="btn btn-primary btn-lg btn-block" id="report_action_show_sx">Search</button>
+		</div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    $(document).ready(function(){
+        $('#main_li').removeClass('active');
+
+        $('#reports_li').addClass('active').removeClass('collapsed');
+        $('#reports_a').attr('aria-expanded',true);
+        $('#reports').addClass('show');
+
+        $('#report_dk_a').addClass('text-primary');
+
+		$('#report_action_show').on('click', function () {
+			$.ajax({
+				url:/*[[@{'/report_dk/get_download_date'}]]*/ "report_dk/get_download_date",
+				type: "get",
+				data: {
+					"mode": 1
+				},
+				success: function (download_date_detail) {
+					$('#report_dk_service_card_title').text('Загружено:('+ download_date_detail.data[0].add_date +')');
+				}
+			});
+
+			$('#report_dk_service_card').removeAttr('hidden');
+			vReportDKServiceValue.rowdata.dk_paid_type_id = $("#report_dk_paid_type_list").val();
+			$(vReportDKServiceValue.table).DataTable().ajax.reload();
+
+			$('#report_dk_filter_div').removeClass('show').collapse('hide');
+
+			$('#report_dk_contracts_card').attr('hidden',true);
+
+			vReportDKContactValue.rowdata.dk_paid_type_id = null;
+			vReportDKContactValue.rowdata.dkm_id = null;
+			$(vReportDKContactValue.table).DataTable().clear().draw();
+
+            $('#report_dk_doc_card').attr('hidden',true);
+
+            vReportDKDocValue.rowdata.dk_paid_type_id = null;
+            vReportDKDocValue.rowdata.dkm_id = null;
+            vReportDKDocValue.rowdata.dkmd_id = null;
+            $(vReportDKDocValue.table).DataTable().clear().draw();
+        });
+
+		$('#report_action_show_sx').on('click', function () {
+			$('#report_dk_service_card').removeAttr('hidden');
+			vReportDKServiceValue.rowdata.dk_paid_type_id = $("#report_dk_paid_type_list").val();
+			$(vReportDKServiceValue.table).DataTable().ajax.reload();
+
+			$('#report_dk_filter_div').removeClass('show').collapse('hide');
+
+			$('#report_dk_contracts_card').attr('hidden',true);
+			vReportDKContactValue.rowdata.dk_paid_type_id = null;
+			vReportDKContactValue.rowdata.dkm_id = null;
+			$(vReportDKContactValue.table).DataTable().clear().draw();
+
+            $('#report_dk_doc_card').attr('hidden',true);
+            vReportDKDocValue.rowdata.dk_paid_type_id = null;
+            vReportDKDocValue.rowdata.dkm_id = null;
+            vReportDKDocValue.rowdata.dkmd_id = null;
+            $(vReportDKDocValue.table).DataTable().clear().draw();
+        });
+    });
+</script>
+
+</body>
+</html>

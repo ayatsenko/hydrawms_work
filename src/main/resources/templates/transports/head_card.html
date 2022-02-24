@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="transports_head_body" th:remove="tag">
+		<form class="form-inline">
+			  <div class="form-group mb-2 mr-2">
+				<label for="transport_country_list" class="mr-2" th:text="#{transports.filter.country_sname}">Country: </label>
+				<select id="transport_country_list" class="form-control select2" data-toggle="select2">
+                    <option value=""></option>     
+					<!--suppress ThymeleafVariablesResolveInspection -->
+                      <option class="p-1"
+									th:each="country_head : ${country_head_list}"
+									th:value="${country_head.country_id}"
+									th:text="${country_head.country_nameua}"
+									th:selected="${country_head.country_id == req_country_id}"
+					  ></option>
+				</select>
+			  </div>
+
+			  <div class="form-group mb-2 mr-2">
+				<label for="transport_country_list" class="mr-2" th:text="#{transports.filter.address}">Address: </label>
+				<input type="text" maxlength="32" class="form-control" id="req_address" name="req_address">
+			  </div>
+
+			  <div class="custom-control custom-switch mb-2 mr-2">
+					<input type="checkbox" class="custom-control-input" id="req_tir_check">
+					<label class="custom-control-label" for="req_tir_check" th:text="#{transports.filter.tms_tir_check}">TIR</label>
+			  </div>
+
+			  <div class="custom-control custom-switch mb-2 mr-2">
+					<input type="checkbox" class="custom-control-input" id="req_adr_check">
+					<label class="custom-control-label" for="req_adr_check" th:text="#{transports.filter.tms_adr_check}">ADR</label>
+			  </div>
+
+			  <div class="custom-control custom-switch mb-2 mr-3">
+					<input type="checkbox" class="custom-control-input" id="req_ekmt_check">
+					<label class="custom-control-label" for="req_ekmt_check" th:text="#{transports.filter.tms_ekmt_check}">EKMT</label>
+			  </div>
+
+			<a class="btn btn-outline-primary mb-2" id="transport_head_show" th:text="#{general.reportshow}">Show</a>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    $(document).ready(function(){
+		var countyID = /*[[${req_country_id}]]*/ null;
+		if(countyID != null){
+			$('#transport_country_list').val(countyID);
+		}
+<!-- Return Country ID -->
+		var reqAddress = /*[[${req_address}]]*/ null;
+		if(reqAddress != null){
+			$('#req_address').val(reqAddress);
+		}
+<!-- Return Address -->
+		var reqTir = /*[[${req_tir_check}]]*/ null;
+		if(reqTir === 1){$('#req_tir_check').prop('checked',true);}
+<!-- Return TIR -->
+		var reqADR = /*[[${req_adr_check}]]*/ null;
+		if(reqADR === 1){$('#req_adr_check').prop('checked',true);}
+<!-- Return TIR -->
+		var reqEKMT = /*[[${req_ekmt_check}]]*/ null;
+		if(reqEKMT === 1){$('#req_ekmt_check').prop('checked',true);}
+<!-- Return EKMT -->
+<!-- ** Filter rows ** -->
+
+		var clientsTransportsCollapse = /*[[${clients_transports_collapse}]]*/ null;
+		if(clientsTransportsCollapse === true){ $('#transports_auto_div').collapse('show');}
+		else if(clientsTransportsCollapse === false){ $('#transports_auto_div').removeClass('show').collapse('hide');}
+<!-- Collapse Transports -->
+
+		var clientsTrailersCollapse = /*[[${clients_trailers_collapse}]]*/ null;
+		if(clientsTrailersCollapse === true){ $('#transports_trailers_div').collapse('show');}
+		else if(clientsTrailersCollapse === false){ $('#transports_trailers_div').removeClass('show').collapse('hide');}
+<!-- Collapse Trailers -->
+
+		var clientsDriversCollapse = /*[[${clients_drivers_collapse}]]*/ null;
+		if(clientsDriversCollapse === true){ $('#transports_drivers_div').collapse('show');}
+		else if(clientsDriversCollapse === false){ $('#transports_drivers_div').removeClass('show').collapse('hide');}
+<!-- Collapse Drivers -->
+
+		var clientsContactsCollapse = /*[[${clients_contacts_collapse}]]*/ null;
+		if(clientsContactsCollapse === true){ $('#transports_contacts_div').collapse('show');}
+		else if(clientsContactsCollapse === false){ $('#transports_contacts_div').removeClass('show').collapse('hide');}
+<!-- Collapse Contacts -->
+
+		var clientsCountryCollapse = /*[[${clients_country_collapse}]]*/ null;
+		if(clientsCountryCollapse === true){ $('#transports_country_div').collapse('show');}
+		else if(clientsCountryCollapse === false){ $('#transports_country_div').removeClass('show').collapse('hide');}
+<!-- Collapse Contacts -->
+
+		var clientsServicesCollapse = /*[[${clients_services_collapse}]]*/ null;
+		if(clientsServicesCollapse === true){ $('#transports_services_div').collapse('show');}
+		else if(clientsServicesCollapse === false){ $('#transports_services_div').removeClass('show').collapse('hide');}
+<!-- Collapse Services -->
+
+		var clientsAddressCollapse = /*[[${clients_address_collapse}]]*/ null;
+		if(clientsAddressCollapse === true){ $('#transports_address_div').collapse('show');}
+		else if(clientsAddressCollapse === false){ $('#transports_address_div').removeClass('show').collapse('hide');}
+<!-- Collapse Address -->
+
+		var clientsDocumentsCollapse = /*[[${clients_documents_collapse}]]*/ null;
+		if(clientsDocumentsCollapse === true){ $('#transports_documents_div').collapse('show');}
+		else if(clientsDocumentsCollapse === false){ $('#transports_documents_div').removeClass('show').collapse('hide');}
+<!-- Collapse Documents -->
+
+		var clientsFilesCollapse = /*[[${clients_files_collapse}]]*/ null;
+		if(clientsFilesCollapse === true){ $('#transports_files_div').collapse('show');}
+		else if(clientsFilesCollapse === false){ $('#transports_files_div').removeClass('show').collapse('hide');}
+<!-- Collapse Documents -->
+
+		$('#transport_head_show').on('click', function () {
+			var reqTir, reqADR, reqEKMT;
+			if($('#req_tir_check').is(':checked')){reqTir = 1;}else{reqTir = 0;}
+			if($('#req_adr_check').is(':checked')){reqADR = 1;}else{reqADR = 0;}
+			if($('#req_ekmt_check').is(':checked')){reqEKMT = 1;}else{reqEKMT = 0;}
+
+			vTransportsListValue.rowdata.req_country_id	= $("#transport_country_list").val();
+			vTransportsListValue.rowdata.req_address = $("#req_address").val();
+			vTransportsListValue.rowdata.req_tir_check = reqTir;
+			vTransportsListValue.rowdata.req_adr_check = reqADR;
+			vTransportsListValue.rowdata.req_ekmt_check = reqEKMT;
+
+			$(vTransportsListValue.table).DataTable().ajax.reload();
+		})
+    });
+</script>
+
+</body>
+</html>

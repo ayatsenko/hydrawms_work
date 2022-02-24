@@ -1,0 +1,353 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{projects_desc.scheme.caption})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{projects_desc.scheme.caption}"></h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <!--/*@thymesVar id="projects_desc.scheme" type="java.util.List"*/-->
+                <form id="projects-desc-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/projects_desc/scheme_model}">
+                    <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="projects-desc-indexfrm">Cancel</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="projects-desc-addbtn" class="btn btn-outline-success" th:text="#{general.addbtn}">Add</button>
+                            <button th:case="1" type="submit" id="projects-desc-editbtn" class="btn btn-outline-success" th:text="#{general.editbtn}">Edit</button>
+                            <button th:case="2" type="submit" id="projects-desc-delbtn" class="btn btn-outline-success" th:text="#{general.delbtn}">Delete</button>
+                        </div>
+                    </div>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="parent_pr_id" th:value="${parent_pr_id}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="pr_pay_id" th:value="${pr_pay_id}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_scheme_table_order_column" th:value="${projects_desc_scheme_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_scheme_table_order_type" th:value="${projects_desc_scheme_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_scheme_table_search" th:value="${projects_desc_scheme_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_scheme_table_pagelen" th:value="${projects_desc_scheme_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_scheme_table_page" th:value="${projects_desc_scheme_table_page}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_payments_table_order_column" th:value="${projects_desc_payments_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_payments_table_order_type" th:value="${projects_desc_payments_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_payments_table_search" th:value="${projects_desc_payments_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_payments_table_pagelen" th:value="${projects_desc_payments_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_payments_table_page" th:value="${projects_desc_payments_table_page}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_main_table_order_column" th:value="${projects_desc_main_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_main_table_order_type" th:value="${projects_desc_main_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_main_table_search" th:value="${projects_desc_main_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_main_table_pagelen" th:value="${projects_desc_main_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_main_table_page" th:value="${projects_desc_main_table_page}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_tab" th:value="${projects_desc_tab}" >
+
+                    <div class="form-row">
+                        <div class="col-md-5 mb-1" id="parent_pr_id_row">
+                            <label for="parent_pr_id" class="form-label" th:text="'1. '+#{projects_desc.scheme.parent_pr_id}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <select type="text" id="parent_pr_id" name="parent_pr_id" class="form-control p-1" aria-describedby="user_id_helpBlock" th:value="${parent_pr_id}">
+                                    <option value=""></option>
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <option class="p-1"
+                                            th:each="parent_pr : ${parent_pr_list}"
+                                            th:value="${parent_pr.parent_pr_id}"
+                                            th:text="${parent_pr.parent_pr_name}"
+                                            th:selected="${parent_pr.parent_pr_id == parent_pr_id}"
+                                    ></option>
+                                </select>
+                                <button type="button" id="pr_parent_id_x" name="pr_parent_id_x" class="btn btn-outline-success"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-1" id="pr_pay_id_row">
+                            <label for="pr_pay_id" class="form-label" th:text="'2. '+ #{projects_desc.scheme.pr_pay_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="pr_pay_id" name="pr_pay_id" th:value="${pr_pay_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-5 mb-1" id="pr_pay_name_row">
+                            <label for="pr_pay_name" class="form-label" th:text="'3. '+ #{projects_desc.scheme.pr_pay_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="64" class="form-control" id="pr_pay_name" name="pr_pay_name" th:value="${pr_pay_name}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-1" id="pr_pay_scheme_id_row">
+                            <label for="pr_pay_scheme_id" class="form-label" th:text="'4. '+ #{projects_desc.scheme.pr_pay_scheme_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="pr_pay_scheme_id" name="pr_pay_scheme_id" th:value="${pr_pay_scheme_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="currency_id_row">
+                            <label for="currency_id" class="mr-2" th:text="'5. '+#{projects_desc.scheme.currency_sname}">Client: </label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select id="currency_id" name="currency_id" class="form-control" th:value="${currency_id}">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="currency_list : ${currency_list}"
+                                        th:value="${currency_list.currency_id}"
+                                        th:text="${currency_list.currency_sname}"
+                                        th:selected="${currency_list.currency_id == currency_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="pr_pay_scheme_plan_sum_row">
+                            <label for="pr_pay_scheme_plan_sum" class="form-label" th:text="'6. '+ #{projects_desc.scheme.pr_pay_scheme_plan_sum}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="pr_pay_scheme_plan_sum" name="pr_pay_scheme_plan_sum" th:value="${pr_pay_scheme_plan_sum}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-2" id="pr_pay_scheme_plan_date_row">
+                            <label for="pr_pay_scheme_plan_date" class="form-label" th:text="'7. '+ #{projects_desc.scheme.pr_pay_scheme_plan_date}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="pr_pay_scheme_plan_date" name="pr_pay_scheme_plan_date" th:value="${pr_pay_scheme_plan_date}">
+                                <button type="button" id="pr_pay_scheme_plan_date_x" name="pr_pay_scheme_plan_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="pr_pay_scheme_fact_sum_row">
+                            <label for="pr_pay_scheme_fact_sum" class="form-label" th:text="'8. '+ #{projects_desc.scheme.pr_pay_scheme_fact_sum}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="pr_pay_scheme_fact_sum" name="pr_pay_scheme_fact_sum" th:value="${pr_pay_scheme_fact_sum}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-2" id="pr_pay_scheme_fact_date_row">
+                            <label for="pr_pay_scheme_fact_date" class="form-label" th:text="'9. '+ #{projects_desc.scheme.pr_pay_scheme_fact_date}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="pr_pay_scheme_fact_date" name="pr_pay_scheme_fact_date" th:value="${pr_pay_scheme_fact_date}">
+                                <button type="button" id="pr_pay_scheme_fact_date_x" name="pr_pay_scheme_fact_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 4 -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--/*@thymesVar id="projects_desc.scheme" type="java.util.List"*/-->
+    <form id="projects-desc-indexfrm" method="post" th:action="@{/projects_desc}" hidden>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="pr_id" th:value="${parent_pr_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="pr_pay_id" th:value="${pr_pay_id}">
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_scheme_table_order_column" th:value="${projects_desc_scheme_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_scheme_table_order_type" th:value="${projects_desc_scheme_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_scheme_table_search" th:value="${projects_desc_scheme_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_scheme_table_pagelen" th:value="${projects_desc_scheme_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_scheme_table_page" th:value="${projects_desc_scheme_table_page}" >
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_payments_table_order_column" th:value="${projects_desc_payments_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_payments_table_order_type" th:value="${projects_desc_payments_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_payments_table_search" th:value="${projects_desc_payments_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_payments_table_pagelen" th:value="${projects_desc_payments_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_payments_table_page" th:value="${projects_desc_payments_table_page}" >
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_main_table_order_column" th:value="${projects_desc_main_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_main_table_order_type" th:value="${projects_desc_main_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_main_table_search" th:value="${projects_desc_main_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_main_table_pagelen" th:value="${projects_desc_main_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_main_table_page" th:value="${projects_desc_main_table_page}" >
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_tab" th:value="${projects_desc_tab}" >
+    </form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'projects-desc-indexfrm')">Error</span>
+
+<script>
+    $(document).ready(function(){
+        <!-- Hihglight menu -->
+        $('#stages_li').removeClass('active');
+
+        $('#projects_li').addClass('active').removeClass('collapsed');
+        $('#projects_a').attr('aria-expanded',true);
+        $('#projects').addClass('show');
+
+        $('#projects_desc_a').addClass('text-success');
+
+        <!-- Start Objects -->
+        $("#pr_pay_scheme_plan_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        $('#pr_pay_scheme_plan_date_x').on('click', function() {
+            $('#pr_pay_scheme_plan_date').empty().val('');
+        });
+
+        var ActEndDateValue = $('#pr_pay_scheme_fact_date').val();
+        $("#pr_pay_scheme_fact_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        $('#pr_pay_scheme_fact_date_x').on('click', function() {
+            $('#pr_pay_scheme_fact_date').empty().val('');
+        });
+
+        if(ActEndDateValue === null || ActEndDateValue === ''){
+            $('#pr_pay_scheme_fact_date').empty().val('');
+        }        
+        
+        $('#parent_pr_id').attr('readOnly',true);
+        $('#pr_parent_id_x').prop('disabled',true).removeClass('btn-outline-success').addClass('btn-outline-dark');
+
+        $('#pr_pay_id').attr('readOnly',true);
+        $('#pr_pay_name').attr('readOnly',true);
+        $('#currency_id').attr('readOnly',true);
+
+        if($('#mode').val() === '0'){
+            $('#pr_pay_scheme_id_row').prop('hidden',true);
+        }
+        else if($('#mode').val() === '1'){
+            $('#pr_pay_scheme_id').attr('readOnly',true);
+        }
+        else if($('#mode').val() === '2' || $('#mode').val() === '4') {
+            $('#pr_pay_scheme_id').attr('readOnly',true);
+            $('#pr_pay_scheme_plan_sum').attr('readOnly',true);
+            $('#pr_pay_scheme_plan_date').attr('readOnly',true);
+            $('#pr_pay_scheme_plan_date_x').prop('disabled',true).removeClass('btn-outline-success').addClass('btn-outline-dark');
+            $('#pr_pay_scheme_fact_sum').attr('readOnly',true);
+            $('#pr_pay_scheme_fact_date').attr('readOnly',true);
+            $('#pr_pay_scheme_fact_date_x').prop('disabled',true).removeClass('btn-outline-success').addClass('btn-outline-dark');
+        }
+    });
+</script>
+</body>
+</html>

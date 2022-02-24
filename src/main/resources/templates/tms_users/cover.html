@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{tms_users.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+<div class="row">
+    <div class="col-12 col-mb-5 pl-2 pr-1 pt-0">
+        <div class="card mb-2" id="tms_users_list_card">
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#tms_users_list_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#tms_users_list_div" data-toggle="collapse" th:text="#{tms_users.list.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="tms_users_list_div">
+                <div>
+                    <span th:replace="tms_users/list_card :: tms_users_list_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-mb-7 pl-1 pr-2 pt-0">
+        <div class="card mb-2" id="tms_users_chat_card">
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#tms_users_chat_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#tms_users_chat_div" data-toggle="collapse" th:text="#{tms_users.chat.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="tms_users_chat_div">
+                <div>
+                    <span th:replace="tms_users/chat_card :: tms_users_chat_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Location -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<script th:replace="tms_users/chat_card :: cardscript"></script>
+
+<script th:replace="tms_users/list_card :: cardscript"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="user_contragents_body" th:remove="tag">
+        <form id="user-contragents" class="mb-2" th:action="@{/users/contragent_detail}" method="post">
+            <input name="mode" value="0" hidden>
+              <div id="user-contragents-detailbtn-large" class="d-none d-sm-block">
+                 <button type="submit" id="user-contragents-detailbtn" class="btn btn-sm btn-dark user_contragents_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="user-contragents-addbtn" class="btn btn-sm btn-dark user_contragents_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="submit" id="user-contragents-editbtn" class="btn btn-sm btn-dark user_contragents_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="user-contragents-delbtn" class="btn btn-sm btn-dark user_contragents_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="user-contragents-detailbtn-small" class="d-block d-sm-none">
+                 <button type="submit" id="user-contragents-detailbtn-sx" class="btn btn-sm btn-dark user_contragents_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="user-contragents-addbtn-sx" class="btn btn-sm btn-primary user_contragents_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                 <button type="submit" id="user-contragents-editbtn-sx" class="btn btn-sm btn-dark user_contragents_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="user-contragents-delbtn-sx" class="btn btn-sm btn-dark user_contragents_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-user-contragents" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vUsersContragentsListValue;
+    vUsersContragentsListValue = {
+        table : '#table-user-contragents',
+        ajax : {
+            "url": /*[[@{/users/get_contragents_table}]]*/ "users/get_contragents_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.user_id = vUsersContragentsListValue.rowdata.user_id
+            }
+        },
+        key : "cntul_id",
+        switchControl : user_contragents_switchControl,
+        rowdata:{
+            user_id: null,
+            cntul_id: null,
+            cnt_id: null,
+            cntul_main_id: null
+        },
+        ordering: true,
+        order: [
+            [2, "asc"]
+        ],
+        scrollX: true,
+        dom: 'lfrtip',
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [1], "visible": false},
+            {"targets": [3], render: function ( data, type, row ) {
+                    if ( type === 'display' ) {             //if column data is 1 then set attr to checked, use row id as input id (plus prefix)
+                        return '<input type="checkbox" ' + ((data == 1) ? 'checked' : '') + ' id="input' + row.id + '" class="filter-ck" disabled="true" />';
+                    }
+                    return data;
+                },
+                "className": "dt-body-center disabled"
+            }
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{users.clients.cntul_id}]]*/ "cntul_id", "data": "cntul_id", "width": "1%"},
+            /*1*/{"title": /*[[#{users.clients.cnt_id}]]*/ "cnt_id", "data": "cnt_id", "width": "1%"},
+            /*2*/{"title": /*[[#{users.clients.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": "88%"},
+            /*3*/{"title": /*[[#{users.clients.cntul_main_id}]]*/ "cntul_main_id", "data": "cntul_main_id", "width": "10%", "className": "min-tablet-p text-center"}
+        ],
+        pageLength: 10,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function user_contragents_switchControl(){
+        if(vUsersContragentsListValue.rowdata.cntul_id != null) {
+                $("#user-contragents-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#user-contragents-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#user-contragents-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#user-contragents-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#user-contragents-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#user-contragents-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            } else{
+                $("#user-contragents-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#user-contragents-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#user-contragents-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#user-contragents-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#user-contragents-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#user-contragents-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+    }
+
+    $('.user_contragents_btn_control').on('click', function (){
+        $("#user-contragents input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#user-contragents').submit(function() {
+        vUsersContragentsListValue.rowdata.user_contragents_table_order_column = $(vUsersContragentsListValue.table).DataTable().order()[0][0];
+        vUsersContragentsListValue.rowdata.user_contragents_table_order_type = $(vUsersContragentsListValue.table).DataTable().order()[0][1];
+        vUsersContragentsListValue.rowdata.user_contragents_table_search = $(vUsersContragentsListValue.table).DataTable().search();
+        vUsersContragentsListValue.rowdata.user_contragents_table_pagelen = $(vUsersContragentsListValue.table).DataTable().page.len();
+        vUsersContragentsListValue.rowdata.user_contragents_table_page = $(vUsersContragentsListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vUsersContragentsListValue.rowdata.user_id = vUsersListValue.rowdata.user_id;
+
+        Object.keys(vUsersContragentsListValue.rowdata).forEach(function (index) {
+            $("#user-contragents").append("<input name=\"" + index + "\" hidden>");
+            $("#user-contragents input[name=\"" + index + "\"]").val(vUsersContragentsListValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vUsersContragentsListValue.rowdata.cntul_id = /*[[${cntul_id}]]*/ null;
+
+        vUsersContragentsListValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vUsersContragentsListValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vUsersContragentsListValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vUsersContragentsListValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vUsersContragentsListValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vUsersContragentsListValue);
+    });
+</script>
+
+</body>
+</html>

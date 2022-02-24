@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_locals_main_column_filter_modal_body" th:remove="tag">
+    <div class="modal fade" id="tms_locals_column_main_filter_modal">
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content" id="tms_locals_main_column_filter_modal_detail">
+                <div class="modal-header" data-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title" id="tms_locals_main_filter_column_header"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <input type="hidden" id="tms_locals_main_filter_fill_id" value="0">
+                    <input type="hidden" id="tms_locals_main_filter_column_id" value="0">
+                    <input type="hidden" id="tms_locals_main_filter_button_name" value="0">
+
+                    <form id="tms_locals_main_column_filter_modal_form" name="tms_locals_main_column_filter_modal_form">
+                    <div class="form-row">
+                        <div class="col-12">
+                            <button type="button" class="btn btn-outline-primary btn-block" id="tms_locals_filter_clear_button" name="tms_locals_filter_clear_button" th:text="#{general.clearbtn}"></button>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="tms_locals_column_filter_input" class="mb-0" th:text="#{general.filter_input}+': '"></label>
+                            <div class="input-group">
+                                <input class="form-control tms_locals_main_column_filter_input" type="text" id="tms_locals_column_filter_input" name="tms_locals_column_filter_input" table-column=""/>
+                                <button type="button" id="tms_locals_filter_rn_x" name="tms_locals_column_filter_input_x" class="btn btn-outline-primary filter_select_x" data-parent="tms_locals_column_filter_input"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div> <!-- Row 2 -->                        
+
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="tms_locals_column_filter_select2" class="mb-0" th:text="#{general.filter_select}+': '"></label>
+                            <div class="input-group">
+                                <div class="flex-fill">
+                                    <select id="tms_locals_column_filter_select2" name="tms_locals_column_filter_select2" class="tms_locals_main_column_filter tms_locals_column_filter_select filter_column_select2 select2 js-example-basic-multiple js-states form-control" multiple="multiple" data-toggle="select2" style="width: 100%" table-column=""></select>
+                                </div>
+                                <button type="button" id="tms_locals_column_filter_select2_x" name="tms_locals_column_filter_select2_x" class="btn btn-outline-primary filter_select2_x" data-parent="tms_locals_column_filter_select2"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div> <!-- Row 3 -->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    // Clear Fields
+    function clear_tms_locals_main_column_filter_modal_detail(){
+        $("#tms_locals_main_column_filter_modal_detail input[type=text]").val('');
+        $("#tms_locals_main_column_filter_modal_detail input[type=number]").val('');
+        $("#tms_locals_main_column_filter_modal_detail select").val('');
+        $('#tms_locals_main_column_filter_modal_detail .filter_column_select2').val('').trigger('change');
+
+        let clearTable = $(vClaimsValue.table).DataTable();
+        let clearTableColumn = parseInt(table_column_id);
+        clearTable.column(clearTableColumn).search($(this).val(), false, false, true).draw(false);
+        $('#'+$('#tms_locals_main_filter_button_name').val()).addClass('btn-primary').removeClass('btn-info');
+    }
+
+    //Select Function
+    function fill_tms_locals_column_filter_select_create(col){
+        var fill_tms_locals_main_column_filter_currentTable = $(vClaimsValue.table).DataTable();
+        //$('#'+select_id).append('<option value="" selected></option>');
+        $('#tms_locals_column_filter_input').attr('table-column', col);
+        $('#tms_locals_column_filter_select2').empty().attr('table-column', col);
+
+        fill_tms_locals_main_column_filter_currentTable.column(col).data().unique().sort().each( function ( d, j ) {
+            if( d === null) {
+                $('#tms_locals_column_filter_select2').append('<option value="null">(Нет)</option>');
+            }
+            else{
+                $('#tms_locals_column_filter_select2').append('<option value="' + d + '">' + d + '</option>');
+            }
+        });
+    }
+
+    // Load Function
+    function fill_tms_locals_main_column_filter_modal_detail(table_column_id, button_id, column_name){
+        $('#tms_locals_main_filter_button_name').val(button_id);
+        $('#tms_locals_main_filter_column_id').val(table_column_id);
+        $('#tms_locals_main_filter_column_header').text('Фильтр по коллонке: '+column_name);
+
+        $('.tms_locals_column_filter_select').each(function () {
+            fill_tms_locals_column_filter_select_create(
+                table_column_id
+            );
+        });
+
+//Filter Input Value
+        let filterInputColumnValue = parseInt(table_column_id);
+        if(main_filter_array[table_column_id] !== null && main_filter_array[filterInputColumnValue] !== ''){
+            $("#tms_locals_main_column_filter_modal_detail input[type=text]").val(main_filter_array[filterInputColumnValue]);
+        }
+        else{
+            $("#tms_locals_main_column_filter_modal_detail input[type=text]").val('');
+        }
+
+//Filter Select Value
+        let filterSelectColumnValue = parseInt(table_column_id) + 1;
+        if(main_filter_array[filterSelectColumnValue].length > 0 ) {
+            for (var i = 0; i < main_filter_array[filterSelectColumnValue].length; i++) {
+                $('.tms_locals_column_filter_select').val(main_filter_array[filterSelectColumnValue][i]);
+            }
+        }
+        else{
+            $('.tms_locals_column_filter_select').val(null).trigger('change');
+        }
+
+        $('#tms_locals_column_main_filter_modal').modal('show');
+    }
+
+    //Function clear
+    $("#tms_locals_filter_clear_button").click( function () {
+        clear_tms_locals_main_column_filter_modal_detail();
+    });
+
+    $(document).ready(function(){
+        var currentTable = $(vClaimsValue.table).DataTable();
+
+        $('.tms_locals_column_filter_select').on('change', function () {
+            $("#tms_locals_main_column_filter_modal_detail input[type=text]").val('');
+            main_filter_array[$('#tms_locals_main_filter_column_id').val()] = '';
+
+            var currentFilterValue = parseInt($('#tms_locals_main_filter_column_id').val())+1;
+
+            let filterValue
+            if($(this).val().length > 1){
+                for (var i = 0; i < $(this).val().length; i++) {
+                    if($(this).val()[i] !== '' && $(this).val()[i] !== null) {
+                        filterValue = filterValue + '|' + $(this).val()[i];
+                    }
+                    else if($(this).val()[0] === 'null'){
+                        filterValue = filterValue + '|' + '^\s*$';
+                    }
+                    main_filter_array[currentFilterValue][i] = $(this).val();
+                }
+                currentTable.column($(this).attr("table-column")).search(filterValue, true, false).draw(false);
+                $('#'+$('#tms_locals_main_filter_button_name').val()).removeClass('btn-primary').addClass('btn-info');
+            }
+            else if($(this).val().length === 1){
+                if($(this).val()[0] === 'null'){
+                    currentTable.column($(this).attr("table-column")).search('^\s*$', true, false).draw(false);
+                }
+                else {
+                    currentTable.column($(this).attr("table-column")).search($(this).val()[0], false, false, true).draw(false);
+                }
+                $('#'+$('#tms_locals_main_filter_button_name').val()).removeClass('btn-primary').addClass('btn-info');
+                main_filter_array[currentFilterValue][0] = $(this).val();
+            }
+            else{
+                currentTable.column($(this).attr("table-column")).search($(this).val(), false, false, true).draw(false);
+                $('#'+$('#tms_locals_main_filter_button_name').val()).addClass('btn-primary').removeClass('btn-info');
+                main_filter_array[currentFilterValue] = new Array();
+            }
+        });
+
+        $('.tms_locals_main_column_filter_input').on('change', function () {
+            currentTable.column($(this).attr("table-column")).search($(this).val()).draw(false);
+
+            main_filter_array[$('#tms_locals_main_filter_column_id').val()] = $(this).val();
+
+            $('#tms_locals_main_column_filter_modal_detail .filter_column_select2').val('');
+            $('#'+$('#tms_locals_main_filter_button_name').val()).removeClass('btn-primary').addClass('btn-info');
+        });
+
+        //Select clear function
+        $('.filter_select_x').click( function () {
+            $('#'+$(this).attr("data-parent")).val('');
+            currentTable.column($('#'+$(this).attr("data-parent")).attr("table-column")).search('').draw(false);
+
+            $('#tms_locals_main_column_filter_modal_detail .filter_column_select2').val('');
+            $('#'+$('#tms_locals_main_filter_button_name').val()).removeClass('btn-primary').addClass('btn-info');
+        });
+
+        var FilterPlaceHolderDefault = /*[[#{select2.default_placeholder}]]*/ "Select a value";
+
+        //Filter Select2 function
+        $('.filter_column_select2').select2();
+
+        //Select clear function
+        $('.filter_select2_x').click( function () {
+            let clearFilterValue = parseInt($('#tms_locals_main_filter_column_id').val())+1;
+
+            $('#'+$(this).attr("data-parent")).val(null).trigger('change');
+            currentTable.column($(this).attr("table-column")).search($(this).val(), false, false, true).draw(false);
+
+            $('#'+$('#tms_locals_main_filter_button_name').val()).addClass('btn-primary').removeClass('btn-info');
+            main_filter_array[clearFilterValue] = new Array();
+        });
+    });
+</script>
+
+</body>
+</html>

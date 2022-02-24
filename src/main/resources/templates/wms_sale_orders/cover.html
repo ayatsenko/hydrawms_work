@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{wms_sale_orders.caption})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 col-md-8 pl-2 pr-1 pt-0">
+        <div class="card mb-md-1" id="wms_sale_orders_list_card">
+            <div class="card-header pt-1 pb-1 pr-1 pl-1">
+                <div class="row">
+                    <div class="col-1 text-center text-primary">
+                        <a><i class="fa fa-search"></i></a>
+                    </div>
+                    <div class="col-10">
+                        <h4 class="text-center text-primary pb-0" href="#wms_sale_orders_main_div" data-toggle="collapse" th:text="#{wms_sale_orders.caption}"></h4>
+                    </div>
+                    <div class="col-1 text-center">
+                        <a href="#wms_sale_orders_main_div" data-toggle="collapse"><i class="fa fa-minus"></i> </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pt-md-0 pb-md-2 pr-md-2 pl-md-2 collapse show" id="wms_sale_orders_main_div">
+                <div>
+                    <span th:replace="wms_sale_orders/main_files_modal :: wms_sale_orders_main_files_modal_body"></span>
+                    <span th:replace="wms_sale_orders/main_modal :: wms_sale_orders_main_modal_body"></span>
+                    <span th:replace="wms_sale_orders/main_card :: wms_sale_orders_main_body"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-md-1" id="wms_sale_orders_position_list_card" hidden>
+            <div class="card-header pt-1 pb-1 pr-1 pl-1">
+                <div class="row">
+                    <div class="col-1 text-center text-primary">
+                        <a><i class="fa fa-search"></i></a>
+                    </div>
+                    <div class="col-10">
+                        <h4 class="text-center text-primary pb-0" href="#wms_sale_orders_position_div" data-toggle="collapse" th:text="#{wms_sale_orders.position.caption}"></h4>
+                    </div>
+                    <div class="col-1 text-center">
+                        <a href="#wms_sale_orders_position_div" data-toggle="collapse"><i class="fa fa-minus"></i> </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pt-md-0 pb-md-2 pr-md-2 pl-md-2 collapse show" id="wms_sale_orders_position_div">
+                <div>
+                    <span th:replace="wms_sale_orders/positions_card :: wms_sale_orders_position_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-4 pl-0 pr-2 pt-0">
+        <div class="tab">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#wms_sale_orders_detail_tab" data-toggle="tab" role="tab" data-placement="bottom" th:title="#{wms_sale_orders.detail.caption}">
+                        <i class="align-middle text-info fa fa-link fa-lg"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#wms_sale_orders_files_tab" data-toggle="tab" role="tab" data-placement="bottom" th:title="#{wms_sale_orders.files.caption}">
+                        <i class="align-middle text-info fa fa-chart-bar fa-lg"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#wms_sale_orders_post_tab" data-toggle="tab" role="tab" data-placement="bottom" th:title="#{wms_sale_orders.post.caption}">
+                        <i class="align-middle text-info fa fa-box fa-lg"></i>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content p-md-1 m-md-0">
+                <div class="tab-pane active" id="wms_sale_orders_detail_tab" role="tabpanel">
+                    <div class="card" id="wms_sale_orders_detail_card">
+                        <div class="card-header pt-1 pb-1 pr-1 pl-1">
+                            <div class="row">
+                                <div class="col-1 text-center text-primary">
+                                    <a><i class="fa fa-search"></i></a>
+                                </div>
+                                <div class="col-10">
+                                    <h4 class="text-center text-primary pb-0" href="#clients_link_div" data-toggle="collapse" th:text="#{wms_sale_orders.detail.caption}"></h4>
+                                </div>
+                                <div class="col-1 text-center">
+                                    <a href="#clients_link_div" data-toggle="collapse"><i class="fa fa-minus"></i> </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-md-0 m-md-0 collapse show" id="clients_link_div">
+                            <div>
+                                <span th:replace="wms_sale_orders/detail_card :: wms_sale_orders_detail_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- Link Tab -->
+
+                <div class="tab-pane" id="wms_sale_orders_files_tab" role="tabpanel">
+                    <div class="card" id="wms_sale_orders_files_card">
+                        <div class="card-header pt-1 pb-1 pr-1 pl-1">
+                            <div class="row">
+                                <div class="col-1 text-center text-primary">
+                                    <a><i class="fa fa-search"></i></a>
+                                </div>
+                                <div class="col-10">
+                                    <h4 class="text-center text-primary pb-0" href="#wms_sale_orders_files_div" data-toggle="collapse" th:text="#{wms_sale_orders.files.caption}"></h4>
+                                </div>
+                                <div class="col-1 text-center">
+                                    <a href="#wms_sale_orders_files_div" data-toggle="collapse"><i class="fa fa-minus"></i> </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-md-0 m-md-0 collapse show" id="wms_sale_orders_files_div">
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- Statistics Tab -->
+
+                <div class="tab-pane" id="wms_sale_orders_post_tab" role="tabpanel">
+                    <div class="card" id="wms_sale_orders_post_card">
+                        <div class="card-header pt-1 pb-1 pr-1 pl-1">
+                            <div class="row">
+                                <div class="col-1 text-center text-primary">
+                                    <a><i class="fa fa-search"></i></a>
+                                </div>
+                                <div class="col-10">
+                                    <h4 class="text-center text-primary pb-0" href="#wms_sale_orders_post_div" data-toggle="collapse" th:text="#{wms_sale_orders.post.caption}"></h4>
+                                </div>
+                                <div class="col-1 text-center">
+                                    <a href="#wms_sale_orders_post_div" data-toggle="collapse"><i class="fa fa-minus"></i> </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-md-0 m-md-0 collapse show" id="wms_sale_orders_post_div">
+                            <div>
+                                <span th:replace="wms_sale_orders/post_card :: wms_sale_orders_post_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- Contacts Tab -->
+            </div><!-- Tabs Body-->
+        </div><!-- Tabs -->
+    </div>
+</div>
+<!-- Location -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="wms_sale_orders/post_card :: cardscript"></script>
+
+<script th:replace="wms_sale_orders/positions_card :: cardscript"></script>
+
+<script th:replace="wms_sale_orders/detail_card :: cardscript"></script>
+
+<script th:replace="wms_sale_orders/main_files_modal :: cardscript"></script>
+<script th:replace="wms_sale_orders/main_modal :: cardscript"></script>
+<script th:replace="wms_sale_orders/main_card :: cardscript"></script>
+</body>
+</html>

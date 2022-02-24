@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+
+<span th:fragment="system_params_main_body" th:remove="tag">
+    <form id="system-params-main-buttons" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+
+            <div id="system-params-main-btn-large" class="d-none d-sm-block">
+                 <button type="button" id="system-params-main-editbtn" class="btn btn-sm btn-dark mr-2" th:text="#{general.editbtn}" disabled>Edit</button>
+
+                 <button type="button" id="system-params-main-reload" class="btn btn-sm btn-primary"><i class="fas fa-sync-alt"></i></button>
+                 <button type="button" id="system-params-main-filter" class="btn btn-sm btn-dark mr-2" disabled><i class="fas fa-search"></i></button>
+
+                 <button type="button" id="system-params-main-select-all" class="btn btn-sm btn-dark" disabled><i class="fas fa-check-double"></i></button>
+                 <button type="button" id="system-params-main-clear-all" class="btn btn-sm btn-dark" disabled><i class="fas fa-window-close"></i></button>
+              </div>
+              <div id="system-params-main-btn-small" class="d-block d-sm-none">
+                  <button type="button" id="system-params-main-editbtn-sx" class="btn btn-sm btn-dark mr-2" disabled><i class="fas fa-pencil-alt"></i></button>
+
+                 <button type="button" id="system-params-main-reload-sx" class="btn btn-sm btn-primary"><i class="fas fa-sync-alt"></i></button>
+                 <button type="button" id="system-params-main-filter-sx" class="btn btn-sm btn-dark mr-2" disabled><i class="fas fa-search"></i></button>
+
+                 <button type="button" id="system-params-main-select-all-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-check-double"></i></button>
+                 <button type="button" id="system-params-main-clear-all-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-window-close"></i></button>
+              </div>
+        </form>
+
+    <div><table id="table-system-params-main" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var crm_sys_par_id_show, crm_system_id_show, crm_system_sname_show, crm_system_sub_id_show, crm_system_sub_sname_show, crm_sys_par_default_show, crm_sys_par_client_show, 
+        crm_sys_par_description_show;
+
+    var crm_sys_par_id_width, crm_system_id_width, crm_system_sname_width, crm_system_sub_id_width, crm_system_sub_sname_width, crm_sys_par_default_width, crm_sys_par_client_width, 
+        crm_sys_par_description_width;
+
+    var crm_sys_par_id_class, crm_system_id_class, crm_system_sname_class, crm_system_sub_id_class, crm_system_sub_sname_class, crm_sys_par_default_class, crm_sys_par_client_class, 
+        crm_sys_par_description_class;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        crm_sys_par_id_show = true;
+        crm_sys_par_id_width = "5%";
+        crm_sys_par_id_class = "small_size small_head_size small_footer_size head-center";
+        crm_system_id_show = false;
+        crm_system_id_width = "";
+        crm_system_id_class = "";
+        crm_system_sname_show = true;
+        crm_system_sname_width = "10%";
+        crm_system_sname_class = "small_size small_head_size small_footer_size head-center text-center";
+        crm_system_sub_id_show = false;
+        crm_system_sub_id_width = "";
+        crm_system_sub_id_class = "";
+        crm_system_sub_sname_show = true;
+        crm_system_sub_sname_width = "15%";
+        crm_system_sub_sname_class = "small_size small_head_size small_footer_size head-center text-center";
+        crm_sys_par_default_show = true;
+        crm_sys_par_default_width = "5%";
+        crm_sys_par_default_class = "small_size small_head_size small_footer_size head-center text-center";
+        crm_sys_par_client_show = true;
+        crm_sys_par_client_width = "5%";
+        crm_sys_par_client_class = "small_size small_head_size small_footer_size head-center text-center";
+        crm_sys_par_description_show = true;
+        crm_sys_par_description_width = "60%";
+        crm_sys_par_description_class = "small_size small_head_size small_footer_size head-center";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        crm_sys_par_id_show = true;
+        crm_sys_par_id_width = "5%";
+        crm_sys_par_id_class = "small_size small_head_size small_footer_size head-center";
+        crm_system_id_show = false;
+        crm_system_id_width = "";
+        crm_system_id_class = "";
+        crm_system_sname_show = true;
+        crm_system_sname_width = "10%";
+        crm_system_sname_class = "small_size small_head_size small_footer_size head-center text-center";
+        crm_system_sub_id_show = false;
+        crm_system_sub_id_width = "";
+        crm_system_sub_id_class = "";
+        crm_system_sub_sname_show = true;
+        crm_system_sub_sname_width = "15%";
+        crm_system_sub_sname_class = "small_size small_head_size small_footer_size head-center text-center";
+        crm_sys_par_default_show = true;
+        crm_sys_par_default_width = "5%";
+        crm_sys_par_default_class = "small_size small_head_size small_footer_size head-center text-center";
+        crm_sys_par_client_show = true;
+        crm_sys_par_client_width = "5%";
+        crm_sys_par_client_class = "small_size small_head_size small_footer_size head-center text-center";
+        crm_sys_par_description_show = true;
+        crm_sys_par_description_width = "60%";
+        crm_sys_par_description_class = "small_size small_head_size small_footer_size head-center";
+    }
+
+    var vSystemParamsValue;
+    vSystemParamsValue = {
+        table : '#table-system-params-main',
+        button_form: "#system-params-main-buttons",
+        ajax : {
+            "url": /*[[@{/system_params/system_params_main}]]*/ "system_params/system_params_main",
+            "type": "post"
+        },
+        key : "crm_sys_par_id",
+        switchControl : system_params_main_switchControl,
+        rowdata:{
+            crm_sys_par_id: null,
+            crm_system_id: null,
+            crm_system_sname: null,
+            crm_system_sub_id: null,
+            crm_system_sub_sname: null,
+            crm_sys_par_default: null,
+            crm_sys_par_client: null,
+            crm_sys_par_description: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+        select_style: "multi",
+        autoWidth: true,
+        dom: vDomParam,
+        createdRow: function(row, data, index) {
+            //$(row).css('background-color', data["crm_sys_par_description"]);
+        },
+        columnDefs: [
+            {"targets": [0], "width": crm_sys_par_id_width, "className": crm_sys_par_id_class, "visible": crm_sys_par_id_show},
+            {"targets": [1], "width": crm_system_id_width, "className": crm_system_id_class, "visible": crm_system_id_show},
+            {"targets": [2], "width": crm_system_sname_width, "className": crm_system_sname_class, "visible": crm_system_sname_show},
+            {"targets": [3], "width": crm_system_sub_id_width, "className": crm_system_sub_id_class, "visible": crm_system_sub_id_show},
+            {"targets": [4], "width": crm_system_sub_sname_width, "className": crm_system_sub_sname_class, "visible": crm_system_sub_sname_show},
+            {"targets": [5], "width": crm_sys_par_default_width, "className": crm_sys_par_default_class, "visible": crm_sys_par_default_show},
+            {"targets": [6], "width": crm_sys_par_client_width, "className": crm_sys_par_client_class, "visible": crm_sys_par_client_show},
+            {"targets": [7], "width": crm_sys_par_description_width, "className": crm_sys_par_description_class, "visible": crm_sys_par_description_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{system_params.main.crm_sys_par_id}]]*/ "crm_sys_par_id", "data": "crm_sys_par_id"},
+            /*1*/{"title": /*[[#{system_params.main.crm_system_id}]]*/ "crm_system_sub_id", "data": "crm_system_id"},
+            /*2*/{"title": /*[[#{system_params.main.crm_system_sname}]]*/ "crm_system_sname", "data": "crm_system_sname"},
+            /*3*/{"title": /*[[#{system_params.main.crm_system_sub_id}]]*/ "crm_system_sub_id", "data": "crm_system_sub_id"},
+            /*4*/{"title": /*[[#{system_params.main.crm_system_sub_sname}]]*/ "crm_system_sub_sname", "data": "crm_system_sub_sname"},
+            /*5*/{"title": /*[[#{system_params.main.crm_sys_par_default}]]*/ "crm_sys_par_default", "data": "crm_sys_par_default"},
+            /*6*/{"title": /*[[#{system_params.main.crm_sys_par_client}]]*/ "crm_sys_par_client", "data": "crm_sys_par_client"},
+            /*7*/{"title": /*[[#{system_params.main.crm_sys_par_description}]]*/ "crm_sys_par_description", "data": "crm_sys_par_description"}
+        ],
+        pageLength: 50,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function system_params_main_switchControl(){
+        if(vSystemParamsValue.rowdata.crm_sys_par_id != null) {
+            if(RoleAllAdmin){
+                if($(vSystemParamsValue.table).DataTable().rows({ selected: true }).count() === 1) {
+                    $("#system-params-main-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                    $("#system-params-main-editbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                    $("#system-params-main-deltbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                    $("#system-params-main-deltbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                }
+                else{
+                    $("#system-params-main-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                    $("#system-params-main-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                    $("#system-params-main-deltbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                    $("#system-params-main-deltbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                }
+            }
+            else{
+                $("#system-params-main-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#system-params-main-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#system-params-main-deltbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#system-params-main-deltbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+        }
+        else{
+            if(RoleAllAdmin) {
+                if ($(vSystemParamsValue.table).DataTable().rows({selected: true}).count() === 0) {
+                    $("#system-params-main-editbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                    $("#system-params-main-editbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+
+                } else if ($(vSystemParamsValue.table).DataTable().rows({selected: true}).count() === 1) {
+                    $("#system-params-main-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                    $("#system-params-main-editbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                    var selectIndex = $(vSystemParamsValue.table).DataTable().rows({ selected: true })[0][0];
+                    var rowData = $(vSystemParamsValue.table).DataTable().row(selectIndex).data();
+                    Object.keys(vSystemParamsValue.rowdata).forEach(function(index) {
+                        vSystemParamsValue.rowdata[index] = rowData[index]
+                    });
+                } else if ($(vSystemParamsValue.table).DataTable().rows({selected: true}).count() > 1) {
+                    $("#system-params-main-editbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                    $("#system-params-main-editbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                }
+            }
+        }
+    }
+
+    function ClientsManagersReload(){
+        $(vSystemParamsValue.table).DataTable().ajax.reload(null, false);
+    }
+
+    //Reload Button
+    $('#system-params-main-reload').click(function(){
+        ClientsManagersReload();
+    });
+
+    //Reload Button SX
+    $('#system-params-main-reload-sx').click(function(){
+        ClientsManagersReload();
+    });
+
+    //Edit Button
+    $('#system-params-main-editbtn').click(function(){
+        fill_system_params_main_modal_detail(1);
+    });
+
+    //Edit Button
+    $('#system-params-main-editbtn-sx').click(function(){
+        fill_system_params_main_modal_detail(1);
+    });
+
+    //Deselect Button
+    $('#system-params-main-clear-all').click(function(){
+        var currentTable = $(vSystemParamsValue.table).DataTable();
+        currentTable.rows({ selected: true }).deselect();
+    });
+
+    //Deselect Button SX
+    $('#system-params-main-clear-all-sx').click(function(){
+        var currentTable = $(vSystemParamsValue.table).DataTable();
+        currentTable.rows({ selected: true }).deselect();
+    });
+
+    //Select All Function
+    function selectAllRows(){
+        var currentTable = $(vSystemParamsValue.table).DataTable();
+        currentTable.rows({ selected: true }).deselect();
+        currentTable.rows(':visible').select();
+    }
+
+    $('#system-params-main-select-all').click(function(){
+        selectAllRows()
+    });
+
+    $('#system-params-main-select-all-sx').click(function(){
+        selectAllRows()
+    });
+
+    $(document).ready(function(){
+        recreateDataTable(vSystemParamsValue);
+
+        if(RoleAllAdmin){
+            $("#system-params-main-select-all").prop('disabled',false).removeClass('btn-dark').addClass('btn-info');
+            $("#system-params-main-select-all-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-info');
+
+            $("#system-params-main-clear-all").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+            $("#system-params-main-clear-all-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+        }
+        else{
+            $("#system-params-main-select-all").prop('disabled',true).addClass('btn-dark').removeClass('btn-info');
+            $("#system-params-main-select-all-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-info');
+
+            $("#system-params-main-clear-all").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            $("#system-params-main-clear-all-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+        }
+        <!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#admin_li').addClass('active').removeClass('collapsed');
+        $('#admin_a').attr('aria-expanded',true);
+        $('#admin').addClass('show');
+
+        $('#system_params_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

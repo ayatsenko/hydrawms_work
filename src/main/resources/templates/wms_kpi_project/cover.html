@@ -1,0 +1,244 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{wms_kpi_project.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-1">
+            <div class="card-header pt-1 pb-1 pr-1 pl-1">
+                <div class="row">
+                    <div class="col-1 text-center text-dark" id="wms_kpi_project_filter_btn_div">
+                        <a><i class="fa fa-search" id="wms_kpi_project_filter_btn"></i></a>
+                    </div>
+                    <div class="col-10">
+                        <h4 class="text-center text-primary pb-0" href="#wms_kpi_project_filter_div" data-toggle="collapse" th:text="#{wms_kpi_project.filter.caption}"></h4>
+                    </div>
+                    <div class="col-1 text-center">
+                        <a href="#wms_kpi_project_filter_div" data-toggle="collapse"><i class="fa fa-minus"></i> </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pt-md-0 pb-md-2 pr-md-2 pl-md-2 collapse show" id="wms_kpi_project_filter_div">
+                <div>
+                    <div>
+                        <span th:replace="wms_kpi_project/filter_card :: wms_kpi_project_filter_body"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Filter -->
+
+<div class="row" id="wms_kpi_project_department_row" hidden>
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-1">
+            <div class="row">
+                <div class="col-1 text-center text-dark" id="wms_kpi_project_department_filter_btn_div">
+                    <a><i class="fa fa-search" id="wms_kpi_project_department_filter_btn"></i></a>
+                </div>
+                <div class="col-10">
+                    <h4 class="text-center text-primary pb-0" href="#wms_kpi_project_department_div" data-toggle="collapse" th:text="#{wms_kpi_project.department.caption}"></h4>
+                </div>
+                <div class="col-1 text-center">
+                    <a href="#wms_kpi_project_filter_div" data-toggle="collapse"><i class="fa fa-minus"></i> </a>
+                </div>
+            </div>
+            <div class="card-body pt-md-0 pb-md-2 pr-md-2 pl-md-2 collapse show" id="wms_kpi_project_department_div">
+                <div>
+                    <div>
+                        <span th:replace="wms_kpi_project/department_card :: wms_kpi_project_department_body"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Department -->
+
+<div class="row" id="wms_kpi_project_department_project_row" hidden>
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-1">
+            <div class="row">
+                <div class="col-1 text-center text-dark" id="wms_kpi_project_department_project_filter_btn_div">
+                    <a><i class="fa fa-search" id="wms_kpi_project_department_project_filter_btn"></i></a>
+                </div>
+                <div class="col-10">
+                    <h4 class="text-center text-primary pb-0" href="#wms_kpi_project_department_project_div" data-toggle="collapse" th:text="#{wms_kpi_project.project.caption}"></h4>
+                </div>
+                <div class="col-1 text-center">
+                    <a href="#wms_kpi_project_department_project_div" data-toggle="collapse"><i class="fa fa-minus"></i> </a>
+                </div>
+            </div>
+            <div class="card-body pt-md-0 pb-md-2 pr-md-2 pl-md-2 collapse show" id="wms_kpi_project_department_project_div">
+                <div>
+                    <div>
+                        <span th:replace="wms_kpi_project/project_card :: wms_kpi_project_department_project_body"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Project -->
+
+<div class="row" id="wms_kpi_project_department_user_row" hidden>
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-1">
+            <div class="row">
+                <div class="col-1 text-center text-dark" id="wms_kpi_project_department_user_filter_btn_div">
+                    <a><i class="fa fa-search" id="wms_kpi_project_department_user_filter_btn"></i></a>
+                </div>
+                <div class="col-10">
+                    <h4 class="text-center text-primary pb-0" href="#wms_kpi_project_department_user_div" data-toggle="collapse" th:text="#{wms_kpi_project.user.caption}"></h4>
+                </div>
+                <div class="col-1 text-center">
+                    <a href="#wms_kpi_project_department_user_div" data-toggle="collapse"><i class="fa fa-minus"></i> </a>
+                </div>
+            </div>
+            <div class="card-body pt-md-0 pb-md-2 pr-md-2 pl-md-2 collapse show" id="wms_kpi_project_department_user_div">
+                <div>
+                    <div>
+                        <span th:replace="wms_kpi_project/user_card :: wms_kpi_project_department_user_body"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- User -->
+
+<div class="row" id="wms_kpi_project_department_calculation_row" hidden>
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div id="wms_kpi_project_department_calculation_tabs_div">
+            <div class="tab mb-1" id="wms_kpi_project_department_calculation_tabs">
+                <input type="hidden" id="wms_kpi_project_department_calculation_month">
+                <ul class="nav nav-pills" role="tablist" id="wms_kpi_project_department_calculation_ul">
+                    <li class="nav-item"><a class="nav-link" href="#calc-first-tab-1" data-toggle="pill" role="tab" data-current-month="1" th:text="#{month.01}">January</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#calc-first-tab-1" data-toggle="pill" role="tab" data-current-month="2" th:text="#{month.02}">February</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#calc-first-tab-1" data-toggle="pill" role="tab" data-current-month="3" th:text="#{month.03}">March</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#calc-first-tab-1" data-toggle="pill" role="tab" data-current-month="4" th:text="#{month.04}">April</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#calc-first-tab-1" data-toggle="pill" role="tab" data-current-month="5" th:text="#{month.05}">May</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#calc-first-tab-1" data-toggle="pill" role="tab" data-current-month="6" th:text="#{month.06}">June</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#calc-first-tab-1" data-toggle="pill" role="tab" data-current-month="7" th:text="#{month.07}">July</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#calc-first-tab-1" data-toggle="pill" role="tab" data-current-month="8" th:text="#{month.08}">August</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#calc-first-tab-1" data-toggle="pill" role="tab" data-current-month="9" th:text="#{month.09}">September</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#calc-first-tab-1" data-toggle="pill" role="tab" data-current-month="10" th:text="#{month.10}">October</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#calc-first-tab-1" data-toggle="pill" role="tab" data-current-month="11" th:text="#{month.11}">November</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#calc-first-tab-1" data-toggle="pill" role="tab" data-current-month="12" th:text="#{month.12}">December</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#calc-first-tab-1" data-toggle="pill" role="tab" data-current-month="13" th:text="#{report_service_balance.tabs.all}">All</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="calc-first-tab-1" role="tabpanel">
+                        <div class="row" id="wms_kpi_project_department_calculation_first_div" hidden>
+                            <div class="col-12 col-md-7 pl-md-1 pr-md-1">
+                                <span th:replace="wms_kpi_project/calculation_first_card :: wms_kpi_project_department_calculation_first_body"></span>
+                            </div>
+                        </div>
+
+                        <div class="row" id="wms_kpi_project_department_calculation_second_div" hidden>
+                            <div class="col-12 col-md-7 pl-md-1 pr-md-1">
+                                <span th:replace="wms_kpi_project/calculation_second_card :: wms_kpi_project_department_calculation_second_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Calculation Tabs -->
+
+<div class="row" id="wms_kpi_project_department_days_row" hidden>
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-1">
+            <div class="row">
+                <div class="col-1 text-center text-dark" id="wms_kpi_project_department_days_filter_btn_div">
+                    <a><i class="fa fa-search" id="wms_kpi_project_department_days_filter_btn"></i></a>
+                </div>
+                <div class="col-10">
+                    <h4 class="text-center text-primary pb-0" href="#wms_kpi_project_department_days_div" data-toggle="collapse" th:text="#{wms_kpi_project.days.caption}"></h4>
+                </div>
+                <div class="col-1 text-center">
+                    <a href="#wms_kpi_project_department_days_div" data-toggle="collapse"><i class="fa fa-minus"></i> </a>
+                </div>
+            </div>
+            <div class="card-body pt-md-0 pb-md-2 pr-md-2 pl-md-2 collapse show" id="wms_kpi_project_department_days_div">
+                <div>
+                    <div>
+                        <span th:replace="wms_kpi_project/days_card :: wms_kpi_project_department_days_body"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Days -->
+
+<div class="row" id="wms_kpi_project_department_days_finance_row" hidden>
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-1">
+            <div class="row">
+                <div class="col-1 text-center text-dark" id="wms_kpi_project_department_days_finance_filter_btn_div">
+                    <a><i class="fa fa-search" id="wms_kpi_project_department_days_finance_filter_btn"></i></a>
+                </div>
+                <div class="col-10">
+                    <h4 class="text-center text-primary pb-0" href="#wms_kpi_project_department_days_finance_div" data-toggle="collapse" th:text="#{wms_kpi_project.days_finance.caption}"></h4>
+                </div>
+                <div class="col-1 text-center">
+                    <a href="#wms_kpi_project_department_days_finance_div" data-toggle="collapse"><i class="fa fa-minus"></i> </a>
+                </div>
+            </div>
+            <div class="card-body pt-md-0 pb-md-2 pr-md-2 pl-md-2 collapse show" id="wms_kpi_project_department_days_finance_div">
+                <div>
+                    <div>
+                        <span th:replace="wms_kpi_project/days_finance_card :: wms_kpi_project_department_days_finance_body"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Finance -->
+
+<div class="row" id="wms_kpi_project_department_days_text_row" hidden>
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-1">
+            <div class="row">
+                <div class="col-1 text-center text-dark" id="wms_kpi_project_department_days_text_filter_btn_div">
+                    <a><i class="fa fa-search" id="wms_kpi_project_department_days_text_filter_btn"></i></a>
+                </div>
+                <div class="col-10">
+                    <h4 class="text-center text-primary pb-0" href="#wms_kpi_project_department_days_text_div" data-toggle="collapse" th:text="#{wms_kpi_project.days_text.caption}"></h4>
+                </div>
+                <div class="col-1 text-center">
+                    <a href="#wms_kpi_project_department_days_text_div" data-toggle="collapse"><i class="fa fa-minus"></i> </a>
+                </div>
+            </div>
+            <div class="card-body pt-md-0 pb-md-2 pr-md-2 pl-md-2 collapse show" id="wms_kpi_project_department_days_text_div">
+                <div>
+                    <div>
+                        <span th:replace="wms_kpi_project/days_text_card :: wms_kpi_project_department_days_text_body"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Finance -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="wms_kpi_project/days_text_card :: cardscript"></script>
+<script th:replace="wms_kpi_project/days_finance_card :: cardscript"></script>
+<script th:replace="wms_kpi_project/days_card :: cardscript"></script>
+
+<script th:replace="wms_kpi_project/calculation_second_card :: cardscript"></script>
+<script th:replace="wms_kpi_project/calculation_first_card :: cardscript"></script>
+
+<script th:replace="wms_kpi_project/user_card :: cardscript"></script>
+
+<script th:replace="wms_kpi_project/project_card :: cardscript"></script>
+
+<script th:replace="wms_kpi_project/department_card :: cardscript"></script>
+
+<script th:replace="wms_kpi_project/filter_card :: cardscript"></script>
+</body>
+</html>

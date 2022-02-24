@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_employee_clients_head_body" th:remove="tag">
+		<form class="form-inline">
+			  <div class="form-group mb-2 mr-3">
+				<label for="report_employee_clients_employee_list" class="mr-2" th:text="#{report_employee_clients.user_list}">Employee: </label>
+				<select id="report_employee_clients_employee_list" class="form-control select2" data-toggle="select2">
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+					<option
+							   th:each="user_list : ${user_list}"
+							   th:value="${user_list.id}"
+							   th:text="${user_list.user_surname}"
+							   th:selected="${user_list.id == user_id}"
+					 ></option>
+				</select>
+			  </div>
+
+			<a class="btn btn-outline-primary mb-2" id="report_employee_clients_show" th:text="#{general.reportshow}">Show</a>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    $(document).ready(function(){
+		$(".select2").each(function() {
+			$(this)
+					.wrap("<div class=\"position-relative\"></div>")
+					.select2({
+						placeholder: "Select value"
+					});
+		})
+
+        $('#main_li').removeClass('active');
+
+        $('#reports_li').addClass('active').removeClass('collapsed');
+        $('#reports_a').attr('aria-expanded',true);
+        $('#reports').addClass('show');
+
+        $('#report_employee_clients_a').addClass('text-primary');
+
+		$('#report_employee_clients_show').on('click', function () {
+			$('#report_employee_clients_detail_card').removeAttr('hidden');
+
+			vReportEmployeeClientsDetailValue.rowdata.req_user_id = $("#report_employee_clients_employee_list").val();
+			vReportEmployeeClientsDetailValue.rowdata.user_id = null;
+			$(vReportEmployeeClientsDetailValue.table).DataTable().ajax.reload();
+		})
+    });
+</script>
+
+</body>
+</html>

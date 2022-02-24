@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="client_requests_files_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="client_requests_files_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="client_requests_files_modal_mode">
+            </div>
+
+            <div class="modal-content" id="client_requests_files_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{clients.files.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mb-1">
+                    <form id="client_requests_files_modal_form" name="client_requests_files_modal_form" class="was-validated" novalidate method="post" enctype="multipart/form-data">
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="req_type_id_row">
+                            <label for="client_requests_files_modal_req_id" class="form-label mb-0" th:text="'1. '+ #{requests.list.req_id}"></label>
+                            <input type="number" class="form-control" id="client_requests_files_modal_req_id" name="client_requests_files_modal_req_id" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="client_requests_files_modal_req_name" class="form-label mb-0" th:text="'2. '+#{requests.list.req_name}"></label>
+                            <input type="text" class="form-control" id="client_requests_files_modal_req_name" name="client_requests_files_modal_req_name" readonly>
+                        </div>
+                    </div><!-- First Row -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-md-2" id="req_store_id_row">
+                            <label for="req_store_id" class="form-label mb-0" th:text="'3. '+#{requests.files.req_store_id}"></label>
+                            <input type="number" class="form-control" id="req_store_id" name="req_store_id">
+                        </div>
+
+                        <div class="col-md-2" id="req_store_date_row">
+                            <label for="req_store_date" class="form-label mb-0" th:text="'4. '+#{requests.files.req_store_date}"></label>
+                            <input type="number" class="form-control" id="req_store_date" name="req_store_date">
+                        </div>
+
+                        <div class="col-md-4" id="client_requests_files_modal_user_id_row">
+                            <label for="client_requests_files_modal_user_id" class="form-label mb-0" th:text="'5. '+#{requests.files.user_name}"></label>
+                            <select type="text" id="client_requests_files_modal_user_id" name="client_requests_files_modal_user_id" class="custom-select" aria-describedby="user_id_helpBlock">
+                            </select>
+                        </div>
+                    </div><!-- Second Row -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-md-3" id="req_store_filename_row">
+                            <label for="req_store_filename" class="form-label mb-0" th:text="'6. '+#{requests.files.req_store_filename}"></label>
+                            <input type="text" class="form-control" id="req_store_filename" name="req_store_filename">
+                        </div>
+
+                        <div class="col-md-3" id="req_store_addfile_row">
+                            <div class="form-group">
+                                <label class="form-label mb-0" for="req_store_file" th:text="'6. '+#{requests.files.req_file_addname}">File</label>
+                                <div>
+                                    <input type="file" class="validation-file btn" id="req_store_file" name="file">
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Third Row -->
+                    </form>
+                </div><!-- Body -->
+                <div class="modal-footer">
+                    <button type="button" id="client_requests_files_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="client_requests_files_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="client_requests_files_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="client_requests_files_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+// Clear Fields
+    function clear_client_requests_files_modal_detail() {
+        $("#client_requests_files_modal_detail input[type=text]").val('');
+        $("#client_requests_files_modal_detail input[type=number]").val('');
+        $("#client_requests_files_modal_detail select").empty();
+        $("#client_requests_files_modal_detail textarea").val('');
+    }
+
+// Block And Required Fields
+    function block_client_requests_files_modal_detail() {
+        if($('#client_requests_files_modal_mode').val() === "0"){
+            $('#req_store_id_row').attr('hidden',true);
+            $('#req_store_date_row').attr('hidden',true);
+            $('#client_requests_files_modal_user_id_row').attr('hidden',true);
+            $('#req_store_filename_row').attr('hidden',true);
+        }
+        else if($('#client_requests_files_modal_mode').val() === "1"){
+            $('#req_store_id_row').removeAttr('hidden');
+        }
+        else{
+            $('#req_store_id_row').removeAttr('hidden');
+        }
+    }
+
+// Load Function
+    function fill_client_requests_files_modal_detail(aMode){
+        clear_client_requests_files_modal_detail();
+        $('#client_requests_files_modal_mode').val(aMode);
+        block_client_requests_files_modal_detail();
+
+        $('#client_requests_files_modal_req_id').val(vRequestListValue.rowdata.req_id);
+        $('#client_requests_files_modal_req_name').val(vRequestListValue.rowdata.req_name);
+
+        if(aMode > 0){}
+        else if(aMode === 0) {
+            $.when(
+            ).then(function () {
+                $('#client_requests_files_modal').modal('show');
+            });
+        }
+    }
+
+$("#client_requests_files_modal_form").on("submit", function (e) {
+    var MainRowID = vRequestListValue.rowdata.req_id;
+
+    // cancel the default behavior
+    e.preventDefault();
+    var formData = new FormData(this);
+    formData.append('req_id', MainRowID);
+
+    // use $.ajax() to upload file
+    $.ajax({
+        url:/*[[@{'/requests/add_request_file'}]]*/ "/requests/add_request_file",
+        type: "POST",
+        data: formData,
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        cache: false,
+        success: function (res) {
+            $('#client_requests_files_modal').modal('hide');
+
+            vRequestListValue.rowdata.req_id = MainRowID;
+            $(vRequestListValue.table).DataTable().ajax.reload(null, false);
+        },
+        error: function (err) {
+            console.error(err);
+        }
+    });
+});
+
+// Add button script
+    $('#client_requests_files_modal_addbtn').on('click', function(){
+        $('#client_requests_files_modal_form').submit();
+    });
+
+    //Validation Form
+    $('#client_requests_files_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function(error,element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            return false;
+        }
+    });
+
+    // OnChange Functions
+</script>
+
+</body>
+</html>

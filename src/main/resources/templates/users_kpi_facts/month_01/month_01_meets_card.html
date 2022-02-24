@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="users_kpi_facts_meets_month_01" th:remove="tag">
+        <div id="users-kpi-facts-meets-month-01-button">
+                <button type="submit" id="users-kpi-facts-meets-month-01-link" form="users-kpi-facts-meets-month-01-link-form" class="btn btn-sm btn-outline-dark mr-1 user_kpi_meets_link_control mb-2" th:text="#{general.gotobtn}" disabled>GoTo</button>
+        </div>
+
+        <div><table id="table-users-kpi-meets-month-01" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+        
+        <form id="users-kpi-facts-meets-month-01-link-form" th:action="@{/actions}" method="post" target="_blank">
+                <input name="act_id" hidden>
+                <input name="table_order_column" hidden>
+                <input name="table_order_type" hidden>
+                <input name="table_search" hidden>
+                <input name="table_pagelen" hidden>
+                <input name="table_page" hidden>
+        </form>         
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+        if(mobileScreenSize){
+                vDomParam = "Blfrtp";
+        }
+        else if(smallScreenSize){
+                vDomParam = "Blfrtip";
+                act_id_width = "5%";
+                act_id_class = "small_size small_head_size small_footer_size";
+                act_plane_date_width = "5%";
+                act_plane_date_class = "small_size small_head_size small_footer_size text-center";
+                cnt_name_width = "25%";
+                cnt_name_class = "small_size small_head_size small_footer_size";
+                user_name_width = "8%";
+                user_name_class = "small_size small_head_size small_footer_size text-center";
+                act_plan_type_sname_width = "5%";
+                act_plan_type_sname_class = "small_size small_head_size small_footer_size text-center";
+                act_type_sname_width = "5%";
+                act_type_sname_class = "small_size small_head_size small_footer_size text-center";
+                act_status_id_width = "";
+                act_status_id_class = "none";
+                act_status_sname_width = "8%";
+                act_status_sname_class = "small_size small_head_size small_footer_size text-center";
+                act_status_color_width = "";
+                act_status_color_class = "none";
+                act_result_sname_width = "8%";
+                act_result_sname_class = "small_size small_head_size small_footer_size text-center";
+                act_description_width = "31%";
+                act_description_class = "small_size small_head_size small_footer_size";
+        }
+        else{
+                vDomParam = "Blfrtip";
+                act_id_width = "5%";
+                act_id_class = "";
+                act_plane_date_width = "5%";
+                act_plane_date_class = "text-center";
+                cnt_name_width = "25%";
+                cnt_name_class = "";
+                user_name_width = "8%";
+                user_name_class = "text-center";
+                act_plan_type_sname_width = "5%";
+                act_plan_type_sname_class = "text-center";
+                act_type_sname_width = "5%";
+                act_type_sname_class = "text-center";
+                act_status_id_width = "";
+                act_status_id_class = "none";
+                act_status_sname_width = "8%";
+                act_status_sname_class = "text-center";
+                act_status_color_width = "";
+                act_status_color_class = "none";
+                act_result_sname_width = "8%";
+                act_result_sname_class = "text-center";
+                act_description_width = "31%";
+                act_description_class = "";
+        }
+
+        var vUsersKPIMeetsMonth01Value;
+        vUsersKPIMeetsMonth01Value = {
+                table : '#table-users-kpi-meets-month-01',
+                button_form: '#users-kpi-facts-meets-month-01-button',
+                ajax : {
+                        "url": /*[[@{/users_kpi_facts/meets_menu}]]*/ "users_kpi_facts/meets_menu",
+                        "type": "post",
+                        "data": function ( d ) {
+                                d.users_kpi_param_id = vUsersKPIMeetsMonth01Value.rowdata.users_kpi_param_id;
+                                d.users_kpi_user_id = vUsersKPIMeetsMonth01Value.rowdata.users_kpi_user_id;
+                                d.users_kpi_year = vUsersKPIMeetsMonth01Value.rowdata.users_kpi_year;
+                                d.users_kpi_month = vUsersKPIMeetsMonth01Value.rowdata.users_kpi_month;
+                        }
+                },
+                key : "act_id",
+                switchControl : users_kpi_meets_switchControl,
+                rowdata:{
+                        act_id: null,
+                        user_id: null,
+                        users_kpi_year: null,
+                        users_kpi_month: null
+                },
+                ordering: true,
+                order: [
+                        [0, "desc"]
+                ],
+
+                dom: 'Blfrtip',
+                createdRow: function( row, data, dataIndex ) {
+                        $(row).css('background-color', data["act_status_color"]);
+                },
+                columnDefs:[
+                        {"targets": 1, type: 'de_date'}
+                ],
+                columns : [
+                        /*0*/{"title": /*[[#{users_kpi.calls.act_id}]]*/ "act_id", "data": "act_id", "width": act_id_width, "className": act_id_class},
+                        /*1*/{"title": /*[[#{users_kpi.calls.act_plane_date}]]*/ "act_plane_date", "data": "act_plane_date", "width": act_plane_date_width, "className": act_plane_date_class},
+                        /*2*/{"title": /*[[#{users_kpi.calls.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": cnt_name_width, "className": cnt_name_class},
+                        /*3*/{"title": /*[[#{users_kpi.calls.user_name}]]*/ "user_name", "data": "user_name", "width": user_name_width, "className": user_name_class},
+                        /*4*/{"title": /*[[#{users_kpi.calls.act_plan_type_sname}]]*/ "act_plan_type_sname", "data": "act_plan_type_sname", "width": act_plan_type_sname_width, "className": act_plan_type_sname_class},
+                        /*5*/{"title": /*[[#{users_kpi.calls.act_type_sname}]]*/ "act_type_sname", "data": "act_type_sname", "width": act_type_sname_width, "className": act_type_sname_class},
+                        /*6*/{"title": /*[[#{users_kpi.calls.act_status_id}]]*/ "act_status_id", "data": "act_status_id", "width": act_status_id_width, "className": act_status_id_class},
+                        /*7*/{"title": /*[[#{users_kpi.calls.act_status_sname}]]*/ "act_status_sname", "data": "act_status_sname", "width": act_status_sname_width, "className": act_status_sname_class},
+                        /*8*/{"title": /*[[#{users_kpi.calls.act_status_color}]]*/ "act_status_color", "data": "act_status_color", "width": act_status_color_width, "className": act_status_color_class},
+                        /*9*/{"title": /*[[#{users_kpi.calls.act_result_sname}]]*/ "act_result_sname", "data": "act_result_sname", "width": act_result_sname_width, "className": act_result_sname_class},
+                        /*10*/{"title": /*[[#{users_kpi.calls.act_description}]]*/ "act_description", "data": "act_description", "width": act_description_width, "className": act_description_class}
+                ],
+                pageLength: 25,
+                copy_button: true,
+                excel_button: true,
+                pdf_button: true,
+                print_button: true
+        };
+
+    function users_kpi_meets_switchControl(){
+        if(vUsersKPIMeetsMonth01Value.rowdata.act_id != null) {
+                $("#users-kpi-facts-meets-month-01-link").prop('disabled',false).removeClass('btn-outline-dark').addClass('btn-outline-primary');
+
+                $("#users-kpi-facts-meets-month-01-link-sx").prop('disabled',false).removeClass('btn-outline-dark').addClass('btn-outline-primary');
+        } else{
+                $("#users-kpi-facts-meets-month-01-link").prop('disabled',true).addClass('btn-outline-dark').removeClass('btn-outline-primary');
+
+                $("#users-kpi-facts-meets-month-01-link-sx").prop('disabled',true).addClass('btn-outline-dark').removeClass('btn-outline-primary');
+        }
+    }
+
+    $('.users_kpi_meets_btn_control').on('click', function (){
+        $("#actions-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#actions-detail').submit(function() {
+        vUsersKPIMeetsMonth01Value.rowdata.users_kpi_meets_table_order_column = $(vUsersKPIMeetsMonth01Value.table).DataTable().order()[0][0];
+        vUsersKPIMeetsMonth01Value.rowdata.users_kpi_meets_table_order_type = $(vUsersKPIMeetsMonth01Value.table).DataTable().order()[0][1];
+        vUsersKPIMeetsMonth01Value.rowdata.users_kpi_meets_table_search = $(vUsersKPIMeetsMonth01Value.table).DataTable().search();
+        vUsersKPIMeetsMonth01Value.rowdata.users_kpi_meets_table_pagelen = $(vUsersKPIMeetsMonth01Value.table).DataTable().page.len();
+        vUsersKPIMeetsMonth01Value.rowdata.users_kpi_meets_table_page = $(vUsersKPIMeetsMonth01Value.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vUsersKPIMeetsMonth01Value.rowdata).forEach(function (index) {
+            $("#actions-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#actions-detail input[name=\"" + index + "\"]").val(vUsersKPIMeetsMonth01Value.rowdata[index]);
+        });
+    });
+
+    $('.user_kpi_meets_link_control').on('click', function (){
+            $("#users-kpi-facts-meets-month-01-link-form input[name=act_id]").val(vUsersKPIMeetsMonth01Value.rowdata.act_id);
+
+            $("#users-kpi-facts-meets-month-01-link-form input[name=table_order_column]").val(0);
+            $("#users-kpi-facts-meets-month-01-link-form input[name=table_order_type]").val("desc");
+            $("#users-kpi-facts-meets-month-01-link-form input[name=table_search]").val(vUsersKPIMeetsMonth01Value.rowdata.act_id);
+            $("#users-kpi-facts-meets-month-01-link-form input[name=table_pagelen]").val(25);
+            $("#users-kpi-facts-meets-month-01-link-form input[name=table_page]").val(0);
+    });
+
+    $(document).ready(function(){
+        vUsersKPIMeetsMonth01Value.rowdata.act_id = /*[[${act_id}]]*/ null;
+
+        vUsersKPIMeetsMonth01Value.rowdata.user_id = /*[[${user_id}]]*/ null;
+        vUsersKPIMeetsMonth01Value.rowdata.users_kpi_year = /*[[${users_kpi_year}]]*/ null;
+        vUsersKPIMeetsMonth01Value.rowdata.users_kpi_month = /*[[${users_kpi_month}]]*/ null;
+
+        vUsersKPIMeetsMonth01Value.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vUsersKPIMeetsMonth01Value.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vUsersKPIMeetsMonth01Value.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vUsersKPIMeetsMonth01Value.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vUsersKPIMeetsMonth01Value.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vUsersKPIMeetsMonth01Value);
+    });
+</script>
+
+</body>
+</html>

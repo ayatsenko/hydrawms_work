@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="aero_world_main_body" th:remove="tag">
+    <form id="aero-world-main-detail" class="mb-2" hidden>
+        <input name="mode" value="0" hidden>
+        <button type="button" id="aero-world-main-check" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.checkbtn}" disabled><i class="fas fa-check"></i></button>
+        <button type="button" id="aero-world-main-uncheck" class="btn btn-dark mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.uncheckbtn}" disabled><i class="fas fa-times"></i></button>
+        
+        <button type="button" id="aero-world-main-addbtn" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" th:title="#{general.addbtn}"><i class="fa fa-plus"></i></button>
+        <button type="button" id="aero-world-main-editbtn" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.editbtn}" disabled><i class="fa fa-pencil-alt"></i></button>
+        <button type="button" id="aero-world-main-delbtn" class="btn btn-dark mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.delbtn}" disabled><i class="fa fa-trash-alt"></i></button>
+
+        <button type="button" id="aero-world-main-reloadbtn" class="btn btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.refreshbtn}"><i class="fa fa-sync"></i></button>
+    </form>
+
+    <div><table id="table-aero-world-main" class="table new_table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var clm_id_show, trans_id_show, trans_name_show,cnt_id_show,routing_show,mawb_show,hawb_show,shipper_id_show,shipper_name_show,
+        consignee_show,consignee_name_show,package_count_show,gross_weight_show,chargeble_weight_show,etd_show,clm_status_id_show,clm_status_sname_show,
+        clm_status_colour_show, clm_sum_show, clm_costs_show, clm_profit_show, clm_profit_color_show;
+
+    var clm_id_width, trans_id_width, trans_name_width,cnt_id_width,routing_width,mawb_width,hawb_width,shipper_id_width,shipper_name_width,
+        consignee_width,consignee_name_width,package_count_width,gross_weight_width,chargeble_weight_width,etd_width,clm_status_id_width,clm_status_sname_width,
+        clm_status_colour_width, clm_sum_width, clm_costs_width, clm_profit_width, clm_profit_color_width;
+
+    var clm_id_class, trans_id_class, trans_name_class,cnt_id_class,routing_class,mawb_class,hawb_class,shipper_id_class,shipper_name_class,
+        consignee_class,consignee_name_class,package_count_class,gross_weight_class,chargeble_weight_class,etd_class,clm_status_id_class,clm_status_sname_class,
+        clm_status_colour_class, clm_sum_class, clm_costs_class, clm_profit_class, clm_profit_color_class;
+
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+
+        $('#aero-world-main-detail').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        clm_id_show = true;
+        clm_id_width = "40px";
+        clm_id_class = "small_size small_head_size head-center small_footer_size aero_world_edit";
+        trans_id_show = false;
+        trans_id_width = "60px";
+        trans_id_class = "small_size small_head_size head-center small_footer_size aero_world_edit";
+        trans_name_show = true;
+        trans_name_width = "300px";
+        trans_name_class = "small_size small_head_size head-center small_footer_size text-center aero_world_edit";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "";
+        routing_show = true;
+        routing_width = "60px";
+        routing_class = "small_size small_head_size head-center small_footer_size text-center aero_world_edit";
+        mawb_show = true;
+        mawb_width = "80px";
+        mawb_class = "small_size small_head_size head-center small_footer_size text-center aero_world_edit";
+        hawb_show = true;
+        hawb_width = "80px";
+        hawb_class = "small_size small_head_size head-center small_footer_size text-center aero_world_edit";
+        shipper_id_show = false;
+        shipper_id_width = "";
+        shipper_id_class = "";
+        shipper_name_show = true;
+        shipper_name_width = "100px";
+        shipper_name_class = "small_size small_head_size head-center small_footer_size text-center aero_world_edit";
+        consignee_show = false;
+        consignee_width = "";
+        consignee_class = "";
+        consignee_name_show = true;
+        consignee_name_width = "300px";
+        consignee_name_class = "small_size small_head_size head-center small_footer_size text-center aero_world_edit";
+        package_count_show = true;
+        package_count_width = "50px";
+        package_count_class = "small_size small_head_size head-center small_footer_size aero_world_edit";
+        gross_weight_show = true;
+        gross_weight_width = "100px";
+        gross_weight_class = "small_size small_head_size head-center small_footer_size aero_world_edit";
+        chargeble_weight_show = true;
+        chargeble_weight_width = "100px";
+        chargeble_weight_class = "small_size small_head_size head-center small_footer_size aero_world_edit";
+        etd_show = true;
+        etd_width = "60px";
+        etd_class = "small_size small_head_size head-center small_footer_size text-center aero_world_edit";
+        clm_status_id_show = false;
+        clm_status_id_width = "";
+        clm_status_id_class = "";
+        clm_status_sname_show = true;
+        clm_status_sname_width = "60px";
+        clm_status_sname_class = "small_size small_head_size head-center small_footer_size text-center aero_world_edit";
+        clm_status_colour_show = false;
+        clm_status_colour_width = "";
+        clm_status_colour_class = "";
+        clm_sum_show = true;
+        clm_sum_width = "50px";
+        clm_sum_class = "small_size small_head_size head-center small_footer_size aero_world_edit";
+        clm_costs_show = true;
+        clm_costs_width = "50px";
+        clm_costs_class = "small_size small_head_size head-center small_footer_size aero_world_edit";
+        clm_profit_show = true;
+        clm_profit_width = "50px";
+        clm_profit_class = "small_size small_head_size head-center small_footer_size aero_world_edit";
+        clm_profit_color_show = false;
+        clm_profit_color_width = "";
+        clm_profit_color_class = "";
+
+        $('#aero-world-main-detail').removeAttr('hidden');
+    }
+    else{
+        vDomParam = "Blfrtip";
+        clm_id_show = true;
+        clm_id_width = "40px";
+        clm_id_class = "small_size small_head_size head-center small_footer_size aero_world_edit";
+        trans_id_show = false;
+        trans_id_width = "60px";
+        trans_id_class = "small_size small_head_size head-center small_footer_size aero_world_edit";
+        trans_name_show = true;
+        trans_name_width = "300px";
+        trans_name_class = "small_size small_head_size head-center small_footer_size text-center aero_world_edit";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "";
+        routing_show = true;
+        routing_width = "60px";
+        routing_class = "small_size small_head_size head-center small_footer_size text-center aero_world_edit";
+        mawb_show = true;
+        mawb_width = "80px";
+        mawb_class = "small_size small_head_size head-center small_footer_size text-center aero_world_edit";
+        hawb_show = true;
+        hawb_width = "80px";
+        hawb_class = "small_size small_head_size head-center small_footer_size text-center aero_world_edit";
+        shipper_id_show = false;
+        shipper_id_width = "";
+        shipper_id_class = "";
+        shipper_name_show = true;
+        shipper_name_width = "100px";
+        shipper_name_class = "small_size small_head_size head-center small_footer_size text-center aero_world_edit";
+        consignee_show = false;
+        consignee_width = "";
+        consignee_class = "";
+        consignee_name_show = true;
+        consignee_name_width = "300px";
+        consignee_name_class = "small_size small_head_size head-center small_footer_size text-center aero_world_edit";
+        package_count_show = true;
+        package_count_width = "50px";
+        package_count_class = "small_size small_head_size head-center small_footer_size aero_world_edit";
+        gross_weight_show = true;
+        gross_weight_width = "100px";
+        gross_weight_class = "small_size small_head_size head-center small_footer_size aero_world_edit";
+        chargeble_weight_show = true;
+        chargeble_weight_width = "100px";
+        chargeble_weight_class = "small_size small_head_size head-center small_footer_size aero_world_edit";
+        etd_show = true;
+        etd_width = "60px";
+        etd_class = "small_size small_head_size head-center small_footer_size text-center aero_world_edit";
+        clm_status_id_show = false;
+        clm_status_id_width = "";
+        clm_status_id_class = "";
+        clm_status_sname_show = true;
+        clm_status_sname_width = "60px";
+        clm_status_sname_class = "small_size small_head_size head-center small_footer_size text-center aero_world_edit";
+        clm_status_colour_show = false;
+        clm_status_colour_width = "";
+        clm_status_colour_class = "";
+        clm_sum_show = true;
+        clm_sum_width = "50px";
+        clm_sum_class = "small_size small_head_size head-center small_footer_size aero_world_edit";
+        clm_costs_show = true;
+        clm_costs_width = "50px";
+        clm_costs_class = "small_size small_head_size head-center small_footer_size aero_world_edit";
+        clm_profit_show = true;
+        clm_profit_width = "50px";
+        clm_profit_class = "small_size small_head_size head-center small_footer_size aero_world_edit";
+        clm_profit_color_show = false;
+        clm_profit_color_width = "";
+        clm_profit_color_class = "";
+    }
+
+    var vFAClaimsValue;
+    vFAClaimsValue = {
+        table : '#table-aero-world-main',
+        button_form: (mobileScreenSize || smallScreenSize ) ? null : "#aero-world-main-detail",
+        ajax : {
+            "url": /*[[@{/aero_world/aero_world_main}]]*/ "aero_world/aero_world_main",
+            "type": "post",
+            "data": function ( d ) {
+                d.aero_world_filter_id = vFAClaimsValue.rowdata.aero_world_filter_id;
+                d.aero_world_filter_start_date = vFAClaimsValue.rowdata.aero_world_filter_start_date;
+                d.aero_world_filter_end_date = vFAClaimsValue.rowdata.aero_world_filter_end_date;
+            }
+        },
+        key : "clm_id",
+        switchControl : aero_world_main_switchControl,
+        rowdata:{
+            clm_id: null,
+            trans_id: null,
+            cnt_id: null,
+            clm_check: null,
+            clm_uncheck: null,
+            clm_status_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        autoWidth: false,
+        scrollY: "690px",
+        scrollX: true,
+        scrollCollapse: true,
+        responsive: false,
+        paging: true,
+        orderCellsTop: true,
+        dom: vDomParam,
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["clm_status_colour"]);
+            $(row).find('td:eq(13)').css('background-color', data["clm_profit_color"]);
+        },
+        columnDefs:[
+            {"targets": [0], "width": clm_id_width, "className": clm_id_class, "visible": clm_id_show},
+            {"targets": [1], "width": trans_id_width, "className": trans_id_class, "visible": trans_id_show},
+            {"targets": [2], "width": trans_name_width, "className": trans_name_class, "visible": trans_name_show},
+            {"targets": [3], "width": cnt_id_width, "className": cnt_id_class, "visible": cnt_id_show},
+            {"targets": [4], "width": routing_width, "className": routing_class, "visible": routing_show},
+            {"targets": [5], "width": mawb_width, "className": mawb_class, "visible": mawb_show},
+            {"targets": [6], "width": hawb_width, "className": hawb_class, "visible": hawb_show},
+            {"targets": [7], "width": shipper_id_width, "className": shipper_id_class, "visible": shipper_id_show},
+            {"targets": [8], "width": consignee_width, "className": consignee_class, "visible": consignee_show},
+            {"targets": [9], "width": shipper_name_width, "className": shipper_name_class, "visible": shipper_name_show},
+            {"targets": [10], "width": consignee_name_width, "className": consignee_name_class, "visible": consignee_name_show},
+            {"targets": [11], "width": package_count_width, "className": package_count_class, "visible": package_count_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": [12], "width": gross_weight_width, "className": gross_weight_class, "visible": gross_weight_show, render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [13], "width": chargeble_weight_width, "className": chargeble_weight_class, "visible": chargeble_weight_show, render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [14], "width": etd_width, "className": etd_class, "visible": etd_show},
+            {"targets": [15], "width": clm_sum_width, "className": clm_sum_class, "visible": clm_sum_show, render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [16], "width": clm_costs_width, "className": clm_costs_class, "visible": clm_costs_show, render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [17], "width": clm_profit_width, "className": clm_profit_class, "visible": clm_profit_show, render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [18], "width": clm_profit_color_width, "className": clm_profit_color_class, "visible": clm_profit_color_show},
+            {"targets": [19], "width": clm_status_id_width, "className": clm_status_id_class, "visible": clm_status_id_show},
+            {"targets": [20], "width": clm_status_sname_width, "className": clm_status_sname_class, "visible": clm_status_sname_show},
+            {"targets": [21], "width": clm_status_colour_width, "className": clm_status_colour_class, "visible": clm_status_colour_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{aero_world.main.clm_id}]]*/ "trans_id", "data": "clm_id"},
+            /*1*/{"title": /*[[#{aero_world.main.trans_id}]]*/ "trans_id", "data": "trans_id"},
+            /*2*/{"title": /*[[#{aero_world.main.trans_name}]]*/ "trans_name", "data": "trans_name"},
+            /*3*/{"title": /*[[#{aero_world.main.cnt_id}]]*/ "cnt_id", "data": "cnt_id"},
+            /*4*/{"title": /*[[#{aero_world.main.routing}]]*/ "routing", "data": "routing"},
+            /*5*/{"title": /*[[#{aero_world.main.mawb}]]*/ "mawb", "data": "mawb"},
+            /*6*/{"title": /*[[#{aero_world.main.hawb}]]*/ "hawb", "data": "hawb"},
+            /*7*/{"title": /*[[#{aero_world.main.shipper_id}]]*/ "shipper_id", "data": "shipper_id"},
+            /*8*/{"title": /*[[#{aero_world.main.consignee}]]*/ "consignee", "data": "consignee"},
+            /*9*/{"title": /*[[#{aero_world.main.shipper_name}]]*/ "shipper_name", "data": "shipper_name"},
+            /*10*/{"title": /*[[#{aero_world.main.consignee_name}]]*/ "consignee_name", "data": "consignee_name"},
+            /*11*/{"title": /*[[#{aero_world.main.package_count}]]*/ "package_count", "data": "package_count"},
+            /*12*/{"title": /*[[#{aero_world.main.gross_weight}]]*/ "gross_weight", "data": "gross_weight"},
+            /*13*/{"title": /*[[#{aero_world.main.chargeble_weight}]]*/ "chargeble_weight", "data": "chargeble_weight"},
+            /*14*/{"title": /*[[#{aero_world.main.etd}]]*/ "etd", "data": "etd"},
+            /*15*/{"title": /*[[#{aero_world.main.clm_sum}]]*/ "clm_sum", "data": "clm_sum"},
+            /*16*/{"title": /*[[#{aero_world.main.clm_costs}]]*/ "clm_costs", "data": "clm_costs"},
+            /*17*/{"title": /*[[#{aero_world.main.clm_profit}]]*/ "clm_profit", "data": "clm_profit"},
+            /*18*/{"title": /*[[#{aero_world.main.clm_profit_color}]]*/ "clm_profit_color", "data": "clm_profit_color"},
+            /*19*/{"title": /*[[#{aero_world.main.clm_status_id}]]*/ "clm_status_id", "data": "clm_status_id"},
+            /*20*/{"title": /*[[#{aero_world.main.clm_status_sname}]]*/ "clm_status_sname", "data": "clm_status_sname"},
+            /*21*/{"title": /*[[#{aero_world.main.clm_status_colour}]]*/ "clm_status_colour", "data": "clm_status_colour"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function aero_world_main_switchControl(){
+        if(vFAClaimsValue.rowdata.clm_id != null) {
+            if(RoleOPS || RoleChiefOPS || RoleSuperOPS) {
+                $("#aero-world-main-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#aero-world-main-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-danger');
+            }
+            if((vFAClaimsValue.rowdata.clm_status_id >= 0 && vFAClaimsValue.rowdata.clm_status_id < 12) && (RoleOPS || RoleChiefOPS || RoleSuperOPS)){
+                $("#aero-world-main-check").prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+            }
+            else{
+                $("#aero-world-main-check").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+            }
+
+            if((vFAClaimsValue.rowdata.clm_status_id > 0 && vFAClaimsValue.rowdata.clm_status_id <= 12) && (RoleOPS || RoleChiefOPS || RoleSuperOPS)){
+                $("#aero-world-main-uncheck").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+            }
+            else{
+                $("#aero-world-main-uncheck").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            }
+//Logs
+            vFAClaimTimeLogValue.rowdata.clm_id = vFAClaimsValue.rowdata.clm_id;
+            $(vFAClaimTimeLogValue.table).DataTable().ajax.reload();
+//Costs
+            vFAClaimCostsGroupsValue.rowdata.clm_id = vFAClaimsValue.rowdata.clm_id;
+            $(vFAClaimCostsGroupsValue.table).DataTable().ajax.reload();
+        }
+        else{
+            $("#aero-world-main-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#aero-world-main-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+            $("#aero-world-main-check").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+            $("#aero-world-main-uncheck").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+//Logs
+            vFAClaimTimeLogValue.rowdata.clm_id = null;
+            vFAClaimTimeLogValue.rowdata.clmll_id = null;
+            $(vFAClaimTimeLogValue.table).DataTable().clear().draw();
+//Costs
+            vFAClaimCostsGroupsValue.rowdata.clm_id = null;
+            vFAClaimCostsGroupsValue.rowdata.clmcgl_id = null;
+            $(vFAClaimCostsGroupsValue.table).DataTable().clear().draw();
+        }
+    }
+
+    if(RoleOPS || RoleChiefOPS || RoleSuperOPS) {
+        $('#aero-world-main-addbtn').prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+    }
+    else{
+        $('#aero-world-main-addbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+    }
+    //Add Function
+    function addAeroWorld(){
+        $('#aero_world_main_modal_addbtn').removeAttr('hidden');
+        $('#aero_world_main_modal_editbtn').attr('hidden',true);
+        $('#aero_world_main_modal_delbtn').attr('hidden',true);
+        fill_aero_world_main_modal_detail(0);
+    }
+    //Add Button
+    $('#aero-world-main-addbtn').click(function() {
+        addAeroWorld();
+    });
+
+    //Edit Function
+    function editAeroWorld(){
+        $('#aero_world_main_modal_addbtn').attr('hidden',true);
+        $('#aero_world_main_modal_editbtn').removeAttr('hidden');
+        $('#aero_world_main_modal_delbtn').attr('hidden',true);
+        fill_aero_world_main_modal_detail(1);
+    }
+    //Edit Button
+    $('#aero-world-main-editbtn').click(function() {
+        editAeroWorld();
+    });
+
+    $('#aero-world-main-check').click(function() {
+        $('#aero_world_main_time_modal').modal('show');
+    });
+
+    function tmsAeroWorldReload(){
+        $(vFAClaimsValue.table).DataTable().ajax.reload(null, false);
+    }
+    //Reload Button
+    $('#aero-world-main-reloadbtn').click(function(){
+        tmsAeroWorldReload();
+    });
+
+    function deleteAeroWorld() {
+        if (vFAClaimsValue.rowdata.clm_id != null) {
+            var RowID = vFAClaimsValue.rowdata.clm_id;
+            $.ajax({
+                url: /*[[ @{/aero_world/del_main} ]]*/ "/aero_world/del_main",
+                type: 'POST',
+                data: {"clm_id": vFAClaimsValue.rowdata.clm_id},
+                success: function (result) {
+                    vFAClaimsValue.rowdata.clm_id = RowID;
+                    $(vFAClaimsValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        } 
+    }
+
+    $('#aero-world-main-delbtn').click(function(){
+        deleteAeroWorld();
+    });
+
+    //UnCheck Function
+    function seaShipsMainUnCheck(){
+        if (vFAClaimsValue.rowdata.clm_id != null) {
+            var RowID = vFAClaimsValue.rowdata.clm_id;
+            $.ajax({
+                url: /*[[ @{/aero_world/main_uncheck} ]]*/ "/aero_world/main_uncheck",
+                type: 'POST',
+                data: {"clm_id": vFAClaimsValue.rowdata.clm_id},
+                success: function (result) {
+                    vFAClaimsValue.rowdata.clm_id = RowID;
+
+                    $(vFAClaimsValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }
+    //UnCheck Button
+    $('#aero-world-main-uncheck').click(function(){
+        seaShipsMainUnCheck();
+    });
+    
+    $(document).ready(function(){
+        vFAClaimsValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+
+        vFAClaimsValue.rowdata.table_order_show = /*[[${aero_world_main_table_order_show}]]*/ null;
+        vFAClaimsValue.rowdata.table_order_type = /*[[${aero_world_main_table_order_type}]]*/ null;
+        vFAClaimsValue.rowdata.table_search = /*[[${aero_world_main_table_search}]]*/ null;
+        vFAClaimsValue.rowdata.table_pagelen = /*[[${aero_world_main_table_pagelen}]]*/ null;
+        vFAClaimsValue.rowdata.table_page = /*[[${aero_world_main_table_page}]]*/ null;
+
+        vFAClaimsValue.rowdata.aero_world_filter_id = /*[[${aero_world_filter_id}]]*/ null;
+        vFAClaimsValue.rowdata.aero_world_filter_start_date = /*[[${aero_world_filter_start_date}]]*/ null;
+        vFAClaimsValue.rowdata.aero_world_filter_end_date = /*[[${aero_world_filter_end_date}]]*/ null;
+
+        recreateDataTable(vFAClaimsValue);
+
+        $(vFAClaimsValue.table).on('dblclick', '.aero_world_edit', function (e) {
+            var selectedRow = this._DT_CellIndex.row;
+            var currentTable = $(vFAClaimsValue.table).DataTable();
+            var NameString =  /*[[${#authentication.name}]]*/ '';
+            vFAClaimsValue.rowdata.clm_id = currentTable.row(selectedRow).data().clm_id;
+
+            editAeroWorld();
+        });
+
+        <!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#tms_li').addClass('active').removeClass('collapsed');
+        $('#tms_a').attr('aria-expanded',true);
+        $('#tms').addClass('show');
+
+        $('#aero_world_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

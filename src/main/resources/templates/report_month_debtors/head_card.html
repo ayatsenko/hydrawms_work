@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_month_debtors_head_body" th:remove="tag">
+		<form class="form-inline">
+		      <div class="form-group mr-2">
+				<label for="report_month_debtors_year" class="mr-2" th:text="#{report_month_debtors.filter.year}">Year: </label>
+                <select class="form-control" style="width:130px; display:inline-block" id="report_month_debtors_year" placeholder="Year">
+                  <option selected>2020</option>
+               </select>
+			  </div>			
+			
+			<a class="btn btn-outline-primary" id="report_month_debtors_show" th:text="#{general.reportshow}">Show</a>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+	$(document).ready(function(){
+		$('#main_li').removeClass('active');
+
+		$('#reports_li').addClass('active').removeClass('collapsed');
+		$('#reports_a').attr('aria-expanded',true);
+		$('#reports').addClass('show');
+
+		$('#report_month_debtors_a').addClass('text-primary');
+		$('#report_month_debtors_show').removeAttr('hidden');
+
+		$('#report_month_debtors_show').on('click', function () {
+			$('#report_month_debtors_detail_card').removeAttr('hidden');
+
+			vReportMonthDebtorsMainValue.rowdata.req_year = $("#report_month_debtors_year").val();
+			$(vReportMonthDebtorsMainValue.table).DataTable().ajax.reload();
+			$('#report_month_debtors_filter_div').removeClass('show').collapse('hide');
+		});
+	});
+</script>
+
+</body>
+</html>

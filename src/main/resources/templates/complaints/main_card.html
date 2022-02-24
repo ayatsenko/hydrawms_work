@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="complaints_main_body" th:remove="tag">
+        <form id="complaints-main-detail" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="complaints-main-detailbtn-large" class="d-none d-sm-block">
+                 <button type="button" id="complaints-main-detailbtn" class="btn btn-sm btn-dark" th:text="#{general.detailbtn}" disabled>View</button>
+                 <button type="button" id="complaints-main-addbtn" class="btn btn-sm btn-primary" th:text="#{general.addbtn}">Add</button>
+                 <button type="button" id="complaints-main-editbtn" class="btn btn-sm btn-dark" th:text="#{general.editbtn}" disabled>Edit</button>
+                 <button type="button" id="complaints-main-delbtn" class="btn btn-sm btn-dark" th:text="#{general.delbtn}" disabled>Delete</button>
+              </div>
+              <div id="complaints-main-detailbtn-small" class="d-block d-sm-none">
+                 <button type="button" id="complaints-main-detailbtn-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-list-ul"></i></button>
+                 <button type="button" id="complaints-main-addbtn-sx" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></button>
+                 <button type="button" id="complaints-main-editbtn-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-pencil-alt"></i></button>
+                 <button type="button" id="complaints-main-delbtn-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-trash-alt"></i></button>
+              </div>
+        </form>
+
+        <div><table id="table-complaints-main" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var cnt_comp_id_width, cnt_id_width, cnt_name_width, dep_id_width, dep_name_width, user_id_width, user_name_width, cnt_comp_date_width, cnt_comp_text_width;
+    var cnt_comp_id_class, cnt_id_class, cnt_name_class, dep_id_class, dep_name_class, user_id_class, user_name_class, cnt_comp_date_class, cnt_comp_text_class;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtip";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        cnt_comp_id_width = "";
+        cnt_comp_id_class = "none";
+        cnt_id_width = "";
+        cnt_id_class = "none";
+        cnt_name_width = "25%";
+        cnt_name_class = "head-center";
+        dep_id_width = "";
+        dep_id_class = "none";
+        dep_name_width = "10%";
+        dep_name_class = "head-center";
+        user_id_width = "";
+        user_id_class = "none";
+        user_name_width = "15%";
+        user_name_class = "text-center head-center";
+        cnt_comp_date_width = "6%";
+        cnt_comp_date_class = "text-center head-center";
+        cnt_comp_text_width = "44%";
+        cnt_comp_text_class = "head-center";
+    }
+
+    var vComplaintsMainValue;
+    vComplaintsMainValue = {
+        table : '#table-complaints-main',
+        button_form: "#complaints-main-detail",
+        ajax : {
+            "url": /*[[@{/complaints/get_main_table}]]*/ "complaints/get_main_table",
+            "type": "post",
+            "data": function ( d ) {
+            }
+        },
+        key : "cnt_comp_id",
+        switchControl : complaints_main_switchControl,
+        rowdata:{
+            cnt_comp_id: null,
+            cnt_id: null
+        },
+        ordering: true,
+        order: [
+            [1, "desc"]
+        ],
+
+        dom: vDomParam,
+        columnDefs:[
+            {"targets": [1], type: 'de_date'}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{complaints.main.cnt_comp_id}]]*/ "cnt_comp_id", "data": "cnt_comp_id", "width": cnt_comp_id_width, "className": cnt_comp_id_class},
+            /*1*/{"title": /*[[#{complaints.main.cnt_comp_date}]]*/ "cnt_comp_date", "data": "cnt_comp_date", "width": cnt_comp_date_width, "className": cnt_comp_date_class},
+            /*2*/{"title": /*[[#{complaints.main.cnt_id}]]*/ "cnt_id", "data": "cnt_id", "width": cnt_id_width, "className": cnt_id_class},
+            /*3*/{"title": /*[[#{complaints.main.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": cnt_name_width, "className": cnt_name_class},
+            /*4*/{"title": /*[[#{complaints.main.dep_id}]]*/ "dep_id", "data": "dep_id", "width": dep_id_width, "className": dep_id_class},
+            /*5*/{"title": /*[[#{complaints.main.dep_name}]]*/ "dep_name", "data": "dep_name", "width": dep_name_width, "className": dep_name_class},
+            /*6*/{"title": /*[[#{complaints.main.user_id}]]*/ "user_id", "data": "user_id", "width": user_id_width, "className": user_id_class},
+            /*7*/{"title": /*[[#{complaints.main.user_name}]]*/ "user_name", "data": "user_name", "width": user_name_width, "className": user_name_class},
+            /*8*/{"title": /*[[#{complaints.main.cnt_comp_text}]]*/ "cnt_comp_text", "data": "cnt_comp_text", "width": cnt_comp_text_width, "className": cnt_comp_text_class}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function complaints_main_switchControl(){
+        if(vComplaintsMainValue.rowdata.cnt_comp_id != null) {
+            $("#complaints-main-detailbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            $("#complaints-main-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            $("#complaints-main-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#complaints-main-detailbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            $("#complaints-main-editbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            $("#complaints-main-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+            $("#complaints-main-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#complaints-main-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#complaints-main-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#complaints-main-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#complaints-main-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#complaints-main-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.complaints_main_btn_control').on('click', function (){
+        $("#complaints-main-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+// Show Address Button
+    $('#complaints-main-detailbtn').click(function (){
+        $('#complaints_main_modal_addbtn').attr('hidden',true);
+        $('#complaints_main_modal_editbtn').attr('hidden',true);
+        $('#complaints_main_modal_delbtn').attr('hidden',true);
+        fill_complaints_main_modal_detail(4);
+    });
+
+    $('#complaints-main-detailbtn-sx').click(function (){
+        $('#complaints_main_modal_addbtn').attr('hidden',true);
+        $('#complaints_main_modal_editbtn').attr('hidden',true);
+        $('#complaints_main_modal_delbtn').attr('hidden',true);
+        fill_complaints_main_modal_detail(4);
+    });
+// Add Address Button
+    $('#complaints-main-addbtn').click(function (){
+        $('#complaints_main_modal_addbtn').removeAttr('hidden');
+        $('#complaints_main_modal_editbtn').attr('hidden',true);
+        $('#complaints_main_modal_delbtn').attr('hidden',true);
+        fill_complaints_main_modal_detail(0);
+    });
+
+    $('#complaints-main-addbtn-sx').click(function (){
+        $('#complaints_main_modal_addbtn').removeAttr('hidden');
+        $('#complaints_main_modal_editbtn').attr('hidden',true);
+        $('#complaints_main_modal_delbtn').attr('hidden',true);
+        fill_complaints_main_modal_detail(0);
+    });
+// Edit Address Button
+    $('#complaints-main-editbtn').click(function (){
+        $('#complaints_main_modal_addbtn').attr('hidden',true);
+        $('#complaints_main_modal_editbtn').removeAttr('hidden');
+        $('#complaints_main_modal_delbtn').attr('hidden',true);
+        fill_complaints_main_modal_detail(1);
+    });
+
+    $('#complaints-main-editbtn-sx').click(function (){
+        $('#complaints_main_modal_addbtn').attr('hidden',true);
+        $('#complaints_main_modal_editbtn').removeAttr('hidden');
+        $('#complaints_main_modal_delbtn').attr('hidden',true);
+        fill_complaints_main_modal_detail(1);
+    });
+// Del Address Button
+    $('#complaints-main-delbtn').click(function (){
+        $('#complaints_main_modal_addbtn').attr('hidden',true);
+        $('#complaints_main_modal_editbtn').attr('hidden',true);
+        $('#complaints_main_modal_delbtn').removeAttr('hidden');
+        fill_complaints_main_modal_detail(2);
+    });
+
+    $('#complaints-main-delbtn-sx').click(function (){
+        $('#complaints_main_modal_addbtn').attr('hidden',true);
+        $('#complaints_main_modal_editbtn').attr('hidden',true);
+        $('#complaints_main_modal_delbtn').removeAttr('hidden');
+        fill_complaints_main_modal_detail(2);
+    });    
+
+    $(document).ready(function(){
+// Highlight menu
+        $('#main_li').removeClass('active');
+
+        $('#clients_li').addClass('active').removeClass('collapsed');
+        $('#clients_a').attr('aria-expanded',true);
+        $('#clients').addClass('show');
+
+        $('#complaints_a').addClass('text-primary');
+
+        vComplaintsMainValue.rowdata.cnt_comp_id = /*[[${cnt_comp_id}]]*/ null;
+        vComplaintsMainValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vComplaintsMainValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vComplaintsMainValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vComplaintsMainValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vComplaintsMainValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vComplaintsMainValue);
+    });
+</script>
+
+</body>
+</html>

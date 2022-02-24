@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_users_list_body" th:remove="tag">
+        <div><table id="table-tms-users-list" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vTmsUsersListValue;
+    vTmsUsersListValue = {
+        table : '#table-tms-users-list',
+        button_form: "#tms-users-list-detail",
+        ajax : {
+            "url": /*[[@{/tms_users/get_list_table}]]*/ "tms_users/get_list_table",
+            "type": "post",
+            "data": {
+            }
+        },
+        key : "user_id",
+        switchControl : tms_users_list_switchControl,
+        rowdata:{
+            user_id: null,
+            user_name: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        columnDefs:[
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{tms_users.list.user_id}]]*/ "user_id", "data": "user_id", "width": "10%"},
+                /*1*/{"title": /*[[#{tms_users.list.user_name}]]*/ "user_name", "data": "user_name", "width": "90%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function tms_users_list_switchControl(){
+        if(vTmsUsersListValue.rowdata.user_id != null) {
+            vTmsUsersChatValue.rowdata.req_user_id = vTmsUsersListValue.rowdata.user_id;
+            $(vTmsUsersChatValue.table).DataTable().ajax.reload();
+        } else{
+            vTmsUsersChatValue.rowdata.req_user_id = null;
+            $(vTmsUsersChatValue.table).DataTable().clear().draw();
+        }
+    }
+
+    $('.tms_users_list_btn_control').on('click', function (){
+        $("#tms-users-list-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#tms-users-list-detail').submit(function() {
+        vTmsUsersListValue.rowdata.tms_users_list_table_order_column = $(vTmsUsersListValue.table).DataTable().order()[0][0];
+        vTmsUsersListValue.rowdata.tms_users_list_table_order_type = $(vTmsUsersListValue.table).DataTable().order()[0][1];
+        vTmsUsersListValue.rowdata.tms_users_list_table_search = $(vTmsUsersListValue.table).DataTable().search();
+        vTmsUsersListValue.rowdata.tms_users_list_table_pagelen = $(vTmsUsersListValue.table).DataTable().page.len();
+        vTmsUsersListValue.rowdata.tms_users_list_table_page = $(vTmsUsersListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vTmsUsersListValue.rowdata).forEach(function (index) {
+            $("#tms-users-list-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#tms-users-list-detail input[name=\"" + index + "\"]").val(vTmsUsersListValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vTmsUsersListValue.rowdata.user_id = /*[[${user_id}]]*/ null;
+
+        vTmsUsersListValue.rowdata.table_order_column = /*[[${tms_users_list_table_order_column}]]*/ null;
+        vTmsUsersListValue.rowdata.table_order_type = /*[[${tms_users_list_table_order_type}]]*/ null;
+        vTmsUsersListValue.rowdata.table_search = /*[[${tms_users_list_table_search}]]*/ null;
+        vTmsUsersListValue.rowdata.table_pagelen = /*[[${tms_users_list_table_pagelen}]]*/ null;
+        vTmsUsersListValue.rowdata.table_page = /*[[${tms_users_list_table_page}]]*/ null;
+
+        recreateDataTable(vTmsUsersListValue);
+<!-- Hihglight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#tms_poland_li').addClass('active').removeClass('collapsed');
+        $('#tms_poland_a').attr('aria-expanded',true);
+        $('#tms_poland').addClass('show');
+
+        $('#tms_poland_users_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

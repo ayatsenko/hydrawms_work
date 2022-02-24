@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="user_interface_menu_body" th:remove="tag">
+
+        <div><table id="table-user-interface-menu" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+        var vUserInterfaceMenuValue;
+        vUserInterfaceMenuValue = {
+                table : '#table-user-interface-menu',
+                ajax : {
+                        "url": /*[[@{/user_interface_menu/gettable}]]*/ "user_interface_menu/gettable",
+                        "type": "post",
+                        "data": function ( d ) {
+                                d.role_id = vUserInterfaceRoleValue.rowdata.role_id
+                        }
+                },
+                key : "murl_id",
+                switchControl : user_interface_menu_switchControl,
+                rowdata: {
+                        murl_id: null,
+                        role_id: null,
+                        menu_id: null,
+
+                        user_interface_menu_table_order_column: null,
+                        user_interface_menu_table_order_type: null,
+                        user_interface_menu_table_search: null,
+                        user_interface_menu_table_pagelen: null,
+                        user_interface_menu_table_page: null
+                },
+                ordering: true,
+                order: [
+                        [0, "desc"]
+                ],
+
+                dom: 'Blfrtip',
+                columnDefs:[
+                        {"targets": 1, "visible": false},
+                        {"targets": 3, "visible": false}
+                ],
+                columns : [
+                    /*0*/{"title": /*[[#{user_interface_menu.murl_id}]]*/ "murl_id", "data": "murl_id", "width": "5%", "className": "desktop"},
+                    /*1*/{"title": /*[[#{user_interface_menu.menu_id}]]*/ "menu_id", "data": "menu_id", "width": "20%"},
+                    /*2*/{"title": /*[[#{user_interface_menu.menu_name}]]*/ "menu_name", "data": "menu_name", "width": "65%"},
+                    /*3*/{"title": /*[[#{user_interface_menu.mr_hide}]]*/ "mr_hide", "data": "mr_hide", "width": "10%"}
+                ],
+                pageLength: 25,
+                copy_button: false,
+                excel_button: false,
+                pdf_button: false,
+                print_button: false
+        };
+
+        function user_interface_menu_switchControl(){
+                if(vUserInterfaceMenuValue.rowdata.murl_id != null) {
+                    <!-- Manin Button -->
+                } else{
+                    <!-- Manin Button -->
+                }
+
+                vUserInterfaceContextValue.rowdata.menu_id = vUserInterfaceMenuValue.rowdata.menu_id;
+                $(vUserInterfaceContextValue.table).DataTable().ajax.reload();
+        }
+        
+        $('.user_interface_menu_btn_control').on('click', function (){
+                $("#user-interface-menu-detail input[name=mode]").val($(this).attr("mode"));
+        });
+
+        $('#user-interface-menu-detail').submit(function() {
+                vUserInterfaceMenuValue.rowdata.user_interface_menu_table_order_column = $(vUserInterfaceMenuValue.table).DataTable().order()[0][0];
+                vUserInterfaceMenuValue.rowdata.user_interface_menu_table_order_type = $(vUserInterfaceMenuValue.table).DataTable().order()[0][1];
+                vUserInterfaceMenuValue.rowdata.user_interface_menu_table_search = $(vUserInterfaceMenuValue.table).DataTable().search();
+                vUserInterfaceMenuValue.rowdata.user_interface_menu_table_pagelen = $(vUserInterfaceMenuValue.table).DataTable().page.len();
+                vUserInterfaceMenuValue.rowdata.user_interface_menu_table_page = $(vUserInterfaceMenuValue.table).DataTable().page.info().page;
+                <!-- Recreate Contragent Ajax Filter Value -->
+
+                Object.keys(vUserInterfaceMenuValue.rowdata).forEach(function (index) {
+                   $("#user-interface-menu-detail").append("<input name=\"" + index + "\" hidden>");
+                   $("#user-interface-menu-detail input[name=\"" + index + "\"]").val(vUserInterfaceMenuValue.rowdata[index]);
+                });
+        });
+
+        $(document).ready(function() {
+                vUserInterfaceMenuValue.rowdata.murl_id = /*[[${murl_id}]]*/ null;
+                vUserInterfaceMenuValue.rowdata.role_id = /*[[${role_id}]]*/ null;
+                 recreateDataTable(vUserInterfaceMenuValue);
+        });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="part_world_costs_groups_body" th:remove="tag">
+        <form id="part-world-costs-groups-detail" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+        </form>
+        
+        <div><table id="table-part-world-costs-groups" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var clmcgl_id_width, clmcg_type_id_width, clmcg_type_name_width, cnt_id_width, trans_costs_group_width;
+
+    var clmcgl_id_class, clmcg_type_id_class, clmcg_type_name_class, cnt_id_class, trans_costs_group_class;
+
+    if(mobileScreenSize){
+        vDomParam = "frtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "frtp";
+        clmcgl_id_width = "";
+        clmcgl_id_class = "none";
+        clmcg_type_id_width = "";
+        clmcg_type_id_class = "none";
+        clmcg_type_name_width = "100%";
+        clmcg_type_name_class = "small_size small_head_size small_footer_size";
+        cnt_id_width = "";
+        cnt_id_class = "none";
+        trans_costs_group_width = "";
+        trans_costs_group_class = "none";
+    }
+    else{
+        vDomParam = "frtp";
+        clmcgl_id_width = "";
+        clmcgl_id_class = "none";
+        clmcg_type_id_width = "";
+        clmcg_type_id_class = "none";
+        clmcg_type_name_width = "100%";
+        clmcg_type_name_class = "";
+        cnt_id_width = "";
+        cnt_id_class = "none";
+        trans_costs_group_width = "";
+        trans_costs_group_class = "none";
+    }
+
+    var vFLGClaimCostsGroupsValue;
+    vFLGClaimCostsGroupsValue = {
+        table : '#table-part-world-costs-groups',
+        button_form: "#part-world-costs-groups-detail",
+        ajax : {
+            "url": /*[[@{/part_world/get_costs_groups_table}]]*/ "part_world/get_costs_groups_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vFLGClaimCostsGroupsValue.rowdata.clm_id;
+            }
+        },
+        key : "clmcgl_id",
+        switchControl : part_world_costs_groups_switchControl,
+        rowdata:{
+            clm_id: null,
+            clmcgl_id: null,
+            clmcg_type_id: null,
+            clmcg_type_name: null,
+            trans_costs_group: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: vDomParam,
+        columnDefs:[
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{part_world.costs_groups.clmcgl_id}]]*/ "clmcgl_id", "data": "clmcgl_id", "width": clmcgl_id_width, "className": clmcgl_id_class},
+            /*1*/{"title": /*[[#{part_world.costs_groups.clmcg_type_id}]]*/ "clmcg_type_id", "data": "clmcg_type_id", "width": clmcg_type_id_width, "className": clmcg_type_id_class},
+            /*2*/{"title": /*[[#{part_world.costs_groups.clmcg_type_name}]]*/ "clmcg_type_name", "data": "clmcg_type_name", "width": clmcg_type_name_width, "className": clmcg_type_name_class},
+            /*3*/{"title": /*[[#{part_world.costs_groups.cnt_id}]]*/ "cnt_id", "data": "cnt_id", "width": cnt_id_width, "className": cnt_id_class},
+            /*3*/{"title": /*[[#{part_world.costs_groups.trans_costs_group}]]*/ "trans_costs_group", "data": "trans_costs_group", "width": trans_costs_group_width, "className": trans_costs_group_class}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function part_world_costs_groups_switchControl(){
+        if(vFLGClaimCostsGroupsValue.rowdata.clmcgl_id != null) {
+            vFLGClaimCostsValue.rowdata.clm_id = vFLGClaimsValue.rowdata.clm_id;
+            vFLGClaimCostsValue.rowdata.clmcgl_id = vFLGClaimCostsGroupsValue.rowdata.clmcgl_id;
+            $(vFLGClaimCostsValue.table).DataTable().ajax.reload();
+            $("#part-world-costs-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#part-world-costs-addbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        }
+        else{
+            vFLGClaimCostsValue.rowdata.clm_id = null;
+            vFLGClaimCostsValue.rowdata.clmcgl_id = null;
+            vFLGClaimCostsValue.rowdata.clmcl_id = null;
+            $(vFLGClaimCostsValue.table).DataTable().clear().draw();
+            $("#part-world-costs-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#part-world-costs-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.part_world_costs_groups_btn_control').on('click', function (){
+        $("#part-world-costs-groups-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $(document).ready(function(){
+        vFLGClaimCostsGroupsValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vFLGClaimCostsGroupsValue.rowdata.clmcgl_id = /*[[${clmcgl_id}]]*/ null;
+
+        vFLGClaimCostsGroupsValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vFLGClaimCostsGroupsValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vFLGClaimCostsGroupsValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vFLGClaimCostsGroupsValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vFLGClaimCostsGroupsValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vFLGClaimCostsGroupsValue);
+    });
+</script>
+
+</body>
+</html>

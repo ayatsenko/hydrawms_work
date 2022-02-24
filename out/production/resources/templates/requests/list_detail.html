@@ -1,0 +1,2210 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{requests.list.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{requests.list.caption}"></h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <!--/*@thymesVar id="requests_list_detail" type="java.util.List"*/-->
+                <form id="requests-list-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/requests/list_model}">
+                    <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                    <!--/*@thymesVar id="auth_user_id" type="java.lang.Long"*/-->
+                    <input type="hidden" name="auth_user_id" id="auth_user_id" th:value="${auth_user_id}">
+                    <!--/*@thymesVar id="auth_username" type="java.lang.String"*/-->
+                    <input type="hidden" name="auth_username" id="auth_username" th:value="${auth_username}">
+                    <!--/*@thymesVar id="auth_role_id" type="java.lang.Long"*/-->
+                    <input type="hidden" name="auth_role_id" id="auth_role_id" th:value="${auth_role_id}">
+
+                    <div class="btn-group mb-1">
+                        <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="requests-list-indexfrm">Cancel</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="requests-list-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                            <button th:case="1" type="submit" id="requests-list-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                            <button th:case="2" type="submit" id="requests-list-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                        </div>
+                    </div>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="req_id" th:value="${req_id}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="requests_list_table_order_column" th:value="${requests_list_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="requests_list_table_order_type" th:value="${requests_list_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="requests_list_table_search" th:value="${requests_list_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="requests_list_table_pagelen" th:value="${requests_list_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="requests_list_table_page" th:value="${requests_list_table_page}" >
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-1" id="req_id_row">
+                            <label for="req_id" class="form-label" th:text="'1. '+ #{requests.list.req_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="req_id" name="req_id" th:value="${req_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-2 mb-1">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="req_type_id" class="form-label" th:text="'2. '+#{requests.list.req_type_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="req_type_id" name="req_type_id" class="form-control p-1" aria-describedby="req_type_id_helpBlock" th:value="${req_type_id}" readonly="true">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="req_type : ${req_type_list}"
+                                        th:value="${req_type.req_type_id}"
+                                        th:text="${req_type.req_type_sname}"
+                                        th:selected="${req_type.req_type_id == req_type_id}"
+                                ></option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-1">
+                            <label for="user_id" class="form-label" th:text="'3. '+#{requests.list.user_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="user_id" name="user_id" class="form-control p-1" aria-describedby="user_id_helpBlock" th:value="${user_id}">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="sale_user : ${sale_user_list}"
+                                        th:value="${sale_user.id}"
+                                        th:text="${sale_user.username}"
+                                        th:selected="${sale_user.id == user_id}"
+                                ></option>
+                            </select>
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-md-12 mb-1" id="cnt_id_div">
+                            <label for="cnt_id" th:text="'4. '+#{requests.list.cnt_id}"></label>
+                            <div class="input-group d-flex">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <select type="text" id="cnt_id" name="cnt_id" class="form-control p-1" aria-describedby="cnt_id_helpBlock" th:value="${cnt_id}">
+                                    <option value=""></option>
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <option class="p-1"
+                                            th:each="cnt : ${cnt_list}"
+                                            th:value="${cnt.cnt_id}"
+                                            th:text="${cnt.cnt_name}"
+                                            th:selected="${cnt.cnt_id == cnt_id}">
+                                    </option>
+                                </select>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                                <span class="input-group-append">
+                                    <button type="button" class="btn btn-outline-primary" id="cnt_id_show" name="cnt_id_show"><i data-feather="clipboard"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="req_end_date_row">
+                            <label for="req_end_date" class="form-label" th:text="'5. '+ #{requests.list.req_end_date}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="req_end_date" name="req_end_date" th:value="${req_end_date}">
+                                <button type="button" id="req_end_date_x" name="req_end_date_x" class="btn btn-outline-primary"><i data-feather="x"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-1" id="ser_id_row">
+                            <label for="ser_id" class="form-label" th:text="'6. '+#{requests.list.ser_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="ser_id" name="ser_id" class="form-control p-1" aria-describedby="ser_id_helpblock" th:value="${ser_id}">
+                                <option value="" th:text="#{requests.list.ser_select_text}">выберите услугу</option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="ser : ${ser_list}"
+                                        th:value="${ser.ser_id}"
+                                        th:text="${ser.ser_name}"
+                                        th:selected="${ser.ser_id == ser_id}">
+                                </option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                        </div>
+                    </div><!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-md-5 mb-1" id="req_load_place_row">
+                            <label for="req_load_place" th:text="'7. '+#{requests.list.req_load_place}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="128" style="resize:none;" id="req_load_place" name="req_load_place" th:text="${req_load_place}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-5 mb-1" id="req_tax_place_row">
+                            <label for="req_tax_place" th:text="'8. '+#{requests.list.req_tax_place}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="128" style="resize:none;" id="req_tax_place" name="req_tax_place" th:text="${req_tax_place}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 4 -->
+
+                    <div class="form-row">
+                        <div class="col-md-5 mb-1" id="req_clearance_place_row">
+                            <label for="req_clearance_place" th:text="'9. '+#{requests.list.req_clearance_place}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="128" style="resize:none;" id="req_clearance_place" name="req_clearance_place" th:text="${req_clearance_place}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-5 mb-1" id="req_unload_place_row">
+                            <label for="req_unload_place" th:text="'10. '+#{requests.list.req_unload_place}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="128" style="resize:none;" id="req_unload_place" name="req_unload_place" th:text="${req_unload_place}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 5 -->
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-1" id="req_cargo_note_row">
+                            <label for="req_cargo_note" class="form-label" th:text="'11. '+ #{requests.list.req_cargo_note}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="req_cargo_note" name="req_cargo_note" th:value="${req_cargo_note}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-3 mb-1" id="load_type_id_row">
+                            <label for="load_type_id" class="form-label" th:text="'12. '+ #{requests.list.load_type_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="load_type_id" name="load_type_id" class="form-control p-1" aria-describedby="load_type_id_helpBlock" th:value="${load_type_id}">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="load_type : ${load_type_list}"
+                                        th:value="${load_type.load_type_id}"
+                                        th:text="${load_type.load_type_sname}"
+                                        th:selected="${load_type.load_type_id == load_type_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 6 -->
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-1" id="req_weight_row">
+                            <label for="req_weight" class="form-label" th:text="'13. '+ #{requests.list.req_weight}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="req_weight" name="req_weight" th:value="${req_weight}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-3 mb-1" id="req_volume_row">
+                            <label for="req_volume" class="form-label" th:text="'14. '+ #{requests.list.req_volume}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="req_volume" name="req_volume" th:value="${req_volume}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 7 -->
+
+                    <div class="form-row">
+                        <div class="col-md-6 mb-1" id="req_dims_row">
+                            <label for="req_dims" th:text="'15. '+#{requests.list.req_dims}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="128" style="resize:none;" id="req_dims" name="req_dims" th:text="${req_dims}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 8-->
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-1" id="req_adr_row">
+                            <label for="req_adr" class="form-label" th:text="'16. '+ #{requests.list.req_adr}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="req_adr" name="req_adr" th:value="${req_adr}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-3 mb-1" id="req_special_row">
+                            <label for="req_special" class="form-label" th:text="'17. '+ #{requests.list.req_special}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="req_special" name="req_special" th:value="${req_special}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 9 -->
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-1" id="req_tir_type_row">
+                            <label for="req_tir_type" class="form-label" th:text="'18. '+ #{requests.list.req_tir_type}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="req_tir_type" name="req_tir_type" th:value="${req_tir_type}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-3 mb-1" id="req_profiles_row">
+                            <label for="req_profiles" class="form-label" th:text="'19. '+ #{requests.list.req_profiles}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="req_profiles" name="req_profiles" th:value="${req_profiles}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 10 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="req_plan_price_row">
+                            <label for="req_plan_price" class="form-label" th:text="'20. '+ #{requests.list.req_plan_price}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="req_plan_price" name="req_plan_price" th:value="${req_plan_price}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 11 -->
+
+                    <div class="form-row">
+                        <div class="col-md-6 mb-1" id="req_note_row">
+                            <label for="req_note" th:text="'21. '+#{requests.list.req_note}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="128" style="resize:none;" id="req_note" name="req_note" th:text="${req_note}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 12 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="req_ops_id_row">
+                            <label for="req_ops_id" class="form-label" th:text="'22. '+ #{requests.list.req_ops_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="req_ops_id" name="req_ops_id" th:value="${req_ops_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="req_ops_date_row">
+                            <label for="req_ops_date" class="form-label" th:text="'23. '+ #{requests.list.req_ops_date}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="req_ops_date" name="req_ops_date" th:value="${req_ops_date}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="req_ops_username_row">
+                            <label for="req_ops_user_id" class="form-label" th:text="'24. '+ #{requests.list.req_ops_username}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="req_ops_user_id" name="req_ops_user_id" class="form-control p-1" aria-describedby="user_id_helpBlock" th:value="${req_ops_user_id}">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="opsuser: ${ops_user_list}"
+                                        th:value="${opsuser.id}"
+                                        th:text="${opsuser.username}"
+                                        th:selected="${opsuser.id == req_ops_user_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 13 -->
+
+                    <div class="form-row">
+                        <div class="col-md-6 mb-1" id="req_ops_answer_row">
+                            <label for="req_ops_answer" th:text="'25. '+#{requests.list.req_ops_answer}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="64" style="resize:none;" id="req_ops_answer" name="req_ops_answer" th:text="${req_ops_answer}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 14 -->
+
+                    <div class="form-row">
+                        <div class="col-md-6 mb-1" id="req_ops_note_row">
+                            <label for="req_ops_note" th:text="'26. '+#{requests.list.req_ops_note}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="5" maxlength="612" style="resize:none;" id="req_ops_note" name="req_ops_note" th:text="${req_ops_note}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 15 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="req_status_id_row">
+                            <label for="req_status_id" th:text="'27. '+#{requests.list.req_status_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="req_status_id" name="req_status_id" class="form-control p-1" aria-describedby="req_status_id_helpBlock" th:value="${req_status_id}">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="req_status : ${req_status_list}"
+                                        th:value="${req_status.req_status_id}"
+                                        th:text="${req_status.req_status_sname}"
+                                        th:selected="${req_status.req_status_id == req_status_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="req_result_status_id_row">
+                            <label for="req_result_status_id" th:text="'28. '+#{requests.list.req_result_status_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="req_result_status_id" name="req_result_status_id" class="form-control selectpicker" aria-describedby="req_result_status_helpBlock" th:value="${req_result_status_id}">
+                                <option value="">Выберите статус результата</option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="req_result_status : ${req_result_status_list}"
+                                        th:value="${req_result_status.req_result_status_id}"
+                                        th:text="${req_result_status.req_result_status_sname}"
+                                        th:selected="${req_result_status.req_result_status_id == req_result_status_id}"
+                                        th:style="'background-color:'+${req_result_status.req_result_status_colour}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="req_profit_predict_row">
+                            <label for="req_profit_predict" class="form-label" th:text="'29. '+ #{requests.list.req_profit_predict}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="req_profit_predict" name="req_profit_predict" th:value="${req_profit_predict}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 16 -->
+
+                    <div class="form-row">
+                        <div class="col-md-6 mb-1" id="req_result_text_row">
+                            <label for="req_result_text" th:text="'30. '+#{requests.list.req_result_text}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="64" style="resize:none;" id="req_result_text" name="req_result_text" th:text="${req_result_text}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!--  Row 17 -->
+
+                    <div class="form-row">
+                        <div class="col-md-6 mb-1" id="req_result_note_row">
+                            <label for="req_result_note" th:text="'31. '+#{requests.list.req_result_note}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="5" maxlength="612" style="resize:none;" id="req_result_note" name="req_result_note" th:text="${req_result_note}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 18 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="req_doc_number_row">
+                            <label for="req_doc_number" class="form-label" th:text="'32. '+ #{requests.list.req_doc_number}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="req_doc_number" name="req_doc_number" th:value="${req_doc_number}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="req_doc_start_date_row">
+                            <label for="req_doc_start_date" class="form-label" th:text="'33. '+ #{requests.list.req_doc_start_date}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="req_doc_start_date" name="req_doc_start_date" th:value="${req_doc_start_date}">
+                                <button type="button" id="req_doc_start_date_x" name="req_doc_start_date_x" class="btn btn-outline-primary"><i data-feather="x"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="req_doc_end_date_row">
+                            <label for="req_doc_end_date" class="form-label" th:text="'34. '+ #{requests.list.req_doc_end_date}"></label>
+                            <div class="input-group">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="req_doc_end_date" name="req_doc_end_date" th:value="${req_doc_end_date}">
+                                <button type="button" id="req_doc_end_date_x" name="req_doc_end_date_x" class="btn btn-outline-primary"><i data-feather="x"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 19 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="req_work_start_date_row">
+                            <label for="req_work_start_date" class="form-label" th:text="'35. '+ #{requests.list.req_work_start_date}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="req_work_start_date" name="req_work_start_date" th:value="${req_work_start_date}">
+                                <button type="button" id="req_work_start_date_x" name="req_work_start_date_x" class="btn btn-outline-primary"><i data-feather="x"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 20 -->
+
+                    <div class="form-row">
+                        <div class="col-md-6 mb-1" id="req_work_note_row">
+                            <label for="req_work_note" th:text="'36. '+#{requests.list.req_work_note}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="5" maxlength="612" style="resize:none;" id="req_work_note" name="req_work_note" th:text="${req_work_note}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 21 -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--/*@thymesVar id="requests_list_detail" type="java.util.List"*/-->
+    <form id="requests-list-indexfrm" method="post" th:action="@{/requests}" hidden>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="req_id" th:value="${req_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="requests_list_table_order_column" th:value="${requests_list_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="requests_list_table_order_type" th:value="${requests_list_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="requests_list_table_search" th:value="${requests_list_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="requests_list_table_pagelen" th:value="${requests_list_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="requests_list_table_page" th:value="${requests_list_table_page}" >
+    </form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'requests-list-indexfrm')">Error</span>
+
+<script>
+    $(document).ready(function(){
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#crm_li').addClass('active').removeClass('collapsed');
+        $('#crm_a').attr('aria-expanded',true);
+        $('#crm').addClass('show');
+
+        $('#requests_a').addClass('text-primary');
+
+<!-- Form Start -->
+        $('#req_id').prop('readOnly',true);
+        $('#cnt_id').prop('required',true);
+        $('#req_end_date').prop('required',true);
+
+        $("#req_end_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        $('#req_end_date_x').on('click', function() {
+            $('#req_end_date').empty().val('');
+        });
+<!-- Req End Date -->
+
+        var docStartDate = $("#req_doc_start_date").val();
+        $("#req_doc_start_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        $('#req_doc_start_date_x').on('click', function() {
+            $('#req_doc_start_date').empty().val('');
+        });
+
+        if(docStartDate === null || docStartDate === ''){
+            $('#req_doc_start_date').empty().val('');
+        }
+<!-- Doc Start Date -->
+
+        var docEndDate = $("#req_doc_end_date").val();
+        $("#req_doc_end_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        $('#req_doc_end_date_x').on('click', function() {
+            $('#req_doc_end_date').empty().val('');
+        });
+
+        if(docEndDate === null || docEndDate === ''){
+            $('#req_doc_end_date').empty().val('');
+        }
+<!-- Doc End Date -->
+        var workStartDate = $('#req_work_start_date').val();
+        $("#req_work_start_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        $('#req_work_start_date_x').on('click', function() {
+            $('#req_work_start_date').empty().val('');
+        });
+
+        if(workStartDate === null || workStartDate === ''){
+            $('#req_work_start_date').empty().val('');
+        }
+<!-- Work Start Date -->
+
+        $('#cnt_id')
+            .wrap("<div class=\"position-relative\"></div>")
+            .select2({
+                id: '-1', // the value of the option
+                placeholder: /*[[#{requests.list.client_placeholder}]]*/ "Select a client",
+                allowClear: true,
+                minimumInputLength: 2,
+                width: 'element',
+                dropdownAutoWidth: true
+            });
+
+        $('#cnt_id_show').on('click', function () {
+            if($('#cnt_id_show').hasClass('btn-outline-primary')) {
+                $('#cnt_id_show').removeClass('btn-outline-primary').addClass('btn-primary');
+                var options_zero = {
+                    id: '-1', // the value of the option
+                    placeholder: /*[[#{requests.list.client_placeholder}]]*/ "Select a client",
+                    allowClear: true,
+                    width: 'element',
+                    dropdownAutoWidth: true
+                };
+                $("#cnt_id").select2("destroy").select2(options_zero);
+            }
+            else if($('#cnt_id_show').hasClass('btn-primary')){
+                $('#cnt_id_show').addClass('btn-outline-primary').removeClass('btn-primary');
+                var options_two = {
+                    id: '-1', // the value of the option
+                    placeholder: /*[[#{requests.list.client_placeholder}]]*/ "Select a client",
+                    allowClear: true,
+                    minimumInputLength: 2,
+                    width: 'element',
+                    dropdownAutoWidth: true
+                };
+                $("#cnt_id").select2("destroy").select2(options_two);
+            }
+        });
+
+        function TypeChange(){
+            var serid = $('#ser_id').val();
+            if (serid == 2){
+                $('#req_end_date_row').removeAttr('hidden');
+                $('#req_end_date').attr('required', true);
+
+                $('#req_load_place_row').attr('hidden', true);
+                $('#req_load_place').removeAttr('required');
+
+                $('#req_tax_place_row').attr('hidden', true);
+                $('#req_tax_place').removeAttr('required');
+
+                $('#req_clearance_place_row').removeAttr('hidden');
+                $('#req_clearance_place').attr('required', true);
+
+                $('#req_unload_place_row').attr('hidden', true);
+                $('#req_unload_place').removeAttr('required');
+
+                $('#req_cargo_note_row').removeAttr('hidden');
+
+                $('#load_type_id_row').attr('hidden', true);
+
+                $('#req_weight_row').attr('hidden', true);
+                $('#req_weight').removeAttr('required');
+
+                $('#req_volume_row').attr('hidden', true);
+                $('#req_volume').removeAttr('required');
+
+                $('#req_dims_row').attr('hidden', true);
+
+                $('#req_adr_row').attr('hidden', true);
+                $('#req_adr').removeAttr('required');
+
+                $('#req_special_row').attr('hidden', true);
+                $('#req_special').removeAttr('required');
+
+                $('#req_tir_type_row').removeAttr('hidden');
+                $('#req_tir_type').attr('required', true);
+
+                $('#req_profiles_row').attr('hidden', true);
+                $('#req_profiles').removeAttr('required');
+
+                $('#req_plan_price_row').removeAttr('hidden');
+            }
+            else if (serid == 3) {
+                $('#req_end_date_row').removeAttr('hidden');
+                $('#req_end_date').attr('required', true);
+
+                $('#req_load_place_row').removeAttr('hidden');
+                $('#req_load_place').attr('required', true);
+
+                $('#req_tax_place_row').attr('hidden',true);
+                $('#req_tax_place').removeAttr('required');
+
+                $('#req_clearance_place_row').attr('hidden',true);
+                $('#req_clearance_place').removeAttr('required');
+
+                $('#req_unload_place_row').removeAttr('hidden');
+                $('#req_unload_place').attr('required', true);
+
+                $('#req_cargo_note_row').removeAttr('hidden');
+                $('#load_type_id_row').removeAttr('hidden');
+
+                $('#req_weight_row').removeAttr('hidden');
+                $('#req_weight').attr('required', true);
+
+                $('#req_volume_row').removeAttr('hidden');
+                $('#req_volume').attr('required', true);
+
+                $('#req_dims_row').removeAttr('hidden');
+
+                $('#req_adr_row').removeAttr('hidden');
+                $('#req_adr').attr('required', true);
+
+                $('#req_special_row').removeAttr('hidden');
+                $('#req_special').attr('required', true);
+
+                $('#req_tir_type_row').attr('hidden',true);
+                $('#req_tir_type').removeAttr('required');
+
+                $('#req_profiles_row').removeAttr('hidden');
+                $('#req_profiles').attr('required', true);
+
+                $('#req_plan_price_row').removeAttr('hidden');
+            }
+            else if (serid == 7) {
+                $('#req_end_date_row').removeAttr('hidden');
+                $('#req_end_date').attr('required', true);
+
+                $('#req_load_place_row').removeAttr('hidden');
+                $('#req_load_place').attr('required', true);
+
+                $('#req_tax_place_row').attr('hidden',true);
+                $('#req_tax_place').removeAttr('required');
+
+                $('#req_clearance_place_row').addClass('hidden',true);
+                $('#req_clearance_place').removeAttr('required');
+
+                $('#req_unload_place_row').removeAttr('hidden');
+                $('#req_unload_place').attr('required', true);
+
+                $('#req_cargo_note_row').removeAttr('hidden');
+                $('#load_type_id_row').removeAttr('hidden');
+
+                $('#req_weight_row').removeAttr('hidden');
+                $('#req_weight').attr('required', true);
+
+                $('#req_volume_row').removeAttr('hidden');
+                $('#req_volume').attr('required', true);
+
+                $('#req_dims_row').removeAttr('hidden');
+
+                $('#req_adr_row').removeAttr('hidden');
+                $('#req_adr').attr('required', true);
+
+                $('#req_special_row').removeAttr('hidden');
+                $('#req_special').attr('required', true);
+
+                $('#req_tir_type_row').attr('hidden',true);
+                $('#req_tir_type').removeAttr('required');
+
+                $('#req_profiles_row').removeAttr('hidden');
+                $('#req_profiles').attr('required', true);
+
+                $('#req_plan_price_row').removeAttr('hidden');
+            }
+            else if (serid == 9) {
+                $('#req_end_date_row').removeAttr('hidden');
+                $('#req_end_date').attr('required', true);
+
+                $('#req_load_place_row').removeAttr('hidden');
+                $('#req_load_place').attr('required', true);
+
+                $('#req_tax_place_row').removeAttr('hidden');
+                $('#req_tax_place').attr('required', true);
+
+                $('#req_clearance_place_row').removeAttr('hidden');
+                $('#req_clearance_place').attr('required', true);
+
+                $('#req_unload_place_row').removeAttr('hidden');
+                $('#req_unload_place').attr('required', true);
+
+                $('#req_cargo_note_row').removeAttr('hidden');
+
+                $('#load_type_id_row').attr('hidden', true);
+
+                $('#req_weight_row').removeAttr('hidden');
+                $('#req_weight').attr('required', true);
+
+                $('#req_volume_row').removeAttr('hidden');
+                $('#req_volume').attr('required', true);
+
+                $('#req_dims_row').removeAttr('hidden');
+
+                $('#req_adr_row').removeAttr('hidden');
+                $('#req_adr').attr('required', true);
+
+                $('#req_special_row').removeAttr('hidden');
+                $('#req_special').attr('required', true);
+
+                $('#req_tir_type_row').attr('hidden', true);
+                $('#req_tir_type').removeAttr('required');
+
+                $('#req_profiles_row').removeAttr('hidden');
+                $('#req_profiles').attr('required', true);
+
+                $('#req_plan_price_row').removeAttr('hidden');
+            }
+            else if (serid == 10) {
+                $('#req_end_date_row').removeAttr('hidden');
+                $('#req_end_date').attr('required', true);
+
+                $('#req_load_place_row').removeAttr('hidden');
+                $('#req_load_place').attr('required', true);
+
+                $('#req_tax_place_row').removeAttr('hidden');
+                $('#req_tax_place').attr('required', true);
+
+                $('#req_clearance_place_row').removeAttr('hidden');
+                $('#req_clearance_place').attr('required', true);
+
+                $('#req_unload_place_row').removeAttr('hidden');
+                $('#req_unload_place').attr('required', true);
+
+                $('#req_cargo_note_row').removeAttr('hidden');
+                $('#load_type_id_row').removeAttr('hidden');
+
+                $('#req_weight_row').removeAttr('hidden');
+                $('#req_weight').attr('required', true);
+
+                $('#req_volume_row').removeAttr('hidden');
+                $('#req_volume').attr('required', true);
+
+                $('#req_dims_row').removeAttr('hidden');
+
+                $('#req_adr_row').removeAttr('hidden');
+                $('#req_adr').attr('required', true);
+
+                $('#req_special_row').removeAttr('hidden');
+                $('#req_special').attr('required', true);
+
+                $('#req_tir_type_row').attr('hidden',true);
+                $('#req_tir_type').removeAttr('required');
+
+                $('#req_profiles_row').removeAttr('hidden');
+                $('#req_profiles').attr('required', true);
+            }
+            else if (serid == 11) {
+                $('#req_end_date_row').removeAttr('hidden');
+                $('#req_end_date').attr('required', true);
+
+                $('#req_load_place_row').attr('hidden',true);
+                $('#req_load_place').removeAttr('required');
+
+                $('#req_tax_place_row').attr('hidden',true);
+                $('#req_tax_place').removeAttr('required');
+
+                $('#req_clearance_place_row').attr('hidden',true);
+                $('#req_clearance_place').removeAttr('required');
+
+                $('#req_unload_place_row').attr('hidden',true);
+                $('#req_unload_place').removeAttr('required');
+
+                $('#req_cargo_note_row').removeAttr('hidden');
+
+                $('#load_type_id_row').attr('hidden', true);
+
+                $('#req_weight_row').attr('hidden',true);
+                $('#req_weight').removeAttr('required');
+
+                $('#req_volume_row').removeAttr('hidden');
+                $('#req_volume').attr('required', true);
+
+                $('#req_dims_row').removeAttr('hidden');
+
+                $('#req_adr_row').removeAttr('hidden');
+                $('#req_adr').attr('required', true);
+
+                $('#req_special_row').attr('hidden',true);
+                $('#req_special').removeAttr('required');
+
+                $('#req_tir_type_row').attr('hidden',true);
+                $('#req_tir_type').removeAttr('required');
+
+                $('#req_profiles_row').removeAttr('hidden');
+                $('#req_profiles').attr('required', true);
+
+                $('#req_plan_price_row').removeAttr('hidden');
+            }
+            else if (serid == 12) {
+                $('#req_end_date_row').removeAttr('hidden');
+                $('#req_end_date').attr('required', true);
+
+                $('#req_load_place_row').attr('hidden',true);
+                $('#req_load_place').removeAttr('required');
+
+                $('#req_tax_place_row').attr('hidden',true);
+                $('#req_tax_place').removeAttr('required');
+
+                $('#req_clearance_place_row').attr('hidden',true);
+                $('#req_clearance_place').removeAttr('required');
+
+                $('#req_unload_place_row').attr('hidden',true);
+                $('#req_unload_place').removeAttr('required');
+
+                $('#req_cargo_note_row').removeAttr('hidden');
+
+                $('#load_type_id_row').attr('hidden', true);
+
+                $('#req_weight_row').attr('hidden',true);
+                $('#req_weight').removeAttr('required');
+
+                $('#req_volume_row').removeAttr('hidden');
+                $('#req_volume').attr('required', true);
+
+                $('#req_dims_row').removeAttr('hidden');
+
+                $('#req_adr_row').removeAttr('hidden');
+                $('#req_adr').attr('required', true);
+
+                $('#req_special_row').attr('hidden',true);
+                $('#req_special').removeAttr('required');
+
+                $('#req_tir_type_row').attr('hidden',true);
+                $('#req_tir_type').removeAttr('required');
+
+                $('#req_profiles_row').removeAttr('hidden');
+                $('#req_profiles').attr('required', true);
+
+                $('#req_plan_price_row').removeAttr('hidden');
+            }
+            else {
+                $('#req_end_date_row').removeAttr('hidden');
+                $('#req_end_date').attr('required', true);
+
+                $('#req_load_place_row').removeAttr('hidden');
+                $('#req_load_place').attr('required', true);
+
+                $('#req_tax_place_row').removeAttr('hidden');
+                $('#req_tax_place').attr('required', true);
+
+                $('#req_clearance_place_row').removeAttr('hidden');
+                $('#req_clearance_place').attr('required', true);
+
+                $('#req_unload_place_row').removeAttr('hidden');
+                $('#req_unload_place').attr('required', true);
+
+                $('#req_cargo_note_row').removeAttr('hidden');
+                $('#load_type_id_row').removeAttr('hidden');
+
+                $('#req_weight_row').removeAttr('hidden');
+                $('#req_weight').attr('required', true);
+
+                $('#req_volume_row').removeAttr('hidden');
+                $('#req_volume').attr('required', true);
+
+                $('#req_dims_row').removeAttr('hidden');
+
+                $('#req_adr_row').removeAttr('hidden');
+                $('#req_adr').attr('required', true);
+
+                $('#req_special_row').removeAttr('hidden');
+                $('#req_special').attr('required', true);
+
+                $('#req_tir_type_row').removeAttr('hidden');
+                $('#req_tir_type').attr('required', true);
+
+                $('#req_profiles_row').removeAttr('hidden');
+                $('#req_profiles').attr('required', true);
+
+                $('#req_plan_price_row').removeAttr('hidden');
+            }
+        };
+
+        function DisplayType(){
+            var serid = $('#ser_id').val();
+            if (serid == 2){
+                $('#req_end_date_row').removeAttr('hidden');
+
+                $('#req_load_place_row').attr('hidden', true);
+
+                $('#req_tax_place_row').attr('hidden', true);
+
+                $('#req_clearance_place_row').removeAttr('hidden');
+
+                $('#req_unload_place_row').attr('hidden', true);
+
+                $('#req_cargo_note_row').removeAttr('hidden');
+
+                $('#load_type_id_row').attr('hidden', true);
+
+                $('#req_weight_row').attr('hidden', true);
+
+                $('#req_volume_row').attr('hidden', true);
+
+                $('#req_dims_row').attr('hidden', true);
+
+                $('#req_adr_row').attr('hidden', true);
+
+                $('#req_special_row').attr('hidden', true);
+
+                $('#req_tir_type_row').removeAttr('hidden');
+
+                $('#req_profiles_row').attr('hidden', true);
+
+                $('#req_plan_price_row').removeAttr('hidden');
+            }
+            else if (serid == 3) {
+                $('#req_end_date_row').removeAttr('hidden');
+
+                $('#req_load_place_row').removeAttr('hidden');
+
+                $('#req_tax_place_row').attr('hidden',true);
+
+                $('#req_clearance_place_row').attr('hidden',true);
+
+                $('#req_unload_place_row').removeAttr('hidden');
+
+                $('#req_cargo_note_row').removeAttr('hidden');
+
+                $('#load_type_id_row').removeAttr('hidden');
+
+                $('#req_weight_row').removeAttr('hidden');
+
+                $('#req_volume_row').removeAttr('hidden');
+
+                $('#req_dims_row').removeAttr('hidden');
+
+                $('#req_adr_row').removeAttr('hidden');
+
+                $('#req_special_row').removeAttr('hidden');
+
+                $('#req_tir_type_row').attr('hidden',true);
+
+                $('#req_profiles_row').removeAttr('hidden');
+
+                $('#req_plan_price_row').removeAttr('hidden');
+            }
+            else if (serid == 7) {
+                $('#req_end_date_row').removeAttr('hidden');
+
+                $('#req_load_place_row').removeAttr('hidden');
+
+                $('#req_tax_place_row').attr('hidden',true);
+
+                $('#req_clearance_place_row').addClass('hidden',true);
+
+                $('#req_unload_place_row').removeAttr('hidden');
+
+                $('#req_cargo_note_row').removeAttr('hidden');
+
+                $('#load_type_id_row').removeAttr('hidden');
+
+                $('#req_weight_row').removeAttr('hidden');
+
+                $('#req_volume_row').removeAttr('hidden');
+
+                $('#req_dims_row').removeAttr('hidden');
+
+                $('#req_adr_row').removeAttr('hidden');
+
+                $('#req_special_row').removeAttr('hidden');
+
+                $('#req_tir_type_row').attr('hidden',true);
+
+                $('#req_profiles_row').removeAttr('hidden');
+
+                $('#req_plan_price_row').removeAttr('hidden');
+            }
+            else if (serid == 9) {
+                $('#req_end_date_row').removeAttr('hidden');
+
+                $('#req_load_place_row').removeAttr('hidden');
+
+                $('#req_tax_place_row').removeAttr('hidden');
+
+                $('#req_clearance_place_row').removeAttr('hidden');
+
+                $('#req_unload_place_row').removeAttr('hidden');
+
+                $('#req_cargo_note_row').removeAttr('hidden');
+
+                $('#load_type_id_row').attr('hidden', true);
+
+                $('#req_weight_row').removeAttr('hidden');
+
+                $('#req_volume_row').removeAttr('hidden');
+                $('#req_dims_row').removeAttr('hidden');
+
+                $('#req_adr_row').removeAttr('hidden');
+
+                $('#req_special_row').removeAttr('hidden');
+
+                $('#req_tir_type_row').attr('hidden', true);
+
+                $('#req_profiles_row').removeAttr('hidden');
+
+                $('#req_plan_price_row').removeAttr('hidden');
+            }
+            else if (serid == 10) {
+                $('#req_end_date_row').removeAttr('hidden');
+
+                $('#req_load_place_row').removeAttr('hidden');
+
+                $('#req_tax_place_row').removeAttr('hidden');
+
+                $('#req_clearance_place_row').removeAttr('hidden');
+
+                $('#req_unload_place_row').removeAttr('hidden');
+
+                $('#req_cargo_note_row').removeAttr('hidden');
+                $('#load_type_id_row').removeAttr('hidden');
+
+                $('#req_weight_row').removeAttr('hidden');
+
+                $('#req_volume_row').removeAttr('hidden');
+                $('#req_dims_row').removeAttr('hidden');
+
+                $('#req_adr_row').removeAttr('hidden');
+
+                $('#req_special_row').removeAttr('hidden');
+
+                $('#req_tir_type_row').attr('hidden',true);
+
+                $('#req_profiles_row').removeAttr('hidden');
+
+                $('#req_plan_price_row').removeAttr('hidden');
+            }
+            else if (serid == 11) {
+                $('#req_end_date_row').removeAttr('hidden');
+
+                $('#req_load_place_row').attr('hidden',true);
+
+                $('#req_tax_place_row').attr('hidden',true);
+
+                $('#req_clearance_place_row').attr('hidden',true);
+
+                $('#req_unload_place_row').attr('hidden',true);
+
+                $('#req_cargo_note_row').removeAttr('hidden');
+
+                $('#load_type_id_row').attr('hidden', true);
+
+                $('#req_weight_row').attr('hidden',true);
+
+                $('#req_volume_row').removeAttr('hidden');
+                $('#req_dims_row').removeAttr('hidden');
+
+                $('#req_adr_row').removeAttr('hidden');
+
+                $('#req_special_row').attr('hidden',true);
+
+                $('#req_tir_type_row').attr('hidden',true);
+
+                $('#req_profiles_row').removeAttr('hidden');
+
+                $('#req_plan_price_row').removeAttr('hidden');
+            }
+            else if (serid == 12) {
+                $('#req_end_date_row').removeAttr('hidden');
+                $('#req_end_date').attr('required', true);
+
+                $('#req_load_place_row').attr('hidden',true);
+                $('#req_load_place').removeAttr('required');
+
+                $('#req_tax_place_row').attr('hidden',true);
+                $('#req_tax_place').removeAttr('required');
+
+                $('#req_clearance_place_row').attr('hidden',true);
+                $('#req_clearance_place').removeAttr('required');
+
+                $('#req_unload_place_row').attr('hidden',true);
+                $('#req_unload_place').removeAttr('required');
+
+                $('#req_cargo_note_row').removeAttr('hidden');
+
+                $('#load_type_id_row').attr('hidden', true);
+
+                $('#req_weight_row').attr('hidden',true);
+                $('#req_weight').removeAttr('required');
+
+                $('#req_volume_row').removeAttr('hidden');
+                $('#req_dims_row').removeAttr('hidden');
+
+                $('#req_adr_row').removeAttr('hidden');
+                $('#req_adr').attr('required', true);
+
+                $('#req_special_row').attr('hidden',true);
+                $('#req_special').removeAttr('required');
+
+                $('#req_tir_type_row').attr('hidden',true);
+                $('#req_tir_type').removeAttr('required');
+
+                $('#req_profiles_row').removeAttr('hidden');
+                $('#req_profiles').attr('required', true);
+
+                $('#req_plan_price_row').removeAttr('hidden');
+
+                $('#req_tend_date_row').attr('hidden', true);
+                $('#req_tend_date').removeAttr('required');
+
+                $('#req_tend_end_date_row').attr('hidden', true);
+
+                $('#req_tend_runway_row').attr('hidden', true);
+                $('#req_tend_runway').removeAttr('required');
+
+                $('#req_tend_autotype_row').attr('hidden', true);
+                $('#req_tend_autotype').removeAttr('required');
+
+                $('#req_tend_count_row').attr('hidden', true);
+                $('#req_tend_count').removeAttr('required');
+
+                $('#lreq_note_simple').removeAttr('hidden');
+                $('#lreq_note_tend').attr('hidden', true);
+
+                $('#lreq_status_id_simple').removeAttr('hidden');
+                $('#lreq_status_id_tend').attr('hidden', true);
+
+                $('#lreq_type_id_simple').removeAttr('hidden');
+                $('#lreq_type_id_tend').attr('hidden', true);
+            }
+            else {
+                $('#req_end_date_row').removeAttr('hidden');
+
+                $('#req_load_place_row').removeAttr('hidden');
+
+                $('#req_tax_place_row').removeAttr('hidden');
+
+                $('#req_clearance_place_row').removeAttr('hidden');
+
+                $('#req_unload_place_row').removeAttr('hidden');
+
+                $('#req_cargo_note_row').removeAttr('hidden');
+                $('#load_type_id_row').removeAttr('hidden');
+
+                $('#req_weight_row').removeAttr('hidden');
+
+                $('#req_volume_row').removeAttr('hidden');
+                $('#req_dims_row').removeAttr('hidden');
+
+                $('#req_adr_row').removeAttr('hidden');
+
+                $('#req_special_row').removeAttr('hidden');
+
+                $('#req_tir_type_row').removeAttr('hidden');
+
+                $('#req_profiles_row').removeAttr('hidden');
+
+                $('#req_plan_price_row').removeAttr('hidden');
+            }
+        };
+
+            var NameString = $('#auth_username').val();
+            var AuthID = $('#auth_user_id').val();
+
+            if ($('#mode').val() == 0) {
+                $('#cnt_id').attr('required', true);
+
+                $('#ser_id').attr('required', true);
+                $('#req_id_row').attr('hidden', true);
+                $('#user_id_row').attr('hidden', true);
+                $('#req_name_row').attr('hidden', true);
+
+                $('#req_end_date').attr('required', true);
+
+                $('#req_load_place').attr('required', true);
+
+                $('#req_tax_place').attr('required', true);
+
+                $('#req_clearance_place').attr('required', true);
+
+                $('#req_unload_place').attr('required', true);
+
+                $('#req_weight').attr('required', true);
+
+                $('#req_volume').attr('required', true);
+
+                $('#req_adr').attr('required', true);
+
+                $('#req_special').attr('required', true);
+
+                $('#req_tir_type').attr('required', true);
+
+                $('#req_profiles').attr('required', true);
+
+                $('#req_result_text_row').attr('hidden', true);
+                $('#req_result_note_row').attr('hidden', true);
+
+                $('#req_ops_username_row').attr('hidden', true);
+
+                $('#req_ops_id_row').attr('hidden', true);
+                $('#req_ops_date_row').attr('hidden', true);
+                $('#req_ops_user_id_row').attr('hidden', true);
+                $('#req_ops_answer_row').attr('hidden', true);
+                $('#req_ops_note_row').attr('hidden', true);
+                $('#req_type_id_row').attr('hidden', true);
+                $('#req_result_status_id_row').attr('hidden', true);
+
+                $('#req_profit_predict').attr('required', true).prop('min', 50);
+
+                $('#req_doc_number_row').attr('hidden', true);
+                $('#req_doc_end_date_row').attr('hidden', true);
+                $('#req_doc_start_date_row').attr('hidden', true);
+                $('#req_work_start_date_row').attr('hidden', true);
+
+                $('#req_work_note_row').attr('hidden', true);
+            }
+/*Редактирование до OPS*/
+            else if ($('#mode').val() == 1
+                && (($('#auth_role_id').val() != 3 && $('#auth_role_id').val() != 6 && $('#auth_role_id').val() != 9)
+                    || (['3', '6', '9'].indexOf($('#auth_role_id').val()) >= 0 && $('#user_id').text() == NameString))
+                && ['1', '2'].indexOf($('#req_status_id').val()) >= 0) {
+                DisplayType();
+                $('#cnt_id').attr('disabled', true);
+                $('#cnt_id').select2({width: 'style'});
+                $('#cnt_id_show').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#ser_id').attr('required', true);
+                $('#req_type_id').attr('readonly', true);
+                $('#req_id').attr('readonly', true);
+                $('#user_id').attr('readonly', true);
+                $('#req_name').attr('readonly', true);
+
+                $('#req_result_text_row').attr('hidden', true);
+                $('#req_result_note_row').attr('hidden', true);
+
+                $('#req_ops_username_row').attr('hidden', true);
+
+                $('#req_ops_id_row').attr('hidden', true);
+                $('#req_ops_date_row').attr('hidden', true);
+                $('#req_ops_user_id_row').attr('hidden', true);
+                $('#req_ops_answer_row').attr('hidden', true);
+                $('#req_ops_note_row').attr('hidden', true);
+
+                $('#req_result_status_id_row').attr('hidden', true);
+
+                $('#req_doc_number_row').attr('hidden', true);
+                $('#req_doc_end_date_row').attr('hidden', true);
+                $('#req_doc_start_date_row').attr('hidden', true);
+                $('#req_work_start_date_row').attr('hidden', true);
+
+                $('#req_work_note_row').attr('hidden', true);
+            }
+/*Редактирование OPS*/
+            else if ($('#mode').val() == 1
+                && ['3', '6', '9'].indexOf($('#auth_role_id').val()) >= 0
+                && $('#user_id').text() != NameString
+                && ['2', '3', '4'].indexOf($('#req_status_id').val()) >= 0) {
+                DisplayType();
+                $('#cnt_id').attr('disabled', true);
+                $('#cnt_id').select2({width: 'style'});
+                $('#cnt_id_show').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#ser_id').attr('readonly', true);
+
+                $('#req_type_id').attr('readonly', true);
+                $('#req_type_id').removeAttr('required');
+
+                $('#req_id').attr('readonly', true);
+                $('#user_id').attr('readonly', true);
+                $('#req_name').attr('readonly', true);
+
+                $('#req_end_date').attr('readonly', true);
+                $('#req_end_date_x').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#req_load_place').attr('readonly', true);
+                $('#req_tax_place').attr('readonly', true);
+                $('#req_clearance_place').attr('readonly', true);
+                $('#req_unload_place').attr('readonly', true);
+                $('#req_cargo_note').attr('readonly', true);
+                $('#load_type_id').attr('disabled', true);
+                $('#req_weight').attr('readonly', true);
+                $('#req_volume').attr('readonly', true);
+                $('#req_dims').attr('readonly', true);
+                $('#req_adr').attr('readonly', true);
+                $('#req_special').attr('readonly', true);
+                $('#req_tir_type').attr('readonly', true);
+                $('#req_profiles').attr('readonly', true);
+                $('#req_plan_price').attr('readonly', true);
+                $('#req_note').attr('readonly', true);
+
+                $('#req_result_text_row').attr('hidden', true);
+                $('#req_result_note_row').attr('hidden', true);
+
+                $('#req_ops_id_row').attr('hidden', true);
+                $('#req_ops_date_row').attr('hidden', true);
+                $('#req_ops_user_id_row').attr('hidden', true);
+
+                $('#req_result_status_id_row').attr('hidden', true);
+
+                $('#req_profit_predict').attr('readonly', true);
+
+                $('#req_doc_number_row').attr('hidden', true);
+                $('#req_doc_end_date_row').attr('hidden', true);
+                $('#req_doc_start_date_row').attr('hidden', true);
+                $('#req_work_start_date_row').attr('hidden', true);
+
+                $('#req_work_note_row').attr('hidden', true);
+            }
+/*Редакитрование после OPS*/
+            else if ($('#mode').val() == 1
+                && (($('#auth_role_id').val() != 3 && $('#auth_role_id').val() != 6 && $('#auth_role_id').val() != 9)
+                    || (['3', '6', '9'].indexOf($('#auth_role_id').val()) >= 0
+                        && $('#user_id').val() === AuthID))
+                && ['4', '5'].indexOf($('#req_status_id').val()) >= 0) {
+                DisplayType();
+                $('#cnt_id').attr('disabled', true);
+                $('#cnt_id').select2({width: 'style'});
+                $('#cnt_id_show').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#ser_id').attr('readonly', true);
+                $('#req_type_id').attr('readonly', true);
+                $('#req_id').attr('readonly', true);
+                $('#user_id').attr('readonly', true);
+                $('#req_name').attr('readonly', true);
+
+                $('#req_end_date').attr('readonly', true);
+                $('#req_end_date_x').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#req_load_place').attr('readonly', true);
+                $('#req_tax_place').attr('readonly', true);
+                $('#req_clearance_place').attr('readonly', true);
+                $('#req_unload_place').attr('readonly', true);
+                $('#req_cargo_note').attr('readonly', true);
+                $('#load_type_id').attr('disabled', true);
+                $('#req_weight').attr('readonly', true);
+                $('#req_volume').attr('readonly', true);
+                $('#req_dims').attr('readonly', true);
+                $('#req_adr').attr('readonly', true);
+                $('#req_special').attr('readonly', true);
+                $('#req_tir_type').attr('readonly', true);
+                $('#req_profiles').attr('readonly', true);
+                $('#req_plan_price').attr('readonly', true);
+                $('#req_note').attr('readonly', true);
+
+                $('#req_ops_id').attr('readonly', true);
+                $('#req_ops_date').attr('disabled', true);
+                $('#req_ops_user_id').attr('disabled', true);
+                $('#req_ops_answer').attr('readonly', true);
+                $('#req_ops_note').attr('readonly', true);
+
+                $('#req_result_status_id').attr('required', true);
+
+                if ($('#req_result_status_id').val() === '-2') {
+                    $('#req_doc_number_row').attr('hidden', false);
+                    $('#req_doc_number').attr('required', true);
+
+                    $('#req_doc_end_date_row').attr('hidden', false);
+                    $('#req_doc_start_date_row').attr('hidden', false);
+
+                    $('#req_work_start_date_row').attr('hidden', false);
+
+                    $('#req_work_note_row').attr('hidden', false);
+                    $('#req_work_note').attr('required', true);
+                }
+                else if ($('#req_result_status_id').val() === '-1') {
+                    $('#req_doc_number_row').attr('hidden', false);
+                    $('#req_doc_number').attr('required', true);
+
+                    $('#req_doc_end_date_row').attr('hidden', false);
+                    $('#req_doc_start_date_row').attr('hidden', false);
+
+                    $('#req_work_start_date_row').attr('hidden', true);
+
+                    $('#req_work_note_row').attr('hidden', false);
+                    $('#req_work_note').attr('required', true);
+                }
+                else if($('#req_result_status_id').val() === '5') {
+                    $('#req_doc_number_row').attr('hidden', false);
+                    $('#req_doc_number').attr('required', true);
+
+                    $('#req_doc_end_date_row').attr('hidden', false);
+                    $('#req_doc_start_date_row').attr('hidden', false);
+
+                    $('#req_work_start_date_row').attr('hidden', true);
+                    $('#req_work_start_date').removeAttr('required');
+
+                    $('#req_work_note_row').attr('hidden', false);
+                    $('#req_work_note').removeAttr('required');
+                }
+                else if($('#req_result_status_id').val() === '6') {
+                    $('#req_doc_number_row').attr('hidden', false);
+                    $('#req_doc_number').attr('required', true);
+
+                    $('#req_doc_end_date_row').attr('hidden', false);
+                    $('#req_doc_start_date_row').attr('hidden', false);
+
+                    $('#req_work_start_date_row').attr('hidden', false);
+                    $('#req_work_start_date').attr('required', true);
+
+                    $('#req_work_note_row').attr('hidden', false);
+                } else {
+                    $('#req_doc_number_row').attr('hidden', true);
+                    $('#req_doc_number').removeAttr('required');
+
+                    $('#req_doc_end_date_row').attr('hidden', true);
+                    $('#req_doc_start_date_row').attr('hidden', true);
+
+                    $('#req_work_start_date_row').attr('hidden', true);
+                    $('#req_work_start_date').removeAttr('required');
+
+                    $('#req_work_note_row').attr('hidden', false);
+                    $('#req_work_note').removeAttr('required');
+                }
+            }
+            /*Удаление запроса*/
+            else if ($('#mode').val() == 2) {
+                DisplayType();
+                $('#cnt_id').attr('disabled', true);
+                $('#cnt_id_show').attr('disabled', true);
+
+                $('#ser_id').attr('readonly', true);
+                $('#req_type_id').attr('disabled', true);
+                $('#req_id').attr('readonly', true);
+                $('#user_id').attr('readonly', true);
+                $('#req_name').attr('readonly', true);
+
+                $('#req_end_date').attr('readonly', true);
+                $('#req_end_date_x').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#req_load_place').attr('readonly', true);
+                $('#req_tax_place').attr('readonly', true);
+                $('#req_clearance_place').attr('readonly', true);
+                $('#req_unload_place').attr('readonly', true);
+                $('#req_cargo_note').attr('readonly', true);
+                $('#load_type_id').attr('disabled', true);
+                $('#req_weight').attr('readonly', true);
+                $('#req_volume').attr('readonly', true);
+                $('#req_dims').attr('readonly', true);
+                $('#req_adr').attr('readonly', true);
+                $('#req_special').attr('readonly', true);
+                $('#req_tir_type').attr('readonly', true);
+                $('#req_profiles').attr('readonly', true);
+                $('#req_plan_price').attr('readonly', true);
+                $('#req_note').attr('readonly', true);
+
+                $('#req_ops_id').attr('readonly', true);
+                $('#req_ops_date').attr('readonly', true);
+                $('#req_ops_user_id').attr('disabled', true);
+                $('#req_ops_answer').attr('readonly', true);
+                $('#req_ops_note').attr('readonly', true);
+
+                $('#req_status_id').attr('disabled', true);
+                $('#req_result_text').attr('readonly', true);
+                $('#req_result_note').attr('readonly', true);
+
+                $('#req_result_status_id').prop('disabled', true);
+
+                $('#req_profit_predict').attr('readonly', true);
+
+                $('#req_doc_number').attr('readonly', true);
+
+                $('#req_doc_start_date').attr('disabled', true);
+                $('#req_doc_start_date_x').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#req_doc_end_date').attr('disabled', true);
+                $('#req_doc_end_date_x').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#req_work_start_date').attr('disabled', true);
+                $('#req_work_start_date_x').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#req_work_note').attr('readonly', true);
+            }
+            /*Просмотр*/
+            else if ($('#mode').val() == 4) {
+                DisplayType();
+                $('#cnt_id').attr('disabled', true);
+                $('#cnt_id').select2({width: 'style'});
+                $('#cnt_id_show').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#ser_id').attr('disabled', true);
+                $('#req_type_id').attr('disabled', true);
+                $('#req_id').attr('disabled', true);
+                $('#user_id').attr('readonly', true);
+                $('#req_name').attr('readonly', true);
+
+                $('#req_end_date').attr('disabled', true);
+                $('#req_end_date_x').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#req_load_place').attr('disabled', true);
+                $('#req_tax_place').attr('disabled', true);
+                $('#req_clearance_place').attr('disabled', true);
+                $('#req_unload_place').attr('disabled', true);
+                $('#req_cargo_note').attr('disabled', true);
+                $('#load_type_id').attr('disabled', true);
+                $('#req_weight').attr('disabled', true);
+                $('#req_volume').attr('disabled', true);
+                $('#req_dims').attr('disabled', true);
+                $('#req_adr').attr('disabled', true);
+                $('#req_special').attr('disabled', true);
+                $('#req_tir_type').attr('disabled', true);
+                $('#req_profiles').attr('disabled', true);
+                $('#req_plan_price').attr('disabled', true);
+                $('#req_note').attr('disabled', true);
+
+                $('#req_ops_id').attr('disabled', true);
+                $('#req_ops_date').attr('disabled', true);
+                $('#req_ops_user_id').attr('disabled', true);
+                $('#req_ops_answer').attr('disabled', true);
+                $('#req_ops_note').attr('disabled', true);
+
+                $('#req_status_id').attr('disabled', true);
+                $('#req_result_text').attr('readonly', true);
+                $('#req_result_note').attr('readonly', true);
+
+                $('#req_result_status_id').prop('disabled', true);
+
+                $('#req_profit_predict').attr('readonly', true);
+
+                $('#req_doc_number').attr('readonly', true);
+
+                $('#req_doc_start_date').attr('disabled', true);
+                $('#req_doc_start_date_x').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#req_doc_end_date').attr('disabled', true);
+                $('#req_doc_end_date_x').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#req_work_start_date').attr('disabled', true);
+                $('#req_work_start_date_x').prop('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#req_work_note').attr('readonly', true);
+            }
+
+        if(['-2','-1','2','3','4'].indexOf($('#req_result_status_id').val()) >= 0){
+            $("#req_result_status_id").selectpicker('setStyle', 'btn-info', 'remove');
+            $("#req_result_status_id").selectpicker('setStyle', 'btn-success', 'remove');
+            $("#req_result_status_id").selectpicker('setStyle', 'btn-danger');
+        }
+        else if(['1','5'].indexOf($('#req_result_status_id').val()) >= 0){
+            $("#req_result_status_id").selectpicker('setStyle', 'btn-danger', 'remove');
+            $("#req_result_status_id").selectpicker('setStyle', 'btn-success', 'remove');
+            $("#req_result_status_id").selectpicker('setStyle', 'btn-info');
+        }
+        else if(['6'].indexOf($('#req_result_status_id').val()) >= 0){
+            $("#req_result_status_id").selectpicker('setStyle', 'btn-danger', 'remove');
+            $("#req_result_status_id").selectpicker('setStyle', 'btn-info', 'remove');
+            $("#req_result_status_id").selectpicker('setStyle', 'btn-success');
+        }
+        else{
+            $("#req_result_status_id").selectpicker('setStyle', 'btn-danger', 'remove');
+            $("#req_result_status_id").selectpicker('setStyle', 'btn-info', 'remove');
+            $("#req_result_status_id").selectpicker('setStyle', 'btn-success', 'remove');
+            $("#req_result_status_id").selectpicker('setStyle', 'btn-light');
+        }
+
+        if(
+            ($('#auth_role_id').val() === "3" || $('#auth_role_id').val() === "6" || $('#auth_role_id').val() === "9")
+            && (['4'].indexOf($('#req_status_id').val()) >= 0)
+        ){
+            $('#req_ops_answer').attr('required', true);
+            $('#req_profit_predict').attr('readonly', true);
+        }
+        else if(['5'].indexOf($('#req_status_id').val()) >= 0){
+            $('#req_result_text').attr('required', true);
+            $('#req_profit_predict').attr('required', true).prop('min',50);
+
+            if ($('#req_result_status_id').val() === '-2') {
+                $('#req_doc_number_row').attr('hidden', false);
+                $('#req_doc_number').attr('required', true);
+
+                $('#req_doc_end_date_row').attr('hidden', false);
+                $('#req_doc_start_date_row').attr('hidden', false);
+
+                $('#req_work_start_date_row').attr('hidden', false);
+
+                $('#req_work_note_row').attr('hidden', false);
+                $('#req_work_note').attr('required', true);
+            }
+            else if ($('#req_result_status_id').val() === '-1') {
+                $('#req_doc_number_row').attr('hidden', false);
+                $('#req_doc_number').attr('required', true);
+
+                $('#req_doc_end_date_row').attr('hidden', false);
+                $('#req_doc_start_date_row').attr('hidden', false);
+
+                $('#req_work_start_date_row').attr('hidden', true);
+
+                $('#req_work_note_row').attr('hidden', false);
+                $('#req_work_note').attr('required', true);
+            }
+            else if($('#req_result_status_id').val() === '5') {
+                $('#req_doc_number_row').attr('hidden', false);
+                $('#req_doc_number').attr('required', true);
+
+                $('#req_doc_end_date_row').attr('hidden', false);
+                $('#req_doc_start_date_row').attr('hidden', false);
+
+                $('#req_work_start_date_row').attr('hidden', true);
+                $('#req_work_start_date').removeAttr('required');
+
+                $('#req_work_note_row').attr('hidden', false);
+                $('#req_work_note').removeAttr('required');
+            }
+            else if($('#req_result_status_id').val() === '6') {
+                $('#req_doc_number_row').attr('hidden', false);
+                $('#req_doc_number').attr('required', true);
+
+                $('#req_doc_end_date_row').attr('hidden', false);
+                $('#req_doc_start_date_row').attr('hidden', false);
+
+                $('#req_work_start_date_row').attr('hidden', false);
+                $('#req_work_start_date').attr('required', true);
+
+                $('#req_work_note_row').attr('hidden', false);
+            } else {
+                $('#req_doc_number_row').attr('hidden', true);
+                $('#req_doc_number').removeAttr('required');
+
+                $('#req_doc_end_date_row').attr('hidden', true);
+                $('#req_doc_start_date_row').attr('hidden', true);
+
+                $('#req_work_start_date_row').attr('hidden', true);
+                $('#req_work_start_date').removeAttr('required');
+
+                $('#req_work_note_row').attr('hidden', false);
+                $('#req_work_note').removeAttr('required');
+            }
+        }
+        else{
+            $('#req_tend_end_date').removeAttr('required');
+            $('#req_ops_answer').removeAttr('required');
+            $('#req_result_text').removeAttr('required');
+        }
+
+        $("#req_status_id").change( function() {
+            if(($('#auth_role_id').val() === "3" || $('#auth_role_id').val() === "6" || $('#auth_role_id').val() === "9")
+                && (['4'].indexOf($('#req_status_id').val()) >= 0)
+            ){
+                $('#req_ops_answer').attr('required', true);
+                $('#req_profit_predict').attr('readonly', true);
+            }
+            else if(($('#auth_role_id').val() !== "1" && $('#auth_role_id').val() !== "8") && ['4'].indexOf($('#req_status_id').val()) >= 0){
+                $('#req_result_status_id').removeAttr('required');
+                $('#req_result_text').removeAttr('required');
+
+                $('#req_profit_predict').attr('required', true).prop('min',50);
+
+                $('#req_doc_number_row').attr('hidden',true);
+                $('#req_doc_number').removeAttr('required');
+                $('#req_doc_end_date_row').attr('hidden',true);
+                $('#req_doc_start_date_row').attr('hidden',true);
+                $('#req_work_start_date_row').attr('hidden',true);
+                $('#req_work_start_date').removeAttr('required');
+
+                $('#req_work_note_row').attr('hidden',true);
+                $('#req_work_note').removeAttr('required');
+            }
+            else if(($('#auth_role_id').val() !== "1" && $('#auth_role_id').val() !== "8") && ['5'].indexOf($('#req_status_id').val()) >= 0){
+                $('#req_result_status_id').attr('required', true);
+                $('#req_result_text').attr('required', true);
+
+                $('#req_profit_predict').attr('required', true).prop('min',50);
+
+                if ($('#req_result_status_id').val() === '-2') {
+                    $('#req_doc_number_row').attr('hidden', false);
+                    $('#req_doc_number').attr('required', true);
+
+                    $('#req_doc_end_date_row').attr('hidden', false);
+                    $('#req_doc_start_date_row').attr('hidden', false);
+
+                    $('#req_work_start_date_row').attr('hidden', false);
+
+                    $('#req_work_note_row').attr('hidden', false);
+                    $('#req_work_note').attr('required', true);
+                }
+                else if ($('#req_result_status_id').val() === '-1') {
+                    $('#req_doc_number_row').attr('hidden', false);
+                    $('#req_doc_number').attr('required', true);
+
+                    $('#req_doc_end_date_row').attr('hidden', false);
+                    $('#req_doc_start_date_row').attr('hidden', false);
+
+                    $('#req_work_start_date_row').attr('hidden', true);
+
+                    $('#req_work_note_row').attr('hidden', false);
+                    $('#req_work_note').attr('required', true);
+                }
+                else if($('#req_result_status_id').val() === '5') {
+                    $('#req_doc_number_row').attr('hidden', false);
+                    $('#req_doc_number').attr('required', true);
+
+                    $('#req_doc_end_date_row').attr('hidden', false);
+                    $('#req_doc_start_date_row').attr('hidden', false);
+
+                    $('#req_work_start_date_row').attr('hidden', true);
+                    $('#req_work_start_date').removeAttr('required');
+
+                    $('#req_work_note_row').attr('hidden', false);
+                    $('#req_work_note').removeAttr('required');
+                }
+                else if($('#req_result_status_id').val() === '6') {
+                    $('#req_doc_number_row').attr('hidden', false);
+                    $('#req_doc_number').attr('required', true);
+
+                    $('#req_doc_end_date_row').attr('hidden', false);
+                    $('#req_doc_start_date_row').attr('hidden', false);
+
+                    $('#req_work_start_date_row').attr('hidden', false);
+                    $('#req_work_start_date').attr('required', true);
+
+                    $('#req_work_note_row').attr('hidden', false);
+                } else {
+                    $('#req_doc_number_row').attr('hidden', true);
+                    $('#req_doc_number').removeAttr('required');
+
+                    $('#req_doc_end_date_row').attr('hidden', true);
+                    $('#req_doc_start_date_row').attr('hidden', true);
+
+                    $('#req_work_start_date_row').attr('hidden', true);
+                    $('#req_work_start_date').removeAttr('required');
+
+                    $('#req_work_note_row').attr('hidden', false);
+                    $('#req_work_note').removeAttr('required');
+                }
+            }
+            else if(($('#auth_role_id').val() !== "1" && $('#auth_role_id').val() !== "8") && ['6'].indexOf($('#req_status_id').val()) >= 0){
+                $('#req_result_status_id').removeAttr('required');
+                $('#req_result_text').removeAttr('required');
+
+                $('#req_doc_number_row').attr('hidden',true);
+                $('#req_doc_number').removeAttr('required');
+                $('#req_doc_end_date_row').attr('hidden',true);
+                $('#req_doc_start_date_row').attr('hidden',true);
+                $('#req_work_start_date_row').attr('hidden',true);
+                $('#req_work_start_date').removeAttr('required');
+
+                $('#req_work_note_row').attr('hidden',true);
+                $('#req_work_note').removeAttr('required');
+            }
+            else if(($('#auth_role_id').val() === "1" || $('#auth_role_id').val() === "8")
+                && (['3','4','6'].indexOf($('#req_status_id').val()) >= 0)
+            ){
+                DisplayType();
+                $('#cnt_id').attr('disabled',true);
+                $('#cnt_id_show').attr('disabled',true);
+
+                $('#ser_id').attr('readonly', true);
+                $('#req_type_id').attr('readonly',true);
+                $('#req_id').attr('readonly',true);
+                $('#user_id').attr('readonly',true);
+                $('#req_name').attr('readonly',true);
+
+                $('#req_end_date').attr('readonly',true);
+                $('#req_end_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#req_load_place').attr('readonly',true);
+                $('#req_tax_place').attr('readonly',true);
+                $('#req_clearance_place').attr('readonly',true);
+                $('#req_unload_place').attr('readonly',true);
+                $('#req_cargo_note').attr('readonly',true);
+                $('#load_type_id').attr('disabled',true);
+                $('#req_weight').attr('readonly',true);
+                $('#req_volume').attr('readonly',true);
+                $('#req_dims').attr('readonly',true);
+                $('#req_adr').attr('readonly',true);
+                $('#req_special').attr('readonly',true);
+                $('#req_tir_type').attr('readonly',true);
+                $('#req_profiles').attr('readonly',true);
+                $('#req_plan_price').attr('readonly',true);
+                $('#req_note').attr('readonly',true);
+
+                $('#req_ops_id').attr('readonly',true);
+                $('#req_ops_date').attr('disabled',true);
+                $('#req_ops_user_id').attr('disabled',true);
+                $('#req_ops_answer').attr('readonly',true);
+                $('#req_ops_note').attr('readonly',true);
+
+                $('#req_result_text_row').removeAttr('hidden');
+                $('#req_result_note_row').removeAttr('hidden');
+
+                $('#req_ops_id_row').removeAttr('hidden');
+                $('#req_ops_date_row').removeAttr('hidden');
+                $('#req_ops_user_id_row').removeAttr('hidden');
+
+                $('#req_result_status_id_row').removeAttr('hidden');
+                $('#req_result_status_id').removeAttr('required');
+                $('#req_result_status_id').attr('readonly', false);
+                $('#req_result_text').removeAttr('required');
+
+                $('#req_doc_number_row').attr('hidden', true);
+                $('#req_doc_number').removeAttr('required');
+
+                $('#req_doc_end_date_row').attr('hidden', true);
+                $('#req_doc_start_date_row').attr('hidden', true);
+
+                $('#req_work_start_date_row').attr('hidden', true);
+                $('#req_work_start_date').removeAttr('required', true);
+
+                $('#req_work_note_row').attr('hidden', true);
+                $('#req_work_note').removeAttr('required');
+            }
+            else if(($('#auth_role_id').val() === "1" || $('#auth_role_id').val() === "8")
+                && (['5'].indexOf($('#req_status_id').val()) >= 0)
+            ){
+                DisplayType();
+                $('#cnt_id').attr('disabled',true);
+                $('#cnt_id_show').attr('disabled',true);
+
+                $('#ser_id').attr('readonly', true);
+                $('#req_type_id').attr('readonly',true);
+                $('#req_id').attr('readonly',true);
+                $('#user_id').attr('readonly',true);
+                $('#req_name').attr('readonly',true);
+
+                $('#req_end_date').attr('readonly',true);
+                $('#req_end_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#req_load_place').attr('readonly',true);
+                $('#req_tax_place').attr('readonly',true);
+                $('#req_clearance_place').attr('readonly',true);
+                $('#req_unload_place').attr('readonly',true);
+                $('#req_cargo_note').attr('readonly',true);
+                $('#load_type_id').attr('disabled',true);
+                $('#req_weight').attr('readonly',true);
+                $('#req_volume').attr('readonly',true);
+                $('#req_dims').attr('readonly',true);
+                $('#req_adr').attr('readonly',true);
+                $('#req_special').attr('readonly',true);
+                $('#req_tir_type').attr('readonly',true);
+                $('#req_profiles').attr('readonly',true);
+                $('#req_plan_price').attr('readonly',true);
+                $('#req_note').attr('readonly',true);
+
+                $('#req_ops_id').attr('readonly',true);
+                $('#req_ops_date').attr('disabled',true);
+                $('#req_ops_user_id').attr('disabled',true);
+                $('#req_ops_answer').attr('readonly',true);
+                $('#req_ops_note').attr('readonly',true);
+
+                $('#req_result_text_row').removeAttr('hidden');
+                $('#req_result_note_row').removeAttr('hidden');
+
+                $('#req_ops_id_row').removeAttr('hidden');
+                $('#req_ops_date_row').removeAttr('hidden');
+                $('#req_ops_user_id_row').removeAttr('hidden');
+
+                $('#req_result_status_id_row').removeAttr('hidden');
+                $('#req_result_status_id').attr('required', true);
+                $('#req_result_status_id').attr('readonly', false);
+                $('#req_result_text').attr('required', true);
+
+                $('#req_profit_predict').attr('required', true).prop('min',50);
+                $('#req_work_note').removeAttr('required');
+
+                if ($('#req_result_status_id').val() === '-2') {
+                    $('#req_doc_number_row').attr('hidden', false);
+                    $('#req_doc_number').attr('required', true);
+
+                    $('#req_doc_end_date_row').attr('hidden', false);
+                    $('#req_doc_start_date_row').attr('hidden', false);
+
+                    $('#req_work_start_date_row').attr('hidden', false);
+
+                    $('#req_work_note_row').attr('hidden', false);
+                    $('#req_work_note').attr('required', true);
+                }
+                else if ($('#req_result_status_id').val() === '-1') {
+                    $('#req_doc_number_row').attr('hidden', false);
+                    $('#req_doc_number').attr('required', true);
+
+                    $('#req_doc_end_date_row').attr('hidden', false);
+                    $('#req_doc_start_date_row').attr('hidden', false);
+
+                    $('#req_work_start_date_row').attr('hidden', true);
+
+                    $('#req_work_note_row').attr('hidden', false);
+                    $('#req_work_note').attr('required', true);
+                }
+                else if($('#req_result_status_id').val() === '5') {
+                    $('#req_doc_number_row').attr('hidden', false);
+                    $('#req_doc_number').attr('required', true);
+
+                    $('#req_doc_end_date_row').attr('hidden', false);
+                    $('#req_doc_start_date_row').attr('hidden', false);
+
+                    $('#req_work_start_date_row').attr('hidden', true);
+                    $('#req_work_start_date').removeAttr('required');
+
+                    $('#req_work_note_row').attr('hidden', false);
+                    $('#req_work_note').removeAttr('required');
+                }
+                else if($('#req_result_status_id').val() === '6') {
+                    $('#req_doc_number_row').attr('hidden', false);
+                    $('#req_doc_number').attr('required', true);
+
+                    $('#req_doc_end_date_row').attr('hidden', false);
+                    $('#req_doc_start_date_row').attr('hidden', false);
+
+                    $('#req_work_start_date_row').attr('hidden', false);
+                    $('#req_work_start_date').attr('required', true);
+
+                    $('#req_work_note_row').attr('hidden', false);
+                } else {
+                    $('#req_doc_number_row').attr('hidden', true);
+                    $('#req_doc_number').removeAttr('required');
+
+                    $('#req_doc_end_date_row').attr('hidden', true);
+                    $('#req_doc_start_date_row').attr('hidden', true);
+
+                    $('#req_work_start_date_row').attr('hidden', true);
+                    $('#req_work_start_date').removeAttr('required');
+
+                    $('#req_work_note_row').attr('hidden', false);
+                    $('#req_work_note').removeAttr('required');
+                }
+            }
+            else{
+                $('#req_ops_answer').removeAttr('required');
+                $('#req_result_text').removeAttr('required');
+            }
+        });
+
+
+<!-- Change Function -->
+        $("#ser_id").change( function() {
+            var ddl = document.getElementById('ser_id');
+            $("#req_name").val( $("#cnt_name").val()+": "+ ddl.options[ddl.options.selectedIndex].text);
+            TypeChange();
+        });
+
+        $("#req_type_id").change( function() {
+            if($('#mode').val() == 0){
+                TypeChange();
+            }
+            else{}
+        });
+
+        $("#req_result_status_id").change( function() {
+            if(['-2','-1','2','3','4'].indexOf($('#req_result_status_id').val()) >= 0){
+                $("#req_result_status_id").selectpicker('setStyle', 'btn-light', 'remove');
+                $("#req_result_status_id").selectpicker('setStyle', 'btn-info', 'remove');
+                $("#req_result_status_id").selectpicker('setStyle', 'btn-success', 'remove');
+                $("#req_result_status_id").selectpicker('setStyle', 'btn-danger');
+            }
+            else if(['1','5'].indexOf($('#req_result_status_id').val()) >= 0){
+                $("#req_result_status_id").selectpicker('setStyle', 'btn-light', 'remove');
+                $("#req_result_status_id").selectpicker('setStyle', 'btn-danger', 'remove');
+                $("#req_result_status_id").selectpicker('setStyle', 'btn-success', 'remove');
+                $("#req_result_status_id").selectpicker('setStyle', 'btn-info');
+            }
+            else if(['6'].indexOf($('#req_result_status_id').val()) >= 0){
+                $("#req_result_status_id").selectpicker('setStyle', 'btn-light', 'remove');
+                $("#req_result_status_id").selectpicker('setStyle', 'btn-danger', 'remove');
+                $("#req_result_status_id").selectpicker('setStyle', 'btn-info', 'remove');
+                $("#req_result_status_id").selectpicker('setStyle', 'btn-success');
+            }
+            else{
+                $("#req_result_status_id").selectpicker('setStyle', 'btn-danger', 'remove');
+                $("#req_result_status_id").selectpicker('setStyle', 'btn-info', 'remove');
+                $("#req_result_status_id").selectpicker('setStyle', 'btn-success', 'remove');
+                $("#req_result_status_id").selectpicker('setStyle', 'btn-light');
+            }
+
+            if ($('#req_result_status_id').val() === '-2') {
+                $('#req_doc_number_row').attr('hidden', false);
+                $('#req_doc_number').attr('required', true);
+
+                $('#req_doc_end_date_row').attr('hidden', false);
+                $('#req_doc_start_date_row').attr('hidden', false);
+
+                $('#req_work_start_date_row').attr('hidden', false);
+
+                $('#req_work_note_row').attr('hidden', false);
+                $('#req_work_note').attr('required', true);
+            }
+            else if ($('#req_result_status_id').val() === '-1') {
+                $('#req_doc_number_row').attr('hidden', false);
+                $('#req_doc_number').removeAttr('required');
+
+                $('#req_doc_end_date_row').attr('hidden', false);
+                $('#req_doc_start_date_row').attr('hidden', false);
+
+                $('#req_work_start_date_row').attr('hidden', true);
+
+                $('#req_work_note_row').attr('hidden', false);
+                $('#req_work_note').attr('required', true);
+            }
+            else if($('#req_result_status_id').val() === '5') {
+                $('#req_doc_number_row').attr('hidden', false);
+                $('#req_doc_number').attr('required', true);
+
+                $('#req_doc_end_date_row').attr('hidden', false);
+                $('#req_doc_start_date_row').attr('hidden', false);
+
+                $('#req_work_start_date_row').attr('hidden', true);
+                $('#req_work_start_date').removeAttr('required');
+
+                $('#req_work_note_row').attr('hidden', false);
+                $('#req_work_note').removeAttr('required');
+            }
+            else if($('#req_result_status_id').val() === '6') {
+                $('#req_doc_number_row').attr('hidden', false);
+                $('#req_doc_number').attr('required', true);
+
+                $('#req_doc_end_date_row').attr('hidden', false);
+                $('#req_doc_start_date_row').attr('hidden', false);
+
+                $('#req_work_start_date_row').attr('hidden', false);
+                $('#req_work_start_date').attr('required', true);
+
+                $('#req_work_note_row').attr('hidden', false);
+                $('#req_work_note').removeAttr('required');
+            } else {
+                $('#req_doc_number_row').attr('hidden', true);
+                $('#req_doc_number').removeAttr('required');
+
+                $('#req_doc_end_date_row').attr('hidden', true);
+                $('#req_doc_start_date_row').attr('hidden', true);
+
+                $('#req_work_start_date_row').attr('hidden', true);
+                $('#req_work_start_date').removeAttr('required');
+
+                $('#req_work_note_row').attr('hidden', false);
+                $('#req_work_note').removeAttr('required');
+            }
+        });
+    });
+</script>
+</body>
+</html>

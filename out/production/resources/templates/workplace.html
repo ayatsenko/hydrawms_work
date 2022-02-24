@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:include="layout/layout :: header(title = #{index.workplace_a_description})"></head>
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<script th:inline="javascript">
+    $(document).ready(function() {
+        var table;
+        var rowdata = {
+            selected : false,
+            loc_id : /*[[${loc_id}]]*/ -1,
+            wp_id :  /*[[${wp_id}]]*/ null,
+            wp_name : null,
+            wp_texttemplate : null
+        };
+
+        recreateTable();
+
+        function recreateTable() {
+            if ($.fn.dataTable.isDataTable('#table')) {
+                table = $('#table').DataTable();
+                table.destroy();
+            }
+
+            table = $('#table').DataTable({
+                "ajax": {
+                    "url": "adm/get_location_workplace_table",
+                    "type": "post",
+                    "data" : { "loc_id" : rowdata.loc_id }
+                },
+                "processing": true,
+                "searching": false,
+                "bLengthChange": false,
+                "ordering": false,
+                "lengthMenu": [[5], [5]],
+                "language": {
+                    "url": /*[[#{general.datatable.table_lang_url}]]*/ 'en'
+                },
+                "columns": [
+                    {"title": /*[[#{workplace.loc_id}]]*/ "loc_id", "data": "loc_id"},
+                    {"title": /*[[#{workplace.wp_id}]]*/ "wp_id", "data": "wp_id"},
+                    {"title": /*[[#{workplace.wp_name}]]*/ "wp_name", "data": "wp_name"},
+                    {"title": /*[[#{workplace.wp_texttemplate}]]*/ "wp_texttemplate", "data": "wp_texttemplate"}
+                ]
+            });
+
+            $('#panelMain').show();
+        }
+
+        $('#table tbody').off('click');
+        $('#table tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                rowdata.selected = false;
+                rowdata.loc_id =null;
+                rowdata.wp_id =null;
+                rowdata.wp_name =null;
+                rowdata.wp_texttemplate =null;
+                $('#panelChild').hide();
+
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                rowdata.selected = true;
+                rowdata.loc_id =table.row('.selected').data().loc_id;
+                rowdata.wp_id =table.row('.selected').data().wp_id;
+                rowdata.wp_name =table.row('.selected').data().wp_name;
+                rowdata.wp_texttemplate =table.row('.selected').data().wp_texttemplate;
+                $('#panelChild').show();
+            }
+            $('#editbtn').prop('disabled', !rowdata.selected);
+            $('#delbtn').prop('disabled', !rowdata.selected);
+        });
+
+        $("#search").on("change", function () {
+            rowdata.loc_id = $("#search").val();
+            $('#addbtn').prop('disabled', rowdata.loc_id==-1);
+            recreateTable();
+        });
+        $("#serchbtn").on("click", function ( event ) {
+            rowdata.loc_id = $("#search").val();
+            $('#addbtn').prop('disabled', rowdata.loc_id==-1);
+            recreateTable();
+        });
+
+        $("#addbtn").on("click", function (event) {
+            $("#frm_workplacedetail input[name=mode]").val(0);
+            $("#frm_workplacedetail input[name=loc_id]").val(rowdata.loc_id);
+            $("#frm_workplacedetail input[name=wp_name]").val(rowdata.wp_name);
+            $("#frm_workplacedetail input[name=wp_texttemplate]").val(rowdata.wp_texttemplate);
+            $("#frm_workplacedetail input[name=return_form]").val("workplace");
+            $("#frm_workplacedetail").submit();
+        });
+
+        $("#editbtn").on("click", function (event) {
+            if (rowdata.loc_id != null) {
+                $("#frm_workplacedetail input[name=mode]").val(1);
+                $("#frm_workplacedetail input[name=wp_id]").val(rowdata.wp_id);
+                $("#frm_workplacedetail input[name=loc_id]").val(rowdata.loc_id);
+                $("#frm_workplacedetail input[name=wp_name]").val(rowdata.wp_name);
+                $("#frm_workplacedetail input[name=wp_texttemplate]").val(rowdata.wp_texttemplate);
+                $("#frm_workplacedetail input[name=return_form]").val("workplace");
+                $("#frm_workplacedetail").submit();
+            }
+        });
+
+        $("#delbtn").on("click", function (event) {
+            if (rowdata.loc_id != null) {
+                $("#frm_workplacedetail input[name=mode]").val(2);
+                $("#frm_workplacedetail input[name=wp_id]").val(rowdata.wp_id);
+                $("#frm_workplacedetail input[name=loc_id]").val(rowdata.loc_id);
+                $("#frm_workplacedetail input[name=wp_name]").val(rowdata.wp_name);
+                $("#frm_workplacedetail input[name=wp_texttemplate]").val(rowdata.wp_texttemplate);
+                $("#frm_workplacedetail input[name=return_form]").val("workplace");
+                $("#frm_workplacedetail").submit();
+            }
+        });
+    });
+
+</script>
+
+<main role="main" >
+    <div class="jumbotron ">
+        <div class="container align-items-center justify-content-center">
+            <h2 th:text="#{index.workplace_a_description}">Workplaces</h2>
+            <p th:text="#{index.workplace_description}">We will add all Workplaces of Partnership in the all locations</p>
+        </div>
+    </div>
+
+    <form id="frm_workplacedetail" method="post" th:action="workplacedetail">
+        <input type="hidden" name="mode">
+        <input type="hidden" name="wp_id">
+        <input type="hidden" name="loc_id">
+        <input type="hidden" name="wp_name">
+        <input type="hidden" name="wp_texttemplate">
+        <input type="hidden" name="return_form">
+    </form>
+
+    <div class="container-fluid">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-6">
+                <form id="dcldetailfrm" ></form>
+                <div class="form">
+                    <div class="form-group">
+                        <label for="search" id="label_search" th:text="#{workplace.location_search_by_location}"></label>
+                        <select type="text" id="search" class="form-control" th:value="${loc_id}" >
+                            <option
+                                    th:value="-1"
+                                    th:text="#{general.undefined}"
+                                    th:selected="${loc_id == -1}"
+                            ></option>
+                            <option th:each="location : ${locations}"
+                                    th:value="${location.loc_id}"
+                                    th:text="${location.loc_location}"
+                                    th:selected="${location.loc_id == loc_id}"
+                            ></option>
+                        </select>
+                    </div>
+                    <button type="submit" id="serchbtn" class="btn btn-primary" th:text="#{workplace.serchbtn}"></button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-inline">
+                    <div class="btn-group  mr-auto">
+                        <button type="button" id="addbtn" class="btn btn-primary" th:text="#{workplace.addbtn}" th:disabled="${loc_id == -1}" ></button>
+                        <button type="button" id="editbtn" class="btn btn-primary" th:text="#{workplace.editbtn}" th:disabled="true" ></button>
+                        <button type="button" id="delbtn" class="btn btn-primary" th:text="#{workplace.delbtn}" th:disabled="true" ></button>
+                    </div>
+                    <label for="table" th:text="#{workplace.caption_id}">label</label>
+                </div>
+                <div class="table-responsive">
+                    <table id="table" class="display table table-striped table-hover"></table>
+                </div>
+            </div>
+
+        </div>
+
+        <hr>
+
+    </div> <!-- /container -->
+
+
+
+</main>
+
+<footer th:replace="fragments/footer :: footer">Footer</footer>
+</body>
+</html>

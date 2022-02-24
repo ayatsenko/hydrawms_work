@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="wms_oper_docs_main_body" th:remove="tag">
+    <form id="table-wms-oper-docs-main-buttons" hidden>
+        <input name="mode" value="0" hidden>
+
+        <button type="button" id="wms-oper-docs-main-addbtn" class="btn btn-lg btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.addbtn}"><i class="fa fa-plus"></i></button>
+
+        <button type="button" id="wms-oper-docs-main-check" class="btn btn-lg btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.checkbtn}" disabled><i class="fas fa-check"></i></button>
+        <button type="button" id="wms-oper-docs-main-uncheck" class="btn btn-lg btn-dark mr-md-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.uncheckbtn}" disabled><i class="fas fa-times"></i></button>
+
+        <button type="button" id="wms-oper-docs-main-reloadbtn" class="btn btn-lg btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.refreshbtn}"><i class="fa fa-sync"></i></button>
+
+        <button type="button" id="wms-oper-docs-main-printbtn" class="btn btn-lg btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{wms_sale_docs.main.reestr_button}"><i class="fa fas fa-file-alt"></i></button>
+    </form>
+
+    <div><table id="table-wms-oper-docs-main" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var cnt_id_show, cnt_name_show, api_key_show, doc_id_show, post_id_show, post_name_show, doc_date_show, add_time_show, add_user_id_show, add_user_name_show, add_role_id_show, close_time_show,
+        close_user_id_show, close_user_name_show, close_role_id_show, status_id_show, status_name_show, status_color_show, doc_avg_time_show,
+        doc_post_avg_time_show, doc_post_count_show, doc_client_id_show;
+
+    var cnt_id_width, cnt_name_width, api_key_width, doc_id_width, post_id_width, post_name_width, doc_date_width, add_time_width, add_user_id_width, add_user_name_width, add_role_id_width, close_time_width,
+        close_user_id_width, close_user_name_width, close_role_id_width, status_id_width, status_name_width, status_color_width, doc_avg_time_width,
+        doc_post_avg_time_width, doc_post_count_width, doc_client_id_width;
+
+    var cnt_id_class, cnt_name_class, api_key_class, doc_id_class, post_id_class, post_name_class, doc_date_class, add_time_class, add_user_id_class, add_user_name_class, add_role_id_class, close_time_class,
+        close_user_id_class, close_user_name_class, close_role_id_class, status_id_class, status_name_class, status_color_class, doc_avg_time_class,
+        doc_post_avg_time_class, doc_post_count_class, doc_client_id_class;
+
+    if(mobileScreenSize){
+        vDomParam =
+            "<'row'<'col-12'B>>"+
+            "<'row'<'col-12 col-sm-3'l><'col-12 col-sm-9'f>>"+
+            "<'row'<'col-12'tr>>" +
+            "<'row'<'col-12'p>>";
+        post_id_show = false;
+        post_id_width = "";
+        post_id_class = "";
+        doc_date_show = false;
+        doc_date_width = "";
+        doc_date_class = "";
+        add_time_show = true;
+        add_time_width = "10%";
+        add_time_class = "min-tablet-p small_size small_head_size small_footer_size";
+        add_user_id_show = false;
+        add_user_id_width = "";
+        add_user_id_class = "";
+        add_user_name_show = true;
+        add_user_name_width = "50%";
+        add_user_name_class = "small_size small_head_size small_footer_size text-center";
+        add_role_id_show = true;
+        add_role_id_width = "8%";
+        add_role_id_class = "min-tablet-p small_size small_head_size small_footer_size text-center";
+        doc_avg_time_show = false;
+        doc_avg_time_width = "";
+        doc_avg_time_class = "";
+        doc_post_avg_time_show = false;
+        doc_post_avg_time_width = "";
+        doc_post_avg_time_class = "";
+        doc_post_count_show = false;
+        doc_post_count_width = "";
+        doc_post_count_class = "";
+        doc_client_id_show = false;
+        doc_client_id_width = "";
+        doc_client_id_class = "";
+
+        $('#wms-oper-docs-main-detail').addClass('text-center').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "small_size small_head_size small_footer_size";
+        cnt_name_show  = true;
+        cnt_name_width  = "14%";
+        cnt_name_class  = "small_size small_head_size small_footer_size";
+        api_key_show = false;
+        api_key_width = "";
+        api_key_class = "";
+        doc_id_show = true;
+        doc_id_width = "5%";
+        doc_id_class = "small_size small_head_size small_footer_size";
+        doc_client_id_show = false;
+        doc_client_id_width = "";
+        doc_client_id_class = "small_size small_head_size small_footer_size";
+        post_id_show = false;
+        post_id_width = "";
+        post_id_class = "";
+        post_name_show = true;
+        post_name_width = "16%";
+        post_name_class = "small_size small_head_size small_footer_size text-center";
+        doc_date_show = true;
+        doc_date_width = "5%";
+        doc_date_class = "small_size small_head_size small_footer_size text-center";
+        add_time_show = true;
+        add_time_width = "5%";
+        add_time_class = "small_size small_head_size small_footer_size text-center";
+        add_user_id_show = false;
+        add_user_id_width = "";
+        add_user_id_class = "";
+        add_user_name_show = true;
+        add_user_name_width = "10%";
+        add_user_name_class = "small_size small_head_size small_footer_size text-center";
+        add_role_id_show = false;
+        add_role_id_width = "";
+        add_role_id_class = "";
+        close_time_show = true;
+        close_time_width = "5%"
+        close_time_class = "small_size small_head_size small_footer_size text-center";
+        close_user_id_show = false;
+        close_user_id_width = ""
+        close_user_id_class = "";
+        close_user_name_show = true;
+        close_user_name_width = "10%";
+        close_user_name_class = "small_size small_head_size small_footer_size text-center";
+        close_role_id_show = false;
+        close_role_id_width = ""
+        close_role_id_class = "";
+        status_id_show = false;
+        status_id_width = ""
+        status_id_class = "";
+        status_name_show = true;
+        status_name_width = "10%"
+        status_name_class = "small_size small_head_size small_footer_size text-center";
+        status_color_show = false;
+        status_color_width = ""
+        status_color_class = "";
+        doc_avg_time_show = true;
+        doc_avg_time_width = "5%";
+        doc_avg_time_class = "small_size small_head_size small_footer_size text-center";
+        doc_post_avg_time_show = true;
+        doc_post_avg_time_width = "5%";
+        doc_post_avg_time_class = "small_size small_head_size small_footer_size text-center";
+        doc_post_count_show = true;
+        doc_post_count_width = "5%";
+        doc_post_count_class = "small_size small_head_size small_footer_size";
+
+        $('#wms-oper-docs-main-detail').removeAttr('hidden');
+    }
+    else{
+        vDomParam = "Blfrtip";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "small_size small_head_size small_footer_size";
+        cnt_name_show  = true;
+        cnt_name_width  = "16%";
+        cnt_name_class  = "small_size small_head_size small_footer_size";
+        api_key_show = false;
+        api_key_width = "";
+        api_key_class = "";
+        doc_id_show = true;
+        doc_id_width = "7%";
+        doc_id_class = "small_size small_head_size small_footer_size";
+        doc_client_id_show = false;
+        doc_client_id_width = "";
+        doc_client_id_class = "small_size small_head_size small_footer_size";
+        post_id_show = false;
+        post_id_width = "";
+        post_id_class = "";
+        post_name_show = true;
+        post_name_width = "12%";
+        post_name_class = "small_size small_head_size small_footer_size text-center";
+        doc_date_show = true;
+        doc_date_width = "5%";
+        doc_date_class = "small_size small_head_size small_footer_size text-center";
+        add_time_show = true;
+        add_time_width = "5%";
+        add_time_class = "small_size small_head_size small_footer_size text-center";
+        add_user_id_show = false;
+        add_user_id_width = "";
+        add_user_id_class = "";
+        add_user_name_show = true;
+        add_user_name_width = "10%";
+        add_user_name_class = "small_size small_head_size small_footer_size text-center";
+        add_role_id_show = false;
+        add_role_id_width = "";
+        add_role_id_class = "";
+        close_time_show = true;
+        close_time_width = "5%"
+        close_time_class = "small_size small_head_size small_footer_size text-center";
+        close_user_id_show = false;
+        close_user_id_width = ""
+        close_user_id_class = "";
+        close_user_name_show = true;
+        close_user_name_width = "10%";
+        close_user_name_class = "small_size small_head_size small_footer_size text-center";
+        close_role_id_show = false;
+        close_role_id_width = ""
+        close_role_id_class = "";
+        status_id_show = false;
+        status_id_width = ""
+        status_id_class = "";
+        status_name_show = true;
+        status_name_width = "10%"
+        status_name_class = "small_size small_head_size small_footer_size text-center";
+        status_color_show = false;
+        status_color_width = ""
+        status_color_class = "";
+        doc_avg_time_show = true;
+        doc_avg_time_width = "5%";
+        doc_avg_time_class = "small_size small_head_size small_footer_size text-center";
+        doc_post_avg_time_show = true;
+        doc_post_avg_time_width = "5%";
+        doc_post_avg_time_class = "small_size small_head_size small_footer_size text-center";
+        doc_post_count_show = true;
+        doc_post_count_width = "5%";
+        doc_post_count_class = "small_size small_head_size small_footer_size";
+    }
+
+    var vWMSSaleDocsMainValue;
+    vWMSSaleDocsMainValue = {
+        table : '#table-wms-oper-docs-main',
+        button_form: (mobileScreenSize) ? null : "#table-wms-oper-docs-main-buttons",
+        ajax : {
+            "url": /*[[@{/wms_oper_docs/get_menu}]]*/ "wms_oper_docs/get_menu",
+            "type": "post",
+        },
+        key : "doc_id",
+        switchControl : wms_oper_docs_main_switchControl,
+        rowdata:{
+            doc_id: null,
+
+            post_id: null,
+            post_name: null,
+            status_id: null,
+            api_key: null
+        },
+        order: [
+            [0, "desc"]
+        ],
+        dom: vDomParam,
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["status_color"]);
+        },
+        columnDefs:[
+            {"targets": [0], "width": cnt_id_width, "className": cnt_id_class, "visible": cnt_id_show},
+            {"targets": [1], "width": cnt_name_width, "className": cnt_name_class, "visible": cnt_name_show},
+            {"targets": [2], "width": api_key_width, "className": api_key_class, "visible": api_key_show},
+            {"targets": [3], "width": doc_id_width, "className": doc_id_class, "visible": doc_id_show},
+            {"targets": [4], "width": doc_client_id_width, "className": doc_client_id_class, "visible": doc_client_id_show},
+            {"targets": [5], "width": post_id_width, "className": post_id_class, "visible": post_id_show},
+            {"targets": [6], "width": post_name_width, "className": post_name_class, "visible": post_name_show},
+            {"targets": [7], "width": doc_date_width, "className": doc_date_class, "visible": doc_date_show},
+            {"targets": [8], "width": add_time_width, "className": add_time_class, "visible": add_time_show},
+            {"targets": [9], "width": add_user_id_width, "className": add_user_id_class, "visible": add_user_id_show},
+            {"targets": [10], "width": add_user_name_width, "className": add_user_name_class, "visible": add_user_name_show},
+            {"targets": [11], "width": add_role_id_width, "className": add_role_id_class, "visible": add_role_id_show},
+            {"targets": [12], "width": close_time_width, "className": close_time_class, "visible": close_time_show},
+            {"targets": [13], "width": close_user_id_width, "className": close_user_id_class, "visible": close_user_id_show},
+            {"targets": [14], "width": close_user_name_width, "className": close_user_name_class, "visible": close_user_name_show},
+            {"targets": [15], "width": close_role_id_width, "className": close_role_id_class, "visible": close_role_id_show},
+            {"targets": [16], "width": status_id_width, "className": status_id_class, "visible": status_id_show},
+            {"targets": [17], "width": status_name_width, "className": status_name_class, "visible": status_name_show},
+            {"targets": [18], "width": status_color_width, "className": status_color_class, "visible": status_color_show},
+            {"targets": [19], "width": doc_avg_time_width, "className": doc_avg_time_class, "visible": doc_avg_time_show},
+            {"targets": [20], "width": doc_post_avg_time_width, "className": doc_post_avg_time_class, "visible": doc_post_avg_time_show},
+            {"targets": [21], "width": doc_post_count_width, "className": doc_post_count_class, "visible": doc_post_count_show}
+            ],
+        columns : [
+            /*0*/{"title": /*[[#{wms_oper_docs.main.cnt_id}]]*/ "cnt_id", "data": "cnt_id"},
+            /*1*/{"title": /*[[#{wms_oper_docs.main.cnt_name}]]*/ "cnt_name", "data": "cnt_name"},
+            /*2*/{"title": /*[[#{wms_oper_docs.main.api_key}]]*/ "api_key", "data": "api_key"},
+            /*3*/{"title": /*[[#{wms_oper_docs.main.doc_id}]]*/ "doc_id", "data": "doc_id"},
+            /*4*/{"title": /*[[#{wms_oper_docs.main.doc_client_id}]]*/ "doc_client_id", "data": "doc_client_id"},
+            /*5*/{"title": /*[[#{wms_oper_docs.main.post_id}]]*/ "post_id", "data": "post_id"},
+            /*6*/{"title": /*[[#{wms_oper_docs.main.post_name}]]*/ "post_name", "data": "post_name"},
+            /*7*/{"title": /*[[#{wms_oper_docs.main.doc_date}]]*/ "doc_date", "data": "doc_date"},
+            /*8*/{"title": /*[[#{wms_oper_docs.main.add_date}]]*/ "add_time", "data": "add_time"},
+            /*9*/{"title": /*[[#{wms_oper_docs.main.add_user_id}]]*/ "add_user_id", "data": "add_user_id"},
+            /*10*/{"title": /*[[#{wms_oper_docs.main.add_user_name}]]*/ "add_user_name", "data": "add_user_name"},
+            /*11*/{"title": /*[[#{wms_oper_docs.main.add_role_id}]]*/ "add_role_id", "data": "add_role_id"},
+            /*12*/{"title": /*[[#{wms_oper_docs.main.close_date}]]*/ "close_time", "data": "close_time"},
+            /*13*/{"title": /*[[#{wms_oper_docs.main.close_user_id}]]*/ "close_user_id", "data": "close_user_id"},
+            /*14*/{"title": /*[[#{wms_oper_docs.main.close_user_name}]]*/ "close_user_name", "data": "close_user_name"},
+            /*15*/{"title": /*[[#{wms_oper_docs.main.close_role_id}]]*/ "close_role_id", "data": "close_role_id"},
+            /*16*/{"title": /*[[#{wms_oper_docs.main.status_id}]]*/ "status_id", "data": "status_id"},
+            /*17*/{"title": /*[[#{wms_oper_docs.main.status_name}]]*/ "status_name", "data": "status_name"},
+            /*18*/{"title": /*[[#{wms_oper_docs.main.status_color}]]*/ "status_color", "data": "status_color"},
+            /*19*/{"title": /*[[#{wms_oper_docs.main.doc_avg_time}]]*/ "doc_avg_time", "data": "doc_avg_time"},
+            /*20*/{"title": /*[[#{wms_oper_docs.main.doc_post_avg_time}]]*/ "doc_post_avg_time", "data": "doc_post_avg_time"},
+            /*21*/{"title": /*[[#{wms_oper_docs.main.doc_post_count}]]*/ "doc_post_count", "data": "doc_post_count"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function wms_oper_docs_main_switchControl(){
+        if(vWMSSaleDocsMainValue.rowdata.doc_id != null) {
+            $('#wms_oper_docs_new_post_id').prop('disabled',false).select();
+            $('#wms_oper_docs_new_post_btn').prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+
+            if(RoleWHOper || RoleWHAdmin) {
+                if (vWMSSaleDocsMainValue.rowdata.status_id === 0) {
+                    $('#wms-oper-docs-main-check').prop('disabled', false).removeClass('btn-dark').addClass('btn-success');
+                    $('#wms-oper-docs-main-uncheck').prop('disabled', true).addClass('btn-dark').removeClass('btn-danger');
+
+                    $('#wms_oper_docs_new_post_id').prop('disabled', false).select();
+                    $('#wms_oper_docs_new_post_btn').prop('disabled', false).removeClass('btn-dark').addClass('btn-success');
+                } else if (vWMSSaleDocsMainValue.rowdata.status_id === 1) {
+                    $('#wms-oper-docs-main-check').prop('disabled', true).addClass('btn-dark').removeClass('btn-success');
+                    $('#wms-oper-docs-main-uncheck').prop('disabled', false).removeClass('btn-dark').addClass('btn-danger');
+
+                    $('#wms_oper_docs_new_post_id').prop('disabled', true);
+                    $('#wms_oper_docs_new_post_btn').prop('disabled', true).addClass('btn-dark').removeClass('btn-success');
+                } else {
+                    $('#wms-oper-docs-main-check').prop('disabled', true).addClass('btn-dark').removeClass('btn-success');
+                    $('#wms-oper-docs-main-uncheck').prop('disabled', true).addClass('btn-dark').removeClass('btn-danger');
+
+                    $('#wms_oper_docs_new_post_id').prop('disabled', true);
+                    $('#wms_oper_docs_new_post_btn').prop('disabled', true).addClass('btn-dark').removeClass('btn-success');
+                }
+            }
+
+            if(vWMSSaleDocsMainValue.rowdata.post_id != null){
+                $('#wms-oper-docs-main-printbtn').prop('disabled',false).removeClass('btn-dark').addClass('btn-info');
+            }
+            else{
+                $('#wms-oper-docs-main-printbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-info');
+            }
+
+            vWMSSaleDocsDetailValue.rowdata.doc_id = vWMSSaleDocsMainValue.rowdata.doc_id;
+            vWMSSaleDocsDetailValue.rowdata.doc_link_id = null;
+            $(vWMSSaleDocsDetailValue.table).DataTable().ajax.reload();
+
+            $('#wms-oper-docs-detail-delbtn').prop('disabled', false).removeClass('btn-dark').addClass('btn-danger');
+        }
+        else{
+            $('#wms-oper-docs-main-check').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+            $('#wms-oper-docs-main-uncheck').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+            $('#wms-oper-docs-main-printbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-info');
+
+            $('#wms_oper_docs_new_post_id').prop('disabled',true);
+            $('#wms_oper_docs_new_post_btn').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+
+            vWMSSaleDocsDetailValue.rowdata.doc_id = null;
+            vWMSSaleDocsDetailValue.rowdata.doc_link_id = null;
+            $(vWMSSaleDocsDetailValue.table).DataTable().clear().draw();
+
+            $('#wms-oper-docs-detail-delbtn').prop('disabled', false).removeClass('btn-dark').addClass('btn-danger');
+        }
+    }
+
+//Reload Function
+    function reloadDocMain(){
+        $(vWMSSaleDocsMainValue.table).DataTable().ajax.reload(null, false);
+    }
+
+//Reload button
+    $('#wms-oper-docs-main-reloadbtn').click(function() {
+        reloadDocMain();
+    });
+    //Add Function
+    function addDocMain(){
+        let RowID = vWMSSaleDocsMainValue.rowdata.doc_id;
+        $.ajax({
+            url: /*[[ @{/wms_oper_docs/add_main_doc} ]]*/ "/wms_oper_docs/add_main_doc",
+            type: 'POST',
+            success: function (result) {
+                vWMSSaleDocsMainValue.rowdata.doc_id = RowID;
+                $(vWMSSaleDocsMainValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+    //Add button
+    $('#wms-oper-docs-main-addbtn').click(function() {
+        addDocMain();
+    });
+
+    //Check Function
+    function checkDocMain(){
+        let LocalNPApiKey = vWMSSaleDocsMainValue.rowdata.api_key;
+        let RowID = vWMSSaleDocsMainValue.rowdata.doc_id;
+        $.ajax({
+            url: /*[[ @{/np_post/check_main_doc} ]]*/ "/np_post/check_main_doc",
+            type: 'POST',
+            data: {
+                "doc_id": RowID,
+                "api_key": LocalNPApiKey
+            },            
+            success: function (result) {
+                vWMSSaleDocsMainValue.rowdata.doc_id = RowID;
+                $(vWMSSaleDocsMainValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+    //Add button
+    $('#wms-oper-docs-main-check').click(function() {
+        checkDocMain();
+    });
+
+    //UnCheck Function
+    function uncheckDocMain(){
+        let LocalNPApiKey = vWMSSaleDocsMainValue.rowdata.api_key;
+        let RowID = vWMSSaleDocsMainValue.rowdata.doc_id;
+        let PostRowID = vWMSSaleDocsMainValue.rowdata.post_id;
+        $.ajax({
+            url: /*[[ @{/np_post/uncheck_main_doc} ]]*/ "/np_post/uncheck_main_doc",
+            type: 'POST',
+            data: {
+                "doc_id": RowID,
+                "post_id": PostRowID,
+                "api_key": LocalNPApiKey
+            },
+            success: function (result) {
+                vWMSSaleDocsMainValue.rowdata.doc_id = RowID;
+                $(vWMSSaleDocsMainValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+    //Add button
+    $('#wms-oper-docs-main-uncheck').click(function() {
+        uncheckDocMain();
+    });
+
+    function docPrint() {
+        let TTNID = vWMSSaleDocsMainValue.rowdata.post_id;
+        let PrintNPApiKey = vWMSSaleDocsMainValue.rowdata.api_key;
+        window.open("https://my.novaposhta.ua/scanSheet/printScanSheet/refs[]/"+TTNID+"/type/pdf/apiKey/"+PrintNPApiKey+"", "_blank");
+    }
+
+    $('#wms-oper-docs-main-printbtn').on('click', function () {
+        docPrint();
+    });
+
+    $(document).ready(function(){
+        vWMSSaleDocsMainValue.rowdata.post_id = /*[[${post_id}]]*/ null;
+
+        vWMSSaleDocsMainValue.rowdata.action_filter_type_id = /*[[${action_filter_type_id}]]*/ null;
+        vWMSSaleDocsMainValue.rowdata.action_filter_action_id = /*[[${action_filter_action_id}]]*/ null;
+        vWMSSaleDocsMainValue.rowdata.action_filter_status_id = /*[[${action_filter_status_id}]]*/ null;
+        vWMSSaleDocsMainValue.rowdata.action_filter_result_id = /*[[${action_filter_result_id}]]*/ null;
+        vWMSSaleDocsMainValue.rowdata.action_filter_add_role_id = /*[[${action_filter_add_role_id}]]*/ null;
+        vWMSSaleDocsMainValue.rowdata.action_filter_user_id = /*[[${action_filter_user_id}]]*/ null;
+        
+        recreateDataTable(vWMSSaleDocsMainValue);
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#wms_li').addClass('active').removeClass('collapsed');
+        $('#wms_a').attr('aria-expanded',true);
+        $('#wms').addClass('show');
+
+        $('#wms_oper_docs_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

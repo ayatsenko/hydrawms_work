@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="dep_kpi_facts_calc_month_01_body" th:remove="tag">
+    <div id="table-dep-kpi-facts-calc-month-01-buttons">
+    </div>
+        <div><table id="table-dep-kpi-facts-calc-month-01" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var currentMonth01 = 1;
+
+    var rn_id_width, user_kpi_type_id_width, user_kpi_type_name_width, kpirupl_plan_width, kpirupl_fact_width, kpirupl_persent_width, kpirupl_malus_width, kpirupl_finance_width, kpirupl_colour_width;
+    var rn_id_class, user_kpi_type_id_class, user_kpi_type_name_class, kpirupl_plan_class, kpirupl_fact_class, kpirupl_persent_class, kpirupl_malus_class, kpirupl_finance_class, kpirupl_colour_class;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        rn_id_width = "";
+        rn_id_class = "none";
+        user_kpi_type_id_width = "";
+        user_kpi_type_id_class = "none";
+        user_kpi_type_name_width = "40%";
+        user_kpi_type_name_class = "small_size small_head_size small_footer_size";
+        kpirupl_plan_width = "15%";
+        kpirupl_plan_class = "small_size small_head_size small_footer_size text-center";
+        kpirupl_fact_width = "15%";
+        kpirupl_fact_class = "small_size small_head_size small_footer_size text-center";
+        kpirupl_persent_width = "10%";
+        kpirupl_persent_class = "small_size small_head_size small_footer_size text-center";
+        kpirupl_malus_width = "10%";
+        kpirupl_malus_class = "small_size small_head_size small_footer_size text-center";
+        kpirupl_finance_width = "10%";
+        kpirupl_finance_class = "small_size small_head_size small_footer_size text-center";
+        kpirupl_colour_width = "";
+        kpirupl_colour_class = "none";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        rn_id_width = "";
+        rn_id_class = "none";
+        user_kpi_type_id_width = "";
+        user_kpi_type_id_class = "none";
+        user_kpi_type_name_width = "40%";
+        user_kpi_type_name_class = "";
+        kpirupl_plan_width = "15%";
+        kpirupl_plan_class = "text-center";
+        kpirupl_fact_width = "15%";
+        kpirupl_fact_class = "text-center";
+        kpirupl_persent_width = "10%";
+        kpirupl_persent_class = "text-center";
+        kpirupl_malus_width = "10%";
+        kpirupl_malus_class = "text-center";
+        kpirupl_finance_width = "10%";
+        kpirupl_finance_class = "text-center";
+        kpirupl_colour_width = "";
+        kpirupl_colour_class = "none";
+    }
+
+    var vDepKPIFactCalcMonth01Value;
+    vDepKPIFactCalcMonth01Value = {
+        table : '#table-dep-kpi-facts-calc-month-01',
+        button_form: (mobileScreenSize) ? null : "#table-dep-kpi-facts-calc-month-01-buttons",
+        ajax : {
+            "url": /*[[@{/dep_kpi_facts/get_calc_table}]]*/ "dep_kpi_facts/get_calc_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.dep_kpi_user_id = vDepKPIFactCalcMonth01Value.rowdata.dep_kpi_user_id;
+                d.dep_kpi_facts_year = vDepKPIFactCalcMonth01Value.rowdata.dep_kpi_facts_year;
+                d.dep_kpi_facts_month = currentMonth01;
+                d.dep_id = vDepKPIFactCalcMonth01Value.rowdata.dep_id;
+            }
+        },
+        key : "user_kpi_type_id",
+        switchControl : dep_kpi_facts_calc_month_01_switchControl,
+        rowdata:{
+            user_kpi_type_id: null,
+            dep_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: vDomParam,
+        createdRow: function( row, data, dataIndex ) {
+            $(row).find('td:eq(4)').css('background-color', data["kpirupl_colour"]);
+            $(row).find('td:eq(5)').css('background-color', data["kpirupl_colour"]);
+            $(row).find('td:eq(6)').css('background-color', data["kpirupl_colour"]);
+            $(row).find('td:eq(7)').css('background-color', data["kpirupl_colour"]);
+        },
+        columnDefs:[
+            {"targets": 3,  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": 4,  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": 5,  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": 6,  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": 7,  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{dep_kpi_facts.calc.rn_id}]]*/ "rn_id","data": "rn_id","width": rn_id_width, "className": rn_id_class},
+            /*1*/{"title": /*[[#{dep_kpi_facts.calc.user_kpi_type_id}]]*/ "user_kpi_type_id","data": "user_kpi_type_id","width": user_kpi_type_id_width, "className": user_kpi_type_id_class},
+            /*2*/{"title": /*[[#{dep_kpi_facts.calc.user_kpi_type_name}]]*/ "user_kpi_type_name","data": "user_kpi_type_name","width": user_kpi_type_name_width, "className": user_kpi_type_name_class},
+            /*3*/{"title": /*[[#{dep_kpi_facts.calc.kpirupl_plan}]]*/ "kpirupl_plan","data": "kpirupl_plan","width": kpirupl_plan_width, "className": kpirupl_plan_class},
+            /*4*/{"title": /*[[#{dep_kpi_facts.calc.kpirupl_fact}]]*/ "kpirupl_fact","data": "kpirupl_fact","width": kpirupl_fact_width, "className": kpirupl_fact_class},
+            /*5*/{"title": /*[[#{dep_kpi_facts.calc.kpirupl_persent}]]*/ "kpirupl_persent","data": "kpirupl_persent","width": kpirupl_persent_width, "className": kpirupl_persent_class},
+            /*6*/{"title": /*[[#{dep_kpi_facts.calc.kpirupl_malus}]]*/ "kpirupl_malus","data": "kpirupl_malus","width": kpirupl_malus_width, "className": kpirupl_malus_class},
+            /*7*/{"title": /*[[#{dep_kpi_facts.calc.kpirupl_finance}]]*/ "kpirupl_finance","data": "kpirupl_finance","width": kpirupl_finance_width, "className": kpirupl_finance_class},
+            /*8*/{"title": /*[[#{dep_kpi_facts.calc.kpirupl_colour}]]*/ "kpirupl_colour","data": "kpirupl_colour","width": kpirupl_colour_width, "className": kpirupl_colour_class}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function dep_kpi_facts_calc_month_01_hide() {
+        $('#dep_kpi_facts_meets_month_01').attr('hidden',true);
+        $('#dep_kpi_facts_calls_month_01').attr('hidden',true);
+        $('#dep_kpi_facts_requests_month_01').attr('hidden',true);
+        $('#dep_kpi_facts_tenders_month_01').attr('hidden',true);
+
+        $('#dep_kpi_facts_crm_result_month_01').attr('hidden',true);
+        dep_client_crm_month_01_hide();
+
+        $('#dep_kpi_facts_clients_finance_month_01').attr('hidden',true);
+        dep_kpi_clients_finance_month_01_hide();
+
+        $('#dep_kpi_facts_clients_profit_month_01').attr('hidden',true);
+        dep_kpi_clients_profit_month_01_hide();
+
+        $('#dep_kpi_facts_clients_debtors_month_01').attr('hidden',true);
+        dep_kpi_clients_debtors_month_01_hide();
+
+        $('#dep_kpi_facts_clients_unpaid_month_01').attr('hidden',true);
+        dep_kpi_clients_unpaid_month_01_hide();
+/*Chief*/
+        $('#dep_kpi_facts_chief_clients_profit_month_01').attr('hidden',true);
+        dep_kpi_chief_clients_profit_month_01_hide();
+
+        $('#dep_kpi_facts_chief_clients_unpaid_month_01').attr('hidden',true);
+        dep_kpi_chief_clients_unpaid_month_01_hide();
+
+        $('#dep_kpi_facts_chief_clients_debtors_month_01').attr('hidden',true);
+        dep_kpi_chief_clients_debtors_month_01_hide();
+/*OPS Head*/
+        $('#dep_kpi_head_new_clients_finance_month_01').attr('hidden',true);
+        dep_kpi_head_new_finance_month_01_hide();
+
+        $('#dep_kpi_head_old_clients_finance_month_01').attr('hidden',true);
+        dep_kpi_head_old_finance_month_01_hide();
+
+        $('#dep_kpi_facts_chief_debtors_month_01').attr('hidden',true);
+        $('#dep_kpi_facts_csops_meetings_month_01').attr('hidden',true);
+        $('#dep_kpi_facts_cs_meetings_month_01').attr('hidden',true);
+        $('#dep_kpi_facts_chief_clients_month_01').attr('hidden',true);
+        $('#dep_kpi_facts_chief_bonus_clients_month_01').attr('hidden',true);
+    }
+
+    function dep_kpi_facts_calc_month_01_switchControl(){
+        dep_kpi_facts_calc_month_01_hide();
+        if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id != null) {
+            if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 1) {
+                $('#dep_kpi_facts_meets_month_01').removeAttr('hidden');
+                vDepKPIMeetsMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPIMeetsMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPIMeetsMonth01Value.rowdata.dep_kpi_year = $("#dep_kpi_facts_year").val();
+                vDepKPIMeetsMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPIMeetsMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+            else if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 2) {
+                $('#dep_kpi_facts_calls_month_01').removeAttr('hidden');
+                vDepKPICallsMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPICallsMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPICallsMonth01Value.rowdata.dep_kpi_year = $("#dep_kpi_facts_year").val();
+                vDepKPICallsMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPICallsMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+            else if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 3){
+                $('#dep_kpi_facts_requests_month_01').removeAttr('hidden');
+                vDepKPIRequestsMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPIRequestsMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPIRequestsMonth01Value.rowdata.dep_kpi_year = $("#dep_kpi_facts_year").val();
+                vDepKPIRequestsMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPIRequestsMonth01Value.table).DataTable().ajax.reload(null, false);
+
+                $('#dep_kpi_facts_tenders_month_01').removeAttr('hidden');
+                vDepKPITendersMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPITendersMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPITendersMonth01Value.rowdata.dep_kpi_year = $("#dep_kpi_facts_year").val();
+                vDepKPITendersMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPITendersMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+            else if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 4) {
+                $('#dep_kpi_facts_clients_finance_month_01').removeAttr('hidden');
+                vDepKPIClientsFinanceMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPIClientsFinanceMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPIClientsFinanceMonth01Value.rowdata.dep_kpi_year = $("#dep_kpi_facts_year").val();
+                vDepKPIClientsFinanceMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPIClientsFinanceMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+            else if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 5){
+                $('#dep_kpi_facts_crm_result_month_01').removeAttr('hidden');
+                vDepKPIFactCRMMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPIFactCRMMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPIFactCRMMonth01Value.rowdata.dep_kpi_facts_year = $("#dep_kpi_facts_year").val();
+                vDepKPIFactCRMMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPIFactCRMMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+            else if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 12){
+                $('#dep_kpi_facts_chief_clients_month_01').removeAttr('hidden');
+                vDepKPIChiefClientsMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPIChiefClientsMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPIChiefClientsMonth01Value.rowdata.dep_kpi_year = $("#dep_kpi_facts_year").val();
+                vDepKPIChiefClientsMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPIChiefClientsMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+            else if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 13){
+                $('#dep_kpi_facts_crm_result_month_01').removeAttr('hidden');
+                vDepKPIFactCRMMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPIFactCRMMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPIFactCRMMonth01Value.rowdata.dep_kpi_facts_year = $("#dep_kpi_facts_year").val();
+                vDepKPIFactCRMMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPIFactCRMMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+            else if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 14) {
+                $('#dep_kpi_facts_chief_debtors_month_01').removeAttr('hidden');
+                vDepKPIChiefDebtorsMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPIChiefDebtorsMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPIChiefDebtorsMonth01Value.rowdata.dep_kpi_year = $("#dep_kpi_facts_year").val();
+                vDepKPIChiefDebtorsMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPIChiefDebtorsMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+            else if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 15){
+                $('#dep_kpi_facts_csops_meetings_month_01').removeAttr('hidden');
+                vDepKPICsOpsMeetingsMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPICsOpsMeetingsMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPICsOpsMeetingsMonth01Value.rowdata.dep_kpi_year = $("#dep_kpi_facts_year").val();
+                vDepKPICsOpsMeetingsMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPICsOpsMeetingsMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+            else if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 16){
+                $('#dep_kpi_facts_cs_meetings_month_01').removeAttr('hidden');
+                vDepKPICsMeetingsMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPICsMeetingsMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPICsMeetingsMonth01Value.rowdata.dep_kpi_year = $("#dep_kpi_facts_year").val();
+                vDepKPICsMeetingsMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPICsMeetingsMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+            else if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 20){
+                $('#dep_kpi_facts_chief_bonus_clients_month_01').removeAttr('hidden');
+                vDepKPIChiefBonusClientsMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPIChiefBonusClientsMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPIChiefBonusClientsMonth01Value.rowdata.dep_kpi_year = $("#dep_kpi_facts_year").val();
+                vDepKPIChiefBonusClientsMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPIChiefBonusClientsMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+            else if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 21) {
+                $('#dep_kpi_facts_clients_debtors_month_01').removeAttr('hidden');
+                vDepKPIClientsDebtorsMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPIClientsDebtorsMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPIClientsDebtorsMonth01Value.rowdata.dep_kpi_year = $("#dep_kpi_facts_year").val();
+                vDepKPIClientsDebtorsMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPIClientsDebtorsMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+            else if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 22) {
+                $('#dep_kpi_facts_clients_profit_month_01').removeAttr('hidden');
+                vDepKPIClientsProfitMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPIClientsProfitMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPIClientsProfitMonth01Value.rowdata.dep_kpi_year = $("#dep_kpi_facts_year").val();
+                vDepKPIClientsProfitMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPIClientsProfitMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+            else if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 23) {
+                $('#dep_kpi_facts_clients_unpaid_month_01').removeAttr('hidden');
+                vDepKPIClientsUnpaidMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPIClientsUnpaidMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPIClientsUnpaidMonth01Value.rowdata.dep_kpi_year = $("#dep_kpi_facts_year").val();
+                vDepKPIClientsUnpaidMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPIClientsUnpaidMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+            else if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 24) {
+                $('#dep_kpi_facts_chief_clients_profit_month_01').removeAttr('hidden');
+                vDepKPIChiefClientsProfitMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPIChiefClientsProfitMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPIChiefClientsProfitMonth01Value.rowdata.dep_kpi_year = $("#dep_kpi_facts_year").val();
+                vDepKPIChiefClientsProfitMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPIChiefClientsProfitMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+            else if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 25) {
+                $('#dep_kpi_facts_chief_clients_unpaid_month_01').removeAttr('hidden');
+                vDepKPIChiefClientsUnpaidMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPIChiefClientsUnpaidMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPIChiefClientsUnpaidMonth01Value.rowdata.dep_kpi_year = $("#dep_kpi_facts_year").val();
+                vDepKPIChiefClientsUnpaidMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPIChiefClientsUnpaidMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+            else if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 26) {
+                $('#dep_kpi_facts_chief_clients_debtors_month_01').removeAttr('hidden');
+                vDepKPIChiefClientsDebtorsMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPIChiefClientsDebtorsMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPIChiefClientsDebtorsMonth01Value.rowdata.dep_kpi_year = $("#dep_kpi_facts_year").val();
+                vDepKPIChiefClientsDebtorsMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPIChiefClientsDebtorsMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+//OPS Head
+            else if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 18) {
+                $('#dep_kpi_head_old_clients_finance_month_01').removeAttr('hidden');
+                vDepKPIHeadOldClientsFinanceMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPIHeadOldClientsFinanceMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPIHeadOldClientsFinanceMonth01Value.rowdata.dep_kpi_year = $("#dep_kpi_facts_year").val();
+                vDepKPIHeadOldClientsFinanceMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPIHeadOldClientsFinanceMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+            else if(vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id === 19) {
+                $('#dep_kpi_head_new_clients_finance_month_01').removeAttr('hidden');
+                vDepKPIHeadNewClientsFinanceMonth01Value.rowdata.dep_kpi_param_id = vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+                vDepKPIHeadNewClientsFinanceMonth01Value.rowdata.dep_kpi_user_id = vDepKPIFactUsersValue.rowdata.user_id;
+                vDepKPIHeadNewClientsFinanceMonth01Value.rowdata.dep_kpi_year = $("#dep_kpi_facts_year").val();
+                vDepKPIHeadNewClientsFinanceMonth01Value.rowdata.dep_kpi_month = currentMonth01;
+                $(vDepKPIHeadNewClientsFinanceMonth01Value.table).DataTable().ajax.reload(null, false);
+            }
+        }
+        else{
+            vDepKPIMeetsMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPIMeetsMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPIMeetsMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPIMeetsMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPIMeetsMonth01Value.rowdata.act_id = null;
+            $(vDepKPIMeetsMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPICallsMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPICallsMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPICallsMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPICallsMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPICallsMonth01Value.rowdata.act_id = null;
+            $(vDepKPICallsMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPIRequestsMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPIRequestsMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPIRequestsMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPIRequestsMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPIRequestsMonth01Value.rowdata.req_id = null;
+            $(vDepKPIRequestsMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPITendersMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPITendersMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPITendersMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPITendersMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPITendersMonth01Value.rowdata.req_id = null;
+            $(vDepKPITendersMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPIClientsFinanceMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPIClientsFinanceMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPIClientsFinanceMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPIClientsFinanceMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPIClientsFinanceMonth01Value.rowdata.rn = null;
+            $(vDepKPIClientsFinanceMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPIFactCRMMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPIFactCRMMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPIFactCRMMonth01Value.rowdata.dep_kpi_facts_year = null;
+            vDepKPIFactCRMMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPIFactCRMMonth01Value.rowdata.user_kpi_crm_type_id = null;
+            $(vDepKPIFactCRMMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPIChiefDebtorsMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPIChiefDebtorsMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPIChiefDebtorsMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPIChiefDebtorsMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPIChiefDebtorsMonth01Value.rowdata.fin_id = null;
+            $(vDepKPIChiefDebtorsMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPIChiefClientsMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPIChiefClientsMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPIChiefClientsMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPIChiefClientsMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPIChiefClientsMonth01Value.rowdata.rn_id = null;
+            $(vDepKPIChiefClientsMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPICsOpsMeetingsMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPICsOpsMeetingsMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPICsOpsMeetingsMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPICsOpsMeetingsMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPICsOpsMeetingsMonth01Value.rowdata.user_kpi_meet_id = null;
+            $(vDepKPICsOpsMeetingsMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPICsMeetingsMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPICsMeetingsMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPICsMeetingsMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPICsMeetingsMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPICsMeetingsMonth01Value.rowdata.user_kpi_meet_id = null;
+            $(vDepKPICsMeetingsMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPIChiefBonusClientsMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPIChiefBonusClientsMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPIChiefBonusClientsMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPIChiefBonusClientsMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPIChiefBonusClientsMonth01Value.rowdata.rn_id = null;
+            $(vDepKPIChiefBonusClientsMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPIClientsDebtorsMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPIClientsDebtorsMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPIClientsDebtorsMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPIClientsDebtorsMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPIClientsDebtorsMonth01Value.rowdata.rn = null;
+            $(vDepKPIClientsDebtorsMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPIClientsProfitMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPIClientsProfitMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPIClientsProfitMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPIClientsProfitMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPIClientsProfitMonth01Value.rowdata.rn = null;
+            $(vDepKPIClientsProfitMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPIClientsUnpaidMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPIClientsUnpaidMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPIClientsUnpaidMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPIClientsUnpaidMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPIClientsUnpaidMonth01Value.rowdata.rn = null;
+            $(vDepKPIClientsUnpaidMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPIChiefClientsProfitMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPIChiefClientsProfitMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPIChiefClientsProfitMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPIChiefClientsProfitMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPIChiefClientsProfitMonth01Value.rowdata.rn = null;
+            $(vDepKPIChiefClientsProfitMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPIChiefClientsDebtorsMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPIChiefClientsDebtorsMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPIChiefClientsDebtorsMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPIChiefClientsDebtorsMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPIChiefClientsDebtorsMonth01Value.rowdata.rn = null;
+            $(vDepKPIChiefClientsDebtorsMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPIHeadNewClientsFinanceMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPIHeadNewClientsFinanceMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPIHeadNewClientsFinanceMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPIHeadNewClientsFinanceMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPIHeadNewClientsFinanceMonth01Value.rowdata.rn = null;
+            $(vDepKPIHeadNewClientsFinanceMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPIHeadNewFinanceMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPIHeadNewFinanceMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPIHeadNewFinanceMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPIHeadNewFinanceMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPIHeadNewFinanceMonth01Value.rowdata.dep_kpi_cnt_id = null;
+            vDepKPIHeadNewFinanceMonth01Value.rowdata.dep_kpi_ser_id = null;
+            vDepKPIHeadNewFinanceMonth01Value.rowdata.fin_id = null;
+            $(vDepKPIHeadNewFinanceMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPIHeadOldClientsFinanceMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPIHeadOldClientsFinanceMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPIHeadOldClientsFinanceMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPIHeadOldClientsFinanceMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPIHeadOldClientsFinanceMonth01Value.rowdata.rn = null;
+            $(vDepKPIHeadOldClientsFinanceMonth01Value.table).DataTable().clear().draw();
+
+            vDepKPIHeadOldFinanceMonth01Value.rowdata.dep_kpi_param_id = null;
+            vDepKPIHeadOldFinanceMonth01Value.rowdata.dep_kpi_user_id = null;
+            vDepKPIHeadOldFinanceMonth01Value.rowdata.dep_kpi_year = null;
+            vDepKPIHeadOldFinanceMonth01Value.rowdata.dep_kpi_month = null;
+            vDepKPIHeadOldFinanceMonth01Value.rowdata.dep_kpi_cnt_id = null;
+            vDepKPIHeadOldFinanceMonth01Value.rowdata.dep_kpi_ser_id = null;
+            vDepKPIHeadOldFinanceMonth01Value.rowdata.fin_id = null;
+            $(vDepKPIHeadOldFinanceMonth01Value.table).DataTable().clear().draw();
+        }
+    }
+
+    $(document).ready(function(){
+        vDepKPIFactCalcMonth01Value.rowdata.dep_kpi_user_id = /*[[${dep_kpi_user_id}]]*/ null;
+        vDepKPIFactCalcMonth01Value.rowdata.dep_kpi_facts_year = /*[[${dep_kpi_facts_year}]]*/ null;
+        vDepKPIFactCalcMonth01Value.rowdata.dep_kpi_facts_month = /*[[${dep_kpi_facts_month}]]*/ null;
+        vDepKPIFactCalcMonth01Value.rowdata.dep_id = /*[[${dep_id}]]*/ null;
+        vDepKPIFactCalcMonth01Value.rowdata.user_kpi_type_id = /*[[${user_kpi_type_id}]]*/ null;
+
+        vDepKPIFactCalcMonth01Value.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vDepKPIFactCalcMonth01Value.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vDepKPIFactCalcMonth01Value.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vDepKPIFactCalcMonth01Value.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vDepKPIFactCalcMonth01Value.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vDepKPIFactCalcMonth01Value);
+    });
+</script>
+
+</body>
+</html>

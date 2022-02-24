@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{system_params.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="system_params_main_card">
+            <div class="card-header pb-0 mb-0">
+                <div class="card-actions float-right">
+                    <a href="#system_params_main_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#system_params_main_div" data-toggle="collapse" th:text="#{system_params.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="system_params_main_div">
+                <div>
+                    <span th:replace="system_params/main_modal :: system_params_main_modal_body"></span>
+                    <span th:replace="system_params/main_card :: system_params_main_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="system_params/main_modal :: cardscript"></script>
+<script th:replace="system_params/main_card :: cardscript"></script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="user_kpi_finance_body" th:remove="tag">
+        <div><table id="table-user-kpi-finance" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vUserKpiFinanceValue;
+    vUserKpiFinanceValue = {
+        table : '#table-user-kpi-finance',
+        ajax : {
+            "url": /*[[@{/users_kpi/finance_menu}]]*/ "users_kpi/finance_menu",
+            "type": "post",
+            "data": function ( d ) {
+                d.user_id = vUserKpiMeetsValue.rowdata.user_id;
+                d.users_kpi_year = vUserKpiMeetsValue.rowdata.users_kpi_year;
+                d.users_kpi_month = vUserKpiMeetsValue.rowdata.users_kpi_month;
+            }
+        },
+        key : "fin_id",
+        switchControl : user_kpi_finance_switchControl,
+        rowdata:{
+           fin_id: null,
+           user_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).find('td:eq(4)').css('background-color', data["user_status_colour"]);*/
+        },
+        columnDefs:[
+                {"targets": [0], "visible": false},
+                {"targets": [2], type: 'de_date'},
+                {"targets": [4], "visible": false},
+                {"targets": [7], render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{users_kpi.finance.fin_id}]]*/ "fin_id", "data": "fin_id", "width": "1%"},
+                /*1*/{"title": /*[[#{users_kpi.finance.fin_name}]]*/ "fin_name", "data": "fin_name", "width": "10%"},
+                /*2*/{"title": /*[[#{users_kpi.finance.fin_date}]]*/ "fin_date", "data": "fin_date", "width": "10%", "className":"min-tablet-l text-center"},
+                /*3*/{"title": /*[[#{users_kpi.finance.fin_way_name}]]*/ "fin_way_name", "data": "fin_way_name", "width": "5%", "className":"min-tablet-l"},
+                /*4*/{"title": /*[[#{users_kpi.finance.cnt_id}]]*/ "cnt_id", "data": "cnt_id", "width": "1%"},
+                /*5*/{"title": /*[[#{users_kpi.finance.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": "43%", "className":"min-tablet-p"},
+                /*6*/{"title": /*[[#{users_kpi.finance.ser_name}]]*/ "ser_name", "data": "ser_name", "width": "20%", "className":"min-tablet-l text-center"},
+                /*7*/{"title": /*[[#{users_kpi.finance.fin_sum}]]*/ "fin_sum", "data": "fin_sum", "width": "10%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function user_kpi_finance_switchControl(){
+        if(vUserKpiFinanceValue.rowdata.fin_id != null) {
+
+        }
+    }
+
+    $('.user_kpi_finance_btn_control').on('click', function (){
+        $("#user-kpi-finance input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#user-kpi-finance').submit(function() {
+        vUserKpiFinanceValue.rowdata.user_kpi_finance_table_order_column = $(vUserKpiFinanceValue.table).DataTable().order()[0][0];
+        vUserKpiFinanceValue.rowdata.user_kpi_finance_table_order_type = $(vUserKpiFinanceValue.table).DataTable().order()[0][1];
+        vUserKpiFinanceValue.rowdata.user_kpi_finance_table_search = $(vUserKpiFinanceValue.table).DataTable().search();
+        vUserKpiFinanceValue.rowdata.user_kpi_finance_table_pagelen = $(vUserKpiFinanceValue.table).DataTable().page.len();
+        vUserKpiFinanceValue.rowdata.user_kpi_finance_table_page = $(vUserKpiFinanceValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vUserKpiFinanceValue.rowdata).forEach(function (index) {
+            $("#user-kpi-finance").append("<input name=\"" + index + "\" hidden>");
+            $("#user-kpi-finance input[name=\"" + index + "\"]").val(vUserKpiFinanceValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vUserKpiFinanceValue.rowdata.fin_id = /*[[${fin_id}]]*/ null;
+
+        vUserKpiFinanceValue.rowdata.user_id = /*[[${user_id}]]*/ null;
+        vUserKpiFinanceValue.rowdata.users_kpi_year = /*[[${users_kpi_year}]]*/ null;
+        vUserKpiFinanceValue.rowdata.users_kpi_month = /*[[${users_kpi_month}]]*/ null;
+
+        vUserKpiFinanceValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vUserKpiFinanceValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vUserKpiFinanceValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vUserKpiFinanceValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vUserKpiFinanceValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vUserKpiFinanceValue);
+    });
+</script>
+
+</body>
+</html>

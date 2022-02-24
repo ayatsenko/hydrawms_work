@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="kpi_facts_cs_report_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="kpi_facts_cs_report_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="kpi_facts_cs_report_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{tms_locals.notes.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body m-1">
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="kpi_facts_cs_report_modal_month_row">
+                                    <select class="custom-select d-none d-md-inline-block" style="width:130px; display:inline-block" id="kpi_facts_cs_report_modal_month">
+                                        <option value="1">[[#{month.01}]]</option>
+                                        <option value="2">[[#{month.02}]]</option>
+                                        <option value="3">[[#{month.03}]]</option>
+                                        <option value="4">[[#{month.04}]]</option>
+                                        <option value="5">[[#{month.05}]]</option>
+                                        <option value="6">[[#{month.06}]]</option>
+                                        <option value="7">[[#{month.07}]]</option>
+                                        <option value="8">[[#{month.08}]]</option>
+                                        <option value="9">[[#{month.09}]]</option>
+                                        <option value="10">[[#{month.10}]]</option>
+                                        <option value="11">[[#{month.11}]]</option>
+                                        <option value="12">[[#{month.12}]]</option>
+                                    </select>
+                        </div>
+                        <div class="col-12 col-md-3 mb-1" id="kpi_facts_cs_report_modal_year_row">
+                                    <select class="custom-select d-none d-md-inline-block" style="width:130px; display:inline-block" id="kpi_facts_cs_report_modal_year">
+                                        <option selected>2020</option>
+                                        <option>2021</option>
+                                        <option>2022</option>
+                                    </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <form id="kpi-facts-cs-report-modal-actbtn-xls-form" th:action="@{/kpi_facts/cs_report}" method="get">
+                        <button type="button" id="kpi_facts_cs_report_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                        <button type="submit" id="kpi_facts_cs_report_modal_actbtn" class="btn btn-outline-primary" th:text="#{general.reportxls}"></button>
+                        <input name="req_year" hidden>
+                        <input name="req_month" hidden>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    // Load Function
+    function fill_cs_report_modal_detail(){
+        let csCurrentMonthDate = new Date();
+        let csCurrentMonth = csCurrentMonthDate.getMonth()+1;
+
+        $('#kpi_facts_cs_report_modal_month').val(csCurrentMonth);
+
+        $('#kpi_facts_cs_report_modal').modal('show');
+    }
+
+    $('#kpi-facts-cs-report-modal-actbtn-xls-form').submit(function() {
+        $("#kpi-facts-cs-report-modal-actbtn-xls-form input[name=req_year]").val($("#kpi_facts_cs_report_modal_year").val());
+        $("#kpi-facts-cs-report-modal-actbtn-xls-form input[name=req_month]").val($("#kpi_facts_cs_report_modal_month").val());
+
+        $('#kpi_facts_cs_report_modal').modal('hide');
+    });
+</script>
+
+</body>
+</html>

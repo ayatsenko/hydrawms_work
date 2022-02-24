@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="client_requests_list_link_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="requests_list_link_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{clients.users_roles.modal.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body m-1">
+                    <div class="row mb-2">
+                        <div class="col-12" id="cs_user_id_row">
+                            <label for="first_user_id" class="form-label mb-0" th:text="'1. '+ #{clients.users_roles.first_user_name}"></label>
+                            <div class="input-group mt-0">
+                                <select type="text" class="custom-select" id="first_user_id" name="first_user_id">
+                                </select>
+                                <button type="button" id="first_user_id_x" name="first_user_id_x" data-parent="first_user_id" class="btn btn-outline-primary select_clear"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="row mb-2">
+                        <div class="col-12" id="ops_user_id_row">
+                            <label for="second_user_id" class="form-label mb-0" th:text="'2. '+ #{clients.users_roles.second_user_name}"></label>
+                            <div class="input-group mt-0">
+                                <select type="text" class="custom-select" id="second_user_id" name="second_user_id">
+                                </select>
+                                <button type="button" id="ops_user_id_x" name="ops_user_id_x" data-parent="second_user_id" class="btn btn-outline-primary select_clear"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 2 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="requests_list_link_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="requests_list_link_modal_savebtn" class="btn btn-outline-primary" th:text="#{general.editbtn}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    function FirstListChange(aSaleUserID){
+        $('#first_user_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/client_requests/get_sale_list'}]]*/ "/client_requests/get_sale_list",
+            type: "get",
+            data: {},
+            success: function (sale_list_detail) {
+                for (var i = 0; i < sale_list_detail.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='first_user_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='first_user_id']").find('option').end().append("<option value='" + sale_list_detail.data[i].id + "'>" + sale_list_detail.data[i].user_surname + "</option>");
+                }
+                if(aSaleUserID !== null){
+                    $('#first_user_id').val(aSaleUserID).trigger('change');
+                }
+            }
+        }));
+    }
+
+    function SecondListChange(aSaleUserID){
+        $('#second_user_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/client_requests/get_sale_list'}]]*/ "/client_requests/get_sale_list",
+            type: "get",
+            data: {},
+            success: function (ops_list_detail) {
+                for (var i = 0; i < ops_list_detail.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='second_user_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    if(ops_list_detail.data[i].id !== parseInt(aSaleUserID)) {
+                        $("select[name='second_user_id']").find('option').end().append("<option value='" + ops_list_detail.data[i].id + "'>" + ops_list_detail.data[i].user_surname + "</option>");
+                    }
+                }
+            }
+        }));
+    }
+
+// Clear Fields
+    function clear_requests_list_link_modal_detail() {
+        $("#requests_list_link_modal_detail input[type=text]").val('');
+        $("#requests_list_link_modal_detail input[type=number]").val('');
+        $("#requests_list_link_modal_detail select").empty();
+        $("#requests_list_link_modal_detail textarea").val('');
+    }
+
+// Block And Required Fields
+    function block_requests_list_link_modal_detail() {
+        $('#first_user_id').attr('disabled', true);
+        $('#second_user_id').attr('required', true);
+    }
+
+// Load Function
+    function fill_client_requests_list_link_modal_detail(aMode){
+        clear_requests_list_link_modal_detail();
+        block_requests_list_link_modal_detail();
+
+        $.when(
+            FirstListChange(vClientRequestListValue.rowdata.req_user_id)
+        ).then(function() {
+            $('#requests_list_link_modal').modal('show');
+        });
+    }
+    
+    function requests_list_link_modal_valid(){
+        if (vClientRequestListValue.rowdata.req_id != null) {
+            var RowID =  vClientRequestListValue.rowdata.req_id;
+            var CNTID = $('#cnt_id').val();
+            var CNTName = $('#cnt_name').val();
+            var CNTAccess = $('#cnt_user_access').val();
+            var CNTFilterID;
+            if($('#client_requests_filter_check').prop('checked')) {
+                CNTFilterID = 1;
+            }else{
+                CNTFilterID = 0;
+            }
+            var StartDate = $("#client_requests_filter_start_date").val();
+            var EndDate = $("#client_requests_filter_end_date").val();
+
+            $.ajax({
+                url: /*[[ @{/client_requests/list_link_edit} ]]*/ "/client_requests/list_link_edit",
+                type: 'POST',
+                data: {
+                    "req_id": vClientRequestListValue.rowdata.req_id,
+                    "first_user_id": $('#first_user_id').val(),
+                    "second_user_id": $('#second_user_id').val()
+                },
+                success: function (result) {
+                    $('#requests_list_link_modal').modal('hide');
+                    vClientRequestListValue.rowdata.cnt_id = CNTID;
+                    vClientRequestListValue.rowdata.cnt_name = CNTName;
+                    vClientRequestListValue.rowdata.cnt_user_access = CNTAccess;
+                    vClientRequestListValue.rowdata.client_requests_filter_id = CNTFilterID;
+                    vClientRequestListValue.rowdata.client_requests_filter_start_date = StartDate;
+                    vClientRequestListValue.rowdata.client_requests_filter_end_date = EndDate;
+
+                    vClientRequestListValue.rowdata.req_id = RowID;
+                    $(vClientRequestListValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }
+
+    $('#first_user_id').change( function () {
+        SecondListChange($('#first_user_id').val());
+    });
+
+    $(document).ready(function() {
+        $('#requests_list_link_modal_savebtn').click(function () {
+            requests_list_link_modal_valid();
+        });
+    });
+</script>
+
+</body>
+</html>

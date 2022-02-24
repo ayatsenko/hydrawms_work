@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_tenders_head_body" th:remove="tag">
+		<form class="form-inline">
+		      <div class="form-group mb-2 mr-2">
+				<label for="report_tenders_start_date" class="mr-2" th:text="#{report_tenders.start_date}">StartDate:</label>
+				<input class="form-control" type="text" id="report_tenders_start_date" name="report_tenders_start_date" />
+			  </div>
+
+			  <div class="form-group mb-2 mr-2">
+		    	<label for="report_tenders_end_date" class="mr-2" th:text="#{report_tenders.end_date}">EndDate:</label>
+				<input class="form-control" type="text" id="report_tenders_end_date" name="report_tenders_end_date" />
+			  </div>
+
+			  <div class="form-group mb-2 mr-3">
+				<label for="report_tenders_ser_list" class="mr-2" th:text="#{report_tenders.ser_list}">Service: </label>
+				<select id="report_tenders_ser_list" class="form-control select2" data-toggle="select2">
+					<!--suppress ThymeleafVariablesResolveInspection -->
+					<option class="p-1"
+							th:each="ser_list : ${ser_list}"
+							th:value="${ser_list.ser_id}"
+							th:text="${ser_list.ser_name}"
+							th:selected="${ser_list.ser_id == ser_id}"
+				></option>
+				</select>
+			  </div>
+
+			  <div class="form-group mb-2 mr-3">
+				<label for="report_tenders_user_list" class="mr-2" th:text="#{report_requests.user_list}">Users: </label>
+				<select id="report_tenders_user_list" class="form-control select2" data-toggle="select2">
+					<!--suppress ThymeleafVariablesResolveInspection -->
+					<option class="p-1"
+							th:each="user_list : ${user_list}"
+							th:value="${user_list.id}"
+							th:text="${user_list.user_surname}"
+							th:selected="${user_list.id == user_id}"
+					></option>
+				</select>
+			  </div>
+
+			<a class="btn btn-outline-primary mb-2" id="report_tenders_show" th:text="#{general.reportshow}">Show</a>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+	$(document).ready(function(){
+		var firstYearDay = new Date(new Date().getFullYear(), 0, 1).toLocaleDateString('ru');
+		var LastYearDay = new Date(new Date().getFullYear(), 11, 31).toLocaleDateString('ru');
+
+		$("#report_tenders_start_date").daterangepicker({
+			"singleDatePicker": true,
+			"startDate": firstYearDay,
+			"locale": {
+				"format": "DD.MM.YYYY",
+				"separator": " - ",
+				"applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+				"cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+				"fromLabel": "From",
+				"toLabel": "To",
+				"customRangeLabel": "Custom",
+				"weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+				"daysOfWeek": [
+					/*[[#{weekdays.07_short}]]*/ "Su",
+					/*[[#{weekdays.01_short}]]*/ "Mo",
+					/*[[#{weekdays.02_short}]]*/ "Tu",
+					/*[[#{weekdays.03_short}]]*/ "We",
+					/*[[#{weekdays.04_short}]]*/ "Th",
+					/*[[#{weekdays.05_short}]]*/ "Fr",
+					/*[[#{weekdays.06_short}]]*/ "Sa"
+				],
+				"monthNames": [
+					/*[[#{month.01}]]*/ "January",
+					/*[[#{month.02}]]*/ "February",
+					/*[[#{month.03}]]*/ "March",
+					/*[[#{month.04}]]*/ "April",
+					/*[[#{month.05}]]*/ "May",
+					/*[[#{month.06}]]*/ "June",
+					/*[[#{month.07}]]*/ "July",
+					/*[[#{month.08}]]*/ "August",
+					/*[[#{month.09}]]*/ "September",
+					/*[[#{month.10}]]*/ "October",
+					/*[[#{month.11}]]*/ "November",
+					/*[[#{month.12}]]*/ "December"
+				],
+				"firstDay": 1
+			}
+		});
+
+		$("#report_tenders_end_date").daterangepicker({
+			"singleDatePicker": true,
+			"startDate": LastYearDay,
+			"locale": {
+				"format": "DD.MM.YYYY",
+				"separator": " - ",
+				"applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+				"cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+				"fromLabel": "From",
+				"toLabel": "To",
+				"customRangeLabel": "Custom",
+				"weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+				"daysOfWeek": [
+					/*[[#{weekdays.07_short}]]*/ "Su",
+					/*[[#{weekdays.01_short}]]*/ "Mo",
+					/*[[#{weekdays.02_short}]]*/ "Tu",
+					/*[[#{weekdays.03_short}]]*/ "We",
+					/*[[#{weekdays.04_short}]]*/ "Th",
+					/*[[#{weekdays.05_short}]]*/ "Fr",
+					/*[[#{weekdays.06_short}]]*/ "Sa"
+				],
+				"monthNames": [
+					/*[[#{month.01}]]*/ "January",
+					/*[[#{month.02}]]*/ "February",
+					/*[[#{month.03}]]*/ "March",
+					/*[[#{month.04}]]*/ "April",
+					/*[[#{month.05}]]*/ "May",
+					/*[[#{month.06}]]*/ "June",
+					/*[[#{month.07}]]*/ "July",
+					/*[[#{month.08}]]*/ "August",
+					/*[[#{month.09}]]*/ "September",
+					/*[[#{month.10}]]*/ "October",
+					/*[[#{month.11}]]*/ "November",
+					/*[[#{month.12}]]*/ "December"
+				],
+				"firstDay": 1
+			}
+		});
+
+		if (window.screen.width < 1024 && window.screen.height < 768) {
+			$("#report_tenders_start_date").attr('readonly',true);
+			$("#report_tenders_end_date").attr('readonly',true);
+		}
+
+		$('#report_tenders_ser_list')
+				.wrap("<div class=\"position-relative\"></div>")
+				.select2({
+					placeholder: /*[[#{report_tenders.service_placeholder}]]*/ "Select a client"
+				});
+
+		$('#main_li').removeClass('active');
+
+		$('#reports_li').addClass('active').removeClass('collapsed');
+		$('#reports_a').attr('aria-expanded',true);
+		$('#reports').addClass('show');
+
+		$('#report_tenders_a').addClass('text-primary');
+
+		$('#report_tenders_show').on('click', function () {
+			$('#report_tenders_detail_card').removeAttr('hidden');
+
+			vReportRequestsDetailValue.rowdata.start_date = $("#report_tenders_start_date").val();
+			vReportRequestsDetailValue.rowdata.end_date = $("#report_tenders_end_date").val();
+			vReportRequestsDetailValue.rowdata.req_ser_id = $("#report_tenders_ser_list").val();
+			vReportRequestsDetailValue.rowdata.req_user_id = $("#report_tenders_user_list").val();
+			$(vReportRequestsDetailValue.table).DataTable().ajax.reload();
+		})
+	});
+</script>
+
+</body>
+</html>

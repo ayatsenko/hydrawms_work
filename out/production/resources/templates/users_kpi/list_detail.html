@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{users_kpi.list.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="card flex-fill w-100">
+    <div class="card-header">
+        <h5 class="card-title mb-0" th:text="#{users_kpi.list.caption}"></h5>
+    </div>
+    <div class="card-body">
+        <div>
+            <!--/*@thymesVar id="users_kpi_list_detail_detail" type="java.util.List"*/-->
+            <form id="users-kpi-list-detail-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/users_kpi/list_model}">
+                <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="users-kpi-list-detail-indexfrm">Cancel</button>
+                    <div th:switch="${mode}">
+                        <button th:case="0" type="submit" id="users-kpi-list-detail-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                        <button th:case="1" type="submit" id="users-kpi-list-detail-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                        <button th:case="2" type="submit" id="users-kpi-list-detail-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                    </div>
+                </div>
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="user_id" th:value="${user_id}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="users_kpi_year" th:value="${users_kpi_year}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="users_kpi_month" th:value="${users_kpi_month}" >
+
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="users_kpi_list_detail_table_order_column" th:value="${users_kpi_list_detail_table_order_column}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="users_kpi_list_detail_table_order_type" th:value="${users_kpi_list_detail_table_order_type}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="users_kpi_list_detail_table_search" th:value="${users_kpi_list_detail_table_search}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="users_kpi_list_detail_table_pagelen" th:value="${users_kpi_list_detail_table_pagelen}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="users_kpi_list_detail_table_page" th:value="${users_kpi_list_detail_table_page}" >
+
+                <div class="form-row">
+                    <div class="col-md-1 mb-2" id="user_id_row">
+                        <label for="user_id" class="form-label" th:text="'1. '+ #{users_kpi.list.user_id}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="number" class="form-control" id="user_id" name="user_id" th:value="${user_id}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                    <div class="col-md-5 mb-2" id="user_surname_row">
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <label for="user_surname" class="form-label" th:text="'2. '+#{users_kpi.list.user_surname}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="text" maxlength="120" class="form-control" id="user_surname" name="user_surname" th:value="${user_surname}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div><!-- First Row -->
+
+                <div class="form-row">
+                    <div class="col-md-1 mb-2" id="users_kpi_year_row">
+                        <label for="users_kpi_year" class="form-label" th:text="'3. '+ #{users_kpi.year}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="number" class="form-control" id="users_kpi_year" name="users_kpi_year" th:value="${users_kpi_year}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                    <div class="col-md-1 mb-2" id="users_kpi_month_row">
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <label type="number" for="users_kpi_month" class="form-label" th:text="'4. '+#{users_kpi.month}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="text" maxlength="120" class="form-control" id="users_kpi_month" name="users_kpi_month" th:value="${users_kpi_month}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div><!-- First Row -->
+
+                <div class="form-row">
+                    <div class="col-md-2 mb-2" id="meets_plan_row">
+                        <label for="meets_plan" class="form-label" th:text="'5. '+ #{users_kpi.list.meets_category}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="number" class="form-control" id="meets_plan" name="meets_plan" th:value="${meets_plan}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div><!-- Second Row -->
+
+                <div class="form-row">
+                    <div class="col-md-2 mb-2" id="calls_plan_row">
+                        <label for="user_id" class="form-label" th:text="'6. '+ #{users_kpi.list.calls_category}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="number" class="form-control" id="calls_plan" name="calls_plan" th:value="${calls_plan}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div><!-- Third Row -->
+
+                <div class="form-row">
+                    <div class="col-md-2 mb-2" id="req_plan_row">
+                        <label for="req_plan" class="form-label" th:text="'7. '+ #{users_kpi.list.req_category}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="number" class="form-control" id="req_plan" name="req_plan" th:value="${req_plan}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div><!-- Forth Row -->
+
+                <div class="form-row">
+                    <div class="col-md-2 mb-2" id="fin_plan_row">
+                        <label for="user_id" class="form-label" th:text="'8. '+ #{users_kpi.list.fin_category}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="number" class="form-control" id="fin_plan" name="fin_plan" th:value="${fin_plan}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div><!-- Fifth Row -->
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--/*@thymesVar id="users_kpi_list_detail_detail" type="java.util.List"*/-->
+<form id="users-kpi-list-detail-indexfrm" method="post" th:action="@{/users_kpi}" hidden>
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="user_id" th:value="${user_id}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="users_kpi_year" th:value="${users_kpi_year}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="users_kpi_month" th:value="${users_kpi_month}">
+
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_order_column" th:value="${users_kpi_list_detail_table_order_column}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_order_type" th:value="${users_kpi_list_detail_table_order_type}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_search" th:value="${users_kpi_list_detail_table_search}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_pagelen" th:value="${users_kpi_list_detail_table_pagelen}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_page" th:value="${users_kpi_list_detail_table_page}" >
+</form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'users-kpi-list-detail-indexfrm')">Error</span>
+
+<script>
+    $(document).ready(function(){
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#crm_li').addClass('active').removeClass('collapsed');
+        $('#crm_a').attr('aria-expanded',true);
+        $('#crm').addClass('show');
+
+        $('#users_kpi_a').addClass('text-primary');
+
+<!-- Form Start -->
+        $('#user_id').prop('readOnly',true);
+        $('#user_surname').prop('readOnly',true);
+
+        $('#users_kpi_year').prop('readOnly',true);
+        $('#users_kpi_month').prop('readOnly',true);
+
+<!-- Change Function -->
+        if($('#mode').val() == 0){
+        }
+        else if($('#mode').val() === '2' || $('#mode').val() === '4'){
+            $('#user_id').prop('readOnly',true);
+            $('#user_surname').prop('readOnly',true);
+
+            $('#meets_plan').prop('readOnly',true);
+            $('#calls_plan').prop('readOnly',true);
+            $('#req_plan').prop('readOnly',true);
+            $('#fin_plan').prop('readOnly',true);
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="wms_kpi_project_department_body" th:remove="tag">
+    <form id="table-wms-kpi-project-department-buttons" hidden>
+        <input name="mode" value="0" hidden>
+        
+        <button type="button" id="wms-kpi-project-department-reloadbtn" class="btn btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.refreshbtn}"><i class="fa fa-sync"></i></button>
+    </form>
+
+    <div><table id="table-wms-kpi-project-department" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var wms_dep_id_show, wms_dep_name_show,
+        month_1_show, month_1_color_show, month_2_show, month_2_color_show, month_3_show, month_3_color_show, month_4_show, month_4_color_show,
+        month_5_show, month_5_color_show, month_6_show, month_6_color_show, month_7_show, month_7_color_show, month_8_show, month_8_color_show,
+        month_9_show, month_9_color_show, month_10_show, month_10_color_show, month_11_show, month_11_color_show, month_12_show, month_12_color_show,
+        month_13_show, month_13_color_show;
+
+    var wms_dep_id_width, wms_dep_name_width,
+        month_1_width, month_1_color_width, month_2_width, month_2_color_width, month_3_width, month_3_color_width, month_4_width, month_4_color_width,
+        month_5_width, month_5_color_width, month_6_width, month_6_color_width, month_7_width, month_7_color_width, month_8_width, month_8_color_width,
+        month_9_width, month_9_color_width, month_10_width, month_10_color_width, month_11_width, month_11_color_width, month_12_width, month_12_color_width,
+        month_13_width, month_13_color_width;
+
+    var wms_dep_id_class, wms_dep_name_class,
+        month_1_class, month_1_color_class, month_2_class, month_2_color_class, month_3_class, month_3_color_class, month_4_class, month_4_color_class,
+        month_5_class, month_5_color_class, month_6_class, month_6_color_class, month_7_class, month_7_color_class, month_8_class, month_8_color_class,
+        month_9_class, month_9_color_class, month_10_class, month_10_color_class, month_11_class, month_11_color_class, month_12_class, month_12_color_class,
+        month_13_class, month_13_color_class;
+
+    if(mobileScreenSize){
+        vDomParam =
+            "<'row'<'col-12'B>>"+
+            "<'row'<'col-12 col-sm-3'l><'col-12 col-sm-9'f>>"+
+            "<'row'<'col-12'tr>>" +
+            "<'row'<'col-12'p>>";
+        user_id_show = false;
+        user_id_width = "";
+        user_id_class = "";
+        user_name_show = true;
+        user_name_width = "10%";
+        user_name_class = "min-tablet-p small_size small_head_size small_footer_size";
+        product_name_show = false;
+        product_name_width = "";
+        product_name_class = "";
+        product_quantity_show = true;
+        product_quantity_width = "50%";
+        product_quantity_class = "small_size small_head_size small_footer_size";
+        empty_column_show = true;
+        empty_column_width = "8%";
+        empty_column_class = "min-tablet-p small_size text-center";        
+
+        $('#wms-kpi-project-department-detail').addClass('text-center').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        wms_dep_id_show = false;
+        wms_dep_id_width = "";
+        wms_dep_id_class = "";
+        wms_dep_name_show = true;
+        wms_dep_name_width = "22%";
+        wms_dep_name_class = "small_size head-center head-light-grey head-text-primary";
+        month_1_show = true;
+        month_1_width = "6%";
+        month_1_class = "small_size head-center head-light-grey head-text-primary";
+        month_1_color_show = false;
+        month_1_color_width = "";
+        month_1_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_2_show = true;
+        month_2_width = "6%";
+        month_2_class = "small_size head-center head-light-grey head-text-primary";
+        month_2_color_show = false;
+        month_2_color_width = "";
+        month_2_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_3_show = true;
+        month_3_width = "6%";
+        month_3_class = "small_size head-center head-light-grey head-text-primary";
+        month_3_color_show = false;
+        month_3_color_width = "";
+        month_3_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_4_show = true;
+        month_4_width = "6%";
+        month_4_class = "small_size head-center head-light-grey head-text-primary";
+        month_4_color_show = false;
+        month_4_color_width = "";
+        month_4_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_5_show = true;
+        month_5_width = "6%";
+        month_5_class = "small_size head-center head-light-grey head-text-primary";
+        month_5_color_show = false;
+        month_5_color_width = "";
+        month_5_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_6_show = true;
+        month_6_width = "6%";
+        month_6_class = "small_size head-center head-light-grey head-text-primary";
+        month_6_color_show = false;
+        month_6_color_width = "";
+        month_6_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_7_show = true;
+        month_7_width = "6%";
+        month_7_class = "small_size head-center head-light-grey head-text-primary";
+        month_7_color_show = false;
+        month_7_color_width = "";
+        month_7_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_8_show = true;
+        month_8_width = "6%";
+        month_8_class = "small_size head-center head-light-grey head-text-primary";
+        month_8_color_show = false;
+        month_8_color_width = "";
+        month_8_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_9_show = true;
+        month_9_width = "6%";
+        month_9_class = "small_size head-center head-light-grey head-text-primary";
+        month_9_color_show = false;
+        month_9_color_width = "";
+        month_9_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_10_show = true;
+        month_10_width = "6%";
+        month_10_class = "small_size head-center head-light-grey head-text-primary";
+        month_10_color_show = false;
+        month_10_color_width = "";
+        month_10_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_11_show = true;
+        month_11_width = "6%";
+        month_11_class = "small_size head-center head-light-grey head-text-primary";
+        month_11_color_show = false;
+        month_11_color_width = "";
+        month_11_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_12_show = true;
+        month_12_width = "6%";
+        month_12_class = "small_size head-center head-light-grey head-text-primary";
+        month_12_color_show = false;
+        month_12_color_width = "";
+        month_12_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_13_show = true;
+        month_13_width = "6%";
+        month_13_class = "small_size head-center head-light-grey head-text-primary";
+        month_13_color_show = false;
+        month_13_color_width = "";
+        month_13_color_class = "small_size head-center head-light-grey head-text-primary";
+
+        $('#wms-kpi-project-department-detail').removeAttr('hidden');
+    }
+    else{
+        vDomParam = "Blfrtip";
+        wms_dep_id_show = false;
+        wms_dep_id_width = "";
+        wms_dep_id_class = "";
+        wms_dep_name_show = true;
+        wms_dep_name_width = "22%";
+        wms_dep_name_class = "text-center head-center head-light-grey head-text-primary";
+        month_1_show = true;
+        month_1_width = "6%";
+        month_1_class = "small_size head-center head-light-grey head-text-primary";
+        month_1_color_show = false;
+        month_1_color_width = "";
+        month_1_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_2_show = true;
+        month_2_width = "6%";
+        month_2_class = "small_size head-center head-light-grey head-text-primary";
+        month_2_color_show = false;
+        month_2_color_width = "";
+        month_2_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_3_show = true;
+        month_3_width = "6%";
+        month_3_class = "small_size head-center head-light-grey head-text-primary";
+        month_3_color_show = false;
+        month_3_color_width = "";
+        month_3_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_4_show = true;
+        month_4_width = "6%";
+        month_4_class = "small_size head-center head-light-grey head-text-primary";
+        month_4_color_show = false;
+        month_4_color_width = "";
+        month_4_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_5_show = true;
+        month_5_width = "6%";
+        month_5_class = "small_size head-center head-light-grey head-text-primary";
+        month_5_color_show = false;
+        month_5_color_width = "";
+        month_5_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_6_show = true;
+        month_6_width = "6%";
+        month_6_class = "small_size head-center head-light-grey head-text-primary";
+        month_6_color_show = false;
+        month_6_color_width = "";
+        month_6_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_7_show = true;
+        month_7_width = "6%";
+        month_7_class = "small_size head-center head-light-grey head-text-primary";
+        month_7_color_show = false;
+        month_7_color_width = "";
+        month_7_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_8_show = true;
+        month_8_width = "6%";
+        month_8_class = "small_size head-center head-light-grey head-text-primary";
+        month_8_color_show = false;
+        month_8_color_width = "";
+        month_8_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_9_show = true;
+        month_9_width = "6%";
+        month_9_class = "small_size head-center head-light-grey head-text-primary";
+        month_9_color_show = false;
+        month_9_color_width = "";
+        month_9_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_10_show = true;
+        month_10_width = "6%";
+        month_10_class = "small_size head-center head-light-grey head-text-primary";
+        month_10_color_show = false;
+        month_10_color_width = "";
+        month_10_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_11_show = true;
+        month_11_width = "6%";
+        month_11_class = "small_size head-center head-light-grey head-text-primary";
+        month_11_color_show = false;
+        month_11_color_width = "";
+        month_11_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_12_show = true;
+        month_12_width = "6%";
+        month_12_class = "small_size head-center head-light-grey head-text-primary";
+        month_12_color_show = false;
+        month_12_color_width = "";
+        month_12_color_class = "small_size head-center head-light-grey head-text-primary";
+        month_13_show = true;
+        month_13_width = "6%";
+        month_13_class = "small_size head-center head-light-grey head-text-primary";
+        month_13_color_show = false;
+        month_13_color_width = "";
+        month_13_color_class = "small_size head-center head-light-grey head-text-primary";
+    }
+
+    vJanHeader = /*[[#{month.01_short}]]*/ null;
+    vFebHeader = /*[[#{month.02_short}]]*/ null;
+    vMarchHeader = /*[[#{month.03_short}]]*/ null;
+    vAprlHeader = /*[[#{month.04_short}]]*/ null;
+    vMayHeader = /*[[#{month.05_short}]]*/ null;
+    vJuneHeader = /*[[#{month.06_short}]]*/ null;
+    vJulyHeader = /*[[#{month.07_short}]]*/ null;
+    vAugHeader = /*[[#{month.08_short}]]*/ null;
+    vSepHeader = /*[[#{month.09_short}]]*/ null;
+    vOctHeader = /*[[#{month.10_short}]]*/ null;
+    vNovHeader = /*[[#{month.11_short}]]*/ null;
+    vDecHeader = /*[[#{month.12_short}]]*/ null;
+    vAllHeader = /*[[#{month.all_short}]]*/ null;
+
+    var vWMSKPIProjectDepartmentValue;
+    vWMSKPIProjectDepartmentValue = {
+        table : '#table-wms-kpi-project-department',
+        button_form: (mobileScreenSize) ? null : "#table-wms-kpi-project-department-buttons",
+        ajax : {
+            "url": /*[[@{/wms_kpi_project/get_wms_kpi_project_department_menu}]]*/ "wms_kpi_project/get_wms_kpi_project_department_menu",
+            "type": "post",
+            "data": function ( d ) {
+                d.kpi_year = vWMSKPIProjectDepartmentValue.rowdata.kpi_year;
+            }            
+        },
+        key : "wms_dep_id",
+        switchControl : wms_kpi_project_department_switchControl,
+        rowdata:{
+            wms_dep_id: null
+        },
+        order: [
+            [1, "asc"]
+        ],
+        dom: vDomParam,
+        createdRow: function( row, data, dataIndex ) {
+            $(row).find('td:eq(1)').css('background-color', data["day_1_color"]);
+
+            //$(row).css('background-color', data["act_status_color"]);
+        },
+        columnDefs:[
+            {"targets": [0], "width": wms_dep_id_width, "className": wms_dep_id_class, "visible": wms_dep_id_show},
+            {"targets": [1], "width": wms_dep_name_width, "className": wms_dep_name_class, "visible": wms_dep_name_show},
+
+            {"targets": [2], "width": month_1_width, "className": month_1_class, "visible": month_1_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": [3], "width": month_1_color_width, "className": month_1_color_class, "visible": month_1_color_show},
+
+            {"targets": [4], "width": month_2_width, "className": month_2_class, "visible": month_2_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": [5], "width": month_2_color_width, "className": month_2_color_class, "visible": month_2_color_show},
+
+            {"targets": [6], "width": month_3_width, "className": month_3_class, "visible": month_3_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": [7], "width": month_3_color_width, "className": month_3_color_class, "visible": month_3_color_show},
+
+            {"targets": [8], "width": month_4_width, "className": month_4_class, "visible": month_4_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": [9], "width": month_4_color_width, "className": month_4_color_class, "visible": month_4_color_show},
+
+            {"targets": [10], "width": month_5_width, "className": month_5_class, "visible": month_5_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": [11], "width": month_5_color_width, "className": month_5_color_class, "visible": month_5_color_show},
+
+            {"targets": [12], "width": month_6_width, "className": month_6_class, "visible": month_6_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": [13], "width": month_6_color_width, "className": month_6_color_class, "visible": month_6_color_show},
+
+            {"targets": [14], "width": month_7_width, "className": month_7_class, "visible": month_7_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": [15], "width": month_7_color_width, "className": month_7_color_class, "visible": month_7_color_show},
+
+            {"targets": [16], "width": month_8_width, "className": month_8_class, "visible": month_8_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": [17], "width": month_8_color_width, "className": month_8_color_class, "visible": month_8_color_show},
+
+            {"targets": [18], "width": month_9_width, "className": month_9_class, "visible": month_9_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": [19], "width": month_9_color_width, "className": month_9_color_class, "visible": month_9_color_show},
+
+            {"targets": [20], "width": month_10_width, "className": month_10_class, "visible": month_10_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": [21], "width": month_10_color_width, "className": month_10_color_class, "visible": month_10_color_show},
+
+            {"targets": [22], "width": month_11_width, "className": month_11_class, "visible": month_11_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": [23], "width": month_11_color_width, "className": month_11_color_class, "visible": month_11_color_show},
+
+            {"targets": [24], "width": month_12_width, "className": month_12_class, "visible": month_12_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": [25], "width": month_12_color_width, "className": month_12_color_class, "visible": month_12_color_show},
+
+            {"targets": [26], "width": month_13_width, "className": month_13_class, "visible": month_13_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": [27], "width": month_13_color_width, "className": month_13_color_class, "visible": month_13_color_show}
+
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{wms_kpi_project.department.wms_dep_id}]]*/ "wms_dep_id", "data": "wms_dep_id"},
+            /*1*/{"title": /*[[#{wms_kpi_project.department.wms_dep_name}]]*/ "wms_dep_name", "data": "wms_dep_name"},
+            /*2*/{"title": vJanHeader, "data": "month_1"},
+            /*3*/{"title": "month_1_color", "data": "month_1_color"},
+
+            /*2*/{"title": vFebHeader, "data": "month_2"},
+            /*3*/{"title": "month_2_color", "data": "month_2_color"},
+
+            /*4*/{"title": vMarchHeader, "data": "month_3"},
+            /*5*/{"title": "month_3_color", "data": "month_3_color"},
+
+            /*6*/{"title": vAprlHeader, "data": "month_4"},
+            /*7*/{"title": "month_4_color", "data": "month_4_color"},
+
+            /*8*/{"title": vMayHeader, "data": "month_5"},
+            /*9*/{"title": "month_5_color", "data": "month_5_color"},
+
+            /*10*/{"title": vJuneHeader, "data": "month_6"},
+            /*11*/{"title": "month_6_color", "data": "month_6_color"},
+
+            /*12*/{"title": vJulyHeader, "data": "month_7"},
+            /*13*/{"title": "month_7_color", "data": "month_7_color"},
+
+            /*14*/{"title": vAugHeader, "data": "month_8"},
+            /*15*/{"title": "month_8_color", "data": "month_8_color"},
+
+            /*15*/{"title": vSepHeader, "data": "month_9"},
+            /*16*/{"title": "month_9_color", "data": "month_9_color"},
+
+            /*17*/{"title": vOctHeader, "data": "month_10"},
+            /*18*/{"title": "month_10_color", "data": "month_10_color"},
+
+            /*19*/{"title": vNovHeader, "data": "month_11"},
+            /*20*/{"title": "month_11_color", "data": "month_11_color"},
+
+            /*21*/{"title": vDecHeader, "data": "month_12"},
+            /*22*/{"title": "month_12_color", "data": "month_12_color"},
+
+            /*23*/{"title": vAllHeader, "data": "month_13"},
+            /*24*/{"title": "month_13_color", "data": "month_13_color"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function wms_kpi_project_department_hide() {
+        $('#wms_kpi_project_department_project_row').attr('hidden',true);
+        wms_kpi_project_department_project_hide();
+    }
+    
+    function wms_kpi_project_department_switchControl(){
+        wms_kpi_project_department_hide();
+        if(vWMSKPIProjectDepartmentValue.rowdata.wms_dep_id != null) {
+            $('#wms_kpi_project_department_project_row').removeAttr('hidden');
+            vWMSKPIProjectDepartmentProjectValue.rowdata.kpi_year = $('#wms_kpi_project_year').val();
+            vWMSKPIProjectDepartmentProjectValue.rowdata.req_wms_dep_id = vWMSKPIProjectDepartmentValue.rowdata.wms_dep_id;
+            vWMSKPIProjectDepartmentProjectValue.rowdata.wms_project_id = null;
+            $(vWMSKPIProjectDepartmentProjectValue.table).DataTable().ajax.reload(null, false);
+        } else{
+            vWMSKPIProjectDepartmentProjectValue.rowdata.kpi_year = null;
+            vWMSKPIProjectDepartmentProjectValue.rowdata.req_wms_dep_id = null;
+            vWMSKPIProjectDepartmentProjectValue.rowdata.wms_project_id = null;
+            $(vWMSKPIProjectDepartmentProjectValue.table).DataTable().clear().draw();
+        }
+    }
+
+    $(document).ready(function(){
+        vWMSKPIProjectDepartmentValue.rowdata.user_id = /*[[${user_id}]]*/ null;
+
+        vWMSKPIProjectDepartmentValue.rowdata.action_filter_type_id = /*[[${action_filter_type_id}]]*/ null;
+        vWMSKPIProjectDepartmentValue.rowdata.action_filter_action_id = /*[[${action_filter_action_id}]]*/ null;
+        vWMSKPIProjectDepartmentValue.rowdata.action_filter_status_id = /*[[${action_filter_status_id}]]*/ null;
+        vWMSKPIProjectDepartmentValue.rowdata.action_filter_result_id = /*[[${action_filter_result_id}]]*/ null;
+        vWMSKPIProjectDepartmentValue.rowdata.action_filter_client_id = /*[[${action_filter_client_id}]]*/ null;
+        vWMSKPIProjectDepartmentValue.rowdata.action_filter_user_id = /*[[${action_filter_user_id}]]*/ null;
+        
+        recreateDataTable(vWMSKPIProjectDepartmentValue);
+    });
+</script>
+
+</body>
+</html>

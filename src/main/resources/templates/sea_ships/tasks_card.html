@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="sea_ships_tasks_body" th:remove="tag">
+        <form id="table-sea-ships-tasks-buttons" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+            <button type="button" id="sea-ships-tasks-check" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.checkbtn}" disabled><i class="fas fa-check"></i></button>
+            <button type="button" id="sea-ships-tasks-uncheck" class="btn btn-dark mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.uncheckbtn}" disabled><i class="fas fa-times"></i></button>
+
+            <button type="button" id="sea-ships-tasks-detailbtn" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.detailbtn}" disabled><i class="fa fa-list"></i></button>
+            <button type="button" id="sea-ships-tasks-addbtn" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" th:title="#{general.addbtn}"><i class="fa fa-plus"></i></button>
+            <button type="button" id="sea-ships-tasks-editbtn" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.editbtn}" disabled><i class="fa fa-pencil-alt"></i></button>
+            <button type="button" id="sea-ships-tasks-delbtn" class="btn btn-dark mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.delbtn}" disabled><i class="fa fa-trash-alt"></i></button>
+
+            <button type="button" id="sea-ships-tasks-reloadbtn" class="btn btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.refreshbtn}"><i class="fa fa-sync"></i></button>
+        </form>
+        
+        <div><table id="table-sea-ships-tasks" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var clmtl_id_width, clm_task_sname_width, start_user_name_width, deadline_date_width, start_date_width, end_user_name_width, end_date_width, clm_task_check_width, clm_task_uncheck_width,
+        empty_column_width;
+    var clmtl_id_class, clm_task_sname_class, start_user_name_class, deadline_date_class, start_date_class, end_user_name_class, end_date_class, clm_task_check_class, clm_task_uncheck_class,
+        empty_column_class;
+    var clmtl_id_show, clm_task_sname_show, start_user_name_show, deadline_date_show, start_date_show, end_user_name_show, end_date_show, clm_task_check_show, clm_task_uncheck_show,
+        empty_column_show;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        clmtl_id_show = false;
+        clmtl_id_width = "";
+        clmtl_id_class = "";
+        clm_task_sname_show = true;
+        clm_task_sname_width = "28%";
+        clm_task_sname_class = "small_size small_head_size small_footer_size sea_ships_tasks_edit";
+        start_user_name_show = true;
+        start_user_name_width = "20%";
+        start_user_name_class = "small_size small_head_size small_footer_size text-center sea_ships_tasks_edit";
+        deadline_date_show = true;
+        deadline_date_width = "12%";
+        deadline_date_class = "small_size small_head_size small_footer_size text-center sea_ships_tasks_edit";
+        start_date_show = true;
+        start_date_width = "10%";
+        start_date_class = "small_size small_head_size small_footer_size text-center sea_ships_tasks_edit";
+        end_user_name_show = true;
+        end_user_name_width = "20%";
+        end_user_name_class = "small_size small_head_size small_footer_size text-center sea_ships_tasks_edit";
+        end_date_show = true;
+        end_date_width = "10%";
+        end_date_class = "small_size small_head_size small_footer_size text-center sea_ships_tasks_edit";
+        clm_task_check_show = false;
+        clm_task_check_width = "";
+        clm_task_check_class = "";
+        clm_task_uncheck_show = false;
+        clm_task_uncheck_width = "";
+        clm_task_uncheck_class = "";
+        empty_column_show = false;
+        empty_column_width = "";
+        empty_column_class = "";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        clmtl_id_show = false;
+        clmtl_id_width = "";
+        clmtl_id_class = "";
+        clm_task_sname_show = true;
+        clm_task_sname_width = "20%";
+        clm_task_sname_class = "sea_ships_tasks_edit";
+        start_user_name_show = true;
+        start_user_name_width = "14%";
+        start_user_name_class = "text-center sea_ships_tasks_edit";
+        deadline_date_show = true;
+        deadline_date_width = "8%";
+        deadline_date_class = "text-center sea_ships_tasks_edit";
+        start_date_show = true;
+        start_date_width = "8%";
+        start_date_class = "text-center sea_ships_tasks_edit";
+        end_user_name_show = true;
+        end_user_name_width = "14%";
+        end_user_name_class = "text-center sea_ships_tasks_edit";
+        end_date_show = true;
+        end_date_width = "8%";
+        end_date_class = "text-center sea_ships_tasks_edit";
+        clm_task_check_show = false;
+        clm_task_check_width = "";
+        clm_task_check_class = "";
+        clm_task_uncheck_show = false;
+        clm_task_uncheck_width = "";
+        clm_task_uncheck_class = "";
+        empty_column_show = true;
+        empty_column_width = "28%";
+        empty_column_class = "noExport sea_ships_tasks_edit";
+    }
+
+    var vFSClaimsTasksValue;
+    vFSClaimsTasksValue = {
+        table : '#table-sea-ships-tasks',
+        button_form: "#table-sea-ships-tasks-buttons",
+        ajax : {
+            "url": /*[[@{/sea_ships/get_tasks_table}]]*/ "sea_ships/get_tasks_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vFSClaimsTasksValue.rowdata.clm_id
+            }
+        },
+        key : "clmtl_id",
+        switchControl : sea_ships_tasks_switchControl,
+        rowdata:{
+            clm_id: null,
+            clmtl_id: null,
+            clm_task_check: null,
+            clm_task_uncheck: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).css('background-color', data["act_type_colour"]);*/
+        },
+        columnDefs:[
+            {"targets": [0], "width": clmtl_id_width, "className": clmtl_id_class, "visible": clmtl_id_show},
+            {"targets": [1], "width": clm_task_sname_width, "className": clm_task_sname_class, "visible": clm_task_sname_show},
+            {"targets": [2], "width": start_user_name_width, "className": start_user_name_class, "visible": start_user_name_show},
+            {"targets": [3], "width": deadline_date_width, "className": deadline_date_class, "visible": deadline_date_show, type: 'de_datetime'},
+            {"targets": [4], "width": start_date_width, "className": start_date_class, "visible": start_date_show, type: 'de_datetime'},
+            {"targets": [5], "width": end_user_name_width, "className": end_user_name_class, "visible": end_user_name_show, type: 'de_datetime'},
+            {"targets": [6], "width": end_date_width, "className": end_date_class, "visible": end_date_show},
+            {"targets": [7], "width": clm_task_check_width, "className": clm_task_check_class, "visible": clm_task_check_show},
+            {"targets": [8], "width": clm_task_uncheck_width, "className": clm_task_uncheck_class, "visible": clm_task_uncheck_show},
+            {"targets": [9], "width": empty_column_width, "className": empty_column_class, "visible": empty_column_show}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{sea_ships.tasks.clmtl_id}]]*/ "clmtl_id", "data": "clmtl_id"},
+                /*1*/{"title": /*[[#{sea_ships.tasks.clm_task_sname}]]*/ "clm_task_sname", "data": "clm_task_sname"},
+                /*2*/{"title": /*[[#{sea_ships.tasks.start_user_name}]]*/ "start_user_name", "data": "start_user_name"},
+                /*3*/{"title": /*[[#{sea_ships.tasks.deadline_date}]]*/ "deadline_date", "data": "deadline_date"},
+                /*4*/{"title": /*[[#{sea_ships.tasks.start_date}]]*/ "start_date", "data": "start_date"},
+                /*5*/{"title": /*[[#{sea_ships.tasks.end_user_name}]]*/ "end_user_name", "data": "end_user_name"},
+                /*6*/{"title": /*[[#{sea_ships.tasks.end_date}]]*/ "end_date", "data": "end_date"},
+                /*7*/{"title": /*[[#{sea_ships.tasks.clm_task_check}]]*/ "clm_task_check", "data": "clm_task_check"},
+                /*8*/{"title": /*[[#{sea_ships.tasks.clm_task_uncheck}]]*/ "clm_task_uncheck", "data": "clm_task_uncheck"},
+                /*9*/{"title": /*[[#{sea_ships.tasks.empty_column}]]*/ "empty_column", "data": "empty_column"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function sea_ships_tasks_switchControl(){
+        if(vFSClaimsTasksValue.rowdata.clmtl_id != null && (RoleChiefOPS || RoleOPS || RoleSuperOPS)) {
+                $("#sea-ships-tasks-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#sea-ships-tasks-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#sea-ships-tasks-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+
+                if(vFSClaimsTasksValue.rowdata.clm_task_check === 1){
+                    $("#sea-ships-tasks-check").prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+                }
+                else{
+                    $("#sea-ships-tasks-check").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                }
+
+                if(vFSClaimsTasksValue.rowdata.clm_task_uncheck === 1){
+                    $("#sea-ships-tasks-uncheck").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+                }
+                else{
+                    $("#sea-ships-tasks-uncheck").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+                }
+        } else{
+                $("#sea-ships-tasks-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#sea-ships-tasks-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#sea-ships-tasks-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+                $("#sea-ships-tasks-check").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                $("#sea-ships-tasks-uncheck").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+        }
+    }
+
+    function seaShipsTasksShow(){
+        $('#sea_ships_tasks_modal_addbtn').attr('hidden',true);
+        $('#sea_ships_tasks_modal_editbtn').attr('hidden',true);
+        $('#sea_ships_tasks_modal_delbtn').attr('hidden',true);
+        fill_sea_ships_tasks_modal_detail(4);
+    }
+
+// Detail Button
+    $('#sea-ships-tasks-detailbtn').click( function () {
+        seaShipsTasksShow();
+    });
+
+    // Add Button
+    $('#sea-ships-tasks-addbtn').click( function () {
+        $('#sea_ships_tasks_modal_addbtn').removeAttr('hidden');
+        $('#sea_ships_tasks_modal_editbtn').attr('hidden',true);
+        $('#sea_ships_tasks_modal_delbtn').attr('hidden',true);
+        fill_sea_ships_tasks_modal_detail(0);
+    });
+
+    function seaShipsTasksEdit(){
+        $('#sea_ships_tasks_modal_addbtn').attr('hidden',true);
+        $('#sea_ships_tasks_modal_editbtn').removeAttr('hidden');
+        $('#sea_ships_tasks_modal_delbtn').attr('hidden',true);
+        fill_sea_ships_tasks_modal_detail(1);
+    }
+
+  // Edit Button
+    $('#sea-ships-tasks-editbtn').click( function () {
+        seaShipsTasksEdit();
+    });
+
+    // Del Button
+    $('#sea-ships-tasks-delbtn').click( function () {
+        $('#sea_ships_tasks_modal_addbtn').attr('hidden',true);
+        $('#sea_ships_tasks_modal_editbtn').attr('hidden',true);
+        $('#sea_ships_tasks_modal_delbtn').removeAttr('hidden');
+        fill_sea_ships_tasks_modal_detail(2);
+    });
+
+    //Shift click
+    $('#table-sea-ships-tasks').on('click','.tasks_id_shift', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var taskTable = $("#table-sea-ships-tasks").DataTable();
+
+        if (e.shiftKey) {
+            taskTable.row(selectedRow).select();
+            $('#sea_ships_tasks_modal_addbtn').attr('hidden',true);
+            $('#sea_ships_tasks_modal_editbtn').attr('hidden',true);
+            $('#sea_ships_tasks_modal_delbtn').attr('hidden',true);
+            fill_sea_ships_tasks_modal_detail(4);
+        }
+    });
+
+    function seaShipsTasksCheck() {
+        if (vFSClaimsTasksValue.rowdata.clmtl_id != null) {
+            var MainRowID = vFSClaimsValue.rowdata.clm_id;
+            var RowID = vFSClaimsTasksValue.rowdata.clmtl_id;
+            $.ajax({
+                url: /*[[ @{/sea_ships/task_check} ]]*/ "/sea_ships/task_check",
+                type: 'POST',
+                data: {"clmtl_id": RowID},
+                success: function (result) {
+                    vFSClaimsValue.rowdata.clm_id = MainRowID;
+                    $(vFSClaimsValue.table).DataTable().ajax.reload(null, false);
+
+                    vClaimErrorsValue.rowdata.clm_id = MainRowID;
+                    $(vClaimErrorsValue.table).DataTable().ajax.reload(null, false);
+
+                    vFSClaimsTasksValue.rowdata.clm_id = MainRowID;
+                    vFSClaimsTasksValue.rowdata.clmtl_id = RowID;
+                    $(vFSClaimsTasksValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }
+
+    // Check Button
+    $('#sea-ships-tasks-check').click(function( event ) {
+        seaShipsTasksCheck();
+    });
+
+    function seaShipsTasksUnCheck(){
+        if (vFSClaimsTasksValue.rowdata.clmtl_id != null) {
+            var RowID = vFSClaimsTasksValue.rowdata.clmtl_id;
+            var MainRowID = vFSClaimsValue.rowdata.clm_id;
+            $.ajax({
+                url: /*[[ @{/sea_ships/task_uncheck} ]]*/ "/sea_ships/task_uncheck",
+                type: 'POST',
+                data: {"clmtl_id": RowID},
+                success: function (result) {
+                    vFSClaimsValue.rowdata.clm_id = MainRowID;
+                    $(vFSClaimsValue.table).DataTable().ajax.reload(null, false);
+
+                    vClaimErrorsValue.rowdata.clm_id = MainRowID;
+                    $(vClaimErrorsValue.table).DataTable().ajax.reload(null, false);
+
+                    vFSClaimsTasksValue.rowdata.clm_id = MainRowID;
+                    vFSClaimsTasksValue.rowdata.clmtl_id = RowID;
+                    $(vFSClaimsTasksValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }
+
+    // UnCheck Button
+    $('#sea-ships-tasks-uncheck').click(function( event ) {
+        seaShipsTasksUnCheck();
+    });
+
+    function seaShipsTasksReload(){
+        vFSClaimsTasksValue.rowdata.clm_id = vFSClaimsValue.rowdata.clm_id;
+        $(vFSClaimsTasksValue.table).DataTable().ajax.reload(null, false);
+    }
+    //Reload Button
+    $('#sea-ships-tasks-reloadbtn').click(function(){
+        seaShipsTasksReload();
+    });
+
+    $(document).ready(function(){
+        vFSClaimsTasksValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vFSClaimsTasksValue.rowdata.clmtl_id = /*[[${clmtl_id}]]*/ null;
+
+        vFSClaimsTasksValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vFSClaimsTasksValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vFSClaimsTasksValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vFSClaimsTasksValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vFSClaimsTasksValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vFSClaimsTasksValue);
+
+        $(vFSClaimsTasksValue.table).on('dblclick', '.sea_ships_tasks_edit', function (e) {
+            var selectedTasksRow = this._DT_CellIndex.row;
+            var currentTasksTable = $(vFSClaimsTasksValue.table).DataTable();
+            var NameString =  /*[[${#authentication.name}]]*/ '';
+            vFSClaimsTasksValue.rowdata.clmtl_id = currentTasksTable.row(selectedTasksRow).data().clmtl_id;
+
+            if(RoleOPS || RoleChiefOPS || RoleSuperOPS) {
+                seaShipsTasksEdit();
+            }
+            else{
+                seaShipsTasksShow();
+            }
+        });
+
+    });
+</script>
+
+</body>
+</html>

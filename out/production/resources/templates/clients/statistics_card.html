@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_statistics_body" th:remove="tag">
+		<div class="input-group mb-3" id="clients-statistics-detail">
+            <span class="input-group-prepend">
+                <button type="button" class="btn btn-dark align-middle btn-sm" id="clients_statistics_show" disabled><i data-feather="search"></i></button>
+            </span>
+				<input type="text" class="form-control form-control-sm" id="clients_statistics_start_date">
+				<input type="text" class="form-control form-control-sm" id="clients_statistics_end_date">
+			<span class="input-group-append">
+                  <button type="button" class="btn btn-dark align-middle btn-sm" id="clients_statistics_detail" th:text="#{general.gotobtn}" disabled>Detail</button>
+            </span>
+        </div>
+
+        <div><table id="table-clients-statistics" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+
+        <form id="clients-statistics-actions-form" th:action="@{/client_actions}" method="post" target="_blank">
+                <input name="cnt_id" hidden>
+                <input name="cnt_name" hidden>
+                <input name="cnt_user_access" hidden>
+
+                <input name="clients_list_table_order_column" hidden>
+                <input name="clients_list_table_order_type" hidden>
+                <input name="clients_list_table_search" hidden>
+                <input name="clients_list_table_pagelen" hidden>
+                <input name="clients_list_table_page" hidden>
+
+                <input name="client_actions_list_table_order_column" hidden>
+                <input name="client_actions_list_table_order_type" hidden>
+                <input name="client_actions_list_table_search" hidden>
+                <input name="client_actions_list_table_pagelen" hidden>
+                <input name="client_actions_list_table_page" hidden>
+
+                <input name="client_actions_filter_id" hidden>
+                <input name="client_actions_filter_start_date" hidden>
+                <input name="client_actions_filter_end_date" hidden>
+        </form>
+
+        <form id="clients-statistics-requests-form" th:action="@{/client_requests}" method="post" target="_blank">
+                <input name="cnt_id" hidden>
+                <input name="cnt_name" hidden>
+                <input name="cnt_user_access" hidden>
+
+                <input name="clients_list_table_order_column" hidden>
+                <input name="clients_list_table_order_type" hidden>
+                <input name="clients_list_table_search" hidden>
+                <input name="clients_list_table_pagelen" hidden>
+                <input name="clients_list_table_page" hidden>
+
+                <input name="client_requests_filter_id" hidden>
+                <input name="client_requests_filter_start_date" hidden>
+                <input name="client_requests_filter_end_date" hidden>
+        </form>
+
+        <form id="clients-statistics-tenders-form" th:action="@{/client_tenders}" method="post" target="_blank">
+                <input name="cnt_id" hidden>
+                <input name="cnt_name" hidden>
+                <input name="cnt_user_access" hidden>
+
+                <input name="clients_list_table_order_column" hidden>
+                <input name="clients_list_table_order_type" hidden>
+                <input name="clients_list_table_search" hidden>
+                <input name="clients_list_table_pagelen" hidden>
+                <input name="clients_list_table_page" hidden>
+
+                <input name="client_tenders_filter_id" hidden>
+                <input name="client_tenders_filter_start_date" hidden>
+                <input name="client_tenders_filter_end_date" hidden>
+        </form>
+    
+        <form id="clients-statistics-finance-form" th:action="@{/client_finance}" method="post" target="_blank">
+                <input name="cnt_id" hidden>
+                <input name="cnt_name" hidden>
+                <input name="cnt_user_access" hidden>
+
+                <input name="clients_list_table_order_column" hidden>
+                <input name="clients_list_table_order_type" hidden>
+                <input name="clients_list_table_search" hidden>
+                <input name="clients_list_table_pagelen" hidden>
+                <input name="clients_list_table_page" hidden>
+
+                <input name="client_finance_filter_id" hidden>
+                <input name="client_finance_filter_start_date" hidden>
+                <input name="client_finance_filter_end_date" hidden>
+        </form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var vClientStatisticsListValue;
+    vClientStatisticsListValue = {
+        table : '#table-clients-statistics',
+        button_form: "#clients-statistics-detail",
+        ajax : {
+            "url": /*[[@{/clients/get_statistics_table}]]*/ "clients/get_statistics_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.cnt_id = vClientsListValue.rowdata.cnt_id;
+                d.start_date = $('#clients_statistics_start_date').val();
+                d.end_date = $('#clients_statistics_end_date').val();                
+            }
+        },
+        key : "cnts_id",
+        switchControl : clients_statistics_switchControl,
+        rowdata:{
+            cnts_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 'ftp',
+        columnDefs:[
+            {"targets": [0], "visible": false}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{clients.statistics.cnts_id}]]*/ "cnts_id", "data": "cnts_id", "width": "1%"},
+            /*1*/{"title": /*[[#{clients.statistics.cnts_name}]]*/ "cnts_name", "data": "cnts_name", "width": "69%"},
+            /*2*/{"title": /*[[#{clients.statistics.cnts_count}]]*/ "cnts_count", "data": "cnts_count", "width": "30%", "className": "min-tablet-p"}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function clients_statistics_switchControl(){
+        if(vClientStatisticsListValue.rowdata.cnts_id != null) {
+            $("#clients_statistics_detail").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        }
+        else{
+            $("#clients_statistics_detail").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.clients_statistics_btn_control').on('click', function (){
+        $("#clients-statistics-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#clients-statistics-detail').submit(function(){
+        vClientStatisticsListValue.rowdata.clients_statistics_table_order_column = $(vClientStatisticsListValue.table).DataTable().order()[0][0];
+        vClientStatisticsListValue.rowdata.clients_statistics_table_order_type = $(vClientStatisticsListValue.table).DataTable().order()[0][1];
+        vClientStatisticsListValue.rowdata.clients_statistics_table_search = $(vClientStatisticsListValue.table).DataTable().search();
+        vClientStatisticsListValue.rowdata.clients_statistics_table_pagelen = $(vClientStatisticsListValue.table).DataTable().page.len();
+        vClientStatisticsListValue.rowdata.clients_statistics_table_page = $(vClientStatisticsListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vClientStatisticsListValue.rowdata.cnt_id = vClientsListValue.rowdata.cnt_id;
+
+        Object.keys(vClientStatisticsListValue.rowdata).forEach(function (index) {
+            $("#clients-statistics-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#clients-statistics-detail input[name=\"" + index + "\"]").val(vClientStatisticsListValue.rowdata[index]);
+        });
+    });
+
+    $("#clients_statistics_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#clients_statistics_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });    
+
+    $('#clients_statistics_show').on('click', function () {
+        $(vClientStatisticsListValue.table).DataTable().ajax.reload();
+    });
+
+    $('#clients_statistics_detail').on('click', function () {
+        if(vClientStatisticsListValue.rowdata.cnts_id === 1){
+            $("#clients-statistics-actions-form input[name=cnt_id]").val(vClientsListValue.rowdata.cnt_id);
+            $("#clients-statistics-actions-form input[name=cnt_name]").val(vClientsListValue.rowdata.cnt_name);
+            $("#clients-statistics-actions-form input[name=cnt_user_access]").val(vClientsListValue.rowdata.cnt_user_access);
+
+            $("#clients-statistics-actions-form input[name=clients_list_table_order_column]").val($(vClientsListValue.table).DataTable().order()[0][0]);
+            $("#clients-statistics-actions-form input[name=clients_list_table_order_type]").val($(vClientsListValue.table).DataTable().order()[0][1]);
+            $("#clients-statistics-actions-form input[name=clients_list_table_search]").val($(vClientsListValue.table).DataTable().search());
+            $("#clients-statistics-actions-form input[name=clients_list_table_pagelen]").val($(vClientsListValue.table).DataTable().page.len());
+            $("#clients-statistics-actions-form input[name=clients_list_table_page]").val($(vClientsListValue.table).DataTable().page.info().page);
+
+            $("#clients-statistics-actions-form input[name=client_actions_list_table_order_column]").val(0);
+            $("#clients-statistics-actions-form input[name=client_actions_list_table_order_type]").val("desc");
+            $("#clients-statistics-actions-form input[name=client_actions_list_table_search]").val("звонок");
+            $("#clients-statistics-actions-form input[name=client_actions_list_table_pagelen]").val(25);
+            $("#clients-statistics-actions-form input[name=client_actions_list_table_page]").val(0);
+
+            $("#clients-statistics-actions-form input[name=client_actions_filter_id]").val(1);
+            $("#clients-statistics-actions-form input[name=client_actions_filter_start_date]").val($("#clients_statistics_start_date").val());
+            $("#clients-statistics-actions-form input[name=client_actions_filter_end_date]").val($("#clients_statistics_end_date").val());
+            $("#clients-statistics-actions-form").submit();
+        }
+        else if(vClientStatisticsListValue.rowdata.cnts_id === 2){
+            $("#clients-statistics-actions-form input[name=cnt_id]").val(vClientsListValue.rowdata.cnt_id);
+            $("#clients-statistics-actions-form input[name=cnt_name]").val(vClientsListValue.rowdata.cnt_name);
+            $("#clients-statistics-actions-form input[name=cnt_user_access]").val(vClientsListValue.rowdata.cnt_user_access);
+
+            $("#clients-statistics-actions-form input[name=clients_list_table_order_column]").val($(vClientsListValue.table).DataTable().order()[0][0]);
+            $("#clients-statistics-actions-form input[name=clients_list_table_order_type]").val($(vClientsListValue.table).DataTable().order()[0][1]);
+            $("#clients-statistics-actions-form input[name=clients_list_table_search]").val($(vClientsListValue.table).DataTable().search());
+            $("#clients-statistics-actions-form input[name=clients_list_table_pagelen]").val($(vClientsListValue.table).DataTable().page.len());
+            $("#clients-statistics-actions-form input[name=clients_list_table_page]").val($(vClientsListValue.table).DataTable().page.info().page);
+
+            $("#clients-statistics-actions-form input[name=client_actions_list_table_order_column]").val(0);
+            $("#clients-statistics-actions-form input[name=client_actions_list_table_order_type]").val("desc");
+            $("#clients-statistics-actions-form input[name=client_actions_list_table_search]").val("встреча");
+            $("#clients-statistics-actions-form input[name=client_actions_list_table_pagelen]").val(25);
+            $("#clients-statistics-actions-form input[name=client_actions_list_table_page]").val(0);
+
+            $("#clients-statistics-actions-form input[name=client_actions_filter_id]").val(1);
+            $("#clients-statistics-actions-form input[name=client_actions_filter_start_date]").val($("#clients_statistics_start_date").val());
+            $("#clients-statistics-actions-form input[name=client_actions_filter_end_date]").val($("#clients_statistics_end_date").val());
+            $("#clients-statistics-actions-form").submit();
+        }
+        else if(vClientStatisticsListValue.rowdata.cnts_id === 3){
+            $("#clients-statistics-requests-form input[name=cnt_id]").val(vClientsListValue.rowdata.cnt_id);
+            $("#clients-statistics-requests-form input[name=cnt_name]").val(vClientsListValue.rowdata.cnt_name);
+            $("#clients-statistics-requests-form input[name=cnt_user_access]").val(vClientsListValue.rowdata.cnt_user_access);
+
+            $("#clients-statistics-requests-form input[name=clients_list_table_order_column]").val($(vClientsListValue.table).DataTable().order()[0][0]);
+            $("#clients-statistics-requests-form input[name=clients_list_table_order_type]").val($(vClientsListValue.table).DataTable().order()[0][1]);
+            $("#clients-statistics-requests-form input[name=clients_list_table_search]").val($(vClientsListValue.table).DataTable().search());
+            $("#clients-statistics-requests-form input[name=clients_list_table_pagelen]").val($(vClientsListValue.table).DataTable().page.len());
+            $("#clients-statistics-requests-form input[name=clients_list_table_page]").val($(vClientsListValue.table).DataTable().page.info().page);
+
+            $("#clients-statistics-requests-form input[name=client_requests_filter_id]").val(1);
+            $("#clients-statistics-requests-form input[name=client_requests_filter_start_date]").val($("#clients_statistics_start_date").val());
+            $("#clients-statistics-requests-form input[name=client_requests_filter_end_date]").val($("#clients_statistics_end_date").val());
+            $("#clients-statistics-requests-form").submit();
+        }
+        else if(vClientStatisticsListValue.rowdata.cnts_id === 4){
+            $("#clients-statistics-tenders-form input[name=cnt_id]").val(vClientsListValue.rowdata.cnt_id);
+            $("#clients-statistics-tenders-form input[name=cnt_name]").val(vClientsListValue.rowdata.cnt_name);
+            $("#clients-statistics-tenders-form input[name=cnt_user_access]").val(vClientsListValue.rowdata.cnt_user_access);
+
+            $("#clients-statistics-tenders-form input[name=clients_list_table_order_column]").val($(vClientsListValue.table).DataTable().order()[0][0]);
+            $("#clients-statistics-tenders-form input[name=clients_list_table_order_type]").val($(vClientsListValue.table).DataTable().order()[0][1]);
+            $("#clients-statistics-tenders-form input[name=clients_list_table_search]").val($(vClientsListValue.table).DataTable().search());
+            $("#clients-statistics-tenders-form input[name=clients_list_table_pagelen]").val($(vClientsListValue.table).DataTable().page.len());
+            $("#clients-statistics-tenders-form input[name=clients_list_table_page]").val($(vClientsListValue.table).DataTable().page.info().page);
+
+            $("#clients-statistics-tenders-form input[name=client_tenders_filter_id]").val(1);
+            $("#clients-statistics-tenders-form input[name=client_tenders_filter_start_date]").val($("#clients_statistics_start_date").val());
+            $("#clients-statistics-tenders-form input[name=client_tenders_filter_end_date]").val($("#clients_statistics_end_date").val());
+            $("#clients-statistics-tenders-form").submit();
+        }
+        else if(vClientStatisticsListValue.rowdata.cnts_id === 5){
+            $("#clients-statistics-finance-form input[name=cnt_id]").val(vClientsListValue.rowdata.cnt_id);
+            $("#clients-statistics-finance-form input[name=cnt_name]").val(vClientsListValue.rowdata.cnt_name);
+            $("#clients-statistics-finance-form input[name=cnt_user_access]").val(vClientsListValue.rowdata.cnt_user_access);
+
+            $("#clients-statistics-finance-form input[name=clients_list_table_order_column]").val($(vClientsListValue.table).DataTable().order()[0][0]);
+            $("#clients-statistics-finance-form input[name=clients_list_table_order_type]").val($(vClientsListValue.table).DataTable().order()[0][1]);
+            $("#clients-statistics-finance-form input[name=clients_list_table_search]").val($(vClientsListValue.table).DataTable().search());
+            $("#clients-statistics-finance-form input[name=clients_list_table_pagelen]").val($(vClientsListValue.table).DataTable().page.len());
+            $("#clients-statistics-finance-form input[name=clients_list_table_page]").val($(vClientsListValue.table).DataTable().page.info().page);
+
+            $("#clients-statistics-finance-form input[name=client_finance_filter_id]").val(1);
+            $("#clients-statistics-finance-form input[name=client_finance_filter_start_date]").val($("#clients_statistics_start_date").val());
+            $("#clients-statistics-finance-form input[name=client_finance_filter_end_date]").val($("#clients_statistics_end_date").val());
+            $("#clients-statistics-finance-form").submit();
+        }
+    });
+
+    $(document).ready(function(){
+        vClientStatisticsListValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+        vClientStatisticsListValue.rowdata.cnt_name = /*[[${cnt_name}]]*/ null;
+        vClientStatisticsListValue.rowdata.cnts_id = /*[[${cnts_id}]]*/ null;
+
+        vClientStatisticsListValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vClientStatisticsListValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vClientStatisticsListValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vClientStatisticsListValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vClientStatisticsListValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vClientStatisticsListValue);
+    }); 
+</script>
+
+</body>
+</html>

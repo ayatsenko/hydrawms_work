@@ -1,0 +1,497 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{sea_ships.main.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{sea_ships.main.caption}"></h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <!--/*@thymesVar id="sea_ships_main_detail" type="java.util.List"*/-->
+                <form id="sea-ships-main-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/sea_ships/main_model}">
+                    <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                    <div class="btn-group mb-1">
+                        <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="sea-ships-main-indexfrm">Cancel</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="sea-ships-main-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                            <button th:case="1" type="submit" id="sea-ships-main-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                            <button th:case="2" type="submit" id="sea-ships-main-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                        </div>
+                    </div>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clm_id" th:value="${clm_id}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="sea_ships_main_table_order_column" th:value="${sea_ships_main_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="sea_ships_main_table_order_type" th:value="${sea_ships_main_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="sea_ships_main_table_search" th:value="${sea_ships_main_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="sea_ships_main_table_pagelen" th:value="${sea_ships_main_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="sea_ships_main_table_page" th:value="${sea_ships_main_table_page}" >
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-1" id="clm_id_row">
+                            <label for="clm_id" class="form-label" th:text="'1. '+ #{sea_ships.main.clm_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="clm_id" name="clm_id" th:value="${clm_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-3 mb-1" id="clm_num_row">
+                            <label for="clm_num" class="form-label" th:text="'2. '+ #{sea_ships.main.clm_num}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="clm_num" name="clm_num" th:value="${clm_num}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-2 mb-1" id="clm_date_row">
+                            <label for="clm_date" class="form-label" th:text="'3. '+ #{sea_ships.main.clm_date}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="clm_date" name="clm_date" th:value="${clm_date}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-md-6 mb-1" id="cnt_id_div">
+                            <label for="cnt_id" th:text="'4. '+#{requests.list.cnt_id}"></label>
+                            <div class="input-group d-flex">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <select type="text" id="cnt_id" name="cnt_id" class="form-control p-1" aria-describedby="cnt_id_helpBlock" th:value="${cnt_id}">
+                                    <option value=""></option>
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <option class="p-1"
+                                            th:each="transport_List : ${transport_List}"
+                                            th:value="${transport_List.cnt_id}"
+                                            th:text="${transport_List.cnt_name}"
+                                            th:selected="${transport_List.cnt_id == cnt_id}">
+                                    </option>
+                                </select>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                                <span class="input-group-append">
+                                    <button type="button" class="btn btn-outline-primary" id="cnt_id_show" name="cnt_id_show"><i data-feather="clipboard"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-md-4 mb-1">
+                            <label for="ser_id" class="mr-2" th:text="'5. '+#{sea_ships.main.ser_sname}">Service: </label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="ser_id" name="ser_id" class="form-control p-1" th:value="${ser_id}">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="ser_list : ${ser_list}"
+                                        th:value="${ser_list.ser_id}"
+                                        th:text="${ser_list.ser_name}"
+                                        th:selected="${ser_list.ser_id == ser_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1">
+                            <label for="user_id" class="mr-2" th:text="'6. '+#{sea_ships.main.user_name}">User: </label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="user_id" name="user_id" class="form-control p-1" th:value="${user_id}">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="user_list : ${user_list}"
+                                        th:value="${user_list.id}"
+                                        th:text="${user_list.user_surname}"
+                                        th:selected="${user_list.id == user_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div>  <!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="clm_sum_row">
+                            <label for="clm_sum" class="form-label" th:text="'7. '+ #{sea_ships.main.clm_sum}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="clm_sum" name="clm_sum" th:value="${clm_sum}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="clm_sum_currency_row">
+                            <label for="clm_sum_currency_id" class="mr-2" th:text="'8. '+#{sea_ships.main.curreny_id}">Client: </label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select id="clm_sum_currency_id" name="clm_sum_currency_id" class="form-control" th:value="${clm_sum_currency_id}">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="sum_currency_list : ${clm_sum_currency_list}"
+                                        th:value="${sum_currency_list.currency_id}"
+                                        th:text="${sum_currency_list.currency_sname}"
+                                        th:selected="${sum_currency_list.currency_id == clm_sum_currency_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="clm_sum_currency_date_row">
+                            <label for="clm_sum_currency_date" class="form-label" th:text="'9. '+ #{sea_ships.main.clm_sum_currency_date}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="clm_sum_currency_date" name="clm_sum_currency_date" th:value="${clm_sum_currency_date}">
+                                <button type="button" id="clm_sum_currency_date_x" name="clm_sum_currency_date_x" class="btn btn-outline-primary"><i data-feather="x"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div>  <!-- Row 4 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="clm_rate_row">
+                            <label for="clm_rate" class="form-label" th:text="'10. '+ #{sea_ships.main.clm_rate}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="clm_rate" name="clm_rate" th:value="${clm_rate}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="clm_rate_currency_row">
+                            <label for="clm_rate_currency_id" class="mr-2" th:text="'11. '+#{sea_ships.main.curreny_id}">Client: </label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select id="clm_rate_currency_id" name="clm_rate_currency_id" class="form-control" th:value="${clm_rate_currency_id}">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="rate_currency_list : ${clm_rate_currency_list}"
+                                        th:value="${rate_currency_list.currency_id}"
+                                        th:text="${rate_currency_list.currency_sname}"
+                                        th:selected="${rate_currency_list.currency_id == clm_rate_currency_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="clm_rate_currency_date_row">
+                            <label for="clm_rate_currency_date" class="form-label" th:text="'12. '+ #{sea_ships.main.clm_sum_currency_date}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="clm_rate_currency_date" name="clm_rate_currency_date" th:value="${clm_rate_currency_date}">
+                                <button type="button" id="clm_rate_currency_date_x" name="clm_rate_currency_date_x" class="btn btn-outline-primary"><i data-feather="x"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div> <!-- Row 5 -->
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-1">
+                            <label for="clm_aim_type_id" class="mr-2" th:text="'9. '+#{sea_ships.main.clm_aim_type_sname}">Service: </label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="clm_aim_type_id" name="clm_aim_type_id" class="form-control p-1" th:value="${clm_aim_type_id}">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="clm_aim_type_list : ${clm_aim_type_list}"
+                                        th:value="${clm_aim_type_list.clm_aim_type_id}"
+                                        th:text="${clm_aim_type_list.clm_aim_type_sname}"
+                                        th:selected="${clm_aim_type_list.clm_aim_type_id == clm_aim_type_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-3 mb-1">
+                            <label for="clm_status_id" class="mr-2" th:text="'10. '+#{sea_ships.main.clm_status_sname}">Service: </label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="clm_status_id" name="clm_status_id" class="form-control p-1" th:value="${clm_status_id}">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="claims_status_list : ${claims_status_list}"
+                                        th:value="${claims_status_list.clm_status_id}"
+                                        th:text="${claims_status_list.clm_status_sname}"
+                                        th:selected="${claims_status_list.clm_status_id == clm_status_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div>  <!-- Row 6 -->
+
+                    <div class="form-row">
+                        <div class="col-md-6 mb-1">
+                            <label for="clm_note" th:text="'11. '+#{sea_ships.main.clm_note}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="5" maxlength="512" style="resize:none;" id="clm_note" name="clm_note" th:text="${clm_note}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div>  <!-- Row 7 -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--/*@thymesVar id="sea_ships_main_detail" type="java.util.List"*/-->
+    <form id="sea-ships-main-indexfrm" method="post" th:action="@{/sea_ships}" hidden>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clm_id" th:value="${clm_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_order_column" th:value="${sea_ships_main_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_order_type" th:value="${sea_ships_main_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_search" th:value="${sea_ships_main_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_pagelen" th:value="${sea_ships_main_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_page" th:value="${sea_ships_main_table_page}" >
+    </form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'sea-ships-main-indexfrm')">Error</span>
+
+<script>
+    var sumCurrencyDate = $('#clm_sum_currency_date').val();
+    $("#clm_sum_currency_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#clm_sum_currency_date_x').on('click', function() {
+        $('#clm_sum_currency_date').empty().val('');
+    });
+
+    if(sumCurrencyDate === null || sumCurrencyDate === ''){
+        $('#clm_sum_currency_date').empty().val('');
+    }
+
+    var rateCurrencyDate = $('#clm_rate_currency_date').val();
+    $("#clm_rate_currency_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#clm_rate_currency_date_x').on('click', function() {
+        $('#clm_rate_currency_date').empty().val('');
+    });
+
+    if(rateCurrencyDate === null || rateCurrencyDate === ''){
+        $('#clm_rate_currency_date').empty().val('');
+    }
+
+    $('#cnt_id_show').on('click', function () {
+        if($('#cnt_id_show').hasClass('btn-outline-primary')) {
+            $('#cnt_id_show').removeClass('btn-outline-primary').addClass('btn-primary');
+            var options_zero = {
+                id: '-1', // the value of the option
+                placeholder: /*[[#{requests.list.client_placeholder}]]*/ "Select a client",
+                allowClear: true,
+                width: 'element',
+                dropdownAutoWidth: true
+            };
+            $("#cnt_id").select2("destroy").select2(options_zero);
+        }
+        else if($('#cnt_id_show').hasClass('btn-primary')){
+            $('#cnt_id_show').addClass('btn-outline-primary').removeClass('btn-primary');
+            var options_two = {
+                id: '-1', // the value of the option
+                placeholder: /*[[#{requests.list.client_placeholder}]]*/ "Select a client",
+                allowClear: true,
+                minimumInputLength: 2,
+                width: 'element',
+                dropdownAutoWidth: true
+            };
+            $("#cnt_id").select2("destroy").select2(options_two);
+        }
+    });
+
+    $(document).ready(function(){
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#tms_li').addClass('active').removeClass('collapsed');
+        $('#tms_a').attr('aria-expanded',true);
+        $('#tms').addClass('show');
+
+        $('#sea_ships_a').addClass('text-primary');
+
+<!-- Start Objects -->
+        $("#clm_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        $('#cnt_id')
+            .wrap("<div class=\"position-relative\"></div>")
+            .select2({
+                id: '-1', // the value of the option
+                placeholder: /*[[#{report_client_balance.client_placeholder}]]*/ "Select a client",
+                allowClear: true,
+                minimumInputLength: 3
+            });
+
+        <!-- Form Start -->
+        $('#clm_id').prop('readOnly',true);
+
+        $('#cnt_id').prop('required',true);
+
+        $('#user_id').prop('required',true);
+
+        if($('#mode').val() === '0'){
+            $('#clm_id_row').prop('hidden',true);
+
+            $('#ser_id').prop('required',true);
+
+            $('#clm_aim_type_id').prop('required',true);
+
+            $('#clm_status_id').prop('required',true);
+        }
+        else if($('#mode').val() === '1'){
+            $('#clm_id').prop('readOnly',true);
+        }
+        else{
+            $('#clm_num').prop('readOnly',true);
+
+            $('#clm_date').prop('readOnly',true);
+
+            $('#cnt_id').attr('disabled','disabled');
+            $('#cnt_id_show').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#ser_id').attr('disabled','disabled');
+            $('#user_id').attr('disabled','disabled');
+
+            $('#clm_sum').prop('readOnly',true);
+            $('#clm_sum_currency_id').attr('readOnly',true);
+            $('#clm_sum_currency_date').prop('readOnly',true);
+            $('#clm_sum_currency_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#clm_rate').prop('readOnly',true);
+            $('#clm_rate_currency_id').attr('readOnly',true);
+            $('#clm_rate_currency_date').prop('readOnly',true);
+            $('#clm_rate_currency_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#clm_aim_type_id').attr('disabled','disabled');
+
+            $('#clm_status_id').attr('disabled','disabled');
+
+            $('#clm_note').prop('readOnly',true);
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="users_kpi_meets_users_body" th:remove="tag">
+        <form id="users-kpi-meets-users-detail" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="users-kpi-meets-users-detailbtn-large" class="d-none d-sm-block">
+                 <button type="button" id="users-kpi-meets-users-addbtn" class="btn btn-sm btn-dark" th:text="#{general.addbtn}" disabled>Add</button>
+                 <button type="button" id="users-kpi-meets-users-delbtn" class="btn btn-sm btn-dark mr-2" th:text="#{general.delbtn}" disabled>Delete</button>
+                  
+                 <button type="button" id="users-kpi-meets-users-check" class="btn btn-sm btn-dark" disabled><i class="fas fa-check"></i></button>
+                 <button type="button" id="users-kpi-meets-users-uncheck" class="btn btn-sm btn-dark" disabled><i class="fas fa-times"></i></button>                  
+              </div>
+              <div id="users-kpi-meets-users-detailbtn-small" class="d-block d-sm-none">
+                 <button type="button" id="users-kpi-meets-users-addbtn-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-plus"></i></button>
+                 <button type="button" id="users-kpi-meets-users-delbtn-sx" class="btn btn-sm btn-dark mr-2" disabled><i class="fas fa-trash-alt"></i></button>
+                  
+                 <button type="button" id="users-kpi-meets-users-check-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-check"></i></button>
+                 <button type="button" id="users-kpi-meets-users-uncheck-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-times"></i></button>                     
+              </div>
+        </form>
+
+        <div><table id="table-users-kpi-meets-users" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var user_kpi_meet_user_id_width, user_id_width, user_name_width, user_kpi_meet_check_width;
+    var user_kpi_meet_user_id_class, user_id_class, user_name_class, user_kpi_meet_check_class;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtip";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        user_kpi_meet_user_id_width = "";
+        user_kpi_meet_user_id_class = "none";
+        user_id_width = "";
+        user_id_class = "none";
+        user_name_width = "90%";
+        user_name_class = "head-center";
+        user_kpi_meet_check_width = "10%";
+        user_kpi_meet_check_class = "text-center";
+    }
+
+    var vUsersKPIMeetsUsersValue;
+    vUsersKPIMeetsUsersValue = {
+        table : '#table-users-kpi-meets-users',
+        button_form: "#users-kpi-meets-users-detail",
+        ajax : {
+            "url": /*[[@{/users_kpi_meets/get_users_table}]]*/ "users_kpi_meets/get_users_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.user_kpi_meet_id = vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_id;
+            }
+        },
+        key : "user_kpi_meet_user_id",
+        switchControl : users_kpi_meets_users_switchControl,
+        rowdata:{
+            user_kpi_meet_user_id: null,
+            user_id: null,
+            user_kpi_meet_check: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: vDomParam,
+        columnDefs:[
+            {"targets": [3],
+                render: function ( data, type, row ) {
+                    if ( type === 'display' ) {             //if column data is 1 then set attr to checked, use row id as input id (plus prefix)
+                        return '<input type="checkbox" ' + ((data == 1) ? 'checked' : '') + ' id="input' + row.id + '" class="filter-ck text-center" disabled="true"/>';
+                    }
+                    return data;
+                }
+            }
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{users_kpi_meets.users.user_kpi_meet_user_id}]]*/ "user_kpi_meet_user_id", "data": "user_kpi_meet_user_id", "width": user_kpi_meet_user_id_width, "className": user_kpi_meet_user_id_class},
+            /*1*/{"title": /*[[#{users_kpi_meets.users.user_id}]]*/ "user_id", "data": "user_id", "width": user_id_width, "className": user_id_class},
+            /*2*/{"title": /*[[#{users_kpi_meets.users.user_name}]]*/ "user_name", "data": "user_name", "width": user_name_width, "className": user_name_class},
+            /*3*/{"title": /*[[#{users_kpi_meets.users.user_kpi_meet_check}]]*/ "user_kpi_meet_check", "data": "user_kpi_meet_check", "width": user_kpi_meet_check_width, "className": user_kpi_meet_check_class}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function users_kpi_meets_users_switchControl(){
+        if(vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_user_id != null) {
+            $("#users-kpi-meets-users-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#users-kpi-meets-users-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if(vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_check === 1){
+                $("#users-kpi-meets-users-uncheck").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#users-kpi-meets-users-uncheck-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#users-kpi-meets-users-check").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#users-kpi-meets-users-check-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            else{
+                $("#users-kpi-meets-users-check").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#users-kpi-meets-users-check-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#users-kpi-meets-users-uncheck").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#users-kpi-meets-users-uncheck-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+        } else{
+            $("#users-kpi-meets-users-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#users-kpi-meets-users-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#users-kpi-meets-users-check").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#users-kpi-meets-users-check-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#users-kpi-meets-users-uncheck").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#users-kpi-meets-users-uncheck-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.users_kpi_meets_users_btn_control').on('click', function (){
+        $("#users-kpi-meets-users-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    function checkKPIUsersMeets() {
+        var MainRowID = vUsersKPIMeetsValue.rowdata.user_kpi_meet_id;
+        var RowID = vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_user_id;
+        $.ajax({
+            url: /*[[ @{/users_kpi_meets/check_kpi_meet_user} ]]*/ "/users_kpi_meets/check_kpi_meet_user",
+            type: 'POST',
+            data: {
+                "user_kpi_meet_user_id": RowID
+            },
+            success: function (result) {
+                $('#users_kpi_meets_users_modal').modal('hide');
+                vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_id = MainRowID;
+                vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_user_id = RowID;
+                $(vUsersKPIMeetsUsersValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    function unCheckKPIUsersMeets() {
+        var MainRowID = vUsersKPIMeetsValue.rowdata.user_kpi_meet_id;
+        var RowID = vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_user_id;
+        $.ajax({
+            url: /*[[ @{/users_kpi_meets/uncheck_kpi_meet_user} ]]*/ "/users_kpi_meets/uncheck_kpi_meet_user",
+            type: 'POST',
+            data: {
+                "user_kpi_meet_user_id": RowID
+            },
+            success: function (result) {
+                $('#users_kpi_meets_users_modal').modal('hide');
+                vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_id = MainRowID;
+                vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_user_id = RowID;
+                $(vUsersKPIMeetsUsersValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+// Add Address Button
+    $('#users-kpi-meets-users-addbtn').click(function (){
+        $('#users_kpi_meets_users_modal_addbtn').removeAttr('hidden');
+        $('#users_kpi_meets_users_modal_editbtn').attr('hidden',true);
+        $('#users_kpi_meets_users_modal_delbtn').attr('hidden',true);
+        fill_users_kpi_meets_users_modal_detail(0);
+    });
+
+    $('#users-kpi-meets-users-addbtn-sx').click(function (){
+        $('#users_kpi_meets_users_modal_addbtn').removeAttr('hidden');
+        $('#users_kpi_meets_users_modal_editbtn').attr('hidden',true);
+        $('#users_kpi_meets_users_modal_delbtn').attr('hidden',true);
+        fill_users_kpi_meets_users_modal_detail(0);
+    });
+//Check
+    $("#users-kpi-meets-users-check").click(function (){
+        checkKPIUsersMeets();
+    });
+
+    $("#users-kpi-meets-users-check-sx").click(function (){
+        checkKPIUsersMeets();
+    });
+//UnCheck
+    $("#users-kpi-meets-users-uncheck").click(function (){
+        unCheckKPIUsersMeets();
+    });
+
+    $("#users-kpi-meets-users-uncheck-sx").click(function (){
+        unCheckKPIUsersMeets();
+    });
+    // Del Address Button
+    $('#users-kpi-meets-users-delbtn').click(function (){
+        $('#users_kpi_meets_users_modal_addbtn').attr('hidden',true);
+        $('#users_kpi_meets_users_modal_editbtn').attr('hidden',true);
+        $('#users_kpi_meets_users_modal_delbtn').removeAttr('hidden');
+        fill_users_kpi_meets_users_modal_detail(2);
+    });
+
+    $('#users-kpi-meets-users-delbtn-sx').click(function (){
+        $('#users_kpi_meets_users_modal_addbtn').attr('hidden',true);
+        $('#users_kpi_meets_users_modal_editbtn').attr('hidden',true);
+        $('#users_kpi_meets_users_modal_delbtn').removeAttr('hidden');
+        fill_users_kpi_meets_users_modal_detail(2);
+    });    
+
+    $(document).ready(function(){
+// Highlight menu
+        $('#users_li').removeClass('active');
+
+        $('#admin_li').addClass('active').removeClass('collapsed');
+        $('#admin_a').attr('aria-expanded',true);
+        $('#admin').addClass('show');
+
+        $('#users_kpi_meets_a').addClass('text-primary');
+
+        vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_id = /*[[${user_kpi_meet_id}]]*/ null;
+        vUsersKPIMeetsUsersValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vUsersKPIMeetsUsersValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vUsersKPIMeetsUsersValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vUsersKPIMeetsUsersValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vUsersKPIMeetsUsersValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vUsersKPIMeetsUsersValue);
+    });
+</script>
+
+</body>
+</html>

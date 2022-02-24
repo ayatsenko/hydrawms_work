@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="part_world_wh_param_body" th:remove="tag">
+        <form id="part-world-wh-param-detail" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="part-world-wh-param-btn-large" class="d-none d-sm-block">
+                 <button type="button" id="part-world-wh-param-editbtn" class="btn btn-sm btn-dark" th:text="#{general.editbtn}" disabled>Edit</button>
+              </div>
+              <div id="part-world-wh-param-btn-small" class="d-block d-sm-none">
+                 <button type="button" id="part-world-wh-param-editbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="edit-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-part-world-wh-param" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var clmwhpl_id_width, wh_param_id_width, wh_param_name_width, clmwhl_currency_id_width, currency_name_width, clmwhl_wh_param_rate_width, clmwhl_wh_day_count_width, 
+        clmwhl_wh_param_result_width;
+
+    var clmwhpl_id_class, wh_param_id_class, wh_param_name_class, clmwhl_currency_id_class, currency_name_class, clmwhl_wh_param_rate_class, clmwhl_wh_day_count_class, 
+        clmwhl_wh_param_result_class;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        clmwhpl_id_width = "";
+        clmwhpl_id_class = "none";
+        wh_param_id_width = "";
+        wh_param_id_class = "none";
+        wh_param_name_width = "55%";
+        wh_param_name_class = "small_size small_head_size small_footer_size wh_param_id_shift";
+        clmwhl_currency_id_width = "";
+        clmwhl_currency_id_class = "none";
+        currency_name_width = "10%";
+        currency_name_class = "small_size small_head_size small_footer_size";
+        clmwhl_wh_param_rate_width = "10%";
+        clmwhl_wh_param_rate_class = "small_size small_head_size small_footer_size text-center";
+        clmwhl_wh_day_count_width = "10%";
+        clmwhl_wh_day_count_class = "small_size small_head_size small_footer_size text-center";
+        clmwhl_wh_param_result_width = "15%";
+        clmwhl_wh_param_result_class = "small_size small_head_size small_footer_size text-center";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        clmwhpl_id_width = "";
+        clmwhpl_id_class = "none";
+        wh_param_id_width = "";
+        wh_param_id_class = "none";
+        wh_param_name_width = "55%";
+        wh_param_name_class = "wh_param_id_shift";
+        clmwhl_currency_id_width = "";
+        clmwhl_currency_id_class = "none";
+        currency_name_width = "10%";
+        currency_name_class = "";
+        clmwhl_wh_param_rate_width = "10%";
+        clmwhl_wh_param_rate_class = "text-center";
+        clmwhl_wh_day_count_width = "10%";
+        clmwhl_wh_day_count_class = "text-center";
+        clmwhl_wh_param_result_width = "15%";
+        clmwhl_wh_param_result_class = "text-center";
+    }
+
+    var vFLGClaimWHParamValue;
+    vFLGClaimWHParamValue = {
+        table : '#table-part-world-wh-param',
+        button_form: "#part-world-wh-param-detail",
+        ajax : {
+            "url": /*[[@{/part_world/get_wh_param_table}]]*/ "part_world/get_wh_param_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vFLGClaimWHParamValue.rowdata.clm_id;
+                d.clmwhl_id = vFLGClaimWHParamValue.rowdata.clmwhl_id;
+            }
+        },
+        key : "clmwhpl_id",
+        switchControl : part_world_wh_param_switchControl,
+        rowdata:{
+            clm_id: null,
+            clmwhl_id: null,
+            clmwhpl_id: null,
+            wh_param_id: null,
+            clmwhl_currency_id: null,
+            clmwhl_wh_param_rate: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        columnDefs:[
+            {"targets": [5],  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [6],  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": [7],  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{part_world.wh_param.clmwhpl_id}]]*/ "clmwhpl_id", "data": "clmwhpl_id", "width": clmwhpl_id_width, "className": clmwhpl_id_class},
+                /*1*/{"title": /*[[#{part_world.wh_param.wh_param_id}]]*/ "wh_param_id", "data": "wh_param_id", "width": wh_param_id_width, "className": wh_param_id_class},
+                /*2*/{"title": /*[[#{part_world.wh_param.wh_param_name}]]*/ "wh_param_name", "data": "wh_param_name", "width": wh_param_name_width, "className": wh_param_name_class},
+                /*3*/{"title": /*[[#{part_world.wh_param.clmwhl_currency_id}]]*/ "clmwhl_currency_id", "data": "clmwhl_currency_id", "width": clmwhl_currency_id_width, "className": clmwhl_currency_id_class},
+                /*4*/{"title": /*[[#{part_world.wh_param.currency_name}]]*/ "currency_name", "data": "currency_name", "width": currency_name_width, "className": currency_name_class},
+                /*5*/{"title": /*[[#{part_world.wh_param.clmwhl_wh_param_rate}]]*/ "clmwhl_wh_param_rate", "data": "clmwhl_wh_param_rate", "width": clmwhl_wh_param_rate_width, "className": clmwhl_wh_param_rate_class},
+                /*6*/{"title": /*[[#{part_world.wh_param.clmwhl_wh_day_count}]]*/ "clmwhl_wh_day_count", "data": "clmwhl_wh_day_count", "width": clmwhl_wh_day_count_width, "className": clmwhl_wh_day_count_class},
+                /*7*/{"title": /*[[#{part_world.wh_param.clmwhl_wh_param_result}]]*/ "clmwhl_wh_param_result", "data": "clmwhl_wh_param_result", "width": clmwhl_wh_param_result_width, "className": clmwhl_wh_param_result_class}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function part_world_wh_param_switchControl(){
+        if(vFLGClaimWHParamValue.rowdata.clmwhpl_id != null && (RoleOPS || RoleChiefOPS)) {
+            $("#part-world-wh-param-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#part-world-wh-param-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+            $("#part-world-wh-param-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#part-world-wh-param-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.part_world_wh_param_btn_control').on('click', function (){
+        $("#part-world-wh-param-detail input[name=mode]").val($(this).attr("mode"));
+    });
+    // Detail Button
+    $('#part-world-wh-param-detailbtn').click( function () {
+        $('#part_world_wh_param_modal_addbtn').attr('hidden',true);
+        $('#part_world_wh_param_modal_editbtn').attr('hidden',true);
+        $('#part_world_wh_param_modal_delbtn').attr('hidden',true);
+        fill_part_world_wh_param_modal_detail(4);
+    });
+    // Detail Button SX
+    $('#part-world-wh-param-detailbtn-sx').click( function () {
+        $('#part_world_wh_param_modal_addbtn').attr('hidden',true);
+        $('#part_world_wh_param_modal_editbtn').attr('hidden',true);
+        $('#part_world_wh_param_modal_delbtn').attr('hidden',true);
+        fill_part_world_wh_param_modal_detail(4);
+    });
+    // Add Button
+    $('#part-world-wh-param-addbtn').click( function () {
+        $('#part_world_wh_param_modal_addbtn').removeAttr('hidden');
+        $('#part_world_wh_param_modal_editbtn').attr('hidden',true);
+        $('#part_world_wh_param_modal_delbtn').attr('hidden',true);
+        fill_part_world_wh_param_modal_detail(0);
+    });
+    // Add Button SX
+    $('#part-world-wh-param-addbtn-sx').click( function () {
+        $('#part_world_wh_param_modal_addbtn').removeAttr('hidden');
+        $('#part_world_wh_param_modal_editbtn').attr('hidden',true);
+        $('#part_world_wh_param_modal_delbtn').attr('hidden',true);
+        fill_part_world_wh_param_modal_detail(0);
+    });
+    // Edit Button
+    $('#part-world-wh-param-editbtn').click( function () {
+        $('#part_world_wh_param_modal_addbtn').attr('hidden',true);
+        $('#part_world_wh_param_modal_editbtn').removeAttr('hidden');
+        $('#part_world_wh_param_modal_delbtn').attr('hidden',true);
+        fill_part_world_wh_param_modal_detail(1);
+    });
+    // Edit Button SX
+    $('#part-world-wh-param-editbtn-sx').click( function () {
+        $('#part_world_wh_param_modal_addbtn').attr('hidden',true);
+        $('#part_world_wh_param_modal_editbtn').removeAttr('hidden');
+        $('#part_world_wh_param_modal_delbtn').attr('hidden',true);
+        fill_part_world_wh_param_modal_detail(1);
+    });
+    // Del Button
+    $('#part-world-wh-param-delbtn').click( function () {
+        $('#part_world_wh_param_modal_addbtn').attr('hidden',true);
+        $('#part_world_wh_param_modal_editbtn').attr('hidden',true);
+        $('#part_world_wh_param_modal_delbtn').removeAttr('hidden');
+        fill_part_world_wh_param_modal_detail(2);
+    });
+    // Del Button SX
+    $('#part-world-wh-param-delbtn-sx').click( function () {
+        $('#part_world_wh_param_modal_addbtn').attr('hidden',true);
+        $('#part_world_wh_param_modal_editbtn').attr('hidden',true);
+        $('#part_world_wh_param_modal_delbtn').removeAttr('hidden');
+        fill_part_world_wh_param_modal_detail(2);
+    });
+    //Shift click
+    $('#table-part-world-wh-param').on('click','.wh_param_id_shift', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var loadTable = $("#table-part-world-wh-param").DataTable();
+
+        if (e.shiftKey) {
+            loadTable.row(selectedRow).select();
+            $('#part_world_wh_param_modal_addbtn').attr('hidden',true);
+            $('#part_world_wh_param_modal_editbtn').attr('hidden',true);
+            $('#part_world_wh_param_modal_delbtn').attr('hidden',true);
+            fill_part_world_wh_param_modal_detail(4);
+        }
+    });
+    $(document).ready(function(){
+        vFLGClaimWHParamValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vFLGClaimWHParamValue.rowdata.clmwhpl_id = /*[[${clmwhpl_id}]]*/ null;
+
+        vFLGClaimWHParamValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vFLGClaimWHParamValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vFLGClaimWHParamValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vFLGClaimWHParamValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vFLGClaimWHParamValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vFLGClaimWHParamValue);
+    });
+</script>
+
+</body>
+</html>

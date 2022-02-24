@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="wms_sale_docs_main_body" th:remove="tag">
+    <form id="table-wms-sale-docs-main-buttons" hidden>
+        <input name="mode" value="0" hidden>
+
+        <button type="button" id="wms-sale-docs-main-addbtn" class="btn btn-lg btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.addbtn}"><i class="fa fa-plus"></i></button>
+
+        <button type="button" id="wms-sale-docs-main-check" class="btn btn-lg btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.checkbtn}" disabled><i class="fas fa-check"></i></button>
+        <button type="button" id="wms-sale-docs-main-uncheck" class="btn btn-lg btn-dark mr-md-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.uncheckbtn}" disabled><i class="fas fa-times"></i></button>
+
+        <button type="button" id="wms-sale-docs-main-reloadbtn" class="btn btn-lg btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.refreshbtn}"><i class="fa fa-sync"></i></button>
+
+        <button type="button" id="wms-sale-docs-main-printbtn" class="btn btn-lg btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{wms_sale_docs.main.reestr_button}"><i class="fa fas fa-file-alt"></i></button>
+    </form>
+
+    <div><table id="table-wms-sale-docs-main" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var doc_id_show, post_id_show, post_name_show, add_date_show, add_user_id_show, add_user_name_show, add_role_id_show, close_date_show, close_user_id_show, close_user_name_show,
+        close_role_id_show, status_id_show, status_name_show, status_color_show;
+
+    var doc_id_width, post_id_width, post_name_width, add_date_width, add_user_id_width, add_user_name_width, add_role_id_width, close_date_width, close_user_id_width, close_user_name_width,
+        close_role_id_width, status_id_width, status_name_width, status_color_width;
+
+    var doc_id_class, post_id_class, post_name_class, add_date_class, add_user_id_class, add_user_name_class, add_role_id_class, close_date_class, close_user_id_class, close_user_name_class,
+        close_role_id_class, status_id_class, status_name_class, status_color_class;
+
+    if(mobileScreenSize){
+        vDomParam =
+            "<'row'<'col-12'B>>"+
+            "<'row'<'col-12 col-sm-3'l><'col-12 col-sm-9'f>>"+
+            "<'row'<'col-12'tr>>" +
+            "<'row'<'col-12'p>>";
+        post_id_show = false;
+        post_id_width = "";
+        post_id_class = "";
+        add_date_show = true;
+        add_date_width = "10%";
+        add_date_class = "min-tablet-p small_size small_head_size small_footer_size";
+        add_user_id_show = false;
+        add_user_id_width = "";
+        add_user_id_class = "";
+        add_user_name_show = true;
+        add_user_name_width = "50%";
+        add_user_name_class = "small_size small_head_size small_footer_size";
+        add_role_id_show = true;
+        add_role_id_width = "8%";
+        add_role_id_class = "min-tablet-p small_size small_head_size small_footer_size text-center";        
+
+        $('#wms-sale-docs-main-detail').addClass('text-center').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        doc_id_show = true;
+        doc_id_width = "5%";
+        doc_id_class = "head-center head-light-grey head-text-primary";
+        post_id_show = false;
+        post_id_width = "";
+        post_id_class = "";
+        post_name_show = true;
+        post_name_width = "10%";
+        post_name_class = "text-center head-center head-light-grey head-text-primary";
+        add_date_show = true;
+        add_date_width = "10%";
+        add_date_class = "text-center head-center head-light-grey head-text-primary";
+        add_user_id_show = false;
+        add_user_id_width = "";
+        add_user_id_class = "";
+        add_user_name_show = true;
+        add_user_name_width = "10%";
+        add_user_name_class = "text_center head-center head-light-grey head-text-primary";
+        add_role_id_show = false;
+        add_role_id_width = "";
+        add_role_id_class = "";
+        close_date_show = true;
+        close_date_width = "10%"
+        close_date_class = "text-center head-center head-light-grey head-text-primary";
+        close_user_id_show = false;
+        close_user_id_width = ""
+        close_user_id_class = "";
+        close_user_name_show = true;
+        close_user_name_width = "10%";
+        close_user_name_class = "text-center head-center head-light-grey head-text-primary";
+        close_role_id_show = false;
+        close_role_id_width = ""
+        close_role_id_class = "";
+        status_id_show = false;
+        status_id_width = ""
+        status_id_class = "";
+        status_name_show = true;
+        status_name_width = "10%"
+        status_name_class = "text-center head-center head-light-grey head-text-primary";
+        status_color_show = false;
+        status_color_width = ""
+        status_color_class = "";
+
+        $('#wms-sale-docs-main-detail').removeAttr('hidden');
+    }
+    else{
+        vDomParam = "Blfrtip";
+        doc_id_show = true;
+        doc_id_width = "5%";
+        doc_id_class = "head-center head-light-grey head-text-primary";
+        post_id_show = false;
+        post_id_width = "";
+        post_id_class = "";
+        post_name_show = true;
+        post_name_width = "10%";
+        post_name_class = "text-center head-center head-light-grey head-text-primary";
+        add_date_show = true;
+        add_date_width = "10%";
+        add_date_class = "text-center head-center head-light-grey head-text-primary";
+        add_user_id_show = false;
+        add_user_id_width = "";
+        add_user_id_class = "";
+        add_user_name_show = true;
+        add_user_name_width = "10%";
+        add_user_name_class = "text_center head-center head-light-grey head-text-primary";
+        add_role_id_show = false;
+        add_role_id_width = "";
+        add_role_id_class = "";
+        close_date_show = true;
+        close_date_width = "10%"
+        close_date_class = "text-center head-center head-light-grey head-text-primary";
+        close_user_id_show = false;
+        close_user_id_width = ""
+        close_user_id_class = "";
+        close_user_name_show = true;
+        close_user_name_width = "10%";
+        close_user_name_class = "text-center head-center head-light-grey head-text-primary";
+        close_role_id_show = false;
+        close_role_id_width = ""
+        close_role_id_class = "";
+        status_id_show = false;
+        status_id_width = ""
+        status_id_class = "";
+        status_name_show = true;
+        status_name_width = "10%"
+        status_name_class = "text-center head-center head-light-grey head-text-primary";
+        status_color_show = false;
+        status_color_width = ""
+        status_color_class = "";
+    }
+
+    var vWMSSaleDocsMainValue;
+    vWMSSaleDocsMainValue = {
+        table : '#table-wms-sale-docs-main',
+        button_form: (mobileScreenSize) ? null : "#table-wms-sale-docs-main-buttons",
+        ajax : {
+            "url": /*[[@{/wms_sale_docs/get_menu}]]*/ "wms_sale_docs/get_menu",
+            "type": "post",
+        },
+        key : "doc_id",
+        switchControl : wms_sale_docs_main_switchControl,
+        rowdata:{
+            doc_id: null,
+
+            post_id: null,
+            post_name: null,
+            status_id: null
+        },
+        order: [
+            [0, "desc"]
+        ],
+        dom: vDomParam,
+        columnDefs:[
+            {"targets": [0], "width": doc_id_width, "className": doc_id_class, "visible": doc_id_show},
+            {"targets": [1], "width": post_id_width, "className": post_id_class, "visible": post_id_show},
+            {"targets": [2], "width": post_name_width, "className": post_name_class, "visible": post_name_show},
+            {"targets": [3], "width": add_date_width, "className": add_date_class, "visible": add_date_show},
+            {"targets": [4], "width": add_user_id_width, "className": add_user_id_class, "visible": add_user_id_show},
+            {"targets": [5], "width": add_user_name_width, "className": add_user_name_class, "visible": add_user_name_show},
+            {"targets": [6], "width": add_role_id_width, "className": add_role_id_class, "visible": add_role_id_show},
+            {"targets": [7], "width": close_date_width, "className": close_date_class, "visible": close_date_show},
+            {"targets": [8], "width": close_user_id_width, "className": close_user_id_class, "visible": close_user_id_show},
+            {"targets": [9], "width": close_user_name_width, "className": close_user_name_class, "visible": close_user_name_show},
+            {"targets": [10], "width": close_role_id_width, "className": close_role_id_class, "visible": close_role_id_show},
+            {"targets": [11], "width": status_id_width, "className": status_id_class, "visible": status_id_show},
+            {"targets": [12], "width": status_name_width, "className": status_name_class, "visible": status_name_show},
+            {"targets": [13], "width": status_color_width, "className": status_color_class, "visible": status_color_show}
+            ],
+        columns : [
+            /*0*/{"title": /*[[#{wms_sale_docs.main.doc_id}]]*/ "doc_id", "data": "doc_id"},
+            /*1*/{"title": /*[[#{wms_sale_docs.main.post_id}]]*/ "post_id", "data": "post_id"},
+            /*2*/{"title": /*[[#{wms_sale_docs.main.post_name}]]*/ "post_name", "data": "post_name"},
+            /*3*/{"title": /*[[#{wms_sale_docs.main.add_date}]]*/ "add_date", "data": "add_date"},
+            /*4*/{"title": /*[[#{wms_sale_docs.main.add_user_id}]]*/ "add_user_id", "data": "add_user_id"},
+            /*5*/{"title": /*[[#{wms_sale_docs.main.add_user_name}]]*/ "add_user_name", "data": "add_user_name"},
+            /*6*/{"title": /*[[#{wms_sale_docs.main.add_role_id}]]*/ "add_role_id", "data": "add_role_id"},
+            /*7*/{"title": /*[[#{wms_sale_docs.main.close_date}]]*/ "close_date", "data": "close_date"},
+            /*8*/{"title": /*[[#{wms_sale_docs.main.close_user_id}]]*/ "close_user_id", "data": "close_user_id"},
+            /*9*/{"title": /*[[#{wms_sale_docs.main.close_user_name}]]*/ "close_user_name", "data": "close_user_name"},
+            /*10*/{"title": /*[[#{wms_sale_docs.main.close_role_id}]]*/ "close_role_id", "data": "close_role_id"},
+            /*11*/{"title": /*[[#{wms_sale_docs.main.status_id}]]*/ "status_id", "data": "status_id"},
+            /*12*/{"title": /*[[#{wms_sale_docs.main.status_name}]]*/ "status_name", "data": "status_name"},
+            /*13*/{"title": /*[[#{wms_sale_docs.main.status_color}]]*/ "status_color", "data": "status_color"}
+        ],
+        pageLength: 10,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    let NPApiKey;
+    function getClientApiKey() {
+        $.ajax({
+            url:/*[[@{'/wms_sale_docs/get_client_api_key'}]]*/ "/wms_sale_docs/get_client_api_key",
+            type: "get",
+            success: function (client_api_key_detail) {
+                NPApiKey = client_api_key_detail.data[0].api_key;
+            }
+        })
+    }
+
+    function postCount() {
+        $.ajax({
+            url: /*[[ @{/wms_sale_docs/get_post_count} ]]*/ "/wms_sale_docs/get_post_count",
+            type: 'GET',
+            data: {
+                "doc_id": vWMSSaleDocsMainValue.rowdata.doc_id
+            },
+            error: function (error_result) {
+                $('#post_count_value').val('');
+            },
+            success: function (success_result) {
+                $('#post_count_value').val(success_result.data[0].doc_count);
+            }
+        });
+    }
+
+    function wms_sale_docs_main_switchControl(){
+        if(vWMSSaleDocsMainValue.rowdata.doc_id != null) {
+            postCount();
+
+            if(vWMSSaleDocsMainValue.rowdata.status_id === 0){
+                $('#wms-sale-docs-main-check').prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+                $('#wms-sale-docs-main-uncheck').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+                $('#wms_sale_docs_new_post_id').prop('disabled',false).select();
+                $('#wms_sale_docs_new_post_btn').prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+
+                $('#wms-sale-docs-detail-delbtn').prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+            }
+            else if(vWMSSaleDocsMainValue.rowdata.status_id === 1){
+                $('#wms-sale-docs-main-check').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+
+                if(RoleAllAdmin || RoleWHOper) {
+                    $('#wms-sale-docs-main-uncheck').prop('disabled', false).removeClass('btn-dark').addClass('btn-danger');
+                }
+                else{
+                    $('#wms-sale-docs-main-uncheck').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+                }
+
+                $('#wms_sale_docs_new_post_id').prop('disabled',true);
+                $('#wms_sale_docs_new_post_btn').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+
+                $('#wms-sale-docs-detail-delbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            }
+            else{
+                $('#wms-sale-docs-main-check').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                $('#wms-sale-docs-main-uncheck').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+                $('#wms_sale_docs_new_post_id').prop('disabled',true);
+                $('#wms_sale_docs_new_post_btn').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+
+                $('#wms-sale-docs-detail-delbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            }
+
+            if(vWMSSaleDocsMainValue.rowdata.post_id != null){
+                $('#wms-sale-docs-main-printbtn').prop('disabled',false).removeClass('btn-dark').addClass('btn-info');
+            }
+            else{
+                $('#wms-sale-docs-main-printbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-info');
+            }
+
+            vWMSSaleDocsDetailValue.rowdata.doc_id = vWMSSaleDocsMainValue.rowdata.doc_id;
+            vWMSSaleDocsDetailValue.rowdata.doc_link_id = null;
+            $(vWMSSaleDocsDetailValue.table).DataTable().ajax.reload();
+        }
+        else{
+            $('#wms-sale-docs-main-check').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+            $('#wms-sale-docs-main-uncheck').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+            $('#wms-sale-docs-main-printbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-info');
+
+            $('#wms_sale_docs_new_post_id').prop('disabled',true);
+            $('#wms_sale_docs_new_post_btn').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+
+            let default_stat_text = /*[[#{wms_sale_docs.main.add_post_default_text}]]*/ null;
+            $('#wms_sale_docs_new_post_message_alert').addClass('alert-light').removeClass('alert-danger').removeClass('alert-success').removeClass('alert-warning');
+            $('#wms_sale_docs_new_post_message').text('').text(default_stat_text);
+
+            vWMSSaleDocsDetailValue.rowdata.doc_id = null;
+            vWMSSaleDocsDetailValue.rowdata.doc_link_id = null;
+            $(vWMSSaleDocsDetailValue.table).DataTable().clear().draw();
+            $('#post_count_value').val('');
+
+            $('#wms-sale-docs-detail-delbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+        }
+    }
+
+//Reload Function
+    function reloadDocMain(){
+        $(vWMSSaleDocsMainValue.table).DataTable().ajax.reload(null, false);
+    }
+
+//Reload button
+    $('#wms-sale-docs-main-reloadbtn').click(function() {
+        reloadDocMain();
+    });
+    //Add Function
+    function addDocMain(){
+        let RowID = vWMSSaleDocsMainValue.rowdata.doc_id;
+        $.ajax({
+            url: /*[[ @{/wms_sale_docs/add_main_doc} ]]*/ "/wms_sale_docs/add_main_doc",
+            type: 'POST',
+            success: function (result) {
+                vWMSSaleDocsMainValue.rowdata.doc_id = RowID;
+                $(vWMSSaleDocsMainValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+    //Add button
+    $('#wms-sale-docs-main-addbtn').click(function() {
+        addDocMain();
+    });
+
+    //Check Function
+    function checkDocMain(){
+        let RowID = vWMSSaleDocsMainValue.rowdata.doc_id;
+        $.ajax({
+            url: /*[[ @{/np_post/check_main_doc} ]]*/ "/np_post/check_main_doc",
+            type: 'POST',
+            data: {
+                "doc_id": RowID,
+                "api_key": NPApiKey
+            },            
+            success: function (result) {
+                vWMSSaleDocsMainValue.rowdata.doc_id = RowID;
+                $(vWMSSaleDocsMainValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+    //Add button
+    $('#wms-sale-docs-main-check').click(function() {
+        checkDocMain();
+    });
+
+    //UnCheck Function
+    function uncheckDocMain(){
+        let RowID = vWMSSaleDocsMainValue.rowdata.doc_id;
+        let PostRowID = vWMSSaleDocsMainValue.rowdata.post_id;
+        $.ajax({
+            url: /*[[ @{/np_post/uncheck_main_doc} ]]*/ "/np_post/uncheck_main_doc",
+            type: 'POST',
+            data: {
+                "doc_id": RowID,
+                "post_id": PostRowID,
+                "api_key": NPApiKey
+            },
+            success: function (result) {
+                vWMSSaleDocsMainValue.rowdata.doc_id = RowID;
+                $(vWMSSaleDocsMainValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+    //Add button
+    $('#wms-sale-docs-main-uncheck').click(function() {
+        uncheckDocMain();
+    });
+
+    function docPrint() {
+        let TTNID = vWMSSaleDocsMainValue.rowdata.post_id;
+        window.open("https://my.novaposhta.ua/scanSheet/printScanSheet/refs[]/"+TTNID+"/type/pdf/apiKey/"+NPApiKey+"", "_blank");
+    }
+
+    function postPrint(PostID) {
+        window.open("https://my.novaposhta.ua/orders/printMarkings/orders/"+PostID+"/type/pdf/apiKey/"+NPApiKey+"", "_blank");
+    }
+
+    $('#wms-sale-docs-main-printbtn').on('click', function () {
+        docPrint();
+    });
+
+    $(document).ready(function(){
+        $(".sidebar").toggleClass("toggled");
+
+        vWMSSaleDocsMainValue.rowdata.post_id = /*[[${post_id}]]*/ null;
+
+        vWMSSaleDocsMainValue.rowdata.action_filter_type_id = /*[[${action_filter_type_id}]]*/ null;
+        vWMSSaleDocsMainValue.rowdata.action_filter_action_id = /*[[${action_filter_action_id}]]*/ null;
+        vWMSSaleDocsMainValue.rowdata.action_filter_status_id = /*[[${action_filter_status_id}]]*/ null;
+        vWMSSaleDocsMainValue.rowdata.action_filter_result_id = /*[[${action_filter_result_id}]]*/ null;
+        vWMSSaleDocsMainValue.rowdata.action_filter_add_role_id = /*[[${action_filter_add_role_id}]]*/ null;
+        vWMSSaleDocsMainValue.rowdata.action_filter_user_id = /*[[${action_filter_user_id}]]*/ null;
+        
+        recreateDataTable(vWMSSaleDocsMainValue);
+        getClientApiKey();
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#wms_li').addClass('active').removeClass('collapsed');
+        $('#wms_a').attr('aria-expanded',true);
+        $('#wms').addClass('show');
+
+        $('#wms_sale_docs_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

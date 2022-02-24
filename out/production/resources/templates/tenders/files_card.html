@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tenders_files_body" th:remove="tag">
+        <form id="tenders-files" class="mb-2" th:action="@{/tenders/files_detail}" method="post">
+            <input name="mode" value="0" hidden>
+              <div id="tenders-files-detailbtn-large" class="d-none d-sm-block">
+                 <button type="submit" id="tenders-files-detailbtn" class="btn btn-sm btn-dark tenders_files_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="tenders-files-addbtn" class="btn btn-sm btn-primary tenders_files_btn_control" th:text="#{general.addbtn}" th:attr="mode=0">Add</button>
+                 <button type="submit" id="tenders-files-downbtn" form="frmdownload" class="btn btn-sm btn-dark" th:text="#{general.download}" disabled>Edit</button>
+                 <button type="submit" id="tenders-files-delbtn" class="btn btn-sm btn-dark tenders_files_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="tenders-files-detailbtn-small" class="d-block d-sm-none">
+                 <button type="submit" id="tenders-files-detailbtn-sx" class="btn btn-sm btn-dark tenders_files_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="tenders-files-addbtn-sx" class="btn btn-sm btn-primary tenders_files_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                 <button type="submit" id="tenders-files-downbtn-sx" form="frmdownload" class="btn btn-sm btn-dark" disabled><i data-feather="download"></i></button>
+                 <button type="submit" id="tenders-files-delbtn-sx" class="btn btn-sm btn-dark tenders_files_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+
+        <form id="frmdownload" method="post" th:action="@{/tenders/files_download}">
+            <input type="hidden" name="req_store_id">
+        </form>
+
+        <div><table id="table-tenders-files" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vTenderFilesListValue;
+    vTenderFilesListValue = {
+        table : '#table-tenders-files',
+        ajax : {
+            "url": /*[[@{/tenders/get_files_table}]]*/ "tenders/get_files_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.req_id = vTenderFilesListValue.rowdata.req_id
+            }
+        },
+        key : "req_store_id",
+        switchControl : tenders_files_switchControl,
+        rowdata:{
+            req_id: null,
+            req_name: null,
+            req_store_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 'lfrtip',
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [1], type: 'de_date'}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{requests.files.req_store_id}]]*/ "req_store_id", "data": "req_store_id", "width": "1%"},
+            /*1*/{"title": /*[[#{requests.files.req_store_date}]]*/ "req_store_date", "data": "req_store_date", "width": "7%", "className":"text-center min-tablet-p"},
+            /*2*/{"title": /*[[#{requests.files.user_name}]]*/ "user_name", "data": "user_name", "width": "7%", "className":"text-center desktop"},
+            /*3*/{"title": /*[[#{requests.files.req_store_filename}]]*/ "req_store_filename", "data": "req_store_filename", "width": "85%"}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function tenders_files_switchControl(){
+        if(vTenderFilesListValue.rowdata.req_store_id != null) {
+            if ([-2,-1,5].indexOf(vTenderListValue.rowdata.req_status_id) >= 0) {
+                $("#tenders-files-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tenders-files-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#tenders-files-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tenders-files-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            else{
+                $("#tenders-files-detailbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tenders-files-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#tenders-files-detailbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tenders-files-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            $("#tenders-files-downbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#tenders-files-downbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+            $("#tenders-files-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tenders-files-downbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tenders-files-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#tenders-files-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tenders-files-downbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tenders-files-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');            
+        }
+    }
+
+    $('.tenders_files_btn_control').on('click', function (){
+        $("#tenders-files input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#tenders-files').submit(function(){
+        vTenderFilesListValue.rowdata.tenders_files_table_order_column = $(vTenderFilesListValue.table).DataTable().order()[0][0];
+        vTenderFilesListValue.rowdata.tenders_files_table_order_type = $(vTenderFilesListValue.table).DataTable().order()[0][1];
+        vTenderFilesListValue.rowdata.tenders_files_table_search = $(vTenderFilesListValue.table).DataTable().search();
+        vTenderFilesListValue.rowdata.tenders_files_table_pagelen = $(vTenderFilesListValue.table).DataTable().page.len();
+        vTenderFilesListValue.rowdata.tenders_files_table_page = $(vTenderFilesListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vTenderFilesListValue.rowdata.tenders_list_table_order_column = $(vTenderListValue.table).DataTable().order()[0][0];
+        vTenderFilesListValue.rowdata.tenders_list_table_order_type = $(vTenderListValue.table).DataTable().order()[0][1];
+        vTenderFilesListValue.rowdata.tenders_list_table_search = $(vTenderListValue.table).DataTable().search();
+        vTenderFilesListValue.rowdata.tenders_list_table_pagelen = $(vTenderListValue.table).DataTable().page.len();
+        vTenderFilesListValue.rowdata.tenders_list_table_page = $(vTenderListValue.table).DataTable().page.info().page;
+
+        Object.keys(vTenderFilesListValue.rowdata).forEach(function (index) {
+            $("#tenders-files").append("<input name=\"" + index + "\" hidden>");
+            $("#tenders-files input[name=\"" + index + "\"]").val(vTenderFilesListValue.rowdata[index]);
+        });
+    });
+
+    $('#frmdownload').submit(function(){
+        $("#frmdownload input[name=req_store_id]").val(vTenderFilesListValue.rowdata.req_store_id);
+    });
+
+        $(document).ready(function(){
+        vTenderFilesListValue.rowdata.req_id = /*[[${req_id}]]*/ null;
+        vTenderFilesListValue.rowdata.req_name = /*[[${req_name}]]*/ null;
+        vTenderFilesListValue.rowdata.req_store_id = /*[[${req_id}]]*/ req_store_id;
+
+        vTenderFilesListValue.rowdata.table_order_column = /*[[${tenders_files_table_order_column}]]*/ null;
+        vTenderFilesListValue.rowdata.table_order_type = /*[[${tenders_files_table_order_type}]]*/ null;
+        vTenderFilesListValue.rowdata.table_search = /*[[${tenders_files_table_search}]]*/ null;
+        vTenderFilesListValue.rowdata.table_pagelen = /*[[${tenders_files_table_pagelen}]]*/ null;
+        vTenderFilesListValue.rowdata.table_page = /*[[${tenders_files_table_page}]]*/ null;
+
+        recreateDataTable(vTenderFilesListValue);
+    });
+</script>
+
+</body>
+</html>

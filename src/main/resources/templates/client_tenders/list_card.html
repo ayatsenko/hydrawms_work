@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="client_tenders_list_body" th:remove="tag">
+        <form id="client-tenders-cnt-detail">
+            <input type="hidden" id="cnt_id">
+            <input type="hidden" id="cnt_name">
+            <input type="hidden" id="cnt_user_access">
+
+            <input type="hidden" id="clients_list_table_order_column">
+            <input type="hidden" id="clients_list_table_order_type">
+            <input type="hidden" id="clients_list_table_search">
+            <input type="hidden" id="clients_list_table_pagelen">
+            <input type="hidden" id="clients_list_table_page">
+        </form>
+    
+    
+        <form id="client-tenders-detail" class="mb-2" th:action="@{/client_tenders/list_detail}" method="post">
+            <input name="mode" value="0" hidden>
+              <div id="client-tenders-list-detailbtn-large" class="d-none d-sm-block">
+                 <button type="submit" id="client-tenders-list-detailbtn" class="btn btn-sm btn-dark client_tenders_list_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="client-tenders-list-addbtn" class="btn btn-sm btn-dark client_tenders_list_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="submit" id="client-tenders-list-editbtn" class="btn btn-sm btn-dark client_tenders_list_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="client-tenders-list-delbtn" class="btn btn-sm btn-dark client_tenders_list_btn_control mr-2" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              
+                 <button type="button" id="client-tenders-list-link-edit" class="btn btn-sm btn-dark mr-2" disabled data-toggle="tooltip" data-placement="bottom" title="Sale All Link Edit"><i class="fas fa-user-friends"></i></button>
+              </div>
+              <div id="client-tenders-list-detailbtn-small" class="d-block d-sm-none">
+                 <button type="submit" id="client-tenders-list-detailbtn-sx" class="btn btn-sm btn-dark client_tenders_list_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="client-tenders-list-addbtn-sx" class="btn btn-sm btn-dark client_tenders_list_btn_control" th:attr="mode=0" disabled><i data-feather="plus"></i></button>
+                 <button type="submit" id="client-tenders-list-editbtn-sx" class="btn btn-sm btn-dark client_tenders_list_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="client-tenders-list-delbtn-sx" class="btn btn-sm btn-dark client_tenders_list_btn_control mr-2" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              
+                 <button type="button" id="client-tenders-list-link-edit-sx" class="btn btn-sm btn-dark mr-2" disabled data-toggle="tooltip" data-placement="bottom" title="Sale All Link Edit"><i class="fas fa-user-friends"></i></button>
+              </div>
+            
+            <input type="hidden" name="clients_list_table_order_column">
+            <input type="hidden" name="clients_list_table_order_type">
+            <input type="hidden" name="clients_list_table_search">
+            <input type="hidden" name="clients_list_table_pagelen">
+            <input type="hidden" name="clients_list_table_page">            
+        </form>
+        
+        <div><table id="table-client-tenders-list" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vClientTenderListValue;
+    vClientTenderListValue = {
+        table : '#table-client-tenders-list',
+        button_form: '#client-tenders-detail',
+        ajax : {
+            "url": /*[[@{/client_tenders/get_list_table}]]*/ "client_tenders/get_list_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.cnt_id = vClientTenderListValue.rowdata.cnt_id;
+                d.client_tenders_filter_id = vClientTenderListValue.rowdata.client_tenders_filter_id;
+                d.client_tenders_filter_start_date = vClientTenderListValue.rowdata.client_tenders_filter_start_date;
+                d.client_tenders_filter_end_date = vClientTenderListValue.rowdata.client_tenders_filter_end_date;                
+            }
+        },
+        key : "req_id",
+        switchControl : client_tenders_list_switchControl,
+        rowdata:{
+            cnt_id: null,
+            cnt_name: null,
+            cnt_user_access: null,
+
+           req_id: null,
+           req_name: null,
+           user_id: null,
+           user_name: null,
+           req_ops_username: null,
+           tend_status_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).find('td:eq(4)').css('background-color', data["user_status_colour"]);*/
+            $(row).css('background-color', data["tend_status_colour"]);
+        },
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [3], "visible": false},
+            {"targets": [9], "visible": false},
+            {"targets": [11], "visible": false},
+            {"targets": [13], "visible": false},
+            {"targets": [14], "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{tenders.list.req_id}]]*/ "req_id", "data": "req_id", "width": "1%"},
+                /*1*/{"title": /*[[#{tenders.list.req_name}]]*/ "req_name", "data": "req_name", "width": "28%"},
+                /*2*/{"title": /*[[#{tenders.list.user_name}]]*/ "user_name", "data": "user_name", "width": "8%", "className":"text-center cs_user_edit"},
+                /*3*/{"title": /*[[#{tenders.list.user_id}]]*/ "user_id", "data": "user_id", "width": "1%"},
+                /*4*/{"title": /*[[#{tenders.list.req_date}]]*/ "req_date", "data": "req_date", "width": "8%", "className":"text-center"},
+                /*5*/{"title": /*[[#{tenders.list.req_tend_date}]]*/ "req_tend_date", "data": "req_tend_date", "width": "5%", "className":"text-center"},
+                /*6*/{"title": /*[[#{tenders.list.req_tend_end_date}]]*/ "req_tend_end_date", "data": "req_tend_end_date", "width": "5%", "className":"text-center"},
+                /*7*/{"title": /*[[#{tenders.list.req_ops_username}]]*/ "req_ops_username", "data": "req_ops_username", "width": "8%", "className": "desktop text-center"},
+                /*8*/{"title": /*[[#{tenders.list.req_ops_answer}]]*/ "req_ops_answer", "data": "req_ops_answer", "width": "18%"},
+                /*9*/{"title": /*[[#{tenders.list.tend_status_id}]]*/ "tend_status_id", "data": "tend_status_id", "width": "1%"},
+                /*10*/{"title": /*[[#{tenders.list.tend_status_sname}]]*/ "tend_status_sname", "data": "tend_status_sname", "width": "8%", "className":"text-center"},
+                /*11*/{"title": /*[[#{tenders.list.tend_status_colour}]]*/ "tend_status_colour", "data": "tend_status_colour", "width": "1%"},
+                /*12*/{"title": /*[[#{tenders.list.req_tend_status_sname}]]*/ "req_tend_status_sname", "data": "req_tend_status_sname", "width": "8%", "className":"text-center"},
+                /*13*/{"title": /*[[#{tenders.list.req_action}]]*/ "req_action", "data": "req_action", "width": "1%"},
+                /*14*/{"title": /*[[#{tenders.list.req_show}]]*/ "req_show", "data": "req_show", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function client_tenders_list_switchControl(){
+        if(vClientTenderListValue.rowdata.req_id != null) {
+            $('#client-tenders-list-detailbtn').prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            $('#client-tenders-list-detailbtn-sx').prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            var NameString =  /*[[${#authentication.name}]]*/ '';
+            var RoleString = /*[[ ${#authorization.expression('!hasRole("ROLE_SALEOPS")')} ]]*/ null;
+            var RoleChString = /*[[ ${#authorization.expression('!hasRole("ROLE_CHIEFOPS")')} ]]*/ null;
+            var RoleSupString = /*[[ ${#authorization.expression('!hasRole("ROLE_SUPOPS")')} ]]*/ null;
+            var RoleAdminString = /*[[ ${#authorization.expression('hasRole("ROLE_ADMIN")')} ]]*/ null;
+            var userAccessID = $('#cnt_user_access').val();
+
+            if(RoleAllAdmin){
+                $('#client-tenders-list-link-edit').prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+                $('#client-tenders-list-link-edit-sx').prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+            }
+            else{
+                $('#client-tenders-list-link-edit').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+                $('#client-tenders-list-link-edit-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            }            
+            
+            // if((NameString === vClientTenderListValue.rowdata.user_name || RoleAdminString === true && userAccessID === "1")
+            //     && [1,2,3,4,5,6].indexOf(vClientTenderListValue.rowdata.tend_status_id) >= 0) {
+            //     $('#client-tenders-list-editbtn').prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            //     $('#client-tenders-list-delbtn').prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            //
+            //     $('#client-tenders-list-editbtn-sx').prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            //     $('#client-tenders-list-delbtn-sx').prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            // }
+            // else if((NameString === vClientTenderListValue.rowdata.req_ops_username || vClientTenderListValue.rowdata.req_ops_username === null)
+            //     && NameString !== vClientTenderListValue.rowdata.user_name
+            //     && (RoleString === false || RoleChString === false || RoleSupString === false)
+            //     && [2,3,4].indexOf(vClientTenderListValue.rowdata.tend_status_id) >= 0
+            // ){
+            //     $('#client-tenders-list-editbtn').prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            //     $('#client-tenders-list-delbtn').prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            //
+            //     $('#client-tenders-list-editbtn-sx').prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            //     $('#client-tenders-list-delbtn-sx').prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            // }
+            // else{
+            //     $('#client-tenders-list-editbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            //     $('#client-tenders-list-delbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            //
+            //     $('#client-tenders-list-editbtn-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            //     $('#client-tenders-list-delbtn-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            // }
+/*Таблица Файлов запросов*/
+            vClientTenderFilesListValue.rowdata.req_id = vClientTenderListValue.rowdata.req_id;
+            vClientTenderFilesListValue.rowdata.req_name = vClientTenderListValue.rowdata.req_name;
+            vClientTenderFilesListValue.rowdata.req_store_id = null;
+            $(vClientTenderFilesListValue.table).DataTable().ajax.reload();
+
+            // if([-2,-1,5].indexOf(vClientTenderListValue.rowdata.tend_status_id) >= 0 && userAccessID === "1") {
+            //     $('#client-tenders-file-addbtn').removeClass('btn-primary').addClass('btn-dark').prop('disabled', true);
+            //     $('#client-tenders-file-addbtn-sx').removeClass('btn-primary').addClass('btn-dark').prop('disabled', true);
+            // }
+            // else{
+            //     $('#client-tenders-files-addbtn').addClass('btn-primary').removeClass('btn-dark').prop('disabled', false);
+            //     $('#client-tenders-file-addbtn-sx').addClass('btn-primary').removeClass('btn-dark').prop('disabled', false);
+            // }
+/*Чат запросов*/
+            vClientTenderChatListValue.rowdata.req_id = vClientTenderListValue.rowdata.req_id;
+            vClientTenderChatListValue.rowdata.req_chat_id = null;
+            $(vClientTenderChatListValue.table).DataTable().ajax.reload();
+
+            // if([-2,-1,5].indexOf(vClientTenderListValue.rowdata.tend_status_id) >= 0){
+            //     $("#client-tenders-chat-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            //     $("#client-tenders-chat-clearbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            //
+            //     $("#client-tenders-chat-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            //     $("#client-tenders-chat-clearbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            //
+            //     $("#req_chat_note").val('').prop('disabled',true);
+            // }
+            // else{
+            //     $('#client-tenders-chat-addbtn').prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            //     $('#client-tenders-chat-clearbtn').prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            //
+            //     $('#client-tenders-chat-addbtn-sx').prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            //     $('#client-tenders-chat-clearbtn-sx').prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            //
+            //     $("#req_chat_note").val('').prop('disabled',false);
+            // }
+        } else {
+            $('#client-tenders-list-detailbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $('#client-tenders-list-editbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $('#client-tenders-list-delbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $('#client-tenders-list-detailbtn-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $('#client-tenders-list-editbtn-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $('#client-tenders-list-delbtn-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $('#client-tenders-list-link-edit').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            $('#client-tenders-list-link-edit-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger'); 
+            
+            /*Файлы запросов*/
+            vClientTenderFilesListValue.rowdata.req_id = null;
+            vClientTenderFilesListValue.rowdata.req_name = null;
+            vClientTenderFilesListValue.rowdata.req_store_id = null;
+            $(vClientTenderFilesListValue.table).DataTable().clear().draw();
+            $("#client-tenders-files-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#client-tenders-files-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            /*Чат запросов*/
+            vClientTenderChatListValue.rowdata.req_id = null;
+            vClientTenderChatListValue.rowdata.req_name = null;
+            vClientTenderChatListValue.rowdata.req_chat_id = null;
+            $(vClientTenderChatListValue.table).DataTable().clear().draw();
+
+            $("#client-tenders-chat-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#client-tenders-chat-clearbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#client-tenders-chat-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#client-tenders-chat-clearbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#req_chat_note").val('').prop('disabled',true); 
+        }
+    }
+
+    $("#client_tenders_filter_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#client_tenders_filter_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#client_tenders_filter_check').on('click', function(){
+        if($(this).prop('checked')){
+            $('#client_tenders_filter_start_date').removeAttr('disabled');
+            $('#client_tenders_filter_end_date').removeAttr('disabled');
+            $("#client_tenders_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if (window.screen.width < 1024 && window.screen.height < 768) {
+                $("#client_tenders_filter_start_date").attr('readonly',true);
+                $("#client_tenders_filter_end_date").attr('readonly',true);
+            }
+        }
+        else{
+            $('#client_tenders_filter_start_date').attr('disabled',true);
+            $('#client_tenders_filter_end_date').attr('disabled',true);
+            $("#client_tenders_filter_show").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            if(vClientTenderListValue.rowdata.client_tenders_filter_id === 1){
+                vClientTenderListValue.rowdata.client_tenders_filter_id = 0;
+                $(vClientTenderListValue.table).DataTable().ajax.reload();
+            }
+        }
+    });
+
+    $('#client_tenders_filter_show').on('click', function() {
+        vClientTenderListValue.rowdata.cnt_id = $('#cnt_id').val();
+
+        vClientTenderListValue.rowdata.client_tenders_filter_id = 1;
+        vClientTenderListValue.rowdata.client_tenders_filter_start_date = $('#client_tenders_filter_start_date').val();
+        vClientTenderListValue.rowdata.client_tenders_filter_end_date = $('#client_tenders_filter_end_date').val();
+
+        $(vClientTenderListValue.table).DataTable().ajax.reload();
+    });    
+    
+    $('.client_tenders_list_btn_control').on('click', function (){
+        $("#client-tenders-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    function editTenderCsUser(){
+        fill_tenders_list_link_modal_detail(1);
+    }
+
+    //Sale Link Edit Button
+    $('#client-tenders-list-link-edit').click(function(){
+        editTenderCsUser();
+    });
+
+    //Sale Link Edit Button SX
+    $('#client-tenders-list-link-edit-sx').click(function(){
+        editTenderCsUser();
+    });    
+    
+    $('#client-tenders-detail').submit(function() {
+        vClientTenderListValue.rowdata.client_tenders_list_table_order_column = $(vClientTenderListValue.table).DataTable().order()[0][0];
+        vClientTenderListValue.rowdata.client_tenders_list_table_order_type = $(vClientTenderListValue.table).DataTable().order()[0][1];
+        vClientTenderListValue.rowdata.client_tenders_list_table_search = $(vClientTenderListValue.table).DataTable().search();
+        vClientTenderListValue.rowdata.client_tenders_list_table_pagelen = $(vClientTenderListValue.table).DataTable().page.len();
+        vClientTenderListValue.rowdata.client_tenders_list_table_page = $(vClientTenderListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vClientTenderListValue.rowdata.cnt_id = $('#cnt_id').val();
+        vClientTenderListValue.rowdata.cnt_name = $('#cnt_name').val();
+        vClientTenderListValue.rowdata.cnt_user_access = $('#cnt_user_access').val();
+
+        if($('#client_tenders_filter_check').prop('checked')) {
+            vClientTenderListValue.rowdata.client_tenders_filter_id = 1;
+        }else{
+            vClientTenderListValue.rowdata.client_tenders_filter_id = 0;
+        }
+        vClientTenderListValue.rowdata.client_tenders_filter_start_date = $("#client_tenders_filter_start_date").val();
+        vClientTenderListValue.rowdata.client_tenders_filter_end_date = $("#client_tenders_filter_end_date").val();        
+        
+        Object.keys(vClientTenderListValue.rowdata).forEach(function (index) {
+            $("#client-tenders-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#client-tenders-detail input[name=\"" + index + "\"]").val(vClientTenderListValue.rowdata[index]);
+        });
+
+        $("#client-tenders-detail input[name=clients_list_table_order_column]").val($('#clients_list_table_order_column').val());
+        $("#client-tenders-detail input[name=clients_list_table_order_type]").val($('#clients_list_table_order_type').val());
+        $("#client-tenders-detail input[name=clients_list_table_search]").val($('#clients_list_table_search').val());
+        $("#client-tenders-detail input[name=clients_list_table_pagelen]").val($('#clients_list_table_pagelen').val());
+        $("#client-tenders-detail input[name=clients_list_table_page]").val($('#clients_list_table_page').val());        
+    });
+
+    $(document).ready(function(){
+        vClientTenderListValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+        vClientTenderListValue.rowdata.cnt_name = /*[[${cnt_name}]]*/ null;
+        vClientTenderListValue.rowdata.cnt_user_access = /*[[${cnt_user_access}]]*/ null;
+
+        vClientTenderListValue.rowdata.req_id = /*[[${req_id}]]*/ null;
+
+        vClientTenderListValue.rowdata.table_order_column = /*[[${client_tenders_list_table_order_column}]]*/ null;
+        vClientTenderListValue.rowdata.table_order_type = /*[[${client_tenders_list_table_order_type}]]*/ null;
+        vClientTenderListValue.rowdata.table_search = /*[[${client_tenders_list_table_search}]]*/ null;
+        vClientTenderListValue.rowdata.table_pagelen = /*[[${client_tenders_list_table_pagelen}]]*/ null;
+        vClientTenderListValue.rowdata.table_page = /*[[${client_tenders_list_table_page}]]*/ null;
+
+        vClientTenderListValue.rowdata.client_tenders_filter_id = /*[[${client_tenders_filter_id}]]*/ null;
+
+        var startDate =  /*[[${client_tenders_filter_start_date}]]*/ null;
+        vClientTenderListValue.rowdata.client_tenders_filter_start_date = startDate;
+
+        var endDate = /*[[${client_tenders_filter_end_date}]]*/ null;
+        vClientTenderListValue.rowdata.client_tenders_filter_end_date = endDate;
+
+        if(startDate != null){
+            $('#client_tenders_filter_start_date').empty().val(startDate);
+            $('#client_tenders_filter_start_date').data('daterangepicker').setStartDate(startDate);
+            $('#client_tenders_filter_start_date').data('daterangepicker').setEndDate(startDate);
+        }
+
+        if(endDate != null){
+            $('#client_tenders_filter_end_date').empty().val(endDate);
+            $('#client_tenders_filter_end_date').data('daterangepicker').setStartDate(endDate);
+            $('#client_tenders_filter_end_date').data('daterangepicker').setEndDate(endDate);
+        }
+
+        if(vClientTenderListValue.rowdata.cnt_user_access === 1){
+            $('#client-tenders-link-financebtn').prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        }else{
+            $('#client-tenders-link-financebtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+
+        if(vClientTenderListValue.rowdata.cnt_user_access === 1 && (RoleAllAdmin || currentUser === "k.boboshko")){
+            $('#client-tenders-link-docbtn').prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        }else{
+            $('#client-tenders-link-docbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+
+        <!-- Start Filter -->
+        if(vClientTenderListValue.rowdata.client_tenders_filter_id === 1){
+            $('#client_tenders_filter_check').prop('checked', true);
+            $("#client_tenders_filter_start_date").removeAttr('disabled').val(vClientTenderListValue.rowdata.client_tenders_filter_start_date);
+            $("#client_tenders_filter_end_date").removeAttr('disabled').val(vClientTenderListValue.rowdata.client_tenders_filter_end_date);
+            $("#client_tenders_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if (window.screen.width < 1024 && window.screen.height < 768) {
+                $("#client_tenders_filter_start_date").attr('readonly',true);
+                $("#client_tenders_filter_end_date").attr('readonly',true);
+            }
+        }
+
+        $(vClientTenderListValue.table).on('dblclick', '.cs_user_edit', function (e) {
+            var selectedRow = this._DT_CellIndex.row;
+            var currentTable = $(vClientTenderListValue.table).DataTable();
+            vClientTenderListValue.rowdata.req_id = currentTable.row(selectedRow).data().req_id;
+            vClientTenderListValue.rowdata.user_id = currentTable.row(selectedRow).data().user_id;
+            editTenderCsUser();
+        });        
+        
+        recreateDataTable(vClientTenderListValue);
+        <!-- Client Detail -->
+        $('#cnt_id').val(/*[[${cnt_id}]]*/);
+        $('#cnt_name').val(/*[[${cnt_name}]]*/);
+        $('#cnt_user_access').val(/*[[${cnt_user_access}]]*/);
+
+        $('#actions_cnt_id').val(/*[[${cnt_id}]]*/);
+        $('#actions_cnt_name').val(/*[[${cnt_name}]]*/);
+        $('#actions_cnt_user_access').val(/*[[${cnt_user_access}]]*/);
+
+        $('#requests_cnt_id').val(/*[[${cnt_id}]]*/);
+        $('#requests_cnt_name').val(/*[[${cnt_name}]]*/);
+        $('#requests_cnt_user_access').val(/*[[${cnt_user_access}]]*/);
+
+        $('#finance_cnt_id').val(/*[[${cnt_id}]]*/);
+        $('#finance_cnt_name').val(/*[[${cnt_name}]]*/);
+        $('#finance_cnt_user_access').val(/*[[${cnt_user_access}]]*/);
+
+        $('#docs_cnt_id').val(/*[[${cnt_id}]]*/);
+        $('#docs_cnt_name').val(/*[[${cnt_name}]]*/);
+        $('#docs_cnt_user_access').val(/*[[${cnt_user_access}]]*/);
+
+        $('#clients_list_table_order_column').val(/*[[${clients_list_table_order_column}]]*/);
+        $('#clients_list_table_order_type').val(/*[[${clients_list_table_order_type}]]*/);
+        $('#clients_list_table_search').val(/*[[${clients_list_table_search}]]*/);
+        $('#clients_list_table_pagelen').val(/*[[${clients_list_table_pagelen}]]*/);
+        $('#clients_list_table_page').val(/*[[${clients_list_table_page}]]*/);
+        <!-- Client Show Detail -->
+        $("#clients_tenders_back_detail_pretend span[id=cur_cnt_id]").text(/*[[${cnt_id}]]*/);
+        $("#clients_tenders_back_detail input[name=cur_cnt_name]").val(/*[[${cnt_name}]]*/);
+
+        $('#cur_cnt_id').text(/*[[${cnt_id}]]*/);
+        $('#cur_cnt_name').val(/*[[${cnt_name}]]*/);
+        <!-- Disabled Add Button -->
+        // if($('#cnt_user_access').val() === '1'){
+        //     $("#client-tenders-list-addbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        //
+        //     $("#client-tenders-list-addbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        // }else{
+        //     $("#client-tenders-list-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        //
+        //     $("#client-tenders-list-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        // }
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#clients_li').addClass('active').removeClass('collapsed');
+        $('#clients_a').attr('aria-expanded',true);
+        $('#clients').addClass('show');
+
+        $('#clients_list_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

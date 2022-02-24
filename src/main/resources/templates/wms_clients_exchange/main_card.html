@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="wms_clients_exchange_main_body" th:remove="tag">
+    <form id="table-wms-clients-exchange-list-buttons" class="mb-2" hidden>
+        <input name="mode" value="0" hidden>
+        <button type="button" id="wms-clients-exchange-list-addbtn" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" th:title="#{general.addbtn}"><i class="fa fa-plus"></i></button>
+        <button type="button" id="wms-clients-exchange-list-delbtn" class="btn btn-dark mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.delbtn}" disabled><i class="fa fa-trash-alt"></i></button>
+
+        <button type="button" id="wms-clients-exchange-list-reloadbtn" class="btn btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.refreshbtn}"><i class="fa fa-sync"></i></button>
+    </form>
+
+    <div><table id="table-wms-clients-exchange-list" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var exch_ser_file_id_show, cnt_id_show, cnt_name_show, user_id_show, user_name_show, role_id_show, role_name_show, exch_ser_file_name_show, exch_ser_file_date_show, exch_ser_file_contenttype_show,
+        exch_ser_file_insert_type_show, exch_ser_type_id_show, exch_ser_type_name_show;
+
+    var exch_ser_file_id_width, cnt_id_width, cnt_name_width, user_id_width, user_name_width, role_id_width, role_name_width, exch_ser_file_name_width, exch_ser_file_date_width,
+        exch_ser_file_contenttype_width, exch_ser_file_insert_type_width, exch_ser_type_id_width, exch_ser_type_name_width;
+
+    var exch_ser_file_id_class, cnt_id_class, cnt_name_class, user_id_class, user_name_class, role_id_class, role_name_class, exch_ser_file_name_class, exch_ser_file_date_class,
+        exch_ser_file_contenttype_class, exch_ser_file_insert_type_class, exch_ser_type_id_class, exch_ser_type_name_class;
+
+    if(mobileScreenSize){
+        vDomParam =
+            "<'row'<'col-12'B>>"+
+            "<'row'<'col-12 col-sm-3'l><'col-12 col-sm-9'f>>"+
+            "<'row'<'col-12'tr>>" +
+            "<'row'<'col-12'p>>";
+        exch_ser_file_id_show = false;
+        exch_ser_file_id_width = "";
+        exch_ser_file_id_class = "";
+        exch_ser_file_date_show = false;
+        exch_ser_file_date_width = "";
+        exch_ser_file_date_class = "";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "";
+        cnt_name_show = false;
+        cnt_name_width = "";
+        cnt_name_class = "";
+        user_id_show = false;
+        user_id_width = "";
+        user_id_class = "";
+        user_name_show = true;
+        user_name_width = "20%";
+        user_name_class = "small_size small_head_size small_footer_size text-center";
+        role_id_show = false;
+        role_id_width = "";
+        role_id_class = "";
+        role_name_show = false;
+        role_name_width = "";
+        role_name_class = "";
+        exch_ser_file_name_show = true;
+        exch_ser_file_name_width = "80%";
+        exch_ser_file_name_class = "small_size small_head_size small_footer_size";
+        exch_ser_file_contenttype_show = false;
+        exch_ser_file_contenttype_width = "";
+        exch_ser_file_contenttype_class = "";
+        exch_ser_file_insert_type_show = false;
+        exch_ser_file_insert_type_width = "";
+        exch_ser_file_insert_type_class = "";
+        exch_ser_type_id_show = false;
+        exch_ser_type_id_width = "";
+        exch_ser_type_id_class = "";
+        exch_ser_type_name_show = false;
+        exch_ser_type_name_width = "";
+        exch_ser_type_name_class = "";
+
+        $('#wms-clients-exchange-list-detail').addClass('text-center').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        exch_ser_file_id_show = false;
+        exch_ser_file_id_width = "";
+        exch_ser_file_id_class = "";
+        exch_ser_file_date_show = true;
+        exch_ser_file_date_width = "10%";
+        exch_ser_file_date_class = "small_size small_head_size small_footer_size text-center";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "";
+        cnt_name_show = true;
+        cnt_name_width = "35%";
+        cnt_name_class = "small_size small_head_size small_footer_size";
+        user_id_show = false;
+        user_id_width = "";
+        user_id_class = "";
+        user_name_show = true;
+        user_name_width = "15%";
+        user_name_class = "small_size small_head_size small_footer_size text-center";
+        role_id_show = false;
+        role_id_width = "";
+        role_id_class = "";
+        role_name_show = false;
+        role_name_width = "";
+        role_name_class = "";
+        exch_ser_file_name_show = true;
+        exch_ser_file_name_width = "25%";
+        exch_ser_file_name_class = "small_size small_head_size small_footer_size";
+        exch_ser_file_contenttype_show = false;
+        exch_ser_file_contenttype_width = "";
+        exch_ser_file_contenttype_class = "";
+        exch_ser_file_insert_type_show = false;
+        exch_ser_file_insert_type_width = "";
+        exch_ser_file_insert_type_class = "";
+        exch_ser_type_id_show = false;
+        exch_ser_type_id_width = "";
+        exch_ser_type_id_class = "";
+        exch_ser_type_name_show = true;
+        exch_ser_type_name_width = "15%";
+        exch_ser_type_name_class = "small_size small_head_size small_footer_size text-center";
+
+        $('#wms-clients-exchange-list-detail').removeAttr('hidden');
+    }
+    else{
+        vDomParam = "Blfrtip";
+        exch_ser_file_id_show = false;
+        exch_ser_file_id_width = "";
+        exch_ser_file_id_class = "";
+        exch_ser_file_date_show = true;
+        exch_ser_file_date_width = "12%";
+        exch_ser_file_date_class = "small_size small_head_size small_footer_size text-center";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "";
+        cnt_name_show = true;
+        cnt_name_width = "35%";
+        cnt_name_class = "small_size small_head_size small_footer_size";
+        user_id_show = false;
+        user_id_width = "";
+        user_id_class = "";
+        user_name_show = true;
+        user_name_width = "15%";
+        user_name_class = "small_size small_head_size small_footer_size text-center";
+        role_id_show = false;
+        role_id_width = "";
+        role_id_class = "";
+        role_name_show = false;
+        role_name_width = "";
+        role_name_class = "";
+        exch_ser_file_name_show = true;
+        exch_ser_file_name_width = "25%";
+        exch_ser_file_name_class = "small_size small_head_size small_footer_size";
+        exch_ser_file_contenttype_show = false;
+        exch_ser_file_contenttype_width = "";
+        exch_ser_file_contenttype_class = "";
+        exch_ser_file_insert_type_show = false;
+        exch_ser_file_insert_type_width = "";
+        exch_ser_file_insert_type_class = "";
+        exch_ser_type_id_show = false;
+        exch_ser_type_id_width = "";
+        exch_ser_type_id_class = "";
+        exch_ser_type_name_show = true;
+        exch_ser_type_name_width = "13%";
+        exch_ser_type_name_class = "small_size small_head_size small_footer_size text-center";
+    }
+
+    var vWMSClientsExchangeMainValue;
+    vWMSClientsExchangeMainValue = {
+        table : '#table-wms-clients-exchange-list',
+        button_form: (mobileScreenSize) ? null : "#table-wms-clients-exchange-list-buttons",
+        ajax : {
+            "url": /*[[@{/wms_clients_exchange/get_menu}]]*/ "wms_clients_exchange/get_menu",
+            "type": "post",
+        },
+        key : "exch_ser_file_id",
+        switchControl : wms_clients_exchange_switchControl,
+        rowdata:{
+            exch_ser_file_id: null
+        },
+        order: [
+            [1, "desc"]
+        ],
+        dom: vDomParam,
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["act_status_color"]);
+        },
+        columnDefs:[
+            {"targets": [0], "width": exch_ser_file_id_width, "className": exch_ser_file_id_class, "visible": exch_ser_file_id_show},
+            {"targets": [1], "width": exch_ser_file_date_width, "className": exch_ser_file_date_class, "visible": exch_ser_file_date_show, type: 'de_datetime'},
+            {"targets": [2], "width": cnt_id_width, "className": cnt_id_class, "visible": cnt_id_show},
+            {"targets": [3], "width": cnt_name_width, "className": cnt_name_class, "visible": cnt_name_show},
+            {"targets": [4], "width": user_id_width, "className": user_id_class, "visible": user_id_show},
+            {"targets": [5], "width": user_name_width, "className": user_name_class, "visible": user_name_show},
+            {"targets": [6], "width": role_id_width, "className": role_id_class, "visible": role_id_show},
+            {"targets": [7], "width": role_name_width, "className": role_name_class, "visible": role_name_show},
+            {"targets": [8], "width": exch_ser_file_name_width, "className": exch_ser_file_name_class, "visible": exch_ser_file_name_show},
+            {"targets": [9], "width": exch_ser_file_contenttype_width, "className": exch_ser_file_contenttype_class, "visible": exch_ser_file_contenttype_show},
+            {"targets": [10], "width": exch_ser_file_insert_type_width, "className": exch_ser_file_insert_type_class, "visible": exch_ser_file_insert_type_show},
+            {"targets": [11], "width": exch_ser_type_id_width, "className": exch_ser_type_id_class, "visible": exch_ser_type_id_show},
+            {"targets": [12], "width": exch_ser_type_name_width, "className": exch_ser_type_name_class, "visible": exch_ser_type_name_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{wms_clients_exchange.exch_ser_file_id}]]*/ "exch_ser_file_id", "data": "exch_ser_file_id"},
+            /*1*/{"title": /*[[#{wms_clients_exchange.exch_ser_file_date}]]*/ "exch_ser_file_date", "data": "exch_ser_file_date"},
+            /*2*/{"title": /*[[#{wms_clients_exchange.cnt_id}]]*/ "cnt_id", "data": "cnt_id"},
+            /*3*/{"title": /*[[#{wms_clients_exchange.cnt_name}]]*/ "cnt_name", "data": "cnt_name"},
+            /*4*/{"title": /*[[#{wms_clients_exchange.user_id}]]*/ "user_id", "data": "user_id"},
+            /*5*/{"title": /*[[#{wms_clients_exchange.user_name}]]*/ "user_name", "data": "user_name"},
+            /*6*/{"title": /*[[#{wms_clients_exchange.role_id}]]*/ "role_id", "data": "role_id"},
+            /*7*/{"title": /*[[#{wms_clients_exchange.role_name}]]*/ "role_name", "data": "role_name"},
+            /*8*/{"title": /*[[#{wms_clients_exchange.exch_ser_file_name}]]*/ "exch_ser_file_name", "data": "exch_ser_file_name"},
+            /*9*/{"title": /*[[#{wms_clients_exchange.exch_ser_file_contenttype}]]*/ "exch_ser_file_contenttype", "data": "exch_ser_file_contenttype"},
+            /*10*/{"title": /*[[#{wms_clients_exchange.exch_ser_file_insert_type}]]*/ "exch_ser_file_insert_type", "data": "exch_ser_file_insert_type"},
+            /*11*/{"title": /*[[#{wms_clients_exchange.exch_ser_type_id}]]*/ "exch_ser_type_id", "data": "exch_ser_type_id"},
+            /*12*/{"title": /*[[#{wms_clients_exchange.exch_ser_type_name}]]*/ "exch_ser_type_name", "data": "exch_ser_type_name"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function wms_clients_exchange_switchControl(){
+        if(vWMSClientsExchangeMainValue.rowdata.exch_ser_file_id != null) {
+            $("#wms-clients-exchange-list-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+
+            vWMSClientsExchangeLogValue.rowdata.exch_ser_file_id = vWMSClientsExchangeMainValue.rowdata.exch_ser_file_id;
+            vWMSClientsExchangeLogValue.rowdata.exch_ser_file_log_id = null;
+            $(vWMSClientsExchangeLogValue.table).DataTable().ajax.reload();
+        }
+        else{
+            $("#wms-clients-exchange-list-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+            vWMSClientsExchangeLogValue.rowdata.exch_ser_file_id = null;
+            vWMSClientsExchangeLogValue.rowdata.exch_ser_file_log_id = null;
+            $(vWMSClientsExchangeLogValue.table).DataTable().clear().draw();
+        }
+    }
+
+    //Add Function
+    function addExchange(){
+        $('#wms_clients_exchange_main_file_modal_addbtn').removeAttr('hidden');
+        $('#wms_clients_exchange_main_file_modal_editbtn').attr('hidden',true);
+        $('#wms_clients_exchange_main_file_modal_delbtn').attr('hidden',true);
+        fill_wms_clients_exchange_main_file_modal_detail(0);
+    }
+
+    //Add button
+    $('#wms-clients-exchange-list-addbtn').click(function() {
+        addExchange();
+    });
+
+    function delExchange(){
+        if (vWMSClientsExchangeMainValue.rowdata.exch_ser_file_id != null) {
+            let RowID = vWMSClientsExchangeMainValue.rowdata.exch_ser_file_id;
+            $.ajax({
+                url: /*[[ @{/wms_clients_exchange/del_client_exchange_service_file} ]]*/ "/wms_clients_exchange/del_client_exchange_service_file",
+                type: 'POST',
+                data: {"exch_ser_file_id": RowID},
+                success: function (result) {
+                    $(vWMSClientsExchangeMainValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    }
+
+    //Add button
+    $('#wms-clients-exchange-list-delbtn').click(function() {
+        delExchange();
+    });
+
+//Reload Function
+    function reloadExchange(){
+        $(vWMSClientsExchangeMainValue.table).DataTable().ajax.reload(null, false);
+    }
+
+//Reload button
+    $('#wms-clients-exchange-list-reloadbtn').click(function() {
+        reloadExchange();
+    });
+
+    $(document).ready(function(){
+        vWMSClientsExchangeMainValue.rowdata.exch_ser_file_id = /*[[${exch_ser_file_id}]]*/ null;
+
+        vWMSClientsExchangeMainValue.rowdata.action_filter_type_id = /*[[${action_filter_type_id}]]*/ null;
+        vWMSClientsExchangeMainValue.rowdata.action_filter_action_id = /*[[${action_filter_action_id}]]*/ null;
+        vWMSClientsExchangeMainValue.rowdata.action_filter_status_id = /*[[${action_filter_status_id}]]*/ null;
+        vWMSClientsExchangeMainValue.rowdata.action_filter_result_id = /*[[${action_filter_result_id}]]*/ null;
+        vWMSClientsExchangeMainValue.rowdata.action_filter_client_id = /*[[${action_filter_client_id}]]*/ null;
+        vWMSClientsExchangeMainValue.rowdata.action_filter_user_id = /*[[${action_filter_user_id}]]*/ null;
+        
+        recreateDataTable(vWMSClientsExchangeMainValue);
+
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#wms_li').addClass('active').removeClass('collapsed');
+        $('#wms_a').attr('aria-expanded',true);
+        $('#wms').addClass('show');
+
+        $('#wms_clients_exchange_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

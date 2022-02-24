@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="dashboard_tms_status_detail_body" th:remove="tag">
+    <div id="dashboard-tms-status-detail-buttons" hidden>
+    </div>
+
+        <div><table id="table-dashboard-tms-status-detail" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    $("#table-dashboard-tms-status-detail").append('<tfoot class="font-weight-bold" style="background-color: #d5e1df">'
+        +'<th></th><th></th><th></th><th></th><th></th>'
+        +'<th></th><th></th><th></th><th></th><th></th>'
+        +'<th></th><th></th><th></th><th></th><th></th>'
+        +'<th></th><th></th><th></th><th></th><th></th>'
+        +'<th></th><th></th><th></th><th></th><th></th>'
+        +'<th></th><th></th>'
+        +'</tfoot>');
+
+    var user_id_width, user_name_width, all_count_width, notfilled_count_width, notfilled_color_width, new_count_width, new_color_width, drawup_count_width, drawup_color_width,
+        onload_count_width, onload_color_width, loaded_count_width, loaded_color_width, document_count_width, document_color_width, border_count_width, border_color_width,
+        custom_count_width, custom_color_width, unloading_count_width, unloading_color_width, unloaded_count_width, unloaded_color_width, closed_count_width, closed_color_width,
+        payed_count_width, payed_color_width;
+
+    var user_id_class, user_name_class, all_count_class, notfilled_count_class, notfilled_color_class, new_count_class, new_color_class, drawup_count_class, drawup_color_class,
+        onload_count_class, onload_color_class, loaded_count_class, loaded_color_class, document_count_class, document_color_class, border_count_class, border_color_class,
+        custom_count_class, custom_color_class, unloading_count_class, unloading_color_class, unloaded_count_class, unloaded_color_class, closed_count_class, closed_color_class,
+        payed_count_class, payed_color_class;
+
+
+    var smallScreenSize = window.screen.width > 1024 && window.screen.height <= 768;
+    var mobileScreenSize = window.screen.width < 1024 && window.screen.height < 768;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtip";
+
+        $('#dashboard-tms-status-detail-buttons').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        user_id_width = "";
+        user_id_class = "none";
+        user_name_width = "22%";
+        user_name_class = "small_size small_head_size small_footer_size";
+
+        all_count_width = "6%";
+        all_count_class = "small_size small_head_size small_footer_size text-center";
+
+        notfilled_count_width = "6%";
+        notfilled_count_class = "small_size small_head_size small_footer_size text-center";
+        notfilled_color_width = "";
+        notfilled_color_class = "none";
+
+        new_count_width = "6%";
+        new_count_class = "small_size small_head_size small_footer_size text-center";
+        new_color_width = "";
+        new_color_class = "none";
+
+        drawup_count_width = "6%";
+        drawup_count_class = "small_size small_head_size small_footer_size text-center";
+        drawup_color_width = "";
+        drawup_color_class = "none";
+
+        onload_count_width = "6%";
+        onload_count_class = "small_size small_head_size small_footer_size text-center";
+        onload_color_width = "";
+        onload_color_class = "none";
+
+        loaded_count_width = "6%";
+        loaded_count_class = "small_size small_head_size small_footer_size text-center";
+        loaded_color_width = "";
+        loaded_color_class = "none";
+
+        document_count_width = "6%";
+        document_count_class = "small_size small_head_size small_footer_size text-center";
+        document_color_width = "";
+        document_color_class = "none";
+
+        border_count_width = "6%";
+        border_count_class = "small_size small_head_size small_footer_size text-center";
+        border_color_width = "";
+        border_color_class = "none";
+
+        custom_count_width = "6%";
+        custom_count_class = "small_size small_head_size small_footer_size text-center";
+        custom_color_width = "";
+        custom_color_class = "none";
+
+        unloading_count_width = "6%";
+        unloading_count_class = "small_size small_head_size small_footer_size text-center";
+        unloading_color_width = "";
+        unloading_color_class = "none";
+
+        unloaded_count_width = "6%";
+        unloaded_count_class = "small_size small_head_size small_footer_size text-center";
+        unloaded_color_width = "";
+        unloaded_color_class = "none";
+
+        closed_count_width = "6%";
+        closed_count_class = "small_size small_head_size small_footer_size text-center";
+        closed_color_width = "";
+        closed_color_class = "none";
+
+        payed_count_width = "6%";
+        payed_count_class = "small_size small_head_size small_footer_size text-center";
+        payed_color_width = "";
+        payed_color_class = "none";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        user_id_width = "";
+        user_id_class = "none";
+        user_name_width = "22%";
+        user_name_class = "";
+
+        all_count_width = "6%";
+        all_count_class = "text-center";
+
+        notfilled_count_width = "6%";
+        notfilled_count_class = "text-center";
+        notfilled_color_width = "";
+        notfilled_color_class = "none";
+
+        new_count_width = "6%";
+        new_count_class = "text-center";
+        new_color_width = "";
+        new_color_class = "none";
+
+        drawup_count_width = "6%";
+        drawup_count_class = "text-center";
+        drawup_color_width = "";
+        drawup_color_class = "none";
+
+        onload_count_width = "6%";
+        onload_count_class = "text-center";
+        onload_color_width = "";
+        onload_color_class = "none";
+
+        loaded_count_width = "6%";
+        loaded_count_class = "text-center";
+        loaded_color_width = "";
+        loaded_color_class = "none";
+
+        document_count_width = "6%";
+        document_count_class = "text-center";
+        document_color_width = "";
+        document_color_class = "none";
+
+        border_count_width = "6%";
+        border_count_class = "text-center";
+        border_color_width = "";
+        border_color_class = "none";
+
+        custom_count_width = "6%";
+        custom_count_class = "text-center";
+        custom_color_width = "";
+        custom_color_class = "none";
+
+        unloading_count_width = "6%";
+        unloading_count_class = "text-center";
+        unloading_color_width = "";
+        unloading_color_class = "none";
+
+        unloaded_count_width = "6%";
+        unloaded_count_class = "text-center";
+        unloaded_color_width = "";
+        unloaded_color_class = "none";
+
+        closed_count_width = "6%";
+        closed_count_class = "text-center";
+        closed_color_width = "";
+        closed_color_class = "none";
+
+        payed_count_width = "6%";
+        payed_count_class = "text-center";
+        payed_color_width = "";
+        payed_color_class = "none";
+    }
+
+    var vDashBoardTMSServiceDetailValue;
+    vDashBoardTMSServiceDetailValue = {
+        table : '#table-dashboard-tms-status-detail',
+        button_form: (mobileScreenSize) ? null : "#dashboard-tms-status-detail-buttons",
+        ajax : {
+            "url": /*[[@{/dashboard_tms_status/get_list_table}]]*/ "dashboard_tms_status/get_list_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.start_date = vDashBoardTMSServiceDetailValue.rowdata.start_date;
+                d.end_date = vDashBoardTMSServiceDetailValue.rowdata.end_date;
+                d.req_ser_id = vDashBoardTMSServiceDetailValue.rowdata.req_ser_id;
+            }
+        },
+        key : "user_id",
+        keys: true,
+        switchControl : dashboard_tms_status_detail_switchControl,
+        rowdata:{
+            user_id: null,
+            start_date: null,
+            end_date: null,
+            req_ser_id: null
+        },
+        ordering: true,
+        order: [
+            [1, "asc"]
+        ],
+
+        dom: vDomParam,
+        footerCallback: function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+            var numFormat = $.fn.dataTable.render.number( '\ ', '.', 0, '').display;
+// Total over all pages
+            var TotalAllCount = api.column(2, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+            var TotalNotfilledCount = api.column(3, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+            var TotalNewCount = api.column(5, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+            var TotalDrawupCount = api.column(7, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+            var TotalOnloadCount = api.column(9, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+            var TotalLoadedCount = api.column(11, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+            var TotalDocumentCount = api.column(13, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+            var TotalBorderCount = api.column(15, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+            var TotalCustomCount = api.column(17, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+            var TotalUnloadingCount = api.column(19, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+            var TotalUnloadedCount = api.column(21, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+            var TotalClosedCount = api.column(23, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+            var TotalPayedCount = api.column(25, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+
+// Update footer
+            $( api.column(0).footer()).hide();
+            $( api.column(1).footer()).html('Всего: ');
+
+            $( api.column(2).footer()).html(numFormat(TotalAllCount));
+            $( api.column(3).footer()).html(numFormat(TotalNotfilledCount));
+            $( api.column(4).footer()).hide();
+            $( api.column(5).footer()).html(numFormat(TotalNewCount));
+            $( api.column(6).footer()).hide();
+            $( api.column(7).footer()).html(numFormat(TotalDrawupCount));
+            $( api.column(8).footer()).hide();
+            $( api.column(9).footer()).html(numFormat(TotalOnloadCount));
+            $( api.column(10).footer()).hide();
+            $( api.column(11).footer()).html(numFormat(TotalLoadedCount));
+            $( api.column(12).footer()).hide();
+            $( api.column(13).footer()).html(numFormat(TotalDocumentCount));
+            $( api.column(14).footer()).hide();
+            $( api.column(15).footer()).html(numFormat(TotalBorderCount));
+            $( api.column(16).footer()).hide();
+            $( api.column(17).footer()).html(numFormat(TotalCustomCount));
+            $( api.column(18).footer()).hide();
+            $( api.column(19).footer()).html(numFormat(TotalUnloadingCount));
+            $( api.column(20).footer()).hide();
+            $( api.column(21).footer()).html(numFormat(TotalUnloadedCount));
+            $( api.column(22).footer()).hide();
+            $( api.column(23).footer()).html(numFormat(TotalClosedCount));
+            $( api.column(24).footer()).hide();
+            $( api.column(25).footer()).html(numFormat(TotalPayedCount));
+            $( api.column(26).footer()).hide();
+        },
+        createdRow: function( row, data, dataIndex ) {
+            $(row).find('td:eq(3)').css('background-color', data["all_count"]);
+            $(row).find('td:eq(5)').css('background-color', data["notfilled_color"]);
+            $(row).find('td:eq(7)').css('background-color', data["new_color"]);
+            $(row).find('td:eq(9)').css('background-color', data["drawup_color"]);
+            $(row).find('td:eq(11)').css('background-color', data["onload_color"]);
+            $(row).find('td:eq(13)').css('background-color', data["loaded_color"]);
+            $(row).find('td:eq(15)').css('background-color', data["document_color"]);
+            $(row).find('td:eq(17)').css('background-color', data["border_color"]);
+            $(row).find('td:eq(19)').css('background-color', data["custom_color"]);
+            $(row).find('td:eq(20)').css('background-color', data["unloading_color"]);
+            $(row).find('td:eq(21)').css('background-color', data["unloaded_color"]);
+            $(row).find('td:eq(23)').css('background-color', data["closed_color"]);
+            $(row).find('td:eq(25)').css('background-color', data["payed_color"]);
+
+            if(data["ser_id"] === 0){
+                $(row).css('background-color','#d5e1df');
+                $(row).addClass("font-weight-bold");
+            }
+        },
+        columnDefs: [
+            { "targets": [3,5,7,9,11,13,15,17,19,21,23,25], render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{dashboard_tms_status.detail.user_id}]]*/ "user_id", "data": "user_id", "width": user_id_width, "className": user_id_class},
+            /*1*/{"title": /*[[#{dashboard_tms_status.detail.user_name}]]*/ "user_name", "data": "user_name", "width": user_name_width, "className": user_name_class},
+            /*2*/{"title": /*[[#{dashboard_tms_status.detail.all_count}]]*/ "all_count", "data": "all_count", "width": all_count_width, "className": all_count_class},
+            /*3*/{"title": /*[[#{dashboard_tms_status.detail.notfilled_count}]]*/ "notfilled_count", "data": "notfilled_count", "width": notfilled_count_width, "className": notfilled_count_class},
+            /*4*/{"title": /*[[#{dashboard_tms_status.detail.notfilled_color}]]*/ "notfilled_color", "data": "notfilled_color", "width": notfilled_color_width, "className": notfilled_color_class},
+            /*5*/{"title": /*[[#{dashboard_tms_status.detail.new_count}]]*/ "new_count", "data": "new_count", "width": new_count_width, "className": new_count_class},
+            /*6*/{"title": /*[[#{dashboard_tms_status.detail.new_color}]]*/ "new_color", "data": "new_color", "width": new_color_width, "className": new_color_class},
+            /*7*/{"title": /*[[#{dashboard_tms_status.detail.drawup_count}]]*/ "drawup_count", "data": "drawup_count", "width": drawup_count_width, "className": drawup_count_class},
+            /*8*/{"title": /*[[#{dashboard_tms_status.detail.drawup_color}]]*/ "drawup_color", "data": "drawup_color", "width": drawup_color_width, "className": drawup_color_class},
+            /*9*/{"title": /*[[#{dashboard_tms_status.detail.onload_count}]]*/ "onload_count", "data": "onload_count", "width": onload_count_width, "className": onload_count_class},
+            /*10*/{"title": /*[[#{dashboard_tms_status.detail.onload_color}]]*/ "onload_color", "data": "onload_color", "width": onload_color_width, "className": onload_color_class},
+            /*11*/{"title": /*[[#{dashboard_tms_status.detail.loaded_count}]]*/ "loaded_count", "data": "loaded_count", "width": loaded_count_width, "className": loaded_count_class},
+            /*12*/{"title": /*[[#{dashboard_tms_status.detail.loaded_color}]]*/ "loaded_color", "data": "loaded_color", "width": loaded_color_width, "className": loaded_color_class},
+            /*13*/{"title": /*[[#{dashboard_tms_status.detail.document_count}]]*/ "document_count", "data": "document_count", "width": document_count_width, "className": document_count_class},
+            /*14*/{"title": /*[[#{dashboard_tms_status.detail.document_color}]]*/ "document_color", "data": "document_color", "width": document_color_width, "className": document_color_class},
+            /*15*/{"title": /*[[#{dashboard_tms_status.detail.border_count}]]*/ "border_count", "data": "border_count", "width": border_count_width, "className": border_count_class},
+            /*16*/{"title": /*[[#{dashboard_tms_status.detail.border_color}]]*/ "border_color", "data": "border_color", "width": border_color_width, "className": border_color_class},
+            /*17*/{"title": /*[[#{dashboard_tms_status.detail.custom_count}]]*/ "custom_count", "data": "custom_count", "width": custom_count_width, "className": custom_count_class},
+            /*18*/{"title": /*[[#{dashboard_tms_status.detail.custom_color}]]*/ "custom_color", "data": "custom_color", "width": custom_color_width, "className": custom_color_class},
+            /*19*/{"title": /*[[#{dashboard_tms_status.detail.unloading_count}]]*/ "unloading_count", "data": "unloading_count", "width": unloading_count_width, "className": unloading_count_class},
+            /*20*/{"title": /*[[#{dashboard_tms_status.detail.unloading_color}]]*/ "unloading_color", "data": "unloading_color", "width": unloading_color_width, "className": unloading_color_class},
+            /*21*/{"title": /*[[#{dashboard_tms_status.detail.unloaded_count}]]*/ "unloaded_count", "data": "unloaded_count", "width": unloaded_count_width, "className": unloaded_count_class},
+            /*22*/{"title": /*[[#{dashboard_tms_status.detail.unloaded_color}]]*/ "unloaded_color", "data": "unloaded_color", "width": unloaded_color_width, "className": unloaded_color_class},
+            /*23*/{"title": /*[[#{dashboard_tms_status.detail.closed_count}]]*/ "closed_count", "data": "closed_count", "width": closed_count_width, "className": closed_count_class},
+            /*24*/{"title": /*[[#{dashboard_tms_status.detail.closed_color}]]*/ "closed_color", "data": "closed_color", "width": closed_color_width, "className": closed_color_class},
+            /*25*/{"title": /*[[#{dashboard_tms_status.detail.payed_count}]]*/ "payed_count", "data": "payed_count", "width": payed_count_width, "className": payed_count_class},
+            /*26*/{"title": /*[[#{dashboard_tms_status.detail.payed_color}]]*/ "payed_color", "data": "payed_color", "width": payed_color_width, "className": payed_color_class}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function dashboard_tms_status_detail_switchControl(){
+        if(vDashBoardTMSServiceDetailValue.rowdata.user_id != null){
+            $('#dashboard_tms_status_tabs_div').removeAttr('hidden');
+            vDashBoardTMSServiceAllValue.rowdata.start_date = $("#dashboard_tms_status_start_date").val();
+            vDashBoardTMSServiceAllValue.rowdata.end_date = $("#dashboard_tms_status_end_date").val();
+            vDashBoardTMSServiceAllValue.rowdata.req_ser_id = $("#dashboard_tms_status_service_list").val();
+            vDashBoardTMSServiceAllValue.rowdata.req_user_id = vDashBoardTMSServiceDetailValue.rowdata.user_id;
+            $(vDashBoardTMSServiceAllValue.table).DataTable().ajax.reload();
+<!-- All -->
+            vDashBoardTMSServiceNotfilledValue.rowdata.start_date = $("#dashboard_tms_status_start_date").val();
+            vDashBoardTMSServiceNotfilledValue.rowdata.end_date = $("#dashboard_tms_status_end_date").val();
+            vDashBoardTMSServiceNotfilledValue.rowdata.req_ser_id = $("#dashboard_tms_status_service_list").val();
+            vDashBoardTMSServiceNotfilledValue.rowdata.req_user_id = vDashBoardTMSServiceDetailValue.rowdata.user_id;
+            $(vDashBoardTMSServiceNotfilledValue.table).DataTable().ajax.reload();
+<!-- NotFilled -->
+            vDashBoardTMSServiceNewValue.rowdata.start_date = $("#dashboard_tms_status_start_date").val();
+            vDashBoardTMSServiceNewValue.rowdata.end_date = $("#dashboard_tms_status_end_date").val();
+            vDashBoardTMSServiceNewValue.rowdata.req_ser_id = $("#dashboard_tms_status_service_list").val();
+            vDashBoardTMSServiceNewValue.rowdata.req_user_id = vDashBoardTMSServiceDetailValue.rowdata.user_id;
+            $(vDashBoardTMSServiceNewValue.table).DataTable().ajax.reload();
+<!-- New -->
+            vDashBoardTMSServiceDrawupValue.rowdata.start_date = $("#dashboard_tms_status_start_date").val();
+            vDashBoardTMSServiceDrawupValue.rowdata.end_date = $("#dashboard_tms_status_end_date").val();
+            vDashBoardTMSServiceDrawupValue.rowdata.req_ser_id = $("#dashboard_tms_status_service_list").val();
+            vDashBoardTMSServiceDrawupValue.rowdata.req_user_id = vDashBoardTMSServiceDetailValue.rowdata.user_id;
+            $(vDashBoardTMSServiceDrawupValue.table).DataTable().ajax.reload();
+<!-- Drawup -->
+            vDashBoardTMSServiceOnloadValue.rowdata.start_date = $("#dashboard_tms_status_start_date").val();
+            vDashBoardTMSServiceOnloadValue.rowdata.end_date = $("#dashboard_tms_status_end_date").val();
+            vDashBoardTMSServiceOnloadValue.rowdata.req_ser_id = $("#dashboard_tms_status_service_list").val();
+            vDashBoardTMSServiceOnloadValue.rowdata.req_user_id = vDashBoardTMSServiceDetailValue.rowdata.user_id;
+            $(vDashBoardTMSServiceOnloadValue.table).DataTable().ajax.reload();
+<!-- Onload -->
+            vDashBoardTMSServiceLoadedValue.rowdata.start_date = $("#dashboard_tms_status_start_date").val();
+            vDashBoardTMSServiceLoadedValue.rowdata.end_date = $("#dashboard_tms_status_end_date").val();
+            vDashBoardTMSServiceLoadedValue.rowdata.req_ser_id = $("#dashboard_tms_status_service_list").val();
+            vDashBoardTMSServiceLoadedValue.rowdata.req_user_id = vDashBoardTMSServiceDetailValue.rowdata.user_id;
+            $(vDashBoardTMSServiceLoadedValue.table).DataTable().ajax.reload();
+<!-- Loaded -->
+            vDashBoardTMSServiceDocumentValue.rowdata.start_date = $("#dashboard_tms_status_start_date").val();
+            vDashBoardTMSServiceDocumentValue.rowdata.end_date = $("#dashboard_tms_status_end_date").val();
+            vDashBoardTMSServiceDocumentValue.rowdata.req_ser_id = $("#dashboard_tms_status_service_list").val();
+            vDashBoardTMSServiceDocumentValue.rowdata.req_user_id = vDashBoardTMSServiceDetailValue.rowdata.user_id;
+            $(vDashBoardTMSServiceDocumentValue.table).DataTable().ajax.reload();
+<!-- Document -->
+            vDashBoardTMSServiceBorderValue.rowdata.start_date = $("#dashboard_tms_status_start_date").val();
+            vDashBoardTMSServiceBorderValue.rowdata.end_date = $("#dashboard_tms_status_end_date").val();
+            vDashBoardTMSServiceBorderValue.rowdata.req_ser_id = $("#dashboard_tms_status_service_list").val();
+            vDashBoardTMSServiceBorderValue.rowdata.req_user_id = vDashBoardTMSServiceDetailValue.rowdata.user_id;
+            $(vDashBoardTMSServiceBorderValue.table).DataTable().ajax.reload();
+<!-- Border -->
+            vDashBoardTMSServiceCustomValue.rowdata.start_date = $("#dashboard_tms_status_start_date").val();
+            vDashBoardTMSServiceCustomValue.rowdata.end_date = $("#dashboard_tms_status_end_date").val();
+            vDashBoardTMSServiceCustomValue.rowdata.req_ser_id = $("#dashboard_tms_status_service_list").val();
+            vDashBoardTMSServiceCustomValue.rowdata.req_user_id = vDashBoardTMSServiceDetailValue.rowdata.user_id;
+            $(vDashBoardTMSServiceCustomValue.table).DataTable().ajax.reload();
+<!-- Custom -->
+            vDashBoardTMSServiceUnloadingValue.rowdata.start_date = $("#dashboard_tms_status_start_date").val();
+            vDashBoardTMSServiceUnloadingValue.rowdata.end_date = $("#dashboard_tms_status_end_date").val();
+            vDashBoardTMSServiceUnloadingValue.rowdata.req_ser_id = $("#dashboard_tms_status_service_list").val();
+            vDashBoardTMSServiceUnloadingValue.rowdata.req_user_id = vDashBoardTMSServiceDetailValue.rowdata.user_id;
+            $(vDashBoardTMSServiceUnloadingValue.table).DataTable().ajax.reload();
+<!-- Unloading -->
+            vDashBoardTMSServiceUnloadedValue.rowdata.start_date = $("#dashboard_tms_status_start_date").val();
+            vDashBoardTMSServiceUnloadedValue.rowdata.end_date = $("#dashboard_tms_status_end_date").val();
+            vDashBoardTMSServiceUnloadedValue.rowdata.req_ser_id = $("#dashboard_tms_status_service_list").val();
+            vDashBoardTMSServiceUnloadedValue.rowdata.req_user_id = vDashBoardTMSServiceDetailValue.rowdata.user_id;
+            $(vDashBoardTMSServiceUnloadedValue.table).DataTable().ajax.reload();
+<!-- Unloaded -->
+            vDashBoardTMSServiceClosedValue.rowdata.start_date = $("#dashboard_tms_status_start_date").val();
+            vDashBoardTMSServiceClosedValue.rowdata.end_date = $("#dashboard_tms_status_end_date").val();
+            vDashBoardTMSServiceClosedValue.rowdata.req_ser_id = $("#dashboard_tms_status_service_list").val();
+            vDashBoardTMSServiceClosedValue.rowdata.req_user_id = vDashBoardTMSServiceDetailValue.rowdata.user_id;
+            $(vDashBoardTMSServiceClosedValue.table).DataTable().ajax.reload();
+<!-- Closed -->
+            vDashBoardTMSServicePaidValue.rowdata.start_date = $("#dashboard_tms_status_start_date").val();
+            vDashBoardTMSServicePaidValue.rowdata.end_date = $("#dashboard_tms_status_end_date").val();
+            vDashBoardTMSServicePaidValue.rowdata.req_ser_id = $("#dashboard_tms_status_service_list").val();
+            vDashBoardTMSServicePaidValue.rowdata.req_user_id = vDashBoardTMSServiceDetailValue.rowdata.user_id;
+            $(vDashBoardTMSServicePaidValue.table).DataTable().ajax.reload();
+<!-- Paid -->
+        }
+        else{
+            $('#dashboard_tms_status_tabs_div').attr('hidden', true);
+            vDashBoardTMSServiceAllValue.rowdata.start_date = null;
+            vDashBoardTMSServiceAllValue.rowdata.end_date = null;
+            vDashBoardTMSServiceAllValue.rowdata.req_ser_id = null;
+            vDashBoardTMSServiceAllValue.rowdata.req_user_id = null;
+            $(vDashBoardTMSServiceAllValue.table).DataTable().clear().draw();
+<!-- All -->
+            vDashBoardTMSServiceNotfilledValue.rowdata.start_date = null;
+            vDashBoardTMSServiceNotfilledValue.rowdata.end_date = null;
+            vDashBoardTMSServiceNotfilledValue.rowdata.req_ser_id = null;
+            vDashBoardTMSServiceNotfilledValue.rowdata.req_user_id = null;
+            $(vDashBoardTMSServiceNotfilledValue.table).DataTable().clear().draw();
+<!-- NotFilled -->
+            vDashBoardTMSServiceNewValue.rowdata.start_date = null;
+            vDashBoardTMSServiceNewValue.rowdata.end_date = null;
+            vDashBoardTMSServiceNewValue.rowdata.req_ser_id = null;
+            vDashBoardTMSServiceNewValue.rowdata.req_user_id = null;
+            $(vDashBoardTMSServiceNewValue.table).DataTable().clear().draw();
+<!-- New -->
+            vDashBoardTMSServiceDrawupValue.rowdata.start_date = null;
+            vDashBoardTMSServiceDrawupValue.rowdata.end_date = null;
+            vDashBoardTMSServiceDrawupValue.rowdata.req_ser_id = null;
+            vDashBoardTMSServiceDrawupValue.rowdata.req_user_id = null;
+            $(vDashBoardTMSServiceDrawupValue.table).DataTable().clear().draw();
+<!-- Drawup -->
+            vDashBoardTMSServiceOnloadValue.rowdata.start_date = null;
+            vDashBoardTMSServiceOnloadValue.rowdata.end_date = null;
+            vDashBoardTMSServiceOnloadValue.rowdata.req_ser_id = null;
+            vDashBoardTMSServiceOnloadValue.rowdata.req_user_id = null;
+            $(vDashBoardTMSServiceOnloadValue.table).DataTable().clear().draw();
+<!-- Onload -->
+            vDashBoardTMSServiceLoadedValue.rowdata.start_date = null;
+            vDashBoardTMSServiceLoadedValue.rowdata.end_date = null;
+            vDashBoardTMSServiceLoadedValue.rowdata.req_ser_id = null;
+            vDashBoardTMSServiceLoadedValue.rowdata.req_user_id = null;
+            $(vDashBoardTMSServiceLoadedValue.table).DataTable().clear().draw();
+<!-- Loaded -->
+            vDashBoardTMSServiceDocumentValue.rowdata.start_date = null;
+            vDashBoardTMSServiceDocumentValue.rowdata.end_date = null;
+            vDashBoardTMSServiceDocumentValue.rowdata.req_ser_id = null;
+            vDashBoardTMSServiceDocumentValue.rowdata.req_user_id = null;
+            $(vDashBoardTMSServiceDocumentValue.table).DataTable().clear().draw();
+<!-- Document -->
+            vDashBoardTMSServiceBorderValue.rowdata.start_date = null;
+            vDashBoardTMSServiceBorderValue.rowdata.end_date = null;
+            vDashBoardTMSServiceBorderValue.rowdata.req_ser_id = null;
+            vDashBoardTMSServiceBorderValue.rowdata.req_user_id = null;
+            $(vDashBoardTMSServiceBorderValue.table).DataTable().clear().draw();
+<!-- Border -->
+            vDashBoardTMSServiceCustomValue.rowdata.start_date = null;
+            vDashBoardTMSServiceCustomValue.rowdata.end_date = null;
+            vDashBoardTMSServiceCustomValue.rowdata.req_ser_id = null;
+            vDashBoardTMSServiceCustomValue.rowdata.req_user_id = null;
+            $(vDashBoardTMSServiceCustomValue.table).DataTable().clear().draw();
+<!-- Custom -->
+            vDashBoardTMSServiceUnloadingValue.rowdata.start_date = null;
+            vDashBoardTMSServiceUnloadingValue.rowdata.end_date = null;
+            vDashBoardTMSServiceUnloadingValue.rowdata.req_ser_id = null;
+            vDashBoardTMSServiceUnloadingValue.rowdata.req_user_id = null;
+            $(vDashBoardTMSServiceUnloadingValue.table).DataTable().clear().draw();
+<!-- Unloading -->
+            vDashBoardTMSServiceUnloadedValue.rowdata.start_date = null;
+            vDashBoardTMSServiceUnloadedValue.rowdata.end_date = null;
+            vDashBoardTMSServiceUnloadedValue.rowdata.req_ser_id = null;
+            vDashBoardTMSServiceUnloadedValue.rowdata.req_user_id = null;
+            $(vDashBoardTMSServiceUnloadedValue.table).DataTable().clear().draw();
+<!-- Unloaded -->
+            vDashBoardTMSServiceClosedValue.rowdata.start_date = null;
+            vDashBoardTMSServiceClosedValue.rowdata.end_date = null;
+            vDashBoardTMSServiceClosedValue.rowdata.req_ser_id = null;
+            vDashBoardTMSServiceClosedValue.rowdata.req_user_id = null;
+            $(vDashBoardTMSServiceClosedValue.table).DataTable().clear().draw();
+<!-- Closed -->
+            vDashBoardTMSServicePaidValue.rowdata.start_date = null;
+            vDashBoardTMSServicePaidValue.rowdata.end_date = null;
+            vDashBoardTMSServicePaidValue.rowdata.req_ser_id = null;
+            vDashBoardTMSServicePaidValue.rowdata.req_user_id = null;
+            $(vDashBoardTMSServicePaidValue.table).DataTable().clear().draw();
+<!-- Paid -->
+        }
+    }
+
+    $('.positions_btn_control').on('click', function (){
+        $("#positions-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $(document).ready(function(){
+        vDashBoardTMSServiceDetailValue.rowdata.start_date = null;
+        vDashBoardTMSServiceDetailValue.rowdata.end_date = null;
+        vDashBoardTMSServiceDetailValue.rowdata.req_ser_id = null;
+
+        recreateDataTable(vDashBoardTMSServiceDetailValue);        
+    });
+</script>
+
+</body>
+</html>

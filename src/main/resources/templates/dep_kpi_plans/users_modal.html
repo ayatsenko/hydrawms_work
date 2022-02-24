@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="dep_kpi_plans_users_modal_body" th:remove="tag">
+    <div class="modal fade" id="dep_kpi_plans_users_modal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{users_kpi_plans.modal.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                        <input type="text" class="form-control" id="mode" name="mode" hidden>
+                        <div class="row">
+                            <div class="col-12" id="user_kpi_type_name_row">
+                                <label for="user_kpi_type_name" class="form-label" th:text="'1. '+ #{users_kpi_plans.modal.user_kpi_type_name}"></label>
+                                <div class="input-group">
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <input type="text" class="form-control" id="user_kpi_type_name" name="user_kpi_type_name" readonly>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                                </div>
+                            </div>
+                        </div><!-- Type Name -->
+
+                        <div class="row">
+                            <div class="col-12" id="user_surname_row">
+                                <label for="user_surname" class="form-label" th:text="'2. '+ #{users_kpi_plans.modal.user_surname}"></label>
+                                <div class="input-group">
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <input type="number" class="form-control" id="user_kpi_id" name="user_kpi_id" hidden>
+                                    <input type="text" class="form-control" id="user_surname" name="user_surname" readonly>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                                </div>
+                            </div>
+                        </div><!-- User Name -->
+
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="month_1" th:text="'3. '+#{month.01}"></label>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="number" class="form-control" id="month_1" name="month_1">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+
+                            <div class="col-4">
+                                <label for="month_2" th:text="'4. '+#{month.02}"></label>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="number" class="form-control" id="month_2" name="month_2">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+
+                            <div class="col-4">
+                                <label for="month_3" th:text="'5. '+#{month.03}"></label>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="number" class="form-control" id="month_3" name="month_3">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div><!-- Month 1,2,3 -->
+
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="month_4" th:text="'6. '+#{month.04}"></label>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="number" class="form-control" id="month_4" name="month_4">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+
+                            <div class="col-4">
+                                <label for="month_5" th:text="'7. '+#{month.05}"></label>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="number" class="form-control" id="month_5" name="month_5">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+
+                            <div class="col-4">
+                                <label for="month_6" th:text="'8. '+#{month.06}"></label>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="number" class="form-control" id="month_6" name="month_6">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div><!-- Month 4,5,6 -->
+
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="month_7" th:text="'9. '+#{month.07}"></label>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="number" class="form-control" id="month_7" name="month_7">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+
+                            <div class="col-4">
+                                <label for="month_8" th:text="'10. '+#{month.08}"></label>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="number" class="form-control" id="month_8" name="month_8">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+
+                            <div class="col-4">
+                                <label for="month_9" th:text="'11. '+#{month.09}"></label>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="number" class="form-control" id="month_9" name="month_9">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div><!-- Month 7,8,9 -->
+
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="month_10" th:text="'12. '+#{month.10}"></label>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="number" class="form-control" id="month_10" name="month_10">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+
+                            <div class="col-4">
+                                <label for="month_11" th:text="'13. '+#{month.11}"></label>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="number" class="form-control" id="month_11" name="month_11">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+
+                            <div class="col-4">
+                                <label for="month_12" th:text="'14. '+#{month.12}"></label>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="number" class="form-control" id="month_12" name="month_12">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div><!-- Month 10,11,12 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="dep_kpi_plans_users_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="dep_kpi_plans_users_modal_savebtn" class="btn btn-outline-primary" th:text="#{general.editbtn}"></button>
+                    <button type="button" id="dep_kpi_plans_users_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+     function dep_kpi_plans_users_modal_valid(){
+         var Year = $("#dep_kpi_plans_year").val();
+         var TypeID = $("#user_kpi_type_list").val();
+         var UserID = $('#department_users_list').val();
+         var DepID = $('#department_list').val();
+         var DepTypeID = $('#dep_kpi_type_list').val();
+
+        if ($('#mode').val() === '1') {
+            $.ajax({
+                url: /*[[ @{/dep_kpi_plans/users_kpi_plans_edit} ]]*/ "/dep_kpi_plans/users_kpi_plans_edit",
+                type: 'POST',
+                data: {
+                    "user_kpi_year": $('#dep_kpi_plans_year').val(),
+                    "user_kpi_type_id": $('#user_kpi_type_list').val(),
+                    "user_kpi_id": $('#user_kpi_id').val(),
+                    "month_1": $('#month_1').val(),
+                    "month_2": $('#month_2').val(),
+                    "month_3": $('#month_3').val(),
+                    "month_4": $('#month_4').val(),
+                    "month_5": $('#month_5').val(),
+                    "month_6": $('#month_6').val(),
+                    "month_7": $('#month_7').val(),
+                    "month_8": $('#month_8').val(),
+                    "month_9": $('#month_9').val(),
+                    "month_10": $('#month_10').val(),
+                    "month_11": $('#month_11').val(),
+                    "month_12": $('#month_12').val()
+                },
+                success: function (result) {
+                    $('#dep_kpi_plans_users_modal').modal('hide');
+                    vDepKPIPlanUsersListValue.rowdata.users_kpi_plans_year = Year;
+                    vDepKPIPlanUsersListValue.rowdata.user_kpi_type_id = TypeID;
+                    vDepKPIPlanUsersListValue.rowdata.dep_user_id = UserID;
+                    vDepKPIPlanUsersListValue.rowdata.dep_id = DepID;
+                    $(vDepKPIPlanUsersListValue.table).DataTable().ajax.reload(null, false);
+                    vUsersKPIDepPlanMainValue.rowdata.dep_id = DepID;
+                    vUsersKPIDepPlanMainValue.rowdata.dep_kpi_plans_year = Year;
+                    vUsersKPIDepPlanMainValue.rowdata.dep_kpi_type_id = DepTypeID;
+                    $(vUsersKPIDepPlanMainValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+         else if ($('#mode').val() === '2') {
+            $.ajax({
+                 url: /*[[ @{/dep_kpi_plans/users_kpi_plans_del} ]]*/ "/dep_kpi_plans/users_kpi_plans_del",
+                 type: 'POST',
+                 data: {
+                     "user_kpi_year": $('#dep_kpi_plans_year').val(),
+                     "user_kpi_type_id": $('#user_kpi_type_list').val(),
+                     "user_kpi_id": $('#user_kpi_id').val()
+                 },
+                 success: function (result) {
+                     $('#dep_kpi_plans_users_modal').modal('hide');
+                     vDepKPIPlanUsersListValue.rowdata.users_kpi_plans_year = Year;
+                     vDepKPIPlanUsersListValue.rowdata.user_kpi_type_id = TypeID;
+                     vDepKPIPlanUsersListValue.rowdata.dep_user_id = UserID;
+                     vDepKPIPlanUsersListValue.rowdata.dep_id = DepID;
+                     $(vDepKPIPlanUsersListValue.table).DataTable().ajax.reload(null, false);
+                     vUsersKPIDepPlanMainValue.rowdata.dep_id = DepID;
+                     vUsersKPIDepPlanMainValue.rowdata.dep_kpi_plans_year = Year;
+                     vUsersKPIDepPlanMainValue.rowdata.dep_kpi_type_id = DepTypeID;
+                     $(vUsersKPIDepPlanMainValue.table).DataTable().ajax.reload(null, false);
+                 }
+             });
+         }
+    }
+
+    $(document).ready(function() {
+        $('#dep_kpi_plans_users_modal').on('shown.bs.modal', function() {
+            if($('#mode').val() === '4') {
+                $('#month_1').attr('readonly', true);
+                $('#month_2').attr('readonly', true);
+                $('#month_3').attr('readonly', true);
+                $('#month_4').attr('readonly', true);
+                $('#month_5').attr('readonly', true);
+                $('#month_6').attr('readonly', true);
+                $('#month_7').attr('readonly', true);
+                $('#month_8').attr('readonly', true);
+                $('#month_9').attr('readonly', true);
+                $('#month_10').attr('readonly', true);
+                $('#month_11').attr('readonly', true);
+                $('#month_12').attr('readonly', true);
+                $('#dep_kpi_plans_users_modal_savebtn').attr('hidden', true);
+                $('#dep_kpi_plans_users_modal_delbtn').attr('hidden', true);
+            }
+            else if($('#mode').val() === '1') {
+                $('#month_1').removeAttr('readonly');
+                $('#month_2').removeAttr('readonly');
+                $('#month_3').removeAttr('readonly');
+                $('#month_4').removeAttr('readonly');
+                $('#month_5').removeAttr('readonly');
+                $('#month_6').removeAttr('readonly');
+                $('#month_7').removeAttr('readonly');
+                $('#month_8').removeAttr('readonly');
+                $('#month_9').removeAttr('readonly');
+                $('#month_10').removeAttr('readonly');
+                $('#month_11').removeAttr('readonly');
+                $('#month_12').removeAttr('readonly');
+                $('#dep_kpi_plans_users_modal_savebtn').removeAttr('hidden');
+                $('#dep_kpi_plans_users_modal_delbtn').attr('hidden', true);
+            }
+            else if($('#mode').val() === '2') {
+                $('#month_1').attr('readonly', true);
+                $('#month_2').attr('readonly', true);
+                $('#month_3').attr('readonly', true);
+                $('#month_4').attr('readonly', true);
+                $('#month_5').attr('readonly', true);
+                $('#month_6').attr('readonly', true);
+                $('#month_7').attr('readonly', true);
+                $('#month_8').attr('readonly', true);
+                $('#month_9').attr('readonly', true);
+                $('#month_10').attr('readonly', true);
+                $('#month_11').attr('readonly', true);
+                $('#month_12').attr('readonly', true);
+                $('#dep_kpi_plans_users_modal_savebtn').attr('hidden', true);
+                $('#dep_kpi_plans_users_modal_delbtn').removeAttr('hidden');
+            }
+        });
+
+        $('#dep_kpi_plans_users_modal_savebtn').on('click', function () {
+                dep_kpi_plans_users_modal_valid();
+        });
+
+        $('#dep_kpi_plans_users_modal_delbtn').on('click', function () {
+            dep_kpi_plans_users_modal_valid();
+        });
+    });
+</script>
+
+</body>
+</html>

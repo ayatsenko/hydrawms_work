@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="wms_kpi_project_filter_body" th:remove="tag">
+		<form class="form-inline">
+		      <div class="form-group mb-2 mr-2">
+				<label for="wms_kpi_project_year" class="mr-2" th:text="#{wms_kpi_project.filter.year}">Year: </label>
+                <select class="custom-select" style="width:130px; display:inline-block" id="wms_kpi_project_year" placeholder="Year">
+					<option selected>2021</option>
+					<option>2022</option>
+               </select>
+			  </div>
+
+			<a class="btn btn-outline-primary mb-2" id="wms_kpi_project_show" th:text="#{general.showbth}" hidden>Show</a>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+	$(document).ready(function(){
+		<!-- Highlight menu -->
+		$('#main_li').removeClass('active');
+
+		$('#wms_kpi_li').addClass('active').removeClass('collapsed');
+		$('#wms_kpi_a').attr('aria-expanded',true);
+		$('#wms_kpi').addClass('show');
+
+		$(".sidebar").toggleClass("toggled");
+
+		$('#wms_kpi_project_a').addClass('text-primary');
+		$('#wms_kpi_project_show').removeAttr('hidden');
+
+		$("#wms_kpi_project_department_calculation_month").val(currentMonth);
+		$('.nav-pills a[data-current-month="' + currentMonth + '"]').tab('show');
+	});
+
+	$('#wms_kpi_project_show').click(function () {
+		$('#wms_kpi_project_department_row').removeAttr('hidden');
+
+		vWMSKPIProjectDepartmentValue.rowdata.kpi_year = $('#wms_kpi_project_year').val();
+		vWMSKPIProjectDepartmentValue.rowdata.wms_dep_id = null;
+		$(vWMSKPIProjectDepartmentValue.table).DataTable().ajax.reload(null, false);
+	});
+
+	$('#wms_kpi_project_department_calculation_ul a').on('shown.bs.tab', function (e) {
+		e.target; // newly activated tab
+		e.relatedTarget; // previous active tab
+		$('#wms_kpi_project_department_calculation_month').val($(this).attr("data-current-month"));
+		if(vWMSKPIProjectDepartmentProjectValue.rowdata.wms_project_id === 1 || vWMSKPIProjectDepartmentProjectValue.rowdata.wms_project_id === 3) {
+			wms_kpi_project_department_calculation_first_change();
+		}
+		else if(vWMSKPIProjectDepartmentProjectValue.rowdata.wms_project_id === 2){
+			wms_kpi_project_department_calculation_second_change();
+		}
+	});
+</script>
+
+</body>
+</html>

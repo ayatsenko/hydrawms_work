@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="requests_list_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="requests_list_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="hidden">
+                <input type="hidden" id="requests_list_modal_mode">
+                <input type="hidden" name="curr_user_id" id="curr_user_id">
+                <input type="hidden" name="curr_username" id="curr_username">
+                <input type="hidden" name="curr_user_surname" id="curr_user_surname">
+                <input type="hidden" name="curr_role_id" id="curr_role_id">
+                <input type="hidden" name="edit_type_id" id="edit_type_id">
+            </div>
+
+            <div class="modal-content" id="requests_list_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{requests.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <form id="requests_list_modal_form">
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3 " id="req_id_row">
+                            <label for="req_id" class="label mb-0" th:text="'1. '+ #{requests.list.req_id}"></label>
+                            <input type="number" class="form-control" id="req_id" name="req_id">
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <label for="req_type_id" class="label mb-0" th:text="'2. '+#{requests.list.req_type_id}"></label>
+                            <select type="text" id="req_type_id" name="req_type_id" class="custom-select" aria-describedby="req_type_id_helpBlock">
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-5">
+                            <label for="requests_list_modal_user_id" class="label mb-0" th:text="'3. '+#{requests.list.user_id}"></label>
+                            <div class="flex-fill">
+                                <select type="text" id="requests_list_modal_user_id" name="requests_list_modal_user_id" class="custom-select select2" aria-describedby="requests_list_modal_user_id_helpBlock">
+                                </select>
+                            </div>
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-10" id="requests_list_modal_cnt_id_div">
+                            <label for="requests_list_modal_cnt_id" class="label mb-0" th:text="'4. '+#{requests.list.cnt_id}"></label>
+                            <div class="flex-fill">
+                                <select type="text" id="requests_list_modal_cnt_id" name="requests_list_modal_cnt_id" class="custom-select select2" aria-describedby="requests_list_modal_cnt_id_helpBlock">
+                                </select>
+                            </div>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="req_end_date_row">
+                            <label for="req_end_date" class="label mb-0" th:text="'5. '+ #{requests.list.req_end_date}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="req_end_date" name="req_end_date">
+                                <button type="button" id="req_end_date_x" name="req_end_date_x" data-parent="req_end_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-5" id="requests_list_modal_ser_id_row">
+                            <label for="requests_list_modal_ser_id" class="label mb-0" th:text="'6. '+#{requests.list.ser_id}"></label>
+                            <select type="text" id="requests_list_modal_ser_id" name="requests_list_modal_ser_id" class="custom-select" aria-describedby="requests_list_modal_ser_id_helpblock">
+                            </select>
+                        </div>
+                    </div><!-- Row 3 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-6" id="req_load_place_row">
+                            <label for="req_load_place" class="label mb-0" th:text="'7. '+#{requests.list.req_load_place}"></label>
+                            <textarea class="form-control" rows="5" maxlength="256" style="resize:none;" id="req_load_place" name="req_load_place">
+                            </textarea>
+                        </div>
+
+                        <div class="col-12 col-md-6" id="req_tax_place_row">
+                            <label for="req_tax_place" class="label mb-0" th:text="'8. '+#{requests.list.req_tax_place}"></label>
+                            <textarea class="form-control" rows="5" maxlength="256" style="resize:none;" id="req_tax_place" name="req_tax_place">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 4 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-6" id="req_clearance_place_row">
+                            <label for="req_clearance_place" class="label mb-0" th:text="'9. '+#{requests.list.req_clearance_place}"></label>
+                            <textarea class="form-control" rows="5" maxlength="256" style="resize:none;" id="req_clearance_place" name="req_clearance_place">
+                            </textarea>
+                        </div>
+
+                        <div class="col-12 col-md-6" id="req_unload_place_row">
+                            <label for="req_unload_place" class="label mb-0" th:text="'10. '+#{requests.list.req_unload_place}"></label>
+                            <textarea class="form-control" rows="5" maxlength="256" style="resize:none;" id="req_unload_place" name="req_unload_place">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 5 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-5" id="req_cargo_note_row">
+                            <label for="req_cargo_note" class="label mb-0" th:text="'11. '+ #{requests.list.req_cargo_note}"></label>
+                            <input type="text" maxlength="32" class="form-control" id="req_cargo_note" name="req_cargo_note">
+                        </div>
+
+                        <div class="col-12 col-md-5" id="load_type_id_row">
+                            <label for="load_type_id" class="label mb-0" th:text="'12. '+ #{requests.list.load_type_id}"></label>
+                            <select type="text" id="load_type_id" name="load_type_id" class="custom-select" aria-describedby="load_type_id_helpBlock">
+                            </select>
+                        </div>
+                    </div><!-- Row 6 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="req_weight_row">
+                            <label for="req_weight" class="label mb-0" th:text="'13. '+ #{requests.list.req_weight}"></label>
+                            <input type="text" maxlength="32" class="form-control" id="req_weight" name="req_weight">
+                        </div>
+
+                        <div class="col-12 col-md-5" id="req_volume_row">
+                            <label for="req_volume" class="label mb-0" th:text="'14. '+ #{requests.list.req_volume}"></label>
+                            <input type="text" maxlength="32" class="form-control" id="req_volume" name="req_volume">
+                        </div>
+                    </div><!-- Row 7 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-2" id="req_load_deep_row">
+                            <label for="req_load_deep" class="label mb-0" th:text="'15. '+ #{requests.list.req_load_deep}"></label>
+                            <input type="number" maxlength="16" class="form-control" id="req_load_deep" name="req_load_deep">
+                        </div>
+
+                        <div class="col-12 col-md-2" id="req_load_width_row">
+                            <label for="req_load_width" class="label mb-0" th:text="'16. '+ #{requests.list.req_load_width}"></label>
+                            <input type="number" maxlength="16" class="form-control" id="req_load_width" name="req_load_width">
+                        </div>
+
+                        <div class="col-12 col-md-2" id="req_load_high_row">
+                            <label for="req_load_high" class="label mb-0" th:text="'17. '+ #{requests.list.req_load_high}"></label>
+                            <input type="number" maxlength="16" class="form-control" id="req_load_high" name="req_load_high">
+                        </div>
+                    </div><!-- Row 8 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-12" id="req_dims_row">
+                            <label for="req_dims" class="label mb-0" th:text="'18. '+#{requests.list.req_dims}"></label>
+                            <textarea class="form-control" rows="3" maxlength="128" style="resize:none;" id="req_dims" name="req_dims">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 9-->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-5" id="req_adr_row">
+                            <label for="req_adr" class="label mb-0" th:text="'19. '+ #{requests.list.req_adr}"></label>
+                            <input type="text" maxlength="32" class="form-control" id="req_adr" name="req_adr">
+                        </div>
+
+                        <div class="col-12 col-md-5" id="req_special_row">
+                            <label for="req_special" class="label mb-0" th:text="'20. '+ #{requests.list.req_special}"></label>
+                            <input type="text" maxlength="32" class="form-control" id="req_special" name="req_special">
+                        </div>
+                    </div><!-- Row 10 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-5" id="req_tir_type_row">
+                            <label for="req_tir_type" class="label mb-0" th:text="'21. '+ #{requests.list.req_tir_type}"></label>
+                            <input type="text" maxlength="32" class="form-control" id="req_tir_type" name="req_tir_type">
+                        </div>
+
+                        <div class="col-12 col-md-5" id="req_profiles_row">
+                            <label for="req_profiles" class="label mb-0" th:text="'22. '+ #{requests.list.req_profiles}"></label>
+                            <input type="text" maxlength="32" class="form-control" id="req_profiles" name="req_profiles">
+                        </div>
+                    </div><!-- Row 11 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="req_plan_currency_row">
+                            <label for="req_plan_currency_id" class="label mb-0" th:text="'23. '+#{requests.list.req_plan_currency_id}">Currency: </label>
+                            <select id="req_plan_currency_id" name="req_plan_currency_id" class="custom-select">
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-3" id="req_plan_price_row">
+                            <label for="req_plan_price" class="label mb-0" th:text="'24. '+ #{requests.list.req_plan_price}"></label>
+                            <input type="number" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="req_plan_price" name="req_plan_price">
+                        </div>
+                    </div><!-- Row 12 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="req_note_row">
+                            <label for="req_note" class="label mb-0" th:text="'25. '+#{requests.list.req_note}"></label>
+                            <textarea class="form-control" rows="5" maxlength="256" style="resize:none;" id="req_note" name="req_note">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 13 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="req_ops_id_row">
+                            <label for="req_ops_id" class="label mb-0" th:text="'26. '+ #{requests.list.req_ops_id}"></label>
+                            <input type="number" class="form-control" id="req_ops_id" name="req_ops_id">
+                        </div>
+
+                        <div class="col-12 col-md-3" id="req_ops_date_row">
+                            <label for="req_ops_date" class="label mb-0" th:text="'27. '+ #{requests.list.req_ops_date}"></label>
+                            <input type="text" class="form-control" id="req_ops_date" name="req_ops_date">
+                        </div>
+
+                        <div class="col-12 col-md-5" id="req_ops_username_row">
+                            <label for="requests_list_modal_ops_user_id" class="label mb-0" th:text="'28. '+ #{requests.list.req_ops_username}"></label>
+                            <select type="text" id="requests_list_modal_ops_user_id" name="requests_list_modal_ops_user_id" class="custom-select" aria-describedby="requests_list_modal_user_id_helpBlock">
+                            </select>
+                        </div>
+                    </div><!-- Row 14 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="req_ops_currency_row">
+                            <label for="req_ops_currency_id" class="label mb-0" th:text="'29. '+#{requests.list.req_ops_currency_id}">Currency: </label>
+                            <select id="req_ops_currency_id" name="req_ops_currency_id" class="custom-select">
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-3" id="req_ops_price_row">
+                            <label for="req_ops_price" class="label mb-0" th:text="'30. '+ #{requests.list.req_ops_price}"></label>
+                            <input type="number" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="req_ops_price" name="req_ops_price">
+                        </div>
+                    </div><!-- Row 15 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="req_ops_answer_row">
+                            <label for="req_ops_answer" class="label mb-0" th:text="'31. '+#{requests.list.req_ops_answer}"></label>
+                            <textarea class="form-control" rows="3" maxlength="128" style="resize:none;" id="req_ops_answer" name="req_ops_answer">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 16 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="req_ops_note_row">
+                            <label for="req_ops_note" class="label mb-0" th:text="'32. '+#{requests.list.req_ops_note}"></label>
+                            <textarea class="form-control" rows="5" maxlength="612" style="resize:none;" id="req_ops_note" name="req_ops_note">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 17 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-4" id="req_status_id_row">
+                            <label for="req_status_id" class="label mb-0" th:text="'33. '+#{requests.list.req_status_id}"></label>
+                            <select type="text" id="req_status_id" name="req_status_id" class="custom-select" aria-describedby="req_status_id_helpBlock">
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-3" id="req_profit_predict_row">
+                            <label for="req_profit_predict" class="label mb-0" th:text="'34. '+ #{requests.list.req_profit_predict}"></label>
+                            <input type="number" class="form-control" id="req_profit_predict" name="req_profit_predict">
+                        </div>
+                    </div><!-- Row 18 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-4" id="req_result_status_id_row">
+                            <label for="req_result_status_id" class="label mb-0" th:text="'35. '+#{requests.list.req_result_status_id}"></label>
+                            <select type="text" id="req_result_status_id" name="req_result_status_id" class="custom-select">
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-4" id="req_fia_status_id_row">
+                            <label for="req_fia_status_id" class="label mb-0" th:text="'36. '+#{requests.list.req_fia_status_id}"></label>
+                            <select type="text" id="req_fia_status_id" name="req_fia_status_id" class="custom-select" aria-describedby="req_fia_status_id_helpBlock">
+                            </select>
+                        </div>
+                    </div><!-- Row 19 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="req_result_currency_row">
+                            <label for="req_result_currency_id" class="label mb-0" th:text="'37. '+#{requests.list.req_result_currency_id}">Currency: </label>
+                            <select id="req_result_currency_id" name="req_result_currency_id" class="custom-select">
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-3" id="req_result_price_row">
+                            <label for="req_result_price" class="label mb-0" th:text="'38. '+ #{requests.list.req_result_price}"></label>
+                            <input type="number" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="req_result_price" name="req_result_price">
+                        </div>
+                    </div><!-- Row 20 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="req_result_text_row">
+                            <label for="req_result_text" class="label mb-0" th:text="'39. '+#{requests.list.req_result_text}"></label>
+                            <textarea class="form-control" rows="3" maxlength="64" style="resize:none;" id="req_result_text" name="req_result_text">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 21 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="req_result_note_row">
+                            <label for="req_result_note" class="label mb-0" th:text="'40. '+#{requests.list.req_result_note}"></label>
+                            <textarea class="form-control" rows="5" maxlength="612" style="resize:none;" id="req_result_note" name="req_result_note">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 22 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="req_doc_number_row">
+                            <label for="req_doc_number" class="label mb-0" th:text="'41. '+ #{requests.list.req_doc_number}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="req_doc_number" name="req_doc_number">
+                        </div>
+
+                        <div class="col-12 col-md-3" id="req_doc_start_date_row">
+                            <label for="req_doc_start_date" class="label mb-0" th:text="'42. '+ #{requests.list.req_doc_start_date}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="req_doc_start_date" name="req_doc_start_date">
+                                <button type="button" id="req_doc_start_date_x" name="req_doc_start_date_x" data-parent="req_doc_start_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-3" id="req_doc_end_date_row">
+                            <label for="req_doc_end_date" class="label mb-0" th:text="'43. '+ #{requests.list.req_doc_end_date}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="req_doc_end_date" name="req_doc_end_date">
+                                <button type="button" id="req_doc_end_date_x" name="req_doc_end_date_x" data-parent="req_doc_end_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div><!-- Row 23 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="req_work_start_date_row">
+                            <label for="req_work_start_date" class="label mb-0" th:text="'44. '+ #{requests.list.req_work_start_date}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="req_work_start_date" name="req_work_start_date">
+                                <button type="button" id="req_work_start_date_x" name="req_work_start_date_x" data-parent="req_work_start_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div><!-- Row 24 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="req_work_note_row">
+                            <label for="req_work_note" class="label mb-0" th:text="'45. '+#{requests.list.req_work_note}"></label>
+                            <textarea class="form-control" rows="5" maxlength="612" style="resize:none;" id="req_work_note" name="req_work_note">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 25 -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="requests_list_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="requests_list_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="requests_list_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="requests_list_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    //Fields Show
+    function TypeChange(){
+        let serid = $('#requests_list_modal_ser_id').val();
+        if (serid == 2){
+            $('#req_end_date_row').removeAttr('hidden');
+            $('#req_end_date').attr('required', true);
+
+            $('#req_load_place_row').attr('hidden', true);
+            $('#req_load_place').removeAttr('required');
+
+            $('#req_tax_place_row').attr('hidden', true);
+            $('#req_tax_place').removeAttr('required');
+
+            $('#req_clearance_place_row').removeAttr('hidden');
+            $('#req_clearance_place').attr('required', true);
+
+            $('#req_unload_place_row').attr('hidden', true);
+            $('#req_unload_place').removeAttr('required');
+
+            $('#req_cargo_note_row').removeAttr('hidden');
+
+            $('#load_type_id_row').attr('hidden', true);
+
+            $('#req_weight_row').attr('hidden', true);
+            $('#req_weight').removeAttr('required');
+
+            $('#req_volume_row').attr('hidden', true);
+            $('#req_volume').removeAttr('required');
+
+            $('#req_dims_row').attr('hidden', true);
+
+            $('#req_adr_row').attr('hidden', true);
+            $('#req_adr').removeAttr('required');
+
+            $('#req_special_row').attr('hidden', true);
+            $('#req_special').removeAttr('required');
+
+            $('#req_tir_type_row').removeAttr('hidden');
+            $('#req_tir_type').attr('required', true);
+
+            $('#req_profiles_row').attr('hidden', true);
+            $('#req_profiles').removeAttr('required');
+
+            $('#req_plan_price_row').removeAttr('hidden');
+        }
+        else if (serid == 3) {
+            $('#req_end_date_row').removeAttr('hidden');
+            $('#req_end_date').attr('required', true);
+
+            $('#req_load_place_row').removeAttr('hidden');
+            $('#req_load_place').attr('required', true);
+
+            $('#req_tax_place_row').attr('hidden',true);
+            $('#req_tax_place').removeAttr('required');
+
+            $('#req_clearance_place_row').attr('hidden',true);
+            $('#req_clearance_place').removeAttr('required');
+
+            $('#req_unload_place_row').removeAttr('hidden');
+            $('#req_unload_place').attr('required', true);
+
+            $('#req_cargo_note_row').removeAttr('hidden');
+            $('#load_type_id_row').removeAttr('hidden');
+
+            $('#req_weight_row').removeAttr('hidden');
+            $('#req_weight').attr('required', true);
+
+            $('#req_volume_row').removeAttr('hidden');
+            $('#req_volume').attr('required', true);
+
+            $('#req_dims_row').removeAttr('hidden');
+
+            $('#req_adr_row').removeAttr('hidden');
+            $('#req_adr').attr('required', true);
+
+            $('#req_special_row').removeAttr('hidden');
+            $('#req_special').attr('required', true);
+
+            $('#req_tir_type_row').attr('hidden',true);
+            $('#req_tir_type').removeAttr('required');
+
+            $('#req_profiles_row').removeAttr('hidden');
+            $('#req_profiles').attr('required', true);
+
+            $('#req_plan_price_row').removeAttr('hidden');
+        }
+        else if (serid == 7) {
+            $('#req_end_date_row').removeAttr('hidden');
+            $('#req_end_date').attr('required', true);
+
+            $('#req_load_place_row').removeAttr('hidden');
+            $('#req_load_place').attr('required', true);
+
+            $('#req_tax_place_row').attr('hidden',true);
+            $('#req_tax_place').removeAttr('required');
+
+            $('#req_clearance_place_row').addClass('hidden',true);
+            $('#req_clearance_place').removeAttr('required');
+
+            $('#req_unload_place_row').removeAttr('hidden');
+            $('#req_unload_place').attr('required', true);
+
+            $('#req_cargo_note_row').removeAttr('hidden');
+            $('#load_type_id_row').removeAttr('hidden');
+
+            $('#req_weight_row').removeAttr('hidden');
+            $('#req_weight').attr('required', true);
+
+            $('#req_volume_row').removeAttr('hidden');
+            $('#req_volume').attr('required', true);
+
+            $('#req_dims_row').removeAttr('hidden');
+
+            $('#req_adr_row').removeAttr('hidden');
+            $('#req_adr').attr('required', true);
+
+            $('#req_special_row').removeAttr('hidden');
+            $('#req_special').attr('required', true);
+
+            $('#req_tir_type_row').attr('hidden',true);
+            $('#req_tir_type').removeAttr('required');
+
+            $('#req_profiles_row').removeAttr('hidden');
+            $('#req_profiles').attr('required', true);
+
+            $('#req_plan_price_row').removeAttr('hidden');
+        }
+        else if (serid == 9) {
+            $('#req_end_date_row').removeAttr('hidden');
+            $('#req_end_date').attr('required', true);
+
+            $('#req_load_place_row').removeAttr('hidden');
+            $('#req_load_place').attr('required', true);
+
+            $('#req_tax_place_row').removeAttr('hidden');
+            $('#req_tax_place').attr('required', true);
+
+            $('#req_clearance_place_row').removeAttr('hidden');
+            $('#req_clearance_place').attr('required', true);
+
+            $('#req_unload_place_row').removeAttr('hidden');
+            $('#req_unload_place').attr('required', true);
+
+            $('#req_cargo_note_row').removeAttr('hidden');
+
+            $('#load_type_id_row').attr('hidden', true);
+
+            $('#req_weight_row').removeAttr('hidden');
+            $('#req_weight').attr('required', true);
+
+            $('#req_volume_row').removeAttr('hidden');
+            $('#req_volume').attr('required', true);
+
+            $('#req_dims_row').removeAttr('hidden');
+
+            $('#req_adr_row').removeAttr('hidden');
+            $('#req_adr').attr('required', true);
+
+            $('#req_special_row').removeAttr('hidden');
+            $('#req_special').attr('required', true);
+
+            $('#req_tir_type_row').attr('hidden', true);
+            $('#req_tir_type').removeAttr('required');
+
+            $('#req_profiles_row').removeAttr('hidden');
+            $('#req_profiles').attr('required', true);
+
+            $('#req_plan_price_row').removeAttr('hidden');
+        }
+        else if (serid == 10) {
+            $('#req_end_date_row').removeAttr('hidden');
+            $('#req_end_date').attr('required', true);
+
+            $('#req_load_place_row').removeAttr('hidden');
+            $('#req_load_place').attr('required', true);
+
+            $('#req_tax_place_row').removeAttr('hidden');
+            $('#req_tax_place').attr('required', true);
+
+            $('#req_clearance_place_row').removeAttr('hidden');
+            $('#req_clearance_place').attr('required', true);
+
+            $('#req_unload_place_row').removeAttr('hidden');
+            $('#req_unload_place').attr('required', true);
+
+            $('#req_cargo_note_row').removeAttr('hidden');
+            $('#load_type_id_row').removeAttr('hidden');
+
+            $('#req_weight_row').removeAttr('hidden');
+            $('#req_weight').attr('required', true);
+
+            $('#req_volume_row').removeAttr('hidden');
+            $('#req_volume').attr('required', true);
+
+            $('#req_dims_row').removeAttr('hidden');
+
+            $('#req_adr_row').removeAttr('hidden');
+            $('#req_adr').attr('required', true);
+
+            $('#req_special_row').removeAttr('hidden');
+            $('#req_special').attr('required', true);
+
+            $('#req_tir_type_row').attr('hidden',true);
+            $('#req_tir_type').removeAttr('required');
+
+            $('#req_profiles_row').removeAttr('hidden');
+            $('#req_profiles').attr('required', true);
+        }
+        else if (serid == 11) {
+            $('#req_end_date_row').removeAttr('hidden');
+            $('#req_end_date').attr('required', true);
+
+            $('#req_load_place_row').attr('hidden',true);
+            $('#req_load_place').removeAttr('required');
+
+            $('#req_tax_place_row').attr('hidden',true);
+            $('#req_tax_place').removeAttr('required');
+
+            $('#req_clearance_place_row').attr('hidden',true);
+            $('#req_clearance_place').removeAttr('required');
+
+            $('#req_unload_place_row').attr('hidden',true);
+            $('#req_unload_place').removeAttr('required');
+
+            $('#req_cargo_note_row').removeAttr('hidden');
+
+            $('#load_type_id_row').attr('hidden', true);
+
+            $('#req_weight_row').attr('hidden',true);
+            $('#req_weight').removeAttr('required');
+
+            $('#req_volume_row').removeAttr('hidden');
+            $('#req_volume').attr('required', true);
+
+            $('#req_dims_row').removeAttr('hidden');
+
+            $('#req_adr_row').removeAttr('hidden');
+            $('#req_adr').attr('required', true);
+
+            $('#req_special_row').attr('hidden',true);
+            $('#req_special').removeAttr('required');
+
+            $('#req_tir_type_row').attr('hidden',true);
+            $('#req_tir_type').removeAttr('required');
+
+            $('#req_profiles_row').removeAttr('hidden');
+            $('#req_profiles').attr('required', true);
+
+            $('#req_plan_price_row').removeAttr('hidden');
+        }
+        else if (serid == 12) {
+            $('#req_end_date_row').removeAttr('hidden');
+            $('#req_end_date').attr('required', true);
+
+            $('#req_load_place_row').attr('hidden',true);
+            $('#req_load_place').removeAttr('required');
+
+            $('#req_tax_place_row').attr('hidden',true);
+            $('#req_tax_place').removeAttr('required');
+
+            $('#req_clearance_place_row').attr('hidden',true);
+            $('#req_clearance_place').removeAttr('required');
+
+            $('#req_unload_place_row').attr('hidden',true);
+            $('#req_unload_place').removeAttr('required');
+
+            $('#req_cargo_note_row').removeAttr('hidden');
+
+            $('#load_type_id_row').attr('hidden', true);
+
+            $('#req_weight_row').attr('hidden',true);
+            $('#req_weight').removeAttr('required');
+
+            $('#req_volume_row').removeAttr('hidden');
+            $('#req_volume').attr('required', true);
+
+            $('#req_dims_row').removeAttr('hidden');
+
+            $('#req_adr_row').removeAttr('hidden');
+            $('#req_adr').attr('required', true);
+
+            $('#req_special_row').attr('hidden',true);
+            $('#req_special').removeAttr('required');
+
+            $('#req_tir_type_row').attr('hidden',true);
+            $('#req_tir_type').removeAttr('required');
+
+            $('#req_profiles_row').removeAttr('hidden');
+            $('#req_profiles').attr('required', true);
+
+            $('#req_plan_price_row').removeAttr('hidden');
+        }
+        else {
+            $('#req_end_date_row').removeAttr('hidden');
+            $('#req_end_date').attr('required', true);
+
+            $('#req_load_place_row').removeAttr('hidden');
+            $('#req_load_place').attr('required', true);
+
+            $('#req_tax_place_row').removeAttr('hidden');
+            $('#req_tax_place').attr('required', true);
+
+            $('#req_clearance_place_row').removeAttr('hidden');
+            $('#req_clearance_place').attr('required', true);
+
+            $('#req_unload_place_row').removeAttr('hidden');
+            $('#req_unload_place').attr('required', true);
+
+            $('#req_cargo_note_row').removeAttr('hidden');
+            $('#load_type_id_row').removeAttr('hidden');
+
+            $('#req_weight_row').removeAttr('hidden');
+            $('#req_weight').attr('required', true);
+
+            $('#req_volume_row').removeAttr('hidden');
+            $('#req_volume').attr('required', true);
+
+            $('#req_dims_row').removeAttr('hidden');
+
+            $('#req_adr_row').removeAttr('hidden');
+            $('#req_adr').attr('required', true);
+
+            $('#req_special_row').removeAttr('hidden');
+            $('#req_special').attr('required', true);
+
+            $('#req_tir_type_row').removeAttr('hidden');
+            $('#req_tir_type').attr('required', true);
+
+            $('#req_profiles_row').removeAttr('hidden');
+            $('#req_profiles').attr('required', true);
+
+            $('#req_plan_price_row').removeAttr('hidden');
+        }
+    }
+
+    function reqStatusChangeID(){
+        if($('#edit_type_id').val() === '2' && $('#req_status_id').val() === '4'){
+            $('#req_ops_price').attr("min", 100).attr('required', true);
+            $('#req_ops_currency_id').attr('required', true);
+            $('#req_ops_answer').attr('minlength', 10).prop('required', true);
+            $('#req_result_status_id').val('').removeAttr('required').attr('disabled', true);
+            $('#req_fia_status_id').val('').removeAttr('required').attr('disabled', true);
+        }
+        else if($('#edit_type_id').val() === '2' && $('#req_status_id').val() !== '4'){
+            $('#req_ops_price').removeAttr("min").removeAttr('required');
+            $('#req_ops_currency_id').removeAttr('required');
+            $('#req_ops_answer').removeAttr('minlength').prop('required', false);
+            $('#req_result_status_id').val('').removeAttr('required').attr('disabled', true);
+            $('#req_fia_status_id').val('').removeAttr('required').attr('disabled', true);
+        }
+        else if($('#edit_type_id').val() === '3' && $('#req_status_id').val() === '5') {
+            $('#req_result_status_id').attr('required', true).removeAttr('disabled');
+            $('#req_fia_status_id').val('').removeAttr('required').attr('disabled', true);
+        }
+        else if($('#edit_type_id').val() === '3' && $('#req_status_id').val() !== '5') {
+            $('#req_result_status_id').val('').removeAttr('required').attr('disabled', true);
+            $('#req_fia_status_id').val('').removeAttr('required').attr('disabled', true);
+        }
+        else{
+            $('#req_ops_price').removeAttr("min").removeAttr('required');
+            $('#req_ops_currency_id').removeAttr('required');
+            $('#req_ops_answer').removeAttr('minlength').prop('required', false);
+            $('#req_result_status_id').removeAttr('required').attr('disabled', true);
+            $('#req_fia_status_id').removeAttr('required').attr('disabled', true);
+            $('#req_doc_number').val('').removeAttr('required');
+            $('#req_work_start_date').val('').removeAttr('required');
+            $('#req_result_text').removeAttr('minlength').prop('required', false);
+        }
+    }
+
+    function reqResultStatusChangeID(){
+        if(['-2', '-1'].indexOf($('#req_result_status_id').val()) >= 0) {
+            $('#req_result_text').attr('minlength', 10).prop('required', true);
+            $('#req_fia_status_id').val('').removeAttr('required').attr('disabled', true);
+            $('#req_doc_number').val('').removeAttr('required');
+            $('#req_work_start_date').val('').removeAttr('required');
+        }
+        else if(['2', '3', '4'].indexOf($('#req_result_status_id').val()) >= 0){
+            $('#req_result_text').attr('minlength', 10).prop('required', true);
+            $('#req_fia_status_id').attr('required', true).removeAttr('disabled');
+            $('#req_doc_number').val('').removeAttr('required');
+            $('#req_work_start_date').val('').removeAttr('required');
+        }
+        else if($('#req_result_status_id').val() === '5'){
+            $('#req_result_text').removeAttr('minlength').prop('required', false);
+            $('#req_fia_status_id').val('').removeAttr('required').attr('disabled', true);
+            $('#req_doc_number').attr('required', true);
+            $('#req_work_start_date').val('').removeAttr('required');
+        }
+        else if($('#req_result_status_id').val() === '6'){
+            $('#req_result_text').removeAttr('minlength').prop('required', false);
+            $('#req_fia_status_id').val('').removeAttr('required').attr('disabled', true);
+            $('#req_doc_number').attr('required', true);
+            $('#req_work_start_date').attr('required', true);
+        }
+        else{
+            $('#req_result_text').removeAttr('minlength').prop('required', false);
+            $('#req_fia_status_id').val('').removeAttr('required').attr('disabled', true);
+            $('#req_doc_number').val('').removeAttr('required');
+            $('#req_work_start_date').val('').removeAttr('required');
+        }
+    }
+
+    // Clear Fields
+    function clear_requests_list_modal_detail() {
+        $("#requests_list_modal_detail input[type=text]").val('');
+        $("#requests_list_modal_detail input[type=number]").val('');
+        $("#requests_list_modal_detail select").empty();
+        $("#requests_list_modal_detail textarea").val('');
+    }
+    // Block And Required Fields
+    function block_requests_list_modal_detail() {
+        $('#requests_list_modal_cnt_id').prop('required',true);
+        $('#requests_list_modal_user_id').prop('required',true);
+        $('#requests_list_modal_ser_id').prop('required',true);
+        $('#req_status_id').prop('required',true);
+
+        if($('#requests_list_modal_mode').val() === "0"){
+            $('#req_id_row').attr('hidden', true);
+
+            $('#req_load_deep').val(0);
+            $('#req_load_high').val(0);
+            $('#req_load_width').val(0);
+            $('#req_plan_price').val('0.00');
+            $('#req_ops_price').val('0.00');
+            $('#req_profit_predict').val('0.00');
+            $('#req_result_price').val('0.00');
+
+            $('#req_ops_id_row').attr('hidden', true);
+            $('#req_ops_date_row').attr('hidden', true);
+            $('#req_ops_username_row').attr('hidden', true);
+            $('#req_ops_currency_row').attr('hidden', true);
+            $('#req_ops_price_row').attr('hidden', true);
+            $('#req_ops_answer_row').attr('hidden', true);
+            $('#req_ops_note_row').attr('hidden', true);
+
+            $('#req_result_status_id_row').attr('hidden', true);
+            $('#req_result_status_id').removeAttr('required');
+            $('#req_fia_status_id_row').attr('hidden', true);
+            $('#req_result_currency_row').attr('hidden', true);
+            $('#req_result_price_row').attr('hidden', true);
+            $('#req_result_text_row').attr('hidden', true);
+            $('#req_result_note_row').attr('hidden', true);
+            $('#req_doc_number_row').attr('hidden', true);
+            $('#req_doc_start_date_row').attr('hidden', true);
+            $('#req_doc_end_date_row').attr('hidden', true);
+            $('#req_work_start_date_row').attr('hidden', true);
+            $('#req_work_note_row').attr('hidden', true);
+        }
+        else if($('#requests_list_modal_mode').val() === "1"){
+            $('#req_id_row').removeAttr('hidden');
+            $('#req_id').prop('readOnly',true);
+
+            $('#req_type_id').prop('disabled',false);
+            $('#requests_list_modal_user_id').prop('disabled',false);
+            $('#requests_list_modal_cnt_id').prop('disabled',false);
+            $('#requests_list_modal_ser_id').prop('disabled',false);
+
+            $('#req_end_date').attr('disabled', false);
+            $('#req_end_date_x').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#req_load_place').removeAttr('readonly');
+            $('#req_tax_place').removeAttr('readonly');
+            $('#req_clearance_place').removeAttr('readonly');
+            $('#req_unload_place').removeAttr('readonly');
+            $('#req_cargo_note').removeAttr('readonly');
+            $('#req_weight').removeAttr('readonly');
+            $('#req_volume').removeAttr('readonly');
+            $('#req_load_deep').removeAttr('readonly');
+            $('#req_load_width').removeAttr('readonly');
+            $('#req_load_high').removeAttr('readonly');
+            $('#req_dims').removeAttr('readonly');
+            $('#req_adr').removeAttr('readonly');
+            $('#req_special').removeAttr('readonly');
+            $('#req_tir_type').removeAttr('readonly');
+
+            $('#load_type_id').prop('disabled',false);
+
+            $('#req_profiles').removeAttr('readonly');
+            $('#req_plan_price').removeAttr('readonly');
+            $('#req_plan_currency_id').prop('disabled',false);
+
+            $('#req_note').removeAttr('readonly');
+
+            $('#req_ops_id_row').removeAttr('hidden');
+            $('#req_ops_id').removeAttr('readonly');
+            $('#requests_list_modal_ops_user_id').prop('disabled',false);
+
+            $('#req_ops_date_row').removeAttr('hidden');
+            $('#req_ops_date').removeAttr('readonly');
+
+            $('#req_ops_username_row').removeAttr('hidden');
+
+            $('#req_ops_currency_row').removeAttr('hidden');
+            $('#req_ops_currency_id').prop('disabled',false).attr('required', false);
+
+            $('#req_ops_price_row').removeAttr('hidden');
+            $('#req_ops_price').removeAttr('readonly').removeAttr("min").attr('required', false);
+
+            $('#req_ops_answer_row').removeAttr('hidden');
+            $('#req_ops_answer').removeAttr('readonly').removeAttr('minlength').prop('required', false);
+
+            $('#req_ops_note_row').removeAttr('hidden');
+            $('#req_ops_note').removeAttr('readonly');
+
+            $('#req_status_id').prop('disabled',false);
+
+            $('#req_result_status_id_row').removeAttr('hidden');
+            $('#req_result_status_id').prop('disabled',false);
+
+            $('#req_fia_status_id_row').removeAttr('hidden');
+            $('#req_fia_status_id').prop('disabled',false).removeAttr('required');
+
+            $('#req_result_currency_row').removeAttr('hidden');
+            $('#req_result_currency_id').prop('disabled',false);
+
+            $('#req_profit_predict').removeAttr('readonly');
+
+            $('#req_result_price_row').removeAttr('hidden');
+            $('#req_result_price').removeAttr('readonly');
+
+            $('#req_result_text_row').removeAttr('hidden');
+            $('#req_result_text').removeAttr('readonly');
+
+            $('#req_result_note_row').removeAttr('hidden');
+            $('#req_result_note').removeAttr('readonly');
+
+            $('#req_doc_number_row').removeAttr('hidden');
+            $('#req_doc_number').removeAttr('readonly');
+
+            $('#req_doc_start_date_row').removeAttr('hidden');
+            $('#req_doc_start_date').attr('disabled', false);
+            $('#req_doc_start_date_x').prop('disabled', false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#req_doc_end_date_row').removeAttr('hidden');
+            $('#req_doc_end_date').attr('disabled', false);
+            $('#req_doc_end_date_x').prop('disabled', false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#req_work_start_date_row').removeAttr('hidden');
+            $('#req_work_start_date').attr('disabled', false);
+            $('#req_work_start_date_x').prop('disabled', false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#req_work_note_row').removeAttr('hidden');
+            $('#req_work_note').removeAttr('readonly');
+        }
+        else{
+            $('#req_id_row').removeAttr('hidden');
+            $('#req_id').prop('readOnly',true);
+
+            $('#req_type_id').prop('disabled',true);
+            $('#requests_list_modal_user_id').prop('disabled',true);
+            $('#requests_list_modal_cnt_id').prop('disabled',true);
+            $('#requests_list_modal_ser_id').prop('disabled',true);
+
+            $('#req_end_date').attr('disabled', true);
+            $('#req_end_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_load_place').attr('readonly', true);
+            $('#req_tax_place').attr('readonly', true);
+            $('#req_clearance_place').attr('readonly', true);
+            $('#req_unload_place').attr('readonly', true);
+            $('#req_cargo_note').attr('readonly', true);
+            $('#req_weight').attr('readonly', true);
+            $('#req_volume').attr('readonly', true);
+            $('#req_load_deep').attr('readonly', true);
+            $('#req_load_width').attr('readonly', true);
+            $('#req_load_high').attr('readonly', true);
+            $('#req_dims').attr('readonly', true);
+            $('#req_adr').attr('readonly', true);
+            $('#req_special').attr('readonly', true);
+            $('#req_tir_type').attr('readonly', true);
+
+            $('#load_type_id').prop('disabled',true);
+
+            $('#req_profiles').attr('readonly', true);
+            $('#req_plan_price').attr('readonly', true);
+            $('#req_plan_currency_id').prop('disabled',true);
+
+            $('#req_note').attr('readonly', true);
+
+            $('#req_ops_id_row').removeAttr('hidden');
+            $('#req_ops_id').attr('readonly', true);
+            $('#requests_list_modal_ops_user_id').prop('disabled',true);
+
+            $('#req_ops_date_row').removeAttr('hidden');
+            $('#req_ops_date').attr('readonly', true);
+
+            $('#req_ops_username_row').removeAttr('hidden');
+
+            $('#req_ops_currency_row').removeAttr('hidden');
+            $('#req_ops_currency_id').prop('disabled',true).attr('required', false);
+
+            $('#req_ops_price_row').removeAttr('hidden');
+            $('#req_ops_price').attr('readonly', true).removeAttr("min").attr('required', false);
+
+            $('#req_ops_answer_row').removeAttr('hidden');
+            $('#req_ops_answer').attr('readonly', true).removeAttr('minlength').prop('required', false);
+
+            $('#req_ops_note_row').removeAttr('hidden');
+            $('#req_ops_note').attr('readonly', true);
+
+            $('#req_status_id').prop('disabled',true);
+
+            $('#req_result_status_id_row').removeAttr('hidden');
+            $('#req_result_status_id').prop('disabled',true).removeAttr('required');
+
+            $('#req_fia_status_id_row').removeAttr('hidden');
+            $('#req_fia_status_id').prop('disabled',true);
+
+            $('#req_result_currency_row').removeAttr('hidden');
+            $('#req_result_currency_id').prop('disabled',true);
+
+            $('#req_profit_predict').attr('readonly', true);
+
+            $('#req_result_price_row').removeAttr('hidden');
+            $('#req_result_price').attr('readonly', true);
+
+            $('#req_result_text_row').removeAttr('hidden');
+            $('#req_result_text').attr('readonly', true);
+
+            $('#req_result_note_row').removeAttr('hidden');
+            $('#req_result_note').attr('readonly', true);
+
+            $('#req_doc_number_row').removeAttr('hidden');
+            $('#req_doc_number').attr('readonly', true);
+
+            $('#req_doc_start_date_row').removeAttr('hidden');
+            $('#req_doc_start_date').attr('disabled', true);
+            $('#req_doc_start_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_doc_end_date_row').removeAttr('hidden');
+            $('#req_doc_end_date').attr('disabled', true);
+            $('#req_doc_end_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_work_start_date_row').removeAttr('hidden');
+            $('#req_work_start_date').attr('disabled', true);
+            $('#req_work_start_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_work_note_row').removeAttr('hidden');
+            $('#req_work_note').attr('readonly', true);
+        }
+    }
+
+    function editFiledsShow(){
+        TypeChange();
+//Работа с запросом до OPS
+        if($('#edit_type_id').val() === '1'){
+            $('#req_ops_id_row').attr('hidden', true);
+            $('#req_ops_date_row').attr('hidden', true);
+            $('#req_ops_username_row').attr('hidden', true);
+            $('#req_ops_currency_row').attr('hidden', true);
+            $('#req_ops_currency_id').attr('required', false);
+            $('#req_ops_price_row').attr('hidden', true);
+            $('#req_ops_price').removeAttr("min").attr('required', false);
+            $('#req_ops_answer_row').attr('hidden', true);
+            $('#req_ops_answer').removeAttr('minlength').prop('required', false);
+            $('#req_ops_note_row').attr('hidden', true);
+
+            $('#req_status_id').val(2);
+
+            $('#req_result_status_id_row').attr('hidden', true);
+            $('#req_result_status_id').removeAttr('required');
+            $('#req_fia_status_id_row').attr('hidden', true);
+            $('#req_result_currency_row').attr('hidden', true);
+            $('#req_result_price_row').attr('hidden', true);
+            $('#req_result_text_row').attr('hidden', true);
+            $('#req_result_note_row').attr('hidden', true);
+            $('#req_doc_number_row').attr('hidden', true);
+            $('#req_doc_start_date_row').attr('hidden', true);
+            $('#req_doc_end_date_row').attr('hidden', true);
+            $('#req_work_start_date_row').attr('hidden', true);
+            $('#req_work_note_row').attr('hidden', true);
+        }
+//Работа с запросом OPS
+        else if($('#edit_type_id').val() === '2') {
+            $('#req_id_row').removeAttr('hidden');
+            $('#req_id').prop('readOnly',true);
+
+            $('#req_type_id').prop('disabled',true);
+            $('#requests_list_modal_user_id').prop('disabled',true);
+            $('#requests_list_modal_cnt_id').prop('disabled',true);
+            $('#requests_list_modal_ser_id').prop('disabled',true);
+
+            $('#req_end_date').attr('disabled', true);
+            $('#req_end_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_load_place').attr('readonly', true);
+            $('#req_tax_place').attr('readonly', true);
+            $('#req_clearance_place').attr('readonly', true);
+            $('#req_unload_place').attr('readonly', true);
+            $('#req_cargo_note').attr('readonly', true);
+            $('#req_weight').attr('readonly', true);
+            $('#req_volume').attr('readonly', true);
+            $('#req_load_deep').attr('readonly', true);
+            $('#req_load_width').attr('readonly', true);
+            $('#req_load_high').attr('readonly', true);
+            $('#req_dims').attr('readonly', true);
+            $('#req_adr').attr('readonly', true);
+            $('#req_special').attr('readonly', true);
+            $('#req_tir_type').attr('readonly', true);
+
+            $('#load_type_id').prop('disabled',true);
+
+            $('#req_profiles').attr('readonly', true);
+            $('#req_plan_price').attr('readonly', true);
+            $('#req_plan_currency_id').prop('disabled',true);
+
+            $('#req_note').attr('readonly', true);
+
+            $('#req_ops_price').attr("min", 100).attr('required', true);
+            $('#req_ops_currency_id').attr('required', true);
+            $('#req_ops_answer').attr('minlength', 10).prop('required', true);
+
+            $('#req_status_id').val(4);
+            reqStatusChangeID();
+
+            $('#req_profit_predict').attr('readonly', true);
+
+            $('#req_ops_id_row').attr('hidden', true);
+            $('#req_ops_date_row').attr('hidden', true);
+
+            $('#req_result_status_id_row').attr('hidden', true);
+            $('#req_result_status_id').removeAttr('required');
+            $('#req_fia_status_id_row').attr('hidden', true);
+            $('#req_result_currency_row').attr('hidden', true);
+            $('#req_result_price_row').attr('hidden', true);
+            $('#req_result_text_row').attr('hidden', true);
+            $('#req_result_note_row').attr('hidden', true);
+            $('#req_doc_number_row').attr('hidden', true);
+            $('#req_doc_start_date_row').attr('hidden', true);
+            $('#req_doc_end_date_row').attr('hidden', true);
+            $('#req_work_start_date_row').attr('hidden', true);
+            $('#req_work_note_row').attr('hidden', true);
+        }
+//Работа с запросом после OPS
+        else if($('#edit_type_id').val() === '3') {
+            $('#req_id_row').removeAttr('hidden');
+            $('#req_id').prop('readOnly',true);
+
+            $('#req_type_id').prop('disabled',true);
+            $('#requests_list_modal_user_id').prop('disabled',true);
+            $('#requests_list_modal_cnt_id').prop('disabled',true);
+            $('#requests_list_modal_ser_id').prop('disabled',true);
+
+            $('#req_end_date').attr('disabled', true);
+            $('#req_end_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#req_load_place').attr('readonly', true);
+            $('#req_tax_place').attr('readonly', true);
+            $('#req_clearance_place').attr('readonly', true);
+            $('#req_unload_place').attr('readonly', true);
+            $('#req_cargo_note').attr('readonly', true);
+            $('#req_weight').attr('readonly', true);
+            $('#req_volume').attr('readonly', true);
+            $('#req_load_deep').attr('readonly', true);
+            $('#req_load_width').attr('readonly', true);
+            $('#req_load_high').attr('readonly', true);
+            $('#req_dims').attr('readonly', true);
+            $('#req_adr').attr('readonly', true);
+            $('#req_special').attr('readonly', true);
+            $('#req_tir_type').attr('readonly', true);
+
+            $('#load_type_id').prop('disabled',true);
+
+            $('#req_profiles').attr('readonly', true);
+            $('#req_plan_price').attr('readonly', true);
+            $('#req_plan_currency_id').prop('disabled',true);
+
+            $('#req_note').attr('readonly', true);
+
+            $('#req_ops_id_row').removeAttr('hidden');
+            $('#req_ops_id').attr('readonly', true);
+            $('#requests_list_modal_ops_user_id').prop('disabled',true);
+
+            $('#req_ops_date_row').removeAttr('hidden');
+            $('#req_ops_date').attr('readonly', true);
+
+            $('#req_ops_username_row').removeAttr('hidden');
+
+            $('#req_ops_currency_row').removeAttr('hidden');
+            $('#req_ops_currency_id').prop('disabled',true).attr('required', false);
+
+            $('#req_ops_price_row').removeAttr('hidden');
+            $('#req_ops_price').attr('readonly', true).removeAttr("min").attr('required', false);
+
+            $('#req_ops_answer_row').removeAttr('hidden');
+            $('#req_ops_answer').attr('readonly', true).removeAttr('minlength').prop('required', false);
+
+            $('#req_ops_note_row').removeAttr('hidden');
+            $('#req_ops_note').attr('readonly', true);
+
+            reqStatusChangeID();
+            reqResultStatusChangeID();
+
+            $('#req_result_status_id').attr('required', true);
+        }
+        else {
+            $('#req_id_row').removeAttr('hidden');
+            $('#req_ops_id_row').removeAttr('hidden');
+            $('#req_ops_date_row').removeAttr('hidden');
+            $('#req_ops_username_row').removeAttr('hidden');
+            $('#req_ops_currency_row').removeAttr('hidden');
+            $('#req_ops_price_row').removeAttr('hidden');
+            $('#req_ops_answer_row').removeAttr('hidden');
+            $('#req_ops_note_row').removeAttr('hidden');
+
+            $('#req_result_status_id_row').removeAttr('hidden');
+            $('#req_fia_status_id_row').removeAttr('hidden');
+            $('#req_result_currency_row').removeAttr('hidden');
+            $('#req_result_price_row').removeAttr('hidden');
+            $('#req_result_text_row').removeAttr('hidden');
+            $('#req_result_note_row').removeAttr('hidden');
+            $('#req_doc_number_row').removeAttr('hidden');
+            $('#req_doc_start_date_row').removeAttr('hidden');
+            $('#req_doc_end_date_row').removeAttr('hidden');
+            $('#req_work_start_date_row').removeAttr('hidden');
+            $('#req_work_note_row').removeAttr('hidden');
+        }
+    }
+
+    //Get Requests Type
+    function requestsTypeChange(vMode, vTypeID) {
+        $('#req_type_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/requests/get_request_type'}]]*/ "/requests/get_request_type",
+            type: "get",
+            data: {"mode": vMode
+            },
+            success: function (req_type_result) {
+                for (var i = 0; i < req_type_result.data.length; i++) {
+                    $("select[name='req_type_id']").find('option').end().append(
+                        "<option value='" + req_type_result.data[i].req_type_id + "'>" + req_type_result.data[i].req_type_sname + "</option>");
+                }
+                if(vTypeID != null){
+                    $('#req_type_id').val(vTypeID);
+                }
+            }
+        }));
+    }
+    //Get Users
+    let userPlaceHolder = 'Выберите сотрудника';
+    $('#requests_list_modal_user_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: userPlaceHolder,
+            allowClear: true,
+            width: 'element',
+            dropdownAutoWidth: true
+        });
+
+    function requestsUserChange(vMode, vUSERID) {
+        $('#requests_list_modal_user_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/requests/get_users'}]]*/ "/requests/get_users",
+            type: "get",
+            data: {"mode": vMode,
+                "user_id": vUSERID
+            },
+            success: function (requests_list_users_list_result) {
+                for (var i = 0; i < requests_list_users_list_result.data.length; i++) {
+                    $("select[name='requests_list_modal_user_id']").find('option').end().append(
+                        "<option value='" + requests_list_users_list_result.data[i].id + "'>" + requests_list_users_list_result.data[i].user_surname + "</option>");
+                }
+                if(vUSERID != null){
+                    $('#requests_list_modal_user_id').val(vUSERID);
+                }
+            }
+        }));
+    }
+
+    //Client List
+    let clientsPlaceHolder = 'Выберите клиента';
+    $('#requests_list_modal_cnt_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: clientsPlaceHolder,
+            allowClear: true,
+            width: 'element',
+            dropdownAutoWidth: true
+        });
+
+    function requestsClientChange(vMode, vClientID) {
+        $('#requests_list_modal_cnt_id').empty();
+        $("select[name='requests_list_modal_cnt_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/requests/get_client_list'}]]*/ "/requests/get_client_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "cnt_id": vClientID
+            },
+            success: function (requests_list_modal_client_list_result) {
+                for (var i = 0; i < requests_list_modal_client_list_result.data.length; i++) {
+                    $("select[name='requests_list_modal_cnt_id']").find('option').end().append(
+                        "<option value='" + requests_list_modal_client_list_result.data[i].cnt_id + "'>" + requests_list_modal_client_list_result.data[i].cnt_name + "</option>");
+                }
+                if(vClientID != null){
+                    $('#requests_list_modal_cnt_id').val(vClientID);
+                }
+            }
+        }));
+    }
+
+    $("#req_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#req_doc_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#req_doc_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#req_work_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+    //Services
+    function requestsServiceChange(vMode, vServiceID) {
+        $('#requests_list_modal_ser_id').empty();
+        $("select[name='requests_list_modal_ser_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/requests/get_service_type'}]]*/ "/requests/get_service_type",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (requests_list_modal_ser_list_result) {
+                for (var i = 0; i < requests_list_modal_ser_list_result.data.length; i++) {
+                    $("select[name='requests_list_modal_ser_id']").find('option').end().append(
+                        "<option value='" + requests_list_modal_ser_list_result.data[i].ser_id + "'>" + requests_list_modal_ser_list_result.data[i].ser_name + "</option>");
+                }
+                if(vServiceID != null){
+                    $('#requests_list_modal_ser_id').val(vServiceID);
+                }
+            }
+        }));
+    }
+    //Plan Currency
+    function requestsPlanCurrencyChange(vMode, vCurrencyID) {
+        $('#req_plan_currency_id').empty();
+        $("select[name='req_plan_currency_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/requests/get_currency'}]]*/ "/requests/get_currency",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (req_plan_currency_list_result) {
+                for (var i = 0; i < req_plan_currency_list_result.data.length; i++) {
+                    $("select[name='req_plan_currency_id']").find('option').end().append(
+                        "<option value='" + req_plan_currency_list_result.data[i].currency_id + "'>" + req_plan_currency_list_result.data[i].currency_name + "</option>");
+                }
+                if(vCurrencyID != null){
+                    $('#req_plan_currency_id').val(vCurrencyID);
+                }
+            }
+        }));
+    }
+    //Get OPS Users
+    let userOpsPlaceHolder = 'Выберите сотрудника OPS';
+    $('#requests_list_modal_ops_user_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: userOpsPlaceHolder,
+            allowClear: true,
+            width: 'element',
+            dropdownAutoWidth: true
+        });
+
+    function requestsOPSUserChange(vMode, vOPSUSERID, vEditTypeID) {
+        $('#requests_list_modal_ops_user_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/requests/get_ops_users'}]]*/ "/requests/get_ops_users",
+            type: "get",
+            data: {"mode": vMode,
+                   "user_id": vOPSUSERID,
+                   "edit_type_id": vEditTypeID
+            },
+            success: function (requests_list_ops_users_list_result) {
+                for (var i = 0; i < requests_list_ops_users_list_result.data.length; i++) {
+                    $("select[name='requests_list_modal_ops_user_id']").find('option').end().append(
+                        "<option value='" + requests_list_ops_users_list_result.data[i].id + "'>" + requests_list_ops_users_list_result.data[i].user_surname + "</option>");
+                }
+                if(vOPSUSERID != null){
+                    $('#requests_list_modal_ops_user_id').val(vOPSUSERID);
+                }
+            }
+        }));
+    }
+
+    //OPS Currency
+    function requestsOPSCurrencyChange(vMode, vOpsCurrencyID) {
+        $('#req_ops_currency_id').empty();
+        $("select[name='req_ops_currency_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/requests/get_currency'}]]*/ "/requests/get_currency",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (req_ops_currency_list_result) {
+                for (var i = 0; i < req_ops_currency_list_result.data.length; i++) {
+                    $("select[name='req_ops_currency_id']").find('option').end().append(
+                        "<option value='" + req_ops_currency_list_result.data[i].currency_id + "'>" + req_ops_currency_list_result.data[i].currency_name + "</option>");
+                }
+                if(vOpsCurrencyID != null){
+                    $('#req_ops_currency_id').val(vOpsCurrencyID);
+                }
+            }
+        }));
+    }
+    //Result Currency
+    function requestsLoadTypeChange(vMode, vLoadTypeID) {
+        $('#load_type_id').empty();
+        $("select[name='load_type_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/requests/get_load_type'}]]*/ "/requests/get_load_type",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (load_type_list_result) {
+                for (var i = 0; i < load_type_list_result.data.length; i++) {
+                    $("select[name='load_type_id']").find('option').end().append(
+                        "<option value='" + load_type_list_result.data[i].load_type_id + "'>" + load_type_list_result.data[i].load_type_sname + "</option>");
+                }
+                if(vLoadTypeID != null){
+                    $('#load_type_id').val(vLoadTypeID);
+                }
+            }
+        }));
+    }
+    //Result Currency
+    function requestsResultCurrencyChange(vMode, vResultCurrencyID) {
+        $('#req_result_currency_id').empty();
+        $("select[name='req_result_currency_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/requests/get_currency'}]]*/ "/requests/get_currency",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (req_result_currency_list_result) {
+                for (var i = 0; i < req_result_currency_list_result.data.length; i++) {
+                    $("select[name='req_result_currency_id']").find('option').end().append(
+                        "<option value='" + req_result_currency_list_result.data[i].currency_id + "'>" + req_result_currency_list_result.data[i].currency_name + "</option>");
+                }
+                if(vResultCurrencyID != null){
+                    $('#req_result_currency_id').val(vResultCurrencyID);
+                }
+            }
+        }));
+    }
+    //Status
+    function requestsStatusChange(vMode, vStatusID, vEditTypeID) {
+        $('#req_status_id').empty();
+        $("select[name='req_status_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/requests/get_request_status'}]]*/ "/requests/get_request_status",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "edit_type_id": vEditTypeID
+            },
+            success: function (req_status_list_result) {
+                for (var i = 0; i < req_status_list_result.data.length; i++) {
+                    $("select[name='req_status_id']").find('option').end().append(
+                        "<option value='" + req_status_list_result.data[i].req_status_id + "'>" + req_status_list_result.data[i].req_status_sname + "</option>");
+                }
+                if(vStatusID != null){
+                    $('#req_status_id').val(vStatusID);
+                }
+            }
+        }));
+    }
+    //Result Status
+    function requestsResultChange(vMode, vResultStatusID) {
+        $('#req_result_status_id').empty();
+        $("select[name='req_result_status_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/requests/get_result_status'}]]*/ "/requests/get_result_status",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (req_result_status_list_result) {
+                for (var i = 0; i < req_result_status_list_result.data.length; i++) {
+                    $("select[name='req_result_status_id']").find('option').end().append(
+                        "<option style='background-color:"+ req_result_status_list_result.data[i].req_result_status_colour
+                        +"' value='" + req_result_status_list_result.data[i].req_result_status_id + "'>"
+                        + req_result_status_list_result.data[i].req_result_status_sname
+                        +"</option>");
+                }
+                if(vResultStatusID != null){
+                    $('#req_result_status_id').val(vResultStatusID);
+                }
+            }
+        }));
+    }
+    //Fiasco Status
+    function requestsFiascoChange(vMode, vFiascoStatusID) {
+        $('#req_fia_status_id').empty();
+        $("select[name='req_fia_status_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/requests/get_fiasco_status'}]]*/ "/requests/get_fiasco_status",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (req_fia_status_list_result) {
+                for (var i = 0; i < req_fia_status_list_result.data.length; i++) {
+                    $("select[name='req_fia_status_id']").find('option').end().append(
+                        "<option value='" + req_fia_status_list_result.data[i].req_fia_status_id + "'>" + req_fia_status_list_result.data[i].req_fia_status_name + "</option>");
+                }
+                if(vFiascoStatusID != null){
+                    $('#req_fia_status_id').val(vFiascoStatusID);
+                }
+            }
+        }));
+    }
+    // Load Function
+    function fill_requests_list_modal_detail(aMode){
+        clear_requests_list_modal_detail();
+        $('#requests_list_modal_mode').val(aMode);
+        block_requests_list_modal_detail();
+
+        if(aMode !== 0) {
+            $.ajax({
+                url:/*[[@{'/requests/get_request_detail'}]]*/ "requests/get_request_detail",
+                type: "get",
+                data: {
+                    "mode": aMode,
+                    "req_id": vRequestListValue.rowdata.req_id
+                },
+                success: function (requests_list_modal_detail_result) {
+                    $.when(
+                        requestsTypeChange(aMode,1),
+                        requestsUserChange(aMode, requests_list_modal_detail_result.data[0].user_id),
+                        requestsClientChange(aMode, requests_list_modal_detail_result.data[0].cnt_id),
+                        requestsServiceChange(aMode, requests_list_modal_detail_result.data[0].ser_id),
+                        requestsLoadTypeChange(aMode, requests_list_modal_detail_result.data[0].load_type_id),
+                        requestsPlanCurrencyChange(aMode, requests_list_modal_detail_result.data[0].req_plan_currency_id),
+                        requestsOPSUserChange(aMode, requests_list_modal_detail_result.data[0].req_ops_user_id, requests_list_modal_detail_result.data[0].edit_type_id),
+                        requestsOPSCurrencyChange(aMode, requests_list_modal_detail_result.data[0].req_ops_currency_id),
+                        requestsResultCurrencyChange(aMode, requests_list_modal_detail_result.data[0].req_result_currency_id),
+                        requestsResultChange(aMode, requests_list_modal_detail_result.data[0].req_result_status_id),
+                        requestsFiascoChange(aMode, requests_list_modal_detail_result.data[0].req_fia_status_id),
+                        requestsStatusChange(aMode, requests_list_modal_detail_result.data[0].req_status_id, requests_list_modal_detail_result.data[0].edit_type_id)
+                    ).then(function () {
+                        $('#edit_type_id').val(requests_list_modal_detail_result.data[0].edit_type_id);
+                        $('#req_id').val(requests_list_modal_detail_result.data[0].req_id);
+
+                        $('#req_end_date').val(requests_list_modal_detail_result.data[0].req_end_date);
+                        $('#req_load_place').val(requests_list_modal_detail_result.data[0].req_load_place);
+                        $('#req_tax_place').val(requests_list_modal_detail_result.data[0].req_tax_place);
+                        $('#req_clearance_place').val(requests_list_modal_detail_result.data[0].req_clearance_place);
+                        $('#req_unload_place').val(requests_list_modal_detail_result.data[0].req_unload_place);
+                        $('#req_cargo_note').val(requests_list_modal_detail_result.data[0].req_cargo_note);
+                        $('#req_weight').val(requests_list_modal_detail_result.data[0].req_weight);
+                        $('#req_volume').val(requests_list_modal_detail_result.data[0].req_volume);
+                        $('#req_load_deep').val(requests_list_modal_detail_result.data[0].req_load_deep);
+                        $('#req_load_width').val(requests_list_modal_detail_result.data[0].req_load_width);
+                        $('#req_load_high').val(requests_list_modal_detail_result.data[0].req_load_high);
+                        $('#req_dims').val(requests_list_modal_detail_result.data[0].req_dims);
+                        $('#req_adr').val(requests_list_modal_detail_result.data[0].req_adr);
+                        $('#req_special').val(requests_list_modal_detail_result.data[0].req_special);
+                        $('#req_tir_type').val(requests_list_modal_detail_result.data[0].req_tir_type);
+
+                        $('#req_profiles').val(requests_list_modal_detail_result.data[0].req_profiles);
+                        $('#req_plan_price').val(requests_list_modal_detail_result.data[0].req_plan_price);
+                        $('#req_note').val(requests_list_modal_detail_result.data[0].req_note);
+                        $('#req_ops_id').val(requests_list_modal_detail_result.data[0].req_ops_id);
+                        $('#req_ops_date').val(requests_list_modal_detail_result.data[0].req_ops_date);
+                        $('#req_ops_price').val(requests_list_modal_detail_result.data[0].req_ops_price);
+                        
+                        $('#req_ops_answer').val(requests_list_modal_detail_result.data[0].req_ops_answer);
+                        $('#req_ops_note').val(requests_list_modal_detail_result.data[0].req_ops_note);
+                        $('#req_profit_predict').val(requests_list_modal_detail_result.data[0].req_profit_predict);
+                        $('#req_result_price').val(requests_list_modal_detail_result.data[0].req_result_price);
+                        $('#req_result_text').val(requests_list_modal_detail_result.data[0].req_result_text);
+                        $('#req_result_note').val(requests_list_modal_detail_result.data[0].req_result_note);
+                        $('#req_doc_number').val(requests_list_modal_detail_result.data[0].req_doc_number);
+                        $('#req_doc_start_date').val(requests_list_modal_detail_result.data[0].req_doc_start_date);
+                        $('#req_doc_end_date').val(requests_list_modal_detail_result.data[0].req_doc_end_date);
+                        $('#req_work_start_date').val(requests_list_modal_detail_result.data[0].req_work_start_date);
+                        $('#req_work_note').val(requests_list_modal_detail_result.data[0].req_work_note);
+
+                        editFiledsShow();
+                        $('#requests_list_modal').modal('show');
+                    });
+                }
+            });
+        }
+        else {
+            $.when(
+                requestsTypeChange(aMode,1),
+                requestsUserChange(aMode),
+                requestsClientChange(aMode),
+                requestsServiceChange(aMode),
+                requestsLoadTypeChange(aMode),
+                requestsPlanCurrencyChange(aMode, 980),
+                requestsStatusChange(aMode, 2)
+            ).then(function () {
+                $('#req_end_date').data('daterangepicker').setStartDate(currentDayRu);
+                $('#req_end_date').data('daterangepicker').setEndDate(currentDayRu);
+                $('#req_end_date').trigger("apply.daterangepicker");
+
+                $('#requests_list_modal').modal('show');
+            });
+        }
+    }
+    // Add Function
+    function addRequestModal(){
+        var RowID = vRequestListValue.rowdata.req_id;
+        $.ajax({
+            url: /*[[ @{/requests/add_request} ]]*/ "/requests/add_request",
+            type: 'POST',
+            data: {
+                "req_type_id": $('#req_type_id').val(),
+                "user_id":  $('#requests_list_modal_user_id').val(),
+                "cnt_id":  $('#requests_list_modal_cnt_id').val(),
+                "ser_id":  $('#requests_list_modal_ser_id').val(),
+                "req_end_date":  $('#req_end_date').val(),
+                "req_load_place":  $('#req_load_place').val(),
+                "req_tax_place":  $('#req_tax_place').val(),
+                "req_clearance_place":  $('#req_clearance_place').val(),
+                "req_unload_place":  $('#req_unload_place').val(),
+                "req_cargo_note":  $('#req_cargo_note').val(),
+                "load_type_id":  $('#load_type_id').val(),
+                "req_weight":  $('#req_weight').val(),
+                "req_volume":  $('#req_volume').val(),
+                "req_dims":  $('#req_dims').val(),
+                "req_adr":  $('#req_adr').val(),
+                "req_special":  $('#req_special').val(),
+                "req_tir_type":  $('#req_tir_type').val(),
+                "req_profiles":  $('#req_profiles').val(),
+                "req_plan_price":  $('#req_plan_price').val(),
+                "req_note":  $('#req_note').val(),
+                "req_status_id":  $('#req_status_id').val(),
+                "req_profit_predict":  $('#req_profit_predict').val(),
+                "req_load_deep":  $('#req_load_deep').val(),
+                "req_load_high":  $('#req_load_high').val(),
+                "req_load_width":  $('#req_load_width').val(),
+                "req_plan_currency_id":  $('#req_plan_currency_id').val()
+            },
+            success: function (result) {
+                $('#requests_list_modal').modal('hide');
+                vRequestListValue.rowdata.req_id = RowID;
+                $(vRequestListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    // Add button script
+    $('#requests_list_modal_addbtn').on('click', function(){
+        $('#requests_list_modal_form').submit();
+    });
+
+//Edit Before OPS
+    function editRequestModalBeforeOPS(){
+        var RowID = vRequestListValue.rowdata.req_id;
+        $.ajax({
+            url: /*[[ @{/requests/edit_request_before_ops} ]]*/ "/requests/edit_request_before_ops",
+            type: 'POST',
+            data: {
+                "req_id": $('#req_id').val(),
+                "req_type_id": $('#req_type_id').val(),
+                "user_id":  $('#requests_list_modal_user_id').val(),
+                "cnt_id":  $('#requests_list_modal_cnt_id').val(),
+                "ser_id":  $('#requests_list_modal_ser_id').val(),
+                "req_end_date":  $('#req_end_date').val(),
+                "req_load_place":  $('#req_load_place').val(),
+                "req_tax_place":  $('#req_tax_place').val(),
+                "req_clearance_place":  $('#req_clearance_place').val(),
+                "req_unload_place":  $('#req_unload_place').val(),
+                "req_cargo_note":  $('#req_cargo_note').val(),
+                "load_type_id":  $('#load_type_id').val(),
+                "req_weight":  $('#req_weight').val(),
+                "req_volume":  $('#req_volume').val(),
+                "req_dims":  $('#req_dims').val(),
+                "req_adr":  $('#req_adr').val(),
+                "req_special":  $('#req_special').val(),
+                "req_tir_type":  $('#req_tir_type').val(),
+                "req_profiles":  $('#req_profiles').val(),
+                "req_plan_price":  $('#req_plan_price').val(),
+                "req_note":  $('#req_note').val(),
+                "req_status_id":  $('#req_status_id').val(),
+                "req_profit_predict":  $('#req_profit_predict').val(),
+                "req_load_deep":  $('#req_load_deep').val(),
+                "req_load_high":  $('#req_load_high').val(),
+                "req_load_width":  $('#req_load_width').val(),
+                "req_plan_currency_id":  $('#req_plan_currency_id').val()
+            },
+            success: function (result) {
+                $('#requests_list_modal').modal('hide');
+                vRequestListValue.rowdata.req_id = RowID;
+                $(vRequestListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+//Edit OPS
+    function editRequestModalOPS(){
+        var RowID = vRequestListValue.rowdata.req_id;
+        $.ajax({
+            url: /*[[ @{/requests/edit_request_ops} ]]*/ "/requests/edit_request_ops",
+            type: 'POST',
+            data: {
+                "req_id": RowID,
+                "req_ops_user_id": $('#requests_list_modal_ops_user_id').val(),
+                "req_ops_answer":  $('#req_ops_answer').val(),
+                "req_ops_note":  $('#req_ops_note').val(),
+                "req_ops_currency_id":  $('#req_ops_currency_id').val(),
+                "req_ops_price":  $('#req_ops_price').val(),
+                "req_status_id":  $('#req_status_id').val()
+            },
+            success: function (result) {
+                $('#requests_list_modal').modal('hide');
+                vRequestListValue.rowdata.req_id = RowID;
+                $(vRequestListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+//Edit After OPS
+    function editRequestModalAfterOPS(){
+        var RowID = vRequestListValue.rowdata.req_id;
+        $.ajax({
+            url: /*[[ @{/requests/edit_request_after_ops} ]]*/ "/requests/edit_request_after_ops",
+            type: 'POST',
+            data: {
+                "req_id": RowID,
+                "req_status_id":  $('#req_status_id').val(),
+                "req_result_text":  $('#req_result_text').val(),
+                "req_result_note":  $('#req_result_note').val(),
+                "req_result_status_id":  $('#req_result_status_id').val(),
+                "req_profit_predict":  $('#req_profit_predict').val(),
+                "req_result_currency_id":  $('#req_result_currency_id').val(),
+                "req_result_price":  $('#req_result_price').val(),
+                "req_fia_status_id":  $('#req_fia_status_id').val()
+            },
+            success: function (result) {
+                $('#requests_list_modal').modal('hide');
+                vRequestListValue.rowdata.req_id = RowID;
+                $(vRequestListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+//Edit Win
+    function editRequestModalWin(){
+        var RowID = vRequestListValue.rowdata.req_id;
+        $.ajax({
+            url: /*[[ @{/requests/edit_request_win} ]]*/ "/requests/edit_request_win",
+            type: 'POST',
+            data: {
+                "req_id": RowID,
+                "req_status_id":  $('#req_status_id').val(),
+                "req_result_text":  $('#req_result_text').val(),
+                "req_result_note":  $('#req_result_note').val(),
+                "req_result_status_id":  $('#req_result_status_id').val(),
+                "req_profit_predict":  $('#req_profit_predict').val(),
+                "req_result_currency_id":  $('#req_result_currency_id').val(),
+                "req_result_price":  $('#req_result_price').val(),
+                "req_doc_number":  $('#req_doc_number').val(),
+                "req_doc_start_date":  $('#req_doc_start_date').val(),
+                "req_doc_end_date":  $('#req_doc_end_date').val(),
+                "req_work_start_date":  $('#req_work_start_date').val(),
+                "req_work_note":  $('#req_work_note').val()
+            },
+            success: function (result) {
+                $('#requests_list_modal').modal('hide');
+                vRequestListValue.rowdata.req_id = RowID;
+                $(vRequestListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    // Edit button script
+    $('#requests_list_modal_editbtn').on('click', function(){
+        $('#requests_list_modal_form').submit();
+    });
+
+    //Delete Function
+    function delRequestModal(){
+        var RowID = vRequestListValue.rowdata.req_id;
+        $.ajax({
+            url: /*[[ @{/requests/del_request} ]]*/ "/requests/del_request",
+            type: 'POST',
+            data: {
+                "req_id": RowID
+            },
+            success: function (result) {
+                $('#requests_list_modal').modal('hide');
+                $(vRequestListValue.table).DataTable().ajax.reload();
+            }
+        });
+    }
+
+    // Del button script
+    $('#requests_list_modal_delbtn').on('click', function(){
+        $('#requests_list_modal_form').submit();
+    });
+
+    //Validation Form
+    $('#requests_list_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function(error,element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            if($('#requests_list_modal_mode').val() === '0') {
+                addRequestModal();
+            }
+            else if($('#requests_list_modal_mode').val() === '1') {
+//Edit Request Before OPS
+                if($('#edit_type_id').val() === '1') {
+                    editRequestModalBeforeOPS();
+                }
+//Edit Request OPS
+                else if($('#edit_type_id').val() === '2') {
+                    editRequestModalOPS();
+                }
+//Edit Request After OPS
+                else if(
+                    $('#edit_type_id').val() === '3' &&
+                    (['4','6'].indexOf($('#req_status_id').val()) >= 0
+                     ||($('#req_status_id').val() === '5' && ['-2','-1','1','2','3','4'].indexOf($('#req_result_status_id').val()) >= 0)
+                    )
+                ) {
+                    editRequestModalAfterOPS();
+                }
+//Edit Request Win
+                else if(
+                    $('#edit_type_id').val() === '3' &&
+                    $('#req_status_id').val() === '5' && ['5', '6'].indexOf($('#req_result_status_id').val()) >= 0
+                ) {
+                    editRequestModalWin();
+                }
+            }
+            else if($('#requests_list_modal_mode').val() === '2') {
+                delRequestModal();
+            }
+            return false;
+        }
+    });
+
+    $('#requests_list_modal_ser_id').on('change', function () {
+        TypeChange();
+    });
+
+    $('#req_status_id').on('change', function () {
+        reqStatusChangeID();
+    });
+
+    $('#req_result_status_id').on('change', function () {
+        reqResultStatusChangeID();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="part_world_transways_body" th:remove="tag">
+        <form id="part-world-transways-detail" class="mb-2" th:action="@{/part_world/trans_ways_detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="part-world-transways-btn-large" class="d-none d-sm-block">
+                 <button type="button" id="part-world-transways-downbtn" class="btn btn-sm btn-dark" th:text="#{general.downbtn}" disabled>Download</button>
+                 <button type="button" id="part-world-transways-clearbtn" class="btn btn-sm btn-dark" th:text="#{general.clearbtn}" disabled>Clear</button>
+
+                 <button type="submit" id="part-world-transways-addbtn" class="btn btn-sm btn-dark part_world_transways_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="button" id="part-world-transways-delbtn" class="btn btn-sm btn-dark" th:text="#{general.delbtn}" disabled>Delete</button>
+              </div>
+              <div id="part-world-transways-btn-small" class="d-block d-sm-none">
+                 <button type="button" id="part-world-transways-downbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="download"></i></button>
+                 <button type="button" id="part-world-transways-clearbtn-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-times"></i></button>
+
+                 <button type="submit" id="part-world-transways-addbtn-sx" class="btn btn-sm btn-dark part_world_transways_btn_control" th:attr="mode=0"><i data-feather="plus" disabled></i></button>
+                 <button type="button" id="part-world-transways-delbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-part-world-transways" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var rn_width, clmtwl_id_width, clmwl_id_width, clm_way_sname_width, clm_way_date_width, clm_way_fact_date_width, clm_way_point_width, clm_way_address_width, empty_column_width;
+    var rn_class, clmtwl_id_class, clmwl_id_class, clm_way_sname_class, clm_way_date_class, clm_way_fact_date_class, clm_way_point_class, clm_way_address_class, empty_column_class;
+
+    var smallScreenSize = window.screen.width > 1024 && window.screen.height <= 768;
+    var mobileScreenSize = window.screen.width < 1024 && window.screen.height < 768;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        rn_width = "";
+        rn_class = "none";
+        clmtwl_id_width = "";
+        clmtwl_id_class = "none";
+        clmwl_id_width = "";
+        clmwl_id_class = "none";
+        clm_way_sname_width = "10%";
+        clm_way_sname_class = "small_size small_head_size small_footer_size";
+        clm_way_date_width = "6%";
+        clm_way_date_class = "small_size small_head_size small_footer_size text-center";
+        clm_way_fact_date_width = "6%";
+        clm_way_fact_date_class = "small_size small_head_size small_footer_size text-center";
+        clm_way_point_width = "20%";
+        clm_way_point_class = "small_size small_head_size small_footer_size";
+        clm_way_address_width = "20%";
+        clm_way_address_class = "small_size small_head_size small_footer_size";
+        empty_column_width = "38%";
+        empty_column_class = "";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        rn_width = "";
+        rn_class = "none";
+        clmtwl_id_width = "";
+        clmtwl_id_class = "none";
+        clmwl_id_width = "";
+        clmwl_id_class = "none";
+        clm_way_sname_width = "15%";
+        clm_way_sname_class = "";
+        clm_way_date_width = "6%";
+        clm_way_date_class = "text-center";
+        clm_way_fact_date_width = "6%";
+        clm_way_fact_date_class = "text-center";
+        clm_way_point_width = "25%";
+        clm_way_point_class = "";
+        clm_way_address_width = "25%";
+        clm_way_address_class = "";
+        empty_column_width = "23%";
+        empty_column_class = "";
+    }
+
+    var vFLGClaimTransWaysValue;
+    vFLGClaimTransWaysValue = {
+        table : '#table-part-world-transways',
+        button_form: "#part-world-transways-detail",
+        ajax : {
+            "url": /*[[@{/part_world/get_trans_ways_table}]]*/ "part_world/get_trans_ways_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vFLGClaimTransWaysValue.rowdata.clm_id;
+                d.clmtrl_id = vFLGClaimTransWaysValue.rowdata.clmtrl_id;
+            }
+        },
+        key : "clmtwl_id",
+        switchControl : part_world_transways_switchControl,
+        rowdata:{
+            clm_id: null,
+            clmwl_id: null,
+            clmtwl_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).css('background-color', data["act_type_colour"]);*/
+        },
+        columnDefs:[
+            {"targets": [3], type: 'de_date'},
+            {"targets": [4], type: 'de_date'}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{part_world.ways.rn}]]*/ "rn", "data": "rn", "width": rn_width, "className": rn_class},
+                /*1*/{"title": /*[[#{part_world.ways.clmtwl_id}]]*/ "clmtwl_id", "data": "clmtwl_id", "width": clmtwl_id_width, "className": clmtwl_id_class},
+                /*2*/{"title": /*[[#{part_world.ways.clmwl_id}]]*/ "clmwl_id", "data": "clmwl_id", "width": clmwl_id_width, "className": clmwl_id_class},
+                /*3*/{"title": /*[[#{part_world.ways.clm_way_sname}]]*/ "clm_way_sname", "data": "clm_way_sname", "width": clm_way_sname_width, "className": clm_way_sname_class},
+                /*4*/{"title": /*[[#{part_world.ways.clm_way_date}]]*/ "clm_way_date", "data": "clm_way_date", "width": clm_way_date_width, "className": clm_way_date_class},
+                /*5*/{"title": /*[[#{part_world.ways.clm_way_fact_date}]]*/ "clm_way_fact_date", "data": "clm_way_fact_date", "width": clm_way_fact_date_width, "className": clm_way_fact_date_class},
+                /*6*/{"title": /*[[#{part_world.ways.clm_way_point}]]*/ "clm_way_point", "data": "clm_way_point", "width": clm_way_point_width, "className": clm_way_point_class},
+                /*7*/{"title": /*[[#{part_world.ways.clm_way_address}]]*/ "clm_way_address", "data": "clm_way_address", "width": clm_way_address_width, "className": clm_way_address_class},
+                /*8*/{"title": /*[[#{part_world.ways.empty_column}]]*/ "empty_column", "data": "empty_column", "width": empty_column_width, "className": empty_column_class}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function part_world_transways_switchControl(){
+        if(vFLGClaimTransWaysValue.rowdata.clmtwl_id != null && (RoleOPS || RoleChiefOPS)){
+            $("#part-world-transways-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#part-world-transways-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        }
+        else{
+            $("#part-world-transways-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#part-world-transways-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.part_world_transways_btn_control').on('click', function (){
+        $("#part-world-transways-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#part-world-transways-detail').submit(function() {
+        /*Детализация запросов*/
+        $.ajax({
+            url:/*[[@{'/part_world/fill_temp'}]]*/ "/part_world/fill_temp",
+            type: "post",
+            data: {"clm_id": vFLGClaimTransWaysValue.rowdata.clm_id}
+        });
+
+        vFLGClaimTransWaysValue.rowdata.part_world_transways_table_order_column = $(vFLGClaimTransWaysValue.table).DataTable().order()[0][0];
+        vFLGClaimTransWaysValue.rowdata.part_world_transways_table_order_type = $(vFLGClaimTransWaysValue.table).DataTable().order()[0][1];
+        vFLGClaimTransWaysValue.rowdata.part_world_transways_table_search = $(vFLGClaimTransWaysValue.table).DataTable().search();
+        vFLGClaimTransWaysValue.rowdata.part_world_transways_table_pagelen = $(vFLGClaimTransWaysValue.table).DataTable().page.len();
+        vFLGClaimTransWaysValue.rowdata.part_world_transways_table_page = $(vFLGClaimTransWaysValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vFLGClaimTransWaysValue.rowdata.clm_id = vFLGClaimsValue.rowdata.clm_id;
+        vFLGClaimTransWaysValue.rowdata.clm_num = vFLGClaimsValue.rowdata.clm_num;
+        vFLGClaimTransWaysValue.rowdata.cnt_name = vFLGClaimsValue.rowdata.cnt_name;
+
+        vFLGClaimTransWaysValue.rowdata.clmtrl_id = vFLGClaimTransLinkValue.rowdata.clmtrl_id;
+        vFLGClaimTransWaysValue.rowdata.trans_name = vFLGClaimTransLinkValue.rowdata.cnt_name;
+        vFLGClaimTransWaysValue.rowdata.cntc_type_sname = vFLGClaimTransLinkValue.rowdata.cntc_type_sname;
+        vFLGClaimTransWaysValue.rowdata.cntc_type_number = vFLGClaimTransLinkValue.rowdata.cntc_type_number;
+
+        vFLGClaimTransWaysValue.rowdata.part_world_table_order_column = $(vFLGClaimsValue.table).DataTable().order()[0][0];
+        vFLGClaimTransWaysValue.rowdata.part_world_table_order_type = $(vFLGClaimsValue.table).DataTable().order()[0][1];
+        vFLGClaimTransWaysValue.rowdata.part_world_table_search = $(vFLGClaimsValue.table).DataTable().search();
+        vFLGClaimTransWaysValue.rowdata.part_world_table_pagelen = $(vFLGClaimsValue.table).DataTable().page.len();
+        vFLGClaimTransWaysValue.rowdata.part_world_table_page = $(vFLGClaimsValue.table).DataTable().page.info().page;
+
+        vFLGClaimTransWaysValue.rowdata.part_world_translink_table_order_column = $(vFLGClaimTransLinkValue.table).DataTable().order()[0][0];
+        vFLGClaimTransWaysValue.rowdata.part_world_translink_table_order_type = $(vFLGClaimTransLinkValue.table).DataTable().order()[0][1];
+        vFLGClaimTransWaysValue.rowdata.part_world_translink_table_search = $(vFLGClaimTransLinkValue.table).DataTable().search();
+        vFLGClaimTransWaysValue.rowdata.part_world_translink_table_pagelen = $(vFLGClaimTransLinkValue.table).DataTable().page.len();
+        vFLGClaimTransWaysValue.rowdata.part_world_translink_table_page = $(vFLGClaimTransLinkValue.table).DataTable().page.info().page;
+
+        Object.keys(vFLGClaimTransWaysValue.rowdata).forEach(function (index) {
+            $("#part-world-transways-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#part-world-transways-detail input[name=\"" + index + "\"]").val(vFLGClaimTransWaysValue.rowdata[index]);
+        });
+    });
+
+    $('#part-world-transways-downbtn').on('click', function( event ) {
+            var FirstRowID = vFLGClaimsValue.rowdata.clm_id;
+            var MainRowID =  vFLGClaimTransLinkValue.rowdata.clmtrl_id;
+            var RowID = vFLGClaimTransWaysValue.rowdata.clmtwl_id;
+            $.ajax({
+                url: /*[[ @{/part_world/trans_ways_down} ]]*/ "/part_world/trans_ways_down",
+                type: 'POST',
+                data: {
+                    "clm_id": FirstRowID,
+                    "clmtrl_id": MainRowID
+                },
+                success: function (result) {
+                    vFLGClaimTransWaysValue.rowdata.clm_id = vFLGClaimsValue.rowdata.clm_id;
+
+                    vFLGClaimTransWaysValue.rowdata.clm_id = FirstRowID;
+                    vFLGClaimTransWaysValue.rowdata.clmtrl_id = MainRowID;
+                    vFLGClaimTransWaysValue.rowdata.clmtwl_id = RowID;
+                    $(vFLGClaimTransWaysValue.table).DataTable().ajax.reload();
+                }
+            });
+    }); <!-- Download Button -->
+
+    $('#part-world-transways-clearbtn').on('click', function( event ) {
+            var FirstRowID = vFLGClaimsValue.rowdata.clm_id;
+            var MainRowID =  vFLGClaimTransLinkValue.rowdata.clmtrl_id;
+            var RowID = vFLGClaimTransWaysValue.rowdata.clmtwl_id;
+            $.ajax({
+                url: /*[[ @{/part_world/trans_ways_clear} ]]*/ "/part_world/trans_ways_clear",
+                type: 'POST',
+                data: {
+                    "clm_id": FirstRowID,
+                    "clmtrl_id": MainRowID
+                },
+                success: function (result) {
+                    vFLGClaimTransWaysValue.rowdata.clm_id = vFLGClaimsValue.rowdata.clm_id;
+
+                    vFLGClaimTransWaysValue.rowdata.clm_id = FirstRowID;
+                    vFLGClaimTransWaysValue.rowdata.clmtrl_id = MainRowID;
+                    vFLGClaimTransWaysValue.rowdata.clmtwl_id = RowID;
+                    $(vFLGClaimTransWaysValue.table).DataTable().ajax.reload();
+                }
+            });
+    }); <!-- Clear Button -->
+
+    $('#part-world-transways-delbtn').on('click', function( event ) {
+        if (vFLGClaimTransWaysValue.rowdata.clmtwl_id != null) {
+            var FirstRowID = vFLGClaimsValue.rowdata.clm_id;
+            var MainRowID =  vFLGClaimTransLinkValue.rowdata.clmtrl_id;
+            var RowID = vFLGClaimTransWaysValue.rowdata.clmtwl_id;
+            $.ajax({
+                url: /*[[ @{/part_world/trans_ways_delete} ]]*/ "/part_world/trans_ways_delete",
+                type: 'POST',
+                data: {
+                    "clmtwl_id": RowID
+                },
+                success: function (result) {
+                    vFLGClaimTransWaysValue.rowdata.clm_id = FirstRowID;
+                    vFLGClaimTransWaysValue.rowdata.clmtrl_id = MainRowID;
+                    vFLGClaimTransWaysValue.rowdata.clmtwl_id = null;
+                    $(vFLGClaimTransWaysValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    }); <!-- Clear Button -->
+
+    $(document).ready(function(){
+        vFLGClaimTransWaysValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vFLGClaimTransWaysValue.rowdata.clmwl_id = /*[[${clmwl_id}]]*/ null;
+
+        vFLGClaimTransWaysValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vFLGClaimTransWaysValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vFLGClaimTransWaysValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vFLGClaimTransWaysValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vFLGClaimTransWaysValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vFLGClaimTransWaysValue);
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_wh_parameters_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="clients_wh_parameters_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="clients_wh_parameters_mode">
+                <input type="hidden" id="exch_param_link_id">
+            </div>
+
+            <div class="modal-content" id="clients_wh_parameters_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{clients.list.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body m-1">
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="cnt_id_row">
+                            <label for="clients_wh_parameters_cnt_id" class="form-label mb-0" th:text="'1. '+ #{clients.list.cnt_id}"></label>
+                            <input type="number" class="form-control" id="clients_wh_parameters_cnt_id" name="clients_wh_parameters_cnt_id" readonly>
+                        </div>
+                        <div class="col-12 col-md-9" id="cnt_name_row">
+                            <label for="clients_wh_parameters_cnt_name" class="form-label mb-0" th:text="'2. '+#{clients.list.cnt_name}"></label>
+                            <input type="text" maxlength="120" class="form-control" id="clients_wh_parameters_cnt_name" name="clients_wh_parameters_cnt_name" readonly>
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-12" id="country_id_row">
+                            <label for="exch_param_type_id" class="form-label mb-0" th:text="'3. '+#{clients.wh_parameters.exch_param_type_name}"></label>
+                            <div class="flex-fill">
+                                <select type="text" id="exch_param_type_id" name="exch_param_type_id" class="custom-select select2" aria-describedby="exch_param_type_id_helpBlock" disabled>
+                                </select>
+                            </div>
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-9" id="exch_param_link_value_row">
+                            <label for="exch_param_link_value" class="form-label mb-0" th:text="'4. '+#{clients.wh_parameters.exch_param_link_value}"></label>
+                            <input type="text" maxlength="32" class="form-control" id="exch_param_link_value" name="exch_param_link_value">
+                        </div>
+                    </div><!-- Row 3 -->
+                </div><!-- Body -->
+                <div class="modal-footer">
+                    <button type="button" id="clients_wh_parameters_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="clients_wh_parameters_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="clients_wh_parameters_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="clients_wh_parameters_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+// Clear Fields
+    function clear_clients_wh_parameters_modal_detail() {
+        $("#clients_wh_parameters_modal_detail input[type=text]").val('');
+        $("#clients_wh_parameters_modal_detail input[type=number]").val('');
+        $("#clients_wh_parameters_modal_detail select").empty();
+        $("#clients_wh_parameters_modal_detail textarea").val('');
+    }
+
+// Block And Required Fields
+    function block_clients_wh_parameters_modal_detail() {
+    }
+
+    function whParametersTypeChange(vMode,vCNTID,vParametersTypeID) {
+        $('#exch_param_type_id').empty();
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/clients/get_wh_parameters_types_list'}]]*/ "/clients/get_wh_parameters_types_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "cnt_id": vCNTID
+            },
+            success: function (wh_clients_parameters_types_list) {
+                for (var i = 0; i < wh_clients_parameters_types_list.data.length; i++) {
+                    $("select[name='exch_param_type_id']").find('option').end().append(
+                        "<option value='" + wh_clients_parameters_types_list.data[i].exch_param_type_id
+                        + "'>" + wh_clients_parameters_types_list.data[i].exch_param_type_name + "</option>");
+                }
+                if(vParametersTypeID != null){
+                    $('#exch_param_type_id').val(vParametersTypeID);   
+                }
+            }
+        }));
+    }
+
+// Load Function
+    function fill_clients_wh_parameters_modal_detail(aMode){
+        clear_clients_wh_parameters_modal_detail();
+        $('#clients_wh_parameters_mode').val(aMode);
+        block_clients_wh_parameters_modal_detail();
+
+        $('#clients_wh_parameters_cnt_id').val(vClientsListValue.rowdata.cnt_id);
+        $('#clients_wh_parameters_cnt_name').val(vClientsListValue.rowdata.cnt_name);
+
+        $.when(
+            whParametersTypeChange(aMode,vClientsListValue.rowdata.cnt_id, vClientWHParametersListValue.rowdata.exch_param_type_id)
+        ).then(function() {
+            $('#exch_param_link_id').val(vClientWHParametersListValue.rowdata.exch_param_link_id);
+            $('#exch_param_link_value').val(vClientWHParametersListValue.rowdata.exch_param_link_value);
+            
+            $('#clients_wh_parameters_modal').modal('show');
+        });
+    }
+
+// Edit button script
+$('#clients_wh_parameters_modal_editbtn').click(function(){
+    let MainRowID = vClientsListValue.rowdata.cnt_id;
+    let RowID = vClientWHParametersListValue.rowdata.exch_param_link_id;
+    $.ajax({
+        url: /*[[ @{/clients/edit_wh_parameters_list} ]]*/ "/clients/edit_wh_parameters_list",
+        type: 'POST',
+        data: {
+            "exch_param_link_id": RowID,
+            "exch_param_link_value": $('#exch_param_link_value').val()
+        },
+        success: function (result) {
+            $('#clients_wh_parameters_modal').modal('hide');
+            vClientWHParametersListValue.rowdata.cnt_id = MainRowID;
+            vClientWHParametersListValue.rowdata.exch_param_link_id = RowID;
+            $(vClientWHParametersListValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+</script>
+
+</body>
+</html>

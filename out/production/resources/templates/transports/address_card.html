@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="transports_address_body" th:remove="tag">
+        <form id="transports-address-detail" class="mb-2" th:action="@{/transports/address_detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="transports-address-detailbtn-large" class="d-none d-sm-block">
+                 <button type="submit" id="transports-address-detailbtn" class="btn btn-sm btn-dark transports_address_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="transports-address-addbtn" class="btn btn-sm btn-dark transports_address_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="submit" id="transports-address-editbtn" class="btn btn-sm btn-dark transports_address_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="transports-address-delbtn" class="btn btn-sm btn-dark transports_address_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="transports-address-detailbtn-small" class="d-block d-sm-none">
+                 <button type="submit" id="transports-address-detailbtn-sx" class="btn btn-sm btn-dark transports_address_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="transports-address-addbtn-sx" class="btn btn-sm btn-dark transports_address_btn_control" th:attr="mode=0" disabled><i data-feather="plus"></i></button>
+                 <button type="submit" id="transports-address-editbtn-sx" class="btn btn-sm btn-dark transports_address_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="transports-address-delbtn-sx" class="btn btn-sm btn-dark transports_address_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+
+        <div><table id="table-transports-address" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vTransportAddressListValue;
+    vTransportAddressListValue = {
+        table : '#table-transports-address',
+        button_form: "#transports-address-detail",
+        ajax : {
+            "url": /*[[@{/transports/get_address_table}]]*/ "transports/get_address_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.cnt_id = vTransportAddressListValue.rowdata.cnt_id
+            }
+        },
+        key : "cnt_add_id",
+        switchControl : transports_address_switchControl,
+        rowdata:{
+            cnt_add_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 'ftp',
+        columnDefs:[
+            {"targets": [0], "visible": false}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{transports.address.cnt_add_id}]]*/ "cnt_add_id", "data": "cnt_add_id", "width": "1%"},
+            /*1*/{"title": /*[[#{transports.address.add_type_sname}]]*/ "add_type_sname", "data": "add_type_sname", "width": "10%"},
+            /*2*/{"title": /*[[#{transports.address.cnt_add_value}]]*/ "cnt_add_value", "data": "cnt_add_value", "width": "89%"}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function transports_address_switchControl(){
+        if(vTransportAddressListValue.rowdata.cnt_add_id != null) {
+            if(vTransportsListValue.rowdata.cnt_user_access === 1) {
+                $("#transports-address-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#transports-address-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#transports-address-editbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#transports-address-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }else{
+                $("#transports-address-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#transports-address-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#transports-address-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#transports-address-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            $("#transports-address-detailbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#transports-address-detailbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+            $("#transports-address-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-address-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-address-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#transports-address-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-address-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-address-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.transports_address_btn_control').on('click', function (){
+        $("#transports-address-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#transports-address-detail').submit(function(){
+        vTransportAddressListValue.rowdata.transports_address_table_order_column = $(vTransportAddressListValue.table).DataTable().order()[0][0];
+        vTransportAddressListValue.rowdata.transports_address_table_order_type = $(vTransportAddressListValue.table).DataTable().order()[0][1];
+        vTransportAddressListValue.rowdata.transports_address_table_search = $(vTransportAddressListValue.table).DataTable().search();
+        vTransportAddressListValue.rowdata.transports_address_table_pagelen = $(vTransportAddressListValue.table).DataTable().page.len();
+        vTransportAddressListValue.rowdata.transports_address_table_page = $(vTransportAddressListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vTransportAddressListValue.rowdata.cnt_id = vTransportsListValue.rowdata.cnt_id;
+        vTransportAddressListValue.rowdata.cnt_name = vTransportsListValue.rowdata.cnt_name;
+
+        vTransportAddressListValue.rowdata.transports_list_table_order_column = $(vTransportsListValue.table).DataTable().order()[0][0];
+        vTransportAddressListValue.rowdata.transports_list_table_order_type = $(vTransportsListValue.table).DataTable().order()[0][1];
+        vTransportAddressListValue.rowdata.transports_list_table_search = $(vTransportsListValue.table).DataTable().search();
+        vTransportAddressListValue.rowdata.transports_list_table_pagelen = $(vTransportsListValue.table).DataTable().page.len();
+        vTransportAddressListValue.rowdata.transports_list_table_page = $(vTransportsListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+        vTransportAddressListValue.rowdata.req_country_id = $('#transport_country_list').val();
+
+        vTransportAddressListValue.rowdata.req_address = $('#req_address').val();
+        if($('#req_tir_check').is(':checked')) {
+            vTransportAddressListValue.rowdata.req_tir_check = 1;
+        }
+
+        if($('#req_adr_check').is(':checked')) {
+            vTransportAddressListValue.rowdata.req_adr_check = 1;
+        }
+
+        if($('#req_ekmt_check').is(':checked')) {
+            vTransportAddressListValue.rowdata.req_ekmt_check = 1;
+        }
+
+        vTransportAddressListValue.rowdata.clients_transports_collapse = $('#transports_auto_div').hasClass('show');
+        vTransportAddressListValue.rowdata.clients_trailers_collapse = $('#transports_trailers_div').hasClass('show');
+        vTransportAddressListValue.rowdata.clients_drivers_collapse = $('#transports_drivers_div').hasClass('show');
+        vTransportAddressListValue.rowdata.clients_contacts_collapse = $('#transports_contacts_div').hasClass('show');
+        vTransportAddressListValue.rowdata.clients_country_collapse = $('#transports_country_div').hasClass('show');
+        vTransportAddressListValue.rowdata.clients_services_collapse = $('#transports_services_div').hasClass('show');
+        vTransportAddressListValue.rowdata.clients_address_collapse = $('#transports_address_div').hasClass('show');
+        vTransportAddressListValue.rowdata.clients_documents_collapse = $('#transports_documents_div').hasClass('show');
+        vTransportAddressListValue.rowdata.clients_files_collapse = $('#transports_files_div').hasClass('show');        
+        
+        Object.keys(vTransportAddressListValue.rowdata).forEach(function (index) {
+            $("#transports-address-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#transports-address-detail input[name=\"" + index + "\"]").val(vTransportAddressListValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vTransportAddressListValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+        vTransportAddressListValue.rowdata.cnt_name = /*[[${cnt_name}]]*/ null;
+        vTransportAddressListValue.rowdata.cnt_add_id = /*[[${cnt_add_id}]]*/ null;
+
+        vTransportAddressListValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vTransportAddressListValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vTransportAddressListValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vTransportAddressListValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vTransportAddressListValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vTransportAddressListValue);
+    });
+</script>
+
+</body>
+</html>

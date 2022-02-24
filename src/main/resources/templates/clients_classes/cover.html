@@ -1,0 +1,230 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:include="layout/header :: header(title = #{clients.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card order-1 mb-2" id="clients_classes_filters_div">
+            <div class="card-header">
+                <div class="card-actions float-right">
+                    <a href="#clients_classes_filter_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title mb-0" href="#clients_classes_filter_div" data-toggle="collapse" th:text="#{clients.filter.caption}"></h5>
+            </div>
+            <div class="card-body py-3 collapse show" id="clients_classes_filter_div">
+                <div>
+                    <form class="form-inline">
+                        <div class="custom-control custom-switch mb-2">
+                            <input class="custom-control-input" type="checkbox" id="clients_classes_filter_check" name="clients_classes_filter_check" disabled>
+                            <label class="custom-control-label" for="clients_classes_filter_check"></label>
+                        </div>
+
+                        <div class="form-group mb-2 mr-2">
+                            <label for="clients_classes_filters_users_list" class="mr-2" th:text="#{clients_classes.filter.users_list}">Users: </label>
+                            <select id="clients_classes_filters_users_list" class="form-control select2" data-toggle="select2">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="filter_user_list : ${filter_user_list}"
+                                        th:value="${filter_user_list.id}"
+                                        th:text="${filter_user_list.user_surname}"
+                                        th:selected="${filter_user_list.id == user_id}"
+                                ></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-2 mr-2">
+                            <label for="clients_classes_filters_statuses_list" class="mr-2" th:text="#{clients_classes.filter.statuses_list}">Statuses: </label>
+                            <select id="clients_classes_filters_statuses_list" class="form-control">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="filter_statuses : ${filter_statuses_list}"
+                                        th:value="${filter_statuses.cs_id}"
+                                        th:text="${filter_statuses.cs_name}"
+                                        th:selected="${filter_statuses.cs_id == cs_id}"
+                                ></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-2 mr-2">
+                            <label for="clients_classes_filters_classes_list" class="mr-2" th:text="#{clients_classes.filter.classes_list}">Statuses: </label>
+                            <select id="clients_classes_filters_classes_list" class="form-control">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="filter_classes : ${filter_classes_list}"
+                                        th:value="${filter_classes.cnt_class_id}"
+                                        th:text="${filter_classes.cnt_class_name}"
+                                        th:selected="${filter_classes.cnt_class_id == cnt_class_id}"
+                                ></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-2 mr-2">
+                            <label for="clients_classes_filters_start_date" class="mr-2" th:text="#{clients_classes.filter.start_date}">StartDate:</label>
+                            <input class="form-control" type="text" id="clients_classes_filters_start_date" name="clients_classes_filters_start_date" />
+                        </div>
+
+                        <div class="form-group mb-2 mr-2">
+                            <label for="clients_classes_filters_end_date" class="mr-2" th:text="#{clients_classes.filter.end_date}">EndDate:</label>
+                            <input class="form-control" type="text" id="clients_classes_filters_end_date" name="clients_classes_filters_end_date" />
+                        </div>
+
+                        <button type="button" class="btn btn-dark align-middle mb-2" id="clients_classes_filters_show" disabled><i data-feather="search"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div><!-- Filter Table -->
+    </div>
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card order-1 mb-2" id="clients_classes_list_card">
+            <div class="card-header">
+                <div class="card-actions float-right">
+                    <a href="#clients_classes_list_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title mb-0" href="#clients_classes_list_div" data-toggle="collapse" th:text="#{clients_classes.list.caption}"></h5>
+            </div>
+            <div class="card-body py-3 collapse show" id="clients_classes_list_div">
+                <div>
+                    <span th:replace="clients_classes/list_card :: clients_classes_list_body"></span>
+                </div>
+            </div>
+        </div><!-- CLient List Table -->
+    </div><!-- First Column -->
+<!--
+    <div class="col-12 col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-actions float-right">
+                    <a href="#clients_statistics_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title mb-0" th:text="#{clients_classes.statistics.caption}"></h5>
+            </div>
+            <div class="card-body py-3 collapse show" id="clients_statistics_div">
+                <div>
+                    <span th:replace="clients_classes/statistics_card :: clients_classes_stat_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+-->
+<!-- Second Column -->
+</div><!-- Row 1 -->
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div id="clients_classes_tabs_div">
+            <div class="tab">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"><a class="nav-link text-primary active" href="#tab-1" data-toggle="tab" role="tab" th:text="#{clients_classes.tabs.tab1}">Graph.Finance</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-2" data-toggle="tab" role="tab" th:text="#{clients_classes.tabs.tab2}">Graph.Tenders</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-3" data-toggle="tab" role="tab" th:text="#{clients_classes.tabs.tab3}">Graph.Requests</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-4" data-toggle="tab" role="tab" th:text="#{clients_classes.tabs.tab4}">Graph.Meets</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-5" data-toggle="tab" role="tab" th:text="#{clients_classes.tabs.tab5}">Graph.Calls</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-6" data-toggle="tab" role="tab" th:text="#{clients_classes.tabs.tab6}">Finance</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-7" data-toggle="tab" role="tab" th:text="#{clients_classes.tabs.tab7}">Tenders</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-8" data-toggle="tab" role="tab" th:text="#{clients_classes.tabs.tab8}">Requests</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-9" data-toggle="tab" role="tab" th:text="#{clients_classes.tabs.tab9}">Meets</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-10" data-toggle="tab" role="tab" th:text="#{clients_classes.tabs.tab10}">Calls</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-1" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <script th:replace="clients_classes/finance_graph_card :: clients_classes_finance_graph_body"></script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-2" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <script th:replace="clients_classes/tenders_graph_card :: clients_classes_tenders_graph_body"></script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-3" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <script th:replace="clients_classes/requests_graph_card :: clients_classes_requests_graph_body"></script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-4" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <script th:replace="clients_classes/meets_graph_card :: clients_classes_meets_graph_body"></script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-5" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <script th:replace="clients_classes/calls_graph_card :: clients_classes_calls_graph_body"></script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-6" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <script th:replace="clients_classes/finance_card :: clients_classes_finance_body"></script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-7" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <script th:replace="clients_classes/tenders_card :: clients_classes_tenders_body"></script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-8" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <script th:replace="clients_classes/requests_card :: clients_classes_requests_body"></script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-9" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <script th:replace="clients_classes/meets_card :: clients_classes_meets_body"></script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-10" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <script th:replace="clients_classes/calls_card :: clients_classes_calls_body"></script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- Tabs -->
+    </div><!-- Row 2 -->
+</div>
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<script th:replace="clients_classes/finance_graph_card :: cardscript"></script>
+<script th:replace="clients_classes/tenders_graph_card :: cardscript"></script>
+<script th:replace="clients_classes/requests_graph_card :: cardscript"></script>
+<script th:replace="clients_classes/meets_graph_card :: cardscript"></script>
+<script th:replace="clients_classes/calls_graph_card :: cardscript"></script>
+
+<script th:replace="clients_classes/finance_card :: cardscript"></script>
+<script th:replace="clients_classes/tenders_card :: cardscript"></script>
+<script th:replace="clients_classes/requests_card :: cardscript"></script>
+<script th:replace="clients_classes/meets_card :: cardscript"></script>
+<script th:replace="clients_classes/calls_card :: cardscript"></script>
+
+<script th:replace="clients_classes/list_card :: cardscript"></script>
+
+</body>
+</html>

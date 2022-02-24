@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--/* Head takes 3 arguments that are fragments */-->
+<head th:fragment="header(title)">
+
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1">
+
+    <meta name="description" content="ID Company">
+    <meta name="author" content="">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="57x57" th:href="@{/img/favicon/apple-icon-57x57.png}">
+    <link rel="apple-touch-icon" sizes="60x60" th:href="@{/img/favicon/apple-icon-60x60.png}">
+    <link rel="apple-touch-icon" sizes="72x72" th:href="@{/img/favicon/apple-icon-72x72.png}">
+    <link rel="apple-touch-icon" sizes="76x76" th:href="@{/img/favicon/apple-icon-76x76.png}">
+    <link rel="apple-touch-icon" sizes="114x114" th:href="@{/img/favicon/apple-icon-114x114.png}">
+    <link rel="apple-touch-icon" sizes="120x120" th:href="@{/img/favicon/apple-icon-120x120.png}">
+    <link rel="apple-touch-icon" sizes="144x144" th:href="@{/img/favicon/apple-icon-144x144.png}">
+    <link rel="apple-touch-icon" sizes="152x152" th:href="@{/img/favicon/apple-icon-152x152.png}">
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/img/favicon/apple-icon-180x180.png}">
+    <link rel="icon" type="image/png" sizes="192x192"  th:href="@{/img/favicon/android-icon-192x192.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/img/favicon/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="96x96" th:href="@{/img/favicon/favicon-96x96.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/img/favicon/favicon-16x16.png}">
+    <link rel="manifest" th:href="@{/img/favicon/manifest.json}">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="@{/img/favicon/ms-icon-144x144.png}">
+    <meta name="theme-color" content="#ffffff">
+    <!-- end favicon -->
+
+    <title th:text="${title}">qqq</title>
+
+    <!-- Theme -->
+    <link rel="stylesheet" type="text/css" th:href="@{/spark/dist/css/modern.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/js/bootstrap/bootstrap-select.min.css}">
+
+    <style>
+        div.dataTables_length {
+            float: left;
+        }
+
+        div.dataTables_filter {
+            float: right;
+        }
+
+        div.dataTables_info {
+            float: left;
+        }
+
+        div.dataTables_paginate {
+            float: right;
+        }
+
+        div.DTTT {
+            float: left;
+            margin-right: 50px;
+        }
+
+        table.dataTable tbody tr.selected {
+            background-color: #41D492 !important;
+            color: black !important;
+        }
+
+        table.dataTable tbody tr.selected td{
+            background-color: #41D492 !important;
+            color: black !important;
+        }
+
+        #dropdownMenuLink {
+            cursor: pointer; /* not necessary for Bootstrap */
+            color: white /* change if you want */
+        }
+
+        #myBtn {
+            display: none;
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            z-index: 99;
+            cursor: pointer;
+            padding: 14px;
+        }
+
+        input[type=color].form-control {
+            padding: 0px;
+        }
+
+        div.dom_wrapper {
+            position: sticky;  /* Fix to the top */
+            top: 0;
+            padding: 5px;
+            background: rgba(255, 255, 255, 1);  /* hide the scrolling table */
+        }
+
+        div.toolbar {
+            float: left;
+        }
+
+        .table thead th.md_head_size {font-size: 14px;}
+        .table tr td.md_size {font-size: 13px;}
+        .table tfoot th.md_footer_size {font-size: 12px;}
+        .text_md_size {font-size: 13px;}
+
+        .table thead th.small_head_size {font-size: 13px;}
+        .table tr td.small_size {font-size: 12px;}
+        .table tfoot th.small_footer_size {font-size: 11px;}
+        .text_small_size {font-size: 12px;}
+
+        .table thead th.extra_small_head_size {font-size: 10px;}
+        .table tr td.extra_small_size {font-size: 10px;}
+        .table tfoot th.extra_small_footer_size {font-size: 10px;}
+        .text_extra_small_size {font-size: 10px;}
+
+        .table thead th.head-center {text-align: center;}
+
+        .table thead th.head-grey {background-color: #d5e1df;}
+        .table tr td.cell-grey {background-color: #d5e1df;}
+        th.th-grey {background-color: #d5e1df;}
+
+        .table thead th.head-yellow {background-color: #e3eaa7;}
+        .table tr td.cell-yellow {background-color: #e3eaa7;}
+        th.th-yellow {background-color: #e3eaa7;}
+
+        .table thead th.head-brown {background-color: #e6e2d3;}
+        .table tr td.cell-brown {background-color: #e6e2d3;}
+        th.th-brown {background-color: #e6e2d3;}
+
+        .table thead th.head-blue {background-color: #d5f4e6;}
+        .table tr td.cell-blue {background-color: #d5f4e6;}
+        th.th-blue {background-color: #d5f4e6;}
+
+        .table thead th.head-light-grey {background-color: #f2f2f2;}
+        .table tr td.cell-light-grey {background-color: #f2f2f2;}
+        th.th-light-grey {background-color: #f2f2f2;}
+        td.td-light-grey {background-color: #f2f2f2;}
+
+        th.th-border-black {border-right-width:thin; border-right-color: #0a0c0d;}
+        .table tr td.th-border-black {border-right-width:thin; border-right-color: #0a0c0d;}
+
+        th.th-border-select {border-right-width:thin; border-right-color: #80ced6;}
+        .table tr td.th-border-select {border-right-width:thin; border-right-color: #80ced6;}
+
+        .table tr td.th-border-all-select {border-right-width:thin; border-color: #80ced6;}
+
+        .table tr td.th-link {text-decoration: underline;}
+        .table thead th.head-link {text-decoration: underline;}
+
+        .table thead th.head-text-primary {color: #3b7ddd;}
+
+        .text-zammler{ color: #3c97ab}
+        .btn-zammler{ background-color: #3c97ab}
+        .bg-zammler{ background: #3c97ab}
+
+        div.dataTables_processing {
+            z-index: 1;
+        }
+
+        .new_table{
+            margin: 0 auto;
+            width: 100%;
+            clear: both;
+            border-collapse: collapse;
+            table-layout: fixed;
+            word-wrap:break-word;
+        }
+
+        .was-validated .custom-select:invalid + .select2 .select2-selection{
+            border-color: #dc3545!important;
+        }
+        .was-validated .custom-select:valid + .select2 .select2-selection{
+            border-color: #28a745!important;
+        }
+    </style>
+
+</head>
+<body>
+
+</body>
+</html>

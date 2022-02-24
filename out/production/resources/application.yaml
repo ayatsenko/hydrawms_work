@@ -1,0 +1,156 @@
+spring:
+  profiles:
+    active: prod
+
+server :
+  contextPath : /
+  port : 8081
+  compression :
+    enabled : true
+  session :
+    timeout : 3600
+
+---
+
+spring:
+  profiles: dev
+  datasource:
+    url : jdbc:oracle:thin:@10.10.10.10:1521/idltd
+    username : ZCRM
+    password : qazzaq
+    driver-class-name : oracle.jdbc.OracleDriver
+    min-idle : 5
+    max-idle : 10
+    max-active : 20
+
+  jpa :
+    database-platform : org.hibernate.dialect.Oracle10gDialect
+  jackson :
+    date-format : yyyy-MM-dd HH:mm:ss
+    serialization :
+      write-dates-as-timestamps : false
+
+  aop :
+    proxy-target-class : true
+
+  servlet :
+    multipart :
+      max-file-size : 25MB
+      max-request-size : 25MB
+
+  http :
+    multipart :
+      enabled : false
+
+  thymeleaf :
+    mode : LEGACYHTML5
+
+  telegram :
+    BOT_CREATOR_ID : 363275968
+    bot_start : true
+    BOT_TOKEN : 606957316:AAH1ySWFd1gGTCh4DBzITIG3qJbobOjCJ3Y
+    BOT_USERNAME : eeExpress_TestBot
+
+server :
+  contextPath : /hydrawms_new
+  port : 8081
+  compression :
+    enabled : true
+  session :
+    timeout : 3600
+
+---
+spring:
+  profiles: prod
+  datasource:
+    url : jdbc:oracle:thin:@localhost:1521/orclpdb1
+    username : ZCRM
+    password : qazzaq
+    driver-class-name : oracle.jdbc.OracleDriver
+    min-idle : 5
+    max-idle : 10
+    max-active : 20
+
+  jpa :
+    database-platform : org.hibernate.dialect.Oracle10gDialect
+  jackson :
+    date-format : yyyy-MM-dd HH:mm:ss
+    serialization :
+      write-dates-as-timestamps : false
+
+  aop :
+    proxy-target-class : true
+
+  servlet :
+    multipart :
+      max-file-size : 25MB
+      max-request-size : 25MB
+
+  http :
+    multipart :
+      enabled : false
+
+  thymeleaf :
+    mode : LEGACYHTML5
+
+  telegram :
+    BOT_CREATOR_ID : 363275968
+    bot_start : true
+    BOT_TOKEN : 606957316:AAH1ySWFd1gGTCh4DBzITIG3qJbobOjCJ3Y
+    BOT_USERNAME : eeExpress_TestBot
+
+server :
+  contextPath : /hydrawms_new
+  port : 8081
+  compression :
+    enabled : true
+  session :
+    timeout : 3600
+
+---
+spring:
+  profiles: prod_test
+  datasource:
+    url : jdbc:oracle:thin:@localhost:1524/orclpdb1
+    username : ZCRM
+    password : qazzaq
+    driver-class-name : oracle.jdbc.OracleDriver
+    min-idle : 1
+    max-idle : 1
+    max-active : 1
+
+  jpa :
+    database-platform : org.hibernate.dialect.Oracle10gDialect
+  jackson :
+    date-format : yyyy-MM-dd HH:mm:ss
+    serialization :
+      write-dates-as-timestamps : false
+
+  aop :
+    proxy-target-class : true
+
+  servlet :
+    multipart :
+      max-file-size : 25MB
+      max-request-size : 25MB
+
+  http :
+    multipart :
+      enabled : false
+
+  thymeleaf :
+    mode : LEGACYHTML5
+
+  telegram :
+    BOT_CREATOR_ID : 363275968
+    bot_start : true
+    BOT_TOKEN : 606957316:AAH1ySWFd1gGTCh4DBzITIG3qJbobOjCJ3Y
+    BOT_USERNAME : eeExpress_TestBot
+
+server :
+  contextPath : /hydrawms_new
+  port : 8081
+  compression :
+    enabled : true
+  session :
+    timeout : 3600

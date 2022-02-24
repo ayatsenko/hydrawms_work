@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="fin_result_error_body" th:remove="tag">
+            <form id="fin-result-error-detail" class="mb-2 mr-1" th:action="@{/fin_result/client_error_detail}" method="post" hidden>
+                <input name="mode" value="0" hidden>
+                  <div id="fin-result-errorbtn-large" class="d-none d-sm-block">
+                     <button type="submit" id="fin-result-error-cnt-addbtn" class="btn btn-sm btn-dark fin_result_error_cnt_control" disabled th:text="#{general.addbtn}" th:attr="mode=0">Add</button>
+                  </div>
+
+                  <div id="fin-result-errorbtn-small" class="d-block d-sm-none">
+                     <button type="submit" id="fin-result-error-cnt-addbtn-sx" class="btn btn-sm btn-dark fin_result_error_cnt_control" disabled th:attr="mode=0"><i data-feather="plus"></i></button>
+                  </div>
+            </form>
+
+        <div><table id="table-fin-result-error" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vFinResultErrorValue;
+    vFinResultErrorValue = {
+        table : '#table-fin-result-error',
+         button_form: '#fin-result-error-detail',
+        ajax : {
+            "url": /*[[@{/fin_result/get_error_table}]]*/ "fin_result/get_error_table",
+            "type": "post",
+            "data": function ( d ) {
+                    d.req_ser_id = vFinResultErrorValue.rowdata.req_ser_id;
+                    d.start_date = vFinResultErrorValue.rowdata.start_date;
+                    d.end_date = vFinResultErrorValue.rowdata.end_date;
+            }
+        },
+        key : "sfad_id",
+        switchControl : fin_result_error_main_switchControl,
+        rowdata:{
+                sfad_id: null,
+                fads_id: null,
+
+                req_ser_id: null,
+                start_date: null,
+                end_date: null
+        },
+        ordering: true,
+        orderCellsTop: true,
+        fixedHeader: true,
+        order: [
+            [0, "desc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["fads_colour"]);
+        },
+        columnDefs:[
+                {"targets": [0],"visible": false, className: "noExport"},
+                {"targets": [2], type: 'de_date'},
+                {"targets": [10],"visible": false},
+                {"targets": [12],"visible": false, className: "noExport"}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{auto_tasks.finance_file.sfad_id}]]*/ "sfad_id", "data": "sfad_id", "width": "1%"},
+                /*1*/{"title": /*[[#{auto_tasks.finance_file.fa_doc}]]*/ "fa_doc", "data": "fa_doc", "width": "10%"},
+                /*2*/{"title": /*[[#{auto_tasks.finance_file.fa_date}]]*/ "fa_date", "data": "fa_date", "width": "5%"},
+                /*3*/{"title": /*[[#{auto_tasks.finance_file.fa_way}]]*/ "fa_way", "data": "fa_way", "width": "3%"},
+                /*4*/{"title": /*[[#{auto_tasks.finance_file.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": "24%"},
+                /*5*/{"title": /*[[#{auto_tasks.finance_file.cnt_identifycode}]]*/ "cnt_identifycode", "data": "cnt_identifycode", "width": "5%"},
+                /*6*/{"title": /*[[#{auto_tasks.finance_file.user_name}]]*/ "user_name", "data": "user_name", "width": "18%"},
+                /*7*/{"title": /*[[#{auto_tasks.finance_file.fa_division}]]*/ "fa_division", "data": "fa_division", "width": "20%"},
+                /*8*/{"title": /*[[#{auto_tasks.finance_file.summ}]]*/ "summ", "data": "summ", "width": "4%"},
+                /*9*/{"title": /*[[#{auto_tasks.finance_file.id_delete}]]*/ "id_delete", "data": "id_delete", "width": "1%"},
+                /*10*/{"title": /*[[#{auto_tasks.finance_file.fads_id}]]*/ "fads_id", "data": "fads_id", "width": "1%"},
+                /*11*/{"title": /*[[#{auto_tasks.finance_file.fads_sname}]]*/ "fads_sname", "data": "fads_sname", "width": "7%"},
+                /*12*/{"title": /*[[#{auto_tasks.finance_file.fads_colour}]]*/ "fads_colour", "data": "fads_colour", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true,
+        columnSearch: true
+    };
+
+    function fin_result_error_main_switchControl(){
+        if(vFinResultErrorValue.rowdata.sfad_id != null) {
+                if(vFinResultErrorValue.rowdata.fads_id === -1){
+                        $("#fin-result-error-cnt-addbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                        $("#fin-result-error-cnt-addbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                }else{
+                        $("#fin-result-error-cnt-addbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+
+                        $("#fin-result-error-cnt-addbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                }
+        }else{
+                $("#fin-result-error-cnt-addbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#fin-result-error-cnt-addbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.fin_result_error_main_btn_control').on('click', function (){
+        $("#fin-result-error-main-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#fin-result-error-detail').submit(function() {
+        vFinResultErrorValue.rowdata.fin_result_error_main_table_order_column = $(vFinResultErrorValue.table).DataTable().order()[0][0];
+        vFinResultErrorValue.rowdata.fin_result_error_main_table_order_type = $(vFinResultErrorValue.table).DataTable().order()[0][1];
+        vFinResultErrorValue.rowdata.fin_result_error_main_table_search = $(vFinResultErrorValue.table).DataTable().search();
+        vFinResultErrorValue.rowdata.fin_result_error_main_table_pagelen = $(vFinResultErrorValue.table).DataTable().page.len();
+        vFinResultErrorValue.rowdata.fin_result_error_main_table_page = $(vFinResultErrorValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vFinResultErrorValue.rowdata.fin_result_start_date = $("#fin_result_start_date").val();
+        vFinResultErrorValue.rowdata.fin_result_end_date = $("#fin_result_end_date").val();
+        vFinResultErrorValue.rowdata.req_ser_id = $("#fin_result_service_list").val();
+        vFinResultErrorValue.rowdata.ser_id = vFinResultDetailValue.rowdata.ser_id;
+
+        Object.keys(vFinResultErrorValue.rowdata).forEach(function (index) {
+            $("#fin-result-error-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#fin-result-error-detail input[name=\"" + index + "\"]").val(vFinResultErrorValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vFinResultErrorValue.rowdata.sfa_id = /*[[${sfa_id}]]*/ null;
+        vFinResultErrorValue.rowdata.sfad_id = /*[[${sfad_id}]]*/ null;
+
+        vFinResultErrorValue.rowdata.req_ser_id = /*[[${req_ser_id}]]*/ null;
+        vFinResultErrorValue.rowdata.start_date = /*[[${start_date}]]*/ null;
+        vFinResultErrorValue.rowdata.end_date = /*[[${end_date}]]*/ null;
+
+        vFinResultErrorValue.rowdata.table_order_column = /*[[${fin_result_error_main_table_order_column}]]*/ null;
+        vFinResultErrorValue.rowdata.table_order_type = /*[[${fin_result_error_main_table_order_type}]]*/ null;
+        vFinResultErrorValue.rowdata.table_search = /*[[${fin_result_error_main_table_search}]]*/ null;
+        vFinResultErrorValue.rowdata.table_pagelen = /*[[${fin_result_error_main_table_pagelen}]]*/ null;
+        vFinResultErrorValue.rowdata.table_page = /*[[${fin_result_error_main_table_page}]]*/ null;
+
+        recreateDataTable(vFinResultErrorValue);
+
+        $('#table-fin-result-error thead').append('<tr></tr>');
+    });
+</script>
+
+</body>
+</html>

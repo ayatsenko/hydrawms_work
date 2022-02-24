@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_locals_notes_body" th:remove="tag">
+        <form id="table-tms-locals-notes-buttons" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+            <button type="button" id="tms-locals-notes-detailbtn" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.detailbtn}" disabled><i class="fa fa-list"></i></button>
+            <button type="button" id="tms-locals-notes-addbtn" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" th:title="#{general.addbtn}"><i class="fa fa-plus"></i></button>
+            <button type="button" id="tms-locals-notes-editbtn" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.editbtn}" disabled><i class="fa fa-pencil-alt"></i></button>
+            <button type="button" id="tms-locals-notes-delbtn" class="btn btn-dark mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.delbtn}" disabled><i class="fa fa-trash-alt"></i></button>
+
+            <button type="button" id="tms-locals-notes-reload" class="btn btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.refreshbtn}"><i class="fa fa-sync"></i></button>
+        </form>
+        
+        <div><table id="table-tms-locals-notes" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var clmnl_id_width, clm_notes_type_id_width, clm_notes_type_name_width, clm_notes_type_colour_width, clmnl_text_width;
+    var clmnl_id_class, clm_notes_type_id_class, clm_notes_type_name_class, clm_notes_type_colour_class, clmnl_text_class;
+    var clmnl_id_show, clm_notes_type_id_show, clm_notes_type_name_show, clm_notes_type_colour_show, clmnl_text_show;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        clmnl_id_show = false;
+        clmnl_id_width = "";
+        clmnl_id_class = "";
+        clm_notes_type_id_show = false;
+        clm_notes_type_id_width = "";
+        clm_notes_type_id_class = "";
+        clm_notes_type_name_show = true;
+        clm_notes_type_name_width = "20%";
+        clm_notes_type_name_class = "small_size small_head_size small_footer_size";
+        clm_notes_type_colour_show = false;
+        clm_notes_type_colour_width = "";
+        clm_notes_type_colour_class = "";
+        clmnl_text_show = true;
+        clmnl_text_width = "80%";
+        clmnl_text_class = "small_size small_head_size small_footer_size text-center";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        clmnl_id_show = false;
+        clmnl_id_width = "";
+        clmnl_id_class = "";
+        clm_notes_type_id_show = false;
+        clm_notes_type_id_width = "";
+        clm_notes_type_id_class = "";
+        clm_notes_type_name_show = true;
+        clm_notes_type_name_width = "20%";
+        clm_notes_type_name_class = "";
+        clm_notes_type_colour_show = false;
+        clm_notes_type_colour_width = "";
+        clm_notes_type_colour_class = "";
+        clmnl_text_show = true;
+        clmnl_text_width = "80%";
+        clmnl_text_class = "";
+    }
+
+    var vFLDClaimNotesValue;
+    vFLDClaimNotesValue = {
+        table : '#table-tms-locals-notes',
+        button_form : '#table-tms-locals-notes-buttons',
+        ajax : {
+            "url": /*[[@{/tms_locals/get_notes_table}]]*/ "tms_locals/get_notes_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vFLDClaimNotesValue.rowdata.clm_id;
+            }
+        },
+        key : "clmnl_id",
+        switchControl : tms_locals_notes_switchControl,
+        rowdata:{
+            clm_id: null,
+            clmnl_id: null,
+            clm_notes_type_id: null,
+            clmnl_text: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: vDomParam,
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["clm_notes_type_colour"]);
+        },
+        columnDefs:[
+            {"targets": [0], "width": clmnl_id_width, "className": clmnl_id_class, "visible": clmnl_id_show},
+            {"targets": [1], "width": clm_notes_type_id_width, "className": clm_notes_type_id_class, "visible": clm_notes_type_id_show},
+            {"targets": [2], "width": clm_notes_type_name_width, "className": clm_notes_type_name_class, "visible": clm_notes_type_name_show},
+            {"targets": [3], "width": clm_notes_type_colour_width, "className": clm_notes_type_colour_class, "visible": clm_notes_type_colour_show},
+            {"targets": [4], "width": clmnl_text_width, "className": clmnl_text_class, "visible": clmnl_text_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{tms_locals.notes.clmnl_id}]]*/ "clmnl_id", "data": "clmnl_id"},
+            /*1*/{"title": /*[[#{tms_locals.notes.clm_notes_type_id}]]*/ "clm_notes_type_id", "data": "clm_notes_type_id"},
+            /*2*/{"title": /*[[#{tms_locals.notes.clm_notes_type_name}]]*/ "clm_notes_type_name", "data": "clm_notes_type_name"},
+            /*3*/{"title": /*[[#{tms_locals.notes.clm_notes_type_colour}]]*/ "clm_notes_type_colour", "data": "clm_notes_type_colour"},
+            /*4*/{"title": /*[[#{tms_locals.notes.clmnl_text}]]*/ "clmnl_text", "data": "clmnl_text"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function tms_locals_notes_switchControl(){
+        if(vFLDClaimNotesValue.rowdata.clmnl_id != null) {
+            $("#tms-locals-notes-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+            if(RoleOPS || RoleChiefOPS || RoleSuperOPS) {
+                $("#tms-locals-notes-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-locals-notes-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-danger');
+            }
+        } else{
+            $("#tms-locals-notes-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tms-locals-notes-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tms-locals-notes-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+        }
+    }
+
+    //Show Button
+    $('#tms-locals-notes-detailbtn').click(function() {
+        $('#tms_locals_notes_modal_addbtn').attr('hidden',true);
+        $('#tms_locals_notes_modal_editbtn').attr('hidden',true);
+        $('#tms_locals_notes_modal_delbtn').attr('hidden',true);
+        fill_tms_locals_notes_modal_detail(4);
+    });
+
+    //Add Button
+    $('#tms-locals-notes-addbtn').click(function() {
+        $('#tms_locals_notes_modal_addbtn').removeAttr('hidden');
+        $('#tms_locals_notes_modal_editbtn').attr('hidden',true);
+        $('#tms_locals_notes_modal_delbtn').attr('hidden',true);
+        fill_tms_locals_notes_modal_detail(0);
+    });
+
+    // Edit Button
+    $('#tms-locals-notes-editbtn').click(function() {
+        $('#tms_locals_notes_modal_addbtn').attr('hidden',true);
+        $('#tms_locals_notes_modal_editbtn').removeAttr('hidden');
+        $('#tms_locals_notes_modal_delbtn').attr('hidden',true);
+        fill_tms_locals_notes_modal_detail(1);
+    });
+
+    // Del Button
+    $('#tms-locals-notes-delbtn').click(function() {
+        $('#tms_locals_notes_modal_addbtn').attr('hidden',true);
+        $('#tms_locals_notes_modal_editbtn').attr('hidden',true);
+        $('#tms_locals_notes_modal_delbtn').removeAttr('hidden');
+        fill_tms_locals_notes_modal_detail(2);
+    });
+
+    function fullWorldNotesReload(){
+        vFLDClaimNotesValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+        $(vFLDClaimNotesValue.table).DataTable().ajax.reload(null, false);
+    }
+    //Reload Button
+    $('#tms-locals-notes-reload').click(function(){
+        fullWorldNotesReload();
+    });
+
+    $(document).ready(function(){
+        vFLDClaimNotesValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vFLDClaimNotesValue.rowdata.clmcl_id = /*[[${clmcl_id}]]*/ null;
+
+        vFLDClaimNotesValue.rowdata.table_order_column = /*[[${tms_locals_notes_table_order_column}]]*/ null;
+        vFLDClaimNotesValue.rowdata.table_order_type = /*[[${tms_locals_notes_table_order_type}]]*/ null;
+        vFLDClaimNotesValue.rowdata.table_search = /*[[${tms_locals_notes_table_search}]]*/ null;
+        vFLDClaimNotesValue.rowdata.table_pagelen = /*[[${tms_locals_notes_table_pagelen}]]*/ null;
+        vFLDClaimNotesValue.rowdata.table_page = /*[[${tms_locals_notes_table_page}]]*/ null;
+
+        recreateDataTable(vFLDClaimNotesValue);
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="kpi_roles_main_body" th:remove="tag">
+    <form id="kpi-roles-main-detail" class="mb-2 mr-1">
+                <input name="mode" value="0" hidden>
+                  <div id="kpi_roles_main_detailbtn_large">
+                     <button type="button" id="kpi-roles-main-detailbtn" class="btn btn-sm btn-dark" th:text="#{general.detailbtn}" disabled>View</button>
+                     <button type="button" id="kpi-roles-main-addbtn" class="btn btn-sm btn-primary" th:text="#{general.addbtn}">Add</button>
+                     <button type="button" id="kpi-roles-main-editbtn" class="btn btn-sm btn-dark" th:text="#{general.editbtn}" disabled>Edit</button>
+                     <button type="button" id="kpi-roles-main-delbtn" class="btn btn-sm btn-dark mr-2" th:text="#{general.delbtn}" disabled>Delete</button>
+                  </div>
+                  <div id="kpi_roles_main_detailbtn_small" hidden>
+                     <button type="button" id="kpi-roles-main-detailbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="list"></i></button>
+                     <button type="button" id="kpi-roles-main-addbtn-sx" class="btn btn-sm btn-primary"><i data-feather="plus"></i></button>
+                     <button type="button" id="kpi-roles-main-editbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="edit-2"></i></button>
+                     <button type="button" id="kpi-roles-main-delbtn-sx" class="btn btn-sm btn-dark mr-2" disabled><i data-feather="trash-2"></i></button>
+                  </div>
+            </form>
+
+        <div><table id="table-kpi-roles-main" class="table table-striped table-sm table-bordered compact" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var kpi_role_id_show, kpi_role_name_show, kpi_role_sname_show, kpi_role_description_show, empty_column_show;
+    var kpi_role_id_width, kpi_role_name_width, kpi_role_sname_width, kpi_role_description_width, empty_column_width;
+    var kpi_role_id_class, kpi_role_name_class, kpi_role_sname_class, kpi_role_description_class, empty_column_class;
+    <!-- Screen resolution -->
+
+    if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        kpi_role_id_show = false;
+        kpi_role_id_width = "";
+        kpi_role_id_class = "";
+        kpi_role_name_show = true;
+        kpi_role_name_width = "53%";
+        kpi_role_name_class = "all small_size small_head_size";
+        kpi_role_sname_show = true;
+        kpi_role_sname_width = "8%";
+        kpi_role_sname_class = "desktop extra_small_head_size extra_small_size text-center";
+        kpi_role_description_show = true;
+        kpi_role_description_width = "4%";
+        kpi_role_description_class = "desktop extra_small_head_size extra_small_size text-center";
+        empty_column_show = true;
+        empty_column_width ="14%";
+        empty_column_class = "desktop extra_small_size extra_small_head_size text-center";
+    }
+    else if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+
+        kpi_role_id_width = "5%";
+        kpi_role_id_class = "desktop small_size small_head_size";
+        kpi_role_name_width = "46%";
+        kpi_role_name_class = "all small_size small_head_size";
+        kpi_role_sname_width = "8%";
+        kpi_role_sname_class = "desktop small_head_size small_size text-center";
+        kpi_role_description_width = "4%";
+        kpi_role_description_class = "desktop small_head_size small_size text-center";
+        empty_column_width ="22%";
+        empty_column_class = "small_size small_head_size text-center";
+        user_name_width ="10%";
+        user_name_class = "desktop small_size small_head_size text-center";
+        cnt_source_id_width = "";
+        cnt_source_id_class = "none";
+        cnt_source_name_width = "";
+        cnt_source_name_class = "none";
+        cnt_createdate_width = "";
+        cnt_createdate_class = "none";
+    }
+    else{
+        vDomParam = "Blfrtip";
+
+        kpi_role_id_show = true;
+        kpi_role_id_width = "5%";
+        kpi_role_id_class = "";
+        kpi_role_name_show = true;
+        kpi_role_name_width = "15%";
+        kpi_role_name_class ="";
+        kpi_role_sname_show = true;
+        kpi_role_sname_width = "15%";
+        kpi_role_sname_class = "";
+        kpi_role_description_show = true;
+        kpi_role_description_width = "25%";
+        kpi_role_description_class = "";
+        empty_column_show = true;
+        empty_column_width = "40%";
+        empty_column_class = "small_size text-center";
+    }
+
+    var vKPIRolesMainValue;
+    vKPIRolesMainValue = {
+        table : '#table-kpi-roles-main',
+        button_form: "#kpi-roles-main-detail",
+        ajax : {
+            "url": /*[[@{/kpi_roles/get_main_table}]]*/ "kpi_roles/get_main_table",
+            "type": "post",
+            "data": function ( d ) {
+            }
+        },
+        key : "kpi_role_id",
+        switchControl : kpi_roles_main_switchControl,
+        rowdata:{
+            kpi_role_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: vDomParam,
+        createdRow: function( row, data, dataIndex ) {
+            $(row).find('td:eq(2)').css('background-color', data["cnt_class_color"]);
+            $(row).css('background-color', data["cs_color"]);
+        },
+        columnDefs:[
+            {"targets": [0], "width": kpi_role_id_width, "className": kpi_role_id_class, "visible": kpi_role_id_show},
+            {"targets": [1], "width": kpi_role_name_width, "className": kpi_role_name_class, "visible": kpi_role_name_show},
+            {"targets": [2], "width": kpi_role_sname_width, "className": kpi_role_sname_class, "visible": kpi_role_sname_show},
+            {"targets": [3], "width": kpi_role_description_width, "className": kpi_role_description_class, "visible": kpi_role_description_show},
+            {"targets": [4], "width": empty_column_width, "className": empty_column_class, "visible": empty_column_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{kpi_roles.main.kpi_role_id}]]*/ "kpi_role_id", "data": "kpi_role_id"},
+            /*1*/{"title": /*[[#{kpi_roles.main.kpi_role_name}]]*/ "kpi_role_name", "data": "kpi_role_name"},
+            /*2*/{"title": /*[[#{kpi_roles.main.kpi_role_sname}]]*/ "kpi_role_sname", "data": "kpi_role_sname"},
+            /*3*/{"title": /*[[#{kpi_roles.main.kpi_role_description}]]*/ "kpi_role_description", "data": "kpi_role_description"},
+            /*4*/{"title": /*[[#{kpi_roles.main.empty_column}]]*/ "empty_column", "data": "empty_column"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function kpi_roles_main_switchControl(){
+        if(vKPIRolesMainValue.rowdata.kpi_role_id != null) {
+        }
+    }
+
+    $('#kpi-roles-main-detailbtn').click(function (){
+        $('#kpi_roles_main_modal_addbtn').attr('hidden',true);
+        $('#kpi_roles_main_modal_editbtn').attr('hidden',true);
+        $('#kpi_roles_main_modal_delbtn').attr('hidden',true);
+        fill_kpi_roles_main_modal_detail(4);
+    });
+
+    $('#kpi-roles-main-detailbtn-sx').click(function (){
+        $('#kpi_roles_main_modal_addbtn').attr('hidden',true);
+        $('#kpi_roles_main_modal_editbtn').attr('hidden',true);
+        $('#kpi_roles_main_modal_delbtn').attr('hidden',true);
+        fill_kpi_roles_main_modal_detail(4);
+    });
+<!-- Show Buttons -->
+
+    $('#kpi-roles-main-addbtn').click(function (){
+        $('#kpi_roles_main_modal_addbtn').removeAttr('hidden');
+        $('#kpi_roles_main_modal_editbtn').attr('hidden',true);
+        $('#kpi_roles_main_modal_delbtn').attr('hidden',true);
+        fill_kpi_roles_main_modal_detail(0);
+    });
+
+    $('#kpi-roles-main-addbtn-sx').click(function (){
+        $('#kpi_roles_main_modal_addbtn').removeAttr('hidden');
+        $('#kpi_roles_main_modal_editbtn').attr('hidden',true);
+        $('#kpi_roles_main_modal_delbtn').attr('hidden',true);
+        fill_kpi_roles_main_modal_detail(0);
+    });
+<!-- Add Buttons -->
+
+    $('#kpi-roles-main-editbtn').click(function (){
+        $('#kpi_roles_main_modal_addbtn').attr('hidden',true);
+        $('#kpi_roles_main_modal_editbtn').removeAttr('hidden');
+        $('#kpi_roles_main_modal_delbtn').attr('hidden',true);
+        fill_kpi_roles_main_modal_detail(1);
+    });
+
+    $('#kpi-roles-main-editbtn-sx').click(function (){
+        $('#kpi_roles_main_modal_addbtn').attr('hidden',true);
+        $('#kpi_roles_main_modal_editbtn').removeAttr('hidden');
+        $('#kpi_roles_main_modal_delbtn').attr('hidden',true);
+        fill_kpi_roles_main_modal_detail(1);
+    });
+<!-- Edit Buttons -->
+
+    $('#kpi-roles-main-delbtn').click(function (){
+        $('#kpi_roles_main_modal_addbtn').attr('hidden',true);
+        $('#kpi_roles_main_modal_editbtn').attr('hidden',true);
+        $('#kpi_roles_main_modal_delbtn').removeAttr('hidden');
+        fill_kpi_roles_main_modal_detail(2);
+    });
+
+    $('#kpi-roles-main-delbtn-sx').click(function (){
+        $('#kpi_roles_main_modal_addbtn').attr('hidden',true);
+        $('#kpi_roles_main_modal_editbtn').attr('hidden',true);
+        $('#kpi_roles_main_modal_delbtn').removeAttr('hidden');
+        fill_kpi_roles_main_modal_detail(2);
+    });
+<!-- Delete Buttons -->
+
+    $('.kpi_roles_main_btn_control').click(function (){
+        $("#kpi-roles-main-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#kpi-roles-main-detail').submit(function() {
+        vKPIRolesMainValue.rowdata.kpi_roles_main_table_order_column = $(vKPIRolesMainValue.table).DataTable().order()[0][0];
+        vKPIRolesMainValue.rowdata.kpi_roles_main_table_order_type = $(vKPIRolesMainValue.table).DataTable().order()[0][1];
+        vKPIRolesMainValue.rowdata.kpi_roles_main_table_search = $(vKPIRolesMainValue.table).DataTable().search();
+        vKPIRolesMainValue.rowdata.kpi_roles_main_table_pagelen = $(vKPIRolesMainValue.table).DataTable().page.len();
+        vKPIRolesMainValue.rowdata.kpi_roles_main_table_page = $(vKPIRolesMainValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vKPIRolesMainValue.rowdata).forEach(function (index) {
+            $("#kpi-roles-main-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#kpi-roles-main-detail input[name=\"" + index + "\"]").val(vKPIRolesMainValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vKPIRolesMainValue.rowdata.kpi_role_id = /*[[${kpi_role_id}]]*/ null;
+
+        recreateDataTable(vKPIRolesMainValue);
+        <!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#clients_li').addClass('active').removeClass('collapsed');
+        $('#clients_a').attr('aria-expanded',true);
+        $('#clients').addClass('show');
+
+        $('#kpi_roles_main_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

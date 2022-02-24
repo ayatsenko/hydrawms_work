@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_locals_ways_body" th:remove="tag">
+        <form id="table-tms-locals-ways-buttons" class="mb-1" hidden>
+            <input name="mode" value="0" hidden>
+
+            <button type="button" id="tms-locals-ways-detailbtn" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.detailbtn}" disabled><i class="fa fa-list"></i></button>
+            <button type="button" id="tms-locals-ways-addbtn" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" th:title="#{general.addbtn}"><i class="fa fa-plus"></i></button>
+            <button type="button" id="tms-locals-ways-clonebtn" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.clonebtn}" disabled><i class="fa fa-copy"></i></button>
+            <button type="button" id="tms-locals-ways-editbtn" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.editbtn}" disabled><i class="fa fa-pencil-alt"></i></button>
+            <button type="button" id="tms-locals-ways-delbtn" class="btn btn-dark mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.delbtn}" disabled><i class="fa fa-trash-alt"></i></button>
+
+            <button type="button" id="tms-locals-ways-reload" class="btn btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.refreshbtn}"><i class="fa fa-sync"></i></button>
+        </form>
+        
+        <div><table id="table-tms-locals-ways" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var rn_width, clmwl_id_width, clm_way_sname_width, clm_zip_code_width, clm_way_date_width, clm_way_fact_date_width, clm_way_point_width, clm_way_address_width, empty_column_width, clm_way_complex_width ;
+    var rn_class, clmwl_id_class, clm_way_sname_class, clm_zip_code_class, clm_way_date_class, clm_way_fact_date_class, clm_way_point_class, clm_way_address_class, empty_column_class, clm_way_complex_class;
+    var rn_show, clmwl_id_show, clm_way_sname_show, clm_zip_code_show, clm_way_date_show, clm_way_fact_date_show, clm_way_point_show, clm_way_address_show, empty_column_show, clm_way_complex_show;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        rn_show = false;
+        rn_width = "";
+        rn_class = "";
+        clmwl_id_show = false;
+        clmwl_id_width = "";
+        clmwl_id_class = "";
+        clm_way_sname_show = true;
+        clm_way_sname_width = "10%";
+        clm_way_sname_class = "small_size small_head_size small_footer_size";
+        clm_zip_code_show = false;
+        clm_zip_code_width = "";
+        clm_zip_code_class = "";
+        clm_way_date_show = true;
+        clm_way_date_width = "6%";
+        clm_way_date_class = "small_size small_head_size small_footer_size text-center";
+        clm_way_fact_date_show = true;
+        clm_way_fact_date_width = "6%";
+        clm_way_fact_date_class = "small_size small_head_size small_footer_size text-center";
+        clm_way_point_show = false;
+        clm_way_point_width = "";
+        clm_way_point_class = "";
+        clm_way_address_show = false;
+        clm_way_address_width = "";
+        clm_way_address_class = "";
+        clm_way_complex_show = true;
+        clm_way_complex_width = "40%";
+        clm_way_complex_class = "small_size small_head_size small_footer_size";
+        empty_column_show = true;
+        empty_column_width = "38%";
+        empty_column_class = "small_size small_head_size small_footer_size";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        rn_show = false;
+        rn_width = "";
+        rn_class = "";
+        clmwl_id_show = false;
+        clmwl_id_width = "";
+        clmwl_id_class = "";
+        clm_way_sname_show = true;
+        clm_way_sname_width = "10%";
+        clm_way_sname_class = "small_size small_head_size small_footer_size";
+        clm_zip_code_show = false;
+        clm_zip_code_width = "";
+        clm_zip_code_class = "";
+        clm_way_date_show = true;
+        clm_way_date_width = "6%";
+        clm_way_date_class = "small_size small_head_size small_footer_size text-center";
+        clm_way_fact_date_show = true;
+        clm_way_fact_date_width = "6%";
+        clm_way_fact_date_class = "small_size small_head_size small_footer_size text-center";
+        clm_way_point_show = false;
+        clm_way_point_width = "";
+        clm_way_point_class = "";
+        clm_way_address_show = false;
+        clm_way_address_width = "";
+        clm_way_address_class = "";
+        clm_way_complex_show = true;
+        clm_way_complex_width = "40%";
+        clm_way_complex_class = "small_size small_head_size small_footer_size";
+        empty_column_show = true;
+        empty_column_width = "38%";
+        empty_column_class = "small_size small_head_size small_footer_size";
+    }
+
+    var vFLDClaimWaysValue;
+    vFLDClaimWaysValue = {
+        table : '#table-tms-locals-ways',
+        button_form: "#table-tms-locals-ways-buttons",
+        ajax : {
+            "url": /*[[@{/tms_locals/get_ways_table}]]*/ "tms_locals/get_ways_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vFLDClaimWaysValue.rowdata.clm_id
+            }
+        },
+        key : "clmwl_id",
+        switchControl : tms_locals_ways_switchControl,
+        rowdata:{
+            clm_id: null,
+            clmwl_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).css('background-color', data["act_type_colour"]);*/
+        },
+        columnDefs:[
+            {"targets": [0], "width": rn_width, "className": rn_class, "visible": rn_show},
+            {"targets": [1], "width": clmwl_id_width, "className": clmwl_id_class, "visible": clmwl_id_show},
+            {"targets": [2], "width": clm_way_sname_width, "className": clm_way_sname_class, "visible": clm_way_sname_show},
+            {"targets": [3], "width": clm_way_date_width, "className": clm_way_date_class, "visible": clm_way_date_show, type: 'de_date'},
+            {"targets": [4], "width": clm_way_fact_date_width, "className": clm_way_fact_date_class, "visible": clm_way_fact_date_show, type: 'de_date'},
+            {"targets": [5], "width": clm_zip_code_width, "className": clm_zip_code_class, "visible": clm_zip_code_show},
+            {"targets": [6], "width": clm_way_point_width, "className": clm_way_point_class, "visible": clm_way_point_show},
+            {"targets": [7], "width": clm_way_address_width, "className": clm_way_address_class, "visible": clm_way_address_show},
+            {"targets": [8], "width": clm_way_complex_width, "className": clm_way_complex_class, "visible": clm_way_complex_show},
+            {"targets": [9], "width": empty_column_width, "className": empty_column_class, "visible": empty_column_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{tms_locals.ways.rn}]]*/ "rn", "data": "rn"},
+            /*1*/{"title": /*[[#{tms_locals.ways.clmwl_id}]]*/ "clmwl_id", "data": "clmwl_id"},
+            /*2*/{"title": /*[[#{tms_locals.ways.clm_way_sname}]]*/ "clm_way_sname", "data": "clm_way_sname"},
+            /*3*/{"title": /*[[#{tms_locals.ways.clm_way_date}]]*/ "clm_way_date", "data": "clm_way_date"},
+            /*4*/{"title": /*[[#{tms_locals.ways.clm_way_fact_date}]]*/ "clm_way_fact_date", "data": "clm_way_fact_date"},
+            /*5*/{"title": /*[[#{tms_locals.ways.clm_zip_code}]]*/ "clm_zip_code", "data": "clm_zip_code"},
+            /*6*/{"title": /*[[#{tms_locals.ways.clm_way_point}]]*/ "clm_way_point", "data": "clm_way_point"},
+            /*7*/{"title": /*[[#{tms_locals.ways.clm_way_address}]]*/ "clm_way_address", "data": "clm_way_address"},
+            /*8*/{"title": /*[[#{tms_locals.ways.clm_way_complex}]]*/ "clm_way_complex", "data": "clm_way_complex"},
+            /*9*/{"title": /*[[#{tms_locals.ways.empty_column}]]*/ "empty_column", "data": "empty_column"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function tms_locals_ways_switchControl(){
+        if(vFLDClaimWaysValue.rowdata.clmwl_id != null && (RoleOPS || RoleChiefOPS || RoleSuperOPS)) {
+            $("#tms-locals-ways-clonebtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#tms-locals-ways-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#tms-locals-ways-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+
+        } else{
+            $("#tms-locals-ways-clonebtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tms-locals-ways-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tms-locals-ways-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+        }
+    }
+
+//Detail Button
+        $('#tms-locals-ways-detailbtn').click( function () {
+            $('#tms_locals_ways_modal_addbtn').attr('hidden',true);
+            $('#tms_locals_ways_modal_editbtn').attr('hidden',true);
+            $('#tms_locals_ways_modal_delbtn').attr('hidden',true);
+            fill_tms_locals_ways_modal_detail(4);
+        });
+
+//Add Button
+        $('#tms-locals-ways-addbtn').click( function () {
+            $('#tms_locals_ways_modal_addbtn').removeAttr('hidden');
+            $('#tms_locals_ways_modal_editbtn').attr('hidden',true);
+            $('#tms_locals_ways_modal_delbtn').attr('hidden',true);
+            fill_tms_locals_ways_modal_detail(0);
+        });
+
+// Clone function
+    function tmsLocalsCloneWays() {
+        var MainRowID = vClaimsValue.rowdata.clm_id;
+        var RowID = vFLDClaimWaysValue.rowdata.clmwl_id;
+        $.ajax({
+            url: /*[[ @{/tms_locals/clone_way} ]]*/ "/clients/clone_way",
+            type: 'POST',
+            data: {
+                "clmwl_id": RowID
+            },
+            success: function (result) {
+                vFLDClaimWaysValue.rowdata.clm_id = MainRowID;
+                $(vFLDClaimWaysValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+//Clone Button
+        $('#tms-locals-ways-clonebtn').click( function () {
+            tmsLocalsCloneWays();
+        });
+
+//Edit Button
+        $('#tms-locals-ways-editbtn').click( function () {
+            $('#tms_locals_ways_modal_addbtn').attr('hidden',true);
+            $('#tms_locals_ways_modal_editbtn').removeAttr('hidden');
+            $('#tms_locals_ways_modal_delbtn').attr('hidden',true);
+            fill_tms_locals_ways_modal_detail(1);
+        });
+
+//Del Button
+        $('#tms-locals-ways-delbtn').click( function () {
+            $('#tms_locals_ways_modal_addbtn').attr('hidden',true);
+            $('#tms_locals_ways_modal_editbtn').attr('hidden',true);
+            $('#tms_locals_ways_modal_delbtn').removeAttr('hidden');
+            fill_tms_locals_ways_modal_detail(2);
+        });
+
+    function tmsLocalsWaysReload(){
+        if(vClaimsValue.rowdata.clm_id > 0) {
+            vFLDClaimWaysValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+            $(vFLDClaimWaysValue.table).DataTable().ajax.reload(null, false);
+        }
+    }
+    //Reload Button
+    $('#tms-locals-ways-reload').click(function(){
+        tmsLocalsWaysReload();
+    });
+        
+        $(document).ready(function(){
+            vFLDClaimWaysValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+            vFLDClaimWaysValue.rowdata.clmwl_id = /*[[${clmwl_id}]]*/ null;
+
+            vFLDClaimWaysValue.rowdata.table_order_column = /*[[${tms_locals_ways_table_order_column}]]*/ null;
+            vFLDClaimWaysValue.rowdata.table_order_type = /*[[${tms_locals_ways_table_order_type}]]*/ null;
+            vFLDClaimWaysValue.rowdata.table_search = /*[[${tms_locals_ways_table_search}]]*/ null;
+            vFLDClaimWaysValue.rowdata.table_pagelen = /*[[${tms_locals_ways_table_pagelen}]]*/ null;
+            vFLDClaimWaysValue.rowdata.table_page = /*[[${tms_locals_ways_table_page}]]*/ null;
+
+            recreateDataTable(vFLDClaimWaysValue);
+        });
+</script>
+
+</body>
+</html>

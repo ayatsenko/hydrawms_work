@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{wms_clients_exchange.caption})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 col-md-7 pl-2 pr-1 pt-0">
+        <div class="card mb-2" id="wms_clients_exchange_list_card">
+            <div class="card-header pb-0">
+                <div class="card-wms-clients-exchange float-right">
+                    <a href="#wms_clients_exchange_list_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#wms_clients_exchange_list_div" data-toggle="collapse" th:text="#{wms_clients_exchange.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="wms_clients_exchange_list_div">
+                <div>
+                    <span th:replace="wms_clients_exchange/main_file_modal :: wms_clients_exchange_main_file_modal_body"></span>
+                    <span th:replace="wms_clients_exchange/main_card :: wms_clients_exchange_main_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-5 pl-0 pr-2 pt-0">
+        <div class="card mb-2" id="wms_clients_exchange_log_card">
+            <div class="card-header pb-0">
+                <div class="card-wms-clients-exchange float-right">
+                    <a href="#wms_clients_exchange_log_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#wms_clients_exchange_log_div" data-toggle="collapse" th:text="#{wms_clients_exchange.log.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="wms_clients_exchange_log_div">
+                <div>
+                    <span th:replace="wms_clients_exchange/log_card :: wms_clients_exchange_log_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Location -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="wms_clients_exchange/log_card :: cardscript"></script>
+
+<script th:replace="wms_clients_exchange/main_file_modal :: cardscript"></script>
+<script th:replace="wms_clients_exchange/main_card :: cardscript"></script>
+</body>
+</html>

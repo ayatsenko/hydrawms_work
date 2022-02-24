@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{support_tasks.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12">
+        <div>
+        <div class="tab">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-1" data-toggle="tab" role="tab" th:text="#{support_tasks.tabs.result}">Result</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-2" data-toggle="tab" role="tab" th:text="#{support_tasks.tabs.tasks}">Tasks</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-3" data-toggle="tab" role="tab" th:text="#{support_tasks.tabs.result}">Result</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab-1" role="tabpanel">
+                    <span th:replace="support_tasks/head_card :: support_tasks_head_body"></span>
+                   <div class="row">
+                    <div class="col-12 col-md-8" id="support_tasks_result_table_div">
+                        <span th:replace="support_tasks/result_card :: support_tasks_result_body"></span>
+                    </div>
+                       <div class="col-12 col-md-4" id="support_tasks_time_table_div">
+                           <span th:replace="support_tasks/time_card :: support_tasks_time_body"></span>
+                       </div>
+
+                        <div class="col-12 col-md-6" id="support_tasks_result_div">
+                            <div id="par-support-tasks-result" class="chart chart-sm">
+                                <canvas id="support-tasks-result"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6" id="support_tasks_time_div">
+                            <div id="par-support-tasks-time" class="chart chart-sm">
+                                <canvas id="support-tasks-time"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tab-2" role="tabpanel">
+                    <span th:replace="support_tasks/list_card :: support_tasks_list_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-3" role="tabpanel">
+                    <span th:replace="support_tasks/result_head_card :: support_tasks_result_head_body"></span>
+                    <div class="row">
+                        <div class="col-12" id="support_tasks_result_time_div">
+                            <span th:replace="support_tasks/result_time_card :: support_tasks_result_time_body"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<script th:replace="support_tasks/result_card :: cardscript"></script>
+<script th:replace="support_tasks/time_card :: cardscript"></script>
+
+<script th:replace="support_tasks/result_head_card :: cardscript"></script>
+<script th:replace="support_tasks/result_time_card :: cardscript"></script>
+
+<script th:replace="support_tasks/list_card :: cardscript"></script>
+<script th:replace="support_tasks/head_card :: cardscript"></script>
+</body>
+</html>

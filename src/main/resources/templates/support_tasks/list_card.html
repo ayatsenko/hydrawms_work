@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="support_tasks_list_body" th:remove="tag">
+        <div class="row">
+           <div class="col-md-3 mb-2" id="support-tasks-all-show-row">
+               <div class="custom-control custom-switch centered">
+                    <div class="custom-control custom-switch">
+                       <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input class="custom-control-input" type="checkbox" id="support_tasks_all_show" name="support_tasks_all_show" checked>
+                        <label class="custom-control-label" for="support_tasks_all_show">Не закрытые</label>
+                    </div>
+               </div>
+            </div>
+        </div>
+
+        <form id="support-tasks-list-detail" class="mb-1" th:action="@{/support_tasks/list_detail}" method="post">
+            <input name="mode" value="0" hidden>
+              <div id="support-tasks-list-btn-large" class="d-none d-sm-block">
+                 <button type="button" id="support-tasks-list-check" class="btn btn-dark" disabled><i data-feather="check-square"></i></button>
+                 <button type="button" id="support-tasks-list-uncheck" class="btn btn-dark mr-3" disabled><i data-feather="x-square"></i></button>
+
+                 <button type="button" id="support-tasks-list-hight" class="btn btn-dark" disabled><i data-feather="chevron-up"></i></button>
+                 <button type="button" id="support-tasks-list-low" class="btn btn-dark mr-3" disabled><i data-feather="chevron-down"></i></button>
+
+                 <button type="submit" id="support-tasks-list-detailbtn" class="btn btn-sm btn-dark support_tasks_list_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="support-tasks-list-addbtn" class="btn btn-sm btn-primary support_tasks_list_btn_control" th:text="#{general.addbtn}" th:attr="mode=0">Add</button>
+                 <button type="submit" id="support-tasks-list-editbtn" class="btn btn-sm btn-dark support_tasks_list_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="support-tasks-list-delbtn" class="btn btn-sm btn-dark support_tasks_list_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="support-tasks-list-btn-small" class="d-block d-sm-none">
+                 <button type="button" id="support-tasks-list-check-sx" class="btn btn-dark" disabled><i data-feather="check-square"></i></button>
+                 <button type="button" id="support-tasks-list-uncheck-sx" class="btn btn-dark mr-3" disabled><i data-feather="x-square"></i></button>
+
+                 <button type="button" id="support-tasks-list-hight-sx" class="btn btn-dark" disabled><i data-feather="chevron-up"></i></button>
+                 <button type="button" id="support-tasks-list-low-sx" class="btn btn-dark mr-3" disabled><i data-feather="chevron-down"></i></button>
+
+                 <button type="submit" id="support-tasks-list-detailbtn-sx" class="btn btn-sm btn-dark support_tasks_list_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="support-tasks-list-addbtn-sx" class="btn btn-sm btn-primary support_tasks_list_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                 <button type="submit" id="support-tasks-list-editbtn-sx" class="btn btn-sm btn-dark support_tasks_list_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="support-tasks-list-delbtn-sx" class="btn btn-sm btn-dark support_tasks_list_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>        
+        
+        <div><table id="table-support-tasks-list" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vSupportTasksListValue;
+    vSupportTasksListValue = {
+        table : '#table-support-tasks-list',
+        button_form: "#support-tasks-list-detail",
+        ajax : {
+            "url": /*[[@{/support_tasks/get_list_table}]]*/ "support_tasks/get_list_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.show_all = vSupportTasksListValue.rowdata.show_all
+            }
+        },
+        key : "spt_id",
+        switchControl : support_tasks_list_switchControl,
+        rowdata:{
+            spt_id: null,
+            show_all: null,
+            cnt_name: null,
+            req_user_id: null,
+            sptp_id: null,
+            spts_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+                $(row).css('background-color', data["spts_color"]);
+                $(row).find('td:eq(2)').css('background-color', data["sptp_color"]);
+                $(row).find('td:eq(5)').css('background-color', data["spts_color"]);
+        },
+        columnDefs: [
+            { "targets": [2],  "visible": false},
+            { "targets": [4],  "visible": false},
+            { "targets": [9],  "visible": false},
+            { "targets": [11],  "visible": false},
+
+            { "targets": [10],  type: 'de_date'},
+            { "targets": [11],  type: 'de_date'},
+            { "targets": [12],  type: 'de_date'},
+            { "targets": [13],  type: 'de_date'}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{support_tasks.tasks.spt_id}]]*/ "spt_id", "data": "spt_id", "width": "3%"},
+            /*1*/{"title": /*[[#{support_tasks.tasks.spt_name}]]*/ "spt_name", "data": "spt_name", "width": "32%"},
+
+            /*2*/{"title": /*[[#{support_tasks.tasks.sptp_id}]]*/ "sptp_id", "data": "sptp_id", "width": "1%"},
+            /*3*/{"title": /*[[#{support_tasks.tasks.sptp_sname}]]*/ "sptp_sname", "data": "sptp_sname", "width": "5%", "className":"text-center"},
+            /*4*/{"title": /*[[#{support_tasks.tasks.sptp_color}]]*/ "sptp_color", "data": "sptp_color", "width": "1%"},
+
+            /*5*/{"title": /*[[#{support_tasks.tasks.sptt_sname}]]*/ "sptt_sname", "data": "sptt_sname", "width": "5%", "className": "desktop text-center"},
+            /*6*/{"title": /*[[#{support_tasks.tasks.sptt_fact_time}]]*/ "sptt_fact_time", "data": "sptt_fact_time", "width": "5%", "className": "desktop text-center"},
+            /*7*/{"title": /*[[#{support_tasks.tasks.sptt_cost_time}]]*/ "sptt_cost_time", "data": "sptt_cost_time", "width": "5%", "className": "desktop text-center"},
+            /*8*/{"title": /*[[#{support_tasks.tasks.sptt_cost_all_time}]]*/ "sptt_cost_all_time", "data": "sptt_cost_all_time", "width": "10%", "className": "desktop text-center"},
+
+            /*9*/{"title": /*[[#{support_tasks.tasks.spts_id}]]*/ "spts_id", "data": "spts_id", "width": "1%"},
+            /*10*/{"title": /*[[#{support_tasks.tasks.spts_sname}]]*/ "spts_sname", "data": "spts_sname", "width": "5%", "className": "desktop text-center"},
+            /*11*/{"title": /*[[#{support_tasks.tasks.spts_color}]]*/ "spts_color", "data": "spts_color", "width": "1%"},
+            /*12*/{"title": /*[[#{support_tasks.tasks.spt_author_name}]]*/ "spt_author_name", "data": "spt_author_name", "width": "8%", "className": "desktop"},
+            /*13*/{"title": /*[[#{support_tasks.tasks.spt_work_name}]]*/ "spt_work_name", "data": "spt_work_name", "width": "8%", "className": "desktop"},
+            /*14*/{"title": /*[[#{support_tasks.tasks.spt_create_date}]]*/ "spt_create_date", "data": "spt_create_date", "width": "5%", "className": "desktop"},
+            /*15*/{"title": /*[[#{support_tasks.tasks.spt_plan_date}]]*/ "spt_plan_date", "data": "spt_plan_date", "width": "5%", "className": "desktop"},
+            /*16*/{"title": /*[[#{support_tasks.tasks.spt_test_date}]]*/ "spt_test_date", "data": "spt_test_date", "width": "5%", "className": "desktop"},
+            /*17*/{"title": /*[[#{support_tasks.tasks.spt_end_date}]]*/ "spt_end_date", "data": "spt_end_date", "width": "5%", "className": "desktop"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function support_tasks_list_switchControl(){
+            var NameString =  /*[[${#authentication.name}]]*/ '';
+            var RoleAllAdmin = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_GM","ROLE_SALEDIR","ROLE_ADMIN")')}]]*/ null;
+        if(vSupportTasksListValue.rowdata.spt_id != null) {
+                    $("#support-tasks-list-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                    $("#support-tasks-list-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                    if(RoleAllAdmin === true && NameString !== 'ayatsenko' && vSupportTasksListValue.rowdata.spts_id > 1 && vSupportTasksListValue.rowdata.spts_id < 4) {
+                        $("#support-tasks-list-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                        $("#support-tasks-list-editbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                        $("#support-tasks-list-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                        $("#support-tasks-list-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                    }
+                    else if(RoleAllAdmin === true && NameString === 'ayatsenko' && vSupportTasksListValue.rowdata.spts_id > 1 && vSupportTasksListValue.rowdata.spts_id < 7){
+                        $("#support-tasks-list-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                        $("#support-tasks-list-editbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                        $("#support-tasks-list-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                        $("#support-tasks-list-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                    }
+                    else{
+                        $("#support-tasks-list-editbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                        $("#support-tasks-list-editbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+
+                        $("#support-tasks-list-delbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                        $("#support-tasks-list-delbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                    }
+
+                    if(RoleAllAdmin === true && NameString === 'ayatsenko' && vSupportTasksListValue.rowdata.spts_id > 2 && vSupportTasksListValue.rowdata.spts_id < 7) {
+                        $("#support-tasks-list-check").prop('disabled', false).removeClass('btn-dark').addClass('btn-success');
+                        $("#support-tasks-list-check-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-success');
+                    }
+                    else{
+                        $("#support-tasks-list-check").prop('disabled', true).addClass('btn-dark').removeClass('btn-success');
+                        $("#support-tasks-list-check-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-success');
+                    }
+
+                    if(RoleAllAdmin === true && NameString === 'ayatsenko' && vSupportTasksListValue.rowdata.spts_id > 3 && vSupportTasksListValue.rowdata.spts_id < 8 ) {
+                        $("#support-tasks-list-uncheck").prop('disabled', false).removeClass('btn-dark').addClass('btn-danger');
+                        $("#support-tasks-list-uncheck-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-danger');
+                    }
+                    else{
+                        $("#support-tasks-list-uncheck").prop('disabled', true).addClass('btn-dark').removeClass('btn-danger');
+                        $("#support-tasks-list-uncheck-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-danger');
+                    }
+
+                    if(vSupportTasksListValue.rowdata.spts_id > 1 && vSupportTasksListValue.rowdata.spts_id < 7 && vSupportTasksListValue.rowdata.sptp_id < 4) {
+                        $("#support-tasks-list-hight").prop('disabled', false).removeClass('btn-dark').addClass('btn-success');
+                        $("#support-tasks-list-hight-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-success');
+                    }else{
+                        $("#support-tasks-list-hight").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                        $("#support-tasks-list-hught-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                    }
+/*Upper Prior*/
+                    if(vSupportTasksListValue.rowdata.spts_id > 1 && vSupportTasksListValue.rowdata.spts_id < 7 && vSupportTasksListValue.rowdata.sptp_id > 1) {
+                        $("#support-tasks-list-low").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+                        $("#support-tasks-list-low-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+                    }else{
+                        $("#support-tasks-list-low").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+                        $("#support-tasks-list-low-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+                    }
+/*Down Prior*/
+            } else{
+                    $("#support-tasks-list-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                    $("#support-tasks-list-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                    $("#support-tasks-list-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                    $("#support-tasks-list-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                    $("#support-tasks-list-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                    $("#support-tasks-list-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                    $("#support-tasks-list-check").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                    $("#support-tasks-list-check-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+
+                    $("#support-tasks-list-uncheck").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+                    $("#support-tasks-list-uncheck-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+                    $("#support-tasks-list-hight").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                    $("#support-tasks-list-hught-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+
+                    $("#support-tasks-list-low").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+                    $("#support-tasks-list-low-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            }
+    }
+
+    $('#support-tasks-list-hight').on('click', function( event ) {
+        if (vSupportTasksListValue.rowdata.spt_id != null) {
+            var RowID = vSupportTasksListValue.rowdata.spt_id;
+            var ShowAll;
+            if ($('#support_tasks_all_show').is(':checked')) {
+                ShowAll = 1;
+            }
+            else {
+                ShowAll = 0;
+            }
+            $.ajax({
+                url: /*[[ @{/support_tasks/list_upper} ]]*/ "/support_tasks/list_upper",
+                type: 'POST',
+                data: {"spt_id": vSupportTasksListValue.rowdata.spt_id},
+                success: function (result) {
+                    vSupportTasksListValue.rowdata.spt_id = RowID;
+                    vSupportTasksListValue.rowdata.show_all = ShowAll;
+                    $(vSupportTasksListValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    }); <!-- Up Prior Button -->
+
+    $('#support-tasks-list-low').on('click', function( event ) {
+        if (vSupportTasksListValue.rowdata.spt_id != null) {
+            var RowID = vSupportTasksListValue.rowdata.spt_id;
+            var ShowAll;
+            if ($('#support_tasks_all_show').is(':checked')) {
+                ShowAll = 1;
+            }
+            else {
+                ShowAll = 0;
+            }
+            $.ajax({
+                url: /*[[ @{/support_tasks/list_lower} ]]*/ "/support_tasks/list_lower",
+                type: 'POST',
+                data: {"spt_id": vSupportTasksListValue.rowdata.spt_id},
+                success: function (result) {
+                    vSupportTasksListValue.rowdata.spt_id = RowID;
+                    vSupportTasksListValue.rowdata.show_all = ShowAll;
+                    $(vSupportTasksListValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    }); <!-- Low Prior Button -->
+
+    $('#support-tasks-list-check').on('click', function( event ) {
+        if (vSupportTasksListValue.rowdata.spt_id != null) {
+            var RowID = vSupportTasksListValue.rowdata.spt_id;
+            var ShowAll;
+            if ($('#support_tasks_all_show').is(':checked')) {
+                ShowAll = 1;
+            }
+            else {
+                ShowAll = 0;
+            }
+            $.ajax({
+                url: /*[[ @{/support_tasks/list_check} ]]*/ "/support_tasks/list_check",
+                type: 'POST',
+                data: {"spt_id": vSupportTasksListValue.rowdata.spt_id},
+                success: function (result) {
+                    vSupportTasksListValue.rowdata.spt_id = RowID;
+                    vSupportTasksListValue.rowdata.show_all = ShowAll;
+                    $(vSupportTasksListValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    }); <!-- Check Button -->
+
+    $('#support-tasks-list-uncheck').on('click', function( event ) {
+        if (vSupportTasksListValue.rowdata.spt_id != null) {
+            var RowID = vSupportTasksListValue.rowdata.spt_id;
+            var ShowAll;
+            if ($('#support_tasks_all_show').is(':checked')) {
+                ShowAll = 1;
+            }
+            else {
+                ShowAll = 0;
+            }
+            $.ajax({
+                url: /*[[ @{/support_tasks/list_uncheck} ]]*/ "/support_tasks/list_uncheck",
+                type: 'POST',
+                data: {"spt_id": vSupportTasksListValue.rowdata.spt_id},
+                success: function (result) {
+                    vSupportTasksListValue.rowdata.spt_id = RowID;
+                    vSupportTasksListValue.rowdata.show_all = ShowAll;
+                    $(vSupportTasksListValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    }); <!-- Check Button -->
+
+    $('.support_tasks_list_btn_control').on('click', function (){
+            $("#support-tasks-list-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#support-tasks-list-detail').submit(function() {
+            vSupportTasksListValue.rowdata.support_tasks_list_table_order_column = $(vSupportTasksListValue.table).DataTable().order()[0][0];
+            vSupportTasksListValue.rowdata.support_tasks_list_table_order_type = $(vSupportTasksListValue.table).DataTable().order()[0][1];
+            vSupportTasksListValue.rowdata.support_tasks_list_table_search = $(vSupportTasksListValue.table).DataTable().search();
+            vSupportTasksListValue.rowdata.support_tasks_list_table_pagelen = $(vSupportTasksListValue.table).DataTable().page.len();
+            vSupportTasksListValue.rowdata.support_tasks_list_table_page = $(vSupportTasksListValue.table).DataTable().page.info().page;
+            <!-- Recreate Contragent Ajax Filter Value -->
+                if ($('#support_tasks_all_show').is(':checked')) {
+                    vSupportTasksListValue.rowdata.show_all = 1;
+                }
+                else {
+                    vSupportTasksListValue.rowdata.show_all = 0;
+                }
+
+            Object.keys(vSupportTasksListValue.rowdata).forEach(function (index) {
+                    $("#support-tasks-list-detail").append("<input name=\"" + index + "\" hidden>");
+                    $("#support-tasks-list-detail input[name=\"" + index + "\"]").val(vSupportTasksListValue.rowdata[index]);
+            });
+    });
+
+    function activaTab(tab){
+        if(tab === null){ tab = 'tab-1'};
+        $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+    }
+
+    $('#support_tasks_all_show').click(function() {
+        if ($('#support_tasks_all_show').is(':checked')) {
+            vSupportTasksListValue.rowdata.show_all = 1;
+            $(vSupportTasksListValue.table).DataTable().ajax.reload();
+        }
+        else {
+            vSupportTasksListValue.rowdata.show_all = 0;
+            $(vSupportTasksListValue.table).DataTable().ajax.reload();
+        }
+    });
+
+    $(document).ready(function(){
+        vSupportTasksListValue.rowdata.spt_id = /*[[${spt_id}]]*/ null;
+        vSupportTasksListValue.rowdata.show_all =  /*[[${show_all}]]*/ null;
+
+        vSupportTasksListValue.rowdata.table_order_column = /*[[${support_tasks_list_table_order_column}]]*/ null;
+        vSupportTasksListValue.rowdata.table_order_type = /*[[${support_tasks_list_table_order_type}]]*/ null;
+        vSupportTasksListValue.rowdata.table_search = /*[[${support_tasks_list_table_search}]]*/ null;
+        vSupportTasksListValue.rowdata.table_pagelen = /*[[${support_tasks_list_table_pagelen}]]*/ null;
+        vSupportTasksListValue.rowdata.table_page = /*[[${support_tasks_list_table_page}]]*/ null;
+
+        if(vSupportTasksListValue.rowdata.show_all === 1){
+            $('#support_tasks_all_show').prop('checked',true);
+        }else{
+            $('#support_tasks_all_show').prop('checked',false);
+        }
+        recreateDataTable(vSupportTasksListValue);
+
+        $('#main_li').removeClass('active');
+
+        $('#support_li').addClass('active').removeClass('collapsed');
+        $('#support_a').attr('aria-expanded',true);
+        $('#support').addClass('show');
+
+        $('#support_tasks_a').addClass('text-primary');
+
+        activaTab(/*[[${support_tasks_tab_name}]]*/);
+    });
+</script>
+
+</body>
+</html>

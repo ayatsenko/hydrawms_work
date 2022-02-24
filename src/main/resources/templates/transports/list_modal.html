@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="transports_list_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="transports_list_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="transports_list_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{transports.list.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="cnt_id_row">
+                            <label for="cnt_id" class="form-label mb-0" th:text="'1. '+ #{transports.list.cnt_id}"></label>
+                            <input type="number" class="form-control" id="cnt_id" name="cnt_id">
+                        </div>
+                        <div class="col-12 col-md-5">
+                            <label for="cnt_name" class="form-label mb-0" th:text="'2. '+#{transports.list.cnt_name}"></label>
+                            <input type="text" maxlength="120" class="form-control" id="cnt_name" name="cnt_name">
+                        </div>
+                    </div><!-- Row 1 -->
+                    
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-5">
+                            <label for="cnt_name_eng" class="form-label mb-0" th:text="'3. '+#{transports.list.cnt_name_eng}"></label>
+                            <input type="text" maxlength="120" class="form-control" id="cnt_name_eng" name="cnt_name_eng">
+                        </div>
+                    </div><!-- Row 1 -->                    
+                    
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-5" id="country_id_row">
+                            <label for="country_id" class="form-label mb-0" th:text="'4. '+#{transports.list.country_id}"></label>
+                            <div class="flex-fill">
+                                <select type="text" class="custom-select select2" id="country_id" name="country_id">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-2" id="cnt_resident_row">
+                            <label class="form-label mb-0" for="cnt_resident" th:text="'5. '+ #{transports.list.cnt_resident}"></label>
+                            <div class="custom-control custom-switch centered">
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" id="cnt_resident" name="cnt_resident">
+                                    <label class="custom-control-label" for="cnt_resident"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-4" id="owt_id_row">
+                            <label for="owt_id" class="form-label mb-0" th:text="'6. '+#{transports.list.owt_id}"></label>
+                            <select type="text" class="custom-select select2" id="owt_id" name="owt_id">
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-4" id="cnt_identifycode_row">
+                            <label for="cnt_identifycode" class="form-label mb-0" th:text="'7. '+#{transports.list.cnt_identifycode}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="cnt_identifycode" name="cnt_identifycode">
+                        </div>
+                    </div><!-- Row 3 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="tms_contt_id_row">
+                            <label for="tms_contt_id" class="form-label mb-0" th:text="'8. '+#{transports.list.tms_contt_id}"></label>
+                            <select type="text" class="custom-select" id="tms_contt_id" name="tms_contt_id">
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-4" id="tms_contt_num_row">
+                            <label for="tms_contt_num" class="form-label mb-0" th:text="'9. '+#{transports.list.tms_contt_num}"></label>
+                            <input type="text" maxlength="32" class="form-control" id="tms_contt_num" name="tms_contt_num">
+                        </div>
+
+                        <div class="col-12 col-md-3" id="tms_contt_date_row">
+                            <label for="tms_contt_date" class="form-label mb-0" th:text="'10. '+#{transports.list.tms_contt_date_edit}"></label>
+                            <div class="input-group">
+                                <input type="text" maxlength="32" class="form-control" id="tms_contt_date" name="tms_contt_date">
+                                <button type="button" id="tms_contt_date_x" name="tms_contt_date_x" data-parent="tms_contt_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div><!-- Row 4 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-2" id="tms_contt_check_row">
+                            <label class="form-label mb-0" for="tms_contt_check" th:text="'11. '+ #{transports.list.tms_contt_check}"></label>
+                            <div class="custom-control custom-switch">
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" id="tms_contt_check" name="tms_contt_check">
+                                    <label class="custom-control-label" for="tms_contt_check"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4" id="tms_contt_count_row">
+                            <label for="tms_contt_count" class="form-label mb-0" th:text="'12. '+#{transports.list.tms_contt_count}"></label>
+                            <input type="number" class="form-control" id="tms_contt_count" name="tms_contt_count">
+                        </div>
+
+                        <div class="col-12 col-md-3" id="tms_contt_next_date_row">
+                            <label for="tms_contt_next_date" class="form-label mb-0" th:text="'13. '+#{transports.list.tms_contt_next_date}"></label>
+                            <div class="input-group">
+                                <input type="text" maxlength="32" class="form-control" id="tms_contt_next_date" name="tms_contt_next_date">
+                                <button type="button" id="tms_contt_next_date_x" name="tms_contt_next_date_x" data-parent="tms_contt_next_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div><!-- Row 5 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-4" id="tms_lic_num_row">
+                            <label for="tms_lic_num" class="form-label mb-0" th:text="'14. '+#{transports.list.tms_lic_num}"></label>
+                            <input type="text" maxlength="32" class="form-control" id="tms_lic_num" name="tms_lic_num">
+                        </div>
+
+                        <div class="col-12 col-md-3" id="tms_lic_date_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="tms_lic_date" class="form-label mb-0" th:text="'15. '+#{transports.list.tms_lic_date_edit}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" maxlength="32" class="form-control" id="tms_lic_date" name="tms_lic_date" th:value="${tms_lic_date}">
+                                <button type="button" id="tms_lic_date_x" name="tms_lic_date_x" data-parent="tms_lic_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div><!-- Row 6 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-4" id="tms_ins_num_row">
+                            <label for="tms_ins_num" class="form-label mb-0" th:text="'16. '+#{transports.list.tms_ins_num}"></label>
+                            <input type="text" maxlength="32" class="form-control" id="tms_ins_num" name="tms_ins_num">
+                        </div>
+
+                        <div class="col-12 col-md-3" id="tms_ins_date_row">
+                            <label for="tms_ins_date" class="form-label mb-0" th:text="'17. '+#{transports.list.tms_ins_date_edit}"></label>
+                            <div class="input-group">
+                                <input type="text" maxlength="32" class="form-control" id="tms_ins_date" name="tms_ins_date">
+                                <button type="button" id="tms_ins_date_x" name="tms_ins_date_x" data-parent="tms_ins_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div><!-- Row 7 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-2" id="tms_contt_tir_row">
+                            <label class="form-label mb-0" for="tms_tir_check" th:text="'18. '+ #{transports.list.tms_tir_check}"></label>
+                            <div class="custom-control custom-switch">
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" id="tms_tir_check" name="tms_tir_check">
+                                    <label class="custom-control-label" for="tms_tir_check"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2" id="tms_contt_ard_row">
+                            <label class="form-label mb-0" for="tms_adr_check" th:text="'19. '+ #{transports.list.tms_adr_check}"></label>
+                            <div class="custom-control custom-switch">
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" id="tms_adr_check" name="tms_adr_check">
+                                    <label class="custom-control-label" for="tms_adr_check"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2" id="tms_contt_ekmt_row">
+                            <label class="form-label mb-0" for="tms_ekmt_check" th:text="'20. '+ #{transports.list.tms_ekmt_check}"></label>
+                            <div class="custom-control custom-switch">
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" id="tms_ekmt_check" name="tms_ekmt_check">
+                                    <label class="custom-control-label" for="tms_ekmt_check"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 8 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-2" id="trans_id_row">
+                            <label class="form-label mb-0" for="trans_id" th:text="'21. '+ #{transports.list.trans_id}"></label>
+                            <div class="custom-control custom-switch">
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" id="trans_id" name="trans_id">
+                                    <label class="custom-control-label" for="trans_id"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2" id="ship_id_row">
+                            <label class="form-label mb-0" for="ship_id" th:text="'22. '+ #{transports.list.ship_id}"></label>
+                            <div class="custom-control custom-switch">
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" id="ship_id" name="ship_id">
+                                    <label class="custom-control-label" for="ship_id"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2" id="air_id_row">
+                            <label class="form-label mb-0" for="air_id" th:text="'23. '+ #{transports.list.air_id}"></label>
+                            <div class="custom-control custom-switch">
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" id="air_id" name="air_id">
+                                    <label class="custom-control-label" for="air_id"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 9 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-2" id="consegnee_id_row">
+                            <label class="form-label mb-0" for="consegnee_id" th:text="'24. '+ #{transports.list.consegnee_id}"></label>
+                            <div class="custom-control custom-switch">
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" id="consegnee_id" name="consegnee_id">
+                                    <label class="custom-control-label" for="consegnee_id"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-2" id="sea_agent_id_row">
+                            <label class="form-label mb-0" for="sea_agent_id" th:text="'25. '+ #{transports.list.sea_agent_id}"></label>
+                            <div class="custom-control custom-switch">
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" id="sea_agent_id" name="sea_agent_id">
+                                    <label class="custom-control-label" for="sea_agent_id"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-2" id="shipper_id_row">
+                            <label class="form-label mb-0" for="shipper_id" th:text="'26. '+ #{transports.list.shipper_id}"></label>
+                            <div class="custom-control custom-switch">
+                                <div class="custom-control custom-switch">
+                                    <input class="custom-control-input" type="checkbox" id="shipper_id" name="shipper_id">
+                                    <label class="custom-control-label" for="sea_agent_id"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 10 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-8" id="trecking_url_row">
+                            <label for="tms_ins_num" class="form-label mb-0" th:text="'27. '+#{transports.list.trecking_url}"></label>
+                            <input type="text" maxlength="128" class="form-control" id="trecking_url" name="trecking_url">
+                        </div>
+                    </div><!-- Row 11 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-5" id="user_id_row">
+                            <label for="user_id" class="form-label mb-0" th:text="'28. '+#{transports.list.user_name}"></label>
+                            <select type="text" class="custom-select select2" id="user_id" name="user_id">
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-5" id="cnt_source_id_row">
+                            <label for="cnt_source_id" class="form-label mb-0" th:text="'29. '+#{transports.list.cnt_source_id}"></label>
+                            <select type="text" class="custom-select" id="cnt_source_id" name="cnt_source_id">
+                            </select>
+                        </div>
+                    </div><!-- Row 12 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-5" id="cs_id_row">
+                            <label for="cs_id" class="form-label mb-0" th:text="'30. '+#{transports.list.cs_id}"></label>
+                            <select type="text" class="custom-select" id="cs_id" name="cs_id">
+                            </select>
+                        </div>
+                    </div><!-- Row 13 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="cnt_note_row">
+                            <label for="cnt_note" class="form-label mb-0" th:text="'31. '+#{transports.list.cnt_note}"></label>
+                            <textarea class="form-control" rows="3" maxlength="64" style="resize:none;" id="cnt_note" name="cnt_note">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 14 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="transports_list_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="transports_list_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="transports_list_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="transports_list_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    // Clear Fields
+    function clear_transports_list_modal_detail() {
+        $("#transports_list_modal_detail input[type=text]").val('');
+        $("#transports_list_modal_detail input[type=number]").val('');
+        $("#transports_list_modal_detail select").empty();
+        $("#transports_list_modal_detail textarea").val('');
+    }
+
+    // Block And Required Fields
+    function block_transports_list_modal_detail() {
+        $('#shipyard_name').attr('required', true);
+        $('#cnt_name').prop('required',true);
+        $('#cnt_source_id').prop('required',true);
+        $('#cs_id').prop('disabled',true);
+
+        $('#tms_contt_next_date').attr('disabled',true);
+        $('#tms_contt_next_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+        if($('#mode').val() === "0"){
+            $('#cnt_id_row').attr('hidden', true);
+
+            $('#cnt_name').prop('readOnly',false);
+            $('#cnt_name_eng').prop('readOnly',false);
+
+            $('#country_id').removeAttr('disabled');
+            $('#cnt_resident').removeAttr('disabled');
+
+            $('#owt_id').removeAttr('disabled');
+            $('#cnt_identifycode').prop('readOnly',false);
+
+            $('#tms_contt_id').removeAttr('disabled');
+            $('#tms_contt_num').prop('readOnly',false);
+            $('#tms_contt_date').removeAttr('disabled');
+            $('#tms_contt_date_x').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#tms_lic_num').prop('readOnly',false);
+            $('#tms_lic_date').removeAttr('disabled');
+            $('#tms_lic_date_x').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#tms_ins_num').prop('readOnly',false);
+            $('#tms_ins_date').removeAttr('disabled');
+            $('#tms_ins_date_x').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#user_id').removeAttr('disabled');
+            $('#cnt_source_id').removeAttr('disabled');
+
+            $('#cs_id').removeAttr('disabled');
+            $('#cnt_note').prop('readOnly',false);
+
+            $('#tms_contt_check').removeAttr('disabled');
+            $('#tms_contt_count').prop('readOnly',false);
+
+            $('#trans_id').removeAttr('disabled');
+            $('#ship_id').removeAttr('disabled');
+            $('#air_id').removeAttr('disabled');
+            $('#consegnee_id').removeAttr('disabled');
+            $('#sea_agent_id').removeAttr('disabled');
+            $('#shipper_id').removeAttr('disabled');
+
+            $('#trecking_url').prop('readOnly',false);
+
+            $('#tms_tir_check').removeAttr('disabled');
+            $('#tms_adr_check').removeAttr('disabled');
+            $('#tms_ekmt_check').removeAttr('disabled');
+        }
+        else if($('#mode').val() === "1"){
+            $('#cnt_id_row').removeAttr('hidden');
+            $('#cnt_id').attr('readonly', true);
+
+            $('#cnt_name').prop('readOnly',false);
+            $('#cnt_name_eng').prop('readOnly',false);
+
+            $('#country_id').removeAttr('disabled');
+            $('#cnt_resident').removeAttr('disabled');
+
+            $('#owt_id').removeAttr('disabled');
+            $('#cnt_identifycode').prop('readOnly',false);
+
+            $('#tms_contt_id').removeAttr('disabled');
+            $('#tms_contt_num').prop('readOnly',false);
+            $('#tms_contt_date').removeAttr('disabled');
+            $('#tms_contt_date_x').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#tms_lic_num').prop('readOnly',false);
+            $('#tms_lic_date').removeAttr('disabled');
+            $('#tms_lic_date_x').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#tms_ins_num').prop('readOnly',false);
+            $('#tms_ins_date').removeAttr('disabled');
+            $('#tms_ins_date_x').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#user_id').removeAttr('disabled');
+            $('#cnt_source_id').removeAttr('disabled');
+
+            $('#cs_id').removeAttr('disabled');
+            $('#cnt_note').prop('readOnly',false);
+
+            $('#tms_contt_check').removeAttr('disabled');
+            $('#tms_contt_count').prop('readOnly',false);
+
+            $('#trans_id').removeAttr('disabled');
+            $('#ship_id').removeAttr('disabled');
+            $('#air_id').removeAttr('disabled');
+            $('#consegnee_id').removeAttr('disabled');
+            $('#sea_agent_id').removeAttr('disabled');
+            $('#shipper_id').removeAttr('disabled');
+
+            $('#trecking_url').prop('readOnly',false);
+
+            $('#tms_tir_check').removeAttr('disabled');
+            $('#tms_adr_check').removeAttr('disabled');
+            $('#tms_ekmt_check').removeAttr('disabled');
+        }
+        else{
+            $('#cnt_id_row').removeAttr('hidden');
+            $('#cnt_id').attr('readonly', true);
+
+            $('#cnt_name').prop('readOnly',true);
+            $('#cnt_name_eng').prop('readOnly',true);
+
+            $('#country_id').attr('disabled','disabled');
+            $('#cnt_resident').attr('disabled','disabled');
+
+            $('#owt_id').attr('disabled','disabled');
+            $('#cnt_identifycode').prop('readOnly',true);
+
+            $('#tms_contt_id').attr('disabled','disabled');
+            $('#tms_contt_num').prop('readOnly',true);
+            $('#tms_contt_date').attr('disabled','disabled');
+            $('#tms_contt_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#tms_lic_num').prop('readOnly',true);
+            $('#tms_lic_date').attr('disabled','disabled');
+            $('#tms_lic_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#tms_ins_num').prop('readOnly',true);
+            $('#tms_ins_date').attr('disabled','disabled');
+            $('#tms_ins_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#user_id').attr('disabled','disabled');
+            $('#cnt_source_id').attr('disabled','disabled');
+
+            $('#cs_id').attr('disabled','disabled');
+            $('#cnt_note').prop('readOnly',true);
+
+            $('#tms_contt_check').attr('disabled','disabled');
+            $('#tms_contt_count').prop('readOnly',true);
+
+            $('#trans_id').attr('disabled','disabled');
+            $('#ship_id').attr('disabled','disabled');
+            $('#air_id').attr('disabled','disabled');
+            $('#consegnee_id').attr('disabled','disabled');
+            $('#sea_agent_id').attr('disabled','disabled');
+            $('#shipper_id').attr('disabled','disabled');
+
+            $('#trecking_url').prop('readOnly',true);
+
+            $('#tms_tir_check').attr('disabled','disabled');
+            $('#tms_adr_check').attr('disabled','disabled');
+            $('#tms_ekmt_check').attr('disabled','disabled');
+        }
+    }
+
+    $("#tms_contt_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#tms_lic_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#tms_ins_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#tms_contt_next_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    function countryChange(vMode, vCountryID) {
+        $('#country_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/transports/get_country'}]]*/ "/transports/get_country",
+            type: "get",
+            data: {"mode": vMode,
+                "country_id": vCountryID
+            },
+            success: function (country_list) {
+                for (var i = 0; i < country_list.data.length; i++) {
+                    $("select[name='country_id']").find('option').end().append(
+                        "<option value='" + country_list.data[i].country_id + "'>" + country_list.data[i].country_nameua + "</option>"
+                    );
+                }
+                if (vCountryID !== ''){
+                    $('#country_id').val(vCountryID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    function ownershipChange(vMode, vOWNID) {
+        $('#owt_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/transports/get_ownership'}]]*/ "/transports/get_ownership",
+            type: "get",
+            data: {"mode": vMode,
+                    "owt_id": vOWNID
+            },
+            success: function (ownership_list) {
+                for (var i = 0; i < ownership_list.data.length; i++) {
+                    $("select[name='owt_id']").find('option').end().append(
+                        "<option value='" + ownership_list.data[i].owt_id + "'>" + ownership_list.data[i].owt_name + "</option>"
+                    );
+                }
+                if (vOWNID !== ''){
+                    $('#owt_id').val(vOWNID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    function contractTypeChange(vMode, vContractTypeID) {
+        $('#tms_contt_id').empty();
+        $("select[name='tms_contt_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/transports/get_contract_type'}]]*/ "/transports/get_contract_type",
+            type: "get",
+            data: {"mode": vMode
+            },
+            success: function (contract_type_list) {
+                for (var i = 0; i < contract_type_list.data.length; i++) {
+                    $("select[name='tms_contt_id']").find('option').end().append(
+                        "<option value='" + contract_type_list.data[i].tms_contt_id + "'>" + contract_type_list.data[i].tms_contt_sname + "</option>"
+                    );
+                }
+                if (vContractTypeID !== ''){
+                    $('#tms_contt_id').val(vContractTypeID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    function managerChange(vMode, vUserID) {
+        $('#user_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/transports/get_users'}]]*/ "/transports/get_users",
+            type: "get",
+            data: {"mode": vMode
+            },
+            success: function (user_list) {
+                for (var i = 0; i < user_list.data.length; i++) {
+                    $("select[name='user_id']").find('option').end().append(
+                        "<option value='" + user_list.data[i].user_id + "'>" + user_list.data[i].user_surname + "</option>"
+                    );
+                }
+                if (vUserID !== ''){
+                    $('#user_id').val(vUserID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    function sourceChange(vMode, vSourceID) {
+        $('#cnt_source_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/transports/get_contragent_source'}]]*/ "/transports/get_contragent_source",
+            type: "get",
+            data: {"mode": vMode
+            },
+            success: function (source_list) {
+                for (var i = 0; i < source_list.data.length; i++) {
+                    $("select[name='cnt_source_id']").find('option').end().append(
+                        "<option value='" + source_list.data[i].cnt_source_id + "'>" + source_list.data[i].cnt_source_name + "</option>"
+                    );
+                }
+                if (vSourceID !== ''){
+                    $('#cnt_source_id').val(vSourceID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    function statusChange(vMode, vStatusID) {
+        $('#cs_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/transports/get_contragent_status'}]]*/ "/transports/get_contragent_status",
+            type: "get",
+            data: {"mode": vMode,
+                   "cs_id": vStatusID
+            },
+            success: function (status_list) {
+                for (var i = 0; i < status_list.data.length; i++) {
+                    $("select[name='cs_id']").find('option').end().append(
+                        "<option value='" + status_list.data[i].cs_id + "'>" + status_list.data[i].cs_name + "</option>"
+                    );
+                }
+                if (vStatusID !== ''){
+                    $('#cs_id').val(vStatusID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    // Load Function
+    function fill_transports_list_modal_detail(aMode){
+        clear_transports_list_modal_detail();
+        $('#mode').val(aMode);
+        block_transports_list_modal_detail();
+
+        if(aMode > 0) {
+            $.ajax({
+                url:/*[[@{'/transports/get_contragent_detail'}]]*/ "transports/get_contragent_detail",
+                type: "get",
+                data: {
+                    "cnt_id": vTransportsListValue.rowdata.cnt_id,
+                    "mode": aMode
+                },
+                success: function (trans_list_modal_detail) {
+                    $.when(
+                        countryChange(aMode, trans_list_modal_detail.data[0].country_id),
+                        ownershipChange(aMode, trans_list_modal_detail.data[0].owt_id),
+                        managerChange(aMode, trans_list_modal_detail.data[0].user_id),
+                        contractTypeChange(aMode, trans_list_modal_detail.data[0].tms_contt_id),
+                        sourceChange(aMode, trans_list_modal_detail.data[0].cnt_source_id),
+                        statusChange(aMode, trans_list_modal_detail.data[0].cs_id)
+                    ).then(function () {
+                        $('#cnt_id').val(trans_list_modal_detail.data[0].cnt_id);
+                        $('#cnt_name').val(trans_list_modal_detail.data[0].cnt_name);
+                        $('#cnt_name_eng').val(trans_list_modal_detail.data[0].cnt_name_eng);
+
+                        var resident = trans_list_modal_detail.data[0].cnt_resident;
+                        if(resident === 1){
+                            $('#cnt_resident').prop('checked', true);
+                            $('#cnt_identifycode').attr('required', true);
+                        }
+                        else{
+                            $('#cnt_resident').prop('checked', false);
+                            $('#cnt_identifycode').removeAttr('required');
+                        }
+
+                        $('#cnt_identifycode').val(trans_list_modal_detail.data[0].cnt_identifycode);
+
+                        $('#tms_contt_num').val(trans_list_modal_detail.data[0].tms_contt_num);
+                        $('#tms_contt_date').val(trans_list_modal_detail.data[0].tms_contt_date);
+
+                        $('#tms_lic_num').val(trans_list_modal_detail.data[0].tms_lic_num);
+                        $('#tms_lic_date').val(trans_list_modal_detail.data[0].tms_lic_date);
+
+                        $('#tms_ins_num').val(trans_list_modal_detail.data[0].tms_ins_num);
+                        $('#tms_ins_date').val(trans_list_modal_detail.data[0].tms_ins_date);
+
+                        $('#cnt_note').val(trans_list_modal_detail.data[0].cnt_note);
+
+                        var contt_check = trans_list_modal_detail.data[0].tms_contt_check;
+                        if(contt_check === 1){
+                            $('#tms_contt_check').prop('checked', true);
+                        }
+                        else{
+                            $('#tms_contt_check').prop('checked', false);
+                        }
+
+                        $('#tms_contt_count').val(trans_list_modal_detail.data[0].tms_contt_count);
+                        $('#tms_contt_next_date').val(trans_list_modal_detail.data[0].tms_contt_next_date);
+
+                        var tir_check = trans_list_modal_detail.data[0].tms_tir_check;
+                        if(tir_check === 1){
+                            $('#tms_tir_check').prop('checked', true);
+                        }
+                        else{
+                            $('#tms_tir_check').prop('checked', false);
+                        }
+
+                        var adr_check = trans_list_modal_detail.data[0].tms_adr_check;
+                        if(adr_check === 1){
+                            $('#tms_adr_check').prop('checked', true);
+                        }
+                        else{
+                            $('#tms_adr_check').prop('checked', false);
+                        }
+
+                        var ekmt_check = trans_list_modal_detail.data[0].tms_ekmt_check;
+                        if(ekmt_check === 1){
+                            $('#tms_ekmt_check').prop('checked', true);
+                        }
+                        else{
+                            $('#tms_ekmt_check').prop('checked', false);
+                        }
+
+                        var trans_id = trans_list_modal_detail.data[0].trans_id;
+                        if(trans_id === 1){
+                            $('#trans_id').prop('checked', true);
+                        }
+                        else{
+                            $('#trans_id').prop('checked', false);
+                        }
+
+                        var ship_id = trans_list_modal_detail.data[0].ship_id;
+                        if(ship_id === 1){
+                            $('#ship_id').prop('checked', true);
+                        }
+                        else{
+                            $('#ship_id').prop('checked', false);
+                        }
+
+                        var air_id = trans_list_modal_detail.data[0].air_id;
+                        if(air_id === 1){
+                            $('#air_id').prop('checked', true);
+                        }
+                        else{
+                            $('#air_id').prop('checked', false);
+                        }
+
+                        var consegnee_id = trans_list_modal_detail.data[0].consegnee_id;
+                        if(consegnee_id === 1){
+                            $('#consegnee_id').prop('checked', true);
+                        }
+                        else{
+                            $('#consegnee_id').prop('checked', false);
+                        }
+
+                        var sea_agent_id = trans_list_modal_detail.data[0].sea_agent_id;
+                        if(sea_agent_id === 1){
+                            $('#sea_agent_id').prop('checked', true);
+                        }
+                        else{
+                            $('#sea_agent_id').prop('checked', false);
+                        }
+
+                        var shipper_id = trans_list_modal_detail.data[0].shipper_id;
+                        if(shipper_id === 1){
+                            $('#shipper_id').prop('checked', true);
+                        }
+                        else{
+                            $('#shipper_id').prop('checked', false);
+                        }
+
+                        $('#trecking_url').val(trans_list_modal_detail.data[0].trecking_url);
+
+                        $('#transports_list_modal').modal('show');
+                    });
+                }
+            });
+        }
+        else if (aMode === 0){
+            $.when(
+                countryChange(aMode, 2),
+                ownershipChange(aMode, 0),
+                managerChange(aMode, 0),
+                contractTypeChange(aMode, 0),
+                sourceChange(aMode, 0),
+                statusChange(aMode, 0)
+            ).then(function () {
+                $('#tms_tir_check').prop('checked', false);
+                $('#tms_contt_check').prop('checked', false);
+                $('#tms_adr_check').prop('checked', false);
+                $('#tms_ekmt_check').prop('checked', false);
+                $('#trans_id').prop('checked', true);
+                $('#ship_id').prop('checked', false);
+                $('#air_id').prop('checked', false);
+                $('#consegnee_id').prop('checked', false);
+                $('#sea_agent_id').prop('checked', false);
+                $('#shipper_id').prop('checked', false);
+
+                $('#transports_list_modal').modal('show');
+            });
+        }
+    }
+
+    var countryName =   /*[[#{transports.list.country_placeholder}]]*/ "Select a country";
+    $('#country_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: countryName,
+            allowClear: true,
+            dropdownAutoWidth: true
+        });
+
+    var ownershipName =   /*[[#{transports.list.ownership_placeholder}]]*/ "Select a ownership";
+    $('#owt_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: ownershipName,
+            allowClear: true,
+            dropdownAutoWidth: true
+        });
+
+    var userName =   /*[[#{transports.list.user_placeholder}]]*/ "Select a user";
+    $('#user_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: userName,
+            allowClear: true,
+            dropdownAutoWidth: true
+        });
+
+    // Add button script
+    $('#transports_list_modal_addbtn').on('click', function(){
+        var RowID = vTransportsListValue.rowdata.shipyard_id;
+        $.ajax({
+            url: /*[[ @{/transports/add_transport} ]]*/ "/transports/add_transport",
+            type: 'POST',
+            data: {
+                "cnt_name": $('#cnt_name').val(),
+                "cnt_identifycode": $('#cnt_identifycode').val(),
+                "owt_id": $('#owt_id').val(),
+                "cs_id":  $('#cs_id').val(),
+                "cnt_note":  $('#cnt_note').val(),
+                "cnt_resident":  $('#cnt_resident').is(':checked') ? 1 : 0,
+                "cnt_source_id":  $('#cnt_source_id').val(),
+                "country_id":  $('#country_id').val(),
+                "tms_contt_id":  $('#tms_contt_id').val(),
+                "tms_contt_num":  $('#tms_contt_num').val(),
+                "tms_contt_date":  $('#tms_contt_date').val(),
+                "tms_lic_num":  $('#tms_lic_num').val(),
+                "tms_lic_date":  $('#tms_lic_date').val(),
+                "tms_ins_num":  $('#tms_ins_num').val(),
+                "tms_ins_date":  $('#tms_ins_date').val(),
+                "tms_contt_check":  $('#tms_contt_check').is(':checked') ? 1 : 0,
+                "tms_contt_count":  $('#tms_contt_count').val(),
+                "tms_tir_check":  $('#tms_tir_check').is(':checked') ? 1 : 0,
+                "tms_adr_check":  $('#tms_adr_check').is(':checked') ? 1 : 0,
+                "tms_ekmt_check":  $('#tms_ekmt_check').is(':checked') ? 1 : 0,
+                "trans_id":  $('#trans_id').is(':checked') ? 1 : 0,
+                "ship_id":  $('#ship_id').is(':checked') ? 1 : 0,
+                "air_id":  $('#air_id').is(':checked') ? 1 : 0,
+                "consegnee_id":  $('#consegnee_id').is(':checked') ? 1 : 0,
+                "sea_agent_id":  $('#sea_agent_id').is(':checked') ? 1 : 0,
+                "trecking_url":  $('#trecking_url').val(),
+                "cnt_name_eng": $('#cnt_name_eng').val(),
+                "shipper_id":  $('#shipper_id').is(':checked') ? 1 : 0
+            },
+            success: function (result) {
+                $('#transports_list_modal').modal('hide');
+                vTransportsListValue.rowdata.shipyard_id = RowID;
+                $(vTransportsListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    });
+
+    // Edit button script
+    $('#transports_list_modal_editbtn').on('click', function(){
+        var RowID = vTransportsListValue.rowdata.cnt_id;
+        $.ajax({
+            url: /*[[ @{/transports/edit_transport} ]]*/ "/transports/edit_transport",
+            type: 'POST',
+            data: {
+                "cnt_id": RowID,
+                "cnt_name": $('#cnt_name').val(),
+                "cnt_identifycode": $('#cnt_identifycode').val(),
+                "owt_id": $('#owt_id').val(),
+                "cs_id":  $('#cs_id').val(),
+                "cnt_note":  $('#cnt_note').val(),
+                "cnt_resident":  $('#cnt_resident').is(':checked') ? 1 : 0,
+                "cnt_source_id":  $('#cnt_source_id').val(),
+                "country_id":  $('#country_id').val(),
+                "tms_contt_id":  $('#tms_contt_id').val(),
+                "tms_contt_num":  $('#tms_contt_num').val(),
+                "tms_contt_date":  $('#tms_contt_date').val(),
+                "tms_lic_num":  $('#tms_lic_num').val(),
+                "tms_lic_date":  $('#tms_lic_date').val(),
+                "tms_ins_num":  $('#tms_ins_num').val(),
+                "tms_ins_date":  $('#tms_ins_date').val(),
+                "tms_contt_check":  $('#tms_contt_check').is(':checked') ? 1 : 0,
+                "tms_contt_count":  $('#tms_contt_count').val(),
+                "tms_tir_check":  $('#tms_tir_check').is(':checked') ? 1 : 0,
+                "tms_adr_check":  $('#tms_adr_check').is(':checked') ? 1 : 0,
+                "tms_ekmt_check":  $('#tms_ekmt_check').is(':checked') ? 1 : 0,
+                "trans_id":  $('#trans_id').is(':checked') ? 1 : 0,
+                "ship_id":  $('#ship_id').is(':checked') ? 1 : 0,
+                "air_id":  $('#air_id').is(':checked') ? 1 : 0,
+                "consegnee_id":  $('#consegnee_id').is(':checked') ? 1 : 0,
+                "sea_agent_id":  $('#sea_agent_id').is(':checked') ? 1 : 0,
+                "trecking_url":  $('#trecking_url').val(),
+                "cnt_name_eng": $('#cnt_name_eng').val(),
+                "shipper_id":  $('#shipper_id').is(':checked') ? 1 : 0
+            },
+            success: function (result) {
+                $('#transports_list_modal').modal('hide');
+                vTransportsListValue.rowdata.shipyard_id = RowID;
+                $(vTransportsListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    });
+
+    // Del button script
+    $('#transports_list_modal_delbtn').on('click', function() {
+        var RowID = vTransportsListValue.rowdata.cnt_id;
+        $.ajax({
+            url: /*[[ @{/transports/del_transport} ]]*/ "/transports/del_transport",
+            type: 'POST',
+            data: {
+                "cnt_id": RowID
+            },
+            success: function (result) {
+                $('#transports_list_modal').modal('hide');
+                $(vTransportsListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    });
+//On Change
+        $('#cnt_resident').click(function() {
+            if ($('#cnt_resident').is(':checked')) {
+                $('#cnt_identifycode').attr('required', true);
+            }
+            else {
+                $('#cnt_identifycode').removeAttr('required');
+            }
+        });
+
+        $('#tms_contt_date_x').on('click', function() {
+            $('#tms_contt_date').empty().val('');
+            $('#tms_contt_next_date').empty().val('');
+        });
+
+        function changeConttNewDate(){
+            if($('#tms_contt_date').val().length > 0) {
+                var date = new Date($('#tms_contt_date').val().slice(6, 10), $('#tms_contt_date').val().slice(3, 5) - 1, $('#tms_contt_date').val().slice(0, 2));
+                var NewDateRu = new Date(date.setDate(date.getDate() + parseInt($('#tms_contt_count').val()))).toLocaleDateString('ru');
+                $('#tms_contt_next_date').val(NewDateRu);
+            }
+        }
+
+        $('#tms_contt_check').click(function() {
+            if ($('#tms_contt_check').is(':checked')) {
+                $('#tms_contt_count').removeAttr('disabled').attr('required', true);
+                changeConttNewDate();
+            } else {
+                $('#tms_contt_count').attr('disabled', true).removeAttr('required');
+            }
+        });
+
+        $('#tms_contt_count').on('change', function () {
+            changeConttNewDate();
+        });
+
+        $('#tms_contt_date').on('change', function () {
+            if ($('#tms_contt_check').is(':checked')) {
+                changeConttNewDate();
+            }
+        });
+</script>
+
+</body>
+</html>

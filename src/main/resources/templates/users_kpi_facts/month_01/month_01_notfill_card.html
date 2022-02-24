@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="users_kpi_facts_notfill_month_01_body" th:remove="tag">
+    <div id="table-users-kpi-facts-clients-notfill-month-01-buttons">
+       <div id="users-kpi-facts-clients-notfill-month-01-btn-large" class="d-none d-sm-block mb-1">
+             <button type="submit" id="users-kpi-facts-clients-notfill-month-01-link" form="users-kpi-facts-clients-notfill-month-01-link-form" class="btn btn-sm btn-outline-dark mr-1 users_kpi_facts_notfill_month_01_link_control" th:text="#{general.gotobtn}" disabled>GoTo</button>
+       </div>
+       <div id="users-kpi-facts-clients-notfill-month-01-btn-small" class="d-block d-sm-none mb-1">
+            <button type="submit" id="users-kpi-facts-clients-notfill-month-01-link-sx" form="users-kpi-facts-clients-notfill-month-01-link-form" class="btn btn-sm btn-outline-dark mr-1 users_kpi_facts_notfill_month_01_link_control" th:text="#{general.gotobtn}" disabled>GoTo</button>
+       </div>
+    </div>
+
+    <form id="users-kpi-facts-clients-notfill-month-01-link-form" th:action="@{/clients}" method="post" target="_blank">
+          <input name="cnt_id" hidden>
+          <input name="clients_list_table_order_column" hidden>
+          <input name="clients_list_table_order_type" hidden>
+          <input name="clients_list_table_search" hidden>
+          <input name="clients_list_table_pagelen" hidden>
+          <input name="clients_list_table_page" hidden>
+    </form>
+
+            <form id="users-kpi-facts-clients-notfill-month-01-clients-link-form" th:action="@{/clients}" method="post" target="_blank">
+                <input name="cnt_id" hidden>
+                <input name="clients_list_table_order_column" hidden>
+                <input name="clients_list_table_order_type" hidden>
+                <input name="clients_list_table_search" hidden>
+                <input name="clients_list_table_pagelen" hidden>
+                <input name="clients_list_table_page" hidden>
+            </form>
+
+            <form id="users-kpi-facts-clients-notfill-month-01-finance-link-form" th:action="@{/client_finance}" method="post" target="_blank">
+                <input name="cnt_id" hidden>
+                <input name="cnt_name" hidden>
+                <input name="cnt_user_access" hidden>
+
+                <input name="clients_list_table_order_column" hidden>
+                <input name="clients_list_table_order_type" hidden>
+                <input name="clients_list_table_search" hidden>
+                <input name="clients_list_table_pagelen" hidden>
+                <input name="clients_list_table_page" hidden>
+
+                <input name="client_finance_filter_id" hidden>
+                <input name="client_finance_filter_start_date" hidden>
+                <input name="client_finance_filter_end_date" hidden>
+            </form>    
+    
+    <div><table id="table-users-kpi-facts-clients-notfill-month-01" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    $("#table-users-kpi-facts-clients-notfill-month-01").append('<tfoot>'+
+        '<th></th><th></th><th></th><th></th><th></th>'+
+        '<th></th><th></th><th></th><th></th><th></th>'+
+        '<th></th>'+
+        '</tfoot>');
+
+    var vUsersKPICRMClientsNotFillMonth01Value;
+    vUsersKPICRMClientsNotFillMonth01Value = {
+        table : '#table-users-kpi-facts-clients-notfill-month-01',
+        button_form: "#table-users-kpi-facts-clients-notfill-month-01-buttons",
+        ajax : {
+            "url": /*[[@{/users_kpi_facts/get_notfill_table}]]*/ "users_kpi_facts/get_notfill_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.users_kpi_general_param_id = vUsersKPICRMClientsNotFillMonth01Value.rowdata.users_kpi_general_param_id;
+                d.users_kpi_user_id = vUsersKPICRMClientsNotFillMonth01Value.rowdata.users_kpi_user_id;
+                d.users_kpi_year = vUsersKPICRMClientsNotFillMonth01Value.rowdata.users_kpi_year;
+                d.users_kpi_month = vUsersKPICRMClientsNotFillMonth01Value.rowdata.users_kpi_month;
+            }
+        },
+        key : "cnt_id",
+        switchControl : users_kpi_facts_notfill_month_01_switchControl,
+        rowdata:{
+            cnt_id: null,
+            cnt_name: null,
+            req_user_id: null,
+            cntul_id: null,
+            block_check: null
+        },
+        ordering: true,
+        order: [
+            [2, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        footerCallback: function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+            var numFormat = $.fn.dataTable.render.number( '\ ', '.', 0, '').display;
+            var numFormatSec = $.fn.dataTable.render.number( '\ ', '.', 2, '').display;
+            // Total over all pages
+            AllCount = api.column(5, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0);
+            AllSumm = api.column(6, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0);
+
+            // Update footer
+            $( api.column(1).footer()).hide();
+
+            $( api.column(4).footer()).html('Всего: ');
+            $( api.column(5).footer()).html(numFormat(AllCount));
+            $( api.column(6).footer()).html(numFormatSec(AllSumm));
+
+            $( api.column(10).footer()).hide();
+        },
+        createdRow: function( row, data, dataIndex ) {
+            if (data.block_check === 1) {
+                $(row).css('background-color', '#ff8566');
+            }
+        },
+        columnDefs: [
+            {"targets": [0],
+                render: function ( data, type, row ) {
+                    if ( type === 'display' ) {             //if column data is 1 then set attr to checked, use row id as input id (plus prefix)
+                        return '<input type="checkbox" ' + ((data == 1) ? 'checked' : '') + ' id="input' + row.id + '" class="filter-ck text-center" disabled="true"/>';
+                    }
+                    return data;
+                }, className: "text-center"
+            },
+            { "targets": [1], "visible": false},
+            { "targets": [2], className: "cnt_name"},
+            { "targets": [3], className: "cnt_identifycode"},
+            { "targets": [4], type: 'de_date', "className": "text-center"},
+
+            { "targets": [5], render: function (data, type, row) {
+                    return $.fn.dataTable.render.number( '\ ', '.', 0, '').display(data);
+                }, className: "finance"},
+            { "targets": [6], render: function (data, type, row) {
+                if(type === 'export'){
+                    return $.fn.dataTable.render.number('', '.', 2, '').display(data);
+                }
+                else {
+                    return $.fn.dataTable.render.number('\ ', '.', 2, '').display(data);
+                }
+                }, className: "finance"},
+            { "targets": [7], type: 'de_date', "className": "text-center fin_date"},
+            { "targets": [8], type: 'de_date', "className": "text-center fin_last_date"},
+            { "targets": [9], className: "desktop noExport"},
+            { "targets": [10], "visible": false, className: "noExport"}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{dep_kpi_facts.notfill.block_check}]]*/ "block_check", "data": "block_check", "width": "5%"},
+            /*1*/{"title": /*[[#{dep_kpi_facts.notfill.cnt_id}]]*/ "cnt_id", "data": "cnt_id", "width": "1%"},
+            /*2*/{"title": /*[[#{dep_kpi_facts.notfill.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "header":"<div title='CSS 3 tooltip'>CSS3</div>", "width": "29%"},
+            /*3*/{"title": /*[[#{dep_kpi_facts.notfill.cnt_identifycode}]]*/ "cnt_identifycode", "data": "cnt_identifycode", "width": "10%"},
+            /*4*/{"title": /*[[#{dep_kpi_facts.notfill.cnt_createdate}]]*/ "cnt_createdate", "data": "cnt_createdate", "width": "10%"},
+            /*5*/{"title": /*[[#{dep_kpi_facts.notfill.fin_count}]]*/ "fin_count", "data": "fin_count", "width": "5%"},
+            /*6*/{"title": /*[[#{dep_kpi_facts.notfill.fin_sum}]]*/ "fin_sum", "data": "fin_sum", "width": "8%"},
+            /*7*/{"title": /*[[#{dep_kpi_facts.notfill.fin_date}]]*/ "fin_date", "data": "fin_date", "width": "10%"},
+            /*8*/{"title": /*[[#{dep_kpi_facts.notfill.fin_last_date}]]*/ "fin_last_date", "data": "fin_last_date", "width": "10%"},
+            /*9*/{"title": /*[[#{dep_kpi_facts.notfill.empty_column}]]*/ "empty_column", "data": "empty_column", "width": "16%"},
+            /*10*/{"title": /*[[#{dep_kpi_facts.notfill.cntul_id}]]*/ "cntul_id", "data": "cntul_id", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function users_kpi_facts_notfill_month_01_switchControl(){
+        if(vUsersKPICRMClientsNotFillMonth01Value.rowdata.cnt_id != null){
+            $("#users-kpi-facts-clients-notfill-month-01-link").prop('disabled',false).removeClass('btn-outline-dark').addClass('btn-outline-primary');
+            $("#users-kpi-facts-clients-notfill-month-01-link-sx").prop('disabled',false).removeClass('btn-outline-dark').addClass('btn-outline-primary');
+
+            if(vUsersKPICRMClientsNotFillMonth01Value.rowdata.block_check === 0 && RoleAllAdmin === true){
+                $('#users-kpi-facts-clients-notfill-month-01-check').prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+                $('#users-kpi-facts-clients-notfill-month-01-check-sx').prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+
+                $('#users-kpi-facts-clients-notfill-month-01-uncheck').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                $('#users-kpi-facts-clients-notfill-month-01-uncheck-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+            }
+            else if(vUsersKPICRMClientsNotFillMonth01Value.rowdata.block_check === 1 && RoleAllAdmin === true){
+                $('#users-kpi-facts-clients-notfill-month-01-check').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+                $('#users-kpi-facts-clients-notfill-month-01-check-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+                $('#users-kpi-facts-clients-notfill-month-01-uncheck').prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+                $('#users-kpi-facts-clients-notfill-month-01-uncheck-sx').prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+            }
+        }
+        else{
+            $("#users-kpi-facts-clients-notfill-month-01-link").prop('disabled',true).addClass('btn-outline-dark').removeClass('btn-outline-primary');
+            $("#users-kpi-facts-clients-notfill-month-01-link-sx").prop('disabled',true).addClass('btn-outline-dark').removeClass('btn-outline-primary');
+
+            $('#users-kpi-facts-clients-notfill-month-01-check').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            $('#users-kpi-facts-clients-notfill-month-01-check-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+            $('#users-kpi-facts-clients-notfill-month-01-uncheck').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+            $('#users-kpi-facts-clients-notfill-month-01-uncheck-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+        }
+    }
+
+    $('.users_kpi_facts_notfill_month_01_link_control').click(function (){
+        $("#users-kpi-facts-clients-notfill-month-01-link-form input[name=cnt_id]").val(vUsersKPICRMClientsNotFillMonth01Value.rowdata.cnt_id);
+
+        $("#users-kpi-facts-clients-notfill-month-01-link-form input[name=clients_list_table_order_column]").val(0);
+        $("#users-kpi-facts-clients-notfill-month-01-link-form input[name=clients_list_table_order_type]").val("desc");
+        $("#users-kpi-facts-clients-notfill-month-01-link-form input[name=clients_list_table_search]").val(vUsersKPICRMClientsNotFillMonth01Value.rowdata.cnt_name);
+        $("#users-kpi-facts-clients-notfill-month-01-link-form input[name=clients_list_table_pagelen]").val(25);
+        $("#users-kpi-facts-clients-notfill-month-01-link-form input[name=clients_list_table_page]").val(0);
+    });
+
+    $('.positions_btn_control').click(function (){
+        $("#positions-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    if (mobileScreenSize) {
+        $("#users-kpi-facts-clients-notfill-month-01-clients-link-form").prop('target','_parent');
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form").prop('target','_parent');
+    }
+
+    $('#table-users-kpi-facts-clients-notfill-month-01').on('dblclick', '.cnt_name', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var currentTable = $('#table-users-kpi-facts-clients-notfill-month-01').DataTable();
+
+        $("#users-kpi-facts-clients-notfill-month-01-clients-link-form input[name=cnt_id]").val(currentTable.row(selectedRow).data().cnt_id);
+
+        $("#users-kpi-facts-clients-notfill-month-01-clients-link-form input[name=clients_list_table_order_column]").val(0);
+        $("#users-kpi-facts-clients-notfill-month-01-clients-link-form input[name=clients_list_table_order_type]").val("desc");
+        $("#users-kpi-facts-clients-notfill-month-01-clients-link-form input[name=clients_list_table_search]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#users-kpi-facts-clients-notfill-month-01-clients-link-form input[name=clients_list_table_pagelen]").val(25);
+        $("#users-kpi-facts-clients-notfill-month-01-clients-link-form input[name=clients_list_table_page]").val(0);
+        $("#users-kpi-facts-clients-notfill-month-01-clients-link-form").submit();
+    });
+
+    $('#table-users-kpi-facts-clients-notfill-month-01').on('dblclick', '.cnt_identifycode', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var currentTable = $('#table-users-kpi-facts-clients-notfill-month-01').DataTable();
+        if(currentTable.row(selectedRow).data().cnt_identifycode !== null) {
+            $("#users-kpi-facts-clients-notfill-month-01-clients-link-form input[name=cnt_id]").val(currentTable.row(selectedRow).data().cnt_id);
+
+            $("#users-kpi-facts-clients-notfill-month-01-clients-link-form input[name=clients_list_table_order_column]").val(0);
+            $("#users-kpi-facts-clients-notfill-month-01-clients-link-form input[name=clients_list_table_order_type]").val("desc");
+            $("#users-kpi-facts-clients-notfill-month-01-clients-link-form input[name=clients_list_table_search]").val(currentTable.row(selectedRow).data().cnt_identifycode);
+            $("#users-kpi-facts-clients-notfill-month-01-clients-link-form input[name=clients_list_table_pagelen]").val(25);
+            $("#users-kpi-facts-clients-notfill-month-01-clients-link-form input[name=clients_list_table_page]").val(0);
+            $("#users-kpi-facts-clients-notfill-month-01-clients-link-form").submit();
+        }
+    });
+
+    $('#table-users-kpi-facts-clients-notfill-month-01').on('dblclick', '.finance', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var currentTable = $('#table-users-kpi-facts-clients-notfill-month-01').DataTable();
+
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=cnt_id]").val(currentTable.row(selectedRow).data().cnt_id);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=cnt_name]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=cnt_user_access]").val(1);
+
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=clients_list_table_order_column]").val(0);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=clients_list_table_order_type]").val("desc");
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=clients_list_table_search]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=clients_list_table_pagelen]").val(25);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=clients_list_table_page]").val(0);
+
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=client_finance_filter_id]").val(0);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=client_finance_filter_start_date]").val(currentTable.row(selectedRow).data().fin_date);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=client_finance_filter_end_date]").val(currentTable.row(selectedRow).data().fin_last_date);
+
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form").submit();
+    });
+
+    $('#table-users-kpi-facts-clients-notfill-month-01').on('dblclick', '.fin_date', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var currentTable = $('#table-users-kpi-facts-clients-notfill-month-01').DataTable();
+
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=cnt_id]").val(currentTable.row(selectedRow).data().cnt_id);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=cnt_name]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=cnt_user_access]").val(1);
+
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=clients_list_table_order_column]").val(0);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=clients_list_table_order_type]").val("desc");
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=clients_list_table_search]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=clients_list_table_pagelen]").val(25);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=clients_list_table_page]").val(0);
+
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=client_finance_filter_id]").val(1);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=client_finance_filter_start_date]").val(currentTable.row(selectedRow).data().fin_date);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=client_finance_filter_end_date]").val(currentTable.row(selectedRow).data().fin_date);
+
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form").submit();
+    });
+
+    $('#table-users-kpi-facts-clients-notfill-month-01').on('dblclick', '.fin_last_date', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var currentTable = $('#table-users-kpi-facts-clients-notfill-month-01').DataTable();
+
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=cnt_id]").val(currentTable.row(selectedRow).data().cnt_id);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=cnt_name]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=cnt_user_access]").val(1);
+
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=clients_list_table_order_column]").val(0);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=clients_list_table_order_type]").val("desc");
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=clients_list_table_search]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=clients_list_table_pagelen]").val(25);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=clients_list_table_page]").val(0);
+
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=client_finance_filter_id]").val(1);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=client_finance_filter_start_date]").val(currentTable.row(selectedRow).data().fin_last_date);
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form input[name=client_finance_filter_end_date]").val(currentTable.row(selectedRow).data().fin_last_date);
+
+        $("#users-kpi-facts-clients-notfill-month-01-finance-link-form").submit();
+    });
+
+    // Add button script
+    function addCRMNotfillBlock(){
+        var MainParamID =  $("#user_kpi_type_list").val();
+        var DepID = vUsersKPIFactListValue.rowdata.users_id;
+        var MainUserID = vUsersKPIFactUsersValue.rowdata.user_id;
+        var UserKPITypeID = vUsersKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+        var UserKPICRMTypeID = vUsersKPIFactCRMMonth01Value.rowdata.user_kpi_crm_type_id;
+        var RowID = vUsersKPICRMClientsNotFillMonth01Value.rowdata.cnt_id;
+        var GeralRn = vUsersKPICRMGeneralMonth01Value.rowdata.rn;
+        var ParamID = vUsersKPICRMGeneralMonth01Value.rowdata.param_id;
+        var UserID = vUsersKPICRMGeneralMonth01Value.rowdata.user_id;
+        var YearID =  $("#users_kpi_facts_year").val();
+        var MonthID = currentMonth01;
+        $.ajax({
+            url: /*[[ @{/users_kpi_facts/add_notfill_block} ]]*/ "/users_kpi_facts/add_notfill_block",
+            type: 'POST',
+            data: {
+                "block_cnt_id": RowID,
+                "block_user_id": UserID,
+                "block_year": YearID,
+                "block_month": MonthID
+            },
+            success: function (result) {
+//Notfill
+                vUsersKPICRMClientsNotFillMonth01Value.rowdata.cnt_id = RowID;
+                vUsersKPICRMClientsNotFillMonth01Value.rowdata.users_kpi_general_param_id = ParamID;
+                vUsersKPICRMClientsNotFillMonth01Value.rowdata.users_kpi_user_id = UserID;
+                vUsersKPICRMClientsNotFillMonth01Value.rowdata.users_kpi_year = YearID;
+                vUsersKPICRMClientsNotFillMonth01Value.rowdata.users_kpi_month = MonthID;
+                $(vUsersKPICRMClientsNotFillMonth01Value.table).DataTable().ajax.reload(null, false);
+//List
+                vUsersKPIFactListValue.rowdata.users_kpi_facts_year = YearID;
+                vUsersKPIFactListValue.rowdata.user_kpi_type_id = MainParamID;
+                vUsersKPIFactListValue.rowdata.users_id = DepID;
+                $(vUsersKPIFactListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    // Del button script
+    function delCRMNotfillBlock(){
+        var MainParamID =  $("#user_kpi_type_list").val();
+        var DepID = vUsersKPIFactListValue.rowdata.users_id;
+        var MainUserID = vUsersKPIFactUsersValue.rowdata.user_id;
+        var UserKPITypeID = vUsersKPIFactCalcMonth01Value.rowdata.user_kpi_type_id;
+        var UserKPICRMTypeID = vUsersKPIFactCRMMonth01Value.rowdata.user_kpi_crm_type_id;
+        var RowID = vUsersKPICRMClientsNotFillMonth01Value.rowdata.cnt_id;
+        var GeralRn = vUsersKPICRMGeneralMonth01Value.rowdata.rn;
+        var ParamID = vUsersKPICRMGeneralMonth01Value.rowdata.param_id;
+        var UserID = vUsersKPICRMGeneralMonth01Value.rowdata.user_id;
+        var YearID =  $("#users_kpi_facts_year").val();
+        var MonthID = currentMonth01;
+        $.ajax({
+            url: /*[[ @{/users_kpi_facts/del_notfill_block} ]]*/ "/users_kpi_facts/del_notfill_block",
+            type: 'POST',
+            data: {
+                "block_cnt_id": RowID,
+                "block_user_id": UserID,
+                "block_year": YearID,
+                "block_month": MonthID
+            },
+            success: function (result) {
+//Notfill
+                vUsersKPICRMClientsNotFillMonth01Value.rowdata.cnt_id = RowID;
+                vUsersKPICRMClientsNotFillMonth01Value.rowdata.users_kpi_general_param_id = ParamID;
+                vUsersKPICRMClientsNotFillMonth01Value.rowdata.users_kpi_user_id = UserID;
+                vUsersKPICRMClientsNotFillMonth01Value.rowdata.users_kpi_year = YearID;
+                vUsersKPICRMClientsNotFillMonth01Value.rowdata.users_kpi_month = MonthID;
+                $(vUsersKPICRMClientsNotFillMonth01Value.table).DataTable().ajax.reload(null, false);
+//List
+                vUsersKPIFactListValue.rowdata.users_kpi_facts_year = YearID;
+                vUsersKPIFactListValue.rowdata.user_kpi_type_id = MainParamID;
+                vUsersKPIFactListValue.rowdata.users_id = DepID;
+                $(vUsersKPIFactListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    $('#users-kpi-facts-clients-notfill-month-01-check').click(function () {
+        addCRMNotfillBlock();
+    });
+
+    $('#users-kpi-facts-clients-notfill-month-01-check-sx').click(function () {
+        addCRMNotfillBlock();
+    });
+
+    $('#users-kpi-facts-clients-notfill-month-01-uncheck').click(function () {
+        delCRMNotfillBlock();
+    });
+
+    $('#users-kpi-facts-clients-notfill-month-01-uncheck-sx').click(function () {
+        delCRMNotfillBlock();
+    });
+
+    $(document).ready(function(){
+        vUsersKPICRMClientsNotFillMonth01Value.rowdata.req_user_id = null;
+
+        recreateDataTable(vUsersKPICRMClientsNotFillMonth01Value);
+    });
+</script>
+
+</body>
+</html>

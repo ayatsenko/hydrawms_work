@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_task_types_body" th:remove="tag">
+        <form id="tms-task-types-detail" class="mb-2" th:action="@{/tms_task_types/detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="tms-task-types-btn-large" class="d-none d-sm-block">
+                 <button type="submit" id="tms-task-types-detailbtn" class="btn btn-sm btn-dark tms_task_types_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="tms-task-types-addbtn" class="btn btn-sm btn-primary tms_task_types_btn_control" th:text="#{general.addbtn}" th:attr="mode=0">Add</button>
+                 <button type="submit" id="tms-task-types-editbtn" class="btn btn-sm btn-dark tms_task_types_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="tms-task-types-delbtn" class="btn btn-sm btn-dark tms_task_types_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="tms-task-types-btn-small" class="d-block d-sm-none">
+                 <button type="submit" id="tms-task-types-detailbtn-sx" class="btn btn-sm btn-dark tms_task_types_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="tms-task-types-addbtn-sx" class="btn btn-sm btn-primary tms_task_types_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                 <button type="submit" id="tms-task-types-editbtn-sx" class="btn btn-sm btn-dark tms_task_types_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="tms-task-types-delbtn-sx" class="btn btn-sm btn-dark tms_task_types_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-tms-task-types" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vTmsTaskTypesValue;
+    vTmsTaskTypesValue = {
+        table : '#table-tms-task-types',
+        button_form: "#tms-task-types-detail",
+        ajax : {
+            "url": /*[[@{/tms_task_types/gettable}]]*/ "tms_task_types/gettable",
+            "type": "post",
+            "data": {
+            }
+        },
+        key : "clm_task_id",
+        switchControl : tms_task_types_switchControl,
+        rowdata:{
+           clm_task_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["clm_task_colour"]);
+        },
+        columnDefs:[
+                    {"targets": [4], "visible": false},
+                    {"targets": [5],
+                        render: function ( data, type, row ) {
+                            if ( type === 'display' ) {             //if column data is 1 then set attr to checked, use row id as input id (plus prefix)
+                                return '<input type="checkbox" ' + ((data == 1) ? 'checked' : '') + ' id="input' + row.id + '" class="filter-ck text-center" disabled="true"/>';
+                            }
+                            return data;
+                        },
+                        "className": "dt-body-center text-center"
+                    }
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{tms_task_types.clm_task_id}]]*/ "clm_task_id", "data": "clm_task_id", "width": "3%"},
+                /*1*/{"title": /*[[#{tms_task_types.clm_task_sname}]]*/ "clm_task_sname", "data": "clm_task_sname", "width": "18%", "className": "desktop" },
+                /*2*/{"title": /*[[#{tms_task_types.clm_task_name}]]*/ "clm_task_name", "data": "clm_task_name", "width": "20%"},
+                /*3*/{"title": /*[[#{tms_task_types.clm_task_description}]]*/ "clm_task_description", "data": "clm_task_description", "width": "53%", "className": "desktop"},
+                /*4*/{"title": /*[[#{tms_task_types.clm_task_colour}]]*/ "clm_task_colour", "data": "clm_task_colour", "width": "1%"},
+                /*5*/{"title": /*[[#{tms_task_types.clm_task_default}]]*/ "clm_task_default", "data": "clm_task_default", "width": "5%", "className": "desktop text-center"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function tms_task_types_switchControl(){
+        if(vTmsTaskTypesValue.rowdata.clm_task_id != null) {
+                $("#tms-task-types-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-task-types-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#tms-task-types-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-task-types-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+                $("#tms-task-types-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-task-types-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#tms-task-types-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-task-types-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.tms_task_types_btn_control').on('click', function (){
+        $("#tms-task-types-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#tms-task-types-detail').submit(function() {
+        vTmsTaskTypesValue.rowdata.tms_task_types_table_order_column = $(vTmsTaskTypesValue.table).DataTable().order()[0][0];
+        vTmsTaskTypesValue.rowdata.tms_task_types_table_order_type = $(vTmsTaskTypesValue.table).DataTable().order()[0][1];
+        vTmsTaskTypesValue.rowdata.tms_task_types_table_search = $(vTmsTaskTypesValue.table).DataTable().search();
+        vTmsTaskTypesValue.rowdata.tms_task_types_table_pagelen = $(vTmsTaskTypesValue.table).DataTable().page.len();
+        vTmsTaskTypesValue.rowdata.tms_task_types_table_page = $(vTmsTaskTypesValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vTmsTaskTypesValue.rowdata).forEach(function (index) {
+            $("#tms-task-types-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#tms-task-types-detail input[name=\"" + index + "\"]").val(vTmsTaskTypesValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vTmsTaskTypesValue.rowdata.clm_task_id = /*[[${clm_task_id}]]*/ null;
+
+        vTmsTaskTypesValue.rowdata.table_order_column = /*[[${tms_task_types_table_order_column}]]*/ null;
+        vTmsTaskTypesValue.rowdata.table_order_type = /*[[${tms_task_types_table_order_type}]]*/ null;
+        vTmsTaskTypesValue.rowdata.table_search = /*[[${tms_task_types_table_search}]]*/ null;
+        vTmsTaskTypesValue.rowdata.table_pagelen = /*[[${tms_task_types_table_pagelen}]]*/ null;
+        vTmsTaskTypesValue.rowdata.table_page = /*[[${tms_task_types_table_page}]]*/ null;
+
+        recreateDataTable(vTmsTaskTypesValue);
+        $('#main_li').removeClass('active');
+
+        $('#dictionaries_li').addClass('active').removeClass('collapsed');
+        $('#dictionaries_a').attr('aria-expanded',true);
+        $('#dictionaries').addClass('show');
+
+        $('#tms_tasks_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

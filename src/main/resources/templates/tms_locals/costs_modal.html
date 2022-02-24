@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_locals_costs_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="tms_locals_costs_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="tms_locals_costs_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{tms_locals.costs.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <div class="form-row mb-1">
+                        <input type="hidden" id="tms_locals_costs_modal_mode">
+
+                        <div class="col-12 col-md-3" id="tms_locals_costs_modal_clm_id_row">
+                            <label for="tms_locals_costs_modal_clm_id" class="form-label mb-0" th:text="'1. '+ #{tms_locals.main.clm_id}"></label>
+                            <input type="number" class="form-control" id="tms_locals_costs_modal_clm_id" name="tms_locals_costs_modal_clm_id" readonly>
+                        </div>
+                        <div class="col-12 col-md-3" id="tms_locals_costs_modal_clm_num_row">
+                            <label for="tms_locals_costs_modal_clm_num" class="form-label mb-0" th:text="'2. '+ #{tms_locals.main.clm_num}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="tms_locals_costs_modal_clm_num" name="tms_locals_costs_modal_clm_num" readonly>
+                        </div>
+                        <div class="col-12 col-md-6" id="tms_locals_costs_modal_cnt_name_row">
+                            <label for="tms_locals_costs_modal_cnt_name" class="form-label mb-0" th:text="'3. '+ #{tms_locals.main.cnt_name}"></label>
+                            <input type="text" class="form-control" id="tms_locals_costs_modal_cnt_name" name="tms_locals_costs_modal_cnt_name" readonly>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="tms_locals_costs_modal_clmcgl_id_row">
+                            <label for="tms_locals_costs_modal_clmcgl_id" class="form-label mb-0" th:text="'4. '+ #{tms_locals.costs_groups.clmcgl_id}"></label>
+                            <input type="number" class="form-control" id="tms_locals_costs_modal_clmcgl_id" name="tms_locals_costs_modal_clmcgl_id" readonly>
+                        </div>
+
+                        <div class="col-12 col-md-6" id="tms_locals_costs_modal_clmcg_type_name_row">
+                            <label for="tms_locals_costs_modal_clmcg_type_name" class="form-label mb-0" th:text="'5. '+ #{tms_locals.costs_groups.clmcg_type_name}"></label>
+                            <input type="text" maxlength="32" class="form-control" id="tms_locals_costs_modal_clmcg_type_name" name="tms_locals_costs_modal_clmcg_type_name" readonly>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="clmcl_id_row">
+                            <label for="clmcl_id" class="form-label mb-0" th:text="'6. '+ #{tms_locals.costs.clmcl_id}"></label>
+                            <input type="number" class="form-control" id="clmcl_id" name="clmcl_id" readonly>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label for="clmc_type_id" class="form-label mb-0" th:text="'7. '+#{tms_locals.costs.clmc_type_sname}">Service: </label>
+                            <select type="text" id="clmc_type_id" name="clmc_type_id" class="custom-select">
+                            </select>
+                        </div>
+                    </div> <!-- Row 3 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="clmcl_sum_row">
+                            <label for="clmcl_sum" class="form-label mb-0" th:text="'8. '+ #{tms_locals.costs.clmcl_sum}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="clmcl_sum" name="clmcl_sum">
+                        </div>
+
+                        <div class="col-12 col-md-4" id="tms_locals_costs_modal_currency_id_row">
+                            <label for="tms_locals_costs_modal_currency_id" class="form-label mb-0" th:text="'9. '+#{tms_locals.costs.currenсy_id}">Currency: </label>
+                            <select id="tms_locals_costs_modal_currency_id" name="tms_locals_costs_modal_currency_id" class="custom-select">
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-3" id="tms_locals_costs_modal_currency_date_row">
+                            <label for="tms_locals_costs_modal_currency_date" class="form-label mb-0" th:text="'10. '+ #{tms_locals.costs.currency_date}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="tms_locals_costs_modal_currency_date" name="tms_locals_costs_modal_currency_date">
+                                <button type="button" id="tms_locals_costs_modal_currency_date_x" name="tms_locals_costs_modal_currency_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>                        
+                    </div> <!-- Row 4 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12">
+                            <label for="clmcl_note" th:text="'11. '+#{tms_locals.costs.clmcl_note}"></label>
+                            <textarea class="form-control" rows="5" maxlength="512" style="resize:none;" id="clmcl_note" name="clmcl_note">
+                            </textarea>
+                        </div>
+                    </div> <!-- Row 6 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="tms_locals_costs_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="tms_locals_costs_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="tms_locals_costs_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="tms_locals_costs_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+// Clear Fields
+    function clear_tms_locals_costs_modal_detail() {
+        $("#tms_locals_costs_modal_detail input[type=text]").val('');
+        $("#tms_locals_costs_modal_detail input[type=number]").val('');
+        $("#tms_locals_costs_modal_detail select").empty();
+        $("#tms_locals_costs_modal_detail textarea").val('');
+    }
+// Block And Required Fields
+    function block_tms_locals_costs_modal_detail() {
+        $('#clmc_type_id').attr('required', true);
+        $('#clmcl_sum').attr('required', true);
+        $('#tms_locals_costs_modal_currency_id').attr('required', true);
+
+        if($('#tms_locals_costs_modal_mode').val() === "0"){
+            $('#tms_locals_costs_modal_clm_id_row').prop('hidden',true);
+            $('#tms_locals_costs_modal_clmcgl_id_row').prop('hidden',true);
+            $('#clmcl_id_row').prop('hidden',true);
+
+            $('#clmc_type_id').removeAttr('disabled');
+            $('#clmcl_sum').val(0).removeAttr('readonly');
+            $('#tms_locals_costs_modal_currency_id').removeAttr('disabled');
+            $('#tms_locals_costs_modal_currency_date').removeAttr('disabled');
+            $('#tms_locals_costs_modal_currency_date_x').attr('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#clmcl_note').removeAttr('readonly',true);
+        }
+        else if($('#tms_locals_costs_modal_mode').val() === "1"){
+            $('#tms_locals_costs_modal_clm_id_row').prop('hidden',true);
+            $('#tms_locals_costs_modal_clmcgl_id_row').prop('hidden',true);
+            $('#clmcl_id_row').prop('hidden',true);
+
+            $('#clmc_type_id').removeAttr('disabled');
+            $('#clmcl_sum').removeAttr('readonly');
+            $('#tms_locals_costs_modal_currency_id').removeAttr('disabled');
+            $('#tms_locals_costs_modal_currency_date').removeAttr('disabled');
+            $('#tms_locals_costs_modal_currency_date_x').attr('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#clmcl_note').removeAttr('readonly',true);
+        }
+        else{
+            $('#tms_locals_costs_modal_clm_id_row').prop('hidden',true);
+            $('#tms_locals_costs_modal_clmcgl_id_row').prop('hidden',true);
+            $('#clmcl_id_row').prop('hidden',true);
+
+            $('#clmc_type_id').attr('disabled',true);
+            $('#clmcl_sum').attr('readonly',true);
+            $('#tms_locals_costs_modal_currency_id').attr('disabled',true);
+            $('#tms_locals_costs_modal_currency_date').attr('disabled',true);
+            $('#tms_locals_costs_modal_currency_date_x').attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+            $('#clmcl_note').attr('readonly',true);
+        }
+    }
+//Costs Types List
+function sumCostsTypeChange(vMode,vCLMCTypeID,vCLMTransID) {
+    $('#clmc_type_id').empty();
+    $("select[name='clmc_type_id']").find('option').end().append("<option value=''></option>");
+
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/tms_locals/get_costs_types_list'}]]*/ "/tms_locals/get_costs_types_list",
+        type: "get",
+        data: {
+            "mode": vMode,
+            "clmcg_type_id": vFLDClaimCostsGroupsValue.rowdata.clmcg_type_id,
+            "clmc_type_id": vCLMCTypeID,
+            "trans_check_id": vCLMTransID
+        },
+        success: function (costs_types_list) {
+            for (var i = 0; i < costs_types_list.data.length; i++) {
+                $("select[name='clmc_type_id']").find('option').end().append(
+                    "<option value='" + costs_types_list.data[i].clmc_type_id
+                    + "'>" + costs_types_list.data[i].clmc_type_name + "</option>");
+            }
+            if(vCLMCTypeID > 0){
+                $('#clmc_type_id').val(vCLMCTypeID);
+            }
+        }
+    }));
+}
+// Sum Currency List
+function sumCostsCurrencyChange(vMode,vCurrencyID) {
+    $('#tms_locals_costs_modal_currency_id').empty();
+    $("select[name='tms_locals_costs_modal_currency_id']").find('option').end().append("<option value=''></option>");
+
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/tms_locals/get_currency_list'}]]*/ "/tms_locals/get_currency_list",
+        type: "get",
+        data: {
+            "mode": vMode
+        },
+        success: function (currency_list) {
+            for (var i = 0; i < currency_list.data.length; i++) {
+                $("select[name='tms_locals_costs_modal_currency_id']").find('option').end().append(
+                    "<option value='" + currency_list.data[i].currency_id
+                    + "'>" + currency_list.data[i].currency_name + "</option>");
+            }
+         if(vCurrencyID > 0){
+             $('#tms_locals_costs_modal_currency_id').val(vCurrencyID);
+         }
+        }
+    }));
+}
+//Currency Date
+$("#tms_locals_costs_modal_currency_date").daterangepicker({
+    "singleDatePicker": true,
+    "locale": {
+        "format": "DD.MM.YYYY",
+        "separator": " - ",
+        "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+        "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+        "daysOfWeek": [
+            /*[[#{weekdays.07_short}]]*/ "Su",
+            /*[[#{weekdays.01_short}]]*/ "Mo",
+            /*[[#{weekdays.02_short}]]*/ "Tu",
+            /*[[#{weekdays.03_short}]]*/ "We",
+            /*[[#{weekdays.04_short}]]*/ "Th",
+            /*[[#{weekdays.05_short}]]*/ "Fr",
+            /*[[#{weekdays.06_short}]]*/ "Sa"
+        ],
+        "monthNames": [
+            /*[[#{month.01}]]*/ "January",
+            /*[[#{month.02}]]*/ "February",
+            /*[[#{month.03}]]*/ "March",
+            /*[[#{month.04}]]*/ "April",
+            /*[[#{month.05}]]*/ "May",
+            /*[[#{month.06}]]*/ "June",
+            /*[[#{month.07}]]*/ "July",
+            /*[[#{month.08}]]*/ "August",
+            /*[[#{month.09}]]*/ "September",
+            /*[[#{month.10}]]*/ "October",
+            /*[[#{month.11}]]*/ "November",
+            /*[[#{month.12}]]*/ "December"
+        ],
+        "firstDay": 1
+    }
+});
+
+$('#tms_locals_costs_modal_currency_date_x').on('click', function() {
+    $('#tms_locals_costs_modal_currency_date').empty().val('');
+});
+
+// Load Function
+    function fill_tms_locals_costs_modal_detail(aMode){
+        var vTransGroupID = vFLDClaimCostsGroupsValue.rowdata.trans_costs_group;
+        clear_tms_locals_costs_modal_detail();
+        $('#tms_locals_costs_modal_mode').val(aMode);
+        block_tms_locals_costs_modal_detail();
+
+        $('#tms_locals_costs_modal_clm_id').val(vClaimsValue.rowdata.clm_id);
+        $('#tms_locals_costs_modal_clm_num').val(vClaimsValue.rowdata.clm_num);
+        $('#tms_locals_costs_modal_cnt_name').val(vClaimsValue.rowdata.cnt_name);
+
+        $('#tms_locals_costs_modal_clmcgl_id').val(vFLDClaimCostsGroupsValue.rowdata.clmcgl_id);
+        $('#tms_locals_costs_modal_clmcg_type_name').val(vFLDClaimCostsGroupsValue.rowdata.clmcg_type_name);
+
+        if(aMode !== 0) {
+            $.ajax({
+                url:/*[[@{'/tms_locals/get_costs_detail'}]]*/ "tms_locals/get_costs_detail",
+                type: "get",
+                data: {
+                    "mode": aMode,
+                    "clmcl_id": vFLDClaimCostsValue.rowdata.clmcl_id
+                },
+                success: function (tms_locals_costs_modal_detail_result) {
+                    $.when(
+                        sumCostsTypeChange(aMode,tms_locals_costs_modal_detail_result.data[0].clmc_type_id, vTransGroupID),
+                        sumCostsCurrencyChange(aMode,tms_locals_costs_modal_detail_result.data[0].clmc_type_id)
+                    ).then(function () {
+                        $('#clmcl_id').val(tms_locals_costs_modal_detail_result.data[0].clmcl_id);
+                        $('#clmc_type_id').val(tms_locals_costs_modal_detail_result.data[0].clmc_type_id);
+                        $('#clmcl_sum').val(tms_locals_costs_modal_detail_result.data[0].clmcl_sum);
+                        $('#tms_locals_costs_modal_currency_id').val(tms_locals_costs_modal_detail_result.data[0].currency_id);
+                        $('#tms_locals_costs_modal_currency_date').val(tms_locals_costs_modal_detail_result.data[0].currency_date);
+                        $('#clmcl_note').val(tms_locals_costs_modal_detail_result.data[0].clmcl_note);
+
+                        $('#tms_locals_costs_modal').modal('show');
+                    });
+                }
+            });
+        }
+        else {
+            $.when(
+                sumCostsTypeChange(aMode,0,vTransGroupID),
+                sumCostsCurrencyChange(aMode,0)
+            ).then(function () {
+                $('#tms_locals_costs_modal').modal('show');
+            });
+        }
+    }
+// Add button script
+$('#tms_locals_costs_modal_addbtn').on('click', function(){
+    var MainRowID = vClaimsValue.rowdata.clm_id;
+    var GroupRowID = vFLDClaimCostsGroupsValue.rowdata.clmcgl_id;
+    var RowID = vFLDClaimCostsValue.rowdata.clmcl_id;
+
+    $.ajax({
+        url: /*[[ @{/tms_locals/add_costs} ]]*/ "/tms_locals/add_costs",
+        type: 'POST',
+        data: {
+            "clm_id": MainRowID,
+            "clmcgl_id": GroupRowID,
+            "clmc_type_id":  $('#clmc_type_id').val(),
+            "clmcl_sum":  $('#clmcl_sum').val(),
+            "currency_id":  $('#tms_locals_costs_modal_currency_id').val(),
+            "currency_date":  $('#tms_locals_costs_modal_currency_date').val(),
+            "clmcl_note":  $('#clmcl_note').val()
+        },
+        success: function (result) {
+            $('#tms_locals_costs_modal').modal('hide');
+            vFLDClaimCostsValue.rowdata.clm_id = MainRowID;
+            vFLDClaimCostsValue.rowdata.clmcgl_id = GroupRowID;
+            vFLDClaimCostsValue.rowdata.clmcl_id = RowID;
+            $(vFLDClaimCostsValue.table).DataTable().ajax.reload(null, false);
+            vClaimsValue.rowdata.clm_id = MainRowID;
+            $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+            vFLDClaimErrorsValue.rowdata.clm_id = MainRowID;
+            $(vFLDClaimErrorsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// Edit button script
+$('#tms_locals_costs_modal_editbtn').on('click', function(){
+    var MainRowID = vClaimsValue.rowdata.clm_id;
+    var GroupRowID = vFLDClaimCostsGroupsValue.rowdata.clmcgl_id;
+    var RowID = vFLDClaimCostsValue.rowdata.clmcl_id;
+
+    $.ajax({
+        url: /*[[ @{/tms_locals/edit_costs} ]]*/ "/tms_locals/edit_costs",
+        type: 'POST',
+        data: {
+            "clmcl_id": RowID,
+            "clmcgl_id": GroupRowID,
+            "clmc_type_id":  $('#clmc_type_id').val(),
+            "clmcl_sum":  $('#clmcl_sum').val(),
+            "currency_id":  $('#tms_locals_costs_modal_currency_id').val(),
+            "currency_date":  $('#tms_locals_costs_modal_currency_date').val(),
+            "clmcl_note":  $('#clmcl_note').val()
+        },
+        success: function (result) {
+            $('#tms_locals_costs_modal').modal('hide');
+            vFLDClaimCostsValue.rowdata.clm_id = MainRowID;
+            vFLDClaimCostsValue.rowdata.clmcgl_id = GroupRowID;
+            vFLDClaimCostsValue.rowdata.clmcl_id = RowID;
+            $(vFLDClaimCostsValue.table).DataTable().ajax.reload(null, false);
+            vClaimsValue.rowdata.clm_id = MainRowID;
+            $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+            vFLDClaimErrorsValue.rowdata.clm_id = MainRowID;
+            $(vFLDClaimErrorsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// Del button script
+$('#tms_locals_costs_modal_delbtn').on('click', function(){
+    var MainRowID = vClaimsValue.rowdata.clm_id;
+    var GroupRowID = vFLDClaimCostsGroupsValue.rowdata.clmcgl_id;
+    var RowID = vFLDClaimCostsValue.rowdata.clmcl_id;
+
+    $.ajax({
+        url: /*[[ @{/tms_locals/del_costs} ]]*/ "/tms_locals/del_costs",
+        type: 'POST',
+        data: {
+            "clmcl_id": RowID
+        },
+        success: function (result) {
+            $('#tms_locals_costs_modal').modal('hide');
+            vFLDClaimCostsValue.rowdata.clm_id = MainRowID;
+            vFLDClaimCostsValue.rowdata.clmcgl_id = GroupRowID;
+            vFLDClaimCostsValue.rowdata.clmcl_id = RowID;
+            $(vFLDClaimCostsValue.table).DataTable().ajax.reload(null, false);
+            vClaimsValue.rowdata.clm_id = MainRowID;
+            $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+            vFLDClaimErrorsValue.rowdata.clm_id = MainRowID;
+            $(vFLDClaimErrorsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+</script>
+
+</body>
+</html>

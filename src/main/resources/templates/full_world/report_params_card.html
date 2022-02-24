@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="full_world_report_params_body" th:remove="tag">  
+    <div id="table-full-world-report-params-buttons">
+              <div id="full-world-report-params-btn-large" class="d-none d-sm-block mb-1">
+                 <button type="button" id="full-world-report-params-downbtn" class="btn btn-sm btn-dark" th:text="#{general.downbtn}" disabled>Download</button>
+                 <button type="button" id="full-world-report-params-clearbtn" class="btn btn-sm btn-dark" th:text="#{general.clearbtn}" disabled>Clear</button>
+
+                 <button type="button" id="full-world-report-params-editbtn" class="btn btn-sm btn-dark" th:text="#{general.editbtn}" disabled>Add</button>
+                 <button type="button" id="full-world-report-params-delbtn" class="btn btn-sm btn-dark" th:text="#{general.delbtn}" disabled>Delete</button>
+              </div>
+              <div id="full-world-report-params-btn-small" class="d-block d-sm-none mb-1">
+                 <button type="button" id="full-world-report-params-downbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="download"></i></button>
+                 <button type="button" id="full-world-report-params-clearbtn-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-times"></i></button>
+
+                 <button type="button" id="full-world-report-params-editbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="plus"></i></button>
+                 <button type="button" id="full-world-report-params-delbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="trash-2"></i></button>
+              </div>
+    </div>
+
+    <div><table id="table-full-world-report-params" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var clm_rep_link_id_width, rep_param_id_width, rn_width, rep_param_name_width, rep_param_value_width, clm_rep_link_edit_width, empty_column_width;
+    var clm_rep_link_id_class, rep_param_id_class, rn_class, rep_param_name_class, rep_param_value_class, clm_rep_link_edit_class, empty_column_class;
+    var clm_rep_link_id_show, rep_param_id_show, rn_show, rep_param_name_show, rep_param_value_show, clm_rep_link_edit_show, empty_column_show;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        clm_rep_link_id_show = false;
+        clm_rep_link_id_width = "";
+        clm_rep_link_id_class = "";
+        rep_param_id_show = false;
+        rep_param_id_width = "";
+        rep_param_id_class = "";
+        rn_show = true;
+        rn_width = "5%";
+        rn_class = "small_size small_head_size small_footer_size";
+        rep_param_name_show = true;
+        rep_param_name_width = "25%";
+        rep_param_name_class = "small_size small_head_size small_footer_size";
+        rep_param_value_show = true;
+        rep_param_value_width = "65%";
+        rep_param_value_class = "small_size small_head_size small_footer_size";
+        clm_rep_link_edit_show = true;
+        clm_rep_link_edit_width = "5%";
+        clm_rep_link_edit_class = "small_size small_head_size small_footer_size text-center";
+        empty_column_show = false;
+        empty_column_width = "";
+        empty_column_class = "";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        clm_rep_link_id_show = false;
+        clm_rep_link_id_width = "";
+        clm_rep_link_id_class = "";
+        rep_param_id_show = false;
+        rep_param_id_width = "";
+        rep_param_id_class = "";
+        rn_show = true;
+        rn_width = "5%";
+        rn_class = "";
+        rep_param_name_show = true;
+        rep_param_name_width = "25%";
+        rep_param_name_class = "";
+        rep_param_value_show = true;
+        rep_param_value_width = "65%";
+        rep_param_value_class = "";
+        clm_rep_link_edit_show = true;
+        clm_rep_link_edit_width = "5%";
+        clm_rep_link_edit_class = "text-center";
+        empty_column_show = false;
+        empty_column_width = "";
+        empty_column_class = "";
+    }
+
+    var vClaimReportParamsValue;
+    vClaimReportParamsValue = {
+        table : '#table-full-world-report-params',
+        ajax : {
+            "url": /*[[@{/full_world/get_report_params_table}]]*/ "full_world/get_report_params_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vClaimReportParamsValue.rowdata.clm_id;
+                d.report_id = vClaimReportParamsValue.rowdata.report_id;
+            }
+        },
+        key : "clm_rep_link_id",
+        switchControl : full_world_report_params_switchControl,
+        rowdata:{
+            clm_id: null,
+            report_id: null,
+            rep_param_name: null,
+            rep_param_value: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        columnDefs:[
+            {"targets": [0], "width": clm_rep_link_id_width, "className": clm_rep_link_id_class, "visible": clm_rep_link_id_show},
+            {"targets": [1], "width": rep_param_id_width, "className": rep_param_id_class, "visible": rep_param_id_show},
+            {"targets": [2], "width": rn_width, "className": rn_class, "visible": rn_show},
+            {"targets": [3], "width": rep_param_name_width, "className": rep_param_name_class, "visible": rep_param_name_show},
+            {"targets": [4], "width": rep_param_value_width, "className": rep_param_value_class, "visible": rep_param_value_show},
+            {"targets": [5], "width": clm_rep_link_edit_width, "className": clm_rep_link_edit_class, "visible": clm_rep_link_edit_show,
+                render: function ( data, type, row ) {
+                    if ( type === 'display' ) {             //if column data is 1 then set attr to checked, use row id as input id (plus prefix)
+                        return '<input type="checkbox" ' + ((data == 1) ? 'checked' : '') + ' id="input' + row.id + '" class="filter-ck text-center" disabled="true"/>';
+                    }
+                    return data;
+                }
+            },
+            {"targets": [6], "width": empty_column_width, "className": empty_column_class, "visible": empty_column_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{full_world.report_params.clm_rep_link_id}]]*/ "clm_rep_link_id", "data": "clm_rep_link_id"},
+            /*1*/{"title": /*[[#{full_world.report_params.rep_param_id}]]*/ "rep_param_id", "data": "rep_param_id"},
+            /*2*/{"title": /*[[#{full_world.report_params.rn}]]*/ "rn", "data": "rn"},
+            /*3*/{"title": /*[[#{full_world.report_params.rep_param_name}]]*/ "rep_param_name", "data": "rep_param_name"},
+            /*4*/{"title": /*[[#{full_world.report_params.rep_param_value}]]*/ "rep_param_value", "data": "rep_param_value"},
+            /*5*/{"title": /*[[#{full_world.report_params.clm_rep_link_edit}]]*/ "clm_rep_link_edit", "data": "clm_rep_link_edit"},
+            /*6*/{"title": /*[[#{full_world.report_params.empty_column}]]*/ "empty_column", "data": "empty_column"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function full_world_report_params_switchControl(){
+        if(vClaimReportParamsValue.rowdata.clm_rep_link_id != null && (RoleChiefOPS || RoleOPS)) {
+            $("#full-world-report-params-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#full-world-report-params-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#full-world-report-params-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#full-world-report-params-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        }
+        else{
+            $("#full-world-report-params-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-report-params-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#full-world-report-params-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-report-params-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.full_world_report_params_btn_control').on('click', function (){
+        $("#full-world-report-params-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#full-world-report-params-detail').submit(function() {
+        vClaimReportParamsValue.rowdata.full_world_report_params_table_order_column = $(vClaimReportParamsValue.table).DataTable().order()[0][0];
+        vClaimReportParamsValue.rowdata.full_world_report_params_table_order_type = $(vClaimReportParamsValue.table).DataTable().order()[0][1];
+        vClaimReportParamsValue.rowdata.full_world_report_params_table_search = $(vClaimReportParamsValue.table).DataTable().search();
+        vClaimReportParamsValue.rowdata.full_world_report_params_table_pagelen = $(vClaimReportParamsValue.table).DataTable().page.len();
+        vClaimReportParamsValue.rowdata.full_world_report_params_table_page = $(vClaimReportParamsValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vClaimReportParamsValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+        vClaimReportParamsValue.rowdata.rep_id = vClaimReportsValue.rowdata.rep_id;
+
+        Object.keys(vClaimReportParamsValue.rowdata).forEach(function (index) {
+            $("#full-world-report-params-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#full-world-report-params-detail input[name=\"" + index + "\"]").val(vClaimReportParamsValue.rowdata[index]);
+        });
+    });
+
+    $('#full-world-report-params-pdfbtn').on('click', function () {
+        if(vClaimReportParamsValue.rowdata.report_id === 1){
+            $("#full-world-report-params-pdf-first-form input[name=clm_id]").val(vClaimsValue.rowdata.clm_id);
+            $("#full-world-report-params-pdf-first-form").submit();
+        }
+        else if(vClaimReportParamsValue.rowdata.report_id === 2){
+            $("#full-world-report-params-pdf-second-form input[name=clm_id]").val(vClaimsValue.rowdata.clm_id);
+            $("#full-world-report-params-pdf-second-form").submit();
+        }
+    });
+
+    $('#full-world-report-params-clearbtn').on('click', function( event ) {
+        if (vClaimReportsValue.rowdata.report_id  != null) {
+            var MainRowID = vClaimsValue.rowdata.clm_id;
+            var ReportRowID = vClaimReportsValue.rowdata.report_id;
+            var RowID = vClaimReportParamsValue.rowdata.clm_rep_link_id;
+            $.ajax({
+                url: /*[[ @{/full_world/clear_report_params} ]]*/ "/full_world/clear_report_params",
+                type: 'POST',
+                data: {
+                    "clm_id": MainRowID,
+                    "report_id": ReportRowID
+                },
+                success: function (result) {
+                    vClaimReportParamsValue.rowdata.clm_id = MainRowID;
+                    vClaimReportParamsValue.rowdata.report_id = ReportRowID;
+                    vClaimReportParamsValue.rowdata.clm_rep_link_id = RowID;
+                    $(vClaimReportParamsValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }); <!-- Clear Button -->
+
+    $('#full-world-report-params-downbtn').on('click', function( event ) {
+        if (vClaimReportsValue.rowdata.report_id != null) {
+            var MainRowID = vClaimsValue.rowdata.clm_id;
+            var ReportRowID = vClaimReportsValue.rowdata.report_id;
+            var RowID = vClaimReportParamsValue.rowdata.clm_rep_link_id;
+            $.ajax({
+                url: /*[[ @{/full_world/fill_report_params} ]]*/ "/full_world/fill_report_params",
+                type: 'POST',
+                data: {
+                    "clm_id": MainRowID,
+                    "report_id": ReportRowID
+                },
+                success: function (result) {
+                    vClaimReportParamsValue.rowdata.clm_id = MainRowID;
+                    vClaimReportParamsValue.rowdata.report_id = ReportRowID;
+                    vClaimReportParamsValue.rowdata.clm_rep_link_id = RowID;
+                    $(vClaimReportParamsValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }); <!-- Delete Button -->
+
+    $('#full-world-report-params-editbtn').on('click', function( event ) {
+        $('#rep_param_name').val(vClaimReportParamsValue.rowdata.rep_param_name);
+        $('#rep_param_value').val(vClaimReportParamsValue.rowdata.rep_param_value);
+        $('#full_world_report_params_modal').modal('show');
+    }); <!-- Edit Button -->
+
+    $('#full-world-report-params-delbtn').on('click', function( event ) {
+        if (vClaimReportsValue.rowdata.report_id != null) {
+            var MainRowID = vClaimsValue.rowdata.clm_id;
+            var ReportRowID = vClaimReportsValue.rowdata.report_id;
+            var RowID = vClaimReportParamsValue.rowdata.clm_rep_link_id;
+            $.ajax({
+                url: /*[[ @{/full_world/del_report_params} ]]*/ "/full_world/del_report_params",
+                type: 'POST',
+                data: {
+                    "clm_rep_link_id": RowID
+                },
+                success: function (result) {
+                    vClaimReportParamsValue.rowdata.clm_id = MainRowID;
+                    vClaimReportParamsValue.rowdata.report_id = ReportRowID;
+                    vClaimReportParamsValue.rowdata.clm_rep_link_id = RowID;
+                    $(vClaimReportParamsValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }); <!-- Download Button -->
+
+    $('#full-world-report-params-delbtn-sx').on('click', function( event ) {
+        if (vClaimReportsValue.rowdata.report_id != null) {
+            var MainRowID = vClaimsValue.rowdata.clm_id;
+            var ReportRowID = vClaimReportsValue.rowdata.report_id;
+            var RowID = vClaimReportParamsValue.rowdata.clm_rep_link_id;
+            $.ajax({
+                url: /*[[ @{/full_world/del_report_params} ]]*/ "/full_world/del_report_params",
+                type: 'POST',
+                data: {
+                    "clm_rep_link_id": RowID
+                },
+                success: function (result) {
+                    vClaimReportParamsValue.rowdata.clm_id = MainRowID;
+                    vClaimReportParamsValue.rowdata.report_id = ReportRowID;
+                    vClaimReportParamsValue.rowdata.clm_rep_link_id = RowID;
+                    $(vClaimReportParamsValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }); <!-- Delete Button -->
+
+    $(document).ready(function(){
+        vClaimReportParamsValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vClaimReportParamsValue.rowdata.report_id = /*[[${report_id}]]*/ null;
+        vClaimReportParamsValue.rowdata.clm_rep_link_id = /*[[${clm_rep_link_id}]]*/ null;
+
+        vClaimReportParamsValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vClaimReportParamsValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vClaimReportParamsValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vClaimReportParamsValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vClaimReportParamsValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vClaimReportParamsValue);
+    });
+</script>
+
+</body>
+</html>

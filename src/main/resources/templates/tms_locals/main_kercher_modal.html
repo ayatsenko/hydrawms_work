@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_locals_main_kercher_modal_body" th:remove="tag">
+    <form id="tms-locals-main-kercher-modal-detail" class="mb-2" hidden>
+        <div>
+            <button type="button" id="tms_locals_main_modal_kercher_clear" class="btn btn-danger"><i class="fa fa-times"></i></button>
+            <button type="button" id="tms_locals_main_modal_kercher_delete" class="btn btn-dark mr-2" disabled><i class="fa fa-trash-alt"></i></button>
+
+            <button type="button" id="tms_locals_main_modal_kercher_reload" class="btn btn-primary mr-2"><i class="fa fa-sync-alt"></i></button>
+        </div>
+    </form>
+
+    <div><table id="table-tms-locals-kercher-modal" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var row_id_width, order_date_width, order_number_width, client_name_width,delivery_address_width,contact_person_width,load_date_width,unload_date_width;
+
+    var row_id_class, order_date_class, order_number_class, client_name_class,delivery_address_class,contact_person_class,load_date_class,unload_date_class;
+
+    var row_id_show, order_date_show, order_number_show, client_name_show,delivery_address_show,contact_person_show,load_date_show,unload_date_show;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+
+        $('#tms-locals-main-kercher-modal-detail').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "tpi";
+        row_id_show = true;
+        row_id_width = "5%";
+        row_id_class = "small_size small_head_size head-center small_footer_size";
+        order_date_show = true;
+        order_date_width = "8%";
+        order_date_class = "small_size small_head_size head-center small_footer_size text-center";
+        order_number_show = false;
+        order_number_width = "";
+        order_number_class = "";
+        client_name_show = true;
+        client_name_width = "17%";
+        client_name_class = "";
+        delivery_address_show = true;
+        delivery_address_width = "25%";
+        delivery_address_class = "small_size small_head_size head-center small_footer_size text-center";
+        contact_person_show = true;
+        contact_person_width = "25%";
+        contact_person_class = "small_size small_head_size head-center small_footer_size";
+        load_date_show = true;
+        load_date_width = "10%";
+        load_date_class = "small_size small_head_size head-center small_footer_size";
+        unload_date_show = true;
+        unload_date_width = "10%";
+        unload_date_class = "small_size small_head_size head-center small_footer_size";
+
+        $('#tms-locals-main-kercher-modal-detail').removeAttr('hidden');
+    }
+    else{
+        vDomParam = "tpi";
+        row_id_show = true;
+        row_id_width = "5%";
+        row_id_class = "small_size small_head_size head-center small_footer_size";
+        order_date_show = true;
+        order_date_width = "8%";
+        order_date_class = "small_size small_head_size head-center small_footer_size text-center";
+        order_number_show = false;
+        order_number_width = "";
+        order_number_class = "";
+        client_name_show = true;
+        client_name_width = "17%";
+        client_name_class = "small_size small_head_size head-center small_footer_size";
+        delivery_address_show = true;
+        delivery_address_width = "25%";
+        delivery_address_class = "small_size small_head_size head-center small_footer_size";
+        contact_person_show = true;
+        contact_person_width = "25%";
+        contact_person_class = "small_size small_head_size head-center small_footer_size";
+        load_date_show = true;
+        load_date_width = "10%";
+        load_date_class = "small_size small_head_size head-center small_footer_size";
+        unload_date_show = true;
+        unload_date_width = "10%";
+        unload_date_class = "small_size small_head_size head-center small_footer_size";
+    }
+
+    var vClaimsKercherTemp;
+    vClaimsKercherTemp = {
+        table : '#table-tms-locals-kercher-modal',
+        button_form: (mobileScreenSize || smallScreenSize ) ? null : "#tms-locals-main-kercher-modal-detail",
+        ajax : {
+            "url": /*[[@{/tms_locals/get_kercher_temp_table}]]*/ "tms_locals/get_kercher_temp_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.mode = $('#tms_locals_main_files_modal_mode').val();
+                d.type_id = $('#files_cnt_id').val();
+            }
+        },
+        key : "row_id",
+        switchControl : tms_locals_main_kercher_modal_switchControl,
+        rowdata:{
+            order_number: null,
+            client_name: null,
+            row_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+        autoWidth: true,
+
+        dom: vDomParam,
+        columnDefs:[
+            {"targets": [0], "width": row_id_width, "className": row_id_class, "visible": row_id_show},
+            {"targets": [1], "width": order_date_width, "className": order_date_class, "visible": order_date_show},
+            {"targets": [2], "width": order_number_width, "className": order_number_class, "visible": order_number_show},
+            {"targets": [3], "width": client_name_width, "className": client_name_class, "visible": client_name_show},
+            {"targets": [4], "width": delivery_address_width, "className": delivery_address_class, "visible": delivery_address_show},
+            {"targets": [5], "width": contact_person_width, "className": contact_person_class, "visible": contact_person_show},
+            {"targets": [6], "width": load_date_width, "className": load_date_class, "visible": load_date_show},
+            {"targets": [7], "width": unload_date_width, "className": unload_date_class, "visible": unload_date_show} 
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{tms_locals.kercher_modal.row_id}]]*/ "row_id", "data": "row_id"},
+            /*1*/{"title": /*[[#{tms_locals.kercher_modal.order_date}]]*/ "order_number", "data": "order_date"},
+            /*2*/{"title": /*[[#{tms_locals.kercher_modal.order_number}]]*/ "order_number", "data": "order_number"},
+            /*3*/{"title": /*[[#{tms_locals.kercher_modal.client_name}]]*/ "client_name", "data": "client_name"},
+            /*4*/{"title": /*[[#{tms_locals.kercher_modal.delivery_address}]]*/ "delivery_address", "data": "delivery_address"},
+            /*5*/{"title": /*[[#{tms_locals.kercher_modal.contact_person}]]*/ "contact_person", "data": "contact_person"},
+            /*6*/{"title": /*[[#{tms_locals.kercher_modal.load_date}]]*/ "load_date", "data": "load_date"},
+            /*7*/{"title": /*[[#{tms_locals.kercher_modal.unload_date}]]*/ "unload_date", "data": "unload_date"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function tms_locals_main_kercher_modal_switchControl(){
+        if(vClaimsKercherTemp.rowdata.row_id != null) {
+            $("#tms_locals_main_modal_kercher_delete").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#tms_locals_main_modal_kercher_upload").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        }
+        else{
+            $("#tms_locals_main_modal_kercher_delete").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tms_locals_main_modal_kercher_upload").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    function localTMSKercherTemReload(){
+        $(vClaimsKercherTemp.table).DataTable().ajax.reload(null, false);
+    }
+    //Reload Button
+    $('#tms_locals_main_modal_kercher_reload').click(function(){
+        localTMSKercherTemReload();
+    });
+
+    //Delete Function
+    function localTMSKercherTemDelete(){
+        if (vClaimsKercherTemp.rowdata.row_id != null) {
+            $.ajax({
+                url: /*[[ @{/tms_locals/del_kercher_main} ]]*/ "/tms_locals/del_kercher_main",
+                type: 'POST',
+                data: {
+                    "row_id": vClaimsKercherTemp.rowdata.row_id
+                },
+                success: function (result) {
+                    $(vClaimsKercherTemp.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }
+    //Delete Button
+    $('#tms_locals_main_modal_kercher_delete').click(function(){
+        localTMSKercherTemDelete();
+    });
+
+    function localTMSTemDeleteAll(){
+            $.ajax({
+                url: /*[[ @{/tms_locals/del_all_main} ]]*/ "/tms_locals/del_all_main",
+                type: 'POST',
+                success: function (result) {
+                    $(vClaimsKercherTemp.table).DataTable().ajax.reload(null, false);
+                }
+            });
+    }
+
+    //Clear Button
+    $('#tms_locals_main_modal_kercher_clear').click(function(){
+        localTMSTemDeleteAll();
+    });
+
+    $(document).ready(function(){
+        recreateDataTable(vClaimsKercherTemp);
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="users_kpi_meets_users_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="users_kpi_meets_users_modal" data-toggle="validator" tabindex="-1" role="dialog"
+         data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="users_kpi_meets_users_modal_mode">
+            </div>
+
+            <div class="modal-content" id="users_kpi_meets_users_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{users_kpi_meets.users.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mb-1">
+                    <form id="users_kpi_meets_users_modal_form" name="users_kpi_meets_users_modal_form" class="was-validated" novalidate>
+                        <div class="form-row">
+                            <div class="col-12 col-md-3 mb-1" id="users_kpi_meets_users_modal_user_kpi_meet_id_row">
+                                <label for="users_kpi_meets_users_modal_user_kpi_meet_id" class="form-label" th:text="'1. '+ #{users_kpi_meets.main.user_kpi_meet_id}"></label>
+                                <input type="number" class="form-control" id="users_kpi_meets_users_modal_user_kpi_meet_id" name="users_kpi_meets_users_modal_user_kpi_meet_id" readonly>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 mb-1" id="users_kpi_meets_users_modal_user_kpi_meet_name_row">
+                                <label for="users_kpi_meets_users_modal_user_kpi_meet_name" class="form-label" th:text="'2. '+ #{users_kpi_meets.main.user_kpi_meet_name}"></label>
+                                <input type="text" maxlength="32" class="form-control" id="users_kpi_meets_users_modal_user_kpi_meet_name" name="users_kpi_meets_users_modal_user_kpi_meet_name">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-12 col-md-6 mb-1" id="add_type_id_row">
+                                <label for="user_id" th:text="'3. '+#{users_kpi_meets.users.user_id}"></label>
+                                <div class="input-group d-flex">
+                                    <select type="text" id="user_id" name="user_id" class="form-control p-1" aria-describedby="user_id_helpBlock">
+                                    </select>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div><!-- Body -->
+                <div class="modal-footer">
+                    <button type="button" id="users_kpi_meets_users_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="users_kpi_meets_users_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="users_kpi_meets_users_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="users_kpi_meets_users_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+// Clear Fields
+    function clear_users_kpi_meets_users_modal_detail() {
+        $("#users_kpi_meets_users_modal_detail input[type=text]").val('');
+        $("#users_kpi_meets_users_modal_detail input[type=number]").val('');
+        $("#users_kpi_meets_users_modal_detail select").empty();
+        $("#users_kpi_meets_users_modal_detail textarea").val('');
+    }
+
+// Block And Required Fields
+    function block_users_kpi_meets_users_modal_detail() {
+        if ($('#users_kpi_meets_users_modal_mode').val() === "0") {
+
+            $('#user_id').removeAttr('disabled');
+        } else if ($('#users_kpi_meets_users_modal_mode').val() === "1") {
+
+            $('#user_id').removeAttr('disabled');
+        } else {
+
+            $('#user_id').attr('disabled',true);
+        }
+    }
+
+// Load Function
+    function fill_users_kpi_meets_users_modal_detail(aMode) {
+        $('#users_kpi_meets_users_modal_mode').val(aMode);
+        clear_users_kpi_meets_users_modal_detail();
+        block_users_kpi_meets_users_modal_detail();
+
+        $('#users_kpi_meets_users_modal_user_kpi_meet_id').val(vUsersKPIMeetsValue.rowdata.user_kpi_meet_id);
+        $('#users_kpi_meets_users_modal_user_kpi_meet_name').val(vUsersKPIMeetsValue.rowdata.user_kpi_meet_name);
+
+        if (aMode > 0) {
+            $.when(
+                UserListChange(aMode, vUsersKPIMeetsUsersValue.rowdata.user_id)
+            ).then(function (){
+                $('#users_kpi_meets_users_modal').modal('show');
+            });
+        } else if (aMode === 0) {
+            $.when(
+                UserListChange(aMode,vUsersKPIMeetsValue.rowdata.user_kpi_meet_id, 0)
+            ).then(function (){
+                $('#users_kpi_meets_users_modal').modal('show');
+            });
+        }
+    }
+
+// Add button script
+    $('#users_kpi_meets_users_modal_addbtn').click(function () {
+        $('#users_kpi_meets_users_modal_form').submit();
+    });
+// Edit button script
+    $('#users_kpi_meets_users_modal_editbtn').click(function () {
+        $('#users_kpi_meets_users_modal_form').submit();
+    });
+// Del button script
+    $('#users_kpi_meets_users_modal_delbtn').click(function () {
+        $('#users_kpi_meets_users_modal_form').submit();
+    });
+
+// Address Type Сhange Function
+function UserListChange(vMode, vUserID) {
+    $('#user_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/users_kpi_meets/get_users_list'}]]*/ "/users_kpi_meets/get_users_list",
+        type: "get",
+        data: {"mode": vMode,
+                "user_kpi_meet_id": vUsersKPIMeetsValue.rowdata.user_kpi_meet_id,
+                "user_id": vUserID
+        },
+        success: function (users_list) {
+            for (var i = 0; i < users_list.data.length; i++) {
+                $("select[name='user_id']").find('option').end().append("<option value='" + users_list.data[i].user_id + "'>" + users_list.data[i].user_name + "</option>");
+            }
+            if(vUserID !== null){
+                $('#user_id').val(vUserID);
+            }
+        },
+        error: function(){}
+    }));
+}
+
+//Add KPI Meets User
+    function addKPIMeetsUsers() {
+        var MainRowID = vUsersKPIMeetsValue.rowdata.user_kpi_meet_id;
+        var RowID = vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_user_id;
+        $.ajax({
+            url: /*[[ @{/users_kpi_meets/add_kpi_meet_user} ]]*/ "/users_kpi_meets/add_kpi_meet_user",
+            type: 'POST',
+            data: {
+                "user_kpi_meet_id": MainRowID,
+                "user_id": $('#user_id').val()
+            },
+            success: function (result) {
+                $('#users_kpi_meets_users_modal').modal('hide');
+                vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_id = MainRowID;
+                vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_user_id = RowID;
+                $(vUsersKPIMeetsUsersValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+//Del KPI Meets User
+function delKPIMeetsUsers() {
+    var MainRowID = vUsersKPIMeetsValue.rowdata.user_kpi_meet_id;
+    var RowID = vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_user_id;
+    $.ajax({
+        url: /*[[ @{/users_kpi_meets/del_kpi_meet_user} ]]*/ "/users_kpi_meets/del_kpi_meet_user",
+        type: 'POST',
+        data: {
+            "user_kpi_meet_user_id": RowID
+        },
+        success: function (result) {
+            $('#users_kpi_meets_users_modal').modal('hide');
+            vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_id = MainRowID;
+            vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_user_id = null;
+            $(vUsersKPIMeetsUsersValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+}
+
+//Validation Form
+    $('#users_kpi_meets_users_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function (error, element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            if ($('#users_kpi_meets_users_modal_mode').val() === '0') {
+                addKPIMeetsUsers();
+            } else if ($('#users_kpi_meets_users_modal_mode').val() === '1') {
+            } else if ($('#users_kpi_meets_users_modal_mode').val() === '2') {
+                delKPIMeetsUsers();
+            }
+            return false;
+        }
+    });
+// OnChange Functions
+</script>
+
+</body>
+</html>

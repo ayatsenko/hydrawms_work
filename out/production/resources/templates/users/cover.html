@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{users.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 col-md-7">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0" th:text="#{users.caption}"></h5>
+            </div>
+            <div class="card-body py-3">
+                <div>
+                    <span th:replace="users/list_card :: users_list_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- First Column -->
+
+    <div class="col-12 col-md-5">
+        <div class="card" id="user_services_card">
+            <div class="card-header">
+                <div class="card-actions float-right">
+                    <a href="#user_services_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title mb-0" th:text="#{users.services.caption}"></h5>
+            </div>
+            <div class="card-body py-3 collapse show" id="user_services_div">
+                <div>
+                    <span th:replace="users/service_card :: user_services_body"></span>
+                </div>
+            </div>
+        </div><!-- User Services -->
+
+        <div class="card" id="user_subusers_card">
+            <div class="card-header">
+                <div class="card-actions float-right">
+                    <a href="#user_subusers_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title mb-0" th:text="#{users.subusers.caption}"></h5>
+            </div>
+            <div class="card-body py-3 collapse show" id="user_subusers_div">
+                <div>
+                    <span th:replace="users/subuser_card  :: user_subusers_body"></span>
+                </div>
+            </div>
+        </div><!-- User SubUsers -->
+
+        <div class="card" id="user_clients_card">
+            <div class="card-header">
+                <div class="card-actions float-right">
+                    <a href="#user_clients_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title mb-0" th:text="#{users.clients.caption}"></h5>
+            </div>
+            <div class="card-body py-3 collapse show" id="user_clients_div">
+                <div>
+                    <span th:replace="users/contragent_card  :: user_contragents_body"></span>
+                </div>
+            </div>
+        </div><!-- User Contragents -->
+
+        <div class="card" id="user_systems_card">
+            <div class="card-header">
+                <div class="card-actions float-right">
+                    <a href="#user_clients_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title mb-0" th:text="#{users.systems.caption}"></h5>
+            </div>
+            <div class="card-body py-3 collapse show" id="user_systems_div">
+                <div>
+                    <span th:replace="users/systems_card  :: user_systems_body"></span>
+                </div>
+            </div>
+        </div><!-- User Contragents -->
+
+    </div><!-- Second Column -->
+</div>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<script th:replace="users/systems_card :: cardscript"></script>
+<script th:replace="users/service_card :: cardscript"></script>
+<script th:replace="users/subuser_card :: cardscript"></script>
+<script th:replace="users/contragent_card :: cardscript"></script>
+
+<script th:replace="users/list_card :: cardscript"></script>
+</body>
+</html>

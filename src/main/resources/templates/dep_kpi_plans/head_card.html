@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="dep_kpi_plans_head_body" th:remove="tag">
+		<form class="form-inline">
+		      <div class="form-group mb-2 mr-2">
+				<label for="dep_kpi_plans_year" class="mr-2" th:text="#{dep_kpi_plans.filter.year}">Year: </label>
+                <select class="form-control" style="width:130px; display:inline-block" id="dep_kpi_plans_year" placeholder="Year">
+                  <option selected>2020</option>
+               </select>
+			  </div>
+
+			  <div class="form-group mb-2 mr-2" id="department_list_row">
+				<label for="department_list" class="mr-2" th:text="#{dep_kpi_plans.filter.department_list}">Departments: </label>
+				<select id="department_list" class="form-control select2" data-toggle="select2" required>
+					<option value=""></option>
+					<!--suppress ThymeleafVariablesResolveInspection -->
+					<option class="p-1"
+                            th:each="department_type : ${department_list}"
+                            th:value="${department_type.dep_id}"
+                            th:text="${department_type.dep_name}"
+                            th:selected="${department_type.dep_id == dep_id}"
+                    ></option>
+				</select>
+			  </div>
+
+			  <div class="form-group mb-2 mr-2" id="dep_kpi_type_list_row">
+				<label for="dep_kpi_type_list" class="mr-2" th:text="#{dep_kpi_plans.filter.dep_kpi_type_list}">Service: </label>
+				<select id="dep_kpi_type_list" name="dep_kpi_type_list" class="form-control select2" data-toggle="select2" required>
+				</select>
+			  </div>
+
+			<a class="btn btn-outline-primary mb-2" id="dep_kpi_plans_show" th:text="#{general.showbth}">Show</a>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+	$(document).ready(function(){
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#crm_kpi_li').addClass('active').removeClass('collapsed');
+        $('#crm_kpi_a').attr('aria-expanded',true);
+        $('#crm_kpi').addClass('show');
+
+        $('#dep_kpi_plans_a').addClass('text-primary');
+	});
+
+	$('#dep_kpi_plans_show').on('click', function () {
+		if($('#department_list').val() != null && $('#dep_kpi_type_list').val() != null) {
+			$.when(
+					depUserChange($('#department_list').val()),
+					depUserParamChange($('#department_list').val())
+			).then(function () {
+				$('#dep_kpi_plans_main_card').removeAttr('hidden');
+				vUsersKPIDepPlanMainValue.rowdata.dep_id = $('#department_list').val();
+				vUsersKPIDepPlanMainValue.rowdata.dep_kpi_plans_year = $('#dep_kpi_plans_year').val();
+				vUsersKPIDepPlanMainValue.rowdata.dep_kpi_type_id = $('#dep_kpi_type_list').val();
+				$(vUsersKPIDepPlanMainValue.table).DataTable().ajax.reload(null, false);
+
+				$('#dep_kpi_plans_middle_card').removeAttr('hidden');
+
+				vDepKPIPlanUsersListValue.rowdata.users_kpi_plans_year = null;
+				vDepKPIPlanUsersListValue.rowdata.user_kpi_type_id = null;
+				vDepKPIPlanUsersListValue.rowdata.dep_user_id = null;
+				vDepKPIPlanUsersListValue.rowdata.dep_id = null;
+				$(vDepKPIPlanUsersListValue.table).DataTable().clear().draw();
+			});
+			//$('#dep_kpi_plans_filter_div').removeClass('show').collapse('hide');
+		}
+	});
+
+	$('#department_list').change(function () {
+		$('#dep_kpi_type_list').empty();
+		return Promise.resolve($.ajax({
+			url:/*[[@{'/dep_kpi_plans/get_dep_param_list'}]]*/ "/dep_kpi_plans/get_dep_param_list",
+			type: "get",
+			data: {
+				"dep_id": $('#department_list').val()
+			},
+			success: function (user_kpi_meet_type_list) {
+				for (var i = 0; i < user_kpi_meet_type_list.data.length; i++) {
+					$("select[name='dep_kpi_type_list']").find('option').end().append(
+							"<option value='" + user_kpi_meet_type_list.data[i].dep_kpi_type_id + "'>" + user_kpi_meet_type_list.data[i].dep_kpi_type_name + "</option>"
+					);
+				}
+			},
+			error: function(){}
+		}));
+	});
+</script>
+
+</body>
+</html>

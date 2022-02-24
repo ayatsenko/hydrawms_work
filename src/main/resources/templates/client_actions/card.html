@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="client_actions_body" th:remove="tag">
+        <form id="client-action-cnt-detail">
+            <input type="hidden" id="cnt_id" name="cnt_id">
+            <input type="hidden" id="cnt_name" name="cnt_name">
+            <input type="hidden" id="cnt_user_access" name="cnt_user_access">
+
+            <input type="hidden" id="clients_list_table_order_column">
+            <input type="hidden" id="clients_list_table_order_type">
+            <input type="hidden" id="clients_list_table_search">
+            <input type="hidden" id="clients_list_table_pagelen">
+            <input type="hidden" id="clients_list_table_page">
+        </form>
+
+    <form id="table-client-action-buttons" class="mb-2" hidden>
+        <input name="mode" value="0" hidden>
+        <button type="button" id="client-action-detailbtn" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.detailbtn}" disabled><i class="fa fa-list"></i></button>
+        <button type="button" id="client-action-addbtn" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" th:title="#{general.addbtn}"><i class="fa fa-plus"></i></button>
+        <button type="button" id="client-action-clonebtn" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.clonebtn}" disabled><i class="fa fa-copy"></i></button>
+        <button type="button" id="client-action-editbtn" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.editbtn}" disabled><i class="fa fa-pencil-alt"></i></button>
+        <button type="button" id="client-action-delbtn" class="btn btn-dark mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.delbtn}" disabled><i class="fa fa-trash-alt"></i></button>
+
+        <button type="button" id="client-action-reloadbtn" class="btn btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.refreshbtn}"><i class="fa fa-sync"></i></button>
+
+        <input type="hidden" name="clients_list_table_order_column">
+        <input type="hidden" name="clients_list_table_order_type">
+        <input type="hidden" name="clients_list_table_search">
+        <input type="hidden" name="clients_list_table_pagelen">
+        <input type="hidden" name="clients_list_table_page">
+    </form>
+
+    <div><table id="table-client-actions" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var act_id_show, act_plane_date_show, cnt_id_show, cnt_name_show, user_name_show, act_plan_type_sname_show, act_type_sname_show, act_status_id_show, act_status_sname_show,
+        act_status_color_show,  act_result_sname_show, act_description_show;
+    var act_id_width, act_plane_date_width, cnt_id_width, cnt_name_width, user_name_width, act_plan_type_sname_width, act_type_sname_width, act_status_id_width, act_status_sname_width,
+        act_status_color_width,  act_result_sname_width, act_description_width;
+    var act_id_class, act_plane_date_class, cnt_id_class, cnt_name_class, user_name_class, act_plan_type_sname_class, act_type_sname_class, act_status_id_class, act_status_sname_class,
+        act_status_color_class,  act_result_sname_class, act_description_class;
+
+    if(mobileScreenSize){
+        vDomParam =
+            "<'row'<'col-12'B>>"+
+            "<'row'<'col-12 col-sm-3'l><'col-12 col-sm-9'f>>"+
+            "<'row'<'col-12'tr>>" +
+            "<'row'<'col-12'p>>";
+        act_id_show = false;
+        act_id_width = "";
+        act_id_class = "";
+        act_plane_date_show = true;
+        act_plane_date_width = "10%";
+        act_plane_date_class = "min-tablet-p small_size small_head_size small_footer_size";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "";
+        cnt_name_show = true;
+        cnt_name_width = "50%";
+        cnt_name_class = "small_size small_head_size small_footer_size";
+        user_name_show = true;
+        user_name_width = "8%";
+        user_name_class = "min-tablet-p small_size small_head_size small_footer_size text-center";
+        act_plan_type_sname_show = true;
+        act_plan_type_sname_width = "5%";
+        act_plan_type_sname_class = "none";
+        act_type_sname_show = true;
+        act_type_sname_width = "5%";
+        act_type_sname_class = "min-tablet-p small_size small_head_size small_footer_size text-center";
+        act_status_id_show = false;
+        act_status_id_width = "";
+        act_status_id_class = "";
+        act_status_sname_show = true;
+        act_status_sname_width = "18%";
+        act_status_sname_class = "small_size small_head_size small_footer_size text-center";
+        act_status_color_show = false;
+        act_status_color_width = "";
+        act_status_color_class = "";
+        act_result_sname_show = true;
+        act_result_sname_width = "5%";
+        act_result_sname_class = "min-tablet-p small_size small_head_size small_footer_sizetext-center";
+        act_description_show = false;
+        act_description_width = "";
+        act_description_class = "";
+        empty_column_show = false;
+        empty_column_width = "";
+        empty_column_class = "";
+
+        $('#client-actiondetail').addClass('text-center').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        act_id_width = true;
+        act_id_width = "5%";
+        act_id_class = "small_size small_head_size small_footer_size action_edit";
+        act_plane_date_show = true;
+        act_plane_date_width = "5%";
+        act_plane_date_class = "small_size small_head_size small_footer_size text-center action_edit";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "";
+        cnt_name_show = true;
+        cnt_name_width = "25%";
+        cnt_name_class = "small_size small_head_size small_footer_size action_edit";
+        user_name_show = true;
+        user_name_width = "8%";
+        user_name_class = "small_size small_head_size small_footer_size text-center action_edit";
+        act_plan_type_sname_show = true;
+        act_plan_type_sname_width = "5%";
+        act_plan_type_sname_class = "small_size small_head_size small_footer_size text-center action_edit";
+        act_type_sname_show = true;
+        act_type_sname_width = "5%";
+        act_type_sname_class = "small_size small_head_size small_footer_size text-center action_edit";
+        act_status_id_show = false;
+        act_status_id_width = "";
+        act_status_id_class = "";
+        act_status_sname_show = true;
+        act_status_sname_width = "10%";
+        act_status_sname_class = "small_size small_head_size small_footer_size text-center action_edit";
+        act_status_color_show = false;
+        act_status_color_width = "";
+        act_status_color_class = "";
+        act_result_sname_show = true;
+        act_result_sname_width = "5%";
+        act_result_sname_class = "small_size small_head_size small_footer_size text-center action_edit";
+        act_description_show = true;
+        act_description_width = "31%";
+        act_description_class = "small_size small_head_size small_footer_size action_edit";
+        empty_column_show = true;
+        empty_column_width = "5%";
+        empty_column_class = "small_size small_head_size small_footer_size text-center action_edit";
+
+        $('#client-actiondetail').removeAttr('hidden');
+    }
+    else{
+        vDomParam = "Blfrtip";
+        act_id_show = true;
+        act_id_width = "5%";
+        act_id_class = "small_size small_head_size small_footer_size action_edit";
+        act_plane_date_show = true;
+        act_plane_date_width = "5%";
+        act_plane_date_class = "small_size small_head_size small_footer_size text-center action_edit";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "";
+        cnt_name_show = true;
+        cnt_name_width = "25%";
+        cnt_name_class = "small_size small_head_size small_footer_size action_edit";
+        user_name_show = true;
+        user_name_width = "8%";
+        user_name_class = "small_size small_head_size small_footer_size text-center action_edit";
+        act_plan_type_sname_show = true;
+        act_plan_type_sname_width = "5%";
+        act_plan_type_sname_class = "small_size small_head_size small_footer_size text-center action_edit";
+        act_type_sname_show = true;
+        act_type_sname_width = "5%";
+        act_type_sname_class = "small_size small_head_size small_footer_size text-center action_edit";
+        act_status_id_show = false;
+        act_status_id_width = "";
+        act_status_id_class = "";
+        act_status_sname_show = true;
+        act_status_sname_width = "10%";
+        act_status_sname_class = "small_size small_head_size small_footer_size text-center action_edit";
+        act_status_color_show = false;
+        act_status_color_width = "";
+        act_status_color_class = "";
+        act_result_sname_show = true;
+        act_result_sname_width = "5%";
+        act_result_sname_class = "small_size small_head_size small_footer_size text-center action_edit";
+        act_description_show = true;
+        act_description_width = "31%";
+        act_description_class = "small_size small_head_size small_footer_size action_edit";
+    }
+
+    var vClientActionsValue;
+    vClientActionsValue = {
+        table : '#table-client-actions',
+        button_form: '#table-client-action-buttons',
+        ajax : {
+            "url": /*[[@{/client_actions/get_menu}]]*/ "client_actions/get_menu",
+            "type": "post",
+            "data": function ( d ) {
+                d.cnt_id = vClientActionsValue.rowdata.cnt_id;
+                d.client_actions_filter_id = vClientActionsValue.rowdata.client_actions_filter_id;
+                d.client_actions_filter_start_date = vClientActionsValue.rowdata.client_actions_filter_start_date;
+                d.client_actions_filter_end_date = vClientActionsValue.rowdata.client_actions_filter_end_date;
+            }
+        },
+        key : "act_id",
+        switchControl : client_actions_switchControl,
+        rowdata:{
+            cnt_id: null,
+            cnt_user_access: null,
+
+            act_id: null,
+            user_name: null,
+            act_status_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        deferRender: true,
+        scroller: true,
+        scrollCollapse: true,
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["act_status_color"]);
+        },
+        columnDefs:[
+            {"targets": [0], "width": act_id_width, "className": act_id_class, "visible": act_id_show},
+            {"targets": [1], "width": act_plane_date_width, "className": act_plane_date_class, "visible": act_plane_date_show, type: 'de_date'},
+            {"targets": [2], "width": cnt_id_width, "className": cnt_id_class, "visible": cnt_id_show},
+            {"targets": [3], "width": cnt_name_width, "className": cnt_name_class, "visible": cnt_name_show},
+            {"targets": [4], "width": user_name_width, "className": user_name_class, "visible": user_name_show},
+            {"targets": [5], "width": act_plan_type_sname_width, "className": act_plan_type_sname_class, "visible": act_plan_type_sname_show},
+            {"targets": [6], "width": act_type_sname_width, "className": act_type_sname_class, "visible": act_type_sname_show},
+            {"targets": [7], "width": act_status_id_width, "className": act_status_id_class, "visible": act_status_id_show},
+            {"targets": [8], "width": act_status_sname_width, "className": act_status_sname_class, "visible": act_status_sname_show},
+            {"targets": [9], "width": act_status_color_width, "className": act_status_color_class, "visible": act_status_color_show},
+            {"targets": [10], "width": act_result_sname_width, "className": act_result_sname_class, "visible": act_result_sname_show},
+            {"targets": [11], "width": act_description_width, "className": act_description_class, "visible": act_description_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{client_actions.act_id}]]*/ "act_id", "data": "act_id"},
+            /*1*/{"title": /*[[#{client_actions.act_plane_date}]]*/ "act_plane_date", "data": "act_plane_date",},
+            /*2*/{"title": /*[[#{client_actions.cnt_name}]]*/ "cnt_name", "data": "cnt_name"},
+            /*3*/{"title": /*[[#{client_actions.cnt_name}]]*/ "cnt_name", "data": "cnt_name"},
+            /*4*/{"title": /*[[#{client_actions.user_name}]]*/ "user_name", "data": "user_name"},
+            /*5*/{"title": /*[[#{client_actions.act_plan_type_sname}]]*/ "act_plan_type_sname", "data": "act_plan_type_sname"},
+            /*6*/{"title": /*[[#{client_actions.act_type_sname}]]*/ "act_type_sname", "data": "act_type_sname"},
+            /*7*/{"title": /*[[#{client_actions.act_status_id}]]*/ "act_status_id", "data": "act_status_id"},
+            /*8*/{"title": /*[[#{client_actions.act_status_sname}]]*/ "act_status_sname", "data": "act_status_sname"},
+            /*9*/{"title": /*[[#{client_actions.act_status_color}]]*/ "act_status_color", "data": "act_status_color"},
+            /*10*/{"title": /*[[#{client_actions.act_result_sname}]]*/ "act_result_sname", "data": "act_result_sname"},
+            /*11*/{"title": /*[[#{client_actions.act_description}]]*/ "act_description", "data": "act_description"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function client_actions_switchControl(){
+        if(vClientActionsValue.rowdata.act_id != null) {
+            var nameString =  /*[[${#authentication.name}]]*/ '';
+            var userAccessID = $('#cnt_user_access').val();
+
+            if(nameString === vClientActionsValue.rowdata.user_name && [0,1].indexOf(vClientActionsValue.rowdata.act_status_id) >= 0 && userAccessID === "1"){
+                $("#client-action-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#client-action-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-danger');
+            }
+            else if (RoleAllAdmin && [0,1].indexOf(vClientActionsValue.rowdata.act_status_id) >= 0){
+                $("#client-action-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#client-action-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-danger');
+            }
+            else{
+                $("#client-action-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#client-action-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            }
+            $("#client-action-detailbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+            $("#client-action-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#client-action-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#client-action-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+        }
+    }
+
+    $('.client_actions_btn_control').on('click', function (){
+        $("#client-action-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    //Show Function
+    function showClientAction(){
+        $('#client_action_main_modal_addbtn').attr('hidden',true);
+        $('#client_action_main_modal_editbtn').attr('hidden',true);
+        $('#client_action_main_modal_delbtn').attr('hidden',true);
+        fill_client_action_main_modal_detail(4);
+    }
+    //Show Button
+    $('#client-action-detailbtn').click(function() {
+        showClientAction();
+    });
+
+    //Add Function
+    function addClientAction(){
+        $('#client_action_main_modal_addbtn').removeAttr('hidden');
+        $('#client_action_main_modal_editbtn').attr('hidden',true);
+        $('#client_action_main_modal_delbtn').attr('hidden',true);
+        fill_client_action_main_modal_detail(0);
+    }
+
+    //Add Button
+    $('#client-action-addbtn').click(function() {
+        addClientAction();
+    });
+
+    //Clone Function
+    function cloneClientAction(){
+        if (vClientActionsValue.rowdata.act_id != null) {
+            var RowID = vClientActionsValue.rowdata.act_id;
+            $.ajax({
+                url: /*[[ @{/actions/action_clone} ]]*/ "/actions/action_clone",
+                type: 'POST',
+                data: {"act_id": RowID},
+                success: function (result) {
+                    vClientActionsValue.rowdata.act_id = RowID;
+                    $(vClientActionsValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }
+
+    //Clone Button
+    $('#client-action-clonebtn').click(function() {
+        cloneClientAction();
+    });
+
+    //Edit Function
+    function editClientAction(){
+        $('#client_action_main_modal_addbtn').attr('hidden',true);
+        $('#client_action_main_modal_editbtn').removeAttr('hidden');
+        $('#client_action_main_modal_delbtn').attr('hidden',true);
+        fill_client_action_main_modal_detail(1);
+    }
+
+    //Edit Button
+    $('#client-action-editbtn').click(function() {
+        editClientAction();
+    });
+
+    //Delete Function
+    function delClientAction(){
+        $('#client_action_main_modal_addbtn').attr('hidden',true);
+        $('#client_action_main_modal_editbtn').attr('hidden',true);
+        $('#client_action_main_modal_delbtn').removeAttr('hidden');
+        fill_client_action_main_modal_detail(2);
+    }
+
+    //Delete Button
+    $('#client-action-delbtn').click(function() {
+        delClientAction();
+    });
+
+    //Reload Function
+    function reloadClientAction(){
+        $(vClientActionsValue.table).DataTable().ajax.reload(null, false);
+    }
+
+    //Reload button
+    $('#client-action-reloadbtn').click(function() {
+        reloadClientAction();
+    });
+
+    $("#client_actions_filter_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#client_actions_filter_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#client_actions_filter_check').on('click', function(){
+        if($(this).prop('checked')){
+            $('#client_actions_filter_start_date').removeAttr('disabled');
+            $('#client_actions_filter_end_date').removeAttr('disabled');
+            $("#client_actions_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if (window.screen.width < 1024 && window.screen.height < 768) {
+                $("#client_actions_filter_start_date").attr('readonly',true);
+                $("#client_actions_filter_end_date").attr('readonly',true);
+            }
+        }
+        else{
+            $('#client_actions_filter_start_date').attr('disabled',true);
+            $('#client_actions_filter_end_date').attr('disabled',true);
+            $("#client_actions_filter_show").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            if(vClientActionsValue.rowdata.client_actions_filter_id === 1){
+                vClientActionsValue.rowdata.client_actions_filter_id = 0;
+                $(vClientActionsValue.table).DataTable().ajax.reload();
+            }
+        }
+    });
+
+    $('#client_actions_filter_show').on('click', function() {
+        vClientActionsValue.rowdata.cnt_id = $('#cnt_id').val();
+
+        vClientActionsValue.rowdata.client_actions_filter_id = 1;
+        vClientActionsValue.rowdata.client_actions_filter_start_date = $('#client_actions_filter_start_date').val();
+        vClientActionsValue.rowdata.client_actions_filter_end_date = $('#client_actions_filter_end_date').val();
+
+        $(vClientActionsValue.table).DataTable().ajax.reload();
+    });
+
+    $(document).ready(function(){
+        vClientActionsValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+        vClientActionsValue.rowdata.cnt_name = /*[[${cnt_name}]]*/ null;
+        vClientActionsValue.rowdata.cnt_user_access = /*[[${cnt_user_access}]]*/ null;
+
+        vClientActionsValue.rowdata.act_id = /*[[${act_id}]]*/ null;
+
+        vClientActionsValue.rowdata.table_order_column = /*[[${client_actions_list_table_order_column}]]*/ null;
+        vClientActionsValue.rowdata.table_order_type = /*[[${client_actions_list_table_order_type}]]*/ null;
+        vClientActionsValue.rowdata.table_search = /*[[${client_actions_list_table_search}]]*/ null;
+        vClientActionsValue.rowdata.table_pagelen = /*[[${client_actions_list_table_pagelen}]]*/ null;
+        vClientActionsValue.rowdata.table_page = /*[[${client_actions_list_table_page}]]*/ null;
+
+        vClientActionsValue.rowdata.client_actions_filter_id = /*[[${client_actions_filter_id}]]*/ null;
+
+        var startDate =  /*[[${client_actions_filter_start_date}]]*/ null;
+        vClientActionsValue.rowdata.client_actions_filter_start_date = startDate;
+
+        var endDate = /*[[${client_actions_filter_end_date}]]*/ null;
+        vClientActionsValue.rowdata.client_actions_filter_end_date = endDate;
+
+        if(startDate != null){
+            $('#client_actions_filter_start_date').empty().val(startDate);
+            $('#client_actions_filter_start_date').data('daterangepicker').setStartDate(startDate);
+            $('#client_actions_filter_start_date').data('daterangepicker').setEndDate(startDate);
+        }
+
+        if(endDate != null){
+            $('#client_actions_filter_end_date').empty().val(endDate);
+            $('#client_actions_filter_end_date').data('daterangepicker').setStartDate(endDate);
+            $('#client_actions_filter_end_date').data('daterangepicker').setEndDate(endDate);
+        }
+
+        if(vClientActionsValue.rowdata.cnt_user_access === 1){
+            $('#client-actions-link-financebtn').prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        }else{
+            $('#client-actions-link-financebtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+
+        if(vClientActionsValue.rowdata.cnt_user_access === 1 && (RoleAllAdmin || currentUser === "k.boboshko")){
+            $('#client-actions-link-docbtn').prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        }else{
+            $('#client-actions-link-docbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+<!-- Start Filter -->
+        if(vClientActionsValue.rowdata.client_actions_filter_id === 1){
+            $('#client_actions_filter_check').prop('checked', true);
+            $("#client_actions_filter_start_date").removeAttr('disabled').val(vClientActionsValue.rowdata.client_actions_filter_start_date);
+            $("#client_actions_filter_end_date").removeAttr('disabled').val(vClientActionsValue.rowdata.client_actions_filter_end_date);
+            $("#client_actions_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if (window.screen.width < 1024 && window.screen.height < 768) {
+                $("#client_actions_filter_start_date").attr('readonly',true);
+                $("#client_actions_filter_end_date").attr('readonly',true);
+            }
+        }
+
+        recreateDataTable(vClientActionsValue);
+
+        $(vClientActionsValue.table).on('dblclick', '.action_edit', function (e) {
+            var selectedActionRow = this._DT_CellIndex.row;
+            var currentActionTable = $(vClientActionsValue.table).DataTable();
+            var ActionNameString =  /*[[${#authentication.name}]]*/ '';
+            vClientActionsValue.rowdata.act_id = currentActionTable.row(selectedActionRow).data().act_id;
+            vClientActionsValue.rowdata.act_status_id = currentActionTable.row(selectedActionRow).data().act_status_id;
+            vClientActionsValue.rowdata.user_name = currentActionTable.row(selectedActionRow).data().user_name;
+
+            if(ActionNameString === vClientActionsValue.rowdata.user_name && [0,1].indexOf(vClientActionsValue.rowdata.act_status_id) >= 0){
+                editClientAction();
+            }
+            else {
+                showClientAction();
+            }
+        });
+
+<!-- Client Detail -->
+        $('#clients_list_table_order_column').val(/*[[${clients_list_table_order_column}]]*/);
+        $('#clients_list_table_order_type').val(/*[[${clients_list_table_order_type}]]*/);
+        $('#clients_list_table_search').val(/*[[${clients_list_table_search}]]*/);
+        $('#clients_list_table_pagelen').val(/*[[${clients_list_table_pagelen}]]*/);
+        $('#clients_list_table_page').val(/*[[${clients_list_table_page}]]*/);
+
+        $("#client_actions_body input[name=cnt_id]").val(/*[[${cnt_id}]]*/);
+        $("#client_actions_body input[name=cnt_name]").val(/*[[${cnt_name}]]*/);
+        $("#client_actions_body input[name=cnt_user_access]").val(/*[[${cnt_user_access}]]*/);
+
+        $("#client-actions-back-form input[name=cnt_id]").val(/*[[${cnt_id}]]*/);
+
+        $("#client-action-cnt-detail input[name=clients_list_table_order_column]").val(/*[[${clients_list_table_order_column}]]*/);
+        $("#client-action-cnt-detail input[name=clients_list_table_order_type]").val(/*[[${clients_list_table_order_type}]]*/);
+        $("#client-action-cnt-detail input[name=clients_list_table_search]").val(/*[[${clients_list_table_search}]]*/);
+        $("#client-action-cnt-detail input[name=clients_list_table_pagelen]").val(/*[[${clients_list_table_pagelen}]]*/);
+        $("#client-action-cnt-detail input[name=clients_list_table_page]").val(/*[[${clients_list_table_page}]]*/);
+<!-- Client Show Detail -->
+        $("#clients_actions_back_detail_pretend span[id=cur_cnt_id]").text(/*[[${cnt_id}]]*/);
+        $("#clients_actions_back_detail input[name=cur_cnt_name]").val(/*[[${cnt_name}]]*/);
+
+        $('#request_cnt_id').val(/*[[${cnt_id}]]*/);
+        $('#request_cnt_name').val(/*[[${cnt_name}]]*/);
+        $('#request_cnt_user_access').val(/*[[${cnt_user_access}]]*/);
+
+        $('#tender_cnt_id').val(/*[[${cnt_id}]]*/);
+        $('#tender_cnt_name').val(/*[[${cnt_name}]]*/);
+        $('#tender_cnt_user_access').val(/*[[${cnt_user_access}]]*/);
+
+        $('#finance_cnt_id').val(/*[[${cnt_id}]]*/);
+        $('#finance_cnt_name').val(/*[[${cnt_name}]]*/);
+        $('#finance_cnt_user_access').val(/*[[${cnt_user_access}]]*/);
+
+        $('#docs_cnt_id').val(/*[[${cnt_id}]]*/);
+        $('#docs_cnt_name').val(/*[[${cnt_name}]]*/);
+        $('#docs_cnt_user_access').val(/*[[${cnt_user_access}]]*/);
+<!-- Disabled Add Button -->
+        if($('#cnt_user_access').val() === '1'){
+            $("#client-actionaddbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#client-actionaddbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        }else{
+            $("#client-actionaddbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#client-actionaddbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#clients_li').addClass('active').removeClass('collapsed');
+        $('#clients_a').attr('aria-expanded',true);
+        $('#clients').addClass('show');
+
+        $('#clients_list_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

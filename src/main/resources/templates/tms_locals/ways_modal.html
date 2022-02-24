@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_locals_ways_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="tms_locals_ways_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="tms_locals_ways_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{tms_locals.ways.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <div class="form-row mb-1">
+                        <input type="hidden" id="tms_locals_ways_modal_mode">
+
+                        <div class="col-12 col-md-3" id="tms_locals_ways_modal_clm_id_row">
+                            <label for="tms_locals_ways_modal_clm_id" class="form-label mb-0" th:text="'1. '+ #{tms_locals.main.clm_id}"></label>
+                            <input type="number" class="form-control" id="tms_locals_ways_modal_clm_id" name="tms_locals_ways_modal_clm_id" readonly>
+                        </div>
+                        <div class="col-12 col-md-3" id="tms_locals_ways_modal_clm_num_row">
+                            <label for="tms_locals_ways_modal_clm_num" class="form-label mb-0" th:text="'2. '+ #{tms_locals.main.clm_num}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="tms_locals_ways_modal_clm_num" name="tms_locals_ways_modal_clm_num" readonly>
+                        </div>
+                        <div class="col-12 col-md-6" id="tms_locals_ways_modal_cnt_name_row">
+                            <label for="tms_locals_ways_modal_cnt_name" class="form-label mb-0" th:text="'3. '+ #{tms_locals.main.cnt_name}"></label>
+                            <input type="text" class="form-control" id="tms_locals_ways_modal_cnt_name" name="tms_locals_ways_modal_cnt_name" readonly>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row mb-1" id="way_types_row">
+                        <div class="col-12 col-md-3" id="clmwl_id_row">
+                            <label for="clmwl_id" class="form-label mb-0" th:text="'4. '+ #{tms_locals.ways.clmwl_id}"></label>
+                            <input type="number" class="form-control" id="clmwl_id" name="clmwl_id" readonly>
+                        </div>
+                        
+                        <div class="col-12 col-md-4">
+                            <label for="clm_way_id" class="form-label mb-0" th:text="'5. '+#{tms_locals.ways.tabs.way_types}"></label>
+                            <select type="text" class="custom-select" id="clm_way_id" name="clm_way_id">
+                            </select>
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-4" id="clm_way_date_row">
+                            <label for="clm_way_date" class="form-label mb-0" th:text="'6. '+ #{tms_locals.ways.tabs.clm_way_date}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="clm_way_date" name="clm_way_date">
+                                <button type="button" id="clm_way_date_x" name="clm_way_date_x" data-parent="clm_way_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4" id="clm_way_fact_date_row">
+                            <label for="clm_way_fact_date" class="form-label mb-0" th:text="'7. '+ #{tms_locals.ways.tabs.clm_way_fact_date}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="clm_way_fact_date" name="clm_way_fact_date">
+                                <button type="button" id="clm_way_fact_date_x" name="clm_way_fact_date_x" data-parent="clm_way_fact_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div><!-- Row 3 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="clm_zip_code_row">
+                        <label for="clm_zip_code" class="form-label mb-0" th:text="'8. '+ #{tms_locals.ways.tabs.clm_zip_code}"></label>
+                        <input type="text" maxlength="12" class="form-control" id="clm_zip_code" name="clm_zip_code">
+                    </div>
+
+                        <div class="col-12 col-md-9" id="country_id_row">
+                        <label for="country_id" class="form-label mb-0" th:text="'9. '+ #{transports.country.country_sname}"></label>
+                        <div class="flex-fill">
+                            <select type="text" id="country_id" name="country_id" class="custom-select select2" aria-describedby="cnt_id_helpBlock">
+                            </select>
+                        </div>
+                    </div>
+                    </div> <!-- Row 4 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-4" id="clm_way_city_row">
+                            <label for="clm_way_city" class="form-label mb-0" th:text="'10. '+ #{tms_locals.ways.tabs.clm_way_city}"></label>
+                            <input type="text" maxlength="32" class="form-control" id="clm_way_city" name="clm_way_city">
+                        </div>
+
+                    <div class="col-12 col-md-5" id="clm_way_street_row">
+                        <label for="clm_way_street" class="form-label mb-0" th:text="'11. '+ #{tms_locals.ways.tabs.clm_way_street}"></label>
+                        <input type="text" maxlength="32" class="form-control" id="clm_way_street" name="clm_way_street">
+                    </div>
+
+                    <div class="col-12 col-md-3" id="clm_way_home_row">
+                        <label for="clm_way_home" class="form-label mb-0" th:text="'12. '+ #{tms_locals.ways.tabs.clm_way_home}"></label>
+                        <input type="text" maxlength="16" class="form-control" id="clm_way_home" name="clm_way_home">
+                    </div>
+                </div><!-- Row 5 -->
+
+                <div class="form-row mb-1">
+                    <div class="col-12 col-md-7" id="clm_way_company_row">
+                        <label for="clm_way_company" class="form-label mb-0" th:text="'13. '+ #{tms_locals.ways.tabs.clm_way_company}"></label>
+                        <input type="text" maxlength="64" class="form-control" id="clm_way_company" name="clm_way_company">
+                    </div>
+                </div><!-- Row 6 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="tms_locals_ways_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="tms_locals_ways_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="tms_locals_ways_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="tms_locals_ways_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    // Clear Fields
+    function clear_tms_locals_ways_modal_detail() {
+        $("#tms_locals_ways_modal_detail input[type=text]").val('');
+        $("#tms_locals_ways_modal_detail input[type=number]").val('');
+        $("#tms_locals_ways_modal_detail select").empty();
+        $("#tms_locals_ways_modal_detail textarea").val('');
+    }
+
+    // Block And Required Fields
+    function block_tms_locals_ways_modal_detail() {
+        $('#clm_way_id').attr('required', true);
+        $('#clm_way_date').attr('required', true);
+
+        if($('#tms_locals_ways_modal_mode').val() === "0"){
+            $('#tms_locals_ways_modal_clm_id_row').prop('hidden',true);
+            $('#clmwl_id_row').prop('hidden',true);
+
+            $('#country_id').removeAttr('disabled');
+            $('#clm_way_id').removeAttr('disabled');
+            $('#clm_way_city').removeAttr('readonly');
+            $('#clm_way_street').removeAttr('readonly');
+            $('#clm_way_home').removeAttr('readonly');
+            $('#clm_way_date').removeAttr('disabled');
+            $('#clm_way_date_x').attr('disabled', false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#clm_way_fact_date').removeAttr('disabled', true);
+            $('#clm_way_fact_date_x').attr('disabled', false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#clm_way_company').removeAttr('readonly');
+            $('#clm_zip_code').removeAttr('readonly');
+        }
+        else if($('#tms_locals_ways_modal_mode').val() === "1"){
+            $('#tms_locals_ways_modal_clm_id_row').prop('hidden',true);
+            $('#clmwl_id_row').prop('hidden',true);
+
+            $('#country_id').removeAttr('disabled');
+            $('#clm_way_id').removeAttr('disabled');
+            $('#clm_way_city').removeAttr('readonly');
+            $('#clm_way_street').removeAttr('readonly');
+            $('#clm_way_home').removeAttr('readonly');
+            $('#clm_way_date').removeAttr('disabled');
+            $('#clm_way_date_x').attr('disabled', false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#clm_way_fact_date').removeAttr('disabled', true);
+            $('#clm_way_fact_date_x').attr('disabled', false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#clm_way_company').removeAttr('readonly');
+            $('#clm_zip_code').removeAttr('readonly');
+
+            $('#clm_point_date_x').attr('disabled', false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#clm_point_name').removeAttr('readonly');
+        }
+        else{
+            $('#tms_locals_ways_modal_clm_id_row').prop('hidden',true);
+            $('#clmwl_id_row').prop('hidden',true);
+
+            $('#country_id').attr('disabled', true);
+            $('#clm_way_id').attr('disabled', true);
+            $('#clm_way_city').attr('readonly', true);
+            $('#clm_way_street').attr('readonly', true);
+            $('#clm_way_home').attr('readonly', true);
+            $('#clm_way_date').attr('disabled', true);
+            $('#clm_way_date_x').attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+            $('#clm_way_fact_date').attr('disabled', true);
+            $('#clm_way_fact_date_x').attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+            $('#clm_way_company').attr('readonly', true);
+            $('#clm_zip_code').attr('readonly', true);
+        }
+    }
+    //List Function
+    function countryChange(vMode, vCountryID) {
+        $('#country_id').empty();
+        $("select[name='country_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tms_locals/get_country'}]]*/ "/tms_locals/get_country",
+            type: "get",
+            data: {"mode": vMode,
+                "country_id": vCountryID
+            },
+            success: function (country_list) {
+                for (var i = 0; i < country_list.data.length; i++) {
+                    $("select[name='country_id']").find('option').end().append(
+                        "<option value='" + country_list.data[i].country_id + "'>" + country_list.data[i].country_nameua + "</option>"
+                    );
+                }
+                if(vCountryID > 0){
+                    $('#country_id').val(vCountryID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    function wayTypeChange(vMode, vWayTypeID) {
+        $('#clm_way_id').empty();
+        $("select[name='clm_way_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tms_locals/get_ways_type_list'}]]*/ "/tms_locals/get_ways_type_list",
+            type: "get",
+            data: {"mode": vMode,
+                   "clm_way_id": vWayTypeID
+            },
+            success: function (way_list) {
+                for (var i = 0; i < way_list.data.length; i++) {
+                    $("select[name='clm_way_id']").find('option').end().append(
+                        "<option value='" + way_list.data[i].clm_way_id + "'>" + way_list.data[i].clm_way_name + "</option>"
+                    );
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    var wayCountryName =   /*[[#{clients.list.country_placeholder}]]*/ "Select a country";
+
+    $('#country_id')
+        .wrap("<div class=\"position-relative\"></div>")
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: wayCountryName,
+            allowClear: true,
+            dropdownAutoWidth: true,
+            width: 'element'
+        });
+
+    // Load Function
+    function fill_tms_locals_ways_modal_detail(aMode){
+        $('#tms_locals_ways_modal_mode').val(aMode);
+        clear_tms_locals_ways_modal_detail();
+        block_tms_locals_ways_modal_detail();
+
+        $('#tms_locals_ways_modal_clm_id').val(vClaimsValue.rowdata.clm_id);
+        $('#tms_locals_ways_modal_clm_num').val(vClaimsValue.rowdata.clm_num);
+        $('#tms_locals_ways_modal_cnt_name').val(vClaimsValue.rowdata.cnt_name);
+
+        if(aMode !== 0) {
+            $.ajax({
+                url:/*[[@{'/tms_locals/get_ways_detail'}]]*/ "tms_locals/get_ways_detail",
+                type: "get",
+                data: {
+                    "mode": aMode,
+                    "clmwl_id": vFLDClaimWaysValue.rowdata.clmwl_id
+                },
+                success: function (ways_modal_detail) {
+                    $.when(
+                        countryChange(aMode, ways_modal_detail.data[0].country_id),
+                        wayTypeChange(aMode, ways_modal_detail.data[0].clm_way_id)
+                    ).then(function () {
+                        $('#clmwl_id').val(ways_modal_detail.data[0].clmwl_id);
+                        $('#country_id').val(ways_modal_detail.data[0].country_id);
+                        $('#clm_way_id').val(ways_modal_detail.data[0].clm_way_id);
+                        $('#clm_way_city').val(ways_modal_detail.data[0].clm_way_city);
+                        $('#clm_way_street').val(ways_modal_detail.data[0].clm_way_street);
+                        $('#clm_way_home').val(ways_modal_detail.data[0].clm_way_home);
+
+                        $('#clm_way_date').val(ways_modal_detail.data[0].clm_way_date);
+                        if(ways_modal_detail.data[0].clm_way_date !== null) {
+                            $('#clm_way_date').data('daterangepicker').setStartDate(ways_modal_detail.data[0].clm_way_date);
+                            $('#clm_way_date').data('daterangepicker').setEndDate(ways_modal_detail.data[0].clm_way_date);
+                            $('#clm_way_date').trigger("apply.daterangepicker");
+                        }
+
+                        $('#clm_way_fact_date').val(ways_modal_detail.data[0].clm_way_fact_date);
+                        if(ways_modal_detail.data[0].clm_way_fact_date !== null) {
+                            $('#clm_way_fact_date').data('daterangepicker').setStartDate(ways_modal_detail.data[0].clm_way_fact_date);
+                            $('#clm_way_fact_date').data('daterangepicker').setEndDate(ways_modal_detail.data[0].clm_way_fact_date);
+                            $('#clm_way_fact_date').trigger("apply.daterangepicker");
+                        }
+
+                        $('#clm_way_company').val(ways_modal_detail.data[0].clm_way_company);
+                        $('#clm_zip_code').val(ways_modal_detail.data[0].clm_zip_code);
+
+                        $('#tms_locals_ways_modal').modal('show');
+                    });
+                }
+            });
+        }
+        else {
+            $.when(
+                countryChange(aMode, 2),
+                wayTypeChange(aMode, 0)
+            ).then(function () {
+                $('#clm_way_date').val(currentDayRu);
+                $('#clm_way_date').data('daterangepicker').setStartDate(currentDayRu);
+                $('#clm_way_date').data('daterangepicker').setEndDate(currentDayRu);
+                $('#clm_way_date').trigger("apply.daterangepicker");
+
+                $('#tms_locals_ways_modal').modal('show');
+            });
+        }
+    }
+
+    //Currency Date
+    $("#clm_way_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#clm_way_fact_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+//Change Functions
+
+// Add button script
+    $('#tms_locals_ways_modal_addbtn').click(function(){
+        var MainRowID = vClaimsValue.rowdata.clm_id;
+        var RowID = vFLDClaimWaysValue.rowdata.clmwl_id;
+        $.ajax({
+            url: /*[[ @{/tms_locals/add_way} ]]*/ "/tms_locals/add_way",
+            type: 'POST',
+            data: {
+                "clm_id": MainRowID,
+                "clm_way_id":  $('#clm_way_id').val(),
+                "country_id":  $('#country_id').val(),
+                "clm_way_city":  $('#clm_way_city').val(),
+                "clm_way_street":  $('#clm_way_street').val(),
+                "clm_way_home":  $('#clm_way_home').val(),
+                "clm_way_date":  $('#clm_way_date').val(),
+                "clm_way_fact_date":  $('#clm_way_fact_date').val(),
+                "clm_way_company":  $('#clm_way_company').val(),
+                "clm_zip_code":  $('#clm_zip_code').val()
+            },
+            success: function (result) {
+                $('#tms_locals_ways_modal').modal('hide');
+                vFLDClaimWaysValue.rowdata.clm_id = MainRowID;
+                vFLDClaimWaysValue.rowdata.clmwl_id = RowID;
+                $(vFLDClaimWaysValue.table).DataTable().ajax.reload(null, false);
+                vFLDClaimErrorsValue.rowdata.clm_id = MainRowID;
+                $(vFLDClaimErrorsValue.table).DataTable().ajax.reload(null, false);
+                vClaimsValue.rowdata.clm_id = MainRowID;
+                $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    });
+
+// Edit button script
+    $('#tms_locals_ways_modal_editbtn').click(function(){
+        var MainRowID = vClaimsValue.rowdata.clm_id;
+        var RowID = vFLDClaimWaysValue.rowdata.clmwl_id;
+        $.ajax({
+            url: /*[[ @{/tms_locals/edit_way} ]]*/ "/tms_locals/edit_way",
+            type: 'POST',
+            data: {
+                "clmwl_id": RowID,
+                "clm_way_id":  $('#clm_way_id').val(),
+                "country_id":  $('#country_id').val(),
+                "clm_way_city":  $('#clm_way_city').val(),
+                "clm_way_street":  $('#clm_way_street').val(),
+                "clm_way_home":  $('#clm_way_home').val(),
+                "clm_way_date":  $('#clm_way_date').val(),
+                "clm_way_fact_date":  $('#clm_way_fact_date').val(),
+                "clm_way_company":  $('#clm_way_company').val(),
+                "clm_zip_code":  $('#clm_zip_code').val()
+            },
+            success: function (result) {
+                $('#tms_locals_ways_modal').modal('hide');
+                vFLDClaimWaysValue.rowdata.clm_id = MainRowID;
+                vFLDClaimWaysValue.rowdata.clmwl_id = RowID;
+                $(vFLDClaimWaysValue.table).DataTable().ajax.reload(null, false);
+                vFLDClaimErrorsValue.rowdata.clm_id = MainRowID;
+                $(vFLDClaimErrorsValue.table).DataTable().ajax.reload(null, false);
+                vClaimsValue.rowdata.clm_id = MainRowID;
+                $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    });
+
+// Del button script
+    $('#tms_locals_ways_modal_delbtn').click(function(){
+        var MainRowID = vClaimsValue.rowdata.clm_id;
+        var RowID = vFLDClaimWaysValue.rowdata.clmwl_id;
+        $.ajax({
+            url: /*[[ @{/tms_locals/del_way} ]]*/ "/tms_locals/del_way",
+            type: 'POST',
+            data: {
+                "clmwl_id": RowID
+            },
+            success: function (result) {
+                $('#tms_locals_ways_modal').modal('hide');
+                vFLDClaimWaysValue.rowdata.clm_id = MainRowID;
+                $(vFLDClaimWaysValue.table).DataTable().ajax.reload(null, false);
+                vFLDClaimErrorsValue.rowdata.clm_id = MainRowID;
+                $(vFLDClaimErrorsValue.table).DataTable().ajax.reload(null, false);
+                vClaimsValue.rowdata.clm_id = MainRowID;
+                $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

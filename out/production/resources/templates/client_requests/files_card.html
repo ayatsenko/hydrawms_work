@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="client_requests_files_body" th:remove="tag">
+        <form id="client-requests-files-detail" class="mb-2" th:action="@{/client_requests/files_detail}" method="post">
+            <input name="mode" value="0" hidden>
+              <div id="client-requests-files-detailbtn-large" class="d-none d-sm-block">
+                 <button type="submit" id="client-requests-files-detailbtn" class="btn btn-sm btn-dark client_requests_files_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="client-requests-files-addbtn" class="btn btn-sm btn-primary client_requests_files_btn_control" th:text="#{general.addbtn}" th:attr="mode=0">Add</button>
+                 <button type="submit" id="client-requests-files-downbtn" form="frmdownload" class="btn btn-sm btn-dark" th:text="#{general.download}" disabled>Edit</button>
+                 <button type="submit" id="client-requests-files-delbtn" class="btn btn-sm btn-dark client_requests_files_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="client-requests-files-detailbtn-small" class="d-block d-sm-none">
+                 <button type="submit" id="client-requests-files-detailbtn-sx" class="btn btn-sm btn-dark client_requests_files_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="client-requests-files-addbtn-sx" class="btn btn-sm btn-primary client_requests_files_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                 <button type="submit" id="client-requests-files-downbtn-sx" form="frmdownload" class="btn btn-sm btn-dark" disabled><i data-feather="download"></i></button>
+                 <button type="submit" id="client-requests-files-delbtn-sx" class="btn btn-sm btn-dark client_requests_files_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+
+        <form id="frmdownload" method="post" th:action="@{/client_requests/files_download}">
+            <input type="hidden" name="req_store_id">
+        </form>
+
+        <div><table id="table-client-requests-files" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vClientRequestFilesListValue;
+    vClientRequestFilesListValue = {
+        table : '#table-client-requests-files',
+        button_form: '#client-requests-files-detail',
+        ajax : {
+            "url": /*[[@{/client_requests/get_files_table}]]*/ "client_requests/get_files_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.req_id = vClientRequestFilesListValue.rowdata.req_id
+            }
+        },
+        key : "req_store_id",
+        switchControl : client_requests_files_switchControl,
+        rowdata:{
+            cnt_id: null,
+            cnt_name: null,
+            cnt_user_access: null,
+
+            req_id: null,
+            req_name: null,
+            req_store_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 'lfrtip',
+        columnDefs:[
+            {"targets": [0], "visible": false}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{client_requests.files.req_store_id}]]*/ "req_store_id", "data": "req_store_id", "width": "1%"},
+            /*1*/{"title": /*[[#{client_requests.files.req_store_date}]]*/ "req_store_date", "data": "req_store_date", "width": "7%"},
+            /*2*/{"title": /*[[#{client_requests.files.user_name}]]*/ "user_name", "data": "user_name", "width": "7%", "className":"text-center"},
+            /*3*/{"title": /*[[#{client_requests.files.req_store_filename}]]*/ "req_store_filename", "data": "req_store_filename", "width": "85%"}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function client_requests_files_switchControl(){
+        if(vClientRequestFilesListValue.rowdata.req_store_id != null) {
+            var userAccessID = $('#cnt_user_access').val();
+
+            if ([-2,-1,5].indexOf(vClientRequestListValue.rowdata.req_status_id) >= 0 && userAccessID === "1") {
+                $("#client-requests-files-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#client-requests-files-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#client-requests-files-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#client-requests-files-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            else{
+                $("#client-requests-files-detailbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#client-requests-files-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#client-requests-files-detailbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#client-requests-files-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            $("#client-requests-files-downbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#client-requests-files-downbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+            $("#client-requests-files-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#client-requests-files-downbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#client-requests-files-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#client-requests-files-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#client-requests-files-downbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#client-requests-files-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');            
+        }
+    }
+
+    $('.client_requests_files_btn_control').on('click', function (){
+        $("#client-requests-files-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#client-requests-files-detail').submit(function(){
+        vClientRequestFilesListValue.rowdata.client_requests_files_table_order_column = $(vClientRequestFilesListValue.table).DataTable().order()[0][0];
+        vClientRequestFilesListValue.rowdata.client_requests_files_table_order_type = $(vClientRequestFilesListValue.table).DataTable().order()[0][1];
+        vClientRequestFilesListValue.rowdata.client_requests_files_table_search = $(vClientRequestFilesListValue.table).DataTable().search();
+        vClientRequestFilesListValue.rowdata.client_requests_files_table_pagelen = $(vClientRequestFilesListValue.table).DataTable().page.len();
+        vClientRequestFilesListValue.rowdata.client_requests_files_table_page = $(vClientRequestFilesListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vClientRequestFilesListValue.rowdata.cnt_id = $('#cnt_id').val();
+        vClientRequestFilesListValue.rowdata.cnt_name = $('#cnt_name').val();
+        vClientRequestFilesListValue.rowdata.cnt_user_access = $('#cnt_user_access').val();
+
+        Object.keys(vClientRequestFilesListValue.rowdata).forEach(function (index) {
+            $("#client-requests-files-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#client-requests-files-detail input[name=\"" + index + "\"]").val(vClientRequestFilesListValue.rowdata[index]);
+        });
+
+        $("#client-requests-files input[name=clients_list_table_order_column]").val($('#clients_list_table_order_column').val());
+        $("#client-requests-files input[name=clients_list_table_order_type]").val($('#clients_list_table_order_type').val());
+        $("#client-requests-files input[name=clients_list_table_search]").val($('#clients_list_table_search').val());
+        $("#client-requests-files input[name=clients_list_table_pagelen]").val($('#clients_list_table_pagelen').val());
+        $("#client-requests-files input[name=clients_list_table_page]").val($('#clients_list_table_page').val());
+    });
+
+    $('#frmdownload').submit(function(){
+        $("#frmdownload input[name=req_store_id]").val(vClientRequestFilesListValue.rowdata.req_store_id);
+    });
+
+    $(document).ready(function(){
+        vClientRequestFilesListValue.rowdata.req_id = /*[[${req_id}]]*/ null;
+        vClientRequestFilesListValue.rowdata.req_name = /*[[${req_name}]]*/ null;
+        vClientRequestFilesListValue.rowdata.req_store_id = /*[[${req_id}]]*/ req_store_id;
+
+        vClientRequestFilesListValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+        vClientRequestFilesListValue.rowdata.cnt_name = /*[[${cnt_name}]]*/ null;
+        vClientRequestFilesListValue.rowdata.cnt_user_access = /*[[${cnt_user_access}]]*/ null;
+
+        vClientRequestFilesListValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vClientRequestFilesListValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vClientRequestFilesListValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vClientRequestFilesListValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vClientRequestFilesListValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vClientRequestFilesListValue);
+    });
+</script>
+
+</body>
+</html>

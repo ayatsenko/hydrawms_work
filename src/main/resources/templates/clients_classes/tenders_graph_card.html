@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_classes_tenders_graph_body" th:remove="tag">
+       <div id="clients_classes_tenders_graph_div" class="chart">
+             <canvas id="clients_classes_tenders_graph"></canvas>
+       </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    function RemoteTendersChart () {
+        $('#clients_classes_tenders_graph').remove();
+    }
+
+    function CreateTendersChart (aID, aCNTID, aStartDate, aEndDate, aFilterCheck, aFilterUserID, aFiltersStatusID, aFiltersClassID) {
+                $('#clients_classes_tenders_graph').remove();
+                $('#clients_classes_tenders_graph_div').append('<canvas id="clients_classes_tenders_graph"></canvas>');
+
+                var labelPoints = [];
+                var dataPoints1 = [];
+
+                $.ajax({
+                        url: /*[[ @{/clients_classes/get_classes_graph} ]]*/ "/clients_classes/get_classes_graph",
+                        type: 'GET',
+                        data: {
+                                "id": aID,
+                                "start_date": aStartDate,
+                                "end_date": aEndDate,
+                                "cnt_id": aCNTID,
+                                "filter_check": aFilterCheck,
+                                "filters_user_id": aFilterUserID,
+                                "filters_status_id": aFiltersStatusID,
+                                "filters_class_id": aFiltersClassID
+                        },
+                        success: function (data) {
+                                $.each(data, function(key, value){
+                                        labelPoints.push(value.labels);
+                                        dataPoints1.push(value.data1);
+                                });
+
+                                new Chart($("#clients_classes_tenders_graph"), {
+                                        type: "line",
+                                        data: {
+                                                labels: labelPoints,
+                                                datasets: [{
+                                                        label:  'value',
+                                                        steppedLine: false,
+                                                        data: dataPoints1,
+                                                        borderColor: "#0a6ebd",
+                                                        backgroundColor: "#55b0f6",
+                                                        fill: true
+                                                }
+                                                ]
+                                        },
+                                        options: {
+                                                maintainAspectRatio: false,
+                                                legend: {
+                                                        display: false
+                                                },
+                                                tooltips: {
+                                                        intersect: false
+                                                },
+                                                hover: {
+                                                        intersect: true
+                                                },
+                                                plugins: {
+                                                        filler: {
+                                                                propagate: false
+                                                        }
+                                                },
+                                                scales: {
+                                                        xAxes: [{
+                                                                reverse: true,
+                                                                gridLines: {
+                                                                        color: "rgba(0,0,0,0.05)"
+                                                                }
+                                                        }],
+                                                        yAxes: [{
+                                                                display: true,
+                                                                borderDash: [5, 5],
+                                                                gridLines: {
+                                                                        color: "rgba(0,0,0,0)",
+                                                                        fontColor: "#fff"
+                                                                }
+                                                        }]
+                                                }
+                                        }
+                                });
+                        }
+                });
+        }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="aero_world_costs_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="aero_world_costs_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="aero_world_costs_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{aero_world.costs.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <div class="form-row mb-1">
+                        <input type="hidden" id="aero_world_costs_modal_mode">
+
+                        <div class="col-12 col-md-3" id="aero_world_costs_modal_clm_id_row">
+                            <label for="aero_world_costs_modal_clm_id" class="form-label mb-0" th:text="'1. '+ #{aero_world.main.clm_id}"></label>
+                            <input type="number" class="form-control" id="aero_world_costs_modal_clm_id" name="aero_world_costs_modal_clm_id" readonly>
+                        </div>
+                        <div class="col-12 col-md-3" id="aero_world_costs_modal_clm_num_row">
+                            <label for="aero_world_costs_modal_clm_num" class="form-label mb-0" th:text="'2. '+ #{aero_world.main.clm_num}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="aero_world_costs_modal_clm_num" name="aero_world_costs_modal_clm_num" readonly>
+                        </div>
+                        <div class="col-12 col-md-6" id="aero_world_costs_modal_cnt_name_row">
+                            <label for="aero_world_costs_modal_cnt_name" class="form-label mb-0" th:text="'3. '+ #{aero_world.main.cnt_name}"></label>
+                            <input type="text" class="form-control" id="aero_world_costs_modal_cnt_name" name="aero_world_costs_modal_cnt_name" readonly>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="aero_world_costs_modal_clmcgl_id_row">
+                            <label for="aero_world_costs_modal_clmcgl_id" class="form-label mb-0" th:text="'4. '+ #{aero_world.costs_groups.clmcgl_id}"></label>
+                            <input type="number" class="form-control" id="aero_world_costs_modal_clmcgl_id" name="aero_world_costs_modal_clmcgl_id" readonly>
+                        </div>
+
+                        <div class="col-12 col-md-6" id="aero_world_costs_modal_clmcg_type_name_row">
+                            <label for="aero_world_costs_modal_clmcg_type_name" class="form-label mb-0" th:text="'5. '+ #{aero_world.costs_groups.clmcg_type_name}"></label>
+                            <input type="text" maxlength="32" class="form-control" id="aero_world_costs_modal_clmcg_type_name" name="aero_world_costs_modal_clmcg_type_name" readonly>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="clmcl_id_row">
+                            <label for="clmcl_id" class="form-label mb-0" th:text="'6. '+ #{aero_world.costs.clmcl_id}"></label>
+                            <input type="number" class="form-control" id="clmcl_id" name="clmcl_id" readonly>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label for="clmc_type_id" class="form-label mb-0" th:text="'7. '+#{aero_world.costs.clmc_type_sname}">Service: </label>
+                            <select type="text" id="clmc_type_id" name="clmc_type_id" class="custom-select">
+                            </select>
+                        </div>
+                    </div> <!-- Row 3 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="clmcl_sum_row">
+                            <label for="clmcl_sum" class="form-label mb-0" th:text="'8. '+ #{aero_world.costs.clmcl_sum}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="clmcl_sum" name="clmcl_sum">
+                        </div>
+
+                        <div class="col-12 col-md-4" id="aero_world_costs_modal_currency_id_row">
+                            <label for="aero_world_costs_modal_currency_id" class="form-label mb-0" th:text="'9. '+#{aero_world.costs.currenсy_id}">Currency: </label>
+                            <select id="aero_world_costs_modal_currency_id" name="aero_world_costs_modal_currency_id" class="custom-select">
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-3" id="aero_world_costs_modal_currency_date_row">
+                            <label for="aero_world_costs_modal_currency_date" class="form-label mb-0" th:text="'10. '+ #{aero_world.costs.currency_date}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="aero_world_costs_modal_currency_date" name="aero_world_costs_modal_currency_date">
+                                <button type="button" id="aero_world_costs_modal_currency_date_x" name="aero_world_costs_modal_currency_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>                        
+                    </div> <!-- Row 4 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 mb-1">
+                            <label for="clmcl_note" th:text="'11. '+#{aero_world.costs.clmcl_note}"></label>
+                            <textarea class="form-control" rows="5" maxlength="512" style="resize:none;" id="clmcl_note" name="clmcl_note">
+                            </textarea>
+                        </div>
+                    </div> <!-- Row 6 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="aero_world_costs_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="aero_world_costs_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="aero_world_costs_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="aero_world_costs_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+// Clear Fields
+    function clear_aero_world_costs_modal_detail() {
+        $("#aero_world_costs_modal_detail input[type=text]").val('');
+        $("#aero_world_costs_modal_detail input[type=number]").val('');
+        $("#aero_world_costs_modal_detail select").empty();
+        $("#aero_world_costs_modal_detail textarea").val('');
+    }
+// Block And Required Fields
+    function block_aero_world_costs_modal_detail() {
+        $('#clmc_type_id').attr('required', true);
+        $('#clmcl_sum').attr('required', true);
+        $('#aero_world_costs_modal_currency_id').attr('required', true);
+
+        if($('#aero_world_costs_modal_mode').val() === "0"){
+            $('#clmcl_id_row').prop('hidden',true);
+            $('#clmc_type_id').removeAttr('disabled');
+            $('#clmcl_sum').val(0).removeAttr('readonly');
+            $('#aero_world_costs_modal_currency_id').removeAttr('disabled');
+            $('#aero_world_costs_modal_currency_date').removeAttr('disabled');
+            $('#aero_world_costs_modal_currency_date_x').attr('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#clmcl_note').removeAttr('readonly',true);
+        }
+        else if($('#aero_world_costs_modal_mode').val() === "1"){
+            $('#clmcl_id_row').removeAttr('hidden');
+            $('#clmc_type_id').removeAttr('disabled');
+            $('#clmcl_sum').removeAttr('readonly');
+            $('#aero_world_costs_modal_currency_id').removeAttr('disabled');
+            $('#aero_world_costs_modal_currency_date').removeAttr('disabled');
+            $('#aero_world_costs_modal_currency_date_x').attr('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#clmcl_note').removeAttr('readonly',true);
+        }
+        else{
+            $('#clmcl_id_row').removeAttr('hidden');
+            $('#clmc_type_id').attr('disabled',true);
+            $('#clmcl_sum').attr('readonly',true);
+            $('#aero_world_costs_modal_currency_id').attr('disabled',true);
+            $('#aero_world_costs_modal_currency_date').attr('disabled',true);
+            $('#aero_world_costs_modal_currency_date_x').attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+            $('#clmcl_note').attr('readonly',true);
+        }
+    }
+//Costs Types List
+function sumCostsTypeChange(vMode,vCLMCTypeID,vCLMTransID) {
+    $('#clmc_type_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/aero_world/get_costs_types_list'}]]*/ "/aero_world/get_costs_types_list",
+        type: "get",
+        data: {
+            "mode": vMode,
+            "clmcg_type_id": vFAClaimCostsGroupsValue.rowdata.clmcg_type_id,
+            "clmc_type_id": vCLMCTypeID,
+            "trans_check_id": vCLMTransID
+        },
+        success: function (costs_types_list) {
+            for (var i = 0; i < costs_types_list.data.length; i++) {
+                if(i === 0) {
+                    $("select[name='clmc_type_id']").find('option').end().append("<option value=''></option>");
+                }
+                $("select[name='clmc_type_id']").find('option').end().append(
+                    "<option value='" + costs_types_list.data[i].clmc_type_id
+                    + "'>" + costs_types_list.data[i].clmc_type_name + "</option>");
+            }
+            if(vCLMCTypeID > 0){
+                $('#clmc_type_id').val(vCLMCTypeID);
+            }
+        }
+    }));
+}
+// Sum Currency List
+function sumCostsCurrencyChange(vMode,vCurrencyID) {
+    $('#aero_world_costs_modal_currency_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/aero_world/get_currency_list'}]]*/ "/aero_world/get_currency_list",
+        type: "get",
+        data: {
+            "mode": vMode
+        },
+        success: function (currency_list) {
+            for (var i = 0; i < currency_list.data.length; i++) {
+                if(i === 0) {
+                    $("select[name='aero_world_costs_modal_currency_id']").find('option').end().append("<option value=''></option>");
+                }
+                $("select[name='aero_world_costs_modal_currency_id']").find('option').end().append(
+                    "<option value='" + currency_list.data[i].currency_id
+                    + "'>" + currency_list.data[i].currency_name + "</option>");
+            }
+         if(vCurrencyID > 0){
+             $('#aero_world_costs_modal_currency_id').val(vCurrencyID);
+         }
+        }
+    }));
+}
+//Currency Date
+$("#aero_world_costs_modal_currency_date").daterangepicker({
+    "singleDatePicker": true,
+    "locale": {
+        "format": "DD.MM.YYYY",
+        "separator": " - ",
+        "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+        "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+        "daysOfWeek": [
+            /*[[#{weekdays.07_short}]]*/ "Su",
+            /*[[#{weekdays.01_short}]]*/ "Mo",
+            /*[[#{weekdays.02_short}]]*/ "Tu",
+            /*[[#{weekdays.03_short}]]*/ "We",
+            /*[[#{weekdays.04_short}]]*/ "Th",
+            /*[[#{weekdays.05_short}]]*/ "Fr",
+            /*[[#{weekdays.06_short}]]*/ "Sa"
+        ],
+        "monthNames": [
+            /*[[#{month.01}]]*/ "January",
+            /*[[#{month.02}]]*/ "February",
+            /*[[#{month.03}]]*/ "March",
+            /*[[#{month.04}]]*/ "April",
+            /*[[#{month.05}]]*/ "May",
+            /*[[#{month.06}]]*/ "June",
+            /*[[#{month.07}]]*/ "July",
+            /*[[#{month.08}]]*/ "August",
+            /*[[#{month.09}]]*/ "September",
+            /*[[#{month.10}]]*/ "October",
+            /*[[#{month.11}]]*/ "November",
+            /*[[#{month.12}]]*/ "December"
+        ],
+        "firstDay": 1
+    }
+});
+
+$('#aero_world_costs_modal_currency_date_x').on('click', function() {
+    $('#aero_world_costs_modal_currency_date').empty().val('');
+});
+
+// Load Function
+    function fill_aero_world_costs_modal_detail(aMode){
+        var vTransGroupID = vFAClaimCostsGroupsValue.rowdata.trans_costs_group;
+        clear_aero_world_costs_modal_detail();
+        $('#aero_world_costs_modal_mode').val(aMode);
+        block_aero_world_costs_modal_detail();
+
+        $('#aero_world_costs_modal_clm_id').val(vFAClaimsValue.rowdata.clm_id);
+        $('#aero_world_costs_modal_clm_num').val(vFAClaimsValue.rowdata.clm_num);
+        $('#aero_world_costs_modal_cnt_name').val(vFAClaimsValue.rowdata.cnt_name);
+
+        $('#aero_world_costs_modal_clmcgl_id').val(vFAClaimCostsGroupsValue.rowdata.clmcgl_id);
+        $('#aero_world_costs_modal_clmcg_type_name').val(vFAClaimCostsGroupsValue.rowdata.clmcg_type_name);
+
+        if(aMode !== 0) {
+            $.ajax({
+                url:/*[[@{'/aero_world/get_costs_detail'}]]*/ "aero_world/get_costs_detail",
+                type: "get",
+                data: {
+                    "mode": aMode,
+                    "clmcl_id": vFAClaimCostsValue .rowdata.clmcl_id
+                },
+                success: function (aero_world_costs_modal_detail_result) {
+                    $.when(
+                        sumCostsTypeChange(aMode,aero_world_costs_modal_detail_result.data[0].clmc_type_id, vTransGroupID),
+                        sumCostsCurrencyChange(aMode,aero_world_costs_modal_detail_result.data[0].clmc_type_id)
+                    ).then(function () {
+                        $('#clmcl_id').val(aero_world_costs_modal_detail_result.data[0].clmcl_id);
+                        $('#clmc_type_id').val(aero_world_costs_modal_detail_result.data[0].clmc_type_id);
+                        $('#clmcl_sum').val(aero_world_costs_modal_detail_result.data[0].clmcl_sum);
+                        $('#aero_world_costs_modal_currency_id').val(aero_world_costs_modal_detail_result.data[0].currency_id);
+                        $('#aero_world_costs_modal_currency_date').val(aero_world_costs_modal_detail_result.data[0].currency_date);
+                        $('#clmcl_note').val(aero_world_costs_modal_detail_result.data[0].clmcl_note);
+
+                        $('#aero_world_costs_modal').modal('show');
+                    });
+                }
+            });
+        }
+        else {
+            $.when(
+                sumCostsTypeChange(aMode,0,vTransGroupID),
+                sumCostsCurrencyChange(aMode,0)
+            ).then(function () {
+                $('#aero_world_costs_modal').modal('show');
+            });
+        }
+    }
+// Add button script
+$('#aero_world_costs_modal_addbtn').on('click', function(){
+    var MainRowID = vFAClaimsValue.rowdata.clm_id;
+    var GroupRowID = vFAClaimCostsGroupsValue.rowdata.clmcgl_id;
+    var RowID = vFAClaimCostsValue .rowdata.clmcl_id;
+
+    $.ajax({
+        url: /*[[ @{/aero_world/add_costs} ]]*/ "/clients/add_costs",
+        type: 'POST',
+        data: {
+            "clm_id": MainRowID,
+            "clmcgl_id": GroupRowID,
+            "clmc_type_id":  $('#clmc_type_id').val(),
+            "clmcl_sum":  $('#clmcl_sum').val(),
+            "currency_id":  $('#aero_world_costs_modal_currency_id').val(),
+            "currency_date":  $('#aero_world_costs_modal_currency_date').val(),
+            "clmcl_note":  $('#clmcl_note').val()
+        },
+        success: function (result) {
+            $('#aero_world_costs_modal').modal('hide');
+            vFAClaimCostsValue .rowdata.clm_id = MainRowID;
+            vFAClaimCostsValue .rowdata.clmcgl_id = GroupRowID;
+            vFAClaimCostsValue .rowdata.clmcl_id = RowID;
+            $(vFAClaimCostsValue .table).DataTable().ajax.reload(null, false);
+            vFAClaimsValue.rowdata.clm_id = MainRowID;
+            $(vFAClaimsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// Edit button script
+$('#aero_world_costs_modal_editbtn').on('click', function(){
+    var MainRowID = vFAClaimsValue.rowdata.clm_id;
+    var GroupRowID = vFAClaimCostsGroupsValue.rowdata.clmcgl_id;
+    var RowID = vFAClaimCostsValue .rowdata.clmcl_id;
+
+    $.ajax({
+        url: /*[[ @{/aero_world/edit_costs} ]]*/ "/clients/edit_costs",
+        type: 'POST',
+        data: {
+            "clmcl_id": RowID,
+            "clmcgl_id": GroupRowID,
+            "clmc_type_id":  $('#clmc_type_id').val(),
+            "clmcl_sum":  $('#clmcl_sum').val(),
+            "currency_id":  $('#aero_world_costs_modal_currency_id').val(),
+            "currency_date":  $('#aero_world_costs_modal_currency_date').val(),
+            "clmcl_note":  $('#clmcl_note').val()
+        },
+        success: function (result) {
+            $('#aero_world_costs_modal').modal('hide');
+            vFAClaimCostsValue .rowdata.clm_id = MainRowID;
+            vFAClaimCostsValue .rowdata.clmcgl_id = GroupRowID;
+            vFAClaimCostsValue .rowdata.clmcl_id = RowID;
+            $(vFAClaimCostsValue .table).DataTable().ajax.reload(null, false);
+            vFAClaimsValue.rowdata.clm_id = MainRowID;
+            $(vFAClaimsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// Del button script
+$('#aero_world_costs_modal_delbtn').on('click', function(){
+    var MainRowID = vFAClaimsValue.rowdata.clm_id;
+    var GroupRowID = vFAClaimCostsGroupsValue.rowdata.clmcgl_id;
+    var RowID = vFAClaimCostsValue .rowdata.clmcl_id;
+
+    $.ajax({
+        url: /*[[ @{/aero_world/del_costs} ]]*/ "/clients/del_costs",
+        type: 'POST',
+        data: {
+            "clmcl_id": RowID
+        },
+        success: function (result) {
+            $('#aero_world_costs_modal').modal('hide');
+            vFAClaimCostsValue .rowdata.clm_id = MainRowID;
+            vFAClaimCostsValue .rowdata.clmcgl_id = GroupRowID;
+            vFAClaimCostsValue .rowdata.clmcl_id = RowID;
+            $(vFAClaimCostsValue .table).DataTable().ajax.reload(null, false);
+            vFAClaimsValue.rowdata.clm_id = MainRowID;
+            $(vFAClaimsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+</script>
+
+</body>
+</html>

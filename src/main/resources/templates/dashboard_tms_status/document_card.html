@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="dashboard_tms_status_document_body" th:remove="tag">
+    <form id="dashboard-tms-status-document-detail" class="mb-2" th:action="@{/full_world/main_detail}" method="post" hidden>
+    </form>
+        
+    <div><table id="table-dashboard-tms-status-document" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var clm_id_width, clm_date_width, clm_way_date_width, clm_num_width, cnt_name_width, trans_name_width, car_number_width, ser_sname_width, user_name_width, clm_sum_currency_name_width, clm_sum_width, clm_rate_currency_name_width, clm_rate_width,
+        clm_costs_width, clm_profit_width, clm_aim_type_sname_width, clm_status_id_width, clm_status_sname_width, clm_status_colour_width, clm_check_width, clm_uncheck_width;
+
+    var clm_id_class, clm_date_class, clm_way_date_class, clm_num_class, cnt_name_class, trans_name_class, car_number_class, ser_sname_class, user_name_class, clm_sum_currency_name_class, clm_sum_class, clm_rate_currency_name_class, clm_rate_class,
+        clm_costs_class, clm_profit_class, clm_aim_type_sname_class, clm_status_id_class, clm_status_sname_class, clm_status_colour_class, clm_check_class, clm_uncheck_class;
+
+    var smallScreenSize = window.screen.width > 1024 && window.screen.height <= 768;
+    var mobileScreenSize = window.screen.width < 1024 && window.screen.height < 768;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+        clm_id_width = "10%";
+        clm_id_class = "";
+        clm_date_width = "";
+        clm_date_class = "none";
+        clm_way_date_width = "";
+        clm_way_date_class = "none";
+        clm_num_width = "";
+        clm_num_class = "none";
+        cnt_name_width = "90%";
+        cnt_name_class = "small_size small_head_size small_footer_size";
+        trans_name_width = "";
+        trans_name_class = "none";
+        car_number_width = "";
+        car_number_class = "none";
+        ser_sname_width = "";
+        ser_sname_class = "none";
+        user_name_width = "";
+        user_name_class = "none";
+        clm_sum_currency_name_width = "";
+        clm_sum_currency_name_class = "none";
+        clm_sum_width = "";
+        clm_sum_class = "none";
+        clm_rate_currency_name_width = "";
+        clm_rate_currency_name_class = "none";
+        clm_rate_width = "";
+        clm_rate_class = "none";
+        clm_costs_width = "";
+        clm_costs_class = "none";
+        clm_profit_width = "";
+        clm_profit_class = "none";
+        clm_aim_type_sname_width = "";
+        clm_aim_type_sname_class = "none";
+        clm_status_id_width = "";
+        clm_status_id_class = "none";
+        clm_status_sname_width = "";
+        clm_status_sname_class = "none";
+        clm_status_colour_width = "";
+        clm_status_colour_class = "none";
+        clm_check_width = "";
+        clm_check_class = "none";
+        clm_uncheck_width = "";
+        clm_uncheck_class = "none";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        clm_id_width = "3%";
+        clm_id_class = "small_size small_head_size small_footer_size";
+        clm_date_width = "";
+        clm_date_class = "none";
+        clm_way_date_width = "5%";
+        clm_way_date_class = "small_size small_head_size small_footer_size text-center";
+        clm_num_width = "6%";
+        clm_num_class = "small_size small_head_size small_footer_size";
+        cnt_name_width = "25%";
+        cnt_name_class = "small_size small_head_size small_footer_size";
+        trans_name_width = "22%";
+        trans_name_class = "small_size small_head_size small_footer_size";
+        car_number_width = "5%";
+        car_number_class = "small_size small_head_size small_footer_size text-center";
+        ser_sname_width = "";
+        ser_sname_class = "none";
+        user_name_width = "9%";
+        user_name_class = "small_size small_head_size small_footer_size text-center";
+        clm_sum_currency_name_width = "3%";
+        clm_sum_currency_name_class = "small_size small_head_size small_footer_size text-center";
+        clm_sum_width = "6%";
+        clm_sum_class = "small_size small_head_size small_footer_size";
+        clm_rate_currency_name_width = "3%";
+        clm_rate_currency_name_class = "small_size small_head_size small_footer_size text-center";
+        clm_rate_width = "6%";
+        clm_rate_class = "small_size small_head_size small_footer_size";
+        clm_costs_width = "";
+        clm_costs_class = "none";
+        clm_profit_width = "";
+        clm_profit_class = "none";
+        clm_aim_type_sname_width = "";
+        clm_aim_type_sname_class = "none";
+        clm_status_id_width = "";
+        clm_status_id_class = "none";
+        clm_status_sname_width = "7%";
+        clm_status_sname_class = "small_size small_head_size small_footer_size text-center";
+        clm_status_colour_width = "";
+        clm_status_colour_class = "none";
+        clm_check_width = "";
+        clm_check_class = "none";
+        clm_uncheck_width = "";
+        clm_uncheck_class = "none";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        clm_id_width = "3%";
+        clm_id_class = "";
+        clm_date_width = "";
+        clm_date_class = "none";
+        clm_way_date_width = "5%";
+        clm_way_date_class = "text-center";
+        clm_num_width = "6%";
+        clm_num_class = "";
+        cnt_name_width = "25%";
+        cnt_name_class = "";
+        trans_name_width = "22%";
+        trans_name_class = "";
+        car_number_width = "5%";
+        car_number_class = "text-center";
+        ser_sname_width = "";
+        ser_sname_class = "none";
+        user_name_width = "9%";
+        user_name_class = "text-center";
+        clm_sum_currency_name_width = "3%";
+        clm_sum_currency_name_class = "text-center";
+        clm_sum_width = "6%";
+        clm_sum_class = "";
+        clm_rate_currency_name_width = "3%";
+        clm_rate_currency_name_class = "text-center";
+        clm_rate_width = "6%";
+        clm_rate_class = "";
+        clm_costs_width = "";
+        clm_costs_class = "none";
+        clm_profit_width = "";
+        clm_profit_class = "none";
+        clm_aim_type_sname_width = "";
+        clm_aim_type_sname_class = "none";
+        clm_status_id_width = "";
+        clm_status_id_class = "none";
+        clm_status_sname_width = "7%";
+        clm_status_sname_class = "text-center";
+        clm_status_colour_width = "";
+        clm_status_colour_class = "none";
+        clm_check_width = "";
+        clm_check_class = "none";
+        clm_uncheck_width = "";
+        clm_uncheck_class = "none";
+    }
+
+    var vDashBoardTMSServiceDocumentValue;
+    vDashBoardTMSServiceDocumentValue = {
+        table : '#table-dashboard-tms-status-document',
+        button_form: "#dashboard-tms-status-document-detail",
+        ajax : {
+            "url": /*[[@{/dashboard_tms_status/get_tab_table}]]*/ "dashboard_tms_status/get_tab_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.start_date = vDashBoardTMSServiceDocumentValue.rowdata.start_date;
+                d.end_date = vDashBoardTMSServiceDocumentValue.rowdata.end_date;
+                d.req_ser_id = vDashBoardTMSServiceDocumentValue.rowdata.req_ser_id;
+                d.req_user_id = vDashBoardTMSServiceDocumentValue.rowdata.req_user_id;
+                d.req_clm_status_id = 5;
+            }
+        },
+        key : "clm_id",
+        switchControl : dashboard_tms_status_document_switchControl,
+        rowdata:{
+            clm_id: null,
+            clm_num: null,
+            cnt_name: null,
+            clm_check: null,
+            clm_uncheck: null,
+            clm_status_id: null,
+            req_ser_id: null,
+            req_user_id: null,
+            req_clm_status_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+
+        dom: vDomParam,
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["clm_status_colour"]);
+        },
+        columnDefs:[
+            {"targets": [1], type: 'de_date'},
+            {"targets": [3], type: 'de_date'},
+            {"targets": [10],  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [12],  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{full_world.main.clm_id}]]*/ "clm_id", "data": "clm_id", "width": clm_id_width, "className": clm_id_class},
+                /*1*/{"title": /*[[#{full_world.main.clm_date}]]*/ "clm_date", "data": "clm_date", "width": clm_date_width, "className": clm_date_class},
+                /*2*/{"title": /*[[#{full_world.main.clm_num}]]*/ "clm_num", "data": "clm_num", "width": clm_num_width, "className": clm_num_class},
+                /*3*/{"title": /*[[#{full_world.main.clm_way_date}]]*/ "clm_way_date", "data": "clm_way_date", "width": clm_way_date_width, "className": clm_way_date_class},
+                /*4*/{"title": /*[[#{full_world.main.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": cnt_name_width, "className": cnt_name_class},
+                /*5*/{"title": /*[[#{full_world.main.trans_name}]]*/ "trans_name", "data": "trans_name", "width": trans_name_width, "className": trans_name_class},
+                /*6*/{"title": /*[[#{full_world.main.car_number}]]*/ "car_number", "data": "car_number", "width": car_number_width, "className": car_number_class},
+                /*7*/{"title": /*[[#{full_world.main.ser_sname}]]*/ "ser_sname", "data": "ser_sname", "width": ser_sname_width, "className": ser_sname_class},
+                /*8*/{"title": /*[[#{full_world.main.user_name}]]*/ "user_name", "data": "user_name", "width": user_name_width, "className": user_name_class},
+                /*9*/{"title": /*[[#{full_world.main.clm_sum_currency_name}]]*/ "clm_sum_currency_name", "data": "clm_sum_currency_name", "width": clm_sum_currency_name_width, "className": clm_sum_currency_name_class},
+                /*10*/{"title": /*[[#{full_world.main.clm_sum}]]*/ "clm_sum", "data": "clm_sum", "width": clm_sum_width, "className": clm_sum_class},
+                /*11*/{"title": /*[[#{full_world.main.clm_rate_currency_name}]]*/ "clm_rate_currency_name", "data": "clm_rate_currency_name", "width": clm_rate_currency_name_width, "className": clm_rate_currency_name_class},
+                /*12*/{"title": /*[[#{full_world.main.clm_rate}]]*/ "clm_rate", "data": "clm_rate", "width": clm_rate_width, "className": clm_rate_class},
+                /*13*/{"title": /*[[#{full_world.main.clm_costs}]]*/ "clm_costs", "data": "clm_costs", "width": clm_costs_width, "className": clm_costs_class},
+                /*14*/{"title": /*[[#{full_world.main.clm_profit}]]*/ "clm_profit", "data": "clm_profit", "width": clm_profit_width, "className": clm_profit_class},
+                /*15*/{"title": /*[[#{full_world.main.clm_aim_type_sname}]]*/ "clm_aim_type_sname", "data": "clm_aim_type_sname", "width": clm_aim_type_sname_width, "className": clm_aim_type_sname_class},
+                /*16*/{"title": /*[[#{full_world.main.clm_status_id}]]*/ "clm_status_id", "data": "clm_status_id", "width": clm_status_id_width, "className": clm_status_id_class},
+                /*17*/{"title": /*[[#{full_world.main.clm_status_sname}]]*/ "clm_status_sname", "data": "clm_status_sname", "width": clm_status_sname_width, "className": clm_status_sname_class},
+                /*18*/{"title": /*[[#{full_world.main.clm_status_colour}]]*/ "clm_status_colour", "data": "clm_status_colour", "width": clm_status_colour_width, "className": clm_status_colour_class},
+                /*19*/{"title": /*[[#{full_world.main.clm_check}]]*/ "clm_check", "data": "clm_check", "width": clm_check_width, "className": clm_check_class},
+                /*20*/{"title": /*[[#{full_world.main.clm_uncheck}]]*/ "clm_uncheck", "data": "clm_uncheck", "width": clm_uncheck_width, "className": clm_uncheck_class}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function dashboard_tms_status_document_switchControl(){
+    }
+
+    $('.dashboard_tms_status_document_btn_control').on('click', function (){
+        $("#dashboard-tms-status-document-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#dashboard-tms-status-document-detail').submit(function() {
+        vDashBoardTMSServiceDocumentValue.rowdata.dashboard_tms_status_document_table_order_column = $(vDashBoardTMSServiceDocumentValue.table).DataTable().order()[0][0];
+        vDashBoardTMSServiceDocumentValue.rowdata.dashboard_tms_status_document_table_order_type = $(vDashBoardTMSServiceDocumentValue.table).DataTable().order()[0][1];
+        vDashBoardTMSServiceDocumentValue.rowdata.dashboard_tms_status_document_table_search = $(vDashBoardTMSServiceDocumentValue.table).DataTable().search();
+        vDashBoardTMSServiceDocumentValue.rowdata.dashboard_tms_status_document_table_pagelen = $(vDashBoardTMSServiceDocumentValue.table).DataTable().page.len();
+        vDashBoardTMSServiceDocumentValue.rowdata.dashboard_tms_status_document_table_page = $(vDashBoardTMSServiceDocumentValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vDashBoardTMSServiceDocumentValue.rowdata).forEach(function (index) {
+            $("#dashboard-tms-status-document-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#dashboard-tms-status-document-detail input[name=\"" + index + "\"]").val(vDashBoardTMSServiceDocumentValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vDashBoardTMSServiceDocumentValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+
+        vDashBoardTMSServiceDocumentValue.rowdata.table_order_column = /*[[${dashboard_tms_status_document_table_order_column}]]*/ null;
+        vDashBoardTMSServiceDocumentValue.rowdata.table_order_type = /*[[${dashboard_tms_status_document_table_order_type}]]*/ null;
+        vDashBoardTMSServiceDocumentValue.rowdata.table_search = /*[[${dashboard_tms_status_document_table_search}]]*/ null;
+        vDashBoardTMSServiceDocumentValue.rowdata.table_pagelen = /*[[${dashboard_tms_status_document_table_pagelen}]]*/ null;
+        vDashBoardTMSServiceDocumentValue.rowdata.table_page = /*[[${dashboard_tms_status_document_table_page}]]*/ null;
+        
+        recreateDataTable(vDashBoardTMSServiceDocumentValue);
+    });
+</script>
+
+</body>
+</html>

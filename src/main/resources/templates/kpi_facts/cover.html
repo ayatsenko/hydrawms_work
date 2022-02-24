@@ -1,0 +1,325 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{kpi_facts.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2">
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#kpi_facts_filter_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#kpi_facts_filter_div" data-toggle="collapse" th:text="#{kpi_facts.filter.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="kpi_facts_filter_div">
+                <div>
+                    <div>
+                        <span th:replace="kpi_facts/filter_card :: kpi_facts_filter_body"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Header -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="kpi_facts_main_card" hidden>
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#kpi_facts_main_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title"  href="#kpi_facts_main_div" data-toggle="collapse" th:text="#{kpi_facts.main.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="kpi_facts_main_div">
+                <div>
+                    <span th:replace="kpi_facts/ops_report_modal :: kpi_facts_ops_report_modal_body"></span>
+                    <span th:replace="kpi_facts/cs_report_modal :: kpi_facts_cs_report_modal_body"></span>
+                    <span th:replace="kpi_facts/main_card :: kpi_facts_main_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Departaments -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="kpi_facts_branch_card" hidden>
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#kpi_facts_branch_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title"  href="#kpi_facts_branch_div" data-toggle="collapse" th:text="#{kpi_facts.branch.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="kpi_facts_branch_div">
+                <div>
+                    <span th:replace="kpi_facts/branch_card :: kpi_facts_branch_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Branches -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="kpi_facts_users_card" hidden>
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#kpi_facts_users_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#kpi_facts_users_div" data-toggle="collapse" th:text="#{kpi_facts.users.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="kpi_facts_users_div">
+                <div>
+                    <span th:replace="kpi_facts/users_card :: kpi_facts_users_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Users -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div id="kpi_facts_tabs_div" hidden>
+            <div class="tab" id="kpi_facts_month_tabs">
+                <input type="hidden" id="kpi_facts_month">
+                <ul class="nav nav-pills" role="tablist" id="kpi_facts_month_tabs_ul">
+                    <li class="nav-item"><a class="nav-link" href="#tab-1" data-toggle="pill" role="tab" data-current-month="1" th:text="#{month.01}">January</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab-1" data-toggle="pill" role="tab" data-current-month="2" th:text="#{month.02}">February</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab-1" data-toggle="pill" role="tab" data-current-month="3" th:text="#{month.03}">March</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab-1" data-toggle="pill" role="tab" data-current-month="4" th:text="#{month.04}">April</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab-1" data-toggle="pill" role="tab" data-current-month="5" th:text="#{month.05}">May</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab-1" data-toggle="pill" role="tab" data-current-month="6" th:text="#{month.06}">June</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab-1" data-toggle="pill" role="tab" data-current-month="7" th:text="#{month.07}">July</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab-1" data-toggle="pill" role="tab" data-current-month="8" th:text="#{month.08}">August</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab-1" data-toggle="pill" role="tab" data-current-month="9" th:text="#{month.09}">September</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab-1" data-toggle="pill" role="tab" data-current-month="10" th:text="#{month.10}">October</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab-1" data-toggle="pill" role="tab" data-current-month="11" th:text="#{month.11}">November</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab-1" data-toggle="pill" role="tab" data-current-month="12" th:text="#{month.12}">December</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab-1" data-toggle="pill" role="tab" data-current-month="13" th:text="#{report_service_balance.tabs.all}">All</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-1" role="tabpanel">
+                        <div class="row mb-2">
+                            <div class="col-12 col-md-6 pr-md-2">
+                                <span th:replace="kpi_facts/calculation_edit/malus_modal :: kpi_facts_malus_modal_body"></span>
+                                <span th:replace="kpi_facts/calculation_edit/plan_modal :: kpi_facts_plan_modal_body"></span>
+                                <span th:replace="kpi_facts/calculation_card :: kpi_facts_calculation_body"></span>
+                            </div>
+                            <div class="col-12 col-md-6 pl-md-0" id="kpi_facts_cs_clients_finance" hidden>
+                                <span th:replace="kpi_facts/cs/cs_clients_finance_card :: kpi_facts_cs_clients_finance_body"></span>
+                            </div>
+                            <div class="col-12 col-md-6 pl-md-0" id="kpi_facts_cs_crm" hidden>
+                                <span th:replace="kpi_facts/cs_crm/cs_crm_card :: kpi_facts_cs_crm_body"></span>
+                            </div>
+                            <div class="col-12 col-md-6 pl-md-0" id="kpi_facts_cs_clients_profit" hidden>
+                                <span th:replace="kpi_facts/cs/cs_clients_profit_card :: kpi_facts_cs_clients_profit_body"></span>
+                            </div>
+                            <div class="col-12 col-md-6 pl-md-0" id="kpi_facts_cs_clients_unpaid" hidden>
+                                <span th:replace="kpi_facts/cs/cs_clients_unpaid_card :: kpi_facts_cs_clients_unpaid_body"></span>
+                            </div>
+                            <div class="col-12 col-md-6 pl-md-0" id="kpi_facts_cs_clients_debtors_result" hidden>
+                                <span th:replace="kpi_facts/cs/cs_clients_debtors_result_card :: kpi_facts_cs_clients_debtors_result_body"></span>
+                            </div>
+                            <div class="col-12 col-md-6 pl-md-0" id="kpi_facts_ops_clients_finance_new" hidden>
+                                <span th:replace="kpi_facts/ops/ops_clients_finance_new_card :: kpi_facts_ops_clients_finance_new_body"></span>
+                            </div>
+                            <div class="col-12 col-md-6 pl-md-0" id="kpi_facts_ops_clients_finance_old" hidden>
+                                <span th:replace="kpi_facts/ops/ops_clients_finance_old_card :: kpi_facts_ops_clients_finance_old_body"></span>
+                            </div>
+                            <div class="col-12 col-md-6 pl-md-0" id="kpi_facts_ops_clients_finance_all" hidden>
+                                <span th:replace="kpi_facts/ops/ops_clients_finance_all_card :: kpi_facts_ops_clients_finance_all_body"></span>
+                            </div>
+                            <div class="col-12 col-md-6 pl-md-0" id="kpi_facts_ops_clients_finance_count" hidden>
+                                <span th:replace="kpi_facts/ops/ops_clients_finance_count_card :: kpi_facts_ops_clients_finance_count_body"></span>
+                            </div>
+                            <div class="col-12 col-md-6 pl-md-0" id="kpi_facts_div_crm_general" hidden>
+                                <span th:replace="kpi_facts/div_crm/div_crm_general_card :: kpi_facts_div_crm_general_body"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-12" id="kpi_facts_cs_meets" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_meets.caption}"></h6>
+                                <span th:replace="kpi_facts/cs/cs_meets_modal :: kpi_facts_cs_meets_modal_body"></span>
+                                <span th:replace="kpi_facts/cs/cs_meets_card :: kpi_facts_cs_meets"></span>
+                            </div>
+                            <div class="col-12" id="kpi_facts_cs_calls" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_calls.caption}"></h6>
+                                <span th:replace="kpi_facts/cs/cs_calls_modal :: kpi_facts_cs_calls_modal_body"></span>
+                                <span th:replace="kpi_facts/cs/cs_calls_card :: kpi_facts_cs_calls"></span>
+                            </div>
+                            <div class="col-12 mb-2" id="kpi_facts_cs_requests" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_requests.caption}"></h6>
+                                <span th:replace="kpi_facts/cs/cs_requests_modal :: kpi_facts_cs_requests_modal_body"></span>
+                                <span th:replace="kpi_facts/cs/cs_requests_card :: kpi_facts_cs_requests"></span>
+                            </div>
+                            <div class="col-12" id="kpi_facts_cs_tenders" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_tenders.caption}"></h6>
+                                <span th:replace="kpi_facts/cs/cs_tenders_modal :: kpi_facts_cs_tenders_modal_body"></span>
+                                <span th:replace="kpi_facts/cs/cs_tenders_card :: kpi_facts_cs_tenders"></span>
+                            </div>
+                            <div class="col-12 col-md-5 pr-md-2" id="kpi_facts_cs_clients_finance_contragent" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_clients_finance_detail.caption}"></h6>
+                                <span th:replace="kpi_facts/cs/cs_clients_finance_contragent_card :: kpi_facts_cs_clients_finance_contragent_body"></span>
+                            </div>
+                            <div class="col-12 col-md-7 pl-md-0" id="kpi_facts_cs_clients_finance_detail" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_clients_finance_detail.caption}"></h6>
+                                <span th:replace="kpi_facts/cs/cs_clients_finance_detail_modal :: kpi_facts_cs_clients_finance_detail_modal_body"></span>
+                                <span th:replace="kpi_facts/cs/cs_clients_finance_detail_card :: kpi_facts_cs_clients_finance_detail_body"></span>
+                            </div>
+                            <div class="col-12" id="kpi_facts_cs_crm_clients" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_crm_clients.caption}"></h6>
+                                <span th:replace="kpi_facts/cs_crm/cs_crm_clients_card :: kpi_facts_cs_crm_clients_body"></span>
+                            </div>
+                            <div class="col-12" id="kpi_facts_cs_crm_todo" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_crm_todo.caption}"></h6>
+                                <span th:replace="kpi_facts/cs_crm/cs_crm_todo_card :: kpi_facts_cs_crm_todo_body"></span>
+                            </div>
+                            <div class="col-12" id="kpi_facts_cs_crm_requests" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_crm_requests.caption}"></h6>
+                                <span th:replace="kpi_facts/cs_crm/cs_crm_requests_card :: kpi_facts_cs_crm_requests_body"></span>
+                            </div>
+                            <div class="col-12" id="kpi_facts_cs_crm_tenders" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_crm_tenders.caption}"></h6>
+                                <span th:replace="kpi_facts/cs_crm/cs_crm_tenders_card :: kpi_facts_cs_crm_tenders_body"></span>
+                            </div>
+                            <div class="col-12" id="kpi_facts_cs_crm_toplist" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_crm_toplist.caption}"></h6>
+                                <span th:replace="kpi_facts/cs_crm/cs_crm_toplist_card :: kpi_facts_cs_crm_toplist_body"></span>
+                            </div>
+                            <div class="col-12 col-md-6" id="kpi_facts_cs_crm_general" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_crm_general.caption}"></h6>
+                                <span th:replace="kpi_facts/cs_crm_general/cs_crm_general_card :: kpi_facts_cs_crm_general_body"></span>
+                            </div>
+                            <div class="col-12" id="kpi_facts_cs_clients_profit_detail" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_clients_profit_detail.caption}"></h6>
+                                <span th:replace="kpi_facts/cs/cs_clients_profit_detail_modal :: kpi_facts_cs_clients_profit_detail_modal_body"></span>
+                                <span th:replace="kpi_facts/cs/cs_clients_profit_detail_card :: kpi_facts_cs_clients_profit_detail_body"></span>
+                            </div>
+                            <div class="col-12" id="kpi_facts_cs_clients_unpaid_detail" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_clients_unpaid_detail.caption}"></h6>
+                                <span th:replace="kpi_facts/cs/cs_clients_unpaid_detail_card :: kpi_facts_cs_clients_unpaid_detail_body"></span>
+                            </div>
+                            <div class="col-12 col-md-6 pr-md-2" id="kpi_facts_cs_clients_debtors" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_clients_debtors_detail.caption}"></h6>
+                                <span th:replace="kpi_facts/cs/cs_clients_debtors_detail_modal :: kpi_facts_cs_clients_debtors_detail_modal_body"></span>
+                                <span th:replace="kpi_facts/cs/cs_clients_debtors_card :: kpi_facts_cs_clients_debtors_body"></span>
+                            </div>
+                            <div class="col-12 col-md-6 pl-md-0" id="kpi_facts_cs_clients_debtors_detail" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_clients_debtors_detail.caption}"></h6>
+                                <span th:replace="kpi_facts/cs/cs_clients_debtors_detail_card :: kpi_facts_cs_clients_debtors_detail_body"></span>
+                            </div>
+                            <div class="col-12" id="cs_crm_general_notfill_detail" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_clients_debtors_detail.caption}"></h6>
+                                <span th:replace="kpi_facts/cs_crm_general/cs_crm_general_notfill_card :: cs_crm_general_notfill_body"></span>
+                            </div>
+                            <div class="col-12" id="cs_crm_general_notfill_pass_detail" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_clients_debtors_detail.caption}"></h6>
+                                <span th:replace="kpi_facts/cs_crm_general/cs_crm_general_notfill_pass_card :: cs_crm_general_notfill_pass_body"></span>
+                            </div>
+                            <div class="col-12" id="cs_crm_general_outtime_detail" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.cs_clients_debtors_detail.caption}"></h6>
+                                <span th:replace="kpi_facts/cs_crm_general/cs_crm_general_outtime_card :: kpi_facts_cs_crm_general_outtime_body"></span>
+                            </div>
+                            <div class="col-12" id="kpi_facts_ops_clients_finance_new_detail" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.ops_clients_finance_new_detail.caption}"></h6>
+                                <span th:replace="kpi_facts/ops/ops_clients_finance_new_detail_card :: kpi_facts_ops_clients_finance_new_detail_body"></span>
+                            </div>
+                            <div class="col-12" id="kpi_facts_ops_clients_finance_old_detail" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.ops_clients_finance_old_detail.caption}"></h6>
+                                <span th:replace="kpi_facts/ops/ops_clients_finance_old_detail_card :: kpi_facts_ops_clients_finance_old_detail_body"></span>
+                            </div>
+                            <div class="col-12" id="kpi_facts_ops_clients_finance_all_detail" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.ops_clients_finance_all_detail.caption}"></h6>
+                                <span th:replace="kpi_facts/ops/ops_clients_finance_all_detail_card :: kpi_facts_ops_clients_finance_all_detail_body"></span>
+                            </div>
+                            <div class="col-12" id="kpi_facts_ops_clients_finance_count_detail" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.ops_clients_finance_count_detail.caption}"></h6>
+                                <span th:replace="kpi_facts/ops/ops_clients_finance_count_detail_card :: kpi_facts_ops_clients_finance_count_detail_body"></span>
+                            </div>
+                            <div class="col-12" id="kpi_facts_div_crm_requests" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.ops_clients_finance_all_detail.caption}"></h6>
+                                <span th:replace="kpi_facts/div_crm/div_crm_requests_card :: kpi_facts_div_crm_requests_body"></span>
+                            </div>
+                            <div class="col-12" id="kpi_facts_div_crm_tenders" hidden>
+                                <h6 class="card-title text-white bg-primary text-center" th:text="#{kpi_facts.ops_clients_finance_all_detail.caption}"></h6>
+                                <span th:replace="kpi_facts/div_crm/div_crm_tenders_card :: kpi_facts_div_crm_tenders_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Tabs -->
+</div>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="kpi_facts/cs/cs_meets_modal :: cardscript"></script>
+<script th:replace="kpi_facts/cs/cs_meets_card :: cardscript"></script>
+
+<script th:replace="kpi_facts/cs/cs_calls_modal :: cardscript"></script>
+<script th:replace="kpi_facts/cs/cs_calls_card :: cardscript"></script>
+
+<script th:replace="kpi_facts/cs/cs_requests_modal :: cardscript"></script>
+<script th:replace="kpi_facts/cs/cs_requests_card :: cardscript"></script>
+
+<script th:replace="kpi_facts/cs/cs_tenders_modal :: cardscript"></script>
+<script th:replace="kpi_facts/cs/cs_tenders_card :: cardscript"></script>
+
+<script th:replace="kpi_facts/cs/cs_clients_finance_detail_modal :: cardscript"></script>
+<script th:replace="kpi_facts/cs/cs_clients_finance_detail_card :: cardscript"></script>
+<script th:replace="kpi_facts/cs/cs_clients_finance_contragent_card :: cardscript"></script>
+<script th:replace="kpi_facts/cs/cs_clients_finance_card :: cardscript"></script>
+
+<script th:replace="kpi_facts/cs/cs_clients_profit_detail_modal :: cardscript"></script>
+<script th:replace="kpi_facts/cs/cs_clients_profit_detail_card :: cardscript"></script>
+<script th:replace="kpi_facts/cs/cs_clients_profit_card :: cardscript"></script>
+
+<script th:replace="kpi_facts/cs/cs_clients_unpaid_detail_card :: cardscript"></script>
+<script th:replace="kpi_facts/cs/cs_clients_unpaid_card :: cardscript"></script>
+
+<script th:replace="kpi_facts/cs/cs_clients_debtors_detail_modal :: cardscript"></script>
+<script th:replace="kpi_facts/cs/cs_clients_debtors_detail_card :: cardscript"></script>
+<script th:replace="kpi_facts/cs/cs_clients_debtors_card :: cardscript"></script>
+<script th:replace="kpi_facts/cs/cs_clients_debtors_result_card :: cardscript"></script>
+
+<script th:replace="kpi_facts/cs_crm/cs_crm_clients_card :: cardscript"></script>
+<script th:replace="kpi_facts/cs_crm/cs_crm_todo_card :: cardscript"></script>
+<script th:replace="kpi_facts/cs_crm/cs_crm_requests_card :: cardscript"></script>
+<script th:replace="kpi_facts/cs_crm/cs_crm_tenders_card :: cardscript"></script>
+<script th:replace="kpi_facts/cs_crm/cs_crm_toplist_card :: cardscript"></script>
+
+<script th:replace="kpi_facts/cs_crm_general/cs_crm_general_notfill_card :: cardscript"></script>
+<script th:replace="kpi_facts/cs_crm_general/cs_crm_general_notfill_pass_card :: cardscript"></script>
+<script th:replace="kpi_facts/cs_crm_general/cs_crm_general_outtime_card :: cardscript"></script>
+<script th:replace="kpi_facts/cs_crm_general/cs_crm_general_card :: cardscript"></script>
+
+<script th:replace="kpi_facts/cs_crm/cs_crm_card :: cardscript"></script>
+
+<script th:replace="kpi_facts/ops/ops_clients_finance_new_detail_card :: cardscript"></script>
+<script th:replace="kpi_facts/ops/ops_clients_finance_new_card :: cardscript"></script>
+
+<script th:replace="kpi_facts/ops/ops_clients_finance_old_detail_card :: cardscript"></script>
+<script th:replace="kpi_facts/ops/ops_clients_finance_old_card :: cardscript"></script>
+
+<script th:replace="kpi_facts/ops/ops_clients_finance_all_detail_card :: cardscript"></script>
+<script th:replace="kpi_facts/ops/ops_clients_finance_all_card :: cardscript"></script>
+
+<script th:replace="kpi_facts/ops/ops_clients_finance_count_detail_card :: cardscript"></script>
+<script th:replace="kpi_facts/ops/ops_clients_finance_count_card :: cardscript"></script>
+
+<script th:replace="kpi_facts/div_crm/div_crm_tenders_card :: cardscript"></script>
+<script th:replace="kpi_facts/div_crm/div_crm_requests_card :: cardscript"></script>
+<script th:replace="kpi_facts/div_crm/div_crm_general_card :: cardscript"></script>
+
+<script th:replace="kpi_facts/calculation_edit/malus_modal :: cardscript"></script>
+<script th:replace="kpi_facts/calculation_edit/plan_modal :: cardscript"></script>
+<script th:replace="kpi_facts/calculation_card :: cardscript"></script>
+
+<script th:replace="kpi_facts/branch_card :: cardscript"></script>
+<script th:replace="kpi_facts/users_card :: cardscript"></script>
+
+<script th:replace="kpi_facts/ops_report_modal :: cardscript"></script>
+<script th:replace="kpi_facts/cs_report_modal :: cardscript"></script>
+<script th:replace="kpi_facts/main_card :: cardscript"></script>
+<script th:replace="kpi_facts/filter_card :: cardscript"></script>
+</body>
+</html>

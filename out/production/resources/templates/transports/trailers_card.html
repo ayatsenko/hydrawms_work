@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="transports_trailers_body" th:remove="tag">
+        <form id="transports-trailers-detail" class="mb-2" th:action="@{/transports/trailers_detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="transports-trailers-detailbtn-large" class="d-none d-sm-block">
+                 <button type="submit" id="transports-trailers-detailbtn" class="btn btn-sm btn-dark transports_trailers_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="transports-trailers-addbtn" class="btn btn-sm btn-dark transports_trailers_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="submit" id="transports-trailers-editbtn" class="btn btn-sm btn-dark transports_trailers_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="transports-trailers-delbtn" class="btn btn-sm btn-dark transports_trailers_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="transports-trailers-detailbtn-small" class="d-block d-sm-none">
+                 <button type="submit" id="transports-trailers-detailbtn-sx" class="btn btn-sm btn-dark transports_trailers_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="transports-trailers-addbtn-sx" class="btn btn-sm btn-dark transports_trailers_btn_control" th:attr="mode=0" disabled><i data-feather="plus"></i></button>
+                 <button type="submit" id="transports-trailers-editbtn-sx" class="btn btn-sm btn-dark transports_trailers_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="transports-trailers-delbtn-sx" class="btn btn-sm btn-dark transports_trailers_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+
+        <div><table id="table-transports-trailers" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vTransportTrailersListValue;
+    vTransportTrailersListValue = {
+        table : '#table-transports-trailers',
+        button_form: "#transports-trailers-detail",
+        ajax : {
+            "url": /*[[@{/transports/get_trailers_table}]]*/ "transports/get_trailers_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.cnt_id = vTransportTrailersListValue.rowdata.cnt_id
+            }
+        },
+        key : "cntt_id",
+        switchControl : transports_trailers_switchControl,
+        rowdata:{
+            cntt_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 'ftp',
+        columnDefs:[
+            {"targets": [0], "visible": false}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{transports.trailers.cntt_id}]]*/ "cntt_id", "data": "cntt_id", "width": "1%"},
+            /*1*/{"title": /*[[#{transports.trailers.cntt_type_sname}]]*/ "cntt_type_sname", "data": "cntt_type_sname", "width": "10%"},
+            /*2*/{"title": /*[[#{transports.trailers.cntt_fullname}]]*/ "cntt_fullname", "data": "cntt_fullname", "width": "89%"}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function transports_trailers_switchControl(){
+        if(vTransportTrailersListValue.rowdata.cntt_id != null) {
+            if(vTransportsListValue.rowdata.cnt_user_access === 1) {
+                $("#transports-trailers-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#transports-trailers-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#transports-trailers-editbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#transports-trailers-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }else{
+                $("#transports-trailers-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#transports-trailers-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#transports-trailers-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#transports-trailers-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            $("#transports-trailers-detailbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#transports-trailers-detailbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+            $("#transports-trailers-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-trailers-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-trailers-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#transports-trailers-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-trailers-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#transports-trailers-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.transports_trailers_btn_control').on('click', function (){
+        $("#transports-trailers-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#transports-trailers-detail').submit(function(){
+        vTransportTrailersListValue.rowdata.transports_trailers_table_order_column = $(vTransportTrailersListValue.table).DataTable().order()[0][0];
+        vTransportTrailersListValue.rowdata.transports_trailers_table_order_type = $(vTransportTrailersListValue.table).DataTable().order()[0][1];
+        vTransportTrailersListValue.rowdata.transports_trailers_table_search = $(vTransportTrailersListValue.table).DataTable().search();
+        vTransportTrailersListValue.rowdata.transports_trailers_table_pagelen = $(vTransportTrailersListValue.table).DataTable().page.len();
+        vTransportTrailersListValue.rowdata.transports_trailers_table_page = $(vTransportTrailersListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vTransportTrailersListValue.rowdata.cnt_id = vTransportsListValue.rowdata.cnt_id;
+        vTransportTrailersListValue.rowdata.cnt_name = vTransportsListValue.rowdata.cnt_name;
+
+        vTransportTrailersListValue.rowdata.transports_list_table_order_column = $(vTransportsListValue.table).DataTable().order()[0][0];
+        vTransportTrailersListValue.rowdata.transports_list_table_order_type = $(vTransportsListValue.table).DataTable().order()[0][1];
+        vTransportTrailersListValue.rowdata.transports_list_table_search = $(vTransportsListValue.table).DataTable().search();
+        vTransportTrailersListValue.rowdata.transports_list_table_pagelen = $(vTransportsListValue.table).DataTable().page.len();
+        vTransportTrailersListValue.rowdata.transports_list_table_page = $(vTransportsListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+        vTransportTrailersListValue.rowdata.req_country_id = $('#transport_country_list').val();
+
+        vTransportTrailersListValue.rowdata.req_address = $('#req_address').val();
+        if($('#req_tir_check').is(':checked')) {
+            vTransportTrailersListValue.rowdata.req_tir_check = 1;
+        }
+
+        if($('#req_adr_check').is(':checked')) {
+            vTransportTrailersListValue.rowdata.req_adr_check = 1;
+        }
+
+        if($('#req_ekmt_check').is(':checked')) {
+            vTransportTrailersListValue.rowdata.req_ekmt_check = 1;
+        }
+
+        vTransportTrailersListValue.rowdata.clients_transports_collapse = $('#transports_auto_div').hasClass('show');
+        vTransportTrailersListValue.rowdata.clients_trailers_collapse = $('#transports_trailers_div').hasClass('show');
+        vTransportTrailersListValue.rowdata.clients_drivers_collapse = $('#transports_drivers_div').hasClass('show');
+        vTransportTrailersListValue.rowdata.clients_contacts_collapse = $('#transports_contacts_div').hasClass('show');
+        vTransportTrailersListValue.rowdata.clients_country_collapse = $('#transports_country_div').hasClass('show');
+        vTransportTrailersListValue.rowdata.clients_services_collapse = $('#transports_services_div').hasClass('show');
+        vTransportTrailersListValue.rowdata.clients_address_collapse = $('#transports_address_div').hasClass('show');
+        vTransportTrailersListValue.rowdata.clients_documents_collapse = $('#transports_documents_div').hasClass('show');
+        vTransportTrailersListValue.rowdata.clients_files_collapse = $('#transports_files_div').hasClass('show');        
+        
+        Object.keys(vTransportTrailersListValue.rowdata).forEach(function (index) {
+            $("#transports-trailers-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#transports-trailers-detail input[name=\"" + index + "\"]").val(vTransportTrailersListValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vTransportTrailersListValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+        vTransportTrailersListValue.rowdata.cnt_name = /*[[${cnt_name}]]*/ null;
+        vTransportTrailersListValue.rowdata.cntt_id = /*[[${cntt_id}]]*/ null;
+
+        vTransportTrailersListValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vTransportTrailersListValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vTransportTrailersListValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vTransportTrailersListValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vTransportTrailersListValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vTransportTrailersListValue);
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="wms_sale_orders_main_body" th:remove="tag">
+    <form id="table-wms-sale-orders-main-buttons" hidden>
+        <input name="mode" value="0" hidden>
+        
+        <button type="button" id="wms-sale-orders-main-reloadbtn" class="btn btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.refreshbtn}"><i class="fa fa-sync"></i></button>
+
+        <button type="button" id="wms-sale-orders-main-loadbtn" class="btn btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.downbtn}"><i class="fa fas fa-download"></i></button>
+
+        <button type="button" id="wms-sale-orders-main-printbtn-small" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" title="100х100"><i class="fa fas fa-file-alt"></i></button>
+        <button type="button" id="wms-sale-orders-main-printbtn-large" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" title="Єкспресс Накладная"><i class="fa fas fa-file-alt"></i></button>
+    </form>
+
+    <div><table id="table-wms-sale-orders-main" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var row_id_show, exch_ser_file_id_show, exch_ser_file_row_id_show, cnt_id_show, cnt_name_show, client_id_show, order_date_show, order_num_show, item_id_show,
+        item_title_show, sku_show, quantity_show, shipping_show, instructions_show, reciver_name_show, reciver_tel_num_show, reciver_email_show, reciver_address_1_show,
+        reciver_address_2_show, reciver_city_show, reciver_state_show, reciver_zip_code_show, reciver_zip_country_show, exch_sale_order_post_id_show;
+
+    var row_id_width, exch_ser_file_id_width, exch_ser_file_row_id_width, cnt_id_width, cnt_name_width, client_id_width, order_date_width, order_num_width, item_id_width, item_title_width, sku_width, quantity_width,
+        shipping_width, instructions_width, reciver_name_width, reciver_tel_num_width, reciver_email_width, reciver_address_1_width, reciver_address_2_width, reciver_city_width, reciver_state_width,
+        reciver_zip_code_width, reciver_zip_country_width, exch_sale_order_post_id_width;
+
+    var row_id_class, exch_ser_file_id_class, exch_ser_file_row_id_class, cnt_id_class, cnt_name_class, client_id_class, order_date_class, order_num_class, item_id_class, item_title_class, sku_class, quantity_class,
+        shipping_class, instructions_class, reciver_name_class, reciver_tel_num_class, reciver_email_class, reciver_address_1_class, reciver_address_2_class, reciver_city_class, reciver_state_class,
+        reciver_zip_code_class, reciver_zip_country_class, exch_sale_order_post_id_class;
+
+    if(mobileScreenSize){
+        vDomParam =
+            "<'row'<'col-12'B>>"+
+            "<'row'<'col-12 col-sm-3'l><'col-12 col-sm-9'f>>"+
+            "<'row'<'col-12'tr>>" +
+            "<'row'<'col-12'p>>";
+        exch_ser_file_id_show = false;
+        exch_ser_file_id_width = "";
+        exch_ser_file_id_class = "";
+        exch_ser_file_row_id_show = true;
+        exch_ser_file_row_id_width = "10%";
+        exch_ser_file_row_id_class = "min-tablet-p small_size small_head_size small_footer_size";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "";
+        cnt_name_show = true;
+        cnt_name_width = "50%";
+        cnt_name_class = "small_size small_head_size small_footer_size";
+        client_id_show = true;
+        client_id_width = "8%";
+        client_id_class = "min-tablet-p small_size small_head_size small_footer_size text-center";        
+
+        $('#wms-sale-orders-main-detail').addClass('text-center').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        row_id_show = false;
+        row_id_width = "";
+        row_id_class = "";
+        exch_ser_file_id_show = true;
+        exch_ser_file_id_width = "3%";
+        exch_ser_file_id_class = "small_size small_head_size small_footer_size";
+        exch_ser_file_row_id_show = true;
+        exch_ser_file_row_id_width = "20%";
+        exch_ser_file_row_id_class = "small_size small_head_size small_footer_size text-center";
+        cnt_id_show = true;
+        cnt_id_width = "20%";
+        cnt_id_class = "small_size small_head_size small_footer_size";
+        cnt_name_show = true;
+        cnt_name_width = "10%";
+        cnt_name_class = "small_size small_head_size small_footer_size";
+        client_id_show = true;
+        client_id_width = "47%";
+        client_id_class = "small_size small_head_size small_footer_size text-center";
+
+        $('#wms-sale-orders-main-detail').removeAttr('hidden');
+    }
+    else{
+        vDomParam = "Blfrtip";
+        row_id_show = false;
+        row_id_width = "";
+        row_id_class = "";
+        exch_ser_file_id_show = false;
+        exch_ser_file_id_width = "";
+        exch_ser_file_id_class = "";
+        exch_ser_file_row_id_show = false;
+        exch_ser_file_row_id_width = "";
+        exch_ser_file_row_id_class = "";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "";
+        cnt_name_show = true;
+        cnt_name_width = "32%";
+        cnt_name_class = "small_size small_head_size small_footer_size";
+        client_id_show = true;
+        client_id_width = "5%";
+        client_id_class = "small_size small_head_size small_footer_size text-center";
+        order_date_show = true;
+        order_date_width = "10%"
+        order_date_class = "small_size small_head_size small_footer_size text-center";
+        order_num_show = true;
+        order_num_width = "10%"
+        order_num_class = "small_size small_head_size small_footer_size text-center";
+        quantity_show = true;
+        quantity_width = "5%"
+        quantity_class = "small_size small_head_size small_footer_size";
+        shipping_show = false;
+        shipping_width = "";
+        shipping_class = "";
+        instructions_show = false;
+        instructions_width = "";
+        instructions_class = "";
+        reciver_name_show = false;
+        reciver_name_width = "";
+        reciver_name_class = "";
+        reciver_tel_num_show = false;
+        reciver_tel_num_width = "";
+        reciver_tel_num_class = "";
+        reciver_email_show = false;
+        reciver_email_width = "";
+        reciver_email_class = "";
+        reciver_address_1_show = false;
+        reciver_address_1_width = "";
+        reciver_address_1_class = "";
+        reciver_address_2_show = false;
+        reciver_address_2_width = "";
+        reciver_address_2_class = "";
+        reciver_city_show = false;
+        reciver_city_width = "";
+        reciver_city_class = "";
+        reciver_state_show = false;
+        reciver_state_width = "";
+        reciver_state_class = "";
+        reciver_zip_code_show = false;
+        reciver_zip_code_width = "";
+        reciver_zip_code_class = "";
+        reciver_zip_country_show = false;
+        reciver_zip_country_width = "";
+        reciver_zip_country_class = "";
+        exch_sale_order_post_id_show = true;
+        exch_sale_order_post_id_width = "10%";
+        exch_sale_order_post_id_class = "small_size small_head_size small_footer_size declaration_edit th-link head-link head-center text-center";
+    }
+
+    var vWMSSaleOrderMainValue;
+    vWMSSaleOrderMainValue = {
+        table : '#table-wms-sale-orders-main',
+        button_form: (mobileScreenSize) ? null : "#table-wms-sale-orders-main-buttons",
+        ajax : {
+            "url": /*[[@{/wms_sale_orders/get_menu}]]*/ "wms_sale_orders/get_menu",
+            "type": "post",
+        },
+        key : "row_id",
+        switchControl : wms_sale_orders_switchControl,
+        rowdata:{
+            exch_ser_file_id: null,
+            exch_ser_file_row_id: null,
+
+            cnt_name: null,
+            order_num: null,
+            client_id: null,
+            exch_sale_order_post_id: null,
+
+            shipping: null,
+            instructions: null,
+            reciver_name: null,
+            reciver_tel_num: null,
+            reciver_email: null,
+            reciver_address_1: null,
+            reciver_address_2: null,
+            reciver_city: null,
+            reciver_state: null,
+            reciver_zip_code: null,
+            reciver_zip_country: null
+        },
+        order: [
+            [1, "asc"]
+        ],
+        dom: vDomParam,
+        columnDefs:[
+            {"targets": [0], "width": row_id_width, "className": row_id_class, "visible": row_id_show},
+            {"targets": [1], "width": exch_ser_file_id_width, "className": exch_ser_file_id_class, "visible": exch_ser_file_id_show},
+            {"targets": [2], "width": exch_ser_file_id_width, "className": exch_ser_file_id_class, "visible": exch_ser_file_id_show},
+            {"targets": [3], "width": cnt_id_width, "className": cnt_id_class, "visible": cnt_id_show},
+            {"targets": [4], "width": cnt_name_width, "className": cnt_name_class, "visible": cnt_name_show},
+            {"targets": [5], "width": client_id_width, "className": client_id_class, "visible": client_id_show},
+            {"targets": [6], "width": order_date_width, "className": order_date_class, "visible": order_date_show},
+            {"targets": [7], "width": order_num_width, "className": order_num_class, "visible": order_num_show},
+            {"targets": [8], "width": quantity_width, "className": quantity_class, "visible": quantity_show},
+            {"targets": [9], "width": exch_sale_order_post_id_width, "className": exch_sale_order_post_id_class, "visible": exch_sale_order_post_id_show},
+            {"targets": [10], "width": shipping_width, "className": shipping_class, "visible": shipping_show},
+            {"targets": [11], "width": instructions_width, "className": instructions_class, "visible": instructions_show},
+            {"targets": [12], "width": reciver_name_width, "className": reciver_name_class, "visible": reciver_name_show},
+            {"targets": [13], "width": reciver_tel_num_width, "className": reciver_tel_num_class, "visible": reciver_tel_num_show},
+            {"targets": [14], "width": reciver_email_width, "className": reciver_email_class, "visible": reciver_email_show},
+            {"targets": [15], "width": reciver_address_1_width, "className": reciver_address_1_class, "visible": reciver_address_1_show},
+            {"targets": [16], "width": reciver_address_2_width, "className": reciver_address_2_class, "visible": reciver_address_2_show},
+            {"targets": [17], "width": reciver_city_width, "className": reciver_city_class, "visible": reciver_city_show},
+            {"targets": [18], "width": reciver_state_width, "className": reciver_state_class, "visible": reciver_state_show},
+            {"targets": [19], "width": reciver_zip_code_width, "className": reciver_zip_code_class, "visible": reciver_zip_code_show},
+            {"targets": [20], "width": reciver_zip_country_width, "className": reciver_zip_country_class, "visible": reciver_zip_country_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{wms_sale_orders.main.row_id}]]*/ "row_id", "data": "row_id"},
+            /*1*/{"title": /*[[#{wms_sale_orders.main.exch_ser_file_id}]]*/ "exch_ser_file_id", "data": "exch_ser_file_id"},
+            /*2*/{"title": /*[[#{wms_sale_orders.main.exch_ser_file_row_id}]]*/ "exch_ser_file_row_id", "data": "exch_ser_file_row_id"},
+            /*3*/{"title": /*[[#{wms_sale_orders.main.cnt_id}]]*/ "cnt_id", "data": "cnt_id"},
+            /*4*/{"title": /*[[#{wms_sale_orders.main.cnt_name}]]*/ "cnt_name", "data": "cnt_name"},
+            /*5*/{"title": /*[[#{wms_sale_orders.main.client_id}]]*/ "client_id", "data": "client_id"},
+            /*6*/{"title": /*[[#{wms_sale_orders.main.order_date}]]*/ "order_date", "data": "order_date"},
+            /*7*/{"title": /*[[#{wms_sale_orders.main.order_num}]]*/ "order_num", "data": "order_num"},
+            /*8*/{"title": /*[[#{wms_sale_orders.main.quantity}]]*/ "quantity", "data": "quantity"},
+            /*9*/{"title": /*[[#{wms_sale_orders.main.exch_sale_order_post_id}]]*/ "exch_sale_order_post_id", "data": "exch_sale_order_post_id"},
+            /*10*/{"title": /*[[#{wms_sale_orders.main.shipping}]]*/ "shipping", "data": "shipping"},
+            /*11*/{"title": /*[[#{wms_sale_orders.main.instructions}]]*/ "instructions", "data": "instructions"},
+            /*12*/{"title": /*[[#{wms_sale_orders.main.reciver_name}]]*/ "reciver_name", "data": "reciver_name"},
+            /*13*/{"title": /*[[#{wms_sale_orders.main.reciver_tel_num}]]*/ "reciver_tel_num", "data": "reciver_tel_num"},
+            /*14*/{"title": /*[[#{wms_sale_orders.main.reciver_email}]]*/ "reciver_email", "data": "reciver_email"},
+            /*15*/{"title": /*[[#{wms_sale_orders.main.reciver_address_1}]]*/ "reciver_address_1", "data": "reciver_address_1"},
+            /*16*/{"title": /*[[#{wms_sale_orders.main.reciver_address_2}]]*/ "reciver_address_2", "data": "reciver_address_2"},
+            /*17*/{"title": /*[[#{wms_sale_orders.main.reciver_city}]]*/ "reciver_city", "data": "reciver_city"},
+            /*18*/{"title": /*[[#{wms_sale_orders.main.reciver_state}]]*/ "reciver_state", "data": "reciver_state"},
+            /*19*/{"title": /*[[#{wms_sale_orders.main.reciver_zip_code}]]*/ "reciver_zip_code", "data": "reciver_zip_code"},
+            /*20*/{"title": /*[[#{wms_sale_orders.main.reciver_zip_country}]]*/ "reciver_zip_country", "data": "reciver_zip_country"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function wms_sale_orders_switchControl(){
+        if(vWMSSaleOrderMainValue.rowdata.exch_ser_file_id != null) {
+            $('#shipping').text(vWMSSaleOrderMainValue.rowdata.shipping);
+            $('#instructions').text(vWMSSaleOrderMainValue.rowdata.instructions);
+            $('#reciver_name').val(vWMSSaleOrderMainValue.rowdata.reciver_name);
+            $('#reciver_tel_num').val(vWMSSaleOrderMainValue.rowdata.reciver_tel_num);
+            $('#reciver_email').val(vWMSSaleOrderMainValue.rowdata.reciver_email);
+            $('#reciver_address_1').text(vWMSSaleOrderMainValue.rowdata.reciver_address_1);
+            $('#reciver_address_2').text(vWMSSaleOrderMainValue.rowdata.reciver_address_2);
+            $('#reciver_city').val(vWMSSaleOrderMainValue.rowdata.reciver_city);
+            $('#reciver_state').val(vWMSSaleOrderMainValue.rowdata.reciver_state);
+            $('#reciver_zip_code').val(vWMSSaleOrderMainValue.rowdata.reciver_zip_code);
+            $('#reciver_zip_country').val(vWMSSaleOrderMainValue.rowdata.reciver_zip_country);
+
+            $('#wms_sale_orders_position_list_card').prop('hidden', false);
+            vWMSSaleOrderPositionValue.rowdata.req_exch_ser_file_id = vWMSSaleOrderMainValue.rowdata.exch_ser_file_id;
+            vWMSSaleOrderPositionValue.rowdata.req_exch_ser_file_row_id = vWMSSaleOrderMainValue.rowdata.exch_ser_file_row_id;
+            $(vWMSSaleOrderPositionValue.table).DataTable().ajax.reload();
+
+            vWMSSaleOrderPostValue.rowdata.exch_sale_order_id = vWMSSaleOrderMainValue.rowdata.client_id;
+            vWMSSaleOrderPostValue.rowdata.exch_sale_order_post_detail_row_id = null;
+            $(vWMSSaleOrderPostValue.table).DataTable().ajax.reload();
+
+            if(vWMSSaleOrderMainValue.rowdata.exch_sale_order_post_id != null){
+                $('#wms-sale-orders-main-printbtn-small').prop('disabled',false).removeClass('btn-dark').addClass('btn-info');
+                $('#wms-sale-orders-main-printbtn-large').prop('disabled',false).removeClass('btn-dark').addClass('btn-info');
+            }
+            else{
+                $('#wms-sale-orders-main-printbtn-small').prop('disabled',true).addClass('btn-dark').removeClass('btn-info');
+                $('#wms-sale-orders-main-printbtn-large').prop('disabled',true).addClass('btn-dark').removeClass('btn-info');
+            }
+
+        }
+        else{
+            $('#shipping').text('');
+            $('#instructions').text('');
+            $('#reciver_name').val('');
+            $('#reciver_tel_num').val('');
+            $('#reciver_email').val('');
+            $('#reciver_address_1').text('');
+            $('#reciver_address_2').text('');
+            $('#reciver_city').val('');
+            $('#reciver_state').val('');
+            $('#reciver_zip_code').val('');
+            $('#reciver_zip_country').val('');
+
+            $('#wms_sale_orders_position_list_card').prop('hidden', true);
+
+            vWMSSaleOrderPositionValue.rowdata.req_exch_ser_file_id = null;
+            vWMSSaleOrderPositionValue.rowdata.req_exch_ser_file_row_id = null;
+            vWMSSaleOrderPositionValue.rowdata.exch_ser_file_row_id = null;
+            $(vWMSSaleOrderPositionValue.table).DataTable().clear().draw();
+
+            vWMSSaleOrderPostValue.rowdata.exch_sale_order_id = null;
+            vWMSSaleOrderPostValue.rowdata.exch_sale_order_post_detail_row_id = null;
+            $(vWMSSaleOrderPostValue.table).DataTable().clear().draw();
+
+            $('#wms-sale-orders-main-printbtn-small').prop('disabled',true).addClass('btn-dark').removeClass('btn-info');
+            $('#wms-sale-orders-main-printbtn-large').prop('disabled',true).addClass('btn-dark').removeClass('btn-info');
+        }
+    }
+
+//Reload Function
+    function reloadOrderMain(){
+        $(vWMSSaleOrderMainValue.table).DataTable().ajax.reload(null, false);
+    }
+
+//Reload button
+    $('#wms-sale-orders-main-reloadbtn').click(function() {
+        reloadOrderMain();
+    });
+//Declaration Edit Function
+ function editPostMainModal(){
+     $('#wms_sale_orders_main_modal_addbtn').attr('hidden',true);
+     $('#wms_sale_orders_main_modal_editbtn').removeAttr('hidden');
+     $('#wms_sale_orders_main_modal_delbtn').attr('hidden',true);
+
+     fill_wms_sale_orders_main_modal_detail(1);
+ }
+//
+    function smallPrint() {
+        let TTNID = vWMSSaleOrderMainValue.rowdata.exch_sale_order_post_id;
+        window.open("https://my.novaposhta.ua/orders/printMarkings/orders/"+TTNID+"/type/pdf/apiKey/df71731dbc3928d2b31187e539747523", "_blank");
+    }
+
+    $('#wms-sale-orders-main-printbtn-small').on('click', function () {
+        smallPrint();
+    });
+
+    function largePrint() {
+        let TTNID = vWMSSaleOrderMainValue.rowdata.exch_sale_order_post_id;
+        window.open("https://my.novaposhta.ua/orders/printDocument/orders[]/"+TTNID+"/type/pdf/apiKey/df71731dbc3928d2b31187e539747523", "_blank");
+    }
+
+    $('#wms-sale-orders-main-printbtn-large').on('click', function () {
+        largePrint();
+    });
+
+    $('#wms-sale-orders-main-loadbtn').on('click', function () {
+        $('#wms_sale_orders_main_files_modal_addbtn').removeAttr('hidden');
+        $('#wms_sale_orders_main_files_modal_editbtn').attr('hidden',true);
+        $('#wms_sale_orders_main_files_modal_delbtn').attr('hidden',true);
+
+        fill_wms_sale_orders_main_files_modal_detail(0);
+    });
+
+    $(document).ready(function(){
+        vWMSSaleOrderMainValue.rowdata.exch_ser_file_id = /*[[${exch_ser_file_id}]]*/ null;
+
+        vWMSSaleOrderMainValue.rowdata.action_filter_type_id = /*[[${action_filter_type_id}]]*/ null;
+        vWMSSaleOrderMainValue.rowdata.action_filter_action_id = /*[[${action_filter_action_id}]]*/ null;
+        vWMSSaleOrderMainValue.rowdata.action_filter_status_id = /*[[${action_filter_status_id}]]*/ null;
+        vWMSSaleOrderMainValue.rowdata.action_filter_result_id = /*[[${action_filter_result_id}]]*/ null;
+        vWMSSaleOrderMainValue.rowdata.action_filter_client_id = /*[[${action_filter_client_id}]]*/ null;
+        vWMSSaleOrderMainValue.rowdata.action_filter_user_id = /*[[${action_filter_user_id}]]*/ null;
+        
+        recreateDataTable(vWMSSaleOrderMainValue);
+
+        $(vWMSSaleOrderMainValue.table).on('dblclick', '.declaration_edit', function (e) {
+            let selectedPlanRow = this._DT_CellIndex.row;
+            let PlanTable = $(vWMSSaleOrderMainValue.table).DataTable();
+            vWMSSaleOrderMainValue.rowdata.exch_ser_file_id = PlanTable.row(selectedPlanRow).data().exch_ser_file_id;
+            vWMSSaleOrderMainValue.rowdata.cnt_name = PlanTable.row(selectedPlanRow).data().cnt_name;
+            vWMSSaleOrderMainValue.rowdata.order_num = PlanTable.row(selectedPlanRow).data().order_num;
+            vWMSSaleOrderMainValue.rowdata.client_id = PlanTable.row(selectedPlanRow).data().client_id;
+            vWMSSaleOrderMainValue.rowdata.exch_sale_order_post_id = PlanTable.row(selectedPlanRow).data().exch_sale_order_post_id;
+
+            editPostMainModal();
+        });
+
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#wms_li').addClass('active').removeClass('collapsed');
+        $('#wms_a').attr('aria-expanded',true);
+        $('#wms').addClass('show');
+
+        $('#wms_sale_orders_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

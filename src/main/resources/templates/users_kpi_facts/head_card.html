@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="users_kpi_facts_head_body" th:remove="tag">
+		<form class="form-inline">
+		      <div class="form-group mb-2 mr-2">
+				<label for="users_kpi_facts_year" class="mr-2" th:text="#{users_kpi_facts.filter.year}">Year: </label>
+                <select class="form-control" style="width:130px; display:inline-block" id="users_kpi_facts_year" placeholder="Year">
+                  <option selected>2020</option>
+               </select>
+			  </div>
+
+			<a class="btn btn-outline-primary mb-2" id="users_kpi_facts_show" th:text="#{general.showbth}" hidden>Show</a>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+	$(document).ready(function(){
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#crm_kpi_li').addClass('active').removeClass('collapsed');
+        $('#crm_kpi_a').attr('aria-expanded',true);
+        $('#crm_kpi').addClass('show');
+
+        $('#users_kpi_facts_a').addClass('text-primary');
+		$('#users_kpi_facts_show').removeAttr('hidden');
+	});
+
+	$('#users_kpi_facts_show').on('click', function () {
+		$('#users_kpi_facts_list_card').removeAttr('hidden');
+        $('#users_kpi_facts_tabs_div').removeAttr('hidden');
+
+		vUsersKPIFactListValue.rowdata.users_kpi_facts_year = $("#users_kpi_facts_year").val();
+		vUsersKPIFactListValue.rowdata.user_kpi_type_id = $("#user_kpi_type_list").val();
+		$(vUsersKPIFactListValue.table).DataTable().ajax.reload();
+		$('#users_kpi_facts_filter_div').removeClass('show').collapse('hide');
+	});
+</script>
+
+</body>
+</html>

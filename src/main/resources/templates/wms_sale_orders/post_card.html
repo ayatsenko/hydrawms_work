@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="wms_sale_orders_post_body" th:remove="tag">
+    <form id="table-wms-sale-orders-post-buttons" hidden>
+        <input name="mode" value="0" hidden>
+        <button type="button" id="wms-sale-orders-post-reloadbtn" class="btn btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.refreshbtn}"><i class="fa fa-sync"></i></button>
+    </form>
+
+    <div><table id="table-wms-sale-orders-post" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    
+    var exch_sale_order_post_detail_row_id_show, exch_sale_order_post_detail_status_date_show, exch_sale_order_post_detail_status_name_show;
+    var exch_sale_order_post_detail_row_id_width, exch_sale_order_post_detail_status_date_width, exch_sale_order_post_detail_status_name_width;
+    var exch_sale_order_post_detail_row_id_class, exch_sale_order_post_detail_status_date_class, exch_sale_order_post_detail_status_name_class;
+
+    if(mobileScreenSize){
+        vDomParam =
+            "<'row'<'col-12'B>>"+
+            "<'row'<'col-12 col-sm-3'l><'col-12 col-sm-9'f>>"+
+            "<'row'<'col-12'tr>>" +
+            "<'row'<'col-12'p>>";
+        exch_ser_file_id_show = false;
+        exch_ser_file_id_width = "";
+        exch_ser_file_id_class = "";
+        exch_sale_order_post_detail_row_id_show = true;
+        exch_sale_order_post_detail_row_id_width = "10%";
+        exch_sale_order_post_detail_row_id_class = "min-tablet-p small_size small_head_size small_footer_size";
+        exch_sale_order_post_detail_status_date_show = false;
+        exch_sale_order_post_detail_status_date_width = "";
+        exch_sale_order_post_detail_status_date_class = "";
+        exch_sale_order_post_detail_status_name_show = true;
+        exch_sale_order_post_detail_status_name_width = "50%";
+        exch_sale_order_post_detail_status_name_class = "small_size small_head_size small_footer_size";
+        sku_show = true;
+        sku_width = "8%";
+        sku_class = "min-tablet-p small_size small_head_size small_footer_size text-center";        
+
+        $('#wms-sale-orders-post-detail').addClass('text-center').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        exch_ser_file_id_show = true;
+        exch_ser_file_id_width = "3%";
+        exch_ser_file_id_class = "small_size small_head_size small_footer_size";
+        exch_sale_order_post_detail_row_id_show = true;
+        exch_sale_order_post_detail_row_id_width = "20%";
+        exch_sale_order_post_detail_row_id_class = "small_size small_head_size small_footer_size text-center";
+        exch_sale_order_post_detail_status_date_show = true;
+        exch_sale_order_post_detail_status_date_width = "20%";
+        exch_sale_order_post_detail_status_date_class = "small_size small_head_size small_footer_size";
+        exch_sale_order_post_detail_status_name_show = true;
+        exch_sale_order_post_detail_status_name_width = "10%";
+        exch_sale_order_post_detail_status_name_class = "small_size small_head_size small_footer_size";
+        sku_show = true;
+        sku_width = "47%";
+        sku_class = "small_size small_head_size small_footer_size text-center";
+
+        $('#wms-sale-orders-post-detail').removeAttr('hidden');
+    }
+    else{
+        vDomParam = "lfrtp";
+        exch_sale_order_post_detail_row_id_show = true;
+        exch_sale_order_post_detail_row_id_width = "10%";
+        exch_sale_order_post_detail_row_id_class = "small_size small_head_size small_footer_size";
+        exch_sale_order_post_detail_status_date_show = true;
+        exch_sale_order_post_detail_status_date_width = "20%";
+        exch_sale_order_post_detail_status_date_class = "small_size small_head_size small_footer_size";
+        exch_sale_order_post_detail_status_name_show = true;
+        exch_sale_order_post_detail_status_name_width = "70%";
+        exch_sale_order_post_detail_status_name_class = "small_size small_head_size small_footer_size";
+    }
+
+    var vWMSSaleOrderPostValue;
+    vWMSSaleOrderPostValue = {
+        table : '#table-wms-sale-orders-post',
+        button_form: (mobileScreenSize) ? null : "#table-wms-sale-orders-post-buttons",
+        ajax : {
+            "url": /*[[@{/wms_sale_orders/get_post_menu}]]*/ "wms_sale_orders/get_post_menu",
+            "type": "post",
+            "data": function ( d ) {
+                d.exch_sale_order_id = vWMSSaleOrderPostValue.rowdata.exch_sale_order_id;
+            }
+        },
+        key : "exch_sale_order_post_detail_row_id",
+        switchControl : wms_sale_orders_post_switchControl,
+        rowdata:{
+            exch_sale_order_post_detail_row_id: null
+        },
+        order: [
+            [1, "asc"]
+        ],
+        dom: vDomParam,
+        columnDefs:[
+            {"targets": [0], "width": exch_sale_order_post_detail_row_id_width, "className": exch_sale_order_post_detail_row_id_class, "visible": exch_sale_order_post_detail_row_id_show},
+            {"targets": [1], "width": exch_sale_order_post_detail_status_date_width, "className": exch_sale_order_post_detail_status_date_class, "visible": exch_sale_order_post_detail_status_date_show},
+            {"targets": [2], "width": exch_sale_order_post_detail_status_name_width, "className": exch_sale_order_post_detail_status_name_class, "visible": exch_sale_order_post_detail_status_name_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{wms_sale_orders.post.exch_sale_order_post_detail_row_id}]]*/ "exch_sale_order_post_detail_row_id", "data": "exch_sale_order_post_detail_row_id"},
+            /*1*/{"title": /*[[#{wms_sale_orders.post.exch_sale_order_post_detail_status_date}]]*/ "exch_sale_order_post_detail_status_date", "data": "exch_sale_order_post_detail_status_date"},
+            /*2*/{"title": /*[[#{wms_sale_orders.post.exch_sale_order_post_detail_status_name}]]*/ "exch_sale_order_post_detail_status_name", "data": "exch_sale_order_post_detail_status_name"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function wms_sale_orders_post_switchControl(){
+        if(vWMSSaleOrderPostValue.rowdata.exch_sale_order_post_detail_row_id != null) {
+        }
+        else{
+        }
+    }
+
+//Reload Function
+    function reloadOrderPosition(){
+        let RowID = vWMSSaleOrderPostValue.rowdata.exch_sale_order_post_detail_row_id;
+
+        vWMSSaleOrderPostValue.rowdata.exch_ser_file_id = vWMSSaleOrderMainValue.rowdata.exch_ser_file_id;
+        vWMSSaleOrderPostValue.rowdata.exch_sale_order_post_detail_row_id = RowID;
+        $(vWMSSaleOrderPostValue.table).DataTable().ajax.reload(null, false);
+    }
+
+//Reload button
+    $('#wms-sale-orders-post-reloadbtn').click(function() {
+        reloadOrderPosition();
+    });
+
+    $(document).ready(function(){
+        vWMSSaleOrderPostValue.rowdata.exch_ser_file_id = /*[[${exch_ser_file_id}]]*/ null;
+
+        vWMSSaleOrderPostValue.rowdata.action_filter_type_id = /*[[${action_filter_type_id}]]*/ null;
+        vWMSSaleOrderPostValue.rowdata.action_filter_action_id = /*[[${action_filter_action_id}]]*/ null;
+        vWMSSaleOrderPostValue.rowdata.action_filter_status_id = /*[[${action_filter_status_id}]]*/ null;
+        vWMSSaleOrderPostValue.rowdata.action_filter_result_id = /*[[${action_filter_result_id}]]*/ null;
+        vWMSSaleOrderPostValue.rowdata.action_filter_sku = /*[[${action_filter_sku}]]*/ null;
+        vWMSSaleOrderPostValue.rowdata.action_filter_user_id = /*[[${action_filter_user_id}]]*/ null;
+        
+        recreateDataTable(vWMSSaleOrderPostValue);
+    });
+</script>
+
+</body>
+</html>

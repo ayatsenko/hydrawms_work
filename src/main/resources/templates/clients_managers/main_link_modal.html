@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_managers_main_link_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="clients_managers_main_link_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{clients.users_roles.modal.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body m-1">
+                    <div class="alert alert-danger alert-dismissible mb-2" role="alert">
+                        <button class="btn btn-lg text-white" disabled>
+                            <i class="fa fa-user-shield"></i>
+                        </button>
+                        <div class="alert-message">
+                            <strong>Внимание!</strong> Любые изменения в этой форме необратимы, будьте внимательны!
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-12" id="cs_user_id_row">
+                            <label for="first_user_id" class="form-label mb-0" th:text="'1. '+ #{clients.users_roles.first_user_name}"></label>
+                            <div class="input-group mt-0">
+                                <select type="text" class="form-control" id="first_user_id" name="first_user_id">
+                                </select>
+                                <button type="button" id="first_user_id_x" name="first_user_id_x" data-parent="first_user_id" class="btn btn-outline-primary select_clear"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="row mb-2">
+                        <div class="col-12" id="ops_user_id_row">
+                            <label for="second_user_id" class="form-label mb-0" th:text="'2. '+ #{clients.users_roles.second_user_name}"></label>
+                            <div class="input-group mt-0">
+                                <select type="text" class="form-control" id="second_user_id" name="second_user_id">
+                                </select>
+                                <button type="button" id="ops_user_id_x" name="ops_user_id_x" data-parent="second_user_id" class="btn btn-outline-primary select_clear"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 2 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="clients_managers_main_link_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="clients_managers_main_link_modal_savebtn" class="btn btn-outline-primary" th:text="#{general.editbtn}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    function FirstListChange(){
+        $('#first_user_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/clients_managers/get_sale_list'}]]*/ "/clients_managers/get_sale_list",
+            type: "get",
+            data: {},
+            success: function (sale_list_detail) {
+                for (var i = 0; i < sale_list_detail.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='first_user_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='first_user_id']").find('option').end().append("<option value='" + sale_list_detail.data[i].id + "'>" + sale_list_detail.data[i].user_surname + "</option>");
+                }
+            }
+        }));
+    }
+
+    function SecondListChange(aSaleUserID){
+        $('#second_user_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/clients_managers/get_sale_list'}]]*/ "/clients_managers/get_sale_list",
+            type: "get",
+            data: {},
+            success: function (ops_list_detail) {
+                for (var i = 0; i < ops_list_detail.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='second_user_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    if(ops_list_detail.data[i].id !== parseInt(aSaleUserID)) {
+                        $("select[name='second_user_id']").find('option').end().append("<option value='" + ops_list_detail.data[i].id + "'>" + ops_list_detail.data[i].user_surname + "</option>");
+                    }
+                }
+            }
+        }));
+    }
+
+// Clear Fields
+    function clear_clients_managers_main_link_modal_detail() {
+        $("#clients_managers_main_link_modal_detail input[type=text]").val('');
+        $("#clients_managers_main_link_modal_detail input[type=number]").val('');
+        $("#clients_managers_main_link_modal_detail select").empty();
+        $("#clients_managers_main_link_modal_detail textarea").val('');
+    }
+
+// Block And Required Fields
+    function block_clients_managers_main_link_modal_detail() {
+        $('#first_user_id').attr('required', true);
+        $('#second_user_id').attr('required', true);
+    }
+
+// Load Function
+    function fill_clients_managers_main_link_modal_detail(aMode){
+        clear_clients_managers_main_link_modal_detail();
+        block_clients_managers_main_link_modal_detail();
+
+        $.when(
+            FirstListChange()
+        ).then(function() {
+            $('#clients_managers_main_link_modal').modal('show');
+        });
+    }
+
+    function clients_managers_main_link_modal_valid(){
+        var RowID =  vClientsManagersValue.rowdata.cntserl_id;
+        $.ajax({
+            url: /*[[ @{/clients_managers/main_link_edit} ]]*/ "/clients_managers/main_link_edit",
+            type: 'POST',
+            data: {
+                "first_user_id": $('#first_user_id').val(),
+                "second_user_id": $('#second_user_id').val()
+            },
+            success: function (result) {
+                $('#clients_managers_main_link_modal').modal('hide');
+
+                vClientsManagersValue.rowdata.req_cs_user_id = $("#clients_managers_filter_cs_user_id").val();
+                vClientsManagersValue.rowdata.req_ops_user_id = $("#clients_managers_filter_ops_user_id").val();
+                vClientsManagersValue.rowdata.cntserl_id = RowID;
+                $(vClientsManagersValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    $('#first_user_id').change( function () {
+        SecondListChange($('#first_user_id').val());
+    });
+
+    $(document).ready(function() {
+        $('#clients_managers_main_link_modal_savebtn').click(function () {
+            clients_managers_main_link_modal_valid();
+        });
+    });
+</script>
+
+</body>
+</html>

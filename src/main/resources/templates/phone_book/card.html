@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="phone_book_body" th:remove="tag">
+        <div><table id="table-phone-book" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vPhoneBookValue;
+    vPhoneBookValue = {
+        table : '#table-phone-book',
+        ajax : {
+            "url": /*[[@{/phone_book/gettable}]]*/ "phone_book/gettable",
+            "type": "post",
+            "data": {
+            }
+        },
+        key : "rn_id",
+        switchControl : phone_book_switchControl,
+        rowdata:{
+            rn: null,
+            cc_id: null,
+            pb_type_id: null,
+            pb_phone: null
+        },
+        ordering: true,
+        order: [
+            [3, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        columnDefs: [
+            { "targets": 0,"visible": false },
+            { "targets": 1,"visible": false },
+            { "targets": 2,"visible": false },
+            { "targets": 5,
+                render: function (a, b, data, d) {
+                    if (data.pb_phone != null && data.pb_phone != '') {
+                        return '<a class=\"btn btn-xs btn-primary PhoneLink\" id=\"pb_phone_link\" href=\"tel:'+data.pb_phone+'\">M</a>';
+                    }
+                    return "";
+                }
+            },
+            { "targets": 7,
+                render: function (a, b, data, d) {
+                    if (data.pb_email != null && data.pb_email != '') {
+                        return '<a class=\"btn btn-xs btn-primary EmailLink\" id=\"pb_email_link\" href=\"mailto:'+data.pb_email+'\">@</a>';
+                    }
+                    return "";
+                }
+            }
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{phone_book.rn_id}]]*/ "rn_id","data": "rn_id","width": "1%"},
+            /*1*/{"title": /*[[#{phone_book.cc_id}]]*/ "cc_id","data": "cc_id","width": "1%"},
+            /*2*/{"title": /*[[#{phone_book.pb_type_id}]]*/ "pb_type_id","data": "pb_type_id","width": "1%"},
+            /*3*/{"title": /*[[#{phone_book.pb_name}]]*/ "pb_name","data": "pb_name","width": "24%"},
+            /*4*/{"title": /*[[#{phone_book.pb_company}]]*/ "pb_company","data": "pb_company","width": "37%", "className": "desktop"},
+
+            /*5*/{"title": /*[[#{phone_book.pb_phone_link}]]*/ "pb_phone_link","data": "pb_phone_link", "width": "2%", "className": "mobile tablet-p text-center"},
+            /*6*/{"title": /*[[#{phone_book.pb_phone}]]*/ "pb_phone","data": "pb_phone","width": "15%", "className": "min-tablet-l"},
+
+            /*7*/{"title": /*[[#{phone_book.pb_email_link}]]*/ "pb_email_link","data": "pb_email_link", "width": "2%" , "className": "mobile tablet-p text-center"},
+            /*8*/{"title": /*[[#{phone_book.pb_email}]]*/ "pb_email","data": "pb_email","width": "15%", "className": "min-tablet-l"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function phone_book_switchControl(){
+        if(vPhoneBookValue.rowdata.rn_id != null) {
+//Детализация контакта
+            $.ajax({
+                url:/*[[@{'/phone_book/get_contact_detail'}]]*/ "/phone_book/get_contact_detail",
+                type: "get",
+                data: {
+                    "cc_id": vPhoneBookValue.rowdata.cc_id,
+                    "pb_type_id": vPhoneBookValue.rowdata.pb_type_id
+                },
+                success: function (contact_detail) {
+                    $('#cc_position').val('').val(contact_detail.data[0].cc_position);
+
+                    $('#cc_main_phone').val('').val(contact_detail.data[0].cc_main_phone);
+                    if(contact_detail.data[0].cc_main_phone != null){
+                        $('#cc_main_phone_link').removeClass('disabled').prop('href','tel:'+$('#cc_main_phone').val());
+                    }
+                    else{
+                        $('#cc_main_phone_link').prop('href','#').addClass('disabled');
+                    }
+
+                    $('#cc_second_phone').val('').val(contact_detail.data[0].cc_second_phone);
+                    if(contact_detail.data[0].cc_second_phone != null){
+                        $('#cc_second_phone_link').removeClass('disabled').prop('href','tel:'+$('#cc_second_phone').val());
+                    }
+                    else{
+                        $('#cc_second_phone_link').prop('href','#').addClass('disabled');
+                    }
+
+                    $('#cc_main_office_phone').val('').val(contact_detail.data[0].cc_main_office_phone);
+                    if(contact_detail.data[0].cc_main_office_phone != null){
+                        $('#cc_main_office_phone_link').removeClass('disabled').prop('href','tel:'+$('#cc_main_office_phone').val());
+                    }
+                    else{
+                        $('#cc_main_office_phone_link').prop('href','#').addClass('disabled');
+                    }
+
+                    $('#cc_second_office_phone').val('').val(contact_detail.data[0].cc_second_office_phone);
+                    if(contact_detail.data[0].cc_second_office_phone != null){
+                        $('#cc_second_office_phone_link').removeClass('disabled').prop('href','tel:'+$('#cc_second_office_phone').val());
+                    }
+                    else{
+                        $('#cc_second_office_phone_link').prop('href','#').addClass('disabled');
+                    }
+
+                    $('#cc_email').val('').val(contact_detail.data[0].cc_email);
+                    if(contact_detail.data[0].cc_email != null){
+                        $('#cc_email_link').removeClass('disabled').prop('href','mailto:'+$('#cc_email').val());
+                    }
+                    else{
+                        $('#cc_email_link').prop('href','#').addClass('disabled');
+                    }
+
+                    $('#cc_skype').val('').val(contact_detail.data[0].cc_skype);
+                    if(contact_detail.data[0].cc_skype != null){
+                        $('#cc_skype_link').removeClass('disabled').prop('href','skype:'+$('#cc_skype').val()+'?call');
+                    }
+                    else{
+                        $('#cc_skype_link').prop('href','#').addClass('disabled');
+                    }
+                    $('#cc_note').val('').val(contact_detail.data[0].cc_note);
+                }
+            });
+        } else{
+            $('#cc_position').val('');
+
+            $('#cc_main_phone').val('');
+            $('#cc_main_phone_link').prop('href','#').addClass('disabled');
+
+            $('#cc_second_phone').val('');
+            $('#cc_second_phone_link').prop('href','#').addClass('disabled');
+
+            $('#cc_main_office_phone').val('');
+            $('#cc_main_office_phone_link').prop('href','#').addClass('disabled');
+
+            $('#cc_second_office_phone').val('');
+            $('#cc_second_office_phone_link').prop('href','#').addClass('disabled');
+
+            $('#cc_email').val('');
+            $('#cc_email_link').prop('href','#').addClass('disabled');
+
+            $('#cc_skype').val('');
+            $('#cc_skype_link').prop('href','#').addClass('disabled');
+
+            $('#cc_note').val('');
+        }
+    }
+
+    $('.phone_book_btn_control').on('click', function (){
+        $("#phone-book-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#phone-book-detail').submit(function() {
+        vPhoneBookValue.rowdata.phone_book_table_order_column = $(vPhoneBookValue.table).DataTable().order()[0][0];
+        vPhoneBookValue.rowdata.phone_book_table_order_type = $(vPhoneBookValue.table).DataTable().order()[0][1];
+        vPhoneBookValue.rowdata.phone_book_table_search = $(vPhoneBookValue.table).DataTable().search();
+        vPhoneBookValue.rowdata.phone_book_table_pagelen = $(vPhoneBookValue.table).DataTable().page.len();
+        vPhoneBookValue.rowdata.phone_book_table_page = $(vPhoneBookValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vPhoneBookValue.rowdata).forEach(function (index) {
+            $("#phone-book-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#phone-book-detail input[name=\"" + index + "\"]").val(vPhoneBookValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vPhoneBookValue.rowdata.rn_id = /*[[${rn_id}]]*/ null;
+
+        vPhoneBookValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vPhoneBookValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vPhoneBookValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vPhoneBookValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vPhoneBookValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vPhoneBookValue);
+<!-- Highlight menu -->
+            $('#main_li').removeClass('active');
+
+            $('#clients_li').addClass('active').removeClass('collapsed');
+            $('#clients_a').attr('aria-expanded',true);
+            $('#clients').addClass('show');
+
+            $('#phone_book_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

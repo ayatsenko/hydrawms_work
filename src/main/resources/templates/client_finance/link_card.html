@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_finance_link_body" th:remove="tag">
+            <button type="submit" id="client-finance-link-actionsbtn" form="client-finance-link-actions-form" class="btn btn-primary" th:text="#{actions.header}">Actions</button>
+            <button type="submit" id="client-finance-link-requestbtn" form="client-finance-link-request-form" class="btn btn-primary" th:text="#{requests.header}">Requests</button>
+            <button type="submit" id="client-finance-link-tenderbtn" form="client-finance-link-tender-form" class="btn btn-primary" th:text="#{tenders.caption}">Tenders</button>
+            <button type="submit" id="client-finance-link-docbtn" form="client-finance-link-docs-form" class="btn btn-primary" th:text="#{client.docs.caption}">Finance</button>
+
+        <form id="client-finance-link-actions-form" class="mb-2" th:action="@{/client_actions}" method="post" hidden>
+            <input type="hidden" name="cnt_id">
+            <input type="hidden" name="cnt_name">
+            <input type="hidden" name="cnt_user_access">
+
+            <input type="hidden" name="clients_list_table_order_column">
+            <input type="hidden" name="clients_list_table_order_type">
+            <input type="hidden" name="clients_list_table_search">
+            <input type="hidden" name="clients_list_table_pagelen">
+            <input type="hidden" name="clients_list_table_page">
+        </form>
+
+        <form id="client-finance-link-request-form" class="mb-2" th:action="@{/client_requests}" method="post" hidden>
+            <input type="hidden" name="cnt_id">
+            <input type="hidden" name="cnt_name">
+            <input type="hidden" name="cnt_user_access">
+
+            <input type="hidden" name="clients_list_table_order_column">
+            <input type="hidden" name="clients_list_table_order_type"> 
+            <input type="hidden" name="clients_list_table_search">
+            <input type="hidden" name="clients_list_table_pagelen">
+            <input type="hidden" name="clients_list_table_page">
+        </form>
+
+        <form id="client-finance-link-tender-form" class="mb-2" th:action="@{/client_tenders}" method="post" hidden>
+            <input type="hidden" name="cnt_id">
+            <input type="hidden" name="cnt_name">
+            <input type="hidden" name="cnt_user_access">
+
+            <input type="hidden" name="clients_list_table_order_column">
+            <input type="hidden" name="clients_list_table_order_type">
+            <input type="hidden" name="clients_list_table_search">
+            <input type="hidden" name="clients_list_table_pagelen">
+            <input type="hidden" name="clients_list_table_page">
+        </form>
+
+        <form id="client-finance-link-docs-form" class="mb-2" th:action="@{/client_docs}" method="post" hidden>
+            <input type="hidden" name="cnt_id" id="docs_cnt_id">
+            <input type="hidden" name="cnt_name" id="docs_cnt_name">
+            <input type="hidden" name="cnt_user_access" id="docs_cnt_user_access">
+
+            <input type="hidden" name="clients_list_table_order_column">
+            <input type="hidden" name="clients_list_table_order_type">
+            <input type="hidden" name="clients_list_table_search">
+            <input type="hidden" name="clients_list_table_pagelen">
+            <input type="hidden" name="clients_list_table_page">
+        </form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    $('#client-finance-link-actions-form').submit(function() {
+        $("#client-finance-link-actions-form input[name=cnt_id]").val($('#cnt_id').val());
+        $("#client-finance-link-actions-form input[name=cnt_name]").val($('#cnt_name').val());
+        $("#client-finance-link-actions-form input[name=cnt_user_access]").val($('#cnt_user_access').val());
+
+        $("#client-finance-link-actions-form input[name=clients_list_table_order_column]").val($('#clients_list_table_order_column').val());
+        $("#client-finance-link-actions-form input[name=clients_list_table_order_type]").val($('#clients_list_table_order_type').val());
+        $("#client-finance-link-actions-form input[name=clients_list_table_search]").val($('#clients_list_table_search').val());
+        $("#client-finance-link-actions-form input[name=clients_list_table_pagelen]").val($('#clients_list_table_pagelen').val());
+        $("#client-finance-link-actions-form input[name=clients_list_table_page]").val($('#clients_list_table_page').val());
+    });
+
+    $('#client-finance-link-request-form').submit(function() {
+        $("#client-finance-link-request-form input[name=cnt_id]").val($('#cnt_id').val());
+        $("#client-finance-link-request-form input[name=cnt_name]").val($('#cnt_name').val());
+        $("#client-finance-link-request-form input[name=cnt_user_access]").val($('#cnt_user_access').val());
+
+        $("#client-finance-link-request-form input[name=clients_list_table_order_column]").val($('#clients_list_table_order_column').val());
+        $("#client-finance-link-request-form input[name=clients_list_table_order_type]").val($('#clients_list_table_order_type').val());
+        $("#client-finance-link-request-form input[name=clients_list_table_search]").val($('#clients_list_table_search').val());
+        $("#client-finance-link-request-form input[name=clients_list_table_pagelen]").val($('#clients_list_table_pagelen').val());
+        $("#client-finance-link-request-form input[name=clients_list_table_page]").val($('#clients_list_table_page').val());
+    });
+
+    $('#client-finance-link-tender-form').submit(function() {
+        $("#client-finance-link-tender-form input[name=cnt_id]").val($('#cnt_id').val());
+        $("#client-finance-link-tender-form input[name=cnt_name]").val($('#cnt_name').val());
+        $("#client-finance-link-tender-form input[name=cnt_user_access]").val($('#cnt_user_access').val());
+
+        $("#client-finance-link-tender-form input[name=clients_list_table_order_column]").val($('#clients_list_table_order_column').val());
+        $("#client-finance-link-tender-form input[name=clients_list_table_order_type]").val($('#clients_list_table_order_type').val());
+        $("#client-finance-link-tender-form input[name=clients_list_table_search]").val($('#clients_list_table_search').val());
+        $("#client-finance-link-tender-form input[name=clients_list_table_pagelen]").val($('#clients_list_table_pagelen').val());
+        $("#client-finance-link-tender-form input[name=clients_list_table_page]").val($('#clients_list_table_page').val());
+    });
+
+    $('#client-finance-link-docs-form').submit(function() {
+        $("#client-finance-link-docs-form input[name=cnt_id]").val($('#cnt_id').val());
+        $("#client-finance-link-docs-form input[name=cnt_name]").val($('#cnt_name').val());
+        $("#client-finance-link-docs-form input[name=cnt_user_access]").val($('#cnt_user_access').val());
+
+        $("#client-finance-link-docs-form input[name=clients_list_table_order_column]").val($('#clients_list_table_order_column').val());
+        $("#client-finance-link-docs-form input[name=clients_list_table_order_type]").val($('#clients_list_table_order_type').val());
+        $("#client-finance-link-docs-form input[name=clients_list_table_search]").val($('#clients_list_table_search').val());
+        $("#client-finance-link-docs-form input[name=clients_list_table_pagelen]").val($('#clients_list_table_pagelen').val());
+        $("#client-finance-link-docs-form input[name=clients_list_table_page]").val($('#clients_list_table_page').val());
+    });
+</script>
+</body>
+</html>

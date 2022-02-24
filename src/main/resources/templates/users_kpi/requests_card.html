@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="user_kpi_requests_body" th:remove="tag">  
+        <div id="user-kpi-requests-buttons">
+                <button type="submit" id="user-kpi-requests-link" form="user-kpi-requests-link-form" class="btn btn-sm btn-outline-dark mr-1 user_kpi_requests_link_control mb-2" th:text="#{general.gotobtn}" disabled>GoTo</button>
+        </div>
+
+        <div><table id="table-user-kpi-requests" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+        
+        <form id="user-kpi-requests-link-form" th:action="@{/requests}" method="post" target="_blank">
+                <input name="req_id" hidden>
+                <input name="requests_list_table_order_column" hidden>
+                <input name="requests_list_table_order_type" hidden>
+                <input name="requests_list_table_search" hidden>
+                <input name="requests_list_table_pagelen" hidden>
+                <input name="requests_list_table_page" hidden>
+        </form>        
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vUserKpiRequestsValue;
+    vUserKpiRequestsValue = {
+        table : '#table-user-kpi-requests',
+        button_form: '#user-kpi-requests-buttons',
+        ajax : {
+            "url": /*[[@{/users_kpi/requests_menu}]]*/ "users_kpi/requests_menu",
+            "type": "post",
+            "data": function ( d ) {
+                d.user_id = vUserKpiMeetsValue.rowdata.user_id;
+                d.users_kpi_year = vUserKpiMeetsValue.rowdata.users_kpi_year;
+                d.users_kpi_month = vUserKpiMeetsValue.rowdata.users_kpi_month;
+            }
+        },
+        key : "req_id",
+        switchControl : user_kpi_requests_switchControl,
+        rowdata:{
+           req_id: null,
+           req_name: null,
+           req_user_id: null,
+           req_user_name: null,
+           req_status_id: null,
+           req_ops_name: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).find('td:eq(4)').css('background-color', data["user_status_colour"]);*/
+            $(row).css('background-color', data["req_status_colour"]);
+        },
+        columnDefs:[
+                {"targets": [2], "visible": false},
+                {"targets": [4], type: 'de_datetime'},
+                {"targets": [6], "visible": false},
+                {"targets": [8], "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{users_kpi.requests.req_id}]]*/ "req_id", "data": "req_id", "width": "5%", "className": "min-tablet-l"},
+                /*1*/{"title": /*[[#{users_kpi.requests.req_name}]]*/ "req_name", "data": "req_name", "width": "43%"},
+                /*2*/{"title": /*[[#{users_kpi.requests.req_user_id}]]*/ "req_user_id", "data": "req_user_id", "width": "1%"},
+                /*3*/{"title": /*[[#{users_kpi.requests.req_user_name}]]*/ "req_user_name", "data": "req_user_name", "width": "10%", "className":"min-tablet-l text-center"},
+                /*4*/{"title": /*[[#{users_kpi.requests.req_date}]]*/ "req_date", "data": "req_date", "width": "14%", "className":"desktop text-center"},
+                /*5*/{"title": /*[[#{users_kpi.requests.req_ops_name}]]*/ "req_ops_name", "data": "req_ops_name", "width": "10%", "className": "desktop text-center"},
+                /*6*/{"title": /*[[#{users_kpi.requests.req_status_id}]]*/ "req_status_id", "data": "req_status_id", "width": "1%"},
+                /*7*/{"title": /*[[#{users_kpi.requests.req_status_sname}]]*/ "req_status_sname", "data": "req_status_sname", "width": "12%", "className":"desktop text-center"},
+                /*8*/{"title": /*[[#{users_kpi.requests.req_status_colour}]]*/ "req_status_colour", "data": "req_status_colour", "width": "1%"},
+                /*9*/{"title": /*[[#{users_kpi.requests.req_result_status_sname}]]*/ "req_result_status_sname", "data": "req_result_status_sname", "width": "7%", "className":"desktop text-center"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function user_kpi_requests_switchControl(){
+            if(vUserKpiRequestsValue.rowdata.req_id != null) {
+                    $("#user-kpi-requests-link").prop('disabled',false).removeClass('btn-outline-dark').addClass('btn-outline-primary');
+
+                    $("#user-kpi-requests-link-sx").prop('disabled',false).removeClass('btn-outline-dark').addClass('btn-outline-primary');
+            } else{
+                    $("#user-kpi-requests-link").prop('disabled',true).addClass('btn-outline-dark').removeClass('btn-outline-primary');
+
+                    $("#user-kpi-requests-link-sx").prop('disabled',true).addClass('btn-outline-dark').removeClass('btn-outline-primary');
+            }
+    }
+
+    $('.user_kpi_requests_btn_control').on('click', function (){
+        $("#user-kpi-requests input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#user-kpi-requests').submit(function() {
+        vUserKpiRequestsValue.rowdata.user_kpi_requests_table_order_column = $(vUserKpiRequestsValue.table).DataTable().order()[0][0];
+        vUserKpiRequestsValue.rowdata.user_kpi_requests_table_order_type = $(vUserKpiRequestsValue.table).DataTable().order()[0][1];
+        vUserKpiRequestsValue.rowdata.user_kpi_requests_table_search = $(vUserKpiRequestsValue.table).DataTable().search();
+        vUserKpiRequestsValue.rowdata.user_kpi_requests_table_pagelen = $(vUserKpiRequestsValue.table).DataTable().page.len();
+        vUserKpiRequestsValue.rowdata.user_kpi_requests_table_page = $(vUserKpiRequestsValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vUserKpiRequestsValue.rowdata).forEach(function (index) {
+            $("#user-kpi-requests").append("<input name=\"" + index + "\" hidden>");
+            $("#user-kpi-requests input[name=\"" + index + "\"]").val(vUserKpiRequestsValue.rowdata[index]);
+        });
+    });
+
+    $('.user_kpi_requests_link_control').on('click', function (){
+            $("#user-kpi-requests-link-form input[name=req_id]").val(vUserKpiRequestsValue.rowdata.req_id);
+
+            $("#user-kpi-requests-link-form input[name=requests_list_table_order_column]").val(0);
+            $("#user-kpi-requests-link-form input[name=requests_list_table_order_type]").val("desc");
+            $("#user-kpi-requests-link-form input[name=requests_list_table_search]").val(vUserKpiRequestsValue.rowdata.req_id);
+            $("#user-kpi-requests-link-form input[name=requests_list_table_pagelen]").val(25);
+            $("#user-kpi-requests-link-form input[name=requests_list_table_page]").val(0);
+    });    
+    
+    $(document).ready(function(){
+        vUserKpiRequestsValue.rowdata.req_id = /*[[${req_id}]]*/ null;
+
+        vUserKpiRequestsValue.rowdata.user_id = /*[[${user_id}]]*/ null;
+        vUserKpiRequestsValue.rowdata.users_kpi_year = /*[[${users_kpi_year}]]*/ null;
+        vUserKpiRequestsValue.rowdata.users_kpi_month = /*[[${users_kpi_month}]]*/ null;        
+        
+        vUserKpiRequestsValue.rowdata.table_order_column = /*[[${user_kpi_requests_table_order_column}]]*/ null;
+        vUserKpiRequestsValue.rowdata.table_order_type = /*[[${user_kpi_requests_table_order_type}]]*/ null;
+        vUserKpiRequestsValue.rowdata.table_search = /*[[${user_kpi_requests_table_search}]]*/ null;
+        vUserKpiRequestsValue.rowdata.table_pagelen = /*[[${user_kpi_requests_table_pagelen}]]*/ null;
+        vUserKpiRequestsValue.rowdata.table_page = /*[[${user_kpi_requests_table_page}]]*/ null;
+
+        recreateDataTable(vUserKpiRequestsValue);
+
+    });
+</script>
+
+</body>
+</html>

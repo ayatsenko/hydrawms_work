@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="kpi_facts_cs_crm_general_body" th:remove="tag">
+        <div><table id="table-kpi-facts-cs-crm-general" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+        var rn_show, user_id_show, user_name_show, user_surname_show, param_id_show, param_name_show, param_value_show;
+        var rn_width, user_id_width, user_name_width, user_surname_width, param_id_width, param_name_width, param_value_width;
+        var rn_class, user_id_class, user_name_class, user_surname_class, param_id_class, param_name_class, param_value_class;
+
+        if(mobileScreenSize){
+                vDomParam = "Blfrtp";
+        }
+        else if(smallScreenSize){
+                vDomParam = "Blfrtip";
+                rn_show = false;
+                rn_width = "";
+                rn_class = "";
+                user_id_show = false;
+                user_id_width = "";
+                user_id_class = "";
+                user_name_show = true;
+                user_name_width = "40%";
+                user_name_class = "small_size small_head_size small_footer_size text-center";
+                user_surname_show = false;
+                user_surname_width = "";
+                user_surname_class = "";
+                param_id_show = false;
+                param_id_width = "";
+                param_id_class = "";
+                param_name_show = true;
+                param_name_width = "20%";
+                param_name_class = "small_size small_head_size small_footer_size text-center";
+                param_value_show = true;
+                param_value_width = "15%";
+                param_value_class = "small_size small_head_size small_footer_size text-center";
+        }
+        else{
+                vDomParam = "Blfrtip";
+                rn_show = false;
+                rn_width = "";
+                rn_class = "";
+                user_id_show = false;
+                user_id_width = "";
+                user_id_class = "";
+                user_name_show = true;
+                user_name_width = "40%";
+                user_name_class = "small_size small_head_size small_footer_size text-center";
+                user_surname_show = false;
+                user_surname_width = "";
+                user_surname_class = "";
+                param_id_show = false;
+                param_id_width = "";
+                param_id_class = "";
+                param_name_show = true;
+                param_name_width = "20%";
+                param_name_class = "small_size small_head_size small_footer_size text-center";
+                param_value_show = true;
+                param_value_width = "15%";
+                param_value_class = "small_size small_head_size small_footer_size text-center";
+        }
+
+        var vKPIFactsCsCRMGeneralValue;
+        vKPIFactsCsCRMGeneralValue = {
+                table : '#table-kpi-facts-cs-crm-general',
+                ajax : {
+                        "url": /*[[@{/kpi_facts/cs_crm_general_menu}]]*/ "/kpi_facts/cs_crm_general_menu",
+                        "type": "post",
+                        "data": function ( d ) {
+                                d.kpi_facts_crm_param_id = vKPIFactsCsCRMGeneralValue.rowdata.kpi_facts_crm_param_id;
+                                d.kpi_facts_user_id = vKPIFactsCsCRMGeneralValue.rowdata.kpi_facts_user_id;
+                                d.kpi_facts_year = vKPIFactsCsCRMGeneralValue.rowdata.kpi_facts_year;
+                                d.kpi_facts_month = vKPIFactsCsCRMGeneralValue.rowdata.kpi_facts_month;
+                        }
+                },
+                key : "rn",
+                switchControl : user_kpi_crm_general_month_01_switchControl,
+                rowdata:{
+                        rn: null,
+                        cnt_name: null,
+                        cs_name: null,
+                        cs_id: null,
+                        req_ops_username: null,
+                        tend_status_id: null,
+                        param_id: null,
+                        user_id: null,
+
+                        dep_kpi_crm_param_id: null,
+                        dep_kpi_user_id: null,
+                        dep_kpi_year: null,
+                        dep_kpi_month: null
+                },
+                ordering: true,
+                order: [
+                        [0, "desc"]
+                ],
+
+                dom: 'Blfrtip',
+                createdRow: function( row, data, dataIndex ) {
+                        /*$(row).find('td:eq(4)').css('background-color', data["user_status_colour"]);*/
+                },
+                columnDefs:[
+                        {"targets": [0], "width": rn_width, "className": rn_class, "visible": rn_show},
+                        {"targets": [1], "width": user_id_width, "className": user_id_class, "visible": user_id_show},
+                        {"targets": [2], "width": user_name_width, "className": user_name_class, "visible": user_name_show},
+                        {"targets": [3], "width": user_surname_width, "className": user_surname_class, "visible": user_surname_show},
+                        {"targets": [4], "width": param_id_width, "className": param_id_class, "visible": param_id_show},
+                        {"targets": [5], "width": param_name_width, "className": param_name_class, "visible": param_name_show},
+                        {"targets": [6], "width": param_value_width, "className": param_value_class, "visible": param_value_show}
+                ],
+                columns : [
+                        /*0*/{"title": /*[[#{kpi_facts.cs_crm_general.rn}]]*/ "rn", "data": "rn"},
+                        /*1*/{"title": /*[[#{kpi_facts.cs_crm_general.user_id}]]*/ "user_id", "data": "user_id"},
+                        /*2*/{"title": /*[[#{kpi_facts.cs_crm_general.user_name}]]*/ "user_name", "data": "user_name"},
+                        /*3*/{"title": /*[[#{kpi_facts.cs_crm_general.user_surname}]]*/ "user_surname", "data": "user_surname"},
+                        /*4*/{"title": /*[[#{kpi_facts.cs_crm_general.param_id}]]*/ "param_id", "data": "param_id"},
+                        /*5*/{"title": /*[[#{kpi_facts.cs_crm_general.param_name}]]*/ "param_name", "data": "param_name"},
+                        /*6*/{"title": /*[[#{kpi_facts.cs_crm_general.param_value}]]*/ "param_value", "data": "param_value"}
+                ],
+                pageLength: 25,
+                copy_button: true,
+                excel_button: true,
+                pdf_button: true,
+                print_button: true
+        };
+
+        function dep_kpi_crm_general_month_01_hide(){
+        }
+
+        function user_kpi_crm_general_month_01_switchControl(){
+                dep_kpi_crm_general_month_01_hide();
+                if(vKPIFactsCsCRMGeneralValue.rowdata.rn != null) {
+                }
+                else{
+                }
+        }
+
+        $(document).ready(function(){
+                vKPIFactsCsCRMGeneralValue.rowdata.rn = /*[[${rn}]]*/ null;
+
+                vKPIFactsCsCRMGeneralValue.rowdata.cs_name = /*[[${cs_name}]]*/ null;
+                vKPIFactsCsCRMGeneralValue.rowdata.dep_kpi_year = /*[[${dep_kpi_year}]]*/ null;
+                vKPIFactsCsCRMGeneralValue.rowdata.dep_kpi_month = /*[[${dep_kpi_month}]]*/ null;
+
+                vKPIFactsCsCRMGeneralValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+                vKPIFactsCsCRMGeneralValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+                vKPIFactsCsCRMGeneralValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+                vKPIFactsCsCRMGeneralValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+                vKPIFactsCsCRMGeneralValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+                recreateDataTable(vKPIFactsCsCRMGeneralValue);
+        });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{part_world.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card" id="part_world_main_card">
+        <div class="card-header">
+            <div class="card-actions float-right">
+                <a href="#part_world_main_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+            </div>
+            <h5 class="card-title mb-1" th:text="#{part_world.caption}"></h5>
+            <form class="form-inline">
+                <div class="custom-control custom-switch">
+                    <input class="custom-control-input" type="checkbox" id="part_world_filter_check" name="part_world_filter_check">
+                    <label class="custom-control-label" for="part_world_filter_check"></label>
+                </div>
+                <div class="form-group form-group-sm mr-2">
+                    <label for="part_world_filter_start_date" class="mr-2" th:text="#{part_world.filter_start_date}">StartDate:</label>
+                    <input class="form-control" type="text" id="part_world_filter_start_date" name="part_world_tenders_start_date" disabled/>
+                </div>
+
+                <div class="form-group form-group-sm mr-2">
+                    <label for="part_world_filter_end_date" class="mr-2" th:text="#{part_world.filter_end_date}">EndDate:</label>
+                    <input class="form-control" type="text" id="part_world_filter_end_date" name="part_world_tenders_end_date" disabled/>
+                </div>
+                <button type="button" class="btn btn-dark align-middle" id="part_world_filter_show" disabled><i data-feather="search"></i></button>
+            </form>
+        </div>
+        <div class="card-body py-3 collapse show" id="part_world_main_div">
+            <div>
+                <span th:replace="part_world/main_card :: part_world_main_body"></span>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="col-12">
+        <div>
+        <div class="tab">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-1" data-toggle="tab" role="tab" th:text="#{part_world.tabs.timetable}">Timetable</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-2" data-toggle="tab" role="tab" th:text="#{part_world.tabs.tasks}">Tasks</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-3" data-toggle="tab" role="tab" th:text="#{part_world.tabs.addresses}">Addresses</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-4" data-toggle="tab" role="tab" th:text="#{part_world.tabs.aims}">Aims</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-5" data-toggle="tab" role="tab" th:text="#{part_world.tabs.transports}">Transports</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-6" data-toggle="tab" role="tab" th:text="#{part_world.tabs.costs}">Costs</a></li>
+                <li class="nav-item"><a class="nav-link text-light" href="#tab-7" role="tab" th:text="#{part_world.tabs.doc_arch}">Doc Arch</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab-1" role="tabpanel">
+                    <span th:replace="part_world/timelog_card :: part_world_timelog_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-2" role="tabpanel">
+                    <span th:replace="part_world/tasks_card :: part_world_tasks_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-3" role="tabpanel">
+                    <span th:replace="part_world/ways_card :: part_world_ways_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-4" role="tabpanel">
+                    <span th:replace="part_world/loads_card :: part_world_loads_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-5" role="tabpanel">
+                    <span th:replace="part_world/trans_card :: part_world_trans_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-6" role="tabpanel">
+                    <span th:replace="part_world/costs_card :: part_world_costs_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-7" role="tabpanel">
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+<!-- FLC -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<script th:replace="part_world/timelog_card :: cardscript"></script>
+<script th:replace="part_world/tasks_card :: cardscript"></script>
+<script th:replace="part_world/ways_card :: cardscript"></script>
+<script th:replace="part_world/loads_card :: cardscript"></script>
+<script th:replace="part_world/trans_card :: cardscript"></script>
+<script th:replace="part_world/costs_card :: cardscript"></script>
+
+<script th:replace="part_world/main_card :: cardscript"></script>
+
+</body>
+</html>

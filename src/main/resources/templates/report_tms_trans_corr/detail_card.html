@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_tms_trans_corr_detail_body" th:remove="tag">
+        <div><table id="table-report-tms-trans-corr-detail" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var cnt_id_width, cnt_name_width, doc_count_width, doc_sum_width, tms_count_width, tms_sum_width, all_count_width, all_sum_width, empty_column_width;
+    var cnt_id_class, cnt_name_class, doc_count_class, doc_sum_class, tms_count_class, tms_sum_class, all_count_class, all_sum_class, empty_column_class;
+
+    var smallScreenSize = window.screen.width > 1024 && window.screen.height <= 768;
+    var mobileScreenSize = window.screen.width < 1024 && window.screen.height < 768;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+
+        cnt_id_width = "5%";
+        cnt_id_class = "small_size small_head_size small_footer_size";
+        cnt_name_width = "33%";
+        cnt_name_class = "small_size small_head_size small_footer_size";
+        doc_count_width = "5%";
+        doc_count_class = "small_size small_head_size small_footer_size text-center";
+        doc_sum_width = "7%";
+        doc_sum_class = "small_size small_head_size small_footer_size text-center";
+        tms_count_width = "5%";
+        tms_count_class = "small_size small_head_size small_footer_size text-center";
+        tms_sum_width = "7%";
+        tms_sum_class = "small_size small_head_size small_footer_size text-center";
+        all_count_width = "5%";
+        all_count_class = "small_size small_head_size small_footer_size text-center";
+        all_sum_width = "7%";
+        all_sum_class = "small_size small_head_size small_footer_size text-center";
+        empty_column_width = "26%";
+        empty_column_class = "";
+    }
+    else{
+        vDomParam = "Blfrtip";
+
+        cnt_id_width = "5%";
+        cnt_id_class = "";
+        cnt_name_width = "33%";
+        cnt_name_class = "";
+        doc_count_width = "5%";
+        doc_count_class = "text-center";
+        doc_sum_width = "7%";
+        doc_sum_class = "text-center";
+        tms_count_width = "5%";
+        tms_count_class = "text-center";
+        tms_sum_width = "7%";
+        tms_sum_class = "text-center";
+        all_count_width = "5%";
+        all_count_class = "text-center";
+        all_sum_width = "7%";
+        all_sum_class = "text-center";
+        empty_column_width = "26%";
+        empty_column_class = "";
+    }
+
+    var vReportTMSTransCorrDetailValue;
+    vReportTMSTransCorrDetailValue = {
+        table : '#table-report-tms-trans-corr-detail',
+        button_form: "#table-report-tms-trans-corr-buttons",
+        ajax : {
+            "url": /*[[@{/report_tms_trans_corr/get_detail_table}]]*/ "report_tms_trans_corr/get_detail_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.start_date = vReportTMSTransCorrDetailValue.rowdata.start_date;
+                d.end_date = vReportTMSTransCorrDetailValue.rowdata.end_date;
+                d.req_cnt_id = vReportTMSTransCorrDetailValue.rowdata.req_cnt_id;
+            }
+        },
+        key : "cnt_id",
+        switchControl : report_tms_trans_corr_detail_switchControl,
+        rowdata:{
+            cnt_id: null,
+            start_date: null,
+            end_date: null,
+            req_cnt_id: null,
+            ser_id: null,
+            req_id: null
+        },
+        ordering: true,
+        order: [
+            [5, "desc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function(row, data, index) {
+            if(data["cnt_id"] === 0){
+                $(row).css('background-color','#d5e1df');
+                $(row).addClass("font-weight-bold");
+            }
+        },
+        columnDefs: [
+            { "targets": [2,4,6],  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            { "targets": [3,5,7],  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{report_tms_trans_corr.detail.cnt_id}]]*/ "cnt_id", "data": "cnt_id", "width": cnt_id_width, "className": cnt_id_class},
+            /*1*/{"title": /*[[#{report_tms_trans_corr.detail.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": cnt_name_width, "className": cnt_name_class},
+            /*2*/{"title": /*[[#{report_tms_trans_corr.detail.doc_count}]]*/ "doc_count", "data": "doc_count", "width": doc_count_width, "className": doc_count_class},
+            /*3*/{"title": /*[[#{report_tms_trans_corr.detail.doc_sum}]]*/ "doc_sum", "data": "doc_sum", "width": doc_sum_width, "className": doc_sum_class},
+            /*4*/{"title": /*[[#{report_tms_trans_corr.detail.tms_count}]]*/ "tms_count", "data": "tms_count", "width": tms_count_width, "className": tms_count_class},
+            /*5*/{"title": /*[[#{report_tms_trans_corr.detail.tms_sum}]]*/ "tms_sum", "data": "tms_sum", "width": tms_sum_width, "className": tms_sum_class},
+            /*6*/{"title": /*[[#{report_tms_trans_corr.detail.all_count}]]*/ "all_count", "data": "all_count", "width": all_count_width, "className": all_count_class},
+            /*7*/{"title": /*[[#{report_tms_trans_corr.detail.all_sum}]]*/ "all_sum", "data": "all_sum", "width": all_sum_width, "className": all_sum_class},
+            /*8*/{"title": /*[[#{report_tms_trans_corr.detail.empty_column}]]*/ "empty_column", "data": "empty_column", "width": empty_column_width, "className": empty_column_class}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function report_tms_trans_corr_detail_switchControl(){
+    }
+
+    $('.report_tms_trans_corr_detail_link_control').on('click', function (){
+        $("#report-tms-trans-corr-detail-link-form input[name=req_id]").val(vReportTMSTransCorrDetailValue.rowdata.req_id);
+
+        $("#report-tms-trans-corr-detail-link-form input[name=tenders_list_table_order_column]").val(0);
+        $("#report-tms-trans-corr-detail-link-form input[name=tenders_list_table_order_type]").val("desc");
+        $("#report-tms-trans-corr-detail-link-form input[name=tenders_list_table_search]").val(vReportTMSTransCorrDetailValue.rowdata.req_id);
+        $("#report-tms-trans-corr-detail-link-form input[name=tenders_list_table_pagelen]").val(25);
+        $("#report-tms-trans-corr-detail-link-form input[name=tenders_list_table_page]").val(0);
+    });
+
+    $('.positions_btn_control').on('click', function (){
+        $("#positions-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $(document).ready(function(){
+        vReportTMSTransCorrDetailValue.rowdata.start_date = null;
+        vReportTMSTransCorrDetailValue.rowdata.end_date = null;
+        vReportTMSTransCorrDetailValue.rowdata.req_cnt_id = null;
+
+        recreateDataTable(vReportTMSTransCorrDetailValue);
+
+        var vDocHeader = /*[[#{report_tms_trans_corr.detail.doc_header}]]*/ null;
+        var vTMSHeader = /*[[#{report_tms_trans_corr.detail.tms_header}]]*/ null;
+        var vAllHeader = /*[[#{report_tms_trans_corr.detail.all_header}]]*/ null;
+
+        $("#table-report-tms-trans-corr-detail thead tr:first").before(
+                    '<tr role="row">' +
+                    '<th></th><th></th>' +
+                    '<th colspan="2" class="text-center">' + vDocHeader + '</th>' +
+                    '<th colspan="2" class="text-center">' + vTMSHeader + '</th>' +
+                    '<th colspan="2" class="text-center">' + vAllHeader + '</th>' +
+                    '<th></th>' +
+                    '</tr>'
+        );
+    });
+</script>
+
+</body>
+</html>

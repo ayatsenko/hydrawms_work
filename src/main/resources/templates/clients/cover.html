@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:include="layout/header :: header(title = #{clients.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card order-1 mb-2" id="clients_filters_div" hidden>
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#clients_filter_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" id="clients_filter_header" href="#clients_filter_div" data-toggle="collapse" th:text="#{clients.filter.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse" id="clients_filter_div">
+                <div>
+                    <form class="form-inline">
+                        <div class="custom-control custom-switch mb-2">
+                            <input class="custom-control-input" type="checkbox" id="requests_filter_check" name="request_filters_check">
+                            <label class="custom-control-label" for="requests_filter_check"></label>
+                        </div>
+
+                        <div class="form-group mb-2 mr-2">
+                            <label for="clients_filters_users_list" class="mr-2" th:text="#{clients.filter.users_list}">Users: </label>
+                            <select id="clients_filters_users_list" class="form-control select2" data-toggle="select2">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="filter_user_list : ${filter_user_list}"
+                                        th:value="${filter_user_list.id}"
+                                        th:text="${filter_user_list.user_surname}"
+                                        th:selected="${filter_user_list.id == user_id}"
+                                ></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-2 mr-2">
+                            <label for="clients_filters_statuses_list" class="mr-2" th:text="#{clients.filter.statuses_list}">Statuses: </label>
+                            <select id="clients_filters_statuses_list" class="form-control">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="filter_statuses : ${filter_statuses_list}"
+                                        th:value="${filter_statuses.cs_id}"
+                                        th:text="${filter_statuses.cs_name}"
+                                        th:selected="${filter_statuses.cs_id == cs_id}"
+                                ></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-2 mr-2">
+                            <label for="clients_filters_classes_list" class="mr-2" th:text="#{clients.filter.classes_list}">Statuses: </label>
+                            <select id="clients_filters_classes_list" class="form-control">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="filter_classes : ${filter_classes_list}"
+                                        th:value="${filter_classes.cnt_class_id}"
+                                        th:text="${filter_classes.cnt_class_name}"
+                                        th:selected="${filter_classes.cnt_class_id == cnt_class_id}"
+                                ></option>
+                            </select>
+                        </div>
+
+                        <div class="d-none d-sm-block">
+                            <button type="button" class="btn btn-dark align-middle mb-2" id="clients_filters_show" disabled><i data-feather="search"></i></button>
+                        </div>
+                    </form>
+                        <div class="d-block d-sm-none">
+                            <button type="button" class="btn btn-primary btn-lg btn-block" id="clients_filters_show_sx">Search</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Filter Row -->
+
+<div class="row">
+    <div class="col-12 col-lg-8 pl-2 pr-1 pt-0">
+        <div class="card order-1 mb-2" id="clients_list_card">
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#clients_list_div" data-toggle="collapse"><i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" id="clients_list_header" href="#clients_list_div" data-toggle="collapse" th:text="#{clients.list.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="clients_list_div">
+                <div>
+                    <span th:replace="clients/list_modal :: clients_list_modal_body"></span>
+                    <span th:replace="clients/list_card :: clients_list_body"></span>
+                </div>
+            </div>
+        </div><!-- Client List Table -->
+    </div><!-- First Column -->
+
+    <div class="col-12 col-lg-4 pl-md-0 pr-md-2 pt-md-0">
+        <div class="tab">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#clients_wh_tab" data-toggle="tab" role="tab">
+                        <i class="align-middle text-primary" data-feather="box"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#clients_settings_tab" data-toggle="tab" role="tab">
+                        <i class="align-middle text-primary" data-feather="shuffle"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#clients_parameters_tab" data-toggle="tab" role="tab">
+                        <i class="align-middle text-primary" data-feather="settings"></i>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content p-md-1 m-md-0">
+                <div class="tab-pane active" id="clients_wh_tab" role="tabpanel">
+                    <div class="card" id="clients_wh_card">
+                        <div class="card-header pb-0">
+                            <div class="card-actions float-right">
+                                <a href="#clients_wh_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                            </div>
+                            <h5 class="card-title" id="clients_wh_header" href="#clients_wh_div" data-toggle="collapse" th:text="#{clients.wh.caption}"></h5>
+                        </div>
+                        <div class="card-body p-md-0 m-md-0 collapse show" id="clients_wh_div">
+                            <div>
+                                <span th:replace="clients/wh_modal :: clients_wh_modal_body"></span>
+                                <span th:replace="clients/wh_card :: clients_wh_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- WH Tab -->
+
+                <div class="tab-pane" id="clients_settings_tab" role="tabpanel">
+                    <div class="card" id="clients_wh_services_card">
+                        <div class="card-header pb-0">
+                            <div class="card-actions float-right">
+                                <a href="#clients_wh_services_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i></a>
+                            </div>
+                            <h5 class="card-title" id="clients_wh_services_header" href="#clients_wh_services_div" data-toggle="collapse" th:text="#{clients.wh_services.caption}"></h5>
+                        </div>
+                        <div class="card-body p-md-0 m-md-0 collapse show" id="clients_wh_services_div">
+                            <div>
+                                <span th:replace="clients/wh_services_modal :: clients_wh_services_modal_body"></span>
+                                <span th:replace="clients/wh_services_card :: clients_wh_services_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- WH Services Tab -->
+
+                <div class="tab-pane" id="clients_parameters_tab" role="tabpanel">
+                    <div class="card" id="clients_wh_parameters_card">
+                        <div class="card-header pb-0">
+                            <div class="card-actions float-right">
+                                <a href="#clients_wh_parameters_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i></a>
+                            </div>
+                            <h5 class="card-title" id="clients_wh_parameters_header" href="#clients_wh_parameters_div" data-toggle="collapse" th:text="#{clients.wh_parameters.caption}"></h5>
+                        </div>
+                        <div class="card-body p-md-0 m-md-0 collapse show" id="clients_wh_parameters_div">
+                            <div>
+                                <span th:replace="clients/wh_parameters_modal :: clients_wh_parameters_modal_body"></span>
+                                <span th:replace="clients/wh_parameters_card :: clients_wh_parameters_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- WH Services Tab -->
+            </div>
+        </div>
+    </div><!-- Second Column -->
+</div><!-- Clients -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="clients/wh_parameters_modal :: cardscript"></script>
+<script th:replace="clients/wh_parameters_card :: cardscript"></script>
+
+<script th:replace="clients/wh_services_modal :: cardscript"></script>
+<script th:replace="clients/wh_services_card :: cardscript"></script>
+
+<script th:replace="clients/wh_modal :: cardscript"></script>
+<script th:replace="clients/wh_card :: cardscript"></script>
+
+<script th:replace="clients/list_modal :: cardscript"></script>
+<script th:replace="clients/list_card :: cardscript"></script>
+
+</body>
+</html>

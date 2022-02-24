@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:include="layout/header :: header(title = #{users.caption_id})"></head>
+
+<body> <!-- right-to-left -->
+
+<div class="splash active">
+    <div class="splash-icon"></div>
+</div>
+
+<div th:replace="fragments/navigation :: navigation">navigation</div>
+<div class="header">
+    <div class="container">
+        <div class="media text-white">
+            <div class="media-body">
+                <span class="font-weight-normal"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div th:replace="fragments/leftmenu :: leftmenu">left menu</div>
+
+            <div class="col-12 col-md-8 col-lg-9 col-xl-10 pl-lg-4">
+                <div class="row">
+                    <div class="col-8 col-lg-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0" th:text="#{users.caption_id}"></h5>
+                            </div>
+                            <div class="card-body">
+                                <div>
+                                    <span th:replace="user/card :: cardbody"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer th:replace="fragments/footer :: footer"></footer>
+</main>
+
+<footer th:replace="layout/footer :: footer"></footer>
+
+<script th:replace="user/card :: cardscript">supply</script>
+
+</body>
+</html>

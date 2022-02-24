@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="part_world_timelog_body" th:remove="tag">   
+    <form id="part-world-timelog-detail" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+
+            <div id="part-world-timelog-btn-large" class="d-none d-sm-block">
+                 <button type="button" id="part-world-timelog-check" class="btn btn-sm btn-dark" disabled><i class="fas fa-warehouse"></i></button>
+                 <button type="button" id="part-world-timelog-uncheck" class="btn btn-sm btn-dark mr-2" disabled><i class="fas fa-times"></i></button>
+              </div>
+              <div id="part-world-timelog-btn-small" class="d-block d-sm-none">
+                 <button type="button" id="part-world-timelog-check-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-warehouse"></i></button>
+                 <button type="button" id="part-world-timelog-uncheck-sx" class="btn btn-sm btn-dark mr-2" disabled><i class="fas fa-times"></i></button>
+              </div>
+    </form>
+        <div><table id="table-part-world-timelog" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+        var clm_status_id_width, clm_status_name_width, clmtl_date_width, clmtl_fact_date_width, user_surname_width, role_name_width, clm_status_colour_width, empty_column_width;
+        var clm_status_id_class, clm_status_name_class, clmtl_date_class, clmtl_fact_date_class, user_surname_class, role_name_class, clm_status_colour_class, empty_column_class;
+
+        if(mobileScreenSize){
+                vDomParam = "Blfrtp";
+        }
+        else if(smallScreenSize){
+                vDomParam = "Blfrtip";
+                clm_status_id_width = "";
+                clm_status_id_class = "none";
+                clm_status_name_width = "10%";
+                clm_status_name_class = "small_size small_head_size small_footer_size";
+                clmtl_date_width = "10%";
+                clmtl_date_class = "small_size small_head_size small_footer_size text-center";
+                clmtl_fact_date_width = "10%";
+                clmtl_fact_date_class = "small_size small_head_size small_footer_size text-center";
+                user_surname_width = "20%";
+                user_surname_class = "small_size small_head_size small_footer_size text-center";
+                role_name_width = "10%";
+                role_name_class = "small_size small_head_size small_footer_size text-center";
+                clm_status_colour_width = "";
+                clm_status_colour_class = "none";
+                empty_column_width = "40%";
+                empty_column_class = "small_size small_head_size small_footer_size";
+        }
+        else{
+                vDomParam = "Blfrtip";
+                clm_status_id_width = "";
+                clm_status_id_class = "none";
+                clm_status_name_width = "10%";
+                clm_status_name_class = "";
+                clmtl_date_width = "8%";
+                clmtl_date_class = "text-center";
+                clmtl_fact_date_width = "8%";
+                clmtl_fact_date_class = "text-center";
+                user_surname_width = "17%";
+                user_surname_class = "text-center";
+                role_name_width = "10%";
+                role_name_class = "text-center";
+                clm_status_colour_width = "";
+                clm_status_colour_class = "none";
+                empty_column_width = "47%";
+                empty_column_class = "";
+        }
+
+    var vFLGClaimTimeLogValue;
+    vFLGClaimTimeLogValue = {
+            table : '#table-part-world-timelog',
+            button_form: "#part-world-timelog-detail",
+        ajax : {
+            "url": /*[[@{/part_world/get_timelog_table}]]*/ "part_world/get_timelog_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vFLGClaimTimeLogValue.rowdata.clm_id
+            }
+        },
+        key : "clm_status_id",
+        switchControl : part_world_timelog_switchControl,
+        rowdata:{
+            clm_status_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: vDomParam,
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["clm_status_colour"]);
+        },
+        columnDefs:[
+                {"targets": [2], type: 'de_datetime'},
+                {"targets": [3], type: 'de_datetime'}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{part_world.timelog.clm_status_id}]]*/ "clm_status_id", "data": "clm_status_id", "width": clm_status_id_width, "className": clm_status_id_class},
+                /*1*/{"title": /*[[#{part_world.timelog.clm_status_name}]]*/ "clm_status_name", "data": "clm_status_name", "width": clm_status_name_width, "className": clm_status_name_class},
+                /*2*/{"title": /*[[#{part_world.timelog.clmtl_date}]]*/ "clmtl_date", "data": "clmtl_date", "width": clmtl_date_width, "className": clmtl_date_class},
+                /*3*/{"title": /*[[#{part_world.timelog.clmtl_fact_date}]]*/ "clmtl_fact_date", "data": "clmtl_fact_date", "width": clmtl_fact_date_width, "className": clmtl_fact_date_class},
+                /*4*/{"title": /*[[#{part_world.timelog.user_surname}]]*/ "user_surname", "data": "user_surname", "width": user_surname_width, "className": user_surname_class},
+                /*5*/{"title": /*[[#{part_world.timelog.role_name}]]*/ "role_name", "data": "role_name", "width": role_name_width, "className": role_name_class},
+                /*6*/{"title": /*[[#{part_world.timelog.clm_status_colour}]]*/ "clm_status_colour", "data": "clm_status_colour", "width": clm_status_colour_width, "className": clm_status_colour_class},
+                /*7*/{"title": /*[[#{part_world.timelog.empty_column}]]*/ "empty_column", "data": "empty_column", "width": empty_column_width, "className": empty_column_class}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+        function part_world_timelog_switchControl(){
+        }
+
+    $('.part_world_timelog_btn_control').on('click', function (){
+        $("#part-world-timelog-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#part-world-timelog-detail').submit(function() {
+        vFLGClaimTimeLogValue.rowdata.part_world_timelog_table_order_column = $(vFLGClaimTimeLogValue.table).DataTable().order()[0][0];
+        vFLGClaimTimeLogValue.rowdata.part_world_timelog_table_order_type = $(vFLGClaimTimeLogValue.table).DataTable().order()[0][1];
+        vFLGClaimTimeLogValue.rowdata.part_world_timelog_table_search = $(vFLGClaimTimeLogValue.table).DataTable().search();
+        vFLGClaimTimeLogValue.rowdata.part_world_timelog_table_pagelen = $(vFLGClaimTimeLogValue.table).DataTable().page.len();
+        vFLGClaimTimeLogValue.rowdata.part_world_timelog_table_page = $(vFLGClaimTimeLogValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vFLGClaimTimeLogValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+
+        Object.keys(vFLGClaimTimeLogValue.rowdata).forEach(function (index) {
+            $("#part-world-timelog-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#part-world-timelog-detail input[name=\"" + index + "\"]").val(vFLGClaimTimeLogValue.rowdata[index]);
+        });
+    });
+
+        function addWHCheck(){
+                if (vFLGClaimsValue.rowdata.clm_id != null) {
+                        var MainRowID = vFLGClaimsValue.rowdata.clm_id;
+                        var RowID = vFLGClaimTimeLogValue.rowdata.clm_status_id;
+                        $.ajax({
+                                url: /*[[ @{/part_world/add_wh_check} ]]*/ "/part_world/add_wh_check",
+                                type: 'POST',
+                                data: {"clm_id": MainRowID},
+                                success: function (result) {
+                                        vFLGClaimsValue.rowdata.clm_id = MainRowID;
+                                        $(vFLGClaimsValue.table).DataTable().ajax.reload(null, false);
+                                        vFLGClaimTimeLogValue.rowdata.clm_id = MainRowID;
+                                        vFLGClaimTimeLogValue.rowdata.clm_status_id = RowID;
+                                        $(vFLGClaimTimeLogValue.table).DataTable().ajax.reload(null, false);
+                                }
+                        });
+                }
+        }
+
+        function dellWHCheck(){
+                if (vFLGClaimsValue.rowdata.clm_id != null) {
+                        var MainRowID = vFLGClaimsValue.rowdata.clm_id;
+                        var RowID = vFLGClaimTimeLogValue.rowdata.clm_status_id;
+                        $.ajax({
+                                url: /*[[ @{/part_world/del_wh_check} ]]*/ "/part_world/del_wh_check",
+                                type: 'POST',
+                                data: {"clm_id": MainRowID},
+                                success: function (result) {
+                                        vFLGClaimsValue.rowdata.clm_id = MainRowID;
+                                        $(vFLGClaimsValue.table).DataTable().ajax.reload(null, false);
+                                        vFLGClaimTimeLogValue.rowdata.clm_id = MainRowID;
+                                        vFLGClaimTimeLogValue.rowdata.clm_status_id = RowID;
+                                        $(vFLGClaimTimeLogValue.table).DataTable().ajax.reload(null, false);
+                                }
+                        });
+                }
+        }
+
+//Buttons
+        $('#part-world-timelog-check').click(function() {
+                addWHCheck();
+        });
+
+        $('#part-world-timelog-check-sx').click(function() {
+                addWHCheck();
+        });
+
+        $('#part-world-timelog-uncheck').click(function() {
+                dellWHCheck();
+        });
+
+        $('#part-world-timelog-uncheck-sx').click(function() {
+                dellWHCheck();
+        });
+
+                $(document).ready(function(){
+        vFLGClaimTimeLogValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vFLGClaimTimeLogValue.rowdata.clm_status_id = /*[[${clm_status_id}]]*/ null;
+
+        vFLGClaimTimeLogValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vFLGClaimTimeLogValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vFLGClaimTimeLogValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vFLGClaimTimeLogValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vFLGClaimTimeLogValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vFLGClaimTimeLogValue);
+    });
+</script>
+
+</body>
+</html>

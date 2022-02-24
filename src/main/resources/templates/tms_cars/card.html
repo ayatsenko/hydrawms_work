@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_cars_body" th:remove="tag">
+        <form id="tms-cars-detail" class="mb-2" th:action="@{/tms_cars/detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="tms-cars-btn-large" class="d-none d-sm-block">
+                 <button type="submit" id="tms-cars-detailbtn" class="btn btn-sm btn-dark tms_cars_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="tms-cars-addbtn" class="btn btn-sm btn-primary tms_cars_btn_control" th:text="#{general.addbtn}" th:attr="mode=0">Add</button>
+                 <button type="submit" id="tms-cars-editbtn" class="btn btn-sm btn-dark tms_cars_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="tms-cars-delbtn" class="btn btn-sm btn-dark tms_cars_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="tms-cars-btn-small" class="d-block d-sm-none">
+                 <button type="submit" id="tms-cars-detailbtn-sx" class="btn btn-sm btn-dark tms_cars_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="tms-cars-addbtn-sx" class="btn btn-sm btn-primary tms_cars_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                 <button type="submit" id="tms-cars-editbtn-sx" class="btn btn-sm btn-dark tms_cars_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="tms-cars-delbtn-sx" class="btn btn-sm btn-dark tms_cars_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-tms-cars" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vTmsCarsValue;
+    vTmsCarsValue = {
+        table : '#table-tms-cars',
+        button_form: "#tms-cars-detail",
+        ajax : {
+            "url": /*[[@{/tms_cars/gettable}]]*/ "tms_cars/gettable",
+            "type": "post",
+            "data": {
+            }
+        },
+        key : "tms_car_id",
+        switchControl : tms_cars_switchControl,
+        rowdata:{
+           tms_car_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        columnDefs:[
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{tms_cars.tms_car_id}]]*/ "tms_car_id", "data": "tms_car_id", "width": "5%"},
+                /*1*/{"title": /*[[#{tms_cars.tms_car_name}]]*/ "tms_car_name", "data": "tms_car_name", "width": "20%"},
+                /*2*/{"title": /*[[#{tms_cars.tms_car_number}]]*/ "tms_car_number", "data": "tms_car_number", "width": "10%"},
+                /*3*/{"title": /*[[#{tms_cars.tms_car_phone}]]*/ "tms_car_phone", "data": "tms_car_phone", "width": "10%"},
+                /*4*/{"title": /*[[#{tms_cars.tms_car_telegram}]]*/ "tms_car_telegram", "data": "tms_car_telegram", "width": "10%"},
+                /*5*/{"title": /*[[#{tms_cars.empty_column}]]*/ "empty_column", "data": "empty_column", "width": "45%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function tms_cars_switchControl(){
+        if(vTmsCarsValue.rowdata.tms_car_id != null) {
+            $("#tms-cars-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#tms-cars-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#tms-cars-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#tms-cars-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#tms-cars-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#tms-cars-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+            $("#tms-cars-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tms-cars-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tms-cars-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#tms-cars-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tms-cars-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tms-cars-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.tms_cars_btn_control').on('click', function (){
+        $("#tms-cars-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#tms-cars-detail').submit(function() {
+        vTmsCarsValue.rowdata.tms_cars_table_order_column = $(vTmsCarsValue.table).DataTable().order()[0][0];
+        vTmsCarsValue.rowdata.tms_cars_table_order_type = $(vTmsCarsValue.table).DataTable().order()[0][1];
+        vTmsCarsValue.rowdata.tms_cars_table_search = $(vTmsCarsValue.table).DataTable().search();
+        vTmsCarsValue.rowdata.tms_cars_table_pagelen = $(vTmsCarsValue.table).DataTable().page.len();
+        vTmsCarsValue.rowdata.tms_cars_table_page = $(vTmsCarsValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vTmsCarsValue.rowdata).forEach(function (index) {
+            $("#tms-cars-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#tms-cars-detail input[name=\"" + index + "\"]").val(vTmsCarsValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vTmsCarsValue.rowdata.tms_car_id = /*[[${tms_car_id}]]*/ null;
+
+        vTmsCarsValue.rowdata.table_order_column = /*[[${tms_cars_table_order_column}]]*/ null;
+        vTmsCarsValue.rowdata.table_order_type = /*[[${tms_cars_table_order_type}]]*/ null;
+        vTmsCarsValue.rowdata.table_search = /*[[${tms_cars_table_search}]]*/ null;
+        vTmsCarsValue.rowdata.table_pagelen = /*[[${tms_cars_table_pagelen}]]*/ null;
+        vTmsCarsValue.rowdata.table_page = /*[[${tms_cars_table_page}]]*/ null;
+
+        recreateDataTable(vTmsCarsValue);
+<!-- Hihglight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#tms_poland_li').addClass('active').removeClass('collapsed');
+        $('#tms_poland_a').attr('aria-expanded',true);
+        $('#tms_poland').addClass('show');
+
+        $('#tms_poland_cars_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

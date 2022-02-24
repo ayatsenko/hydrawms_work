@@ -1,0 +1,187 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{tenders.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 col-lg-8 pl-2 pr-1 pt-0">
+        <div class="card mb-2" id="tenders_filter_card">
+            <div class="card-header mb-0 pb-0">
+                <div class="card-actions float-right">
+                    <a href="#tenders_filter_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#tenders_filter_div" data-toggle="collapse" th:text="#{tenders.list.filter}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse" id="tenders_filter_div">
+                <div>
+                    <span th:replace="tenders/filter_card :: tenders_filter_body"></span>
+                </div>
+            </div>
+        </div><!-- Request Filter -->
+
+        <div class="card mb-2" id="tenders_list_card">
+            <div class="card-header mb-0 pb-0">
+                <div class="card-actions float-right">
+                    <a href="#tenders_list_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#tenders_list_div" data-toggle="collapse" th:text="#{tenders.list.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="tenders_list_div">
+                <div>
+                    <span th:replace="tenders/list_link_modal :: tenders_list_link_modal_body"></span>
+                    <span th:replace="tenders/list_modal :: tenders_list_modal_body"></span>
+                    <span th:replace="tenders/list_card :: tenders_list_body"></span>
+                </div>
+            </div>
+        </div><!-- Requests List -->
+    </div><!-- First Column -->
+
+    <div class="col-12 col-lg-4 pl-1 pr-2 pt-0">
+        <div class="tab">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#tenders_information_tab" data-toggle="tab" role="tab">
+                        <i class="align-middle text-primary fa fa-clipboard"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#tenders_chat_tab" data-toggle="tab" role="tab">
+                        <i class="align-middle text-primary fa fa-comment-alt"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#tenders_files_tab" data-toggle="tab" role="tab">
+                        <i class="align-middle text-primary fa fa-file-alt"></i>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tenders_information_tab" role="tabpanel">
+                    <div class="card mb-2" id="tenders_answers_card">
+                        <div class="card-header pb-0">
+                            <div class="card-actions float-right">
+                                <a href="#tenders_answers_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                            </div>
+                            <h5 class="card-title" href="#tenders_answers_div" data-toggle="collapse" th:text="#{tenders.answers.caption}"></h5>
+                        </div>
+                        <div class="card-body pt-0 collapse show" id="tenders_answers_div">
+                            <div class="row">
+                                <div class="col-12 col-lg-12">
+                                    <div class="input-group" id="sale_first_name_group">
+                                        <div class="input-group-prepend d-none d-sm-block">
+                                            <span class="input-group-text" th:text="#{tenders.answers.sale_first_name}">First Name:</span>
+                                        </div>
+                                        <input type="text" class="form-control text-dark font-weight-bold" id="sale_desc_name" name="sale_desc_name" readonly>
+                                    </div>
+                                </div>
+                            </div><!-- User First Name Row -->
+
+                            <div class="row mb-3">
+                                <!-- <label for="req_ops_note" class="col-form-label" th:text="#{tenders.answers.ops_text}">Text</label> -->
+                                <div class="col-12 col-lg-12">
+                                <textarea class="form-control text-dark font-weight-bold" rows="4" maxlength="128" style="resize:none;" id="sale_desc_note" name="sale_desc_note" readonly>
+                                </textarea>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 col-lg-12">
+                                    <div class="input-group" id="ops_name_group">
+                                        <div class="input-group-prepend d-none d-sm-block">
+                                            <span class="input-group-text" th:text="#{tenders.answers.ops_name}">OPS:</span>
+                                        </div>
+                                        <input type="text" class="form-control text-dark font-weight-bold" id="req_desc_ops_name" name="req_desc_ops_name" readonly>
+                                    </div>
+                                </div>
+                            </div><!-- Ops User Name Row -->
+
+                            <div class="row mb-3">
+                                <!-- <label for="req_ops_note" class="col-form-label" th:text="#{tenders.answers.ops_text}">Text</label> -->
+                                <div class="col-12 col-lg-12">
+                                <textarea class="form-control text-dark font-weight-bold" rows="4" maxlength="128" style="resize:none;" id="req_desc_ops_note" name="req_desc_ops_note" readonly>
+                                </textarea>
+                                </div>
+                            </div>
+                            <!-- Ops Text Row -->
+
+                            <div class="row">
+                                <div class="col-12 col-lg-12">
+                                    <div class="input-group" id="req_result_name_group">
+                                        <div class="input-group-prepend d-none d-sm-block">
+                                            <span class="input-group-text" th:text="#{tenders.answers.sale_name}">Sale:</span>
+                                        </div>
+                                        <input type="text" class="form-control text-dark font-weight-bold" id="req_desc_result_name" name="req_desc_result_name" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Sale User Name Row -->
+
+                            <div class="row">
+                                <!-- <label for="req_sale_note" class="col-form-label" th:text="#{tenders.answers.sale_text}">Text</label> -->
+                                <div class="col-12 col-lg-12">
+                                <textarea class="form-control text-dark font-weight-bold" rows="4" maxlength="128" style="resize:none;" id="req_desc_result_note" name="req_desc_result_note" readonly>
+                                </textarea>
+                                </div>
+                            </div>
+                            <!-- Sale Text Row -->
+                        </div>
+                    </div><!-- User SubUsers -->
+                </div><!-- Information Tab -->
+
+                <div class="tab-pane" id="tenders_chat_tab" role="tabpanel">
+                    <div class="position-relative">
+                        <div class="chat-messages" id="tenders_chat_container">
+                        </div>
+                    </div>
+                    <div class="flex-grow-0 border-top">
+                        <div class="input-group pt-2 pr-1 pl-1">
+                            <input type="text" class="form-control" placeholder="Type your message" id="tenders_chat_new_text">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" id="tenders_chat_new_button">Send</button>
+                            </div>
+                        </div>
+                    </div><!-- Request Chat -->
+                </div><!-- Chat Tab-->
+
+                <div class="tab-pane" id="tenders_files_tab" role="tabpanel">
+                    <div class="card mb-2" id="tenders_files_card">
+                        <div class="card-header pb-0">
+                            <div class="card-actions float-right">
+                                <a href="#tenders_files_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                            </div>
+                            <h5 class="card-title" href="#tenders_files_div" data-toggle="collapse" th:text="#{tenders.files.caption}"></h5>
+                        </div>
+                        <div class="card-body pt-0 collapse show" id="tenders_files_div">
+                            <div>
+                                <span th:replace="tenders/files_modal :: tenders_files_modal_body"></span>
+                                <span th:replace="tenders/files_card :: tenders_files_body"></span>
+                            </div>
+                        </div>
+                    </div><!-- Request Files -->
+                </div><!-- Files Tab-->
+
+            </div><!-- Tabs Body-->
+        </div><!-- Tabs -->
+    </div><!-- Second Column -->
+</div><!-- First Row -->
+<!-- Location -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="tenders/filter_card :: cardscript"></script>
+
+<script th:replace="tenders/chat_card :: cardscript"></script>
+
+<script th:replace="tenders/files_modal :: cardscript"></script>
+<script th:replace="tenders/files_card :: cardscript"></script>
+
+<script th:replace="tenders/list_link_modal :: cardscript"></script>
+<script th:replace="tenders/list_modal :: cardscript"></script>
+<script th:replace="tenders/list_card :: cardscript"></script>
+
+</body>
+</html>

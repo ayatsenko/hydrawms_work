@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{full_world.loads.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{full_world.loads.caption}"></h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <!--/*@thymesVar id="full_world_loads_detail" type="java.util.List"*/-->
+                <form id="full-world-loads-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/full_world/loads_model}">
+                    <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                    <div class="btn-group mb-2">
+                        <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="full-world-loads-indexfrm">Cancel</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="full-world-loads-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                            <button th:case="1" type="submit" id="full-world-loads-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                            <button th:case="2" type="submit" id="full-world-loads-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                        </div>
+                    </div>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clm_id" th:value="${clm_id}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="full_world_loads_table_order_column" th:value="${full_world_loads_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="full_world_loads_table_order_type" th:value="${full_world_loads_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="full_world_loads_table_search" th:value="${full_world_loads_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="full_world_loads_table_pagelen" th:value="${full_world_loads_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="full_world_loads_table_page" th:value="${full_world_loads_table_page}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="full_world_tab_name" th:value="${full_world_tab_name}" >
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-1" id="clm_id_row">
+                            <label for="clm_id" class="form-label" th:text="'1. '+ #{full_world.main.clm_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="clm_id" name="clm_id" th:value="${clm_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-2 mb-1" id="clm_num_row">
+                            <label for="clm_num" class="form-label" th:text="'2. '+ #{full_world.main.clm_num}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="clm_num" name="clm_num" th:value="${clm_num}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-4 mb-1" id="cnt_name_row">
+                            <label for="cnt_name" class="form-label" th:text="'3. '+ #{full_world.main.cnt_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="cnt_name" name="cnt_name" th:value="${cnt_name}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-1" id="clmll_id_row">
+                            <label for="clmll_id" class="form-label" th:text="'4. '+ #{full_world.loads.clmll_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="clmll_id" name="clmll_id" th:value="${clmll_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-3 mb-2" id="clm_load_name_row">
+                            <label for="clm_load_name" class="form-label" th:text="'5. '+ #{full_world.loads.clm_load_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="clm_load_name" name="clm_load_name" th:value="${clm_load_name}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>                        
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="clm_load_weight_row">
+                            <label for="clm_load_weight" class="form-label" th:text="'6. '+ #{full_world.loads.clm_load_weight}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="clm_load_weight" name="clm_load_weight" th:value="${clm_load_weight}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-2" id="clm_load_dims_row">
+                            <label for="clm_load_dims" class="form-label" th:text="'7. '+ #{full_world.loads.clm_load_dims}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="clm_load_dims" name="clm_load_dims" th:value="${clm_load_dims}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-md-7 mb-2">
+                            <label for="clm_load_notes" th:text="'8. '+#{full_world.loads.clm_load_notes}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="5" maxlength="512" style="resize:none;" id="clm_load_notes" name="clm_load_notes" th:text="${clm_load_notes}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div>  <!-- Row 4 -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--/*@thymesVar id="full_world_loads_detail" type="java.util.List"*/-->
+    <form id="full-world-loads-indexfrm" method="post" th:action="@{/full_world}" hidden>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clmll_id" th:value="${clmll_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clm_id" th:value="${clm_id}">
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_order_column" th:value="${full_world_loads_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_order_type" th:value="${full_world_loads_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_search" th:value="${full_world_loads_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_pagelen" th:value="${full_world_loads_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_page" th:value="${full_world_loads_table_page}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="full_world_tab_name" th:value="${full_world_tab_name}" >
+    </form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'full-world-loads-indexfrm')">Error</span>
+
+<script>
+    $(document).ready(function(){
+ <!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#tms_li').addClass('active').removeClass('collapsed');
+        $('#tms_a').attr('aria-expanded',true);
+        $('#tms').addClass('show');
+
+        $('#full_world_a').addClass('text-primary');
+
+<!-- Start Objects -->
+
+        <!-- Form Start -->
+        $('#clm_id').prop('readOnly',true);
+        $('#clm_num').prop('readOnly',true);
+        $('#cnt_name').prop('readOnly',true);
+
+        $('#clm_load_name').prop('required',true);
+
+        if($('#mode').val() === '0'){
+            $('#clmll_id_row').prop('hidden',true);
+        }
+        else if($('#mode').val() === '1'){
+            $('#clmll_id').prop('readOnly',true);
+        }
+        else{
+            $('#clmll_id').prop('readOnly',true);
+
+            $('#clm_load_name').prop('readOnly',true);
+
+            $('#clm_load_weight').prop('readOnly',true);
+
+            $('#clm_load_dims').prop('readOnly',true);
+        }
+    });
+</script>
+</body>
+</html>

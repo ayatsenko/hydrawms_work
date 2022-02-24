@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: net.sourceforge.barbecue:barbecue:1.5-beta1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.sourceforge.barbecue/barbecue/1.5-beta1/946380ea816fbc93cb591562af43997ded5c0a70/barbecue-1.5-beta1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.sourceforge.barbecue/barbecue/1.5-beta1/363a84845554f87531abb9493dd2690321ef268/barbecue-1.5-beta1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

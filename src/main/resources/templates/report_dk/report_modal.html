@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_dk_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="report_dk_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="report_dk_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{tms_locals.notes.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body m-1">
+
+                </div>
+                <div class="modal-footer">
+                    <form id="report-dk-modal-actbtn-xls-form" th:action="@{/report_dk/dk_report}" method="get">
+                        <button type="button" id="report_dk_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                        <button type="submit" id="report_dk_modal_actbtn" class="btn btn-outline-primary" th:text="#{general.reportxls}"></button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    // Load Function
+    function fill_report_dk_modal_detail(){
+        $('#report_dk_modal').modal('show');
+    }
+
+    $('#report-dk-modal-actbtn-xls-form').submit(function() {
+    });
+</script>
+
+</body>
+</html>

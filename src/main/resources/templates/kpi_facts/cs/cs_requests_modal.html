@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="kpi_facts_cs_requests_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="kpi_facts_cs_requests_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="kpi_facts_cs_requests_modal_mode">
+                <input type="hidden" id="kpi_facts_cs_requests_modal_kpirupl_id">
+            </div>
+
+            <div class="modal-content" id="kpi_facts_cs_requests_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{tms_locals.notes.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body m-1">
+                    <form id="kpi_facts_cs_requests_modal_form">
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="kpi_facts_cs_requests_modal_dep_name_row">
+                            <label for="kpi_facts_cs_requests_modal_dep_name" class="form-label mb-0" th:text="'1. '+ #{kpi_facts.main.dep_name}"></label>
+                            <input type="text" class="form-control" id="kpi_facts_cs_requests_modal_dep_name" name="kpi_facts_cs_requests_modal_dep_name">
+                        </div>                        
+                    </div>
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="kpi_facts_cs_requests_modal_branch_name_row">
+                            <label for="kpi_facts_cs_requests_modal_branch_name" class="form-label mb-0" th:text="'2. '+ #{kpi_facts.branch.dep_name}"></label>
+                            <input type="text" class="form-control" id="kpi_facts_cs_requests_modal_branch_name" name="kpi_facts_cs_requests_modal_branch_name">
+                        </div>
+                    </div>
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="kpi_facts_cs_requests_modal_user_name_row">
+                            <label for="kpi_facts_cs_requests_modal_user_name" class="form-label mb-0" th:text="'3. '+ #{kpi_facts.users.user_name}"></label>
+                            <input type="text" class="form-control" id="kpi_facts_cs_requests_modal_user_name" name="kpi_facts_cs_requests_modal_user_name">
+                        </div>
+                    </div>
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="kpi_facts_cs_requests_modal_user_kpi_type_name_row">
+                            <label for="kpi_facts_cs_requests_modal_user_kpi_type_name" class="form-label mb-0" th:text="'4. '+ #{kpi_facts.calc.user_kpi_type_name}"></label>
+                            <input type="text" class="form-control" id="kpi_facts_cs_requests_modal_user_kpi_type_name" name="kpi_facts_cs_requests_modal_user_kpi_type_name">
+                        </div>
+                    </div>
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="kpi_facts_cs_requests_modal_req_name_row">
+                            <label for="kpi_facts_cs_requests_modal_req_name" class="form-label mb-0" th:text="'5. '+ #{kpi_facts.cs_requests.req_name}"></label>
+                            <input type="text" class="form-control" id="kpi_facts_cs_requests_modal_req_name" name="kpi_facts_cs_requests_modal_req_name">
+                        </div>
+                    </div>
+
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="kpi_facts_cs_requests_modal_block_note_row">
+                            <label for="kpi_facts_cs_requests_modal_block_note" class="form-label mb-0" th:text="'6. '+#{kpi_facts.cs_clients_debtors_detail.block_note}"></label>
+                            <textarea class="form-control" rows="7" maxlength="256" style="resize:none;" id="kpi_facts_cs_requests_modal_block_note" name="kpi_facts_cs_requests_modal_block_note">
+                            </textarea>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="kpi_facts_cs_requests_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="kpi_facts_cs_requests_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="kpi_facts_cs_requests_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="kpi_facts_cs_requests_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    // Clear Fields
+    function clear_kpi_facts_cs_requests_modal_detail() {
+        $("#kpi_facts_cs_requests_modal_detail input[type=text]").val('').removeAttr('required').removeAttr('readonly');
+        $("#kpi_facts_cs_requests_modal_detail input[type=number]").val('').removeAttr('required').removeAttr('readonly');
+        $("#kpi_facts_cs_requests_modal_detail select").empty().removeAttr('required').removeAttr('disabled');
+        $("#kpi_facts_cs_requests_modal_detail textarea").val('').removeAttr('required').removeAttr('readonly');
+    }
+    // Block And Required Fields
+    function block_kpi_facts_cs_requests_modal_detail() {
+        if($('#kpi_facts_cs_requests_modal_mode').val() === "0"){
+
+        }
+        else if($('#kpi_facts_cs_requests_modal_mode').val() === "1"){
+            $('#kpi_facts_cs_requests_modal_dep_name').attr('readonly', true);
+            $('#kpi_facts_cs_requests_modal_branch_name').attr('readonly', true);
+            $('#kpi_facts_cs_requests_modal_user_name').attr('readonly', true);
+            $('#kpi_facts_cs_requests_modal_user_kpi_type_name').attr('readonly', true);
+            $('#kpi_facts_cs_requests_modal_act_plane_date').attr('readonly', true);
+            $('#kpi_facts_cs_requests_modal_req_name').attr('readonly', true);
+        }
+        else{
+            $('#kpi_facts_cs_requests_modal_dep_name').attr('readonly', true);
+            $('#kpi_facts_cs_requests_modal_branch_name').attr('readonly', true);
+            $('#kpi_facts_cs_requests_modal_user_name').attr('readonly', true);
+            $('#kpi_facts_cs_requests_modal_user_kpi_type_name').attr('readonly', true);
+            $('#kpi_facts_cs_requests_modal_act_plane_date').attr('readonly', true);
+            $('#kpi_facts_cs_requests_modal_req_name').attr('readonly', true);
+        }
+    }
+    // Load Function
+    function fill_kpi_facts_cs_requests_modal_detail(aMode){
+        clear_kpi_facts_cs_requests_modal_detail();
+        $('#kpi_facts_cs_requests_modal_mode').val(aMode);
+        block_kpi_facts_cs_requests_modal_detail();
+
+        if(aMode === 1) {
+            $('#kpi_facts_cs_requests_modal_kpirupl_id').val(vKPIFactCalcValue.rowdata.kpirupl_id);
+            $('#kpi_facts_cs_requests_modal_dep_name').val(vKPIFactListValue.rowdata.dep_name);
+            $('#kpi_facts_cs_requests_modal_branch_name').val(vKPIFactBranchValue.rowdata.dep_name);
+            $('#kpi_facts_cs_requests_modal_user_name').val(vKPIFactUsersValue.rowdata.user_name);
+            $('#kpi_facts_cs_requests_modal_user_kpi_type_name').val(vKPIFactCalcValue.rowdata.user_kpi_type_name);
+            $('#kpi_facts_cs_requests_modal_kpirupl_plan').val(vKPIFactCalcValue.rowdata.kpirupl_plan);
+
+            $('#kpi_facts_cs_requests_modal_req_name').val(vKPIFactsCsRequestsValue.rowdata.req_name);
+            $('#kpi_facts_cs_requests_modal_block_note').val(vKPIFactsCsRequestsValue.rowdata.block_note);
+            $('#kpi_facts_cs_requests_modal').modal('show');
+        }
+    }
+    // Add Function
+    function addKPIFactsCsRequestsModal(){
+        var RowID = vActionsValue.rowdata.req_id;
+    }
+    // Add button script
+    $('#kpi_facts_cs_requests_modal_addbtn').on('click', function(){
+        $('#kpi_facts_cs_requests_modal_form').submit();
+    });
+
+    //Edit Function
+    function editKPIFactsCsRequestsModal(){
+        let RowID = vKPIFactsCsRequestsValue.rowdata.req_id;
+        let YearID =  $("#kpi_facts_year").val();
+        let UserID = vKPIFactUsersValue.rowdata.user_id;
+        let MonthID = $("#kpi_facts_month").val();
+        let TypeID = vKPIFactCalcValue.rowdata.user_kpi_type_id;
+        $.ajax({
+            url: /*[[ @{/kpi_facts/add_comment_cs_requests_block} ]]*/ "/kpi_facts/add_comment_cs_requests_block",
+            type: 'POST',
+            data: {
+                "block_req_id": RowID,
+                "block_user_id": UserID,
+                "block_year": YearID,
+                "block_month": MonthID,
+                "block_note": $('#kpi_facts_cs_requests_modal_block_note').val()
+            },
+            success: function (result) {
+                vKPIFactsCsRequestsValue.rowdata.kpi_facts_param_id = TypeID;
+                vKPIFactsCsRequestsValue.rowdata.kpi_facts_user_id = UserID;
+                vKPIFactsCsRequestsValue.rowdata.kpi_facts_year = YearID;
+                vKPIFactsCsRequestsValue.rowdata.kpi_facts_month = MonthID;
+                vKPIFactsCsRequestsValue.rowdata.req_id = RowID;
+                $(vKPIFactsCsRequestsValue.table).DataTable().ajax.reload(null, false);
+
+                $('#kpi_facts_cs_requests_modal').modal('hide');
+            }
+        });
+    }
+    // Edit button script
+    $('#kpi_facts_cs_requests_modal_editbtn').on('click', function(){
+        $('#kpi_facts_cs_requests_modal_form').submit();
+    });
+
+    //Delete Function
+    function delKPIFactsCsRequestsModal(){
+        var RowID = vActionsValue.rowdata.req_id;
+    }
+
+    // Del button script
+    $('#kpi_facts_cs_requests_modal_delbtn').on('click', function(){
+        $('#kpi_facts_cs_requests_modal_form').submit();
+    });
+
+    //Validation Form
+    $('#kpi_facts_cs_requests_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function(error,element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            if($('#kpi_facts_cs_requests_modal_mode').val() === '0') {
+                addKPIFactsCsRequestsModal();
+            }
+            else if($('#kpi_facts_cs_requests_modal_mode').val() === '1') {
+                editKPIFactsCsRequestsModal();
+            }
+            else if($('#kpi_facts_cs_requests_modal_mode').val() === '2') {
+                delKPIFactsCsRequestsModal();
+            }
+            return false;
+        }
+    });    
+</script>
+
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_actions_calls_fail_body" th:remove="tag">
+    <div id="table-report-actions-calls-fail-buttons">
+              <div id="report-actions-call-fail-btn-large" class="d-none d-sm-block mb-1">
+                 <button type="submit" id="report-actions-call-fail-xlsbtn" form="report-actions-call-fail-xls-form" class="btn btn-sm btn-outline-primary mr-1" th:text="#{general.reportxls}">Xls</button>
+                 <button type="submit" id="report-actions-call-fail-pdfbtn" form="report-actions-call-fail-pdf-form" class="btn btn-sm btn-outline-primary" th:text="#{general.reportpdf}">Pdf</button>
+              </div>
+              <div id="report-actions-call-fail-btn-small" class="d-block d-sm-none mb-1">
+                 <button type="submit" id="report-actions-call-fail-xlsbtn-sx" form="report-actions-call-fail-xls-form" class="btn btn-sm btn-outline-primary mr-1"><i class="far fa-file-excel"></i></button>
+                 <button type="submit" id="report-actions-call-fail-pdfbtn-sx" form="report-actions-call-fail-pdf-form" class="btn btn-sm btn-outline-primary"><i class="far fa-file-pdf"></i></button>
+              </div>
+    </div>
+            <form id="report-actions-call-fail-pdf-form" th:action="@{/report_actions/pdf_callfail}" method="get">
+                <input name="start_date" hidden>
+                <input name="end_date" hidden>
+                <input name="userid" hidden>
+            </form>
+
+            <form id="report-actions-call-fail-xls-form" th:action="@{/report_actions/xls_callfail}" method="get">
+                <input name="start_date" hidden>
+                <input name="end_date" hidden>
+                <input name="userid" hidden>
+            </form>
+        
+        <div><table id="table-report-actions-calls-fail" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+    
+            <form id="table_report_actions_calls_fail_users_form" th:action="@{/users}" method="post" target="_blank">
+                <input name="user_id" hidden>
+                <input name="users_list_table_order_column" hidden>
+                <input name="users_list_table_order_type" hidden>
+                <input name="users_list_table_search" hidden>
+                <input name="users_list_table_pagelen" hidden>
+                <input name="users_list_table_page" hidden>
+            </form>
+
+            <form id="table_report_actions_calls_fail_clients_form" th:action="@{/clients}" method="post" target="_blank">
+                <input name="cnt_id" hidden>
+                <input name="clients_list_table_order_column" hidden>
+                <input name="clients_list_table_order_type" hidden>
+                <input name="clients_list_table_search" hidden>
+                <input name="clients_list_table_pagelen" hidden>
+                <input name="clients_list_table_page" hidden>
+            </form>     
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var act_id_width, act_plane_date_width, cnt_id_width, cnt_name_width, user_id_width, username_width, act_date_width, act_end_date_width, act_fact_date_width, act_plan_type_id_width,
+        act_plan_type_sname_width, act_plan_type_colour_width, act_type_id_width, act_type_sname_width, act_status_id_width, act_status_sname_width, act_status_colour_width, act_result_id_width,
+        act_result_sname_width, act_result_colour_width, act_description_width, act_draw_width;
+
+    var act_id_class, act_plane_date_class, cnt_id_class, cnt_name_class, user_id_class, username_class, act_date_class, act_end_date_class, act_fact_date_class, act_plan_type_id_class,
+        act_plan_type_sname_class, act_plan_type_colour_class, act_type_id_class, act_type_sname_class, act_status_id_class, act_status_sname_class, act_status_colour_class, act_result_id_class,
+        act_result_sname_class, act_result_colour_class, act_description_class, act_draw_class;
+
+    var smallScreenSize = window.screen.width > 1024 && window.screen.height <= 768;
+    var mobileScreenSize = window.screen.width < 1024 && window.screen.height < 768;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+
+        act_id_width = "";
+        act_id_class = "none";
+
+        act_plane_date_width = "15%";
+        act_plane_date_class = "min-tablet-p  small_size small_head_size small_footer_size text-center";
+
+        cnt_id_width = "";
+        cnt_id_class = "none";
+
+        cnt_name_width = "70%";
+        cnt_name_class = "small_size small_head_size small_footer_size cnt_name";
+
+        user_id_width = "";
+        user_id_class = "none";
+
+        username_width = "";
+        username_class = "none";
+
+        act_date_width = "";
+        act_date_class = "none";
+
+        act_end_date_width = "";
+        act_end_date_class = "none";
+
+        act_fact_date_width = "";
+        act_fact_date_class = "none";
+
+        act_plan_type_id_width = "";
+        act_plan_type_id_class = "none";
+
+        act_plan_type_sname_width = "";
+        act_plan_type_sname_class = "none";
+
+        act_plan_type_colour_width = "";
+        act_plan_type_colour_class = "none";
+
+        act_type_id_width = "";
+        act_type_id_class = "none";
+
+        act_type_sname_width = "";
+        act_type_sname_class = "none";
+
+        act_status_id_width = "";
+        act_status_id_class = "none";
+
+        act_status_sname_width = "";
+        act_status_sname_class = "none";
+
+        act_status_colour_width = "";
+        act_status_colour_class = "none";
+
+        act_result_id_width = "";
+        act_result_id_class = "none";
+
+        act_result_sname_width = "15%";
+        act_result_sname_class = "small_size small_head_size small_footer_size text-center";
+
+        act_result_colour_width = "";
+        act_result_colour_class = "none";
+
+        act_description_width = "";
+        act_description_class = "none";
+
+        act_draw_width = "";
+        act_draw_class = "none";
+
+        $('#table_report_actions_calls_fail_users_form').prop('target','_self');
+        $('#table_report_actions_calls_fail_clients_form').prop('target','_self');
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+
+        act_id_width = "";
+        act_id_class = "none";
+
+        act_plane_date_width = "5%";
+        act_plane_date_class = "desktop small_size small_head_size small_footer_size text-center";
+
+        cnt_id_width = "";
+        cnt_id_class = "none";
+
+        cnt_name_width = "22%";
+        cnt_name_class = "small_size small_head_size small_footer_size cnt_name";
+
+        user_id_width = "";
+        user_id_class = "none";
+
+        username_width = "8%";
+        username_class = "small_size small_head_size small_footer_size text-center user_name";
+
+        act_date_width = "";
+        act_date_class = "none";
+
+        act_end_date_width = "";
+        act_end_date_class = "none";
+
+        act_fact_date_width = "";
+        act_fact_date_class = "none";
+
+        act_plan_type_id_width = "";
+        act_plan_type_id_class = "none";
+
+        act_plan_type_sname_width = "8%";
+        act_plan_type_sname_class = "desktop small_size small_head_size small_footer_size text-center";
+
+        act_plan_type_colour_width = "";
+        act_plan_type_colour_class = "none";
+
+        act_type_id_width = "";
+        act_type_id_class = "none";
+
+        act_type_sname_width = "5%";
+        act_type_sname_class = "small_size small_head_size small_footer_size text-center";
+
+        act_status_id_width = "";
+        act_status_id_class = "none";
+
+        act_status_sname_width = "5%";
+        act_status_sname_class = "desktop small_size small_head_size small_footer_size text-center";
+
+        act_status_colour_width = "";
+        act_status_colour_class = "none";
+
+        act_result_id_width = "";
+        act_result_id_class = "none";
+
+        act_result_sname_width = "5%";
+        act_result_sname_class = "small_size small_head_size small_footer_size text-center";
+
+        act_result_colour_width = "";
+        act_result_colour_class = "none";
+
+        act_description_width = "42%";
+        act_description_class = "desktop small_size small_head_size small_footer_size";
+
+        act_draw_width = "";
+        act_draw_class = "none";
+
+        $('#table_report_actions_calls_fail_users_form').prop('target','_blank');
+        $('#table_report_actions_calls_fail_clients_form').prop('target','_blank');
+    }
+    else{
+        vDomParam = "Blfrtip";
+
+        act_id_width = "";
+        act_id_class = "none";
+
+        act_plane_date_width = "5%";
+        act_plane_date_class = "desktop text-center";
+
+        cnt_id_width = "";
+        cnt_id_class = "none";
+
+        cnt_name_width = "22%";
+        cnt_name_class = "cnt_name";
+
+        user_id_width = "";
+        user_id_class = "none";
+
+        username_width = "8%";
+        username_class = "text-center user_name";
+
+        act_date_width = "";
+        act_date_class = "none";
+
+        act_end_date_width = "";
+        act_end_date_class = "none";
+
+        act_fact_date_width = "";
+        act_fact_date_class = "none";
+
+        act_plan_type_id_width = "";
+        act_plan_type_id_class = "none";
+
+        act_plan_type_sname_width = "8%";
+        act_plan_type_sname_class = "desktop text-center";
+
+        act_plan_type_colour_width = "";
+        act_plan_type_colour_class = "none";
+
+        act_type_id_width = "";
+        act_type_id_class = "none";
+
+        act_type_sname_width = "5%";
+        act_type_sname_class = "text-center";
+
+        act_status_id_width = "";
+        act_status_id_class = "none";
+
+        act_status_sname_width = "5%";
+        act_status_sname_class = "desktop text-center";
+
+        act_status_colour_width = "";
+        act_status_colour_class = "none";
+
+        act_result_id_width = "";
+        act_result_id_class = "none";
+
+        act_result_sname_width = "5%";
+        act_result_sname_class = "text-center";
+
+        act_result_colour_width = "";
+        act_result_colour_class = "none";
+
+        act_description_width = "42%";
+        act_description_class = "desktop";
+
+        act_draw_width = "";
+        act_draw_class = "none";
+
+        $('#table_report_actions_calls_fail_users_form').prop('target','_blank');
+        $('#table_report_actions_calls_fail_clients_form').prop('target','_blank');
+    }
+
+    var vReportActionsCallsFailValue;
+    vReportActionsCallsFailValue = {
+        table : '#table-report-actions-calls-fail',
+        button_form: "#table-report-actions-calls-fail-buttons",
+        ajax : {
+            "url": /*[[@{/report_actions/calls_fail}]]*/ "report_actions/calls_fail",
+            "type": "post",
+            "data": function ( d ) {
+                d.start_date = vReportActionsCallsFailValue.rowdata.start_date;
+                d.end_date = vReportActionsCallsFailValue.rowdata.end_date;
+                d.req_user_id = vReportActionsCallsFailValue.rowdata.req_user_id;
+            }
+        },
+        key : "act_id",
+        switchControl : report_actions_calls_fail_switchControl,
+        rowdata:{
+            act_id: null,
+            start_date: null,
+            end_date: null,
+            req_user_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        columnDefs:[
+            {"targets": [1], render:function(data){return (data === null) ? data : moment(data).format('DD.MM.YYYY');}, type: 'de_date'}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{report_actions.tabs.act_id_short}]]*/ "act_id","data": "act_id","width": act_id_width, "className": act_id_class},
+            /*1*/{"title": /*[[#{report_actions.tabs.act_plane_date}]]*/ "act_plane_date","data": "act_plane_date","width": act_plane_date_width,"className": act_plane_date_class},
+            /*2*/{"title": /*[[#{report_actions.tabs.cnt_id}]]*/ "cnt_id","data": "cnt_id","width": cnt_id_width,"className": cnt_id_class},
+            /*3*/{"title": /*[[#{report_actions.tabs.cnt_name}]]*/ "cnt_name","data": "cnt_name","width": cnt_name_width,"className": cnt_name_class },
+            /*4*/{"title": /*[[#{report_actions.tabs.user_id}]]*/ "user_id","data": "user_id","width": user_id_width,"className": user_id_class},
+            /*5*/{"title": /*[[#{report_actions.tabs.username}]]*/ "username","data": "username","width": username_width, "className": username_class},
+            /*6*/{"title": /*[[#{report_actions.tabs.act_date}]]*/ "act_date","data": "act_date","width": act_date_width,"className": act_date_class},
+            /*7*/{"title": /*[[#{report_actions.tabs.act_end_date}]]*/ "act_end_date","data": "act_end_date","width": act_end_date_width,"className": act_end_date_class},
+            /*8*/{"title": /*[[#{report_actions.tabs.act_fact_date}]]*/ "act_fact_date","data": "act_fact_date","width": act_fact_date_width,"className": act_fact_date_class},
+            /*9*/{"title": /*[[#{report_actions.tabs.act_plan_type_id}]]*/ "act_plan_type_id","data": "act_plan_type_id","width": act_plan_type_id_width,"className": act_plan_type_id_class},
+            /*10*/{"title": /*[[#{report_actions.tabs.act_plan_type_sname}]]*/ "act_plan_type_sname","data": "act_plan_type_sname","width": act_plan_type_sname_width,"className": act_plan_type_sname_class},
+            /*11*/{"title": /*[[#{report_actions.tabs.act_plan_type_colour}]]*/ "act_plan_type_colour","data": "act_plan_type_colour","width": act_plan_type_colour_width,"className": act_plan_type_colour_class},
+            /*12*/{"title": /*[[#{report_actions.tabs.act_type_id}]]*/ "act_type_id","data": "act_type_id","width": act_type_id_width,"className": act_type_id_class},
+            /*13*/{"title": /*[[#{report_actions.tabs.act_type_sname}]]*/ "act_type_sname","data": "act_type_sname","width": act_type_sname_width, "className": act_type_sname_class},
+            /*14*/{"title": /*[[#{report_actions.tabs.act_status_id}]]*/ "act_status_id","data": "act_status_id","width": act_status_id_width,"className": act_status_id_class},
+            /*15*/{"title": /*[[#{report_actions.tabs.act_status_sname}]]*/ "act_status_sname","data": "act_status_sname","width": act_status_sname_width,"className": act_status_sname_class},
+            /*16*/{"title": /*[[#{report_actions.tabs.act_status_colour}]]*/ "act_status_colour","data": "act_status_colour","width": act_status_colour_width,"className": act_status_colour_class},
+            /*17*/{"title": /*[[#{report_actions.tabs.act_result_id}]]*/ "act_result_id","data": "act_result_id","width": act_result_id_width,"className": act_result_id_class},
+            /*18*/{"title": /*[[#{report_actions.tabs.act_result_sname}]]*/ "act_result_sname","data": "act_result_sname","width": act_result_sname_width, "className": act_result_sname_class},
+            /*19*/{"title": /*[[#{report_actions.tabs.act_result_colour}]]*/ "act_result_colour","data": "act_result_colour","width": act_result_colour_width,"className": act_result_colour_class},
+            /*20*/{"title": /*[[#{report_actions.tabs.act_description}]]*/ "act_description","data": "act_description","width": act_description_width,"className": act_description_class},
+            /*21*/{"title": /*[[#{report_actions.tabs.act_draw}]]*/ "act_draw","data": "act_draw","width": act_draw_width,"className": act_draw_class}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function report_actions_calls_fail_switchControl(){
+        if(vReportActionsCallsFailValue.rowdata.pos_id != null) {
+        } else{
+        }
+    }
+
+    $('.report_actions_calls_fail_btn_control').on('click', function (){
+        $("#report-actions-calls-fail-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#report-actions-calls-fail-detail').submit(function() {
+        vReportActionsCallsFailValue.rowdata.report_actions_calls_fail_table_order_column = $(vReportActionsCallsFailValue.table).DataTable().order()[0][0];
+        vReportActionsCallsFailValue.rowdata.report_actions_calls_fail_table_order_type = $(vReportActionsCallsFailValue.table).DataTable().order()[0][1];
+        vReportActionsCallsFailValue.rowdata.report_actions_calls_fail_table_search = $(vReportActionsCallsFailValue.table).DataTable().search();
+        vReportActionsCallsFailValue.rowdata.report_actions_calls_fail_table_pagelen = $(vReportActionsCallsFailValue.table).DataTable().page.len();
+        vReportActionsCallsFailValue.rowdata.report_actions_calls_fail_table_page = $(vReportActionsCallsFailValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vReportActionsCallsFailValue.rowdata).forEach(function (index) {
+            $("#report-actions-calls-fail-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#report-actions-calls-fail-detail input[name=\"" + index + "\"]").val(vReportActionsCallsFailValue.rowdata[index]);
+        });
+    });
+
+    $('#table-report-actions-calls-fail').on('dblclick', '.user_name', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var currentTable = $('#table-report-actions-calls-fail').DataTable();
+
+        $("#table_report_actions_calls_fail_users_form input[name=user_id]").val(currentTable.row(selectedRow).data().user_id);
+
+        $("#table_report_actions_calls_fail_users_form input[name=users_list_table_order_column]").val(0);
+        $("#table_report_actions_calls_fail_users_form input[name=users_list_table_order_type]").val("desc");
+        $("#table_report_actions_calls_fail_users_form input[name=users_list_table_search]").val(currentTable.row(selectedRow).data().username);
+        $("#table_report_actions_calls_fail_users_form input[name=users_list_table_pagelen]").val(25);
+        $("#table_report_actions_calls_fail_users_form input[name=users_list_table_page]").val(0);
+        $("#table_report_actions_calls_fail_users_form").submit();
+    });
+
+    $('#table-report-actions-calls-fail').on('dblclick', '.cnt_name', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var currentTable = $('#table-report-actions-calls-fail').DataTable();
+
+        $("#table_report_actions_calls_fail_clients_form input[name=cnt_id]").val(currentTable.row(selectedRow).data().cnt_id);
+
+        $("#table_report_actions_calls_fail_clients_form input[name=clients_list_table_order_column]").val(0);
+        $("#table_report_actions_calls_fail_clients_form input[name=clients_list_table_order_type]").val("desc");
+        $("#table_report_actions_calls_fail_clients_form input[name=clients_list_table_search]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#table_report_actions_calls_fail_clients_form input[name=clients_list_table_pagelen]").val(25);
+        $("#table_report_actions_calls_fail_clients_form input[name=clients_list_table_page]").val(0);
+        $("#table_report_actions_calls_fail_clients_form").submit();
+    });    
+    
+    $('#report-actions-call-fail-xls-form').submit(function() {
+            $("#report-actions-call-fail-xls-form input[name=start_date]").val(vReportActionsCallsFailValue.rowdata.start_date);
+            $("#report-actions-call-fail-xls-form input[name=end_date]").val(vReportActionsCallsFailValue.rowdata.end_date);
+            $("#report-actions-call-fail-xls-form input[name=userid]").val(vReportActionsCallsFailValue.rowdata.req_user_id);
+    });
+
+    $('#report-actions-call-fail-pdf-form').submit(function() {
+            $("#report-actions-call-fail-pdf-form input[name=start_date]").val(vReportActionsCallsFailValue.rowdata.start_date);
+            $("#report-actions-call-fail-pdf-form input[name=end_date]").val(vReportActionsCallsFailValue.rowdata.end_date);
+            $("#report-actions-call-fail-pdf-form input[name=userid]").val(vReportActionsCallsFailValue.rowdata.req_user_id);
+    });    
+    
+    $(document).ready(function(){
+        vReportActionsCallsFailValue.rowdata.act_id = /*[[${act_id}]]*/ null;
+        vReportActionsCallsFailValue.rowdata.start_date = null;
+        vReportActionsCallsFailValue.rowdata.end_date = null;
+        vReportActionsCallsFailValue.rowdata.req_user_id = null;
+
+        vReportActionsCallsFailValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vReportActionsCallsFailValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vReportActionsCallsFailValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vReportActionsCallsFailValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vReportActionsCallsFailValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vReportActionsCallsFailValue);
+    });
+</script>
+
+</body>
+</html>

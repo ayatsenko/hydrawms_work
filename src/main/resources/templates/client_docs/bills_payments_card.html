@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="client_bills_payments_body" th:remove="tag">
+        <div><table id="table-client-bills-payments" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+        var vClientBillsPaymentsValue;
+        vClientBillsPaymentsValue = {
+                table : '#table-client-bills-payments',
+                ajax : {
+                        "url": /*[[@{/client_docs/get_client_bills_payments_table}]]*/ "client_docs/get_client_bills_payments_table",
+                        "type": "post",
+                        "data": function ( d ) {
+                                d.cnt_bill_id = vClientBillsPaymentsValue.rowdata.cnt_bill_id
+                        }
+                },
+                key : "cnt_bill_pay_id",
+                switchControl : client_bills_payments_switchControl,
+                rowdata:{
+                        cnt_bill_id: null,
+
+                        cnt_bill_pay_id: null
+                },
+                ordering: true,
+                order: [
+                        [2, "desc"]
+                ],
+                deferRender: true,
+                scroller: true,
+                scrollCollapse: true,
+                dom: 'Blfrtip',
+                columnDefs:[
+                        {"targets": [0], "visible": false},
+                        {"targets": [1], type: 'de_date'},
+                        {"targets": [2], "visible": false},
+                        {"targets": [4],  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )}
+                ],
+                columns : [
+                        /*0*/{"title": /*[[#{clients.docs.bills.payments.cnt_bill_pay_id}]]*/ "cnt_bill_pay_id", "data": "cnt_bill_pay_id", "width": "1%"},
+                        /*1*/{"title": /*[[#{clients.docs.bills.payments.cnt_bill_pay_date}]]*/ "cnt_bill_pay_date", "data": "cnt_bill_pay_date", "width": "10%", "className": "text-center"},
+                        /*2*/{"title": /*[[#{clients.docs.bills.payments.currency_id}]]*/ "currency_id", "data": "currency_id", "width": "1%"},
+                        /*3*/{"title": /*[[#{clients.docs.bills.payments.currency_name}]]*/ "currency_name", "data": "currency_name", "width": "5%", "className": "text-center"},
+                        /*4*/{"title": /*[[#{clients.docs.bills.payments.cnt_bill_pay_sum}]]*/ "cnt_bill_pay_sum", "data": "cnt_bill_pay_sum", "width": "10%"},
+                        /*5*/{"title": /*[[#{clients.docs.bills.payments.empty_column}]]*/ "empty_column", "data": "empty_column", "width": "73%", "className": "text-center"}
+                ],
+                pageLength: 25,
+                copy_button: true,
+                excel_button: true,
+                pdf_button: true,
+                print_button: true
+        };
+
+        function client_bills_payments_switchControl(){
+        }
+
+        $('.client_bills_payments_btn_control').on('click', function (){
+                $("#client-bills-payments-detail input[name=mode]").val($(this).attr("mode"));
+        });
+
+        $('#client-bills-payments-detail').submit(function() {
+                vClientBillsPaymentsValue.rowdata.client_bills_payments_table_order_column = $(vClientBillsPaymentsValue.table).DataTable().order()[0][0];
+                vClientBillsPaymentsValue.rowdata.client_bills_payments_table_order_type = $(vClientBillsPaymentsValue.table).DataTable().order()[0][1];
+                vClientBillsPaymentsValue.rowdata.client_bills_payments_table_search = $(vClientBillsPaymentsValue.table).DataTable().search();
+                vClientBillsPaymentsValue.rowdata.client_bills_payments_table_pagelen = $(vClientBillsPaymentsValue.table).DataTable().page.len();
+                vClientBillsPaymentsValue.rowdata.client_bills_payments_table_page = $(vClientBillsPaymentsValue.table).DataTable().page.info().page;
+                <!-- Recreate Contragent Ajax Filter Value -->
+        });
+
+        $(document).ready(function(){
+                recreateDataTable(vClientBillsPaymentsValue);
+        });
+</script>
+
+</body>
+</html>

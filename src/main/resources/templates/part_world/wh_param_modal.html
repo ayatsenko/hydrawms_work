@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="part_world_wh_param_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="part_world_wh_param_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content" id="part_world_wh_param_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{part_world.costs.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <div class="form-row">
+                        <input type="hidden" id="part_world_wh_param_modal_mode">
+
+                        <div class="col-12 col-md-3 mb-1" id="part_world_wh_param_clm_id_row">
+                            <label for="part_world_wh_param_clm_id" class="form-label" th:text="'1. '+ #{part_world.main.clm_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="part_world_wh_param_clm_id" name="part_world_wh_param_clm_id" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-12 col-md-3 mb-1" id="part_world_wh_param_clm_num_row">
+                            <label for="part_world_wh_param_clm_num" class="form-label" th:text="'2. '+ #{part_world.main.clm_num}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="part_world_wh_param_clm_num" name="part_world_wh_param_clm_num" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-12 col-md-6 mb-1" id="part_world_wh_param_cnt_name_row">
+                            <label for="part_world_wh_param_cnt_name" class="form-label" th:text="'3. '+ #{part_world.main.cnt_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="part_world_wh_param_cnt_name" name="part_world_wh_param_cnt_name" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="part_world_wh_param_clmwhl_id_row">
+                            <label for="part_world_wh_param_clmwhl_id" class="form-label" th:text="'4. '+ #{part_world.wh.clmwhl_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="part_world_wh_param_clmwhl_id" name="part_world_wh_param_clmwhl_id" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 mb-1" id="part_world_wh_param_clm_load_name_row">
+                            <label for="part_world_wh_param_clm_load_name" class="form-label" th:text="'5. '+ #{part_world.wh.clm_load_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="part_world_wh_param_clm_load_name" name="part_world_wh_param_clm_load_name" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="clmwhpl_id_row">
+                            <label for="clmwhpl_id" class="form-label" th:text="'6. '+ #{part_world.wh_param.clmwhpl_id}"></label>
+                            <input type="number" class="form-control" id="clmwhpl_id" name="clmwhpl_id" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 mb-1">
+                            <label for="wh_param_id" class="mr-2" th:text="'7. '+#{part_world.wh_param.wh_param_name}">Param: </label>
+                            <select type="text" id="wh_param_id" name="wh_param_id" class="form-control p-1">
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="clmwhl_wh_param_rate_row">
+                            <label for="clmwhl_wh_param_rate" class="form-label" th:text="'8. '+ #{part_world.wh_param.clmwhl_wh_param_rate}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="clmwhl_wh_param_rate" name="clmwhl_wh_param_rate">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-4 mb-1" id="part_world_costs_modal_currency_id_row">
+                            <label for="clmwhl_currency_id" class="mr-2" th:text="'9. '+#{part_world.wh_param.clmwhl_currency_id}">Currency: </label>
+                            <select id="clmwhl_currency_id" name="clmwhl_currency_id" class="form-control">
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 4 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="part_world_wh_param_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="part_world_wh_param_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="part_world_wh_param_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="part_world_wh_param_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+// Clear Fields
+    function clear_part_world_wh_param_modal_detail() {
+        $("#part_world_wh_param_modal_detail input[type=text]").val('');
+        $("#part_world_wh_param_modal_detail input[type=number]").val('');
+        $("#part_world_wh_param_modal_detail select").empty();
+        $("#part_world_wh_param_modal_detail textarea").val('');
+    }
+// Block And Required Fields
+    function block_part_world_wh_param_modal_detail() {
+
+        if($('#part_world_wh_param_modal_mode').val() === "0"){
+        }
+        else if($('#part_world_wh_param_modal_mode').val() === "1"){
+            $('#wh_param_id').attr('disabled',true);
+            $('#clmwhl_wh_param_rate').removeAttr('disabled');
+            $('#clmwhl_currency_id').removeAttr('disabled');
+        }
+        else{
+        }
+    }
+// WH Param List
+function WHParamChange(vMode,vWHParamID) {
+    $('#wh_param_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/part_world/get_wh_param_list'}]]*/ "/part_world/get_wh_param_list",
+        type: "get",
+        data: {
+            "mode": vMode,
+            "wh_param_id": vWHParamID
+        },
+        success: function (wh_param_list) {
+            for (var i = 0; i < wh_param_list.data.length; i++) {
+                if(i === 0) {
+                    $("select[name='wh_param_id']").find('option').end().append("<option value=''></option>");
+                }
+                $("select[name='wh_param_id']").find('option').end().append(
+                    "<option value='" + wh_param_list.data[i].wh_param_id
+                    + "'>" + wh_param_list.data[i].wh_param_name + "</option>");
+            }
+            if(vWHParamID > 0){
+                $('#wh_param_id').val(vWHParamID);
+            }
+        }
+    }));
+}
+// WH Param Currency List
+function WHParamCurrencyChange(vMode,vCurrencyID) {
+    $('#clmwhl_currency_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/part_world/get_currency_list'}]]*/ "/part_world/get_currency_list",
+        type: "get",
+        data: {
+            "mode": vMode
+        },
+        success: function (currency_list) {
+            for (var i = 0; i < currency_list.data.length; i++) {
+                if(i === 0) {
+                    $("select[name='clmwhl_currency_id']").find('option').end().append("<option value=''></option>");
+                }
+                $("select[name='clmwhl_currency_id']").find('option').end().append(
+                    "<option value='" + currency_list.data[i].currency_id
+                    + "'>" + currency_list.data[i].currency_name + "</option>");
+            }
+            if(vCurrencyID > 0){
+                $('#clmwhl_currency_id').val(vCurrencyID);
+            }
+        }
+    }));
+}
+// Load Function
+    function fill_part_world_wh_param_modal_detail(aMode){
+        $('#part_world_wh_param_modal_mode').val(aMode);
+        clear_part_world_wh_param_modal_detail();
+        block_part_world_wh_param_modal_detail();
+
+        $('#part_world_wh_param_clm_id').val(vFLGClaimsValue.rowdata.clm_id);
+        $('#part_world_wh_param_clm_num').val(vFLGClaimsValue.rowdata.clm_num);
+        $('#part_world_wh_param_cnt_name').val(vFLGClaimsValue.rowdata.cnt_name);
+
+        $('#part_world_wh_param_clmwhl_id').val(vFLGClaimWHValue.rowdata.clmwhl_id);
+        $('#part_world_wh_param_clm_load_name').val(vFLGClaimWHValue.rowdata.clm_load_name);
+
+        if(aMode !== 0) {
+            $.when(
+                WHParamChange(aMode,vFLGClaimWHParamValue.rowdata.wh_param_id),
+                WHParamCurrencyChange(aMode,vFLGClaimWHParamValue.rowdata.clmwhl_currency_id)
+            ).then(function () {
+                $('#clmwhpl_id').val(vFLGClaimWHParamValue.rowdata.clmwhpl_id);
+                $('#clmwhl_wh_param_rate').val(vFLGClaimWHParamValue.rowdata.clmwhl_wh_param_rate);
+
+                $('#part_world_wh_param_modal').modal('show');
+            });
+        }
+        else {
+        }
+    }
+// Add button script
+$('#part_world_wh_param_modal_addbtn').click(function(){
+    var MainRowID = vFLGClaimsValue.rowdata.clm_id;
+    var RowID = vFLGClaimWHValue.rowdata.clmcl_id;
+
+    $.ajax({
+        url: /*[[ @{/part_world/add_wh_param} ]]*/ "/part_world/add_wh_param",
+        type: 'POST',
+        data: {
+            "clm_id": MainRowID
+        },
+        success: function (result) {
+            $('#part_world_wh_param_modal').modal('hide');
+            vFLGClaimWHValue.rowdata.clm_id = MainRowID;
+            vFLGClaimWHValue.rowdata.clmwhl_id = RowID;
+            $(vFLGClaimWHValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// Edit button script
+$('#part_world_wh_param_modal_editbtn').click(function(){
+    var MainRowID = vFLGClaimsValue.rowdata.clm_id;
+    var WHRowID = vFLGClaimWHValue.rowdata.clmwhl_id;
+    var RowID = vFLGClaimWHParamValue.rowdata.clmwhpl_id;
+    $.ajax({
+        url: /*[[ @{/part_world/edit_wh_param} ]]*/ "/clients/edit_wh_param",
+        type: 'POST',
+        data: {
+            "clmwhpl_id": RowID,
+            "clmwhl_currency_id":  $('#clmwhl_currency_id').val(),
+            "clmwhl_wh_param_rate":  $('#clmwhl_wh_param_rate').val()
+        },
+        success: function (result) {
+            $('#part_world_wh_param_modal').modal('hide');
+            vFLGClaimWHParamValue.rowdata.clm_id = MainRowID;
+            vFLGClaimWHParamValue.rowdata.clmwhl_id = WHRowID;
+            vFLGClaimWHParamValue.rowdata.clmwhpl_id = RowID;
+            $(vFLGClaimWHParamValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// Del button script
+$('#part_world_wh_param_modal_delbtn').click(function(){
+    var MainRowID = vFLGClaimsValue.rowdata.clm_id;
+    var RowID = vFLGClaimWHValue.rowdata.clmwhl_id;
+
+    $.ajax({
+        url: /*[[ @{/part_world/del_wh_param} ]]*/ "/part_world/del_wh_param",
+        type: 'POST',
+        data: {
+            "clmwhl_id": RowID
+        },
+        success: function (result) {
+            $('#part_world_wh_param_modal').modal('hide');
+            vFLGClaimWHValue.rowdata.clm_id = MainRowID;
+            vFLGClaimWHValue.rowdata.clmwhl_id = RowID;
+            $(vFLGClaimWHValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="sea_ships_main_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="sea_ships_main_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="sea_ships_main_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{sea_ships.main.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body pr-3 pl-3 pb-1 pt-1">
+                    <form id="sea_ships_main_modal_form" name="sea_ships_main_modal_form" class="was-validated" novalidate>
+                    <input type="hidden" id="sea_ships_main_add_modal_mode" name="sea_ships_main_add_modal_mode">
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-2" id="sea_ships_main_modal_clm_id_row">
+                            <label for="sea_ships_main_modal_clm_id" class="form-label mb-0" th:text="'1. '+ #{sea_ships.main.clm_id}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="sea_ships_main_modal_clm_id" name="sea_ships_main_modal_clm_id" readonly>
+                        </div>
+                        <div class="col-12 col-md-2" id="sea_ships_main_modal_clm_num_row">
+                            <label for="sea_ships_main_modal_clm_num" class="form-label mb-0" th:text="'2. '+ #{sea_ships.main.clm_num}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="sea_ships_main_modal_clm_num" name="sea_ships_main_modal_clm_num">
+                        </div>
+                        <div class="col-12 col-md-3" id="sea_ships_main_modal_clm_client_num_row">
+                            <label for="sea_ships_main_modal_clm_client_num" class="form-label mb-0" th:text="'3. '+ #{sea_ships.main.clm_client_num}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="sea_ships_main_modal_clm_client_num" name="sea_ships_main_modal_clm_client_num">
+                        </div>
+                        <div class="col-12 col-md-5">
+                            <label for="sea_ships_main_modal_ser_id" class="form-label mb-0" th:text="'4. '+#{sea_ships.main.ser_sname}">Service</label>
+                            <select type="text" id="sea_ships_main_modal_ser_id" name="sea_ships_main_modal_ser_id" class="custom-select">
+                            </select>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-4" id="cnt_filter_row">
+                            <label for="cnt_filter" class="form-label mb-0" th:text="'5. '+ #{sea_ships.main.cnt_filter}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="cnt_filter" name="cnt_filter">
+                                <button type="button" id="cnt_filter_check" name="cnt_filter_check" class="btn btn-outline-primary"><i class="fas fa-database"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6" id="sea_ships_main_modal_cnt_id_div">
+                            <label for="sea_ships_main_modal_cnt_id" class="form-label mb-0" th:text="'6. '+#{sea_ships.main.cnt_name}"></label>
+                            <div class="input-group">
+                                <select type="text" id="sea_ships_main_modal_cnt_id" name="sea_ships_main_modal_cnt_id" class="custom-select" aria-describedby="sea_ships_main_modal_cnt_id_helpBlock">
+                                </select>
+                                <button type="button" id="sea_ships_main_modal_cnt_id_x" name="sea_ships_main_modal_cnt_id_x" class="btn btn-outline-primary select_clear" data-parent="sea_ships_main_modal_cnt_id"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-12 m-0 p-0 container">
+						    <div class="tab tab-vertical tab-light">
+								<ul class="nav nav-tabs" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link text-primary active" href="#sea_ships_main_modal_tab_1" data-toggle="tab" role="tab">
+                                            <i class="align-middle fa fa-map-marked-alt"></i>
+                                        </a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link text-primary" href="#sea_ships_main_modal_tab_2" data-toggle="tab" role="tab">
+                                            <i class="align-middle fa fa-ship"></i>
+                                        </a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link text-primary" href="#sea_ships_main_modal_tab_3" data-toggle="tab" role="tab">
+                                            <i class="align-middle fa fa-shipping-fast"></i>
+                                        </a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link text-primary" href="#sea_ships_main_modal_tab_4" data-toggle="tab" role="tab">
+                                            <i class="align-middle fa fa-box-open"></i>
+                                        </a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link text-primary" href="#sea_ships_main_modal_tab_5" data-toggle="tab" role="tab">
+                                            <i class="align-middle fa fa-dollar-sign"></i>
+                                        </a>
+									</li>
+								</ul>
+								<div class="tab-content p-3">
+                                    <div class="tab-pane active" id="sea_ships_main_modal_tab_1" role="tabpanel">
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-3">
+                                                <label for="sea_ships_main_modal_clm_incoterms_id" class="form-label mb-0 text-dark" th:text="'7. '+#{sea_ships.main.clm_incoterms_name}"></label>
+                                                <select type="text" class="custom-select" id="sea_ships_main_modal_clm_incoterms_id" name="sea_ships_main_modal_clm_incoterms_id">
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-md-5" id="clm_incoterms_new_name_row">
+                                                <label for="sea_ships_main_modal_clm_incoterms_new_name" class="form-label mb-0 text-dark" th:text="'7.1. '+ #{sea_ships.main.sea_ships_new_name}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="sea_ships_main_modal_clm_incoterms_new_name" name="sea_ships_main_modal_clm_incoterms_new_name" readonly>
+                                            </div>
+                                        </div><!-- Tab 1 Row 1-->
+
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-3">
+                                                <label for="sea_ships_main_modal_clm_bulk_type_id" class="form-label mb-0 text-dark" th:text="'8. '+#{sea_ships.main.clm_sea_type_name}"></label>
+                                                <select type="text" class="custom-select" id="sea_ships_main_modal_clm_bulk_type_id" name="sea_ships_main_modal_clm_bulk_type_id">
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-md-5" id="sea_ships_main_modal_clm_bulk_type_new_name_row">
+                                                <label for="sea_ships_main_modal_clm_bulk_type_new_name" class="form-label mb-0 text-dark" th:text="'8.1. '+ #{sea_ships.main.sea_ships_new_name}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="sea_ships_main_modal_clm_bulk_type_new_name" name="sea_ships_main_modal_clm_bulk_type_new_name" readonly>
+                                            </div>
+                                        </div><!-- Tab 1 Row 2-->
+
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-5">
+                                                <label for="sea_ships_main_modal_clm_sea_agent_id" class="form-label mb-0 text-dark" th:text="'9. '+#{sea_ships.main.clm_sea_agent_name}"></label>
+                                                <select type="text" class="custom-select select2" id="sea_ships_main_modal_clm_sea_agent_id" name="sea_ships_main_modal_clm_sea_agent_id">
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-md-6" id="sea_ships_main_modal_clm_sea_agent_new_name_row">
+                                                <label for="sea_ships_main_modal_clm_sea_agent_new_name" class="form-label mb-0 text-dark" th:text="'9.1. '+ #{sea_ships.main.sea_ships_new_name}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="sea_ships_main_modal_clm_sea_agent_new_name" name="sea_ships_main_modal_clm_sea_agent_new_name" readonly>
+                                            </div>
+                                        </div><!-- Tab 1 Row 3-->
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-2" id="clm_sea_agent_resident_new_row">
+                                                <label class="form-label mb-0 text-dark" for="clm_sea_agent_resident_new" th:text="'9.2. '+ #{clients.list.cnt_resident}"></label>
+                                                <div class="custom-control custom-switch centered">
+                                                    <input class="custom-control-input" type="checkbox" id="clm_sea_agent_resident_new" name="clm_sea_agent_resident_new" disabled>
+                                                    <label class="custom-control-label" for="clm_sea_agent_resident_new"></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-5" id="clm_sea_agent_identifycode_new_row">
+                                                <label for="clm_sea_agent_identifycode_new" class="form-label mb-0 text-dark" th:text="'9.3. '+#{clients.list.cnt_identifycode}"></label>
+                                                <input type="text" maxlength="16" class="form-control" id="clm_sea_agent_identifycode_new" name="clm_sea_agent_identifycode_new" readonly>
+                                            </div>
+                                        </div><!--Tab 1 Row 4-->
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-3" id="sea_ships_main_modal_clm_doc_check_row">
+                                                <label class="form-label mb-0 text-dark" for="sea_ships_main_modal_clm_doc_check" th:text="'10. '+ #{sea_ships.main.clm_doc_check}"></label>
+                                                <div class="custom-control custom-switch centered">
+                                                    <input class="custom-control-input" type="checkbox" id="sea_ships_main_modal_clm_doc_check" name="sea_ships_main_modal_clm_doc_check">
+                                                    <label class="custom-control-label text-dark" for="sea_ships_main_modal_clm_doc_check"></label>
+                                                </div>
+                                            </div>
+                                        </div><!-- Tab 1 Row 5-->
+                                    </div><!-- Tab 1 -->
+                                    <div class="tab-pane" id="sea_ships_main_modal_tab_2" role="tabpanel">
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-4">
+                                                <label for="sea_ships_main_modal_clm_sea_line_id" class="form-label mb-0 text-dark" th:text="'11. '+#{sea_ships.main.clm_sea_line_name}"></label>
+                                                <select type="text" class="custom-select" id="sea_ships_main_modal_clm_sea_line_id" name="sea_ships_main_modal_clm_sea_line_id">
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-md-5" id="sea_ships_main_modal_clm_sea_line_new_name_row">
+                                                <label for="sea_ships_main_modal_clm_sea_line_new_name" class="form-label mb-0 text-dark" th:text="'11.1. '+ #{sea_ships.main.sea_ships_new_name}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="sea_ships_main_modal_clm_sea_line_new_name" name="sea_ships_main_modal_clm_sea_line_new_name" readonly>
+                                            </div>
+                                        </div><!-- Tab 2 Row 1-->
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-4">
+                                                <label for="sea_ships_main_modal_ship_id" class="form-label mb-0 text-dark" th:text="'12. '+#{sea_ships.main.ship_name}"></label>
+                                                <select type="text" class="custom-select" id="sea_ships_main_modal_ship_id" name="sea_ships_main_modal_ship_id">
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-md-5" id="sea_ships_main_modal_ship_new_name_row">
+                                                <label for="sea_ships_main_modal_clm_sea_line_new_name" class="form-label mb-0 text-dark" th:text="'12.1. '+ #{sea_ships.main.sea_ships_new_name}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="sea_ships_main_modal_ship_new_name" name="sea_ships_main_modal_ship_new_name" readonly>
+                                            </div>
+                                        </div><!-- Tab 2 Row 2-->
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-5">
+                                                <label for="sea_ships_main_modal_start_country_id" class="form-label mb-0 text-dark" th:text="'13. '+#{sea_ships.main.start_country_name}"></label>
+                                                <select type="text" class="custom-select select2" id="sea_ships_main_modal_start_country_id" name="sea_ships_main_modal_start_country_id">
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-md-5">
+                                                <label for="sea_ships_main_modal_start_shipyard_id" class="form-label mb-0 text-dark" th:text="'14. '+#{sea_ships.main.start_shipyard_name}"></label>
+                                                <select type="text" class="custom-select select2" id="sea_ships_main_modal_start_shipyard_id" name="sea_ships_main_modal_start_shipyard_id">
+                                                </select>
+                                            </div>
+                                        </div><!-- Tab 2 Row 3-->
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-5" id="sea_ships_main_modal_start_shipyard_new_name_row">
+                                                <label for="sea_ships_main_modal_start_shipyard_new_name" class="form-label mb-0 text-dark" th:text="'14.1. '+ #{sea_ships.main.sea_ships_new_name}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="sea_ships_main_modal_start_shipyard_new_name" name="sea_ships_main_modal_start_shipyard_new_name" readonly>
+                                            </div>
+                                        </div><!-- Tab 2 Row 4-->
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-5">
+                                                <label for="sea_ships_main_modal_end_country_id" class="form-label mb-0 text-dark" th:text="'15. '+#{sea_ships.main.end_country_name}"></label>
+                                                <select type="text" class="custom-select select2" id="sea_ships_main_modal_end_country_id" name="sea_ships_main_modal_end_country_id">
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-md-5">
+                                                <label for="sea_ships_main_modal_end_shipyard_id" class="form-label mb-0 text-dark" th:text="'16. '+#{sea_ships.main.end_shipyard_name}"></label>
+                                                <select type="text" class="custom-select select2" id="sea_ships_main_modal_end_shipyard_id" name="sea_ships_main_modal_end_shipyard_id">
+                                                </select>
+                                            </div>
+                                        </div><!-- Tab 2 Row 5-->
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-5" id="sea_ships_main_modal_end_shipyard_new_name_row">
+                                                <label for="sea_ships_main_modal_end_shipyard_new_name" class="form-label mb-0 text-dark" th:text="'16.1. '+ #{sea_ships.main.sea_ships_new_name}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="sea_ships_main_modal_end_shipyard_new_name" name="sea_ships_main_modal_end_shipyard_new_name" readonly>
+                                            </div>
+                                        </div><!-- Tab 2 Row 6-->
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-4" id="sea_ships_main_modal_clm_mhb_row">
+                                                <label for="sea_ships_main_modal_clm_mhb" class="form-label mb-0 text-dark" th:text="'17. '+ #{sea_ships.main.clm_mhb}"></label>
+                                                <input type="text" maxlength="32" class="form-control" id="sea_ships_main_modal_clm_mhb" name="sea_ships_main_modal_clm_mhb">
+                                            </div>
+                                            <div class="col-12 col-md-4" id="sea_ships_main_modal_clm_hbl_row">
+                                                <label for="sea_ships_main_modal_clm_sea_line_new_name" class="form-label mb-0 text-dark" th:text="'18. '+ #{sea_ships.main.clm_hbl}"></label>
+                                                <input type="text" maxlength="32" class="form-control" id="sea_ships_main_modal_clm_hbl" name="sea_ships_main_modal_clm_hbl">
+                                            </div>
+                                        </div><!-- Tab 2 Row 7-->
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-3" id="clm_load_date_row">
+                                                <label class="form-label mb-0 text-dark" th:text="'19. '+ #{sea_ships.main.clm_load_date}"></label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="clm_load_date" name="clm_load_date">
+                                                    <button type="button" id="clm_load_date_x" name="clm_load_date_x" data-parent="clm_load_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div><!-- Tab 2 Row 8-->
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-3" id="clm_eta_date_row">
+                                                <label class="form-label mb-0 text-dark" th:text="'20. '+ #{sea_ships.main.clm_eta_date}"></label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="clm_eta_date" name="clm_eta_date">
+                                                    <button type="button" id="clm_eta_date_x" name="clm_eta_date_x" data-parent="clm_eta_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-3" id="clm_ata_date_row">
+                                                <label class="form-label mb-0 text-dark" th:text="'21. '+ #{sea_ships.main.clm_ata_date}"></label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="clm_ata_date" name="clm_ata_date">
+                                                    <button type="button" id="clm_ata_date_x" name="clm_ata_date_x" data-parent="clm_ata_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div><!-- Tab 2 Row 9-->
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-3" id="clm_shipyard_date_row">
+                                                <label class="form-label mb-0 text-dark" th:text="'22. '+ #{sea_ships.main.clm_shipyard_date}"></label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="clm_shipyard_date" name="clm_shipyard_date">
+                                                    <button type="button" id="clm_shipyard_date_x" name="clm_shipyard_date_x" data-parent="clm_shipyard_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-3" id="clm_border_date_row">
+                                                <label class="form-label mb-0 text-dark" th:text="'23. '+ #{sea_ships.main.clm_border_date}"></label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="clm_border_date" name="clm_border_date">
+                                                    <button type="button" id="clm_border_date_x" name="clm_border_date_x" data-parent="clm_border_date" class="btn btn-outline-primary date_clear"><i class="fas fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div><!-- Tab 2 Row 10-->
+                                    </div><!-- Tab 2 -->
+                                    <div class="tab-pane" id="sea_ships_main_modal_tab_3" role="tabpanel">
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-8" id="sea_ships_main_modal_trans_cnt_id_div">
+                                                <label for="sea_ships_main_modal_trans_cnt_id" class="form-label text-dark mb-0" th:text="'24. '+#{tms_locals.main.trans.cnt_name}"></label>
+                                                <div class="input-group d-flex">
+                                                    <select type="text" id="sea_ships_main_modal_trans_cnt_id" name="sea_ships_main_modal_trans_cnt_id" class="custom-select select2" style="width:100%" aria-describedby="sea_ships_main_modal_cnt_id_helpBlock">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div> <!-- Tab 3 Row 1 -->
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-5" id="sea_ships_main_modal_trans_cnt_name_new_row">
+                                                <label for="sea_ships_main_modal_trans_cnt_name_new" class="form-label mb-0 text-dark" th:text="'24.1. '+ #{sea_ships.main.sea_ships_new_name}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="sea_ships_main_modal_trans_cnt_name_new" name="sea_ships_main_modal_trans_cnt_name_new" readonly>
+                                            </div>
+                                        </div><!-- Tab 3 Row 2-->
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-4">
+                                                <label for="sea_ships_main_modal_cntc_id" class="form-label text-dark mb-0" th:text="'25. '+#{tms_locals.main.trans.cntc_name}">Car: </label>
+                                                <div class="input-group d-flex">
+                                                    <select type="text" id="sea_ships_main_modal_cntc_id" name="sea_ships_main_modal_cntc_id" class="custom-select select2" style="width:100%" aria-describedby="sea_ships_main_modal_cnt_id_helpBlock">
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-4" id="sea_ships_main_modal_cntc_name_new_row">
+                                                <label for="sea_ships_main_modal_cntc_name_new" class="form-label mb-0 text-dark" th:text="'25.1. '+ #{sea_ships.main.sea_ships_new_name}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="sea_ships_main_modal_cntc_name_new" name="sea_ships_main_modal_cntc_name_new" readonly>
+                                            </div>
+                                        </div><!-- Tab 3 Row 3-->
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-4">
+                                                <label for="sea_ships_main_modal_cntt_id" class="form-label text-dark mb-0" th:text="'26. '+#{tms_locals.main.trans.cntt_name}">SemiCar: </label>
+                                                <div class="input-group d-flex">
+                                                    <select type="text" id="sea_ships_main_modal_cntt_id" name="sea_ships_main_modal_cntt_id" class="custom-select select2" style="width:100%" aria-describedby="sea_ships_main_modal_cntt_id_helpBlock">
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-4" id="sea_ships_main_modal_cntt_name_new_row">
+                                                <label for="sea_ships_main_modal_cntt_name_new" class="form-label mb-0 text-dark" th:text="'26.1. '+ #{sea_ships.main.sea_ships_new_name}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="sea_ships_main_modal_cntt_name_new" name="sea_ships_main_modal_cntt_name_new" readonly>
+                                            </div>
+                                        </div><!-- Tab 3 Row 4-->
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-6">
+                                                <label for="sea_ships_main_modal_cntd_id" class="form-label text-dark mb-0" th:text="'27. '+#{tms_locals.main.trans.cntd_name}">Driver: </label>
+                                                <div class="input-group d-flex">
+                                                    <select type="text" id="sea_ships_main_modal_cntd_id" name="sea_ships_main_modal_cntd_id" class="custom-select select2" style="width:100%" aria-describedby="sea_ships_main_modal_cntd_id_helpBlock">
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 col-md-4" id="cntd_name_new_row">
+                                                <label for="cntd_name_new" class="form-label mb-0 text-dark" th:text="'27.1. '+ #{sea_ships.main.sea_ships_new_name}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="sea_ships_main_modal_cntd_name_new" name="sea_ships_main_modal_cntd_name_new" readonly>
+                                            </div>
+                                        </div><!-- Tab 3 Row 8-->
+                                    </div><!-- Tab 3 -->
+                                    <div class="tab-pane" id="sea_ships_main_modal_tab_4" role="tabpanel">
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-4">
+                                                <label for="sea_ships_main_modal_clm_containers_id" class="form-label mb-0 text-dark" th:text="'28. '+#{sea_ships.main.clm_containers_name}"></label>
+                                                <select type="text" class="custom-select" id="sea_ships_main_modal_clm_containers_id" name="sea_ships_main_modal_clm_containers_id">
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-md-5" id="sea_ships_main_modal_clm_containers_new_name_row">
+                                                <label for="sea_ships_main_modal_clm_sea_line_new_name" class="form-label mb-0 text-dark" th:text="'28.1. '+ #{sea_ships.main.sea_ships_new_name}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="sea_ships_main_modal_clm_containers_new_name" name="sea_ships_main_modal_clm_containers_new_name" readonly>
+                                            </div>
+                                        </div><!-- Tab 4 Row 1-->
+                                        <div class="row mb-2">
+                                            <div class="col-12 col-md-3" id="sea_ships_main_modal_clm_containers_num_row">
+                                                <label for="sea_ships_main_modal_clm_containers_num" class="form-label mb-0 text-dark" th:text="'29. '+ #{sea_ships.main.clm_containers_num}"></label>
+                                                <input type="text" maxlength="32" class="form-control" id="sea_ships_main_modal_clm_containers_num" name="sea_ships_main_modal_clm_containers_num">
+                                            </div>
+                                            <div class="col-12 col-md-5" id="sea_ships_main_modal_clm_containers_weight_row">
+                                                <label for="sea_ships_main_modal_clm_containers_weight" class="form-label mb-0 text-dark" th:text="'30. '+ #{sea_ships.main.clm_containers_weight}"></label>
+                                                <input type="text" maxlength="16" class="form-control" id="sea_ships_main_modal_clm_containers_weight" name="sea_ships_main_modal_clm_containers_weight">
+                                            </div>
+                                        </div><!-- Tab 4 Row 2-->
+                                        <div class="row mb-2 text-dark">
+                                            <div class="col-12" id="sea_ships_main_containers_modal_row">
+                                                <span th:replace="sea_ships/main_containers_modal :: sea_ships_main_containers_modal_body"></span>
+                                            </div>
+                                        </div><!-- Tab 4 Row 3-->
+                                    </div><!-- Tab 4 -->
+                                    <div class="tab-pane" id="sea_ships_main_modal_tab_5" role="tabpanel">
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-2" id="clm_sum_row">
+                                                <label for="clm_sum" class="form-label mb-0 text-dark" th:text="'31. '+ #{tms_locals.main.clm_sum}"></label>
+                                                <input type="text" class="form-control" id="clm_sum" name="clm_sum">
+                                            </div>
+
+                                            <div class="col-12 col-md-4" id="clm_sum_currency_row">
+                                                <label for="clm_sum_currency_id" class="form-label mb-0 text-dark" th:text="'32. '+#{full_world.main.clm_rate_currency_id}">Currency: </label>
+                                                <select id="clm_sum_currency_id" name="clm_sum_currency_id" class="custom-select">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div><!-- Tab 5 -->
+								</div>
+							</div>
+                        </div>
+                    </div>  <!-- Row 7 -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="sea_ships_main_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="sea_ships_main_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="sea_ships_main_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    let currentDate = new Date().toLocaleDateString('ru');
+    function sea_ships_main_modal_block() {
+        $('#sea_ships_main_modal_cnt_id').attr('required',true);
+    }
+    // Block And Required Fields
+    function block_sea_ships_main_modal_detail(){
+        $('#sea_ships_main_modal_cnt_id').attr('required', true);
+        $('#sea_ships_main_modal_ser_id').attr('required', true);
+        $('#sea_ships_main_modal_start_country_id').attr('required', true);
+        $('#sea_ships_main_modal_end_country_id').attr('required', true);
+        $('#sea_ships_main_modal_clm_sea_line_id').attr('required', true);
+        $('#clm_sum').attr('required', true);
+        $('#clm_sum_currency_id').attr('required', true);
+
+        if ($('#sea_ships_main_add_modal_mode').val() === 0){
+            $('#sea_ships_main_modal_clm_incoterms_new_name').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_clm_bulk_type_new_name').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_clm_sea_agent_new_name').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_clm_sea_line_new_name').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_ship_new_name').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_start_shipyard_new_name').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_end_shipyard_new_name').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_trans_cnt_name_new').removeAttr('required').removeAttr('readonly',true);
+            $('#sea_ships_main_modal_cntc_name_new').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_cntt_name_new').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_cntd_name_new').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_clm_containers_new_name').removeAttr('required').attr('readonly',true);
+        }
+        else if ($('#sea_ships_main_add_modal_mode').val() === 1){
+            $('#sea_ships_main_modal_clm_incoterms_new_name').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_clm_bulk_type_new_name').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_clm_sea_agent_new_name').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_clm_sea_line_new_name').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_ship_new_name').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_start_shipyard_new_name').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_end_shipyard_new_name').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_trans_cnt_name_new').removeAttr('required').removeAttr('readonly',true);
+            $('#sea_ships_main_modal_cntc_name_new').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_cntt_name_new').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_cntd_name_new').removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_clm_containers_new_name').removeAttr('required').attr('readonly',true);
+        }
+    }
+
+    // Clear Fields
+    function clear_sea_ships_main_modal_detail() {
+        $("#sea_ships_main_modal_detail input[type=text]").val('');
+        $("#sea_ships_main_modal_detail input[type=number]").val('');
+        $("#sea_ships_main_modal_detail select").empty();
+        $("#sea_ships_main_modal_detail textarea").val('');
+    }
+
+    // Service List
+    function addServiceChange(vMode) {
+        $('#sea_ships_main_modal_ser_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/sea_ships/get_service_list'}]]*/ "/sea_ships/get_service_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "ser_id": 1
+            },
+            success: function (sea_ships_modal_ser_list) {
+                for (var i = 0; i < sea_ships_modal_ser_list.data.length; i++) {
+                    $("select[name='sea_ships_main_modal_ser_id']").find('option').end().append(
+                        "<option value='" + sea_ships_modal_ser_list.data[i].ser_id
+                        + "'>" + sea_ships_modal_ser_list.data[i].ser_name + "</option>");
+                }
+            }
+        }));
+    }
+
+    // Client List
+    function tmsAddClientChange(vMode,vCNTID,vCNTFILTER) {
+        $('#sea_ships_main_modal_cnt_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/sea_ships/get_tms_client_list'}]]*/ "/sea_ships/get_tms_client_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "cnt_filter": vCNTFILTER
+            },
+            success: function (client_list) {
+                for (var i = 0; i < client_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='sea_ships_main_modal_cnt_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='sea_ships_main_modal_cnt_id']").find('option').end().append(
+                        "<option value='" + client_list.data[i].cnt_id
+                        + "'>" + client_list.data[i].cnt_name + "</option>");
+                }
+                if(vCNTID != null){
+                    $("#sea_ships_main_modal_cnt_id").val(vCNTID);
+                }
+            }
+        }));
+    }
+    //Incoterms List
+    function tmsIncotermsList(vMode, vIncotermsID) {
+        $('#sea_ships_main_modal_clm_incoterms_id').empty();
+        $("select[name='sea_ships_main_modal_clm_incoterms_id']").find('option').end().append("<option value='0' class='bg-success text-white'>New</option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/sea_ships/get_tms_incoterms_list'}]]*/ "/sea_ships/get_tms_incoterms_list",
+            type: "get",
+            data: {"mode": vMode
+            },
+            success: function (incoterms_list) {
+                for (var i = 0; i < incoterms_list.data.length; i++) {
+                    $("select[name='sea_ships_main_modal_clm_incoterms_id']").find('option').end().append(
+                        "<option value='" + incoterms_list.data[i].clm_incoterms_id + "'>"
+                        + incoterms_list.data[i].clm_incoterms_sname + "</option>"
+                    );
+                }
+                if(vIncotermsID !== ''){
+                    $('#sea_ships_main_modal_clm_incoterms_id').val(vIncotermsID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+    //Bulk Type List
+    function tmsBulkTypeList(vMode, vBulkTypeID) {
+        $('#sea_ships_main_modal_clm_bulk_type_id').empty();
+        $("select[name='sea_ships_main_modal_clm_bulk_type_id']").find('option').end().append("<option value=''></option>");
+        $("select[name='sea_ships_main_modal_clm_bulk_type_id']").find('option').end().append("<option value='0' class='bg-success text-white'>New</option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/sea_ships/get_tms_bulk_type_list'}]]*/ "/sea_ships/get_tms_bulk_type_list",
+            type: "get",
+            data: {"mode": vMode
+            },
+            success: function (bulk_type_list) {
+                for (var i = 0; i < bulk_type_list.data.length; i++) {
+                    $("select[name='sea_ships_main_modal_clm_bulk_type_id']").find('option').end().append(
+                        "<option value='" + bulk_type_list.data[i].clm_bulk_type_id + "'>"
+                        + bulk_type_list.data[i].clm_bulk_type_sname + "</option>"
+                    );
+                }
+                if(vBulkTypeID !== ''){
+                    $('#sea_ships_main_modal_clm_bulk_type_id').val(vBulkTypeID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+    //Sea Agent List
+    function tmsSeaAgentList(vMode, vSeaAgentID) {
+        $('#sea_ships_main_modal_clm_sea_agent_id').empty();
+        $("select[name='sea_ships_main_modal_clm_sea_agent_id']").find('option').end().append("<option value=''></option>");
+        $("select[name='sea_ships_main_modal_clm_sea_agent_id']").find('option').end().append("<option value='0' class='bg-success text-white'>New</option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/sea_ships/get_tms_sea_agent_list'}]]*/ "/sea_ships/get_tms_sea_agent_list",
+            type: "get",
+            data: {"mode": vMode
+            },
+            success: function (sea_agent_list) {
+                for (var i = 0; i < sea_agent_list.data.length; i++) {
+                    $("select[name='sea_ships_main_modal_clm_sea_agent_id']").find('option').end().append(
+                        "<option value='" + sea_agent_list.data[i].cnt_id + "'>"
+                        + sea_agent_list.data[i].cnt_name + "</option>"
+                    );
+                }
+                if(vSeaAgentID !== ''){
+                    $('#sea_ships_main_modal_clm_sea_agent_id').val(vSeaAgentID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    let agentName =  "Выберите агента";
+    $('#sea_ships_main_modal_clm_sea_agent_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: agentName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    //Start Country List
+    function tmsStartCountryList(vMode, vStartCountryID) {
+        $('#sea_ships_main_modal_start_country_id').empty();
+        $("select[name='sea_ships_main_modal_start_country_id']").find('option').end().append("<option value=''></option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/sea_ships/get_country'}]]*/ "/sea_ships/get_country",
+            type: "get",
+            data: {"mode": vMode
+            },
+            success: function (start_country_list) {
+                for (var i = 0; i < start_country_list.data.length; i++) {
+                    $("select[name='sea_ships_main_modal_start_country_id']").find('option').end().append(
+                        "<option value='" + start_country_list.data[i].country_id + "'>"
+                        + start_country_list.data[i].country_nameua + "</option>"
+                    );
+                }
+                if(vStartCountryID !== ''){
+                    $('#sea_ships_main_modal_start_country_id').val(vStartCountryID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    let startCountryName =  "Выберите страну";
+    $('#sea_ships_main_modal_start_country_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: startCountryName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    //Start Country Shipyard List
+    function tmsStartCountryShipyardList(vMode, vStartCountryID, vStartShipyardID) {
+        $('#sea_ships_main_modal_start_shipyard_id').empty();
+        $("select[name='sea_ships_main_modal_start_shipyard_id']").find('option').end().append("<option value=''></option>");
+        $("select[name='sea_ships_main_modal_start_shipyard_id']").find('option').end().append("<option value='0' class='bg-success text-white'>New</option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/sea_ships/get_country_shipyard_list'}]]*/ "/sea_ships/get_country_shipyard_list",
+            type: "get",
+            data: {"mode": vMode,
+                    "country_id": vStartCountryID
+            },
+            success: function (start_shipyard_list) {
+                for (var i = 0; i < start_shipyard_list.data.length; i++) {
+                    $("select[name='sea_ships_main_modal_start_shipyard_id']").find('option').end().append(
+                        "<option value='" + start_shipyard_list.data[i].shipyard_id + "'>"
+                        + start_shipyard_list.data[i].shipyard_name + "</option>"
+                    );
+                }
+                if(vStartShipyardID !== ''){
+                    $('#sea_ships_main_modal_start_shipyard_id').val(vStartShipyardID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    let startShipyardName =  "Выберите порт";
+    $('#sea_ships_main_modal_start_shipyard_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: startShipyardName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    //End Country List
+    function tmsEndCountryList(vMode, vEndCountryID) {
+        $('#sea_ships_main_modal_end_country_id').empty();
+        $("select[name='sea_ships_main_modal_end_country_id']").find('option').end().append("<option value=''></option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/sea_ships/get_country'}]]*/ "/sea_ships/get_country",
+            type: "get",
+            data: {"mode": vMode
+            },
+            success: function (end_country_list) {
+                for (var i = 0; i < end_country_list.data.length; i++) {
+                    $("select[name='sea_ships_main_modal_end_country_id']").find('option').end().append(
+                        "<option value='" + end_country_list.data[i].country_id + "'>"
+                        + end_country_list.data[i].country_nameua + "</option>"
+                    );
+                }
+                if(vEndCountryID !== ''){
+                    $('#sea_ships_main_modal_end_country_id').val(vEndCountryID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    let endCountryName =  "Выберите страну";
+    $('#sea_ships_main_modal_end_country_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: endCountryName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    //Start Country Shipyard List
+    function tmsEndCountryShipyardList(vMode, vEndCountryID, vEndShipyardID) {
+        $('#sea_ships_main_modal_end_shipyard_id').empty();
+        $("select[name='sea_ships_main_modal_end_shipyard_id']").find('option').end().append("<option value=''></option>");
+        $("select[name='sea_ships_main_modal_end_shipyard_id']").find('option').end().append("<option value='0' class='bg-success text-white'>New</option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/sea_ships/get_country_shipyard_list'}]]*/ "/sea_ships/get_country_shipyard_list",
+            type: "get",
+            data: {"mode": vMode,
+                "country_id": vEndCountryID
+            },
+            success: function (end_shipyard_list) {
+                for (var i = 0; i < end_shipyard_list.data.length; i++) {
+                    $("select[name='sea_ships_main_modal_end_shipyard_id']").find('option').end().append(
+                        "<option value='" + end_shipyard_list.data[i].shipyard_id + "'>"
+                        + end_shipyard_list.data[i].shipyard_name + "</option>"
+                    );
+                }
+                if(vEndShipyardID !== ''){
+                    $('#sea_ships_main_modal_end_shipyard_id').val(vEndShipyardID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    let endShipyardName =  "Выберите порт";
+    $('#sea_ships_main_modal_end_shipyard_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: endShipyardName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    //Ship Operator List
+    function tmsShipOperatorList(vMode, vShipOperatorID) {
+        $('#sea_ships_main_modal_clm_sea_line_id').empty();
+        $("select[name='sea_ships_main_modal_clm_sea_line_id']").find('option').end().append("<option value=''></option>");
+        $("select[name='sea_ships_main_modal_clm_sea_line_id']").find('option').end().append("<option value='0' class='bg-success text-white'>New</option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/sea_ships/get_ship_operator_list'}]]*/ "/sea_ships/get_ship_operator_list",
+            type: "get",
+            data: {"mode": vMode
+            },
+            success: function (sea_line_list) {
+                for (var i = 0; i < sea_line_list.data.length; i++) {
+                    $("select[name='sea_ships_main_modal_clm_sea_line_id']").find('option').end().append(
+                        "<option value='" + sea_line_list.data[i].cnt_id + "'>"
+                        + sea_line_list.data[i].cnt_name + "</option>"
+                    );
+                }
+                if(vShipOperatorID !== ''){
+                    $('#sea_ships_main_modal_clm_sea_line_id').val(vShipOperatorID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+    //Ships List
+    function tmsShipList(vMode, vShipOperatorID, vShipID) {
+        $('#sea_ships_main_modal_ship_id').empty();
+        $("select[name='sea_ships_main_modal_ship_id']").find('option').end().append("<option value=''></option>");
+        $("select[name='sea_ships_main_modal_ship_id']").find('option').end().append("<option value='0' class='bg-success text-white'>New</option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/sea_ships/get_ships_list'}]]*/ "/sea_ships/get_ships_list",
+            type: "get",
+            data: {"mode": vMode,
+                    "ship_operator_id": vShipOperatorID
+            },
+            success: function (ship_list) {
+                for (var i = 0; i < ship_list.data.length; i++) {
+                    $("select[name='sea_ships_main_modal_ship_id']").find('option').end().append(
+                        "<option value='" + ship_list.data[i].ship_id + "'>"
+                        + ship_list.data[i].ship_name + "</option>"
+                    );
+                }
+                if(vShipID !== ''){
+                    $('#sea_ships_main_modal_ship_id').val(vShipID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+    // Sum Currency List
+    function rateAddCurrencyChange(vMode, vCurrencyID) {
+        $('#clm_sum_currency_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/sea_ships/get_currency_list'}]]*/ "/sea_ships/get_currency_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (sum_currency_list) {
+                for (var i = 0; i < sum_currency_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='clm_sum_currency_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='clm_sum_currency_id']").find('option').end().append(
+                        "<option value='" + sum_currency_list.data[i].currency_id
+                        + "'>" + sum_currency_list.data[i].currency_name + "</option>");
+                }
+                if(vCurrencyID !== ''){
+                    $('#clm_sum_currency_id').val(vCurrencyID);
+                }
+            }
+        }));
+    }
+
+    //Containers Type List
+    function tmsContainersTypeList(vMode, vContainerTypeID) {
+        $('#sea_ships_main_modal_clm_containers_id').empty();
+        $("select[name='sea_ships_main_modal_clm_containers_id']").find('option').end().append("<option value='0' class='bg-success text-white'>New</option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/sea_ships/get_containers_type_list'}]]*/ "/sea_ships/get_containers_type_list",
+            type: "get",
+            data: {"mode": vMode
+            },
+            success: function (container_type_list) {
+                for (var i = 0; i < container_type_list.data.length; i++) {
+                    $("select[name='sea_ships_main_modal_clm_containers_id']").find('option').end().append(
+                        "<option value='" + container_type_list.data[i].clm_containers_id + "'>"
+                        + container_type_list.data[i].clm_containers_sname + "</option>"
+                    );
+                }
+                if(vContainerTypeID !== ''){
+                    $('#sea_ships_main_modal_clm_containers_id').val(vContainerTypeID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    $("#clm_load_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#clm_eta_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#clm_ata_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#clm_shipyard_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#clm_border_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    let mainModalTransName =  "Выберите перевозчика";
+    $('#sea_ships_main_modal_trans_cnt_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: mainModalTransName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    let mainModalCarName =  "Выберите авто";
+    $('#sea_ships_main_modal_cntc_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: mainModalCarName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    let mainModalTrailersName =  "Выберите прицеп";
+    $('#sea_ships_main_modal_cntt_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: mainModalTrailersName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    let mainModalDriverName =  "Выберите водителя";
+    $('#sea_ships_main_modal_cntd_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: mainModalDriverName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    //Cars List
+    function mainModalCarsListChange(vTransCntID, vTransCntCarID){
+        $('#sea_ships_main_modal_cntc_id').empty();
+        $("select[name='sea_ships_main_modal_cntc_id']").find('option').end().append("<option value=''></option>");
+        $("select[name='sea_ships_main_modal_cntc_id']").find('option').end().append("<option value='0' class='bg-success text-white'>New</option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/sea_ships/get_cars'}]]*/ "/sea_ships/get_cars",
+            type: "get",
+            data: {
+                "cnt_id": vTransCntID
+            },
+            success: function (sea_ships_main_modal_cntc_list) {
+                for (var i = 0; i < sea_ships_main_modal_cntc_list.data.length; i++) {
+                    $("select[name='sea_ships_main_modal_cntc_id']").find('option').end().append(
+                        "<option value='" + sea_ships_main_modal_cntc_list.data[i].cntc_id
+                        + "'>" + sea_ships_main_modal_cntc_list.data[i].cntc_fullname + "</option>");
+                }
+                if(vTransCntCarID !== ''){
+                    $('#sea_ships_main_modal_cntc_id').val(vTransCntCarID);
+                }
+            }
+        }));
+    }
+    //Trailers List
+    function mainModalTrailersListChange(vTransCntID, vTransCntTrailerID){
+        $('#sea_ships_main_modal_cntt_id').empty();
+        $("select[name='sea_ships_main_modal_cntt_id']").find('option').end().append("<option value=''></option>");
+        $("select[name='sea_ships_main_modal_cntt_id']").find('option').end().append("<option value='0' class='bg-success text-white'>New</option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/sea_ships/get_trailers'}]]*/ "/sea_ships/get_trailers",
+            type: "get",
+            data: {
+                "cnt_id": vTransCntID
+            },
+            success: function (sea_ships_main_modal_cntt_list) {
+                for (var i = 0; i < sea_ships_main_modal_cntt_list.data.length; i++) {
+                    $("select[name='sea_ships_main_modal_cntt_id']").find('option').end().append(
+                        "<option value='" + sea_ships_main_modal_cntt_list.data[i].cntt_id
+                        + "'>" + sea_ships_main_modal_cntt_list.data[i].cntt_fullname + "</option>");
+                }
+                if(vTransCntTrailerID !== ''){
+                    $('#sea_ships_main_modal_cntt_id').val(vTransCntTrailerID);
+                }
+            }
+        }));
+    }
+    //Drivers List
+    function mainModalDriversListChange(vTransCntID, vTransCntDriverID){
+        $('#sea_ships_main_modal_cntd_id').empty();
+        $("select[name='sea_ships_main_modal_cntd_id']").find('option').end().append("<option value=''></option>");
+        $("select[name='sea_ships_main_modal_cntd_id']").find('option').end().append("<option value='0' class='bg-success text-white'>New</option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/sea_ships/get_drivers'}]]*/ "/sea_ships/get_drivers",
+            type: "get",
+            data: {
+                "cnt_id": vTransCntID
+            },
+            success: function (sea_ships_main_modal_cntd_list) {
+                for (var i = 0; i < sea_ships_main_modal_cntd_list.data.length; i++) {
+                    $("select[name='sea_ships_main_modal_cntd_id']").find('option').end().append(
+                        "<option value='" + sea_ships_main_modal_cntd_list.data[i].cntd_id
+                        + "'>" + sea_ships_main_modal_cntd_list.data[i].cntd_fullname + "</option>");
+                }
+                if(vTransCntDriverID !== ''){
+                    $('#sea_ships_main_modal_cntd_id').val(vTransCntDriverID);
+                }
+            }
+        }));
+    }
+
+    // Clients List
+    function mainModalTransClientChange(vMode, vTransCntID) {
+        $('#sea_ships_main_modal_trans_cnt_id').empty();
+        $("select[name='sea_ships_main_modal_trans_cnt_id']").find('option').end().append("<option value=''></option>");
+        $("select[name='sea_ships_main_modal_trans_cnt_id']").find('option').end().append("<option value='0' class='bg-success text-white'>New</option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tms_locals/get_trans_clients_list'}]]*/ "/tms_locals/get_trans_clients_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (sea_ships_main_modal_trans_list) {
+                for (var i = 0; i < sea_ships_main_modal_trans_list.data.length; i++) {
+                    $("select[name='sea_ships_main_modal_trans_cnt_id']").find('option').end().append(
+                        "<option value='" + sea_ships_main_modal_trans_list.data[i].cnt_id
+                        + "'>" + sea_ships_main_modal_trans_list.data[i].cnt_name + "</option>");
+                }
+                if(vTransCntID !== ''){
+                    $('#sea_ships_main_modal_trans_cnt_id').val(vTransCntID);
+                }
+            }
+        }));
+    }
+
+    // Load Function
+    function fill_sea_ships_main_modal_detail(aMode) {
+        clear_sea_ships_main_modal_detail();
+        $('#sea_ships_main_add_modal_mode').val(aMode);
+        block_sea_ships_main_modal_detail();
+        sea_ships_main_modal_block();
+
+        $.ajax({
+            url: /*[[ @{/sea_ships/all_del_containers_temp} ]]*/ "/sea_ships/all_del_containers_temp",
+            type: 'POST',
+            data: {}
+        });
+
+        if (aMode === 0) {
+            $.when(
+                addServiceChange(0),
+                tmsIncotermsList(aMode, 1),
+                tmsBulkTypeList(aMode),
+                tmsSeaAgentList(aMode),
+                tmsStartCountryList(aMode),
+                tmsEndCountryList(aMode),
+                tmsShipOperatorList(aMode, -1),
+                mainModalTransClientChange(aMode),
+                rateAddCurrencyChange(aMode),
+                tmsContainersTypeList(aMode, 1)
+            ).then(function () {
+                $('#sea_ships_main_modal_clm_id_row').attr('hidden', true);
+                $('#sea_ships_main_modal_clm_num').val('75-2007-0001');
+
+                $('#sea_ships_main_modal_clm_containers_weight').val('0.00');
+
+                $('#clm_sum').val('0.00');
+                $('#clm_sum_currency_id').val(980);
+
+                vFSClaimsContainersTempValue.rowdata.mode = aMode;
+                $(vFSClaimsContainersTempValue.table).DataTable().ajax.reload(null, false);
+
+                $('#sea_ships_main_modal').modal('show');
+            });
+        } else if (aMode === 1) {
+            $.ajax({
+                url: /*[[ @{/sea_ships/fill_containers_temp} ]]*/ "/sea_ships/fill_containers_temp",
+                type: 'POST',
+                data: {
+                    "clm_id": vFSClaimsValue.rowdata.clm_id
+                }
+            });
+
+            $.ajax({
+                url:/*[[@{'/sea_ships/sea_ships_main_detail'}]]*/ "sea_ships/sea_ships_main_detail",
+                type: "get",
+                data: {
+                    "mode": aMode,
+                    "clm_id": vFSClaimsValue.rowdata.clm_id
+                },
+                success: function (sea_ships_main_modal_detail_result) {
+                    $.when(
+                        addServiceChange(sea_ships_main_modal_detail_result.data[0].ser_id),
+                        tmsAddClientChange(aMode, sea_ships_main_modal_detail_result.data[0].cnt_id, sea_ships_main_modal_detail_result.data[0].cnt_name),
+                        tmsIncotermsList(aMode, sea_ships_main_modal_detail_result.data[0].clm_incoterms_id),
+                        tmsBulkTypeList(aMode, sea_ships_main_modal_detail_result.data[0].clm_bulk_type_id),
+                        tmsSeaAgentList(aMode, sea_ships_main_modal_detail_result.data[0].sea_agent_id),
+                        tmsStartCountryList(aMode, sea_ships_main_modal_detail_result.data[0].start_country_id),
+                        tmsStartCountryShipyardList(aMode, sea_ships_main_modal_detail_result.data[0].start_country_id, sea_ships_main_modal_detail_result.data[0].start_shipyard_id),
+                        tmsEndCountryList(aMode, sea_ships_main_modal_detail_result.data[0].end_country_id),
+                        tmsEndCountryShipyardList(aMode, sea_ships_main_modal_detail_result.data[0].end_country_id, sea_ships_main_modal_detail_result.data[0].end_shipyard_id),
+                        tmsShipOperatorList(aMode, sea_ships_main_modal_detail_result.data[0].clm_sea_line_id),
+                        tmsShipList(aMode, sea_ships_main_modal_detail_result.data[0].clm_sea_line_id, sea_ships_main_modal_detail_result.data[0].ship_id),
+                        mainModalTransClientChange(aMode, sea_ships_main_modal_detail_result.data[0].trans_cnt_id),
+                        mainModalCarsListChange(sea_ships_main_modal_detail_result.data[0].trans_cnt_id, sea_ships_main_modal_detail_result.data[0].cntc_id),
+                        mainModalTrailersListChange(sea_ships_main_modal_detail_result.data[0].trans_cnt_id, sea_ships_main_modal_detail_result.data[0].cntt_id),
+                        mainModalDriversListChange(sea_ships_main_modal_detail_result.data[0].trans_cnt_id, sea_ships_main_modal_detail_result.data[0].cntd_id),
+                        rateAddCurrencyChange(aMode, sea_ships_main_modal_detail_result.data[0].clm_sum_currency_id),
+                        tmsContainersTypeList(aMode, sea_ships_main_modal_detail_result.data[0].clm_containers_id)
+                    ).then(function () {
+                        $('#sea_ships_main_modal_clm_id').val(sea_ships_main_modal_detail_result.data[0].clm_id);
+                        $('#sea_ships_main_modal_clm_num').val(sea_ships_main_modal_detail_result.data[0].clm_num);
+                        $('#sea_ships_main_modal_clm_client_num').val(sea_ships_main_modal_detail_result.data[0].clm_client_num);
+                        $('#cnt_filter').val(sea_ships_main_modal_detail_result.data[0].cnt_name);
+
+                        var clm_doc_check = sea_ships_main_modal_detail_result.data[0].clm_doc_check;
+                        if (clm_doc_check === 1) {
+                            $('#clm_doc_check').prop('checked', true);
+                        } else {
+                            $('#clm_doc_check').removeAttr('checked');
+                        }
+
+                        $('#clm_load_date').val(sea_ships_main_modal_detail_result.data[0].clm_load_date);
+                        $('#clm_eta_date').val(sea_ships_main_modal_detail_result.data[0].clm_eta_date);
+                        $('#clm_ata_date').val(sea_ships_main_modal_detail_result.data[0].clm_ata_date);
+                        $('#sea_ships_main_modal_clm_mhb').val(sea_ships_main_modal_detail_result.data[0].clm_mhb);
+                        $('#sea_ships_main_modal_clm_hbl').val(sea_ships_main_modal_detail_result.data[0].clm_hbl);
+                        $('#clm_shipyard_date').val(sea_ships_main_modal_detail_result.data[0].clm_shipyard_date);
+                        $('#clm_border_date').val(sea_ships_main_modal_detail_result.data[0].clm_border_date);
+
+                        $('#clm_sum').val(sea_ships_main_modal_detail_result.data[0].clm_sum);
+
+                        vFSClaimsContainersTempValue.rowdata.mode = $('#sea_ships_main_add_modal_mode').val();
+                        $(vFSClaimsContainersTempValue.table).DataTable().ajax.reload(null, false);
+
+                        $('#sea_ships_main_modal').modal('show');
+                    })
+                }
+            })
+        }
+    }
+    // Add button function
+    function addTMSLocalsMain(){
+        let RowID = vFSClaimsValue.rowdata.clm_id;
+        $.ajax({
+            url: /*[[ @{/sea_ships/add_main} ]]*/ "/sea_ships/add_main",
+            type: 'POST',
+            data: {
+                "sea_ships_main_modal_clm_num": $('#sea_ships_main_modal_clm_num').val(),
+                "sea_ships_main_modal_clm_client_num": $('#sea_ships_main_modal_clm_client_num').val(),
+                "sea_ships_main_modal_cnt_id": $('#sea_ships_main_modal_cnt_id').val(),
+                "sea_ships_main_modal_ser_id": $('#sea_ships_main_modal_ser_id').val(),
+                "sea_ships_main_modal_clm_incoterms_id": $('#sea_ships_main_modal_clm_incoterms_id').val(),
+                "sea_ships_main_modal_clm_incoterms_new_name": $('#sea_ships_main_modal_clm_incoterms_new_name').val(),
+                "sea_ships_main_modal_clm_bulk_type_id": $('#sea_ships_main_modal_clm_bulk_type_id').val(),
+                "sea_ships_main_modal_clm_bulk_type_new_name": $('#sea_ships_main_modal_clm_bulk_type_new_name').val(),
+                "sea_ships_main_modal_clm_sea_agent_id": $('#sea_ships_main_modal_clm_sea_agent_id').val(),
+                "sea_ships_main_modal_clm_sea_agent_new_name": $('#sea_ships_main_modal_clm_sea_agent_new_name').val(),
+                "clm_sea_agent_resident_new": $('#clm_sea_agent_resident_new').is(':checked') ? 1 : 0,
+                "clm_sea_agent_identifycode_new": $('#clm_sea_agent_identifycode_new').val(),
+                "sea_ships_main_modal_clm_doc_check": $('#sea_ships_main_modal_clm_doc_check').is(':checked') ? 1 : 0,
+                "sea_ships_main_modal_clm_sea_line_id": $('#sea_ships_main_modal_clm_sea_line_id').val(),
+                "sea_ships_main_modal_clm_sea_line_new_name": $('#sea_ships_main_modal_clm_sea_line_new_name').val(),
+                "sea_ships_main_modal_ship_id": $('#sea_ships_main_modal_ship_id').val(),
+                "sea_ships_main_modal_ship_new_name": $('#sea_ships_main_modal_ship_new_name').val(),
+                "sea_ships_main_modal_start_country_id": $('#sea_ships_main_modal_start_country_id').val(),
+                "sea_ships_main_modal_start_shipyard_id": $('#sea_ships_main_modal_start_shipyard_id').val(),
+                "sea_ships_main_modal_start_shipyard_new_name": $('#sea_ships_main_modal_start_shipyard_new_name').val(),
+                "sea_ships_main_modal_end_country_id": $('#sea_ships_main_modal_end_country_id').val(),
+                "sea_ships_main_modal_end_shipyard_id": $('#sea_ships_main_modal_end_shipyard_id').val(),
+                "sea_ships_main_modal_end_shipyard_new_name": $('#sea_ships_main_modal_end_shipyard_new_name').val(),
+
+                "clm_load_date": $('#clm_load_date').val(),
+                "clm_eta_date": $('#clm_eta_date').val(),
+                "clm_ata_date": $('#clm_ata_date').val(),
+                "sea_ships_main_modal_clm_mhb": $('#sea_ships_main_modal_clm_mhb').val(),
+                "sea_ships_main_modal_clm_hbl": $('#sea_ships_main_modal_clm_hbl').val(),
+                "clm_shipyard_date": $('#clm_shipyard_date').val(),
+                "clm_border_date": $('#clm_border_date').val(),
+
+                "trans_cnt_id": $('#sea_ships_main_modal_trans_cnt_id').val(),
+                "trans_cnt_name_new": $('#sea_ships_main_modal_trans_cnt_name_new').val(),
+                "cntc_id": $('#sea_ships_main_modal_cntc_id').val(),
+                "cntc_name_new": $('#sea_ships_main_modal_cntc_name_new').val(),
+                "cntt_id": $('#sea_ships_main_modal_cntt_id').val(),
+                "cntt_name_new": $('#sea_ships_main_modal_cntt_name_new').val(),
+                "cntd_id": $('#sea_ships_main_modal_cntd_id').val(),
+                "cntd_name_new": $('#sea_ships_main_modal_cntd_name_new').val(),
+
+                "sea_ships_main_modal_clm_containers_id": $('#sea_ships_main_modal_clm_containers_id').val(),
+                "sea_ships_main_modal_clm_containers_new_name": $('#sea_ships_main_modal_clm_containers_new_name').val(),
+                "sea_ships_main_modal_clm_containers_num": $('#sea_ships_main_modal_clm_containers_num').val(),
+                "sea_ships_main_modal_clm_containers_weight": $('#sea_ships_main_modal_clm_containers_weight').val(),
+
+                "clm_sum": $('#clm_sum').val(),
+                "clm_sum_currency_id": $('#clm_sum_currency_id').val()            
+            },
+            success: function (result) {
+                $('#sea_ships_main_modal').modal('hide');
+                vFSClaimsValue.rowdata.clm_id = RowID;
+                $(vFSClaimsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    // Edit button function
+    function editTMSLocalsMain(){
+        let RowID = vFSClaimsValue.rowdata.clm_id;
+        $.ajax({
+            url: /*[[ @{/sea_ships/edit_main} ]]*/ "/sea_ships/edit_main",
+            type: 'POST',
+            data: {
+                "sea_ships_main_modal_clm_id": RowID,
+                "sea_ships_main_modal_clm_num": $('#sea_ships_main_modal_clm_num').val(),
+                "sea_ships_main_modal_clm_client_num": $('#sea_ships_main_modal_clm_client_num').val(),
+                "sea_ships_main_modal_cnt_id": $('#sea_ships_main_modal_cnt_id').val(),
+                "sea_ships_main_modal_ser_id": $('#sea_ships_main_modal_ser_id').val(),
+                "sea_ships_main_modal_clm_incoterms_id": $('#sea_ships_main_modal_clm_incoterms_id').val(),
+                "sea_ships_main_modal_clm_incoterms_new_name": $('#sea_ships_main_modal_clm_incoterms_new_name').val(),
+                "sea_ships_main_modal_clm_bulk_type_id": $('#sea_ships_main_modal_clm_bulk_type_id').val(),
+                "sea_ships_main_modal_clm_bulk_type_new_name": $('#sea_ships_main_modal_clm_bulk_type_new_name').val(),
+                "sea_ships_main_modal_clm_sea_agent_id": $('#sea_ships_main_modal_clm_sea_agent_id').val(),
+                "sea_ships_main_modal_clm_sea_agent_new_name": $('#sea_ships_main_modal_clm_sea_agent_new_name').val(),
+                "clm_sea_agent_resident_new": $('#clm_sea_agent_resident_new').is(':checked') ? 1 : 0,
+                "clm_sea_agent_identifycode_new": $('#clm_sea_agent_identifycode_new').val(),
+                "sea_ships_main_modal_clm_doc_check": $('#sea_ships_main_modal_clm_doc_check').is(':checked') ? 1 : 0,
+                "sea_ships_main_modal_clm_sea_line_id": $('#sea_ships_main_modal_clm_sea_line_id').val(),
+                "sea_ships_main_modal_clm_sea_line_new_name": $('#sea_ships_main_modal_clm_sea_line_new_name').val(),
+                "sea_ships_main_modal_ship_id": $('#sea_ships_main_modal_ship_id').val(),
+                "sea_ships_main_modal_ship_new_name": $('#sea_ships_main_modal_ship_new_name').val(),
+                "sea_ships_main_modal_start_country_id": $('#sea_ships_main_modal_start_country_id').val(),
+                "sea_ships_main_modal_start_shipyard_id": $('#sea_ships_main_modal_start_shipyard_id').val(),
+                "sea_ships_main_modal_start_shipyard_new_name": $('#sea_ships_main_modal_start_shipyard_new_name').val(),
+                "sea_ships_main_modal_end_country_id": $('#sea_ships_main_modal_end_country_id').val(),
+                "sea_ships_main_modal_end_shipyard_id": $('#sea_ships_main_modal_end_shipyard_id').val(),
+                "sea_ships_main_modal_end_shipyard_new_name": $('#sea_ships_main_modal_end_shipyard_new_name').val(),
+
+                "clm_load_date": $('#clm_load_date').val(),
+                "clm_eta_date": $('#clm_eta_date').val(),
+                "clm_ata_date": $('#clm_ata_date').val(),
+                "sea_ships_main_modal_clm_mhb": $('#sea_ships_main_modal_clm_mhb').val(),
+                "sea_ships_main_modal_clm_hbl": $('#sea_ships_main_modal_clm_hbl').val(),
+                "clm_shipyard_date": $('#clm_shipyard_date').val(),
+                "clm_border_date": $('#clm_border_date').val(),
+
+                "trans_cnt_id": $('#sea_ships_main_modal_trans_cnt_id').val(),
+                "trans_cnt_name_new": $('#sea_ships_main_modal_trans_cnt_name_new').val(),
+                "cntc_id": $('#sea_ships_main_modal_cntc_id').val(),
+                "cntc_name_new": $('#sea_ships_main_modal_cntc_name_new').val(),
+                "cntt_id": $('#sea_ships_main_modal_cntt_id').val(),
+                "cntt_name_new": $('#sea_ships_main_modal_cntt_name_new').val(),
+                "cntd_id": $('#sea_ships_main_modal_cntd_id').val(),
+                "cntd_name_new": $('#sea_ships_main_modal_cntd_name_new').val(),
+
+                "sea_ships_main_modal_clm_containers_id": $('#sea_ships_main_modal_clm_containers_id').val(),
+                "sea_ships_main_modal_clm_containers_new_name": $('#sea_ships_main_modal_clm_containers_new_name').val(),
+                "sea_ships_main_modal_clm_containers_num": $('#sea_ships_main_modal_clm_containers_num').val(),
+                "sea_ships_main_modal_clm_containers_weight": $('#sea_ships_main_modal_clm_containers_weight').val(),
+
+                "clm_sum": $('#clm_sum').val(),
+                "clm_sum_currency_id": $('#clm_sum_currency_id').val()
+            },
+            success: function (result) {
+                $('#sea_ships_main_modal').modal('hide');
+                vFSClaimsValue.rowdata.clm_id = RowID;
+                $(vFSClaimsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    // Add button script
+    $('#sea_ships_main_modal_addbtn').click(function(){
+        $('#sea_ships_main_modal_form').submit();
+    });
+
+    // Edit button script
+    $('#sea_ships_main_modal_editbtn').click(function(){
+        $('#sea_ships_main_modal_form').submit();
+    });
+
+    //Validation Form
+    $('#sea_ships_main_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function(error,element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            if($('#sea_ships_main_add_modal_mode').val() === '0') {
+                addTMSLocalsMain();
+            }
+            else if($('#sea_ships_main_add_modal_mode').val() === '1') {
+                editTMSLocalsMain();
+            }
+            return false;
+        }
+    });
+    //On Change
+    $('#cnt_filter_check').click(function() {
+        $('#sea_ships_main_modal_cnt_id').removeAttr('disabled');
+        $('#sea_ships_main_modal_cnt_id_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+        tmsAddClientChange(
+            $('#sea_ships_main_add_modal_mode').val(),
+            $('#sea_ships_main_modal_cnt_id').val(),
+            $('#cnt_filter').val()
+        );
+    });
+
+    $('#sea_ships_main_modal_clm_incoterms_id').on('change', function() {
+        if($('#sea_ships_main_modal_clm_incoterms_id').val() === '0'){
+            $('#sea_ships_main_modal_clm_incoterms_new_name').prop('readonly',false).prop('required',true);
+        }
+        else{
+            $('#sea_ships_main_modal_clm_incoterms_new_name').prop('readonly',true).prop('required',false);
+        }
+    });
+
+    $('#sea_ships_main_modal_clm_bulk_type_id').on('change', function() {
+        if($('#sea_ships_main_modal_clm_bulk_type_id').val() === '0'){
+            $('#sea_ships_main_modal_clm_bulk_type_new_name').prop('readonly',false).prop('required',true);
+        }
+        else{
+            $('#sea_ships_main_modal_clm_bulk_type_new_name').prop('readonly',true).prop('required',false);
+        }
+    });
+
+    $('#sea_ships_main_modal_clm_sea_agent_id').on('change', function() {
+        if($('#sea_ships_main_modal_clm_sea_agent_id').val() === '0'){
+            $('#sea_ships_main_modal_clm_sea_agent_new_name').prop('readonly',false).prop('required',true);
+            $('#clm_sea_agent_resident_new').removeAttr('checked').removeAttr('disabled');
+            $('#clm_sea_agent_identifycode_new').removeAttr('required').removeAttr('readonly');
+        }
+        else{
+            $('#sea_ships_main_modal_clm_sea_agent_new_name').prop('readonly',true).prop('required',false);
+            $('#clm_sea_agent_resident_new').removeAttr('checked').attr('disabled',true);
+            $('#clm_sea_agent_identifycode_new').removeAttr('required').attr('readonly',true);
+        }
+    });
+
+    $('#clm_sea_agent_resident_new').click(function() {
+        if ($('#clm_sea_agent_resident_new').is(':checked')) {
+            $('#clm_sea_agent_identifycode_new').attr('required', true);
+        }
+        else {
+            $('#clm_sea_agent_identifycode_new').removeAttr('required');
+        }
+    });
+
+    function startShipyardChange(){
+        if($('#sea_ships_main_modal_start_shipyard_id').val() === '0'){
+            $('#sea_ships_main_modal_start_shipyard_new_name').prop('readonly',false).prop('required',true);
+        }
+        else{
+            $('#sea_ships_main_modal_start_shipyard_new_name').prop('readonly',true).prop('required',false);
+        }
+    }
+
+    $('#sea_ships_main_modal_start_country_id').on('change', function() {
+        $('#sea_ships_main_modal_start_shipyard_id').empty();
+        tmsStartCountryShipyardList( $('#sea_ships_main_add_modal_mode').val(), $('#sea_ships_main_modal_start_country_id').val());
+        startShipyardChange();
+        if($('#sea_ships_main_modal_start_country_id').val() !== ''){
+            $('#sea_ships_main_modal_start_shipyard_id').prop('required',true);
+        }
+        else{
+            $('#sea_ships_main_modal_start_shipyard_id').prop('required',false);
+        }
+    });
+
+    $('#sea_ships_main_modal_start_shipyard_id').on('change', function() {
+        startShipyardChange();
+    });
+
+    function endShipyardChange(){
+        if($('#sea_ships_main_modal_end_shipyard_id').val() === '0'){
+            $('#sea_ships_main_modal_end_shipyard_new_name').prop('readonly',false).prop('required',true);
+        }
+        else{
+            $('#sea_ships_main_modal_end_shipyard_new_name').prop('readonly',true).prop('required',false);
+        }
+    }
+
+    $('#sea_ships_main_modal_end_country_id').on('change', function() {
+        $('#sea_ships_main_modal_end_shipyard_id').empty();
+        tmsEndCountryShipyardList( $('#sea_ships_main_add_modal_mode').val(), $('#sea_ships_main_modal_end_country_id').val());
+        endShipyardChange();
+        if($('#sea_ships_main_modal_end_country_id').val() !== ''){
+            $('#sea_ships_main_modal_end_shipyard_id').prop('required',true);
+        }
+        else{
+            $('#sea_ships_main_modal_end_shipyard_id').prop('required',false);
+        }
+    });
+
+    $('#sea_ships_main_modal_end_shipyard_id').on('change', function() {
+        endShipyardChange();
+    });
+
+    function shipChange(){
+        if($('#sea_ships_main_modal_ship_id').val() === '0'){
+            $('#sea_ships_main_modal_ship_new_name').prop('readonly',false).prop('required',true);
+        }
+        else{
+            $('#sea_ships_main_modal_ship_new_name').prop('readonly',true).prop('required',false);
+        }
+    }
+
+    $('#sea_ships_main_modal_clm_sea_line_id').on('change', function() {
+        $('#sea_ships_main_modal_ship_id').empty();
+        tmsShipList($('#sea_ships_main_add_modal_mode').val(), $('#sea_ships_main_modal_clm_sea_line_id').val(),-1);
+
+        if($('#sea_ships_main_modal_clm_sea_line_id').val() === '0'){
+            $('#sea_ships_main_modal_clm_sea_line_new_name').prop('readonly',false).prop('required',true);
+        }
+        else{
+            $('#sea_ships_main_modal_clm_sea_line_new_name').prop('readonly',true).prop('required',false);
+        }
+        shipChange();
+    });
+
+    $('#sea_ships_main_modal_ship_id').on('change', function() {
+        shipChange();
+    });
+
+    $('#sea_ships_main_modal_trans_cnt_id').on('change', function () {
+        if($('#sea_ships_main_modal_trans_cnt_id').val() === '0'){
+            $('#sea_ships_main_modal_trans_cnt_name_new').attr('required',true).removeAttr('readonly');
+            $('#sea_ships_main_modal_cntc_id').removeAttr('disabled');
+            mainModalCarsListChange($('#sea_ships_main_modal_trans_cnt_id').val());
+            $('#sea_ships_main_modal_cntt_id').removeAttr('disabled');
+            mainModalTrailersListChange($('#sea_ships_main_modal_trans_cnt_id').val());
+            $('#sea_ships_main_modal_cntd_id').removeAttr('disabled');
+            mainModalDriversListChange($('#sea_ships_main_modal_trans_cnt_id').val());
+        }
+        else if($('#sea_ships_main_modal_trans_cnt_id').val() > 0){
+            $('#sea_ships_main_modal_trans_cnt_name_new').empty().removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_cntc_id').removeAttr('disabled');
+            mainModalCarsListChange($('#sea_ships_main_modal_trans_cnt_id').val());
+            $('#sea_ships_main_modal_cntt_id').removeAttr('disabled');
+            mainModalTrailersListChange($('#sea_ships_main_modal_trans_cnt_id').val());
+            $('#sea_ships_main_modal_cntd_id').removeAttr('disabled');
+            mainModalDriversListChange($('#sea_ships_main_modal_trans_cnt_id').val());
+        }
+        else{
+            $('#sea_ships_main_modal_trans_cnt_name_new').empty().removeAttr('required').attr('readonly',true);
+            $('#sea_ships_main_modal_cntc_id').val('').attr('disabled', true);
+            $('#sea_ships_main_modal_cntt_id').val('').attr('disabled', true);
+            $('#sea_ships_main_modal_cntd_id').val('').attr('disabled', true);
+        }
+    });
+
+    $('#sea_ships_main_modal_cntc_id').on('change', function () {
+       if($('#sea_ships_main_modal_cntc_id').val() === '0'){
+           $('#sea_ships_main_modal_cntc_name_new').attr('required',true).removeAttr('readonly');
+       }
+       else{
+           $('#sea_ships_main_modal_cntc_name_new').empty().removeAttr('required').attr('readonly',true);
+       }
+    });
+
+    $('#sea_ships_main_modal_cntt_id').on('change', function () {
+        if($('#sea_ships_main_modal_cntt_id').val() === '0'){
+            $('#sea_ships_main_modal_cntt_name_new').attr('required',true).removeAttr('readonly');
+        }
+        else{
+            $('#sea_ships_main_modal_cntt_name_new').empty().removeAttr('required').attr('readonly',true);
+        }
+    });
+
+    $('#sea_ships_main_modal_cntd_id').on('change', function () {
+        if($('#sea_ships_main_modal_cntd_id').val() === '0'){
+            $('#sea_ships_main_modal_cntd_name_new').attr('required',true).removeAttr('readonly');
+        }
+        else{
+            $('#sea_ships_main_modal_cntd_name_new').empty().removeAttr('required').attr('readonly',true);
+        }
+    });
+
+    $('#sea_ships_main_modal_clm_containers_id').on('change', function() {
+        if($('#sea_ships_main_modal_clm_containers_id').val() === '0'){
+            $('#sea_ships_main_modal_clm_containers_new_name').prop('readonly',false).prop('required',true);
+        }
+        else{
+            $('#sea_ships_main_modal_clm_containers_new_name').prop('readonly',true).prop('required',false);
+        }
+    });
+</script>
+</body>
+</html>

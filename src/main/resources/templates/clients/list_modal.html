@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_list_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="clients_list_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="hidden">
+                <input type="hidden" id="clients_list_modal_mode">
+            </div>
+
+            <div class="modal-content" id="clients_list_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{clients.list.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <form id="clients_list_modal_form">
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="cnt_id_row">
+                            <label for="cnt_id" class="form-label mb-0" th:text="'1. '+ #{clients.list.cnt_id}"></label>
+                            <input type="number" class="form-control" id="cnt_id" name="cnt_id">
+                        </div>
+                        <div class="col-12 col-md-9" id="cnt_name_row">
+                            <label for="cnt_name" class="form-label mb-0" th:text="'2. '+#{clients.list.cnt_name}"></label>
+                            <input type="text" maxlength="120" class="form-control" id="cnt_name" name="cnt_name">
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-7" id="cnt_name_eng_row">
+                            <label for="cnt_name_eng" class="form-label mb-0" th:text="'3. '+#{clients.list.cnt_name_eng}"></label>
+                            <input type="text" maxlength="120" class="form-control" id="cnt_name_eng" name="cnt_name_eng">
+                        </div>
+
+                        <div class="col-12 col-md-4" id="cnt_sname_row">
+                            <label for="cnt_sname" class="form-label mb-0" th:text="'4. '+#{clients.list.cnt_sname}"></label>
+                            <input type="text" maxlength="64" class="form-control" id="cnt_sname" name="cnt_sname">
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-6" id="country_id_row">
+                            <label for="country_id" class="form-label mb-0" th:text="'5. '+#{clients.list.country_id}"></label>
+                            <div class="input-group d-flex">
+                                <div class="flex-fill">
+                                    <select type="text" id="country_id" name="country_id" class="custom-select select2" aria-describedby="cnt_id_helpBlock">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 3 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-6" id="cnt_law_type_id_row">
+                            <label for="country_id" class="form-label mb-0" th:text="'6. '+#{clients.list.cnt_law_type_id}"></label>
+                            <div class="input-group d-flex">
+                                <div class="flex-fill">
+                                    <select type="text" id="cnt_law_type_id" name="cnt_law_type_id" class="custom-select" aria-describedby="cnt_law_type_id_helpBlock">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4" id="cnt_resident_row">
+                            <label class="form-label mb-0" for="cnt_resident" th:text="'7. '+ #{clients.list.cnt_resident}"></label>
+                            <div class="custom-control custom-switch centered">
+                                <input class="custom-control-input" type="checkbox" id="cnt_resident" name="cnt_resident">
+                                <label class="custom-control-label" for="cnt_resident"></label>
+                            </div>
+                        </div>
+                    </div><!-- Row 4 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-5" id="owt_id_row">
+                            <label for="owt_id" class="form-label mb-0" th:text="'8. '+#{clients.list.owt_id}"></label>
+                            <div class="input-group">
+                                <select type="text" id="owt_id" name="owt_id" class="custom-select" style="width: 90%" aria-describedby="owt_id_helpBlock">
+                                </select>
+                                <button type="button" id="owt_id_x" name="owt_id_x" class="btn btn-outline-primary select2_clear" data-parent="owt_id"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-5" id="cnt_identifycode_row">
+                            <label for="cnt_identifycode" class="form-label mb-0" th:text="'9. '+#{clients.list.cnt_identifycode}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="cnt_identifycode" name="cnt_identifycode">
+                        </div>
+                    </div><!-- Row 5 -->
+
+                    <div class="form-row mb-1" hidden>
+                        <div class="col-12 col-md-7" id="user_id_row">
+                            <label for="user_id" class="form-label mb-0" th:text="'10. '+#{clients.list.user_name}"></label>
+                            <div class="input-group">
+                                <select type="text" id="user_id" name="user_id" class="custom-select" style="width: 90%" aria-describedby="user_id_helpBlock">
+                                </select>
+                                <button type="button" id="user_id_x" name="user_id_x" class="btn btn-outline-primary select2_clear" data-parent="user_id"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-5" id="cnt_source_id_row">
+                            <label for="cnt_source_id" class="form-label mb-0" th:text="'11. '+#{clients.list.cnt_source_id}"></label>
+                            <select type="text" class="custom-select" id="cnt_source_id" name="cnt_source_id" style="width: 90%">
+                            </select>
+                        </div>
+                    </div><!-- Row 6 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-5" id="cs_id_row">
+                            <label for="cs_id" class="form-label mb-0" th:text="'12. '+#{clients.list.cs_id}"></label>
+                            <select type="text" class="custom-select" id="cs_id" name="cs_id" style="width: 90%">
+                            </select>
+                        </div>
+                    </div><!-- Row 7 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-12" id="cnt_note_row">
+                            <label for="cnt_note" class="form-label mb-0" th:text="'13. '+#{clients.list.cnt_note}"></label>
+                            <textarea class="form-control" rows="3" maxlength="64" style="resize:none;" id="cnt_note" name="cnt_note">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 8 -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="clients_list_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="clients_list_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="clients_list_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="clients_list_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    // Clear Fields
+    function clear_clients_list_modal_detail() {
+        $("#clients_list_modal_detail input[type=text]").val('');
+        $("#clients_list_modal_detail input[type=number]").val('');
+        $("#clients_list_modal_detail select").empty();
+        $("#clients_list_modal_detail textarea").val('');
+    }
+
+    // Block And Required Fields
+    function block_clients_list_modal_detail() {
+        $('#cnt_name').attr('required', true);
+        $('#cs_id').attr('readonly', true);
+
+        if($('#clients_list_modal_mode').val() === "0"){
+            $('#cnt_id_row').attr('hidden', true);
+            $('#cnt_name').removeAttr('readonly');
+
+            $('#cnt_sname').removeAttr('readonly');
+            $('#cnt_name_eng').removeAttr('readonly');
+
+            $('#country_id').removeAttr('disabled');
+
+            $('#cnt_law_type_id').removeAttr('disabled');
+
+            $('#owt_id').removeAttr('disabled');
+            $("#owt_id_x").attr('disabled', false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#cnt_resident').removeAttr('disabled');
+
+            $('#cnt_identifycode').removeAttr('readonly');
+
+            $('#user_id').removeAttr('disabled');
+            $("#user_id_x").attr('disabled', false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#cnt_source_id').removeAttr('disabled');
+
+            $("#cs_id").attr('disabled', true);
+
+            $('#cnt_note').removeAttr('readonly');
+        }
+        else if($('#clients_list_modal_mode').val() === "1"){
+            $('#cnt_id_row').removeAttr('hidden');
+            $('#cnt_id').attr('readonly', true);
+
+            $('#cnt_name').removeAttr('readonly');
+
+            $('#cnt_sname').removeAttr('readonly');
+            $('#cnt_name_eng').removeAttr('readonly');
+
+            $('#country_id').removeAttr('disabled');
+
+            $('#cnt_law_type_id').removeAttr('disabled');
+
+            $('#owt_id').removeAttr('disabled');
+            $("#owt_id_x").attr('disabled', false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#cnt_resident').removeAttr('disabled');
+
+            $('#cnt_identifycode').removeAttr('readonly');
+
+            $('#user_id').removeAttr('disabled');
+            $("#user_id_x").attr('disabled', false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#cnt_source_id').removeAttr('disabled');
+
+            $("#cs_id").attr('disabled', true)
+
+            $('#cnt_note').removeAttr('readonly');
+        }
+        else{
+            $('#cnt_id_row').removeAttr('hidden');
+            $('#cnt_id').attr('readonly', true);
+
+            $('#cnt_name').attr('readonly', true);
+            $('#cnt_sname').attr('readonly', true);
+            $('#cnt_name_eng').attr('readonly', true);
+
+            $('#country_id').attr('disabled', true);
+
+            $('#cnt_law_type_id').attr('disabled', true);
+
+            $('#owt_id').attr('disabled', true);
+            $("#owt_id_x").attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#cnt_resident').attr('disabled', true);
+
+            $('#cnt_identifycode').removeAttr('required').attr('readonly', true);
+
+            $('#user_id').attr('disabled', true);
+            $("#user_id_x").attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#cnt_source_id').attr('disabled', true);
+
+            $("#cs_id").attr('disabled', true);
+
+            $('#cnt_note').attr('readonly', true);
+        }
+    }
+
+    function statusChange(vMode, vCSID) {
+        $('#cs_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/clients/get_cnt_status'}]]*/ "/clients/get_cnt_status",
+            type: "get",
+            data: {"mode": vMode,
+                "cs_id": vCSID
+            },
+            success: function (cs_list) {
+                for (var i = 0; i < cs_list.data.length; i++) {
+                    $("select[name='cs_id']").find('option').end().append("<option value='" + cs_list.data[i].cs_id + "'>" + cs_list.data[i].cs_name + "</option>");
+                }
+                if (vCSID !== ''){
+                    $('#cs_id').val(vCSID);
+                }
+            }
+        }));
+    }
+
+    function countryChange(vMode, vCountryID) {
+        $('#country_id').empty();
+        $("select[name='country_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/clients/get_country'}]]*/ "/clients/get_country",
+            type: "get",
+            data: {"mode": vMode,
+                "country_id": vCountryID
+            },
+            success: function (country_list) {
+                for (var i = 0; i < country_list.data.length; i++) {
+                    $("select[name='country_id']").find('option').end().append("<option value='" + country_list.data[i].country_id + "'>" + country_list.data[i].country_nameua + "</option>");
+                }
+                if (vCountryID !== ''){
+                    $('#country_id').val(vCountryID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    function ownershipChange(vMode, vOWTID) {
+        $('#owt_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/clients/get_ownership'}]]*/ "/clients/get_ownership",
+            type: "get",
+            data: {"mode": vMode,
+                "owt_id": vOWTID
+            },
+            success: function (owt_list) {
+                for (var i = 0; i < owt_list.data.length; i++) {
+                    if(owt_list.data[i].owt_id === vOWTID) {
+                        $("select[name='owt_id']").find('option').end().append("<option selected value='" + owt_list.data[i].owt_id + "'>" + owt_list.data[i].owt_name + "</option>");
+                    }
+                    else{
+                        $("select[name='owt_id']").find('option').end().append("<option value='" + owt_list.data[i].owt_id + "'>" + owt_list.data[i].owt_name + "</option>");
+                    }
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    let OwnName =  "Выберите тип";
+    $('#owt_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: OwnName,
+            allowClear: true,
+            width: 'style',
+            dropdownAutoWidth: true
+        });
+
+    function userChange(vMode, vUSERID) {
+        $('#user_id').empty();
+        $("select[name='user_id']").find('option').end().append("<option value=''></option>");
+
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/clients/get_users'}]]*/ "/clients/get_users",
+            type: "get",
+            data: {"mode": vMode,
+                "user_id": vUSERID
+            },
+            success: function (users_list) {
+                for (var i = 0; i < users_list.data.length; i++) {
+                    $("select[name='user_id']").find('option').end().append("<option value='" + users_list.data[i].id + "'>" + users_list.data[i].user_surname + "</option>");
+                }
+                if(vUSERID != null){
+                    $('#user_id').val(vUSERID);
+                }
+            }
+        }));
+    }
+
+    let userName =  "Выберите пользователя";
+    $('#user_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: userName,
+            allowClear: true,
+            width: 'style',
+            dropdownAutoWidth: true
+        });
+
+    function sourceChange(vMode, vCntSourceID) {
+        $('#cnt_source_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/clients/get_source'}]]*/ "/clients/get_source",
+            type: "get",
+            data: {"mode": vMode,
+                "cnt_source_id": vCntSourceID
+            },
+            success: function (cnt_source_list) {
+                for (var i = 0; i < cnt_source_list.data.length; i++) {
+                    $("select[name='cnt_source_id']").find('option').end().append("<option value='" + cnt_source_list.data[i].cnt_source_id + "'>"
+                        + cnt_source_list.data[i].cnt_source_name + "</option>");
+                }
+            }
+        }));
+    }
+
+    function lawTypeChange(vMode, vLawTypeID) {
+        $('#cnt_law_type_id').empty();
+        $("select[name='cnt_law_type_id']").find('option').end().append("<option value=''></option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/clients/get_law_type'}]]*/ "/clients/get_law_type",
+            type: "get",
+            data: {"mode": vMode
+            },
+            success: function (cnt_law_type_list) {
+                for (var i = 0; i < cnt_law_type_list.data.length; i++) {
+                    $("select[name='cnt_law_type_id']").find('option').end().append(
+                        "<option value='" + cnt_law_type_list.data[i].cnt_law_type_id + "'>"
+                        + cnt_law_type_list.data[i].cnt_law_type_name + "</option>");
+                }
+                if(vLawTypeID !== ''){
+                    $('#cnt_law_type_id').val(vLawTypeID);
+                }
+            }
+        }));
+    }
+
+    // Load Function
+    function fill_clients_list_modal_detail(aMode){
+        clear_clients_list_modal_detail();
+        $('#clients_list_modal_mode').val(aMode);
+        block_clients_list_modal_detail();
+        $.ajax({
+            url:/*[[@{'/clients/get_list_detail'}]]*/ "clients/get_list_detail",
+            type: "get",
+            data: {
+                "cnt_id": vClientsListValue.rowdata.cnt_id,
+                "mode": aMode
+            },
+            success: function (client_list_modal_detail) {
+
+                $('#cnt_id').val(client_list_modal_detail.data[0].cnt_id);
+                $('#cnt_name').val(client_list_modal_detail.data[0].cnt_name);
+                $('#cnt_sname').val(client_list_modal_detail.data[0].cnt_sname);
+                $('#cnt_name_eng').val(client_list_modal_detail.data[0].cnt_name_eng);
+
+                $('#country_id').val(client_list_modal_detail.data[0].country_id);
+
+                $('#owt_id').val(client_list_modal_detail.data[0].owt_id);
+                var resident = client_list_modal_detail.data[0].cnt_resident;
+                if(resident === 1){
+                    $('#cnt_resident').prop('checked', true);
+                }
+                else{
+                    $('#cnt_resident').removeAttr('checked');
+                }
+
+                $('#cnt_identifycode').val(client_list_modal_detail.data[0].cnt_identifycode);
+
+                $('#user_id').val(client_list_modal_detail.data[0].user_id);
+
+                $('#cnt_source_id').val(client_list_modal_detail.data[0].cnt_source_id);
+
+                $('#cs_id').val(client_list_modal_detail.data[0].cs_id);
+
+                $('#cnt_note').val(client_list_modal_detail.data[0].cnt_note);
+
+                $.when(
+                    countryChange(aMode,client_list_modal_detail.data[0].country_id),
+                    ownershipChange(aMode,client_list_modal_detail.data[0].owt_id),
+                    userChange(aMode,client_list_modal_detail.data[0].user_id),
+                    sourceChange(aMode,client_list_modal_detail.data[0].cnt_source_id),
+                    statusChange(aMode,client_list_modal_detail.data[0].cs_id),
+                    lawTypeChange(aMode,client_list_modal_detail.data[0].cnt_law_type_id)
+                ).then(function() {
+                    $('#clients_list_modal').modal('show');
+                });
+            }
+        });
+    }
+
+    var countryName =   /*[[#{clients.list.country_placeholder}]]*/ "Select a country";
+    var countryFindText = "Введите от 2-х символов";
+
+    $('#country_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: countryName,
+            allowClear: true,
+            dropdownAutoWidth: true
+        });
+
+    function addClient(){
+        var RowID = vClientsListValue.rowdata.cnt_id;
+        $.ajax({
+            url: /*[[ @{/clients/add_client_list} ]]*/ "/clients/add_client_list",
+            type: 'POST',
+            data: {
+                "cnt_name": $('#cnt_name').val(),
+                "cnt_sname": $('#cnt_sname').val(),
+                "cnt_identifycode":  $('#cnt_identifycode').val(),
+                "owt_id":  $('#owt_id').val(),
+                "cs_id":  $('#cs_id').val(),
+                "user_id":  $('#user_id').val(),
+                "cnt_note":  $('#cnt_note').val(),
+                "cnt_resident":  $('#cnt_resident').is(':checked') ? 1 : 0,
+                "cnt_source_id":  $('#cnt_source_id').val(),
+                "country_id":  $('#country_id').val(),
+                "cnt_name_eng": $('#cnt_name_eng').val(),
+                "cnt_law_type_id": $('#cnt_law_type_id').val()
+            },
+            success: function (result) {
+                $('#clients_list_modal').modal('hide');
+                vClientsListValue.rowdata.cnt_id = RowID;
+                $(vClientsListValue.table).DataTable().ajax.reload(null, false);
+
+            }
+        });
+    }
+
+    function editClient(){
+        var RowID = vClientsListValue.rowdata.cnt_id;
+        $.ajax({
+            url: /*[[ @{/clients/edit_client_list} ]]*/ "/clients/edit_client_list",
+            type: 'POST',
+            data: {
+                "cnt_id": $('#cnt_id').val(),
+                "cnt_name": $('#cnt_name').val(),
+                "cnt_sname": $('#cnt_sname').val(),
+                "cnt_identifycode":  $('#cnt_identifycode').val(),
+                "owt_id":  $('#owt_id').val(),
+                "cs_id":  $('#cs_id').val(),
+                "cnt_note":  $('#cnt_note').val(),
+                "cnt_resident":  $('#cnt_resident').is(':checked') ? 1 : 0,
+                "cnt_source_id":  $('#cnt_source_id').val(),
+                "country_id":  $('#country_id').val(),
+                "user_id":  $('#user_id').val(),
+                "cnt_name_eng": $('#cnt_name_eng').val(),
+                "cnt_law_type_id": $('#cnt_law_type_id').val()
+            },
+            success: function (result) {
+                $('#clients_list_modal').modal('hide');
+                vClientsListValue.rowdata.cnt_id = RowID;
+                $(vClientsListValue.table).DataTable().ajax.reload(null, false);
+
+            }
+        });
+    }
+
+    function delClient(){
+        var RowID = vClientsListValue.rowdata.cnt_id;
+        $.ajax({
+            url: /*[[ @{/clients/del_client_list} ]]*/ "/clients/del_client_list",
+            type: 'POST',
+            data: {
+                "cnt_id": RowID
+            },
+            success: function (result) {
+                $('#clients_list_modal').modal('hide');
+                $(vClientsListValue.table).DataTable().ajax.reload(null, false);
+                $(vClientStatisticsListValue.table).DataTable().ajax.reload(null, false);
+                $(vClientContactsListValue.table).DataTable().ajax.reload(null, false);
+                $(vClientUsersRolesListValue.table).DataTable().ajax.reload(null, false);
+                $(vClientsListValue.table).DataTable().ajax.reload(null, false);
+                $(vClientAddressListValue.table).DataTable().ajax.reload(null, false);
+                $(vClientDocumentsListValue.table).DataTable().ajax.reload(null, false);
+                $(vClientDocFilesListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    //Validation Form
+    $('#clients_list_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function(error,element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            if($('#clients_list_modal_mode').val() === '0') {
+                addClient();
+            }
+            else if($('#clients_list_modal_mode').val() === '1') {
+                editClient();
+            }
+            else if($('#clients_list_modal_mode').val() === '2') {
+                delClient();
+            }
+            return false;
+        }
+    });
+
+    // Add button script
+    $('#clients_list_modal_addbtn').on('click', function(){
+        $('#clients_list_modal_form').submit();
+    });
+
+    // Edit button script
+    $('#clients_list_modal_editbtn').on('click', function(){
+        $('#clients_list_modal_form').submit();
+    });
+
+    // Edit button script
+    $('#clients_list_modal_delbtn').on('click', function(){
+        $('#clients_list_modal_form').submit();
+    });
+</script>
+
+</body>
+</html>

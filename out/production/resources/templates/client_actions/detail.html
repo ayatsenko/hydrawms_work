@@ -1,0 +1,465 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{client_actions.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{client_actions.caption}"></h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <!--/*@thymesVar id="client_actions_detail" type="java.util.List"*/-->
+                <form id="client-actions-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/client_actions/model}">
+                    <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                    <div class="btn-group mb-2">
+                        <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="client-actions-indexfrm">Cancel</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="client-actions-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                            <button th:case="1" type="submit" id="client-actions-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                            <button th:case="2" type="submit" id="client-actions-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                        </div>
+                    </div>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="act_id" th:value="${act_id}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="cnt_id" th:value="${cnt_id}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="cnt_user_access" th:value="${cnt_user_access}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="client_actions_list_table_order_column" th:value="${client_actions_list_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="client_actions_list_table_order_type" th:value="${client_actions_list_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="client_actions_list_table_search" th:value="${client_actions_list_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="client_actions_list_table_pagelen" th:value="${client_actions_list_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="client_actions_list_table_page" th:value="${client_actions_list_table_page}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_list_table_order_column" th:value="${clients_list_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_list_table_order_type" th:value="${clients_list_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_list_table_search" th:value="${clients_list_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_list_table_pagelen" th:value="${clients_list_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_list_table_page" th:value="${clients_list_table_page}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="client_actions_filter_id" th:value="${client_actions_filter_id}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="client_actions_filter_start_date" th:value="${client_actions_filter_start_date}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="client_actions_filter_end_date" th:value="${client_actions_filter_end_date}" >
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-2" id="act_id_row">
+                            <label for="act_id" class="form-label" th:text="'1. '+ #{client_actions.act_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="act_id" name="act_id" th:value="${act_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="user_id" class="form-label" th:text="'2. '+#{client_actions.user_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select id="user_id" name="user_id" class="form-control select2" data-toggle="select2">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="user_list : ${user_list}"
+                                        th:value="${user_list.id}"
+                                        th:text="${user_list.user_surname}"
+                                        th:selected="${user_list.id == user_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label for="act_act_type_id" th:text="'3. '+#{client_actions.act_act_type_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="hidden" id="act_act_type_id" name="act_act_type_id" th:value="${act_act_type_id}">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="act_type_client" name="act_type_radio" checked disabled>
+                                    <label class="custom-control-label" for="act_type_client" th:text="#{client_actions.act_type_cold_one}" value="1">ClientAction</label>
+                                </div>
+                                <div class="custom-control custom-radio mb-3">
+                                    <input type="radio" class="custom-control-input" id="act_type_cold" name="act_type_radio" disabled>
+                                    <label class="custom-control-label" for="act_type_cold" th:text="#{client_actions.act_type_cold_second}" value="2">ColdAction</label>
+                                </div>
+                        </div>
+
+                        <div class="col-md-2 mb-2">
+                            <label for="act_type_id" th:text="'4. '+#{client_actions.act_plan_type_detail}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select id="act_type_id" name="act_type_id" class="form-control select2" data-toggle="select2" required>
+                                <option value="">Выберите тип активности</option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="act_type : ${act_type_list}"
+                                        th:value="${act_type.act_type_id}"
+                                        th:text="${act_type.act_type_sname}"
+                                        th:selected="${act_type.act_type_id == act_type_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Second Row -->
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-2" id="cnt_id_row">
+                            <label for="cnt_id" class="form-label" th:text="'5. '+ #{clients.list.cnt_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="cnt_id" name="cnt_id" th:value="${cnt_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-5 mb-2">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="cnt_name" class="form-label" th:text="#{clients.list.cnt_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="120" class="form-control" id="cnt_name" name="cnt_name" th:value="${cnt_name}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Third Row -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-2" id="act_plane_date_row">
+                            <label for="act_plane_date" class="form-label" th:text="'6. '+ #{actions.act_plane_date}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="act_plane_date" name="act_plane_date" th:value="${act_plane_date}">
+                                <button type="button" id="act_plane_date_x" name="act_plane_date_x" class="btn btn-outline-primary"><i data-feather="x"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 mb-2" id="act_end_date_row">
+                            <label for="act_end_date" class="form-label" th:text="'7. '+ #{actions.act_end_date}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="act_end_date" name="act_end_date" th:value="${act_end_date}">
+                                <button type="button" id="act_end_date_x" name="act_end_date_x" class="btn btn-outline-primary"><i data-feather="x"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div>  <!-- Forth Row -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-2" id="act_status_row">
+                            <label for="act_status_id" class="mr-2" th:text="'8. '+#{client_actions.act_status_sname}">Status: </label>
+                            <select id="act_status_id" name="act_status_id" class="form-control select2" data-toggle="select2">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="act_status : ${act_status_list}"
+                                        th:value="${act_status.act_status_id}"
+                                        th:text="${act_status.act_status_sname}"
+                                        th:selected="${act_status.act_status_id == act_status_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-2" id="act_result_row">
+                            <label for="act_result_id" class="mr-2" th:text="'9. '+#{client_actions.act_result_sname}">Result: </label>
+                            <select id="act_result_id" name="act_result_id" class="form-control select2" data-toggle="select2">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option
+                                        th:each="act_result : ${act_result_list}"
+                                        th:value="${act_result.act_result_id}"
+                                        th:text="${act_result.act_result_sname}"
+                                        th:selected="${act_result.act_result_id == act_result_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div>  <!-- Fifth Row -->
+
+                    <div class="form-row">
+                        <div class="col-md-8 mb-2">
+                            <label for="act_description" th:text="'10. '+#{client_actions.act_description}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="512" style="resize:none;" id="act_description" name="act_description" th:text="${act_description}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Sixth Row -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--/*@thymesVar id="client_actions_detail" type="java.util.List"*/-->
+    <form id="client-actions-indexfrm" method="post" th:action="@{/client_actions}" hidden>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="act_id" th:value="${act_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="cnt_id" th:value="${cnt_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="cnt_name" th:value="${cnt_name}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="cnt_user_access" th:value="${cnt_user_access}">
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="client_actions_list_table_order_column" th:value="${client_actions_list_table_order_column}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="client_actions_list_table_order_type" th:value="${client_actions_list_table_order_type}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="client_actions_list_table_search" th:value="${client_actions_list_table_search}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="client_actions_list_table_pagelen" th:value="${client_actions_list_table_pagelen}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="client_actions_list_table_page" th:value="${client_actions_list_table_page}">
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_list_table_order_column" th:value="${clients_list_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_list_table_order_type" th:value="${clients_list_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_list_table_search" th:value="${clients_list_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_list_table_pagelen" th:value="${clients_list_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_list_table_page" th:value="${clients_list_table_page}" >
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="client_actions_filter_id" th:value="${client_actions_filter_id}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="client_actions_filter_start_date" th:value="${client_actions_filter_start_date}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="client_actions_filter_end_date" th:value="${client_actions_filter_end_date}" >
+    </form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'client-actions-indexfrm')">Error</span>
+
+<script>
+    $(document).ready(function(){
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#clients_li').addClass('active').removeClass('collapsed');
+        $('#clients_a').attr('aria-expanded',true);
+        $('#clients').addClass('show');
+
+        $('#clients_list_a').addClass('text-primary');
+
+<!-- Start Objects -->
+        $("#act_plane_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        $('#act_plane_date_x').on('click', function() {
+            $('#act_plane_date').empty().val('');
+        });
+
+        var ActEndDateValue = $('#act_end_date').val();
+        $("#act_end_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        $('#act_end_date_x').on('click', function() {
+            $('#act_end_date').empty().val('');
+        });
+
+        if(ActEndDateValue === null || ActEndDateValue === ''){
+            $('#act_end_date').empty().val('');
+        }
+
+        $('#user_id')
+            .wrap("<div class=\"position-relative\"></div>")
+            .select2({
+                placeholder: /*[[#{report_client_balance.client_placeholder}]]*/ "Select a user",
+                allowClear: true
+            });
+
+<!-- Form Start -->
+        $('#act_id').prop('readOnly',true);
+        $('#act_type_sname').prop('required',true);
+
+        $('#cnt_id').prop('readOnly',true);
+        $('#cnt_name').prop('readOnly',true);
+
+        $('#cnt_list').prop('required',true);
+
+        $('#user_list').prop('required',true);
+
+        $("#act_plane_date").prop('required',true);
+
+        if($('#mode').val() === '0'){
+            $('#act_id_row').prop('hidden',true);
+
+            $('#act_act_type_id').val(1);
+            $('#act_end_date').empty().val('');
+        }
+        else if($('#mode').val() === '1') {
+        }
+        else if($('#mode').val() === '2' || $('#mode').val() === '4'){
+            $('#act_id').prop('readOnly',true);
+
+            $('#user_id').prop('disabled',true);
+
+            $('#act_act_type_id').prop('readOnly',true);
+
+            $('#act_type_id').prop('disabled',true);
+
+            $('#act_plane_date').prop('disabled',true);
+            $('#act_plane_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#act_end_date').prop('disabled',true);
+            $('#act_end_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#act_status_id').prop('disabled',true);
+
+            $('#act_result_id').prop('disabled',true);
+
+            $('#act_description').prop('readOnly',true);
+        }
+<!-- Change Function -->
+        if($("#act_status_id").val() === 1){
+            $("#act_description").attr('required',true);
+
+            $("#act_end_date").attr('required',true);
+
+            $("#act_result_id").attr('required',true);
+            $("#act_result_id").removeAttr('readonly');
+        }
+        else{
+            $("#act_description").removeAttr('required');
+
+            $("#act_end_date").removeAttr('required');
+
+            $("#act_result_id").removeAttr('required');
+            $("#act_result_id").attr('readonly',true);
+        }
+
+        $("#act_status_id").change( function() {
+            if($("#act_status_id").val() === "1"){
+                $("#act_description").attr('required',true);
+
+                $("#act_end_date").attr('required',true);
+
+                $("#act_result_id").removeAttr('readonly');
+                $("#act_result_id").attr('required',true);
+            }
+            else{
+                $("#act_description").removeAttr('required');
+
+                $("#act_end_date").removeAttr('required');
+
+                $("#act_result_id").attr('readonly',true);
+                $("#act_result_id").removeAttr('required');
+            }
+        });
+
+        $('#act_end_date').change( function() {
+            if($('#act_end_date').val() !== "" && $('#act_end_date').val() !== null){
+                $("#act_status_id").val(1);
+
+                $("#act_description").attr('required',true);
+
+                $("#act_end_date").attr('required',true);
+
+                $("#act_result_id").attr('required',true);
+                $("#act_result_id").removeAttr('readonly');
+            } else{
+                $("#act_status_id").val(0);
+
+                $("#act_description").removeAttr('required');
+
+                $("#act_end_date").removeAttr('required');
+
+                $("#act_result_id").removeAttr('required');
+                $("#act_result_id").attr('readonly',true);
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="users_time_head_body" th:remove="tag">
+		<form class="form-inline">
+		      <div class="form-group mb-2 mr-2">
+				<label for="users_time_start_date" class="mr-2" th:text="#{users_time.start_date}">StartDate:</label>
+				<input class="form-control" type="text" id="users_time_start_date" name="users_time_start_date" />
+			  </div>
+
+			  <div class="form-group mb-2 mr-2">
+		    	<label for="users_time_end_date" class="mr-2" th:text="#{users_time.end_date}">EndDate:</label>
+				<input class="form-control" type="text" id="users_time_end_date" name="users_time_end_date" />
+			  </div>
+
+			  <div class="form-group mb-2 mr-3">
+				<label for="users_time_employee_list" class="mr-2" th:text="#{users_time.user_list}">Employee: </label>
+				<select id="users_time_employee_list" class="form-control select2" data-toggle="select2">
+                     <!--suppress ThymeleafVariablesResolveInspection -->
+					 <option
+							   th:each="user_list : ${user_list}"
+							   th:value="${user_list.id}"
+							   th:text="${user_list.user_surname}"
+							   th:selected="${user_list.id == user_id}"
+					 ></option>
+				</select>
+			  </div>
+
+			<a class="btn btn-outline-primary mb-2" id="users_time_show" th:text="#{general.reportshow}">Show</a>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    $(document).ready(function(){
+		var firstMonthDay = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toLocaleDateString('ru');
+
+    	$("#users_time_start_date").daterangepicker({
+            "singleDatePicker": true,
+			"startDate": firstMonthDay,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        $("#users_time_end_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+		if (window.screen.width < 1024 && window.screen.height < 768) {
+			$("#users_time_start_date").attr('readonly',true);
+			$("#users_time_end_date").attr('readonly',true);
+		}
+
+		$(".select2").each(function() {
+			$(this)
+					.wrap("<div class=\"position-relative\"></div>")
+					.select2({
+						placeholder: "Select value"
+					});
+		});
+
+		$('#main_li').removeClass('active');
+
+		$('#admin_li').addClass('active').removeClass('collapsed');
+		$('#admin_a').attr('aria-expanded',true);
+		$('#admin').addClass('show');
+
+		$('#users_time_a').addClass('text-primary');
+
+		$('#users_time_show').on('click', function () {
+			$('#users_time_detail_card').removeAttr('hidden');
+			$('#users_sesion_detail_card').removeAttr('hidden');
+
+			vUsersTimeValue.rowdata.start_date = $("#users_time_start_date").val();
+			vUsersTimeValue.rowdata.end_date = $("#users_time_end_date").val();
+			vUsersTimeValue.rowdata.req_user_id = $("#users_time_employee_list").val();
+			vUsersTimeValue.rowdata.check_id = 1;
+
+			$(vUsersTimeValue.table).DataTable().ajax.reload();
+		})
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="part_world_loads_body" th:remove="tag">
+        <form id="part-world-loads-detail" class="mb-2" th:action="@{/part_world/loads_detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="part-world-loads-btn-large" class="d-none d-sm-block">
+                 <button type="submit" id="part-world-loads-detailbtn" class="btn btn-sm btn-dark part_world_loads_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="part-world-loads-addbtn" class="btn btn-sm btn-dark part_world_loads_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="submit" id="part-world-loads-editbtn" class="btn btn-sm btn-dark part_world_loads_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="part-world-loads-delbtn" class="btn btn-sm btn-dark part_world_loads_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="part-world-loads-btn-small" class="d-block d-sm-none">
+                 <button type="submit" id="part-world-loads-detailbtn-sx" class="btn btn-sm btn-dark part_world_loads_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="part-world-loads-addbtn-sx" class="btn btn-sm btn-dark part_world_loads_btn_control" th:attr="mode=0" disabled><i data-feather="plus"></i></button>
+                 <button type="submit" id="part-world-loads-editbtn-sx" class="btn btn-sm btn-dark part_world_loads_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="part-world-loads-delbtn-sx" class="btn btn-sm btn-dark part_world_loads_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-part-world-loads" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vClaimLoadsValue;
+    vClaimLoadsValue = {
+        table : '#table-part-world-loads',
+        button_form: "#part-world-loads-detail",
+        ajax : {
+            "url": /*[[@{/part_world/get_loads_table}]]*/ "part_world/get_loads_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vClaimLoadsValue.rowdata.clm_id
+            }
+        },
+        key : "clmll_id",
+        switchControl : part_world_loads_switchControl,
+        rowdata:{
+            clm_id: null,
+            clmll_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+        scrollX: true,
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).css('background-color', data["act_type_colour"]);*/
+        },
+        columnDefs:[
+                    {"targets": [0], "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{part_world.loads.clmll_id}]]*/ "clmll_id", "data": "clmll_id", "width": "3%"},
+                /*1*/{"title": /*[[#{part_world.loads.clm_load_name}]]*/ "clm_load_name", "data": "clm_load_name", "width": "27%", "className": "desktop" },
+                /*2*/{"title": /*[[#{part_world.loads.clm_load_weight}]]*/ "clm_load_weight", "data": "clm_load_weight", "width": "10%"},
+                /*3*/{"title": /*[[#{part_world.loads.clm_load_dims}]]*/ "clm_load_dims", "data": "clm_load_dims", "width": "10%", "className": "desktop"},
+                /*4*/{"title": /*[[#{part_world.loads.clm_load_notes}]]*/ "clm_load_notes", "data": "clm_load_notes", "width": "50%", "className": "desktop"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function part_world_loads_switchControl(){
+        if(vClaimLoadsValue.rowdata.clmll_id != null) {
+                $("#part-world-loads-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#part-world-loads-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#part-world-loads-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#part-world-loads-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#part-world-loads-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#part-world-loads-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+                $("#part-world-loads-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#part-world-loads-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#part-world-loads-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#part-world-loads-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#part-world-loads-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#part-world-loads-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                }
+            }
+
+    $('.part_world_loads_btn_control').on('click', function (){
+        $("#part-world-loads-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#part-world-loads-detail').submit(function() {
+        vClaimLoadsValue.rowdata.part_world_loads_table_order_column = $(vClaimLoadsValue.table).DataTable().order()[0][0];
+        vClaimLoadsValue.rowdata.part_world_loads_table_order_type = $(vClaimLoadsValue.table).DataTable().order()[0][1];
+        vClaimLoadsValue.rowdata.part_world_loads_table_search = $(vClaimLoadsValue.table).DataTable().search();
+        vClaimLoadsValue.rowdata.part_world_loads_table_pagelen = $(vClaimLoadsValue.table).DataTable().page.len();
+        vClaimLoadsValue.rowdata.part_world_loads_table_page = $(vClaimLoadsValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vClaimLoadsValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+        vClaimLoadsValue.rowdata.clm_num = vClaimsValue.rowdata.clm_num;
+        vClaimLoadsValue.rowdata.cnt_name = vClaimsValue.rowdata.cnt_name;
+
+        Object.keys(vClaimLoadsValue.rowdata).forEach(function (index) {
+            $("#part-world-loads-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#part-world-loads-detail input[name=\"" + index + "\"]").val(vClaimLoadsValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vClaimLoadsValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vClaimLoadsValue.rowdata.clmll_id = /*[[${clmll_id}]]*/ null;
+
+        vClaimLoadsValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vClaimLoadsValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vClaimLoadsValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vClaimLoadsValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vClaimLoadsValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vClaimLoadsValue);
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{client_tenders.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 col-lg-7 pl-2 pr-1 pt-0">
+        <div class="card order-2 mb-2" id="client_actions_back_div">
+            <div>
+                <span th:replace="client_tenders/back_card :: client_tenders_back_body"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-5 pl-1 pr-2 pt-0">
+        <div class="card order-2 mb-2" id="client_actions_link_div">
+            <div class="text-center">
+                <span th:replace="client_tenders/link_card :: client_tenders_link_body"></span>
+            </div>
+        </div>
+    </div><!-- Client And Buttons Row -->
+
+    <div class="col-12 col-lg-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="tenders_list_div">
+            <div class="card-header">
+                <h5 class="card-title mb-0" th:text="#{client_tenders.list.caption}"></h5>
+                <form class="form-inline">
+                    <div class="custom-control custom-switch">
+                        <input class="custom-control-input" type="checkbox" id="client_tenders_filter_check" name="client_tenders_filter_check">
+                        <label class="custom-control-label" for="client_tenders_filter_check"></label>
+                    </div>
+                    <div class="form-group form-group-sm mr-2">
+                        <label for="client_tenders_filter_start_date" class="mr-2" th:text="#{requests.list.filter_start_date}">StartDate:</label>
+                        <input class="form-control" type="text" id="client_tenders_filter_start_date" name="client_tenders_start_date" disabled/>
+                    </div>
+
+                    <div class="form-group form-group-sm mr-2">
+                        <label for="client_tenders_filter_end_date" class="mr-2" th:text="#{requests.list.filter_end_date}">EndDate:</label>
+                        <input class="form-control" type="text" id="client_tenders_filter_end_date" name="client_tenders_end_date" disabled/>
+                    </div>
+                    <button type="button" class="btn btn-dark align-middle" id="client_tenders_filter_show" disabled><i data-feather="search"></i></button>
+                </form>                
+            </div>
+            <div class="card-body py-3">
+                <div>
+                    <span th:replace="client_tenders/list_link_modal :: client_tenders_list_link_modal_body"></span>
+                    <span th:replace="client_tenders/list_card :: client_tenders_list_body"></span>
+                </div>
+            </div>
+        </div><!-- Requests List -->
+    </div><!-- First Column -->
+</div><!-- First Row -->
+
+<div class="row">
+    <div class="col-12 col-lg-8 pl-2 pr-1 pt-0">
+        <div class="card mb-2" id="client_tenders_chat_card">
+            <div class="card-header">
+                <div class="card-actions float-right">
+                    <a href="#client_tenders_chat_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title mb-0" th:text="#{client_tenders.chat.caption}"></h5>
+            </div>
+            <div class="card-body py-3 collapse show" id="client_tenders_chat_div">
+                <div>
+                    <span th:replace="client_tenders/chat_card :: client_tenders_chat_body"></span>
+                </div>
+            </div>
+        </div><!-- Chat -->
+    </div><!-- First Column -->
+
+    <div class="col-12 col-lg-4 pl-1 pr-2 pt-0">
+        <div class="card mb-2" id="client_tenders_file_card">
+            <div class="card-header">
+                <div class="card-actions float-right">
+                    <a href="#client_tenders_file_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title mb-0" th:text="#{client_tenders.files.caption}"></h5>
+            </div>
+            <div class="card-body py-3 collapse show" id="client_tenders_file_div">
+                <div>
+                    <span th:replace="client_tenders/files_card :: client_tenders_files_body"></span>
+                </div>
+            </div>
+        </div><!-- Tender Files -->
+    </div><!-- Second Column -->
+</div><!-- Second Row -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="client_tenders/chat_card :: cardscript"></script>
+<script th:replace="client_tenders/files_card :: cardscript"></script>
+
+<script th:replace="client_tenders/back_card :: cardscript"></script>
+<script th:replace="client_tenders/link_card :: cardscript"></script>
+
+<script th:replace="client_tenders/list_link_modal :: cardscript"></script>
+<script th:replace="client_tenders/list_card :: cardscript"></script>
+</body>
+</html>

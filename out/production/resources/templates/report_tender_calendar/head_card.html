@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_tender_calendar_head_body" th:remove="tag">
+		<form class="form-inline">
+		      <div class="form-group mb-2 mr-2">
+				<label for="report_tender_calendar_start_date" class="mr-2" th:text="#{report_tender_calendar.start_date}">StartDate:</label>
+				<input class="form-control" type="text" id="report_tender_calendar_start_date" name="report_tender_calendar_start_date" />
+			  </div>
+
+			  <div class="form-group mb-2 mr-2">
+		    	<label for="report_tender_calendar_end_date" class="mr-2" th:text="#{report_tender_calendar.end_date}">EndDate:</label>
+				<input class="form-control" type="text" id="report_tender_calendar_end_date" name="report_tender_calendar_end_date" />
+			  </div>
+
+			  <div class="form-group mb-2 mr-3">
+				<label for="report_tender_calendar_client_list" class="mr-2" th:text="#{report_tender_calendar.client_list}">Client: </label>
+				<select id="report_tender_calendar_client_list" class="form-control select2" data-toggle="select2">
+                    <option value=""></option>
+					<!--suppress ThymeleafVariablesResolveInspection -->
+					<option class="p-1"
+							th:each="cnt_list : ${cnt_list}"
+							th:value="${cnt_list.cnt_id}"
+							th:text="${cnt_list.cnt_name}"
+							th:selected="${cnt_list.cnt_id == cnt_id}"
+					></option>
+				</select>
+              <span class="input-group-append">
+                <button type="button" class="btn btn-outline-primary" id="report_tender_calendar_client_show" name="report_client_balance_client_show"><i data-feather="clipboard"></i></button>
+              </span>
+			  </div>
+
+			<a class="btn btn-outline-primary mb-2" id="report_tender_calendar_show" th:text="#{general.reportshow}">Show</a>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+	$('#report_tender_calendar_client_show').on('click', function () {
+		if($('#report_tender_calendar_client_show').hasClass('btn-outline-primary')) {
+			$('#report_tender_calendar_client_show').removeClass('btn-outline-primary').addClass('btn-primary');
+			var options_zero = {
+				id: '-1', // the value of the option
+				placeholder: /*[[#{report_tender_calendar.client_placeholder}]]*/ "Select a client",
+				allowClear: true,
+				width: 'element',
+				dropdownAutoWidth: true
+			};
+			$("#report_tender_calendar_client_list").select2("destroy").select2(options_zero);
+		}
+		else if($('#report_tender_calendar_client_show').hasClass('btn-primary')){
+			$('#report_tender_calendar_client_show').addClass('btn-outline-primary').removeClass('btn-primary');
+			var options_two = {
+				id: '-1', // the value of the option
+				placeholder: /*[[#{report_tender_calendar.client_placeholder}]]*/ "Select a client",
+				allowClear: true,
+				minimumInputLength: 2,
+				width: 'element',
+				dropdownAutoWidth: true
+			};
+			$("#report_tender_calendar_client_list").select2("destroy").select2(options_two);
+		}
+	});
+
+	$(document).ready(function(){
+		var firstYearDay = new Date(new Date().getFullYear(), 0, 1).toLocaleDateString('ru');
+		var LastYearDay = new Date(new Date().getFullYear(), 11, 31).toLocaleDateString('ru');
+
+		$("#report_tender_calendar_start_date").daterangepicker({
+			"singleDatePicker": true,
+			"startDate": firstYearDay,
+			"locale": {
+				"format": "DD.MM.YYYY",
+				"separator": " - ",
+				"applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+				"cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+				"fromLabel": "From",
+				"toLabel": "To",
+				"customRangeLabel": "Custom",
+				"weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+				"daysOfWeek": [
+					/*[[#{weekdays.07_short}]]*/ "Su",
+					/*[[#{weekdays.01_short}]]*/ "Mo",
+					/*[[#{weekdays.02_short}]]*/ "Tu",
+					/*[[#{weekdays.03_short}]]*/ "We",
+					/*[[#{weekdays.04_short}]]*/ "Th",
+					/*[[#{weekdays.05_short}]]*/ "Fr",
+					/*[[#{weekdays.06_short}]]*/ "Sa"
+				],
+				"monthNames": [
+					/*[[#{month.01}]]*/ "January",
+					/*[[#{month.02}]]*/ "February",
+					/*[[#{month.03}]]*/ "March",
+					/*[[#{month.04}]]*/ "April",
+					/*[[#{month.05}]]*/ "May",
+					/*[[#{month.06}]]*/ "June",
+					/*[[#{month.07}]]*/ "July",
+					/*[[#{month.08}]]*/ "August",
+					/*[[#{month.09}]]*/ "September",
+					/*[[#{month.10}]]*/ "October",
+					/*[[#{month.11}]]*/ "November",
+					/*[[#{month.12}]]*/ "December"
+				],
+				"firstDay": 1
+			}
+		});
+
+		$("#report_tender_calendar_end_date").daterangepicker({
+			"singleDatePicker": true,
+			"startDate": LastYearDay,
+			"locale": {
+				"format": "DD.MM.YYYY",
+				"separator": " - ",
+				"applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+				"cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+				"fromLabel": "From",
+				"toLabel": "To",
+				"customRangeLabel": "Custom",
+				"weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+				"daysOfWeek": [
+					/*[[#{weekdays.07_short}]]*/ "Su",
+					/*[[#{weekdays.01_short}]]*/ "Mo",
+					/*[[#{weekdays.02_short}]]*/ "Tu",
+					/*[[#{weekdays.03_short}]]*/ "We",
+					/*[[#{weekdays.04_short}]]*/ "Th",
+					/*[[#{weekdays.05_short}]]*/ "Fr",
+					/*[[#{weekdays.06_short}]]*/ "Sa"
+				],
+				"monthNames": [
+					/*[[#{month.01}]]*/ "January",
+					/*[[#{month.02}]]*/ "February",
+					/*[[#{month.03}]]*/ "March",
+					/*[[#{month.04}]]*/ "April",
+					/*[[#{month.05}]]*/ "May",
+					/*[[#{month.06}]]*/ "June",
+					/*[[#{month.07}]]*/ "July",
+					/*[[#{month.08}]]*/ "August",
+					/*[[#{month.09}]]*/ "September",
+					/*[[#{month.10}]]*/ "October",
+					/*[[#{month.11}]]*/ "November",
+					/*[[#{month.12}]]*/ "December"
+				],
+				"firstDay": 1
+			}
+		});
+
+		if (window.screen.width < 1024 && window.screen.height < 768) {
+			$("#report_tender_calendar_start_date").attr('readonly',true);
+			$("#report_tender_calendar_end_date").attr('readonly',true);
+		}
+
+		$('#report_tender_calendar_client_list')
+				.wrap("<div class=\"position-relative\"></div>")
+				.select2({
+					id: '-1', // the value of the option
+					placeholder: /*[[#{report_tender_calendar.client_placeholder}]]*/ "Select a client",
+					allowClear: true,
+					minimumInputLength: 2,
+					width: 'element',
+					dropdownAutoWidth: true
+		});
+
+		$('#main_li').removeClass('active');
+
+		$('#reports_li').addClass('active').removeClass('collapsed');
+		$('#reports_a').attr('aria-expanded',true);
+		$('#reports').addClass('show');
+
+		$('#report_tender_calendar_a').addClass('text-primary');
+
+		$('#report_tender_calendar_show').on('click', function () {
+			$('#report_tender_calendar_legend_card').removeAttr('hidden');
+
+			$('#report_tender_calendar_detail_div').removeAttr('hidden');
+
+			vReportTenderCalendarDetailValue.rowdata.start_date = $("#report_tender_calendar_start_date").val();
+			vReportTenderCalendarDetailValue.rowdata.end_date = $("#report_tender_calendar_end_date").val();
+			vReportTenderCalendarDetailValue.rowdata.req_cnt_id = $("#report_tender_calendar_client_list").val();
+			$(vReportTenderCalendarDetailValue.table).DataTable().ajax.reload();
+		});
+
+		$.ajax({
+			url: /*[[ @{/report_tender_calendar/get_status_color} ]]*/ "/report_tender_calendar/get_status_color",
+			type: 'GET',
+			success: function (status) {
+				for (var i = 0, l = status.data.length; i < l; i++) {
+					$('#status_legend').append('<input type="text" class="text-center" id="result_'+status.data[i].tend_status_id
+							+'" value="'+status.data[i].tend_status_sname
+							+'" style="background-color: '+status.data[i].tend_status_colour
+							+'" readonly>'
+					);
+				}
+			}
+		});
+
+		$.ajax({
+			url: /*[[ @{/report_tender_calendar/get_result_color} ]]*/ "/report_tender_calendar/get_result_color",
+			type: 'GET',
+			success: function (result) {
+				for (var i = 0, l = result.data.length; i < l; i++) {
+					$('#result_legend').append('<input type="text" class="text-center" id="result_'+result.data[i].req_tend_status_id
+							+'" value="'+result.data[i].req_tend_status_name
+							+'" style="background-color: '+result.data[i].req_tend_status_colour
+							+'" readonly>'
+					);
+				}
+			}
+		});
+	});
+</script>
+
+</body>
+</html>

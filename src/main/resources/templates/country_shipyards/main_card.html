@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="country_shipyards_main_body" th:remove="tag">
+        <form id="table-country-shipyards-main-buttons" class="mb-2">
+            <input name="mode" value="0" hidden>
+            <button type="button" id="country-shipyards-main-detailbtn" class="btn btn-sm btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.detailbtn}" disabled><i class="fa fa-list"></i></button>
+            <button type="button" id="country-shipyards-main-addbtn" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="bottom" th:title="#{general.addbtn}"><i class="fa fa-plus"></i></button>
+            <button type="button" id="country-shipyards-main-editbtn" class="btn btn-sm btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.editbtn}" disabled><i class="fa fa-pencil-alt"></i></button>
+            <button type="button" id="country-shipyards-main-delbtn" class="btn btn-sm btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.delbtn}" disabled><i class="fa fa-trash-alt"></i></button>
+        </form>
+        
+        <div><table id="table-country-shipyards-main" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var shipyard_id_show, shipyard_name_show, shipyard_namerus_show, shipyard_code_show, country_id_show, country_name_show;
+    var shipyard_id_width, shipyard_name_width, shipyard_namerus_width, shipyard_code_width, country_id_width, country_name_width;
+    var shipyard_id_class, shipyard_name_class, shipyard_namerus_class, shipyard_code_class, country_id_class, country_name_class;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtip";
+        shipyard_id_show = false;
+        shipyard_id_width = "";
+        shipyard_id_class = "";
+        shipyard_name_show = true;
+        shipyard_name_width = "15%";
+        shipyard_name_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center";
+        shipyard_namerus_show = true;
+        shipyard_namerus_width = "15%";
+        shipyard_namerus_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center";
+        shipyard_code_show = true;
+        shipyard_code_width = "70%";
+        shipyard_code_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center";
+        country_id_show = false;
+        country_id_width = "";
+        country_id_class = "";
+        country_name_show = false;
+        country_name_width = "";
+        country_name_class = "";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        shipyard_id_show = false;
+        shipyard_id_width = "";
+        shipyard_id_class = "";
+        shipyard_name_show = true;
+        shipyard_name_width = "30%";
+        shipyard_name_class = "small_size small_head_size small_footer_size head-center";
+        shipyard_namerus_show = true;
+        shipyard_namerus_width = "30%";
+        shipyard_namerus_class = "small_size small_head_size small_footer_size head-center";
+        shipyard_code_show = true;
+        shipyard_code_width = "10%";
+        shipyard_code_class = "small_size small_head_size small_footer_size head-center";
+        country_id_show = false;
+        country_id_width = "";
+        country_id_class = "";
+        country_name_show = true;
+        country_name_width = "30%";
+        country_name_class = "small_size small_head_size small_footer_size head-center";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        shipyard_id_show = false;
+        shipyard_id_width = "";
+        shipyard_id_class = "";
+        shipyard_name_show = true;
+        shipyard_name_width = "30%";
+        shipyard_name_class = "head-center";
+        shipyard_namerus_show = true;
+        shipyard_namerus_width = "30%";
+        shipyard_namerus_class = "head-center";
+        shipyard_code_show = true;
+        shipyard_code_width = "10%";
+        shipyard_code_class = "head-center";
+        country_id_show = false;
+        country_id_width = "";
+        country_id_class = "";
+        country_name_show = true;
+        country_name_width = "30%";
+        country_name_class = "head-center";
+    }
+
+    var vCountryShipyardsValue;
+    vCountryShipyardsValue = {
+        table : '#table-country-shipyards-main',
+        button_form: (mobileScreenSize) ? null : "#table-country-shipyards-main-buttons",
+        ajax : {
+            "url": /*[[@{/country_shipyards/get_main_table}]]*/ "country_shipyards/get_main_table",
+            "type": "post",
+            "data": {
+            }
+        },
+        key : "shipyard_id",
+        switchControl : country_shipyards_main_switchControl,
+        rowdata:{
+            shipyard_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+        dom: vDomParam,
+        columnDefs:[
+            {"targets": [0], "width": shipyard_id_width, "className": shipyard_id_class, "visible": shipyard_id_show},
+            {"targets": [1], "width": shipyard_name_width, "className": shipyard_name_class, "visible": shipyard_name_show},
+            {"targets": [2], "width": shipyard_namerus_width, "className": shipyard_namerus_class, "visible": shipyard_namerus_show},
+            {"targets": [3], "width": shipyard_code_width, "className": shipyard_code_class, "visible": shipyard_code_show},
+            {"targets": [4], "width": country_id_width, "className": country_id_class, "visible": country_id_show},
+            {"targets": [5], "width": country_name_width, "className": country_name_class, "visible": country_name_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{country_shipyards.main.shipyard_id}]]*/ "shipyard_id", "data": "shipyard_id"},
+            /*1*/{"title": /*[[#{country_shipyards.main.shipyard_name}]]*/ "shipyard_name", "data": "shipyard_name"},
+            /*2*/{"title": /*[[#{country_shipyards.main.shipyard_namerus}]]*/ "shipyard_namerus", "data": "shipyard_namerus"},
+            /*3*/{"title": /*[[#{country_shipyards.main.shipyard_code}]]*/ "shipyard_code", "data": "shipyard_code"},
+            /*4*/{"title": /*[[#{country_shipyards.main.country_id}]]*/ "country_id", "data": "country_id"},
+            /*5*/{"title": /*[[#{country_shipyards.main.country_name}]]*/ "country_name", "data": "country_name"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function country_shipyards_main_switchControl(){
+        if(vCountryShipyardsValue.rowdata.shipyard_id != null) {
+            $("#country-shipyards-main-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#country-shipyards-main-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#country-shipyards-main-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+        } else{
+            $("#country-shipyards-main-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#country-shipyards-main-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#country-shipyards-main-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+        }
+    }
+    //Show Function
+    function countryShipyardsShow(){
+        $('#country_shipyards_main_modal_addbtn').removeAttr('hidden');
+        $('#country_shipyards_main_modal_editbtn').attr('hidden',true);
+        $('#country_shipyards_main_modal_delbtn').attr('hidden',true);
+        fill_country_shipyards_main_modal_detail(0);
+    }
+    //Show Button
+    $('#country-shipyards-main-detailbtn').on('click', function (){
+        countryShipyardsShow();
+    });
+    //Add Function
+    function countryShipyardsAdd(){
+        $('#country_shipyards_main_modal_addbtn').removeAttr('hidden');
+        $('#country_shipyards_main_modal_editbtn').attr('hidden',true);
+        $('#country_shipyards_main_modal_delbtn').attr('hidden',true);
+        fill_country_shipyards_main_modal_detail(0);
+    }
+    //Add Button
+    $('#country-shipyards-main-addbtn').on('click', function (){
+        countryShipyardsAdd();
+    });
+    //Edit Function
+    function countryShipyardsEdit(){
+        $('#country_shipyards_main_modal_addbtn').attr('hidden',true);
+        $('#country_shipyards_main_modal_editbtn').removeAttr('hidden');
+        $('#country_shipyards_main_modal_delbtn').attr('hidden',true);
+        fill_country_shipyards_main_modal_detail(1);
+    }
+    //Edit Button
+    $('#country-shipyards-main-editbtn').on('click', function (){
+        countryShipyardsEdit();
+    });
+    //Delete Function
+    function countryShipyardsDelete(){
+        $('#country_shipyards_main_modal_addbtn').attr('hidden',true);
+        $('#country_shipyards_main_modal_editbtn').attr('hidden',true);
+        $('#country_shipyards_main_modal_delbtn').removeAttr('hidden');
+        fill_country_shipyards_main_modal_detail(2);
+    }
+    //Delete Button
+    $('#country-shipyards-main-delbtn').on('click', function (){
+        countryShipyardsDelete();
+    });
+
+    $(document).ready(function(){
+        vCountryShipyardsValue.rowdata.id = /*[[${id}]]*/ null;
+
+        vCountryShipyardsValue.rowdata.table_order_column = /*[[${country_shipyards_main_table_order_column}]]*/ null;
+        vCountryShipyardsValue.rowdata.table_order_type = /*[[${country_shipyards_main_table_order_type}]]*/ null;
+        vCountryShipyardsValue.rowdata.table_search = /*[[${country_shipyards_main_table_search}]]*/ null;
+        vCountryShipyardsValue.rowdata.table_pagelen = /*[[${country_shipyards_main_table_pagelen}]]*/ null;
+        vCountryShipyardsValue.rowdata.table_page = /*[[${country_shipyards_main_table_page}]]*/ null;
+
+        recreateDataTable(vCountryShipyardsValue);
+        $('#main_li').removeClass('active');
+
+        $('#dictionaries_li').addClass('active').removeClass('collapsed');
+        $('#dictionaries_a').attr('aria-expanded',true);
+        $('#dictionaries').addClass('show');
+
+        $('#country_shipyards_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

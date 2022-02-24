@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_locals_main_trans_points_modal_body" th:remove="tag">
+    <form id="tms-locals-main-trans-points-modal-buttons" class="mb-2" hidden>
+        <div>
+            <button type="button" id="tms_locals_main_trans_points_modal_reload" class="btn btn-sm btn-primary"><i class="fas fa-sync-alt"></i></button>
+        </div>
+    </form>
+        
+    <div><table id="tms-locals-main-trans-points-modal" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var clm_id_width, clm_num_width, clm_client_num_width, load_date_width, load_point_width, unload_point_width;
+    var clm_id_class, clm_num_class, clm_client_num_class, load_date_class, load_point_class, unload_point_class;
+    var clm_id_show, clm_num_show, clm_client_num_show, load_date_show, load_point_show, unload_point_show;
+
+    if(mobileScreenSize){
+        vDomParam = "t";
+    }
+    else if(smallScreenSize){
+        vDomParam = "t";
+        clm_id_show = false;
+        clm_id_width = "";
+        clm_id_class = "";
+        clm_num_show = true;
+        clm_num_width = "10%";
+        clm_num_class = "small_size small_head_size head-center small_footer_size";
+        clm_client_num_show = true;
+        clm_client_num_width = "20%";
+        clm_client_num_class = "small_size small_head_size head-center small_footer_size";
+        load_date_show = true;
+        load_date_width = "10%";
+        load_date_class = "small_size small_head_size head-center small_footer_size text-center";
+        load_point_show = true;
+        load_point_width = "30%";
+        load_point_class = "small_size small_head_size head-center small_footer_size";
+        unload_point_show = true;
+        unload_point_width = "30%";
+        unload_point_class = "small_size small_head_size head-center small_footer_size";
+
+        $('#tms-locals-main-trans-points-modal-buttons').removeAttr('hidden');
+    }
+    else{
+        vDomParam = "t";
+        clm_id_show = false;
+        clm_id_width = "";
+        clm_id_class = "";
+        clm_num_show = true;
+        clm_num_width = "10%";
+        clm_num_class = "small_size small_head_size head-center small_footer_size";
+        clm_client_num_show = true;
+        clm_client_num_width = "20%";
+        clm_client_num_class = "small_size small_head_size head-center small_footer_size";
+        load_date_show = true;
+        load_date_width = "10%";
+        load_date_class = "small_size small_head_size head-center small_footer_size text-center";
+        load_point_show = true;
+        load_point_width = "30%";
+        load_point_class = "small_size small_head_size head-center small_footer_size";
+        unload_point_show = true;
+        unload_point_width = "30%";
+        unload_point_class = "small_size small_head_size head-center small_footer_size";
+    }
+
+    var vClaimsTransPointTemp;
+    vClaimsTransPointTemp = {
+        table : '#tms-locals-main-trans-points-modal',
+        button_form: (mobileScreenSize || smallScreenSize ) ? null : "#tms-locals-main-trans-points-modal-buttons",
+        ajax : {
+            "url": /*[[@{/tms_locals/get_trans_point_temp_table}]]*/ "tms_locals/get_trans_point_temp_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.mode = $('#tms_locals_main_trans_modal_mode').val();
+            }
+        },
+        key : "clm_id",
+        switchControl : tms_locals_main_loads_modal_switchControl,
+        rowdata:{
+            clm_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: vDomParam,
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).css('background-color', data["act_type_colour"]);*/
+        },
+        columnDefs:[
+            {"targets": [0], "width": clm_id_width, "className": clm_id_class, "visible": clm_id_show},
+            {"targets": [1], "width": clm_num_width, "className": clm_num_class, "visible": clm_num_show},
+            {"targets": [2], "width": clm_client_num_width, "className": clm_client_num_class, "visible": clm_client_num_show},
+            {"targets": [3], "width": load_date_width, "className": load_date_class, "visible": load_date_show},
+            {"targets": [4], "width": load_point_width, "className": load_point_class, "visible": load_point_show},
+            {"targets": [5], "width": unload_point_width, "className": unload_point_class, "visible": unload_point_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{tms_locals.main.trans.clm_id}]]*/ "clm_id", "data": "clm_id"},
+            /*1*/{"title": /*[[#{tms_locals.main.clm_num}]]*/ "clm_num", "data": "clm_num"},
+            /*2*/{"title": /*[[#{tms_locals.main.clm_client_num}]]*/ "clm_client_num", "data": "clm_client_num"},
+            /*3*/{"title": /*[[#{tms_locals.main.clm_way_date}]]*/ "load_date", "data": "load_date"},
+            /*4*/{"title": /*[[#{tms_locals.main.load_point}]]*/ "load_point", "data": "load_point"},
+            /*5*/{"title": /*[[#{tms_locals.main.unload_point}]]*/ "unload_point", "data": "unload_point"}
+        ],
+        pageLength: 50,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function tms_locals_main_loads_modal_switchControl(){
+        if(vClaimsTransPointTemp.rowdata.clm_id != null) {
+            $("#tms_locals_main_trans_points_modal_delete").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#tms_locals_main_trans_points_modal_upload").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        }
+        else{
+            $("#tms_locals_main_trans_points_modal_delete").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tms_locals_main_trans_points_modal_upload").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    // Add button function
+    function addTMSTransPointsTemp(){
+        $.ajax({
+            url: /*[[ @{/tms_locals/add_main_locals_temp} ]]*/ "/tms_locals/add_main_locals_temp",
+            type: 'POST',
+            data: {
+                "cnt_id": $('#tms_locals_main_modal_cnt_id').val(),
+                "clm_id": $('#tms_locals_main_modal_clm_id_temp').val(),
+                "clm_client_num":  $('#clm_client_num').val(),
+                "load_date":  $('#load_date').val(),
+                "load_point":  $('#load_point').val(),
+                "clm_load_notes":  $('#clm_load_notes').val(),
+                "weight_type_id":  $('#weight_type_id').val(),
+                "unload_point":  $('#unload_point').val(),
+                "clmll_load_meters":  $('#clmll_load_meters').val(),
+                "clm_num":  $('#clm_num').val()
+            },
+            success: function (result) {
+                $(vClaimsTransPointTemp.table).DataTable().ajax.reload(false, true);
+                $('#tms_locals_main_modal_clm_id_temp').val('');
+            }
+        });
+    }
+
+    //Add Temp button script
+    $('#tms_locals_main_trans_points_modal_add').click(function(){
+        addTMSTransPointsTemp();
+    });
+    //Reload function
+    function tmsLocalTransPointTempReload(){
+        $(vClaimsTransPointTemp.table).DataTable().ajax.reload(null, false);
+    }
+    //Reload Button
+    $('#tms_locals_main_trans_points_modal_reload').click(function(){
+        tmsLocalTransPointTempReload();
+    });
+
+    // Delete button function
+    function delTMSTransPointsTemp(){
+        $.ajax({
+            url: /*[[ @{/tms_locals/del_main_locals_temp} ]]*/ "/tms_locals/del_main_locals_temp",
+            type: 'POST',
+            data: {
+                "clm_id": vClaimsTransPointTemp.rowdata.clm_id
+            },
+            success: function (result) {
+                $(vClaimsTransPointTemp.table).DataTable().ajax.reload();
+                $('#tms_locals_main_modal_clm_id_temp').val('');
+            }
+        });
+    }
+
+    function tms_locals_main_trans_points_modal_clear(){
+        $('#tms_locals_main_modal_clm_id_temp').val('');
+        $('#clm_num').val('');
+        $('#clm_client_num').val('');
+        $('#load_date').val('');
+        $('#weight_type_id').val('');
+        $('#unload_point').val('');
+        $('#clmll_load_meters').val('');
+        $('#load_point').val('');
+        $('#clm_load_notes').val('');
+    };
+
+    //Upload Function
+    function localTMSTransPointsTempUpload(){
+        if (vClaimsTransPointTemp.rowdata.clm_id != null) {
+            $.ajax({
+                url: /*[[ @{/tms_locals/get_loads_temp_detail} ]]*/ "/tms_locals/get_loads_temp_detail",
+                type: 'get',
+                data: {
+                    "clm_id": vClaimsTransPointTemp.rowdata.clm_id
+                },
+                success: function (loads_temp_detail) {
+                    tms_locals_main_trans_points_modal_clear();
+                    $('#tms_locals_main_modal_clm_id_temp').val(loads_temp_detail.data[0].clm_id);
+                    $('#clm_num').val(loads_temp_detail.data[0].clm_num);
+                    $('#clm_client_num').val(loads_temp_detail.data[0].clm_client_num);
+                    $('#load_date').val(loads_temp_detail.data[0].load_date);
+                    $('#weight_type_id').val(loads_temp_detail.data[0].weight_type_id);
+                    $('#unload_point').val(loads_temp_detail.data[0].unload_point);
+                    $('#clmll_load_meters').val(loads_temp_detail.data[0].clmll_load_meters);
+                    $('#load_point').val(loads_temp_detail.data[0].load_point);
+                    $('#clm_load_notes').val(loads_temp_detail.data[0].clm_load_notes);
+                }
+            });
+        }
+    }
+
+    //Clear Button
+    $('#tms_locals_main_trans_points_modal_clear').click(function(){
+        tms_locals_main_trans_points_modal_clear();
+    });
+
+    //Delete Temp button script
+    $('#tms_locals_main_trans_points_modal_delete').click(function(){
+        delTMSTransPointsTemp();
+    });
+
+    $(document).ready(function(){
+        vClaimsTransPointTemp.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+
+        vClaimsTransPointTemp.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vClaimsTransPointTemp.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vClaimsTransPointTemp.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vClaimsTransPointTemp.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vClaimsTransPointTemp.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vClaimsTransPointTemp);
+    });
+</script>
+
+</body>
+</html>

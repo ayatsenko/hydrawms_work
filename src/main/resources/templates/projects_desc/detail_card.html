@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="projects_desc_detail_body" th:remove="tag">
+    <div class="card-body">
+        <div class="form-row">
+            <div class="col-md-2 mb-1" id="pr_id_row">
+               <label for="pr_id" class="form-label" th:text="'1. '+ #{projects_desc.detail.pr_id}"></label>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+               <input type="number" class="form-control" id="pr_id" name="pr_id" th:value="${pr_id}" disabled>
+               <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+               <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+            </div>
+
+            <div class="col-md-3 mb-1" id="pr_number_row">
+               <label for="pr_number" class="form-label" th:text="'2. '+ #{projects_desc.detail.pr_number}"></label>
+               <!--suppress ThymeleafVariablesResolveInspection -->
+               <input type="text" maxlength="32" class="form-control" id="pr_number" name="pr_number" th:value="${pr_number}" disabled>
+               <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+               <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+            </div>
+
+            <div class="col-md-7 mb-1" id="pr_sname_row">
+               <label for="pr_sname" class="form-label" th:text="'3. '+ #{projects_desc.detail.pr_sname}"></label>
+               <!--suppress ThymeleafVariablesResolveInspection -->
+               <input type="text" maxlength="32" class="form-control" id="pr_sname" name="pr_sname" th:value="${pr_sname}" disabled>
+               <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+               <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+            </div>
+        </div><!-- Row 1 -->
+
+        <div class="form-row">
+             <div class="col-md-2 mb-1" id="pr_type_row">
+                 <label for="pr_type_id" class="mr-2" th:text="'5. '+#{projects_desc.detail.pr_type_id}"></label>
+                 <!--suppress ThymeleafVariablesResolveInspection -->
+                 <select id="pr_type_id" name="pr_type_id" class="form-control" th:value="${pr_type_id}" disabled>
+                 </select>
+                 <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                 <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+             </div>
+        </div><!-- Row 2 -->
+
+         <div class="form-row">
+             <div class="col-md-12 mb-1" id="pr_description_row">
+                 <label for="pr_description" th:text="'4. '+#{projects_desc.detail.pr_description}"></label>
+                 <!--suppress ThymeleafVariablesResolveInspection -->
+                 <textarea class="form-control" rows="3" maxlength="256" style="resize:none;" id="pr_description" name="pr_description" th:text="${pr_description}" disabled>
+                 </textarea>
+                 <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                 <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+             </div>
+         </div><!-- Row 3 -->
+
+        <div class="form-row">
+             <div class="col-md-2 mb-1" id="pr_status_row">
+                 <label for="pr_status_id" class="mr-2" th:text="'5. '+#{projects_desc.detail.pr_status_id}"></label>
+                 <!--suppress ThymeleafVariablesResolveInspection -->
+                 <select id="pr_status_id" name="pr_status_id" class="form-control" th:value="${pr_status_id}" disabled>
+                 </select>
+                 <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                 <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+             </div>
+
+             <div class="col-md-2 mb-1" id="pr_prior_row">
+                 <label for="pr_prior_id" class="mr-2" th:text="'6. '+#{projects_desc.detail.pr_prior_id}"></label>
+                 <!--suppress ThymeleafVariablesResolveInspection -->
+                 <select id="pr_prior_id" name="pr_prior_id" class="form-control" th:value="${pr_prior_id}" disabled>
+                 </select>
+                 <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                 <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+             </div>
+
+            <div class="col-md-2 mb-1" id="pr_persent_row">
+               <label for="pr_persent" class="form-label" th:text="'7. '+ #{projects_desc.detail.pr_persent}"></label>
+                <!--suppress ThymeleafVariablesResolveInspection -->
+               <input type="text" maxlength="32" class="form-control" id="pr_persent" name="pr_persent" th:value="${pr_persent}" disabled>
+               <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+               <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+            </div>
+        </div><!-- Row 4 -->
+
+         <div class="form-row">
+             <div class="col-md-3 mb-1" id="pr_create_date_row">
+               <label for="pr_create_date" class="form-label" th:text="'8. '+ #{projects_desc.detail.pr_create_date}"></label>
+                <!--suppress ThymeleafVariablesResolveInspection -->
+               <input type="text" class="form-control" id="pr_create_date" name="pr_create_date" th:value="${pr_create_date}" disabled>
+               <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+               <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+             </div>
+
+             <div class="col-md-5 mb-1" id="author_row">
+                 <label for="author_id" class="mr-2" th:text="'9. '+#{projects_desc.detail.author_id}"></label>
+                 <!--suppress ThymeleafVariablesResolveInspection -->
+                 <select id="author_id" name="author_id" class="form-control" th:value="${author_id}" disabled>
+                 </select>
+                 <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                 <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+             </div>
+         </div><!-- Row 5 -->
+
+         <div class="form-row">
+             <div class="col-md-12 mb-1" id="pr_result_row">
+                 <label for="pr_result" th:text="'10. '+#{projects_desc.detail.pr_result}"></label>
+                 <!--suppress ThymeleafVariablesResolveInspection -->
+                 <textarea class="form-control" rows="3" maxlength="256" style="resize:none;" id="pr_result" name="pr_result" th:text="${pr_result}" disabled>
+                 </textarea>
+                 <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                 <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+             </div>
+         </div><!-- Row 6 -->
+
+        <div class="form-row">
+            <div class="col-md-2 mb-1" id="pr_plan_start_date_row">
+               <label for="pr_plan_start_date" class="form-label" th:text="'11. '+ #{projects_desc.detail.pr_plan_start_date}"></label>
+                <!--suppress ThymeleafVariablesResolveInspection -->
+               <input type="text" maxlength="32" class="form-control" id="pr_plan_start_date" name="pr_plan_start_date" th:value="${pr_plan_start_date}" disabled>
+               <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+               <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+            </div>
+
+            <div class="col-md-2 mb-1" id="pr_plan_end_date_row">
+               <label for="pr_plan_end_date" class="form-label" th:text="'12. '+ #{projects_desc.detail.pr_plan_end_date}"></label>
+                <!--suppress ThymeleafVariablesResolveInspection -->
+               <input type="text" maxlength="32" class="form-control" id="pr_plan_end_date" name="pr_plan_end_date" th:value="${pr_plan_end_date}" disabled>
+               <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+               <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+            </div>
+        </div><!-- Row 7 -->
+
+        <div class="form-row">
+            <div class="col-md-2 mb-1" id="pr_fact_start_date_row">
+               <label for="pr_fact_start_date" class="form-label" th:text="'13. '+ #{projects_desc.detail.pr_fact_start_date}"></label>
+                <!--suppress ThymeleafVariablesResolveInspection -->
+               <input type="text" maxlength="32" class="form-control" id="pr_fact_start_date" name="pr_fact_start_date" th:value="${pr_fact_start_date}" disabled>
+               <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+               <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+            </div>
+
+            <div class="col-md-2 mb-1" id="pr_fact_end_date_row">
+               <label for="pr_fact_end_date" class="form-label" th:text="'14. '+ #{projects_desc.detail.pr_fact_end_date}"></label>
+                <!--suppress ThymeleafVariablesResolveInspection -->
+               <input type="text" maxlength="32" class="form-control" id="pr_fact_end_date" name="pr_fact_end_date" th:value="${pr_fact_end_date}" disabled>
+               <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+               <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+            </div>
+        </div><!-- Row 8 -->
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    $(document).ready(function(){
+        vProjectsListValue.rowdata.pr_id = /*[[${pr_id}]]*/ null;
+
+        vProjectsListValue.rowdata.table_order_column = /*[[${projects_desc_main_table_order_column}]]*/ null;
+        vProjectsListValue.rowdata.table_order_type = /*[[${projects_desc_main_table_order_type}]]*/ null;
+        vProjectsListValue.rowdata.table_search = /*[[${projects_desc_main_table_search}]]*/ null;
+        vProjectsListValue.rowdata.table_pagelen = /*[[${projects_desc_main_table_pagelen}]]*/ null;
+        vProjectsListValue.rowdata.table_page = /*[[${projects_desc_main_table_page}]]*/ null;
+
+        recreateDataTable(vProjectsListValue);
+        $('#main_li').removeClass('active');
+
+        $('#projects_li').addClass('active').removeClass('collapsed');
+        $('#projects_a').attr('aria-expanded',true);
+        $('#projects').addClass('show');
+
+        $('#projects_desc_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

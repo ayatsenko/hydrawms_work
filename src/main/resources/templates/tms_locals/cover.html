@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{tms_locals.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="tms_locals_filter_card">
+            <div class="card-header pb-0 mb-0">
+                <div class="card-actions float-right">
+                    <a href="#tms_locals_filter_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#tms_locals_filter_div" data-toggle="collapse" th:text="#{tms_locals.filter}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse" id="tms_locals_filter_div">
+                <div>
+                    <span th:replace="tms_locals/filter_card :: tms_locals_filter_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="tms_locals_main_card">
+            <div class="card-header pb-0 mb-0">
+                <div class="card-actions float-right">
+                    <a href="#tms_locals_main_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#tms_locals_main_div" data-toggle="collapse" th:text="#{tms_locals.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="tms_locals_main_div">
+                <div>
+                    <span th:replace="tms_locals/main_modals/main_load_point_modal :: tms_locals_main_load_point_modal_body"></span>
+                    <span th:replace="tms_locals/main_modals/main_load_detail_modal :: tms_locals_main_load_detail_modal_body"></span>
+                    <span th:replace="tms_locals/main_modals/main_cars_id_modal :: tms_locals_main_car_id_modal_body"></span>
+                    <span th:replace="tms_locals/main_modals/main_trans_id_modal :: tms_locals_main_trans_cnt_id_modal_body"></span>
+                    <span th:replace="tms_locals/main_modals/main_clm_rate_modal :: tms_locals_main_clm_rate_modal_body"></span>
+                    <span th:replace="tms_locals/main_modals/main_clm_sum_modal :: tms_locals_main_clm_sum_modal_body"></span>
+                    <span th:replace="tms_locals/main_modals/main_clm_client_num_modal :: tms_locals_main_clm_client_num_modal_body"></span>
+                    <span th:replace="tms_locals/main_modals/main_cnt_id_modal :: tms_locals_main_cnt_id_modal_body"></span>
+                    <span th:replace="tms_locals/main_modals/main_clm_way_date_modal :: tms_locals_main_clm_way_date_modal_body"></span>
+                    <span th:replace="tms_locals/main_modals/main_clm_data_modal :: tms_locals_main_clm_data_modal_body"></span>
+                    <span th:replace="tms_locals/main_modals/main_clm_num_modal :: tms_locals_main_clm_num_modal_body"></span>
+
+                    <span th:replace="tms_locals/main_files_modal :: tms_locals_main_files_modal_body"></span>
+                    <span th:replace="tms_locals/main_column_filter_modal :: tms_locals_main_column_filter_modal_body"></span>
+                    <span th:replace="tms_locals/main_add_modal :: tms_locals_main_add_modal_body"></span>
+                    <span th:replace="tms_locals/main_trans_modal :: tms_locals_main_trans_modal_body"></span>
+                    <span th:replace="tms_locals/main_edit_modal :: tms_locals_main_edit_modal_body"></span>
+                    <span th:replace="tms_locals/main_card :: tms_locals_main_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div>
+            <div class="tab mb-2">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"><a class="nav-link active text-primary" href="#tab-1" data-toggle="tab" role="tab" th:text="#{tms_locals.tabs.timetable}">Timetable</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-2" data-toggle="tab" role="tab" th:text="#{tms_locals.tabs.addresses}">Addresses</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-3" data-toggle="tab" role="tab" th:text="#{tms_locals.tabs.aims}">Aims</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-4" data-toggle="tab" role="tab" th:text="#{tms_locals.tabs.transports}">Transports</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-5" data-toggle="tab" role="tab" th:text="#{tms_locals.tabs.costs}">Costs</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-6" data-toggle="tab" role="tab" th:text="#{tms_locals.tabs.reports}">Reports</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-7" data-toggle="tab" role="tab" th:text="#{tms_locals.tabs.errors}">Errors</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-8" data-toggle="tab" role="tab" th:text="#{tms_locals.tabs.notes}">Notes</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="#tab-9" data-toggle="tab" role="tab" th:text="#{tms_locals.tabs.tasks}">Tasks</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-1" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="tms_locals/timelog_card :: tms_locals_timelog_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-2" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="tms_locals/ways_modal :: tms_locals_ways_modal_body"></span>
+                                <span th:replace="tms_locals/ways_card :: tms_locals_ways_body"></span>                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-3" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="tms_locals/loads_modal :: tms_locals_loads_modal_body"></span>
+                                <span th:replace="tms_locals/loads_card :: tms_locals_loads_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-4" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="tms_locals/trans_modal :: tms_locals_trans_modal_body"></span>
+                                <span th:replace="tms_locals/trans_card :: tms_locals_trans_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-5" role="tabpanel">
+                        <div class="row">
+                            <div class="col-3">
+                                <span th:replace="tms_locals/costs_groups_card :: tms_locals_costs_groups_body"></span>
+                            </div>
+                            <div class="col-9">
+                                <span th:replace="tms_locals/costs_modal :: tms_locals_costs_modal_body"></span>
+                                <span th:replace="tms_locals/costs_card :: tms_locals_costs_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-6" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-7" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="tms_locals/errors_card :: tms_locals_errors_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-8" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="tms_locals/notes_modal :: tms_locals_notes_modal_body"></span>
+                                <span th:replace="tms_locals/notes_card :: tms_locals_notes_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-9" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <span th:replace="tms_locals/tasks_modal :: tms_locals_tasks_modal_body"></span>
+                                <span th:replace="tms_locals/tasks_card :: tms_locals_tasks_body"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FLD -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="tms_locals/filter_card :: cardscript"></script>
+
+<script th:replace="tms_locals/timelog_card :: cardscript"></script>
+
+<script th:replace="tms_locals/ways_modal :: cardscript"></script>
+<script th:replace="tms_locals/ways_card :: cardscript"></script>
+
+<script th:replace="tms_locals/loads_modal :: cardscript"></script>
+<script th:replace="tms_locals/loads_card :: cardscript"></script>
+
+<script th:replace="tms_locals/trans_modal :: cardscript"></script>
+<script th:replace="tms_locals/trans_card :: cardscript"></script>
+
+<script th:replace="tms_locals/costs_groups_card :: cardscript"></script>
+
+<script th:replace="tms_locals/costs_modal :: cardscript"></script>
+<script th:replace="tms_locals/costs_card :: cardscript"></script>
+
+<script th:replace="tms_locals/errors_card :: cardscript"></script>
+
+<script th:replace="tms_locals/tasks_modal :: cardscript"></script>
+<script th:replace="tms_locals/tasks_card :: cardscript"></script>
+
+<script th:replace="tms_locals/notes_modal :: cardscript"></script>
+<script th:replace="tms_locals/notes_card :: cardscript"></script>
+
+<script th:replace="tms_locals/main_modals/main_load_point_temp_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_modals/main_load_point_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_modals/main_load_detail_temp_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_modals/main_load_detail_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_modals/main_cars_id_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_modals/main_trans_id_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_modals/main_clm_rate_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_modals/main_clm_sum_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_modals/main_clm_client_num_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_modals/main_cnt_id_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_modals/main_clm_way_date_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_modals/main_clm_data_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_modals/main_clm_num_modal :: cardscript"></script>
+
+<script th:replace="tms_locals/main_kercher_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_files_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_address_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_loads_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_add_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_trans_points_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_trans_modal :: cardscript"></script>
+<script th:replace="tms_locals/main_edit_modal :: cardscript"></script>
+
+<script th:replace="tms_locals/main_card :: cardscript"></script>
+<script th:replace="tms_locals/main_column_filter_modal :: cardscript"></script>
+</body>
+</html>

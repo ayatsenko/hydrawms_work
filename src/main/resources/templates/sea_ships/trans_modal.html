@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="sea_ships_trans_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="sea_ships_trans_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="sea_ships_trans_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{sea_ships.trans.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <input type="hidden" id="sea_ships_trans_modal_mode">
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="sea_ships_trans_modal_clm_id_row">
+                            <label for="sea_ships_trans_modal_clm_id" class="form-label" th:text="'1. '+ #{sea_ships.main.clm_id}"></label>
+                            <input type="number" class="form-control" id="sea_ships_trans_modal_clm_id" name="sea_ships_trans_modal_clm_id" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-3 mb-1" id="sea_ships_trans_modal_clm_num_row">
+                            <label for="sea_ships_trans_modal_clm_num" class="form-label" th:text="'2. '+ #{sea_ships.main.clm_num}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="sea_ships_trans_modal_clm_num" name="sea_ships_trans_modal_clm_num" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 mb-1" id="cnt_name_row">
+                            <label for="sea_ships_trans_modal_cnt_name" class="form-label" th:text="'3. '+ #{sea_ships.main.cnt_name}"></label>
+                            <input type="text" class="form-control" id="sea_ships_trans_modal_cnt_name" name="sea_ships_trans_modal_cnt_name" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="sea_ships_trans_modal_clmtrl_id_row">
+                            <label for="sea_ships_trans_modal_clmtrl_id" class="form-label" th:text="'4. '+ #{sea_ships.trans.clmtrl_id}"></label>
+                            <input type="number" class="form-control" id="sea_ships_trans_modal_clmtrl_id" name="sea_ships_trans_modal_clmtrl_id" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-12 mb-1" id="sea_ships_trans_modal_cnt_id_div">
+                            <label for="sea_ships_trans_modal_cnt_id" th:text="'5. '+#{sea_ships.trans.cnt_name}"></label>
+                            <div class="input-group d-flex">
+                                <div class="flex-fill">
+                                    <select type="text" id="sea_ships_trans_modal_cnt_id" name="sea_ships_trans_modal_cnt_id" class="form-control p-1" aria-describedby="cnt_id_helpBlock">
+                                    </select>
+                                </div>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div> <!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-12 mb-2">
+                            <label for="sea_ships_trans_modal_cntc_id" class="mr-2" th:text="'6. '+#{sea_ships.trans.cntc_type_brand}">Car: </label>
+                            <div class="input-group d-flex">
+                                <div class="flex-fill">
+                                    <select type="text" id="sea_ships_trans_modal_cntc_id" name="sea_ships_trans_modal_cntc_id" class="custom-select" aria-describedby="cnt_id_helpBlock">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 4 -->
+
+                    <div class="form-row">
+                        <div class="col-12 mb-2">
+                            <label for="sea_ships_trans_modal_cntt_id" class="mr-2" th:text="'7. '+#{sea_ships.trans.cntc_type_brand}">SemiCar: </label>
+                            <div class="input-group d-flex">
+                                <div class="flex-fill">
+                                    <select type="text" id="sea_ships_trans_modal_cntt_id" name="sea_ships_trans_modal_cntt_id" class="custom-select" aria-describedby="sea_ships_trans_modal_cntt_id_helpBlock">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 5 -->
+
+                    <div class="form-row">
+                        <div class="col-12 mb-2">
+                            <label for="sea_ships_trans_modal_cntd_id" class="mr-2" th:text="'8. '+#{sea_ships.trans.cntd_name}">Driver: </label>
+                            <div class="input-group d-flex">
+                                <div class="flex-fill">
+                                    <select type="text" id="sea_ships_trans_modal_cntd_id" name="sea_ships_trans_modal_cntd_id" class="custom-select" aria-describedby="sea_ships_trans_modal_cntd_id_helpBlock">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 6 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="sea_ships_trans_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="sea_ships_trans_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="sea_ships_trans_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="sea_ships_trans_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+// Clear Fields
+    function clear_sea_ships_trans_modal_detail() {
+        $("#sea_ships_trans_modal_detail input[type=text]").val('');
+        $("#sea_ships_trans_modal_detail input[type=number]").val('');
+        $("#sea_ships_trans_modal_detail select").empty();
+        $("#sea_ships_trans_modal_detail textarea").val('');
+    }
+// Block And Required Fields
+    function block_sea_ships_trans_modal_detail(){
+        $('#sea_ships_trans_modal_cnt_id').attr('required', true);
+
+        if($('#sea_ships_trans_modal_mode').val() === "0"){
+            $('#sea_ships_trans_modal_clmtrl_id_row').attr('hidden',true);
+            $('#sea_ships_trans_modal_cnt_id').removeAttr('disabled');
+            $('#sea_ships_trans_modal_cntc_id').removeAttr('disabled');
+            $('#sea_ships_trans_modal_cntt_id').removeAttr('disabled');
+            $('#sea_ships_trans_modal_cntd_id').removeAttr('disabled');
+        }
+        else if($('#sea_ships_trans_modal_mode').val() === "1"){
+            $('#sea_ships_trans_modal_clmtrl_id_row').removeAttr('hidden');
+            $('#sea_ships_trans_modal_cnt_id').removeAttr('disabled');
+            $('#sea_ships_trans_modal_cntc_id').removeAttr('disabled');
+            $('#sea_ships_trans_modal_cntt_id').removeAttr('disabled');
+            $('#sea_ships_trans_modal_cntd_id').removeAttr('disabled');
+        }
+        else{
+            $('#sea_ships_trans_modal_clmtrl_id_row').removeAttr('hidden');
+            $('#sea_ships_trans_modal_cnt_id').attr('disabled',true);
+            $('#sea_ships_trans_modal_cntc_id').attr('disabled',true);
+            $('#sea_ships_trans_modal_cntt_id').attr('disabled',true);
+            $('#sea_ships_trans_modal_cntd_id').attr('disabled',true);
+        }
+    }
+// Clients List
+    function editTransClientChange(vMode, vTransCntID) {
+        $('#sea_ships_trans_modal_cnt_id').empty();
+        $("select[name='sea_ships_trans_modal_cnt_id']").find('option').end().append("<option value=''></option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/sea_ships/get_trans_clients_list'}]]*/ "/sea_ships/get_trans_clients_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (sea_ships_trans_modal_list) {
+                for (var i = 0; i < sea_ships_trans_modal_list.data.length; i++) {
+                    $("select[name='sea_ships_trans_modal_cnt_id']").find('option').end().append(
+                        "<option value='" + sea_ships_trans_modal_list.data[i].cnt_id
+                        + "'>" + sea_ships_trans_modal_list.data[i].cnt_name + "</option>");
+                }
+                if(vTransCntID !== ''){
+                    $('#sea_ships_trans_modal_cnt_id').val(vTransCntID);
+                }
+            }
+        }));
+    }
+//Cars List
+function editCarsListChange(vTransCntID, vCarID){
+    $('#sea_ships_trans_modal_cntc_id').empty();
+    $("select[name='sea_ships_trans_modal_cntc_id']").find('option').end().append("<option value=''></option>");
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/sea_ships/get_cars'}]]*/ "/sea_ships/get_cars",
+        type: "get",
+        data: {
+            "cnt_id": vTransCntID
+        },
+        success: function (sea_ships_trans_modal_cars_list) {
+            for (var i = 0; i < sea_ships_trans_modal_cars_list.data.length; i++) {
+                $("select[name='sea_ships_trans_modal_cntc_id']").find('option').end().append(
+                    "<option value='" + sea_ships_trans_modal_cars_list.data[i].cntc_id
+                    + "'>" + sea_ships_trans_modal_cars_list.data[i].cntc_fullname + "</option>");
+            }
+            if(vCarID !== ''){
+                $('#sea_ships_trans_modal_cntc_id').val(vCarID);
+            }
+        }
+    }));
+}
+//Trailers List
+function editTrailersListChange(vTransCntID, vTraileID){
+    $('#sea_ships_trans_modal_cntt_id').empty();
+    $("select[name='sea_ships_trans_modal_cntt_id']").find('option').end().append("<option value=''></option>");
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/sea_ships/get_trailers'}]]*/ "/sea_ships/get_trailers",
+        type: "get",
+        data: {
+            "cnt_id": vTransCntID
+        },
+        success: function (sea_ships_trans_modal_trailers_list) {
+            for (var i = 0; i < sea_ships_trans_modal_trailers_list.data.length; i++) {
+                $("select[name='sea_ships_trans_modal_cntt_id']").find('option').end().append(
+                    "<option value='" + sea_ships_trans_modal_trailers_list.data[i].cntt_id
+                    + "'>" + sea_ships_trans_modal_trailers_list.data[i].cntt_fullname + "</option>");
+            }
+            if(vTraileID !== ''){
+                $('#sea_ships_trans_modal_cntt_id').val(vTraileID);
+            }
+        }
+    }));
+}
+//Drivers List
+function editDriversListChange(vTransCntID,vDriverID){
+    $('#sea_ships_trans_modal_cntd_id').empty();
+    $("select[name='sea_ships_trans_modal_cntd_id']").find('option').end().append("<option value=''></option>");
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/sea_ships/get_drivers'}]]*/ "/sea_ships/get_drivers",
+        type: "get",
+        data: {
+            "cnt_id": vTransCntID
+        },
+        success: function (sea_ships_trans_modal_drivers_list) {
+            for (var i = 0; i < sea_ships_trans_modal_drivers_list.data.length; i++) {
+                $("select[name='sea_ships_trans_modal_cntd_id']").find('option').end().append(
+                    "<option value='" + sea_ships_trans_modal_drivers_list.data[i].cntd_id
+                    + "'>" + sea_ships_trans_modal_drivers_list.data[i].cntd_fullname + "</option>");
+            }
+            if(vDriverID !== ''){
+                $('#sea_ships_trans_modal_cntd_id').val(vDriverID);
+            }
+        }
+    }));
+}
+//Select2 Options
+var editCntName =  "Выберите перевозчика";
+
+$('#sea_ships_trans_modal_cnt_id')
+    .select2({
+        id: '-1', // the value of the option
+        placeholder: editCntName,
+        allowClear: true,
+        width: 'element',
+        dropdownAutoWidth: true
+    });
+
+//Select2 Car List
+var editCarName =  "Выберите машину";
+
+$('#sea_ships_trans_modal_cntc_id')
+    .select2({
+        id: '-1', // the value of the option
+        placeholder: editCarName,
+        allowClear: true,
+        width: 'element',
+        dropdownAutoWidth: true
+    });
+
+//Select2 Trailer List
+var editTrailerName =  "Выберите прицеп";
+
+$('#sea_ships_trans_modal_cntt_id')
+    .select2({
+        id: '-1', // the value of the option
+        placeholder: editTrailerName,
+        allowClear: true,
+        width: 'element',
+        dropdownAutoWidth: true
+    });
+
+//Select2 Driver List
+var editDriverName =  "Выберите водителя";
+
+$('#sea_ships_trans_modal_cntd_id')
+    .select2({
+        id: '-1', // the value of the option
+        placeholder: editDriverName,
+        allowClear: true,
+        width: 'element',
+        dropdownAutoWidth: true
+    });
+
+// Load Function
+    function fill_sea_ships_trans_modal_detail(aMode){
+        $('#sea_ships_trans_modal_mode').val(aMode);
+        clear_sea_ships_trans_modal_detail();
+        block_sea_ships_trans_modal_detail();
+
+        $('#sea_ships_trans_modal_clm_id').val(vFSClaimsValue.rowdata.clm_id);
+        $('#sea_ships_trans_modal_clm_num').val(vFSClaimsValue.rowdata.clm_num);
+        $('#sea_ships_trans_modal_cnt_name').val(vFSClaimsValue.rowdata.cnt_name);
+
+        if(aMode !== 0){
+            $.ajax({
+                url:/*[[@{'/sea_ships/get_trans_detail'}]]*/ "sea_ships/get_trans_detail",
+                type: "get",
+                data: {
+                    "mode": aMode,
+                    "clmtrl_id": vFSClaimTransValue.rowdata.clmtrl_id
+                },
+                success: function (sea_ships_trans_modal_detail_result) {
+                    $.when(
+                        editTransClientChange(aMode,sea_ships_trans_modal_detail_result.data[0].cnt_id),
+                        editCarsListChange(sea_ships_trans_modal_detail_result.data[0].cnt_id,sea_ships_trans_modal_detail_result.data[0].cntc_id),
+                        editTrailersListChange(sea_ships_trans_modal_detail_result.data[0].cnt_id,sea_ships_trans_modal_detail_result.data[0].cntt_id),
+                        editDriversListChange(sea_ships_trans_modal_detail_result.data[0].cnt_id,sea_ships_trans_modal_detail_result.data[0].cntd_id)
+                    ).then(function () {
+                        $('#sea_ships_trans_modal_clmtrl_id').val(sea_ships_trans_modal_detail_result.data[0].clmtrl_id);
+                        $('#sea_ships_trans_modal').modal('show');
+                    });
+                }
+            });
+        }
+        else{
+            $.when(
+                editTransClientChange(aMode,0)
+            ).then(function () {
+                $('#sea_ships_trans_modal').modal('show');
+            });
+        }
+    }
+
+// Add button script
+$('#sea_ships_trans_modal_addbtn').click(function(){
+    var MainRowID = vFSClaimsValue.rowdata.clm_id;
+    var RowID = vFSClaimTransValue.rowdata.clmtrl_id;
+    $.ajax({
+        url: /*[[ @{/sea_ships/add_transport} ]]*/ "/sea_ships/add_transport",
+        type: 'POST',
+        data: {
+            "clm_id": MainRowID,
+            "cnt_id": $('#sea_ships_trans_modal_cnt_id').val(),
+            "cntc_id":  $('#sea_ships_trans_modal_cntc_id').val(),
+            "cntt_id":  $('#sea_ships_trans_modal_cntt_id').val(),
+            "cntd_id":  $('#sea_ships_trans_modal_cntd_id').val()
+        },
+        success: function (result) {
+            $('#sea_ships_trans_modal').modal('hide');
+            vFSClaimTransValue.rowdata.clm_id = MainRowID;
+            vFSClaimTransValue.rowdata.clmtrl_id = RowID;
+            $(vFSClaimTransValue.table).DataTable().ajax.reload(null, false);
+            vFSClaimsValue.rowdata.clm_id = MainRowID;
+            $(vFSClaimsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// Edit button script
+$('#sea_ships_trans_modal_editbtn').click(function(){
+    var MainRowID = vFSClaimsValue.rowdata.clm_id;
+    var RowID = vFSClaimTransValue.rowdata.clmtrl_id;
+    $.ajax({
+        url: /*[[ @{/sea_ships/edit_transport} ]]*/ "/sea_ships/edit_transport",
+        type: 'POST',
+        data: {
+            "clmtrl_id": RowID,
+            "cnt_id": $('#sea_ships_trans_modal_cnt_id').val(),
+            "cntc_id":  $('#sea_ships_trans_modal_cntc_id').val(),
+            "cntt_id":  $('#sea_ships_trans_modal_cntt_id').val(),
+            "cntd_id":  $('#sea_ships_trans_modal_cntd_id').val()
+        },
+        success: function (result) {
+            $('#sea_ships_trans_modal').modal('hide');
+            vFSClaimTransValue.rowdata.clm_id = MainRowID;
+            vFSClaimTransValue.rowdata.clmtrl_id = RowID;
+            $(vFSClaimTransValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// Del button script
+$('#sea_ships_trans_modal_delbtn').click(function(){
+    var MainRowID = vFSClaimsValue.rowdata.clm_id;
+    var RowID = vFSClaimTransValue.rowdata.clmtrl_id;
+    $.ajax({
+        url: /*[[ @{/sea_ships/del_transport} ]]*/ "/sea_ships/del_transport",
+        type: 'POST',
+        data: {
+            "clmtrl_id": RowID
+        },
+        success: function (result) {
+            $('#sea_ships_trans_modal').modal('hide');
+            vFSClaimTransValue.rowdata.clm_id = MainRowID;
+            $(vFSClaimTransValue.table).DataTable().ajax.reload(null, false);
+            vFSClaimsValue.rowdata.clm_id = MainRowID;
+            $(vFSClaimsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+// OnClick Function
+$('#sea_ships_trans_modal_cnt_id').change(function () {
+    var vTransClientID = $('#sea_ships_trans_modal_cnt_id').val();
+    $.when(
+        editCarsListChange(vTransClientID),
+        editTrailersListChange(vTransClientID),
+        editDriversListChange(vTransClientID)
+    ).then(function () {
+    });
+});
+</script>
+
+</body>
+</html>

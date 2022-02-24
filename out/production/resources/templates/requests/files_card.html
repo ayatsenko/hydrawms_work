@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="requests_files_body" th:remove="tag">
+        <form id="requests-files-detail" class="mb-2" th:action="@{/requests/files_detail}" method="post">
+            <input name="mode" value="0" hidden>
+              <div id="requests-files-detailbtn-large" class="d-none d-sm-block">
+                 <button type="submit" id="requests-files-detailbtn" class="btn btn-sm btn-dark requests_files_detail_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="requests-files-addbtn" class="btn btn-sm btn-primary requests_files_detail_btn_control" th:text="#{general.addbtn}" th:attr="mode=0">Add</button>
+                 <button type="submit" id="requests-files-downbtn" form="frmdownload" class="btn btn-sm btn-dark" th:text="#{general.download}" disabled>Edit</button>
+                 <button type="submit" id="requests-files-delbtn" class="btn btn-sm btn-dark requests_files_detail_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="requests-files-detailbtn-small" class="d-block d-sm-none">
+                 <button type="submit" id="requests-files-detailbtn-sx" class="btn btn-sm btn-dark requests_files_detail_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="requests-files-addbtn-sx" class="btn btn-sm btn-primary requests_files_detail_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                 <button type="submit" id="requests-files-downbtn-sx" form="frmdownload" class="btn btn-sm btn-dark" disabled><i data-feather="download"></i></button>
+                 <button type="submit" id="requests-files-delbtn-sx" class="btn btn-sm btn-dark requests_files_detail_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+
+        <form id="frmdownload" method="post" th:action="@{/requests/files_download}">
+            <input type="hidden" name="req_store_id">
+        </form>
+
+        <div><table id="table-requests-files" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vRequestFilesListValue;
+    vRequestFilesListValue = {
+        table : '#table-requests-files',
+        ajax : {
+            "url": /*[[@{/requests/get_files_table}]]*/ "requests/get_files_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.req_id = vRequestFilesListValue.rowdata.req_id
+            }
+        },
+        key : "req_store_id",
+        switchControl : requests_files_switchControl,
+        rowdata:{
+            req_id: null,
+            req_name: null,
+            req_store_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 'lfrtip',
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [1], type: 'de_date'}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{requests.files.req_store_id}]]*/ "req_store_id", "data": "req_store_id", "width": "1%"},
+            /*1*/{"title": /*[[#{requests.files.req_store_date}]]*/ "req_store_date", "data": "req_store_date", "width": "7%", "className":"text-center min-tablet-p"},
+            /*2*/{"title": /*[[#{requests.files.user_name}]]*/ "user_name", "data": "user_name", "width": "7%", "className":"text-center desktop"},
+            /*3*/{"title": /*[[#{requests.files.req_store_filename}]]*/ "req_store_filename", "data": "req_store_filename", "width": "85%"}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function requests_files_switchControl(){
+        if(vRequestFilesListValue.rowdata.req_store_id != null) {
+            if ([-2,-1,5].indexOf(vRequestListValue.rowdata.req_status_id) >= 0) {
+                $("#requests-files-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#requests-files-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#requests-files-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#requests-files-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            else{
+                $("#requests-files-detailbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#requests-files-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#requests-files-detailbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#requests-files-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            $("#requests-files-downbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#requests-files-downbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+            $("#requests-files-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#requests-files-downbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#requests-files-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#requests-files-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#requests-files-downbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#requests-files-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');            
+        }
+    }
+
+    $('.requests_files_detail_btn_control').on('click', function (){
+        $("#requests-files-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#requests-files-detail').submit(function(){
+        vRequestFilesListValue.rowdata.requests_files_table_order_column = $(vRequestFilesListValue.table).DataTable().order()[0][0];
+        vRequestFilesListValue.rowdata.requests_files_table_order_type = $(vRequestFilesListValue.table).DataTable().order()[0][1];
+        vRequestFilesListValue.rowdata.requests_files_table_search = $(vRequestFilesListValue.table).DataTable().search();
+        vRequestFilesListValue.rowdata.requests_files_table_pagelen = $(vRequestFilesListValue.table).DataTable().page.len();
+        vRequestFilesListValue.rowdata.requests_files_table_page = $(vRequestFilesListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vRequestFilesListValue.rowdata).forEach(function (index) {
+            $("#requests-files-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#requests-files-detail input[name=\"" + index + "\"]").val(vRequestFilesListValue.rowdata[index]);
+        });
+    });
+
+    $('#frmdownload').submit(function(){
+        $("#frmdownload input[name=req_store_id]").val(vRequestFilesListValue.rowdata.req_store_id);
+    });
+
+        $(document).ready(function(){
+        vRequestFilesListValue.rowdata.req_id = /*[[${req_id}]]*/ null;
+        vRequestFilesListValue.rowdata.req_name = /*[[${req_name}]]*/ null;
+        vRequestFilesListValue.rowdata.req_store_id = /*[[${req_id}]]*/ req_store_id;
+
+        vRequestFilesListValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vRequestFilesListValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vRequestFilesListValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vRequestFilesListValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vRequestFilesListValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vRequestFilesListValue);
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="full_world_errors_body" th:remove="tag">
+    <form id="table-full-world-errors-buttons" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+            <div id="full-world-errors-btn-large" class="d-none d-sm-block">
+                 <button type="button" id="full-world-errors-reload" class="btn btn-sm btn-primary mr-2"><i class="fas fa-sync-alt"></i></button>
+              </div>
+              <div id="full-world-errors-btn-small" class="d-block d-sm-none">
+                  <button type="button" id="full-world-errors-reload-sx" class="btn btn-sm btn-primary mr-2"><i class="fas fa-sync-alt"></i></button>
+              </div>
+    </form>        
+        
+        <div><table id="table-full-world-errors" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+        var clm_error_link_id_width, clm_error_type_id_width, clm_error_type_sname_width, clm_error_type_colour_width, clm_error_link_create_date_width, clm_error_link_create_user_id_width,
+                clm_error_link_create_user_name_width, clm_error_link_close_date_width, clm_error_link_close_user_id_width, clm_error_link_close_user_name_width,  clm_error_link_close_id_width,
+                clm_error_link_close_color_width, empty_column_width;
+
+        var clm_error_link_id_class, clm_error_type_id_class, clm_error_type_sname_class, clm_error_type_colour_class, clm_error_link_create_date_class, clm_error_link_create_user_id_class,
+                clm_error_link_create_user_name_class, clm_error_link_close_date_class, clm_error_link_close_user_id_class, clm_error_link_close_user_name_class,  clm_error_link_close_id_class,
+                clm_error_link_close_color_class, empty_column_class;
+
+        var clm_error_link_id_show, clm_error_type_id_show, clm_error_type_sname_show, clm_error_type_colour_show, clm_error_link_create_date_show, clm_error_link_create_user_id_show,
+                clm_error_link_create_user_name_show, clm_error_link_close_date_show, clm_error_link_close_user_id_show, clm_error_link_close_user_name_show,  clm_error_link_close_id_show,
+                clm_error_link_close_color_show, empty_column_show;
+
+        if(mobileScreenSize){
+                vDomParam = "Blfrtp";
+        }
+        else if(smallScreenSize){
+                vDomParam = "Blfrtip";
+                clm_error_link_id_show = false;
+                clm_error_link_id_width = "";
+                clm_error_link_id_class = "";
+                clm_error_type_id_show = true;
+                clm_error_type_id_width = "3%";
+                clm_error_type_id_class = "small_size small_head_size small_footer_size";
+                clm_error_type_sname_show = true;
+                clm_error_type_sname_width = "15%";
+                clm_error_type_sname_class = "small_size small_head_size small_footer_size";
+                clm_error_type_colour_show = false;
+                clm_error_type_colour_width = "";
+                clm_error_type_colour_class = "";
+                clm_error_link_create_date_show = true;
+                clm_error_link_create_date_width = "9%";
+                clm_error_link_create_date_class = "small_size small_head_size small_footer_size text-center";
+                clm_error_link_create_user_id_show = false;
+                clm_error_link_create_user_id_width = "";
+                clm_error_link_create_user_id_class = "";
+                clm_error_link_create_user_name_show = true;
+                clm_error_link_create_user_name_width = "19%";
+                clm_error_link_create_user_name_class = "small_size small_head_size small_footer_size";
+                clm_error_link_close_date_show = true;
+                clm_error_link_close_date_width = "9%";
+                clm_error_link_close_date_class = "small_size small_head_size small_footer_size text-center";
+                clm_error_link_close_user_id_show = false;
+                clm_error_link_close_user_id_width = "";
+                clm_error_link_close_user_id_class = "";
+                clm_error_link_close_user_name_show = true;
+                clm_error_link_close_user_name_width = "19%";
+                clm_error_link_close_user_name_class = "small_size small_head_size small_footer_size";
+                clm_error_link_close_id_show = true;
+                clm_error_link_close_id_width = "5%";
+                clm_error_link_close_id_class = "small_size small_head_size small_footer_size dt-body-center text-center";
+                clm_error_link_close_color_show = false;
+                clm_error_link_close_color_width = "";
+                clm_error_link_close_color_class = "";
+                empty_column_show = true;
+                empty_column_width = "16%";
+                empty_column_class = "small_size small_head_size small_footer_size";
+        }
+        else{
+                vDomParam = "Blfrtip";
+                clm_error_link_id_show = false;
+                clm_error_link_id_width = "";
+                clm_error_link_id_class = "";
+                clm_error_type_id_show = true;
+                clm_error_type_id_width = "3%";
+                clm_error_type_id_class = "";
+                clm_error_type_sname_show = true;
+                clm_error_type_sname_width = "15%";
+                clm_error_type_sname_class = "";
+                clm_error_type_colour_show = false;
+                clm_error_type_colour_width = "";
+                clm_error_type_colour_class = "";
+                clm_error_link_create_date_show = true;
+                clm_error_link_create_date_width = "7%";
+                clm_error_link_create_date_class = "text-center";
+                clm_error_link_create_user_id_show = false;
+                clm_error_link_create_user_id_width = "";
+                clm_error_link_create_user_id_class = "";
+                clm_error_link_create_user_name_show = true;
+                clm_error_link_create_user_name_width = "15%";
+                clm_error_link_create_user_name_class = "";
+                clm_error_link_close_date_show = true;
+                clm_error_link_close_date_width = "7%";
+                clm_error_link_close_date_class = "text-center";
+                clm_error_link_close_user_id_show = false;
+                clm_error_link_close_user_id_width = "";
+                clm_error_link_close_user_id_class = "";
+                clm_error_link_close_user_name_show = true;
+                clm_error_link_close_user_name_width = "15%";
+                clm_error_link_close_user_name_class = "";
+                clm_error_link_close_id_show = true;
+                clm_error_link_close_id_width = "5%";
+                clm_error_link_close_id_class = "text-center";
+                clm_error_link_close_color_show = false;
+                clm_error_link_close_color_width = "";
+                clm_error_link_close_color_class = "";
+                empty_column_show = true;
+                empty_column_width = "28%";
+                empty_column_class = "";
+        }
+
+        var vClaimErrorsValue;
+        vClaimErrorsValue = {
+                table : '#table-full-world-errors',
+                button_form : '#table-full-world-errors-buttons',
+                ajax : {
+                        "url": /*[[@{/full_world/get_errors_table}]]*/ "full_world/get_errors_table",
+                        "type": "post",
+                        "data": function ( d ) {
+                                d.clm_id = vClaimErrorsValue.rowdata.clm_id
+                        }
+                },
+                key : "clm_status_id",
+                switchControl : full_world_errors_switchControl,
+                rowdata:{
+                        clm_status_id: null
+                },
+                ordering: true,
+                order: [
+                        [0, "asc"]
+                ],
+
+                dom: 'Blfrtip',
+                createdRow: function( row, data, dataIndex ) {
+                        $(row).css('background-color', data["clm_error_link_close_color"]);
+                },
+                columnDefs:[
+                        {"targets": [0], "width": clm_error_link_id_width, "className": clm_error_link_id_class, "visible": clm_error_link_id_show},
+                        {"targets": [1], "width": clm_error_type_id_width, "className": clm_error_type_id_class, "visible": clm_error_type_id_show},
+                        {"targets": [2], "width": clm_error_type_sname_width, "className": clm_error_type_sname_class, "visible": clm_error_type_sname_show},
+                        {"targets": [3], "width": clm_error_type_colour_width, "className": clm_error_type_colour_class, "visible": clm_error_type_colour_show},
+                        {"targets": [4], "width": clm_error_link_create_date_width, "className": clm_error_link_create_date_class, "visible": clm_error_link_create_date_show, type: 'de_datetime'},
+                        {"targets": [5], "width": clm_error_link_create_user_id_width, "className": clm_error_link_create_user_id_class, "visible": clm_error_link_create_user_id_show},
+                        {"targets": [6], "width": clm_error_link_create_user_name_width, "className": clm_error_link_create_user_name_class, "visible": clm_error_link_create_user_name_show},
+                        {"targets": [7], "width": clm_error_link_close_date_width, "className": clm_error_link_close_date_class, "visible": clm_error_link_close_date_show, type: 'de_datetime'},
+                        {"targets": [8], "width": clm_error_link_close_user_id_width, "className": clm_error_link_close_user_id_class, "visible": clm_error_link_close_user_id_show},
+                        {"targets": [9], "width": clm_error_link_close_user_name_width, "className": clm_error_link_close_user_name_class, "visible": clm_error_link_close_user_name_show},
+                        {"targets": [10], "width": clm_error_link_close_id_width, "className": clm_error_link_close_id_class, "visible": clm_error_link_close_id_show,
+                                render: function ( data, type, row ) {
+                                        if (type === 'display') {
+                                                if(data === 1){
+                                                        return '<button  id="input' + row.id + '" class="btn btn-sm btn-success" disabled><i class="fas fa-check"></i></button>'
+                                                }
+                                                else if(data === 0){
+                                                        return '<button  id="input' + row.id + '" class="btn btn-sm btn-danger" disabled><i class="fas fa-times"></i></button>'
+                                                }
+                                        }return data;}
+                        },
+                        {"targets": [11], "width": clm_error_link_close_color_width, "className": clm_error_link_close_color_class, "visible": clm_error_link_close_color_show},
+                        {"targets": [12], "width": empty_column_width, "className": empty_column_class, "visible": empty_column_show}
+                ],
+                columns : [
+                        /*0*/{"title": /*[[#{full_world.errors.clm_error_link_id}]]*/ "clm_error_link_id", "data": "clm_error_link_id"},
+                        /*1*/{"title": /*[[#{full_world.errors.clm_error_type_id}]]*/ "clm_error_type_id", "data": "clm_error_type_id"},
+                        /*2*/{"title": /*[[#{full_world.errors.clm_error_type_sname}]]*/ "clm_error_type_sname", "data": "clm_error_type_sname"},
+                        /*3*/{"title": /*[[#{full_world.errors.clm_error_type_colour}]]*/ "clm_error_type_colour", "data": "clm_error_type_colour"},
+                        /*4*/{"title": /*[[#{full_world.errors.clm_error_link_create_date}]]*/ "clm_error_link_create_date", "data": "clm_error_link_create_date"},
+                        /*5*/{"title": /*[[#{full_world.errors.clm_error_link_create_user_id}]]*/ "clm_error_link_create_user_id", "data": "clm_error_link_create_user_id"},
+                        /*6*/{"title": /*[[#{full_world.errors.clm_error_link_create_user_name}]]*/ "clm_error_link_create_user_name", "data": "clm_error_link_create_user_name"},
+                        /*7*/{"title": /*[[#{full_world.errors.clm_error_link_close_date}]]*/ "clm_error_link_close_date", "data": "clm_error_link_close_date"},
+                        /*8*/{"title": /*[[#{full_world.errors.clm_error_link_close_user_id}]]*/ "clm_error_link_close_user_id", "data": "clm_error_link_close_user_id"},
+                        /*9*/{"title": /*[[#{full_world.errors.clm_error_link_close_user_name}]]*/ "clm_error_link_close_user_name", "data": "clm_error_link_close_user_name"},
+                        /*10*/{"title": /*[[#{full_world.errors.clm_error_link_close_id}]]*/ "clm_error_link_close_id", "data": "clm_error_link_close_id"},
+                        /*11*/{"title": /*[[#{full_world.errors.clm_error_link_close_color}]]*/ "clm_error_link_close_color", "data": "clm_error_link_close_color"},
+                        /*12*/{"title": /*[[#{full_world.errors.empty_column}]]*/ "empty_column", "data": "empty_column"}
+                ],
+                pageLength: 25,
+                copy_button: true,
+                excel_button: true,
+                pdf_button: true,
+                print_button: true
+        };
+
+        function full_world_errors_switchControl(){
+        }
+
+        function fullWorldErrorsReload(){
+                vClaimErrorsValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+                $(vClaimErrorsValue.table).DataTable().ajax.reload(null, false);
+        }        
+        
+        //Reload Button
+        $('#full-world-errors-reload').click(function(){
+                fullWorldErrorsReload();
+        });
+        //Reload Button SX
+        $('#full-world-errors-reload-sx').click(function(){
+                fullWorldErrorsReload();
+        });        
+
+        $(document).ready(function(){
+                vClaimErrorsValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+                vClaimErrorsValue.rowdata.clm_status_id = /*[[${clm_status_id}]]*/ null;
+
+                vClaimErrorsValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+                vClaimErrorsValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+                vClaimErrorsValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+                vClaimErrorsValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+                vClaimErrorsValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+                recreateDataTable(vClaimErrorsValue);
+        });
+</script>
+
+</body>
+</html>

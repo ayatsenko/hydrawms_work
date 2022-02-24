@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="service_types_list_body" th:remove="tag">
+        <form id="service-types-list-detail" class="mb-1" th:action="@{/service_types/list_detail}" method="post">
+            <input name="mode" value="0" hidden>
+              <div id="service-types-list-btn-large" class="d-none d-sm-block">
+                 <button type="submit" id="service-types-list-detailbtn" class="btn btn-sm btn-dark service_types_list_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="service-types-list-addbtn" class="btn btn-sm btn-primary service_types_list_btn_control" th:text="#{general.addbtn}" th:attr="mode=0">Add</button>
+                 <button type="submit" id="service-types-list-editbtn" class="btn btn-sm btn-dark service_types_list_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="service-types-list-delbtn" class="btn btn-sm btn-dark service_types_list_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="service-types-list-btn-small" class="d-block d-sm-none">
+                 <button type="submit" id="service-types-list-detailbtn-sx" class="btn btn-sm btn-dark service_types_list_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="service-types-list-addbtn-sx" class="btn btn-sm btn-primary service_types_list_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                 <button type="submit" id="service-types-list-editbtn-sx" class="btn btn-sm btn-dark service_types_list_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="service-types-list-delbtn-sx" class="btn btn-sm btn-dark service_types_list_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-service-types-list" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vServiceTypeListValue;
+    vServiceTypeListValue = {
+        table : '#table-service-types-list',
+        ajax : {
+            "url": /*[[@{/service_types/list_gettable}]]*/ "service_types/list_gettable",
+            "type": "post",
+            "data": {
+            }
+        },
+        key : "ser_id",
+        switchControl : service_types_list_switchControl,
+        rowdata:{
+           ser_id: null,
+           ser_name: null
+        },
+        ordering: true,
+        orderCellsTop: true,
+        fixedHeader: true,
+        order: [
+            [1, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        columnDefs:[
+                    {"targets": [4], "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{service_types.list.ser_id}]]*/ "ser_id", "data": "ser_id", "width": "3%"},
+                /*1*/{"title": /*[[#{service_types.list.ser_sname}]]*/ "ser_sname", "data": "ser_sname", "width": "15%", "className": "desktop" },
+                /*2*/{"title": /*[[#{service_types.list.ser_name}]]*/ "ser_name", "data": "ser_name", "width": "36%"},
+                /*3*/{"title": /*[[#{service_types.list.ser_description}]]*/ "ser_description", "data": "ser_description", "width": "45%", "className": "desktop"},
+                /*4*/{"title": /*[[#{service_types.list.ser_color}]]*/ "ser_color", "data": "ser_color", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true,
+        columnSearch: true,
+        columnSearchSelect: [0,1,3]
+    };
+
+    function service_types_list_switchControl(){
+        if(vServiceTypeListValue.rowdata.ser_id != null) {
+                $("#service-types-list-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#service-types-list-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#service-types-list-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#service-types-list-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#service-types-list-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#service-types-list-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+<!-- List Buttons -->
+                vServiceTypeSystemsValue.rowdata.ser_id = vServiceTypeListValue.rowdata.ser_id;
+                vServiceTypeSystemsValue.rowdata.ser_name = vServiceTypeListValue.rowdata.ser_name;
+                $(vServiceTypeSystemsValue.table).DataTable().ajax.reload();
+
+                $("#service-types-systems-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#service-types-systems-addbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+<!-- Systems Table -->
+        } else{
+                $("#service-types-list-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#service-types-list-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#service-types-list-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#service-types-list-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#service-types-list-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#service-types-list-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- List Buttons -->
+                vServiceTypeSystemsValue.rowdata.ser_id = null;
+                vServiceTypeSystemsValue.rowdata.ser_name = null;
+                $(vServiceTypeSystemsValue.table).DataTable().ajax.reload();
+
+                $("#service-types-systems-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#service-types-systems-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Systems Table -->
+        }
+    }
+
+    $('.service_types_list_btn_control').on('click', function (){
+        $("#service-types-list-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#service-types-list-detail').submit(function() {
+        vServiceTypeListValue.rowdata.service_types_list_table_order_column = $(vServiceTypeListValue.table).DataTable().order()[0][0];
+        vServiceTypeListValue.rowdata.service_types_list_table_order_type = $(vServiceTypeListValue.table).DataTable().order()[0][1];
+        vServiceTypeListValue.rowdata.service_types_list_table_search = $(vServiceTypeListValue.table).DataTable().search();
+        vServiceTypeListValue.rowdata.service_types_list_table_pagelen = $(vServiceTypeListValue.table).DataTable().page.len();
+        vServiceTypeListValue.rowdata.service_types_list_table_page = $(vServiceTypeListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vServiceTypeListValue.rowdata).forEach(function (index) {
+            $("#service-types-list-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#service-types-list-detail input[name=\"" + index + "\"]").val(vServiceTypeListValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vServiceTypeListValue.rowdata.ser_id = /*[[${ser_id}]]*/ null;
+
+        vServiceTypeListValue.rowdata.table_order_column = /*[[${service_types_list_table_order_column}]]*/ null;
+        vServiceTypeListValue.rowdata.table_order_type = /*[[${service_types_list_table_order_type}]]*/ null;
+        vServiceTypeListValue.rowdata.table_search = /*[[${service_types_list_table_search}]]*/ null;
+        vServiceTypeListValue.rowdata.table_pagelen = /*[[${service_types_list_table_pagelen}]]*/ null;
+        vServiceTypeListValue.rowdata.table_page = /*[[${service_types_list_table_page}]]*/ null;
+
+        recreateDataTable(vServiceTypeListValue);
+
+        $('#table-service-types-list thead').append('<tr></tr>');
+
+        $(".select2").each(function() {
+            $(this)
+                .wrap("<div class=\"position-relative\"></div>")
+                .select2({
+                    placeholder: "Select ...",
+                    allowClear: true
+                });
+        });
+
+        $('#main_li').removeClass('active');
+
+        $('#dictionaries_li').addClass('active').removeClass('collapsed');
+        $('#dictionaries_a').attr('aria-expanded',true);
+        $('#dictionaries').addClass('show');
+
+        $('#service_types_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

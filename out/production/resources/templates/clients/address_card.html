@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_address_body" th:remove="tag">
+        <form id="clients-address-detail" class="mb-2" th:action="@{/clients/address_detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="clients-address-detailbtn-large" class="d-none d-sm-block">
+                 <button type="submit" id="clients-address-detailbtn" class="btn btn-sm btn-dark clients_address_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="clients-address-addbtn" class="btn btn-sm btn-dark clients_address_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="submit" id="clients-address-editbtn" class="btn btn-sm btn-dark clients_address_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="clients-address-delbtn" class="btn btn-sm btn-dark clients_address_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="clients-address-detailbtn-small" class="d-block d-sm-none">
+                 <button type="submit" id="clients-address-detailbtn-sx" class="btn btn-sm btn-dark clients_address_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="clients-address-addbtn-sx" class="btn btn-sm btn-dark clients_address_btn_control" th:attr="mode=0" disabled><i data-feather="plus"></i></button>
+                 <button type="submit" id="clients-address-editbtn-sx" class="btn btn-sm btn-dark clients_address_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="clients-address-delbtn-sx" class="btn btn-sm btn-dark clients_address_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+
+        <div><table id="table-clients-address" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vClientAddressListValue;
+    vClientAddressListValue = {
+        table : '#table-clients-address',
+        button_form: "#clients-address-detail",
+        ajax : {
+            "url": /*[[@{/clients/get_address_table}]]*/ "clients/get_address_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.cnt_id = vClientAddressListValue.rowdata.cnt_id
+            }
+        },
+        key : "cnt_add_id",
+        switchControl : clients_address_switchControl,
+        rowdata:{
+            cnt_add_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 'ftp',
+        columnDefs:[
+            {"targets": [0], "visible": false}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{clients.address.cnt_add_id}]]*/ "cnt_add_id", "data": "cnt_add_id", "width": "1%"},
+            /*1*/{"title": /*[[#{clients.address.add_type_sname}]]*/ "add_type_sname", "data": "add_type_sname", "width": "10%", "className": "min-tablet-p"},
+            /*2*/{"title": /*[[#{clients.address.cnt_add_value}]]*/ "cnt_add_value", "data": "cnt_add_value", "width": "89%"}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function clients_address_switchControl(){
+        if(vClientAddressListValue.rowdata.cnt_add_id != null) {
+            if(vClientsListValue.rowdata.cnt_user_main_access === 1) {
+                $("#clients-address-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#clients-address-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#clients-address-editbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#clients-address-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }else{
+                $("#clients-address-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-address-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#clients-address-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-address-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            $("#clients-address-detailbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#clients-address-detailbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+            $("#clients-address-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-address-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-address-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#clients-address-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-address-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-address-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.clients_address_btn_control').on('click', function (){
+        $("#clients-address-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#clients-address-detail').submit(function(){
+        vClientAddressListValue.rowdata.clients_address_table_order_column = $(vClientAddressListValue.table).DataTable().order()[0][0];
+        vClientAddressListValue.rowdata.clients_address_table_order_type = $(vClientAddressListValue.table).DataTable().order()[0][1];
+        vClientAddressListValue.rowdata.clients_address_table_search = $(vClientAddressListValue.table).DataTable().search();
+        vClientAddressListValue.rowdata.clients_address_table_pagelen = $(vClientAddressListValue.table).DataTable().page.len();
+        vClientAddressListValue.rowdata.clients_address_table_page = $(vClientAddressListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vClientAddressListValue.rowdata.cnt_id = vClientsListValue.rowdata.cnt_id;
+        vClientAddressListValue.rowdata.cnt_name = vClientsListValue.rowdata.cnt_name;
+
+        vClientAddressListValue.rowdata.clients_list_table_order_column = $(vClientsListValue.table).DataTable().order()[0][0];
+        vClientAddressListValue.rowdata.clients_list_table_order_type = $(vClientsListValue.table).DataTable().order()[0][1];
+        vClientAddressListValue.rowdata.clients_list_table_search = $(vClientsListValue.table).DataTable().search();
+        vClientAddressListValue.rowdata.clients_list_table_pagelen = $(vClientsListValue.table).DataTable().page.len();
+        vClientAddressListValue.rowdata.clients_list_table_page = $(vClientsListValue.table).DataTable().page.info().page;
+
+        Object.keys(vClientAddressListValue.rowdata).forEach(function (index) {
+            $("#clients-address-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#clients-address-detail input[name=\"" + index + "\"]").val(vClientAddressListValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vClientAddressListValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+        vClientAddressListValue.rowdata.cnt_name = /*[[${cnt_name}]]*/ null;
+        vClientAddressListValue.rowdata.cnt_add_id = /*[[${cnt_add_id}]]*/ null;
+
+        vClientAddressListValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vClientAddressListValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vClientAddressListValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vClientAddressListValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vClientAddressListValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vClientAddressListValue);
+    });
+</script>
+
+</body>
+</html>

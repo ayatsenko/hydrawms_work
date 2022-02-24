@@ -1,0 +1,565 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{projects_desc.caption})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{projects_desc.caption}"></h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <!--/*@thymesVar id="projects_desc_detail" type="java.util.List"*/-->
+                <form id="projects-desc-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/projects_desc/main_model}">
+                    <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="projects-desc-indexfrm">Cancel</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="projects-desc-addbtn" class="btn btn-outline-success" th:text="#{general.addbtn}">Add</button>
+                            <button th:case="1" type="submit" id="projects-desc-editbtn" class="btn btn-outline-success" th:text="#{general.editbtn}">Edit</button>
+                            <button th:case="2" type="submit" id="projects-desc-delbtn" class="btn btn-outline-success" th:text="#{general.delbtn}">Delete</button>
+                        </div>
+                    </div>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="pr_id" th:value="${pr_id}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_main_table_order_column" th:value="${projects_desc_main_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_main_table_order_type" th:value="${projects_desc_main_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_main_table_search" th:value="${projects_desc_main_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_main_table_pagelen" th:value="${projects_desc_main_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="projects_desc_main_table_page" th:value="${projects_desc_main_table_page}" >
+
+                    <div class="form-row">
+                        <div class="col-md-5 mb-1" id="parent_pr_id_row">
+                            <label for="parent_pr_id" class="form-label" th:text="'1. '+#{projects_desc.main.parent_pr_id}"></label>
+                            <div class="input-group">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="parent_pr_id" name="parent_pr_id" class="form-control p-1" aria-describedby="user_id_helpBlock" th:value="${parent_pr_id}">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="parent_pr : ${parent_pr_list}"
+                                        th:value="${parent_pr.parent_pr_id}"
+                                        th:text="${parent_pr.parent_pr_name}"
+                                        th:selected="${parent_pr.parent_pr_id == parent_pr_id}"
+                                ></option>
+                            </select>
+                            <button type="button" id="pr_parent_id_x" name="pr_parent_id_x" class="btn btn-outline-success"><i class="fas fa-times"></i></button>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-1" id="pr_id_row">
+                            <label for="pr_id" class="form-label" th:text="'2. '+ #{projects_desc.detail.pr_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="pr_id" name="pr_id" th:value="${pr_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-2 mb-1" id="pr_number_row">
+                            <label for="pr_id" class="form-label" th:text="'3. '+ #{projects_desc.detail.pr_number}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="pr_number" name="pr_number" th:value="${pr_number}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-5 mb-1" id="pr_sname_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="pr_sname" class="form-label" th:text="'4. '+#{projects_desc.detail.pr_sname}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="64" class="form-control" id="pr_sname" name="pr_sname" th:value="${pr_sname}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="pr_type_id_row">
+                            <label for="pr_type_id" class="form-label" th:text="'5. '+#{projects_desc.detail.pr_type_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="pr_type_id" name="pr_type_id" class="form-control p-1" aria-describedby="user_id_helpBlock" th:value="${pr_type_id}">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="pr_type : ${pr_type_list}"
+                                        th:value="${pr_type.pr_type_id}"
+                                        th:text="${pr_type.pr_type_name}"
+                                        th:selected="${pr_type.pr_type_id == pr_type_id}"
+                                ></option>
+                            </select>
+                        </div>                        
+                    </div><!-- Row 3 -->
+                    
+                    <div class="form-row">
+                        <div class="col-md-6 mb-12">
+                            <label for="pr_description" th:text="'6. '+#{projects_desc.detail.pr_description}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="512" style="resize:none;" id="pr_description" name="pr_description" th:text="${pr_description}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 4 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="pr_status_row">
+                            <label for="pr_status_id" class="mr-2" th:text="'7. '+#{projects_desc.detail.pr_status_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select id="pr_status_id" name="pr_status_id" class="form-control" th:value="${pr_status_id}" >
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="pr_status : ${pr_status_list}"
+                                        th:value="${pr_status.pr_status_id}"
+                                        th:text="${pr_status.pr_status_name}"
+                                        th:selected="${pr_status.pr_status_id == pr_status_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="pr_prior_row">
+                            <label for="pr_prior_id" class="mr-2" th:text="'8. '+#{projects_desc.detail.pr_prior_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select id="pr_prior_id" name="pr_prior_id" class="form-control" th:value="${pr_prior_id}" >
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="pr_prior : ${pr_prior_list}"
+                                        th:value="${pr_prior.pr_prior_id}"
+                                        th:text="${pr_prior.pr_prior_name}"
+                                        th:selected="${pr_prior.pr_prior_id == pr_prior_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="pr_persent_row">
+                            <label for="pr_persent" class="form-label" th:text="'9. '+ #{projects_desc.detail.pr_persent}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="pr_persent" name="pr_persent" th:value="${pr_persent}" >
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 5 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="pr_create_date_row">
+                            <label for="pr_create_date" class="form-label" th:text="'10. '+ #{projects_desc.detail.pr_create_date}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="pr_create_date" name="pr_create_date" th:value="${pr_create_date}" >
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-3 mb-1" id="author_row">
+                            <label for="author_id" class="mr-2" th:text="'11. '+#{projects_desc.detail.author_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select id="author_id" name="author_id" class="form-control" th:value="${author_id}" >
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="author : ${author_list}"
+                                        th:value="${author.id}"
+                                        th:text="${author.user_surname}"
+                                        th:selected="${author.id == author_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 6 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="pr_plan_start_date_row">
+                            <label for="pr_plan_start_date" class="form-label" th:text="'12. '+ #{projects_desc.detail.pr_plan_start_date}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="pr_plan_start_date" name="pr_plan_start_date" th:value="${pr_plan_start_date}">
+                                <button type="button" id="pr_plan_start_date_x" name="pr_plan_start_date_x" class="btn btn-outline-success"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="pr_plan_end_date_row">
+                            <label for="pr_plan_end_date" class="form-label" th:text="'13. '+ #{projects_desc.detail.pr_plan_end_date}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="pr_plan_end_date" name="pr_plan_end_date" th:value="${pr_plan_end_date}">
+                                <button type="button" id="pr_plan_end_date_x" name="pr_plan_end_date_x" class="btn btn-outline-success"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 7 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-1" id="pr_fact_start_date_row">
+                            <label for="pr_fact_start_date" class="form-label" th:text="'14. '+ #{projects_desc.detail.pr_fact_start_date}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="pr_fact_start_date" name="pr_fact_start_date" th:value="${pr_fact_start_date}">
+                                <button type="button" id="pr_fact_start_date_x" name="pr_fact_start_date_x" class="btn btn-outline-success"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 mb-1" id="pr_fact_end_date_row">
+                            <label for="pr_fact_end_date" class="form-label" th:text="'15. '+ #{projects_desc.detail.pr_fact_end_date}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="pr_fact_end_date" name="pr_fact_end_date" th:value="${pr_fact_end_date}">
+                                <button type="button" id="pr_fact_end_date_x" name="pr_fact_end_date_x" class="btn btn-outline-success"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 8 -->
+
+                    <div class="form-row">
+                        <div class="col-md-6 mb-1" id="pr_result_row">
+                            <label for="pr_result" th:text="'16. '+#{projects_desc.detail.pr_result}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="256" style="resize:none;" id="pr_result" name="pr_result" th:text="${pr_result}" >
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 9 -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--/*@thymesVar id="projects_desc_detail" type="java.util.List"*/-->
+    <form id="projects-desc-indexfrm" method="post" th:action="@{/projects_desc}" hidden>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="pr_id" th:value="${pr_id}">
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_main_table_order_column" th:value="${projects_desc_main_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_main_table_order_type" th:value="${projects_desc_main_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_main_table_search" th:value="${projects_desc_main_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_main_table_pagelen" th:value="${projects_desc_main_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="projects_desc_main_table_page" th:value="${projects_desc_main_table_page}" >
+    </form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'projects-desc-indexfrm')">Error</span>
+
+<script>
+    var prPlanStartDate = $('#pr_plan_start_date').val();
+    $("#pr_plan_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#pr_plan_start_date_x').on('click', function() {
+        $('#pr_plan_start_date').empty().val('');
+    });
+
+    if(prPlanStartDate === null || prPlanStartDate === ''){
+        $('#pr_plan_start_date').empty().val('');
+    }
+<!-- Plan Start Date -->
+    var prPlanEndDate = $('#pr_plan_end_date').val();
+    $("#pr_plan_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#pr_plan_end_date_x').on('click', function() {
+        $('#pr_plan_end_date').empty().val('');
+    });
+
+    if(prPlanEndDate === null || prPlanEndDate === ''){
+        $('#pr_plan_end_date').empty().val('');
+    }
+<!-- Fact Start Date -->
+    var prFactStartDate = $('#pr_fact_start_date').val();
+    $("#pr_fact_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#pr_fact_start_date_x').on('click', function() {
+        $('#pr_fact_start_date').empty().val('');
+    });
+
+    if(prFactStartDate === null || prFactStartDate === ''){
+        $('#pr_fact_start_date').empty().val('');
+    }
+<!-- Fact End Date -->
+    var prFactEndDate = $('#pr_fact_end_date').val();
+    $("#pr_fact_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#pr_fact_end_date_x').on('click', function() {
+        $('#pr_fact_end_date').empty().val('');
+    });
+
+    if(prFactEndDate === null || prFactEndDate === ''){
+        $('#pr_fact_end_date').empty().val('');
+    }
+<!-- Fact End Date -->
+
+    $(document).ready(function(){
+<!-- Hihglight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#projects_li').addClass('active').removeClass('collapsed');
+        $('#projects_a').attr('aria-expanded',true);
+        $('#projects').addClass('show');
+
+        $('#projects_desc_a').addClass('text-success');
+<!-- Form Start -->
+        $('#pr_id').prop('readOnly',true);
+        $('#pr_sname').prop('required',true);
+
+        $('#pr_number').prop('readOnly',true);
+        $('#pr_create_date').prop('readOnly',true);
+
+        if($('#pr_type_id').val() === '2' || $('#pr_type_id').val() === '3'){
+            $('#parent_pr_id').prop('required',true);
+        }else{
+            $('#parent_pr_id').removeAttr('required');
+        }
+
+<!-- Change Function -->
+        if($('#mode').val() === '0'){
+            var newDay = new Date().toLocaleDateString('ru');
+
+            $('#pr_id_row').prop('hidden',true);
+            $('#pr_number_row').prop('hidden',true);
+
+            $('#pr_create_date_row').prop('hidden',true);
+
+            $('#pr_plan_start_date').val(newDay);
+
+            $('#pr_plan_start_date').prop('required',true);
+            $('#pr_plan_end_date').prop('required',true);
+
+            $('#pr_fact_start_date_row').prop('hidden',true);
+            $('#pr_fact_end_date_row').prop('hidden',true);
+        }
+        else if($('#mode').val() === '1'){
+
+            $('#pr_fact_start_date_row').prop('hidden',true);
+            $('#pr_fact_end_date_row').prop('hidden',true);
+        }
+        else if($('#mode').val() === '2' || $('#mode').val() === '4'){
+            $('#pr_id').prop('readOnly',true);
+
+            $('#parent_pr_id').attr('readOnly',true);
+            $('#pr_parent_id_x').prop('disabled',true).removeClass('btn-outline-success').addClass('btn-outline-dark');
+
+            $('#pr_sname').prop('readOnly',true);
+
+            $('#pr_type_id').attr('readOnly',true);
+
+            $('#pr_description').prop('readOnly',true);
+
+            $('#pr_status_id').attr('readOnly',true);
+
+            $('#pr_prior_id').attr('readOnly',true);
+
+            $('#pr_persent').prop('readOnly',true);
+
+            $('#author_id').attr('readOnly',true);
+
+            $('#pr_plan_start_date').attr('disabled',true);
+            $('#pr_plan_start_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#pr_plan_end_date').attr('disabled',true);
+            $('#pr_plan_end_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#pr_fact_start_date').attr('disabled',true);
+            $('#pr_fact_start_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#pr_fact_end_date').attr('disabled',true);
+            $('#pr_fact_end_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#pr_result').attr('readOnly',true);
+        }
+
+        $('#pr_parent_id_x').on('click', function () {
+            $('#parent_pr_id').val('');
+            $('#parent_pr_id').removeAttr('required');
+            $('#pr_type_id').val(1);
+        });
+
+        $('#pr_type_id').on('change', function () {
+           if($('#pr_type_id').val() === '2' || $('#pr_type_id').val() === '3'){
+               $('#parent_pr_id').prop('required',true);
+           }else{
+               $('#parent_pr_id').removeAttr('required');
+           }
+        });
+
+        $('#pr_status_id').on('change', function () {
+            if($('#pr_status_id').val() === '0'){
+                $('#pr_plan_start_date').removeAttr('required');
+                $('#pr_plan_end_date').removeAttr('required');
+            }else{
+                $('#pr_plan_start_date').prop('required',true);
+                $('#pr_plan_end_date').prop('required',true);
+            }
+        });
+    });
+</script>
+</body>
+</html>

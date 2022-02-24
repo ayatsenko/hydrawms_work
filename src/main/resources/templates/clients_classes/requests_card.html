@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_classes_requests_body" th:remove="tag">
+        <div><table id="table-clients-classes-requests-list" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vClientsClassesRequestsListValue;
+    vClientsClassesRequestsListValue = {
+        table : '#table-clients-classes-requests-list',
+        button_form: '#clients-classes-requests-detail',
+        ajax : {
+            "url": /*[[@{/clients_classes/get_requests_table}]]*/ "clients_classes/get_requests_table",
+            "type": "post",
+            "data": function ( d ) {
+                    d.cnt_id = vClientsClassesRequestsListValue.rowdata.cnt_id;
+                    d.clients_classes_requests_filter_start_date = vClientsClassesRequestsListValue.rowdata.clients_classes_requests_filter_start_date;
+                    d.clients_classes_requests_filter_end_date = vClientsClassesRequestsListValue.rowdata.clients_classes_requests_filter_end_date;
+
+                    d.filter_check = vClientsClassesRequestsListValue.rowdata.filter_check;
+                    d.filters_user_id = vClientsClassesRequestsListValue.rowdata.filters_user_id;
+                    d.filters_status_id = vClientsClassesRequestsListValue.rowdata.filters_status_id;
+                    d.filters_class_id = vClientsClassesRequestsListValue.rowdata.filters_class_id;
+            }
+        },
+        key : "req_id",
+        switchControl : clients_classes_requests_list_switchControl,
+        rowdata:{
+           cnt_id: null,
+           cnt_name: null,
+           cnt_user_access: null,
+
+           req_id: null,
+           req_name: null,
+           req_user_id: null,
+           req_user_name: null,
+           req_status_id: null,
+           req_ops_name: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).find('td:eq(4)').css('background-color', data["user_status_colour"]);*/
+            $(row).css('background-color', data["req_status_colour"]);
+        },
+        columnDefs:[
+            {"targets": [2], "visible": false},
+            {"targets": [6], "visible": false},
+            {"targets": [8], "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{clients_classes.requests.req_id}]]*/ "req_id", "data": "req_id", "width": "5%"},
+                /*1*/{"title": /*[[#{clients_classes.requests.req_name}]]*/ "req_name", "data": "req_name", "width": "43%"},
+                /*2*/{"title": /*[[#{clients_classes.requests.req_user_id}]]*/ "req_user_id", "data": "req_user_id", "width": "1%"},
+                /*3*/{"title": /*[[#{clients_classes.requests.req_user_name}]]*/ "req_user_name", "data": "req_user_name", "width": "10%", "className":"text-center"},
+                /*4*/{"title": /*[[#{clients_classes.requests.req_date}]]*/ "req_date", "data": "req_date", "width": "14%", "className":"text-center"},
+                /*5*/{"title": /*[[#{clients_classes.requests.req_ops_name}]]*/ "req_ops_name", "data": "req_ops_name", "width": "10%", "className": "desktop text-center"},
+                /*6*/{"title": /*[[#{clients_classes.requests.req_status_id}]]*/ "req_status_id", "data": "req_status_id", "width": "1%"},
+                /*7*/{"title": /*[[#{clients_classes.requests.req_status_sname}]]*/ "req_status_sname", "data": "req_status_sname", "width": "12%", "className":"text-center"},
+                /*8*/{"title": /*[[#{clients_classes.requests.req_status_colour}]]*/ "req_status_colour", "data": "req_status_colour", "width": "1%"},
+                /*9*/{"title": /*[[#{clients_classes.requests.req_result_status_sname}]]*/ "req_result_status_sname", "data": "req_result_status_sname", "width": "7%", "className":"text-center"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function clients_classes_requests_list_switchControl(){
+    }
+
+    $('.clients_classes_requests_list_btn_control').on('click', function (){
+        $("#clients-classes-requests-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#clients-classes-requests-detail').submit(function() {
+        vClientsClassesRequestsListValue.rowdata.clients_classes_requests_list_table_order_column = $(vClientsClassesRequestsListValue.table).DataTable().order()[0][0];
+        vClientsClassesRequestsListValue.rowdata.clients_classes_requests_list_table_order_type = $(vClientsClassesRequestsListValue.table).DataTable().order()[0][1];
+        vClientsClassesRequestsListValue.rowdata.clients_classes_requests_list_table_search = $(vClientsClassesRequestsListValue.table).DataTable().search();
+        vClientsClassesRequestsListValue.rowdata.clients_classes_requests_list_table_pagelen = $(vClientsClassesRequestsListValue.table).DataTable().page.len();
+        vClientsClassesRequestsListValue.rowdata.clients_classes_requests_list_table_page = $(vClientsClassesRequestsListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vClientsClassesRequestsListValue.rowdata).forEach(function (index) {
+            $("#clients-classes-requests-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#clients-classes-requests-detail input[name=\"" + index + "\"]").val(vClientsClassesRequestsListValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vClientsClassesRequestsListValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+        vClientsClassesRequestsListValue.rowdata.cnt_name = /*[[${cnt_name}]]*/ null;
+        vClientsClassesRequestsListValue.rowdata.cnt_user_access = /*[[${cnt_user_access}]]*/ null;
+
+        vClientsClassesRequestsListValue.rowdata.req_id = /*[[${req_id}]]*/ null;
+
+        vClientsClassesRequestsListValue.rowdata.table_order_column = /*[[${clients_classes_requests_list_table_order_column}]]*/ null;
+        vClientsClassesRequestsListValue.rowdata.table_order_type = /*[[${clients_classes_requests_list_table_order_type}]]*/ null;
+        vClientsClassesRequestsListValue.rowdata.table_search = /*[[${clients_classes_requests_list_table_search}]]*/ null;
+        vClientsClassesRequestsListValue.rowdata.table_pagelen = /*[[${clients_classes_requests_list_table_pagelen}]]*/ null;
+        vClientsClassesRequestsListValue.rowdata.table_page = /*[[${clients_classes_requests_list_table_page}]]*/ null;
+
+        var startDate =  /*[[${clients_classes_requests_filter_start_date}]]*/ null;
+        vClientsClassesRequestsListValue.rowdata.clients_classes_requests_filter_start_date = startDate;
+
+        var endDate = /*[[${clients_classes_requests_filter_end_date}]]*/ null;
+        vClientsClassesRequestsListValue.rowdata.clients_classes_requests_filter_end_date = endDate;
+
+        vClientsClassesRequestsListValue.rowdata.filter_check = /*[[${filter_check}]]*/ null;
+        vClientsClassesRequestsListValue.rowdata.filters_user_id = /*[[${filters_user_id}]]*/ null;
+        vClientsClassesRequestsListValue.rowdata.filters_status_id = /*[[${filters_status_id}]]*/ null;
+        vClientsClassesRequestsListValue.rowdata.filters_class_id = /*[[${filters_class_id}]]*/ null;
+
+        recreateDataTable(vClientsClassesRequestsListValue);
+    });
+</script>
+
+</body>
+</html>

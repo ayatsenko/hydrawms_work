@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{request_statuses.caption})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{request_statuses.caption}"></h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <!--/*@thymesVar id="request_statuses_detail" type="java.util.List"*/-->
+                <form id="request-statuses-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/request_statuses/model}">
+                    <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="request-statuses-indexfrm">Cancel</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="request-statuses-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                            <button th:case="1" type="submit" id="request-statuses-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                            <button th:case="2" type="submit" id="request-statuses-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                        </div>
+                    </div>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="req_status_id" th:value="${req_status_id}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="request_statuses_table_order_column" th:value="${request_statuses_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="request_statuses_table_order_type" th:value="${request_statuses_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="request_statuses_table_search" th:value="${request_statuses_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="request_statuses_table_pagelen" th:value="${request_statuses_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="request_statuses_table_page" th:value="${request_statuses_table_page}" >
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-1" id="req_status_id_row">
+                            <label for="req_status_id" class="form-label" th:text="'1. '+ #{request_statuses.req_status_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="req_status_id" name="req_status_id" th:value="${req_status_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="req_status_sname" class="form-label" th:text="'2. '+#{request_statuses.req_status_sname}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="req_status_sname" name="req_status_sname" th:value="${req_status_sname}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-9 mb-9">
+                            <label for="req_status_name" class="form-label" th:text="'3. '+#{request_statuses.req_status_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="48" class="form-control" id="req_status_name" name="req_status_name" th:value="${req_status_name}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-12 mb-12">
+                            <label for="req_status_description" th:text="'4. '+#{request_statuses.req_status_description}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="512" style="resize:none;" id="req_status_description" name="req_status_description" th:text="${req_status_description}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-2" id="req_status_short_row">
+                            <label for="req_status_order" class="form-label" th:text="'5. '+ #{request_statuses.req_status_order}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" maxlength="3" id="req_status_order" name="req_status_order" th:value="${req_status_order}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-10 mb-10" id="req_status_colour_row">
+                            <label for="req_status_colour" class="form-label" th:text="'6. '+#{request_statuses.req_status_colour}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="color" class="form-control color" id="req_status_colour" name="req_status_colour" th:value="${req_status_colour}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--/*@thymesVar id="request_statuses_detail" type="java.util.List"*/-->
+    <form id="request-statuses-indexfrm" method="post" th:action="@{/request_statuses}" hidden>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="req_status_id" th:value="${req_status_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_order_column" th:value="${request_statuses_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_order_type" th:value="${request_statuses_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_search" th:value="${request_statuses_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_pagelen" th:value="${request_statuses_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_page" th:value="${request_statuses_table_page}" >
+    </form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'request-statuses-indexfrm')">Error</span>
+
+<script>
+    $(document).ready(function(){
+<!-- Hihglight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#dictionaries_li').addClass('active').removeClass('collapsed');
+        $('#dictionaries_a').attr('aria-expanded',true);
+        $('#dictionaries').addClass('show');
+
+        $('#request_statuses_a').addClass('text-primary');
+<!-- Form Start -->
+        $('#req_status_id').prop('readOnly',true);
+        $('#req_status_sname').prop('required',true);
+
+<!-- Change Function -->
+        if($('#mode').val() === '0'){
+            $('#req_status_id_row').prop('hidden',true);
+            $('#req_status_name').prop('required',true);
+        }
+        else if($('#mode').val() === '2' || $('#mode').val() === '4'){
+            $('#req_status_id').prop('readOnly',true);
+            $('#req_status_sname').prop('readOnly',true);
+            $('#req_status_name').prop('readOnly',true);
+            $('#req_status_description').prop('readOnly',true);
+            $('#req_status_order').prop('readOnly',true);
+            $('#req_status_colour').prop('readOnly',true);
+        }
+    });
+</script>
+</body>
+</html>

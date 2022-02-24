@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="wms_oper_docs_detail_body" th:remove="tag">
+    <div id="table-wms-oper-docs-detail-buttons">
+        <input name="mode" value="0" hidden>
+        <button type="button" id="wms-oper-docs-detail-delbtn" class="btn btn-lg btn-dark mr-1" data-toggle="tooltip" data-placement="bottom" th:title="#{general.delbtn}" disabled><i class="fa fa-trash-alt"></i></button>
+
+        <button type="button" id="wms-oper-docs-detail-reloadbtn" class="btn btn-lg btn-primary mr-1" data-toggle="tooltip" data-placement="bottom" ><i class="fa fa-sync"></i></button>
+
+        <button type="button" id="wms-oper-docs-detail-printbtn-small" class="btn btn-lg btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{wms_oper_docs.detail.one_100_100}"><i class="fa fas fa-file-alt"></i></button>
+        <button type="button" id="wms-oper-docs-detail-printbtn-large" class="btn btn-lg btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{wms_oper_docs.detail.one_express}"><i class="fa fas fa-file-alt"></i></button>
+        <button type="button" id="wms-oper-docs-detail-printbtn-all-small" class="btn btn-lg btn-info" data-toggle="tooltip" data-placement="bottom" th:title="#{wms_oper_docs.detail.all_85_85}"><i class="fa fas fa-file-alt"></i></button>
+        <button type="button" id="wms-oper-docs-detail-printbtn-all-large" class="btn btn-lg btn-info" data-toggle="tooltip" data-placement="bottom" th:title="#{wms_oper_docs.detail.all_100_100}"><i class="fa fas fa-file-alt"></i></button>
+    </div>
+
+    <div><table id="table-wms-oper-docs-detail" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var doc_link_id_show, doc_id_show, row_id_show, add_date_show, client_id_show, client_post_id_show;
+    var doc_link_id_width, doc_id_width, row_id_width, add_date_width, client_id_width, client_post_id_width;
+    var doc_link_id_class, doc_id_class, row_id_class, add_date_class, client_id_class, client_post_id_class;
+
+    if(mobileScreenSize){
+        vDomParam =
+            "<'row'<'col-12'B>>"+
+            "<'row'<'col-12 col-sm-3'l><'col-12 col-sm-9'f>>"+
+            "<'row'<'col-12'tr>>" +
+            "<'row'<'col-12'p>>";
+        doc_id_show = false;
+        doc_id_width = "";
+        doc_id_class = "";
+        row_id_show = false;
+        row_id_width = "";
+        row_id_class = "";
+        add_date_show = false;
+        add_date_width = "";
+        add_date_class = "";
+        client_post_id_show = true;
+        client_post_id_width = "10%";
+        client_post_id_class = "min-tablet-p small_size small_head_size small_footer_size";
+        add_user_id_show = false;
+        add_user_id_width = "";
+        add_user_id_class = "";
+        add_user_name_show = true;
+        add_user_name_width = "50%";
+        add_user_name_class = "small_size small_head_size small_footer_size";
+        add_role_id_show = true;
+        add_role_id_width = "8%";
+        add_role_id_class = "min-tablet-p small_size small_head_size small_footer_size text-center";
+
+        $('#wms-oper-docs-detail-detail').addClass('text-center').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        doc_link_id_show = false;
+        doc_link_id_width = "";
+        doc_link_id_class = "";
+        doc_id_show = true;
+        doc_id_width = "3%";
+        doc_id_class = "small_size small_head_size small_footer_size";
+        row_id_show = false;
+        row_id_width = "";
+        row_id_class = "";
+        add_date_show = false;
+        add_date_width = "";
+        add_date_class = "";
+        client_post_id_show = true;
+        client_post_id_width = "20%";
+        client_post_id_class = "small_size small_head_size small_footer_size text-center";
+        add_user_id_show = true;
+        add_user_id_width = "20%";
+        add_user_id_class = "small_size small_head_size small_footer_size";
+        add_user_name_show = true;
+        add_user_name_width = "10%";
+        add_user_name_class = "small_size small_head_size small_footer_size";
+        add_role_id_show = true;
+        add_role_id_width = "47%";
+        add_role_id_class = "small_size small_head_size small_footer_size text-center";
+
+        $('#wms-oper-docs-detail-detail').removeAttr('hidden');
+    }
+    else{
+        vDomParam = "lftip";
+        doc_link_id_show = false;
+        doc_link_id_width = "";
+        doc_link_id_class = "";
+        doc_id_show = false;
+        doc_id_width = "";
+        doc_id_class = "";
+        row_id_show = true;
+        row_id_width = "5%";
+        row_id_class = "small_size small_head_size small_footer_size";
+        add_date_show = true;
+        add_date_width = "30%";
+        add_date_class = "small_size small_head_size small_footer_size text-center";
+        client_id_show = false;
+        client_id_width = "";
+        client_id_class = "";
+        client_post_id_show = true;
+        client_post_id_width = "65%";
+        client_post_id_class = "small_size small_head_size small_footer_size text-center";
+    }
+
+    var vWMSSaleDocsDetailValue;
+    vWMSSaleDocsDetailValue = {
+        table : '#table-wms-oper-docs-detail',
+        button_form: (mobileScreenSize) ? null : "#table-wms-oper-docs-detail-buttons",
+        ajax : {
+            "url": /*[[@{/wms_oper_docs/get_detail_menu}]]*/ "wms_oper_docs/get_detail_menu",
+            "type": "post",
+            "data": function ( d ) {
+                d.doc_id = vWMSSaleDocsDetailValue.rowdata.doc_id
+            }
+        },
+        key : "doc_link_id",
+        switchControl : wms_oper_docs_detail_switchControl,
+        rowdata:{
+            doc_link_id: null,
+            client_post_id: null
+        },
+        order: [
+            [2, "desc"]
+        ],
+        dom: vDomParam,
+        columnDefs:[
+            {"targets": [0], "width": doc_link_id_width, "className": doc_link_id_class, "visible": doc_link_id_show},
+            {"targets": [1], "width": doc_id_width, "className": doc_id_class, "visible": doc_id_show},
+            {"targets": [2], "width": row_id_width, "className": row_id_class, "visible": row_id_show},
+            {"targets": [3], "width": client_id_width, "className": client_id_class, "visible": client_id_show},
+            {"targets": [4], "width": client_post_id_width, "className": client_post_id_class, "visible": client_post_id_show},
+            {"targets": [5], "width": add_date_width, "className": add_date_class, "visible": add_date_show, type: 'de_datetime'}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{wms_oper_docs.detail.doc_link_id}]]*/ "doc_link_id", "data": "doc_link_id"},
+            /*1*/{"title": /*[[#{wms_oper_docs.detail.doc_id}]]*/ "doc_id", "data": "doc_id"},
+            /*2*/{"title": /*[[#{wms_oper_docs.detail.row_id}]]*/ "row_id", "data": "row_id"},
+            /*3*/{"title": /*[[#{wms_oper_docs.detail.client_id}]]*/ "client_id", "data": "client_id"},
+            /*4*/{"title": /*[[#{wms_oper_docs.detail.client_post_id}]]*/ "client_post_id", "data": "client_post_id"},
+            /*5*/{"title": /*[[#{wms_oper_docs.detail.add_date}]]*/ "add_date", "data": "add_date"},
+        ],
+        pageLength: 50,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function wms_oper_docs_detail_switchControl(){
+        if(vWMSSaleDocsDetailValue.rowdata.doc_link_id != null) {
+            $('#wms-oper-docs-detail-printbtn-small').prop('disabled',false).removeClass('btn-dark').addClass('btn-info');
+            $('#wms-oper-docs-detail-printbtn-large').prop('disabled',false).removeClass('btn-dark').addClass('btn-info');
+        }
+        else{
+            $('#wms-oper-docs-detail-printbtn-small').prop('disabled',true).addClass('btn-dark').removeClass('btn-info');
+            $('#wms-oper-docs-detail-printbtn-large').prop('disabled',true).addClass('btn-dark').removeClass('btn-info');
+        }
+    }
+
+    function smallPrint() {
+        let LocalNPApiKey = vWMSSaleDocsMainValue.rowdata.api_key;
+        let TTNID = vWMSSaleDocsDetailValue.rowdata.client_post_id;
+        window.open("https://my.novaposhta.ua/orders/printMarkings/orders/"+TTNID+"/type/pdf/apiKey/"+LocalNPApiKey+"", "_blank");
+    }
+
+    $('#wms-oper-docs-detail-printbtn-small').on('click', function () {
+        smallPrint();
+    });
+
+    function largePrint() {
+        let LocalNPApiKey = vWMSSaleDocsMainValue.rowdata.api_key;
+        let TTNID = vWMSSaleDocsDetailValue.rowdata.client_post_id;
+        window.open("https://my.novaposhta.ua/orders/printDocument/orders[]/"+TTNID+"/type/pdf/apiKey/"+LocalNPApiKey+"", "_blank");
+    }
+
+    $('#wms-oper-docs-detail-printbtn-large').on('click', function () {
+        largePrint();
+    });
+
+    function AllPrintSmall() {
+        let LocalNPApiKey = vWMSSaleDocsMainValue.rowdata.api_key;
+        $.ajax({
+            url:/*[[@{'/wms_oper_docs/get_all_print_detail'}]]*/ "/wms_oper_docs/get_all_print_detail",
+            type: "get",
+            data: {
+                "doc_id": vWMSSaleDocsDetailValue.rowdata.doc_id,
+                "mode": 0
+            },
+            success: function (all_print_modal_detail) {
+                var ResultRow = ("https://my.novaposhta.ua/orders/printMarking85_85/orders/" + all_print_modal_detail.data[0].all_post_id + "/type/pdf8/apiKey/"+LocalNPApiKey+"").replace('"','');
+                window.open(ResultRow, "_blank");
+            }
+        })
+    }
+
+    $('#wms-oper-docs-detail-printbtn-all-small').on('click', function () {
+        AllPrintSmall();
+    });
+
+    function AllPrintLarge() {
+        let LocalNPApiKey = vWMSSaleDocsMainValue.rowdata.api_key;
+        $.ajax({
+            url:/*[[@{'/wms_oper_docs/get_all_print_detail'}]]*/ "/wms_oper_docs/get_all_print_detail",
+            type: "get",
+            data: {
+                "doc_id": vWMSSaleDocsDetailValue.rowdata.doc_id,
+                "mode": 0
+            },
+            success: function (all_print_modal_detail) {
+                var ResultRow = ("https://my.novaposhta.ua/orders/printMarking100_100/orders/" + all_print_modal_detail.data[0].all_post_id + "/type/pdf8/apiKey/"+LocalNPApiKey+"").replace('"','');
+                window.open(ResultRow, "_blank");
+            }
+        })
+    }
+
+    $('#wms-oper-docs-detail-printbtn-all-large').on('click', function () {
+        AllPrintLarge();
+    });
+
+    //Reload Function
+    function reloadDocDetail(){
+        let RowID = vWMSSaleDocsDetailValue.rowdata.doc_link_id;
+        vWMSSaleDocsDetailValue.rowdata.doc_id = vWMSSaleDocsMainValue.rowdata.doc_id;
+        vWMSSaleDocsDetailValue.rowdata.doc_link_id = RowID;
+        $(vWMSSaleDocsDetailValue.table).DataTable().ajax.reload(null, false);
+        if(vWMSSaleDocsMainValue.rowdata.status_id === 0){
+            $('#wms_oper_docs_new_post_id').select();
+        }
+    }
+
+    //Reload button
+    $('#wms-oper-docs-detail-reloadbtn').click(function() {
+        reloadDocDetail();
+    });
+
+    //Reload Function
+    function delDocMain(){
+        let MainRowID = vWMSSaleDocsMainValue.rowdata.doc_id;
+        let RowID = vWMSSaleDocsDetailValue.rowdata.doc_link_id
+        $.ajax({
+            url: /*[[ @{/wms_oper_docs/del_detail_doc} ]]*/ "/wms_oper_docs/del_detail_doc",
+            type: 'POST',
+            data: {
+                "doc_link_id": RowID,
+            },
+            success: function (result) {
+                vWMSSaleDocsDetailValue.rowdata.doc_id = MainRowID;
+                vWMSSaleDocsDetailValue.rowdata.doc_link_id = null;
+                $(vWMSSaleDocsDetailValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    //Reload button
+    $('#wms-oper-docs-detail-delbtn').click(function() {
+        delDocMain();
+    });
+
+    $(document).ready(function(){
+        vWMSSaleDocsDetailValue.rowdata.doc_id = /*[[${doc_id}]]*/ null;
+
+        vWMSSaleDocsDetailValue.rowdata.action_filter_type_id = /*[[${action_filter_type_id}]]*/ null;
+        vWMSSaleDocsDetailValue.rowdata.action_filter_action_id = /*[[${action_filter_action_id}]]*/ null;
+        vWMSSaleDocsDetailValue.rowdata.action_filter_status_id = /*[[${action_filter_status_id}]]*/ null;
+        vWMSSaleDocsDetailValue.rowdata.action_filter_result_id = /*[[${action_filter_result_id}]]*/ null;
+        vWMSSaleDocsDetailValue.rowdata.action_filter_add_role_id = /*[[${action_filter_add_role_id}]]*/ null;
+        vWMSSaleDocsDetailValue.rowdata.action_filter_user_id = /*[[${action_filter_user_id}]]*/ null;
+
+        recreateDataTable(vWMSSaleDocsDetailValue);
+        <!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#wms_li').addClass('active').removeClass('collapsed');
+        $('#wms_a').attr('aria-expanded',true);
+        $('#wms').addClass('show');
+
+        $('#wms_oper_docs_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

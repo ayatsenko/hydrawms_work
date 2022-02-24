@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="wms_kpi_project_department_days_text_body" th:remove="tag">
+    <form id="table-wms-kpi-project-department-days-text-buttons" hidden>
+        <input name="mode" value="0" hidden>
+        
+        <button type="button" id="wms-kpi-project-department-days-text-reloadbtn" class="btn btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.refreshbtn}"><i class="fa fa-sync"></i></button>
+    </form>
+
+    <div><table id="table-wms-kpi-project-department-days-text" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var row_id_show,  row_name_show,
+        day_1_show, day_2_show, day_3_show, day_4_show, day_5_show, day_6_show, day_7_show, day_8_show, day_9_show, day_10_show,
+        day_1_color_show, day_2_color_show, day_3_color_show, day_4_color_show, day_5_color_show, day_6_color_show, day_7_color_show, day_8_color_show, day_9_color_show, day_10_color_show,
+        day_11_show, day_12_show, day_13_show, day_14_show, day_15_show, day_16_show, day_17_show, day_18_show, day_19_show, day_20_show,
+        day_11_color_show, day_12_color_show, day_13_color_show, day_14_color_show, day_15_color_show, day_16_color_show, day_17_color_show, day_18_color_show, day_19_color_show, day_20_color_show,
+        day_21_show, day_22_show, day_23_show, day_24_show, day_25_show, day_26_show, day_27_show, day_28_show, day_29_show, day_30_show,
+        day_21_color_show, day_22_color_show, day_23_color_show, day_24_color_show, day_25_color_show, day_26_color_show, day_27_color_show, day_28_color_show, day_29_color_show, day_30_color_show,
+        day_31_show, day_31_color_show;
+
+    var row_id_width, row_name_width,
+        day_1_width, day_2_width, day_3_width, day_4_width, day_5_width, day_6_width, day_7_width, day_8_width, day_9_width, day_10_width,
+        day_1_color_width, day_2_color_width, day_3_color_width, day_4_color_width, day_5_color_width, day_6_color_width, day_7_color_width, day_8_color_width, day_9_color_width, day_10_color_width,
+        day_11_width, day_12_width, day_13_width, day_14_width, day_15_width, day_16_width, day_17_width, day_18_width, day_19_width, day_20_width,
+        day_11_color_width, day_12_color_width, day_13_color_width, day_14_color_width, day_15_color_width, day_16_color_width, day_17_color_width, day_18_color_width, day_19_color_width, day_20_color_width,
+        day_21_width, day_22_width, day_23_width, day_24_width, day_25_width, day_26_width, day_27_width, day_28_width, day_29_width, day_30_width,
+        day_21_color_width, day_22_color_width, day_23_color_width, day_24_color_width, day_25_color_width, day_26_color_width, day_27_color_width, day_28_color_width, day_29_color_width, day_30_color_width,
+        day_31_width, day_31_color_width;
+
+    var row_id_class, row_name_class,
+        day_1_class, day_2_class, day_3_class, day_4_class, day_5_class, day_6_class, day_7_class, day_8_class, day_9_class, day_10_class,
+        day_1_color_class, day_2_color_class, day_3_color_class, day_4_color_class, day_5_color_class, day_6_color_class, day_7_color_class, day_8_color_class, day_9_color_class, day_10_color_class,
+        day_11_class, day_12_class, day_13_class, day_14_class, day_15_class, day_16_class, day_17_class, day_18_class, day_19_class, day_20_class,
+        day_11_color_class, day_12_color_class, day_13_color_class, day_14_color_class, day_15_color_class, day_16_color_class, day_17_color_class, day_18_color_class, day_19_color_class, day_20_color_class,
+        day_21_class, day_22_class, day_23_class, day_24_class, day_25_class, day_26_class, day_27_class, day_28_class, day_29_class, day_30_class,
+        day_21_color_class, day_22_color_class, day_23_color_class, day_24_color_class, day_25_color_class, day_26_color_class, day_27_color_class, day_28_color_class, day_29_color_class, day_30_color_class,
+        day_31_class, day_31_color_class;
+
+    if(mobileScreenSize){
+        vDomParam =
+            "<'row'<'col-12'B>>"+
+            "<'row'<'col-12 col-sm-3'l><'col-12 col-sm-9'f>>"+
+            "<'row'<'col-12'tr>>" +
+            "<'row'<'col-12'p>>";
+        user_id_show = false;
+        user_id_width = "";
+        user_id_class = "";
+        user_name_show = true;
+        user_name_width = "10%";
+        user_name_class = "min-tablet-p small_size small_head_size small_footer_size";
+        product_name_show = false;
+        product_name_width = "";
+        product_name_class = "";
+        product_quantity_show = true;
+        product_quantity_width = "50%";
+        product_quantity_class = "small_size small_head_size small_footer_size";
+        empty_column_show = true;
+        empty_column_width = "8%";
+        empty_column_class = "min-tablet-p small_size text-center";        
+
+        $('#wms-kpi-project-department-days-text-detail').addClass('text-center').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        row_id_show = false;
+        row_id_width = "";
+        row_id_class = "";
+        row_name_show = true;
+        row_name_width = "7%";
+        row_name_class = "text-center small_size head-center head-light-grey head-text-primary";
+
+        day_1_show = true;
+        day_1_width = "3%";
+        day_1_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_1_color_show = false;
+        day_1_color_width = "";
+        day_1_color_class = "";
+
+        day_2_show = true;
+        day_2_width = "3%";
+        day_2_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_2_color_show = false;
+        day_2_color_width = "";
+        day_2_color_class = "";
+
+        day_3_show = true;
+        day_3_width = "3%";
+        day_3_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_3_color_show = false;
+        day_3_color_width = "";
+        day_3_color_class = "";
+
+        day_4_show = true;
+        day_4_width = "3%";
+        day_4_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_4_color_show = false;
+        day_4_color_width = "";
+        day_4_color_class = "";
+
+        day_5_show = true;
+        day_5_width = "3%";
+        day_5_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_5_color_show = false;
+        day_5_color_width = "";
+        day_5_color_class = "";
+
+        day_6_show = true;
+        day_6_width = "3%";
+        day_6_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_6_color_show = false;
+        day_6_color_width = "";
+        day_6_color_class = "";
+
+        day_7_show = true;
+        day_7_width = "3%";
+        day_7_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_7_color_show = false;
+        day_7_color_width = "";
+        day_7_color_class = "";
+
+        day_8_show = true;
+        day_8_width = "3%";
+        day_8_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_8_color_show = false;
+        day_8_color_width = "";
+        day_8_color_class = "";
+
+        day_9_show = true;
+        day_9_width = "3%";
+        day_9_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_9_color_show = false;
+        day_9_color_width = "";
+        day_9_color_class = "";
+
+        day_10_show = true;
+        day_10_width = "3%";
+        day_10_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_10_color_show = false;
+        day_10_color_width = "";
+        day_10_color_class = "";
+
+        day_11_show = true;
+        day_11_width = "3%";
+        day_11_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_11_color_show = false;
+        day_11_color_width = "";
+        day_11_color_class = "";
+
+        day_12_show = true;
+        day_12_width = "3%";
+        day_12_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_12_color_show = false;
+        day_12_color_width = "";
+        day_12_color_class = "";
+
+        day_13_show = true;
+        day_13_width = "3%";
+        day_13_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_13_color_show = false;
+        day_13_color_width = "";
+        day_13_color_class = "";
+
+        day_14_show = true;
+        day_14_width = "3%";
+        day_14_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_14_color_show = false;
+        day_14_color_width = "";
+        day_14_color_class = "";
+
+        day_15_show = true;
+        day_15_width = "3%";
+        day_15_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_15_color_show = false;
+        day_15_color_width = "";
+        day_15_color_class = "";
+
+        day_16_show = true;
+        day_16_width = "3%";
+        day_16_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_16_color_show = false;
+        day_16_color_width = "";
+        day_16_color_class = "";
+
+        day_17_show = true;
+        day_17_width = "3%";
+        day_17_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_17_color_show = false;
+        day_17_color_width = "";
+        day_17_color_class = "";
+
+        day_18_show = true;
+        day_18_width = "3%";
+        day_18_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_18_color_show = false;
+        day_18_color_width = "";
+        day_18_color_class = "";
+
+        day_19_show = true;
+        day_19_width = "3%";
+        day_19_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_19_color_show = false;
+        day_19_color_width = "";
+        day_19_color_class = "";
+
+        day_20_show = true;
+        day_20_width = "3%";
+        day_20_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_20_color_show = false;
+        day_20_color_width = "";
+        day_20_color_class = "";
+
+        day_21_show = true;
+        day_21_width = "3%";
+        day_21_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_21_color_show = false;
+        day_21_color_width = "";
+        day_21_color_class = "";
+
+        day_22_show = true;
+        day_22_width = "3%";
+        day_22_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_22_color_show = false;
+        day_22_color_width = "";
+        day_22_color_class = "";
+
+        day_23_show = true;
+        day_23_width = "3%";
+        day_23_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_23_color_show = false;
+        day_23_color_width = "";
+        day_23_color_class = "";
+
+        day_24_show = true;
+        day_24_width = "3%";
+        day_24_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_24_color_show = false;
+        day_24_color_width = "";
+        day_24_color_class = "";
+
+        day_25_show = true;
+        day_25_width = "3%";
+        day_25_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_25_color_show = false;
+        day_25_color_width = "";
+        day_25_color_class = "";
+
+        day_26_show = true;
+        day_26_width = "3%";
+        day_26_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_26_color_show = false;
+        day_26_color_width = "";
+        day_26_color_class = "";
+
+        day_27_show = true;
+        day_27_width = "3%";
+        day_27_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_27_color_show = false;
+        day_27_color_width = "";
+        day_27_color_class = "";
+
+        day_28_show = true;
+        day_28_width = "3%";
+        day_28_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_28_color_show = false;
+        day_28_color_width = "";
+        day_28_color_class = "";
+
+        day_29_show = true;
+        day_29_width = "3%";
+        day_29_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_29_color_show = false;
+        day_29_color_width = "";
+        day_29_color_class = "";
+
+        day_30_show = true;
+        day_30_width = "3%";
+        day_30_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_30_color_show = false;
+        day_30_color_width = "";
+        day_30_color_class = "";
+
+        day_31_show = true;
+        day_31_width = "3%";
+        day_31_class = "text-center small_size small_head_size small_footer_size head-center head-light-grey head-text-primary";
+        day_31_color_show = false;
+        day_31_color_width = "";
+        day_31_color_class = "";
+
+        $('#wms-kpi-project-department-days-text-detail').removeAttr('hidden');
+    }
+    else{
+        vDomParam = "Blfrtip";
+        row_id_show = false;
+        row_id_width = "";
+        row_id_class = "";
+        row_name_show = true;
+        row_name_width = "7%";
+        row_name_class = "text-center small_size head-center head-light-grey head-text-primary";
+
+        day_1_show = true;
+        day_1_width = "3%";
+        day_1_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_1_color_show = false;
+        day_1_color_width = "";
+        day_1_color_class = "";
+
+        day_2_show = true;
+        day_2_width = "3%";
+        day_2_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_2_color_show = false;
+        day_2_color_width = "";
+        day_2_color_class = "";
+
+        day_3_show = true;
+        day_3_width = "3%";
+        day_3_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_3_color_show = false;
+        day_3_color_width = "";
+        day_3_color_class = "";
+
+        day_4_show = true;
+        day_4_width = "3%";
+        day_4_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_4_color_show = false;
+        day_4_color_width = "";
+        day_4_color_class = "";
+
+        day_5_show = true;
+        day_5_width = "3%";
+        day_5_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_5_color_show = false;
+        day_5_color_width = "";
+        day_5_color_class = "";
+
+        day_6_show = true;
+        day_6_width = "3%";
+        day_6_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_6_color_show = false;
+        day_6_color_width = "";
+        day_6_color_class = "";
+
+        day_7_show = true;
+        day_7_width = "3%";
+        day_7_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_7_color_show = false;
+        day_7_color_width = "";
+        day_7_color_class = "";
+
+        day_8_show = true;
+        day_8_width = "3%";
+        day_8_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_8_color_show = false;
+        day_8_color_width = "";
+        day_8_color_class = "";
+
+        day_9_show = true;
+        day_9_width = "3%";
+        day_9_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_9_color_show = false;
+        day_9_color_width = "";
+        day_9_color_class = "";
+
+        day_10_show = true;
+        day_10_width = "3%";
+        day_10_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_10_color_show = false;
+        day_10_color_width = "";
+        day_10_color_class = "";
+
+        day_11_show = true;
+        day_11_width = "3%";
+        day_11_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_11_color_show = false;
+        day_11_color_width = "";
+        day_11_color_class = "";
+
+        day_12_show = true;
+        day_12_width = "3%";
+        day_12_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_12_color_show = false;
+        day_12_color_width = "";
+        day_12_color_class = "";
+
+        day_13_show = true;
+        day_13_width = "3%";
+        day_13_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_13_color_show = false;
+        day_13_color_width = "";
+        day_13_color_class = "";
+
+        day_14_show = true;
+        day_14_width = "3%";
+        day_14_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_14_color_show = false;
+        day_14_color_width = "";
+        day_14_color_class = "";
+
+        day_15_show = true;
+        day_15_width = "3%";
+        day_15_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_15_color_show = false;
+        day_15_color_width = "";
+        day_15_color_class = "";
+
+        day_16_show = true;
+        day_16_width = "3%";
+        day_16_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_16_color_show = false;
+        day_16_color_width = "";
+        day_16_color_class = "";
+
+        day_17_show = true;
+        day_17_width = "3%";
+        day_17_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_17_color_show = false;
+        day_17_color_width = "";
+        day_17_color_class = "";
+
+        day_18_show = true;
+        day_18_width = "3%";
+        day_18_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_18_color_show = false;
+        day_18_color_width = "";
+        day_18_color_class = "";
+
+        day_19_show = true;
+        day_19_width = "3%";
+        day_19_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_19_color_show = false;
+        day_19_color_width = "";
+        day_19_color_class = "";
+
+        day_20_show = true;
+        day_20_width = "3%";
+        day_20_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_20_color_show = false;
+        day_20_color_width = "";
+        day_20_color_class = "";
+
+        day_21_show = true;
+        day_21_width = "3%";
+        day_21_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_21_color_show = false;
+        day_21_color_width = "";
+        day_21_color_class = "";
+
+        day_22_show = true;
+        day_22_width = "3%";
+        day_22_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_22_color_show = false;
+        day_22_color_width = "";
+        day_22_color_class = "";
+
+        day_23_show = true;
+        day_23_width = "3%";
+        day_23_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_23_color_show = false;
+        day_23_color_width = "";
+        day_23_color_class = "";
+
+        day_24_show = true;
+        day_24_width = "3%";
+        day_24_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_24_color_show = false;
+        day_24_color_width = "";
+        day_24_color_class = "";
+
+        day_25_show = true;
+        day_25_width = "3%";
+        day_25_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_25_color_show = false;
+        day_25_color_width = "";
+        day_25_color_class = "";
+
+        day_26_show = true;
+        day_26_width = "3%";
+        day_26_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_26_color_show = false;
+        day_26_color_width = "";
+        day_26_color_class = "";
+
+        day_27_show = true;
+        day_27_width = "3%";
+        day_27_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_27_color_show = false;
+        day_27_color_width = "";
+        day_27_color_class = "";
+
+        day_28_show = true;
+        day_28_width = "3%";
+        day_28_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_28_color_show = false;
+        day_28_color_width = "";
+        day_28_color_class = "";
+
+        day_29_show = true;
+        day_29_width = "3%";
+        day_29_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_29_color_show = false;
+        day_29_color_width = "";
+        day_29_color_class = "";
+
+        day_30_show = true;
+        day_30_width = "3%";
+        day_30_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_30_color_show = false;
+        day_30_color_width = "";
+        day_30_color_class = "";
+
+        day_31_show = true;
+        day_31_width = "3%";
+        day_31_class = "text-center small_size head-center head-light-grey head-text-primary";
+        day_31_color_show = false;
+        day_31_color_width = "";
+        day_31_color_class = "";
+    }
+
+        let day_1_check = 0
+        let day_2_check = 0;
+        let day_3_check = 0;
+        let day_4_check = 0;
+        let day_5_check = 0;
+        let day_6_check = 0;
+        let day_7_check = 0;
+        let day_8_check = 0;
+        let day_9_check = 0;
+        let day_10_check = 0;
+        let day_11_check = 0;
+        let day_12_check = 0;
+        let day_13_check = 0;
+        let day_14_check = 0;
+        let day_15_check = 0;
+        let day_16_check = 0;
+        let day_17_check = 0;
+        let day_18_check = 0;
+        let day_19_check = 0;
+        let day_20_check = 0;
+        let day_21_check = 0;
+        let day_22_check = 0;
+        let day_23_check = 0;
+        let day_24_check = 0;
+        let day_25_check = 0;
+        let day_26_check = 0;
+        let day_27_check = 0;
+        let day_28_check = 0;
+        let day_29_check = 0;
+        let day_30_check = 0;
+        let day_31_check = 0;
+    let weekend_day_class = 'bg-warning-light';
+    
+    var vWMSKPIProjectDepartmentDaysTextValue;
+    vWMSKPIProjectDepartmentDaysTextValue = {
+        table : '#table-wms-kpi-project-department-days-text',
+        button_form: (mobileScreenSize) ? null : "#table-wms-kpi-project-department-days-text-buttons",
+        ajax : {
+            "url": /*[[@{/wms_kpi_project/get_wms_kpi_project_department_days_text_menu}]]*/ "wms_kpi_project/get_wms_kpi_project_department_days_text_menu",
+            "type": "post",
+            "data": function ( d ) {
+                d.kpi_year = vWMSKPIProjectDepartmentDaysTextValue.rowdata.kpi_year;
+                d.req_wms_dep_id = vWMSKPIProjectDepartmentDaysTextValue.rowdata.req_wms_dep_id;
+                d.req_wms_project_id = vWMSKPIProjectDepartmentDaysTextValue.rowdata.req_wms_project_id;
+                d.req_user_id = vWMSKPIProjectDepartmentDaysTextValue.rowdata.req_user_id;
+                d.req_month_id = vWMSKPIProjectDepartmentDaysTextValue.rowdata.req_month_id;
+                d.req_wms_kpi_param_id = vWMSKPIProjectDepartmentDaysTextValue.rowdata.req_wms_kpi_param_id;
+            }            
+        },
+        key : "user_id",
+        switchControl : wms_kpi_project_department_days_text_switchControl,
+        rowdata:{
+            user_id: null
+        },
+        order: [
+            [1, "asc"]
+        ],
+        dom: vDomParam,
+        createdRow: function( row, data, dataIndex ) {
+/*1*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_1 === 'Сб' || data.day_1 === 'Вс')){ day_1_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_1 !== 'Сб' && data.day_1 !== 'Вс'){ day_1_check = 0}
+            day_1_check === 1 ? $(row).find('td:eq(1)').addClass(weekend_day_class) :  $(row).find('td:eq(1)').removeClass(weekend_day_class);
+/*2*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_2 === 'Сб' || data.day_2 === 'Вс')){ day_2_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_2 !== 'Сб' && data.day_2 !== 'Вс'){ day_2_check = 0}
+            day_2_check === 1 ? $(row).find('td:eq(2)').addClass(weekend_day_class) :  $(row).find('td:eq(2)').removeClass(weekend_day_class);
+/*3*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_3 === 'Сб' || data.day_3 === 'Вс')){ day_3_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_3 !== 'Сб' && data.day_3 !== 'Вс'){ day_3_check = 0}
+            day_3_check === 1 ? $(row).find('td:eq(3)').addClass(weekend_day_class) :  $(row).find('td:eq(3)').removeClass(weekend_day_class);
+/*4*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_4 === 'Сб' || data.day_4 === 'Вс')){ day_4_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_4 !== 'Сб' && data.day_4 !== 'Вс'){ day_4_check = 0}
+            day_4_check === 1 ? $(row).find('td:eq(4)').addClass(weekend_day_class) :  $(row).find('td:eq(4)').removeClass(weekend_day_class);
+/*5*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_5 === 'Сб' || data.day_5 === 'Вс')){ day_5_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_5 !== 'Сб' && data.day_5 !== 'Вс'){ day_5_check = 0}
+            day_5_check === 1 ? $(row).find('td:eq(5)').addClass(weekend_day_class) :  $(row).find('td:eq(5)').removeClass(weekend_day_class);
+/*6*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_6 === 'Сб' || data.day_6 === 'Вс')){ day_6_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_6 !== 'Сб' && data.day_6 !== 'Вс'){ day_6_check = 0}
+            day_6_check === 1 ? $(row).find('td:eq(6)').addClass(weekend_day_class) :  $(row).find('td:eq(6)').removeClass(weekend_day_class);
+/*7*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_7 === 'Сб' || data.day_7 === 'Вс')){ day_7_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_7 !== 'Сб' && data.day_7 !== 'Вс'){ day_7_check = 0}
+            day_7_check === 1 ? $(row).find('td:eq(7)').addClass(weekend_day_class) :  $(row).find('td:eq(7)').removeClass(weekend_day_class);
+/*8*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_8 === 'Сб' || data.day_8 === 'Вс')){ day_8_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_8 !== 'Сб' && data.day_8 !== 'Вс'){ day_8_check = 0}
+            day_8_check === 1 ? $(row).find('td:eq(8)').addClass(weekend_day_class) :  $(row).find('td:eq(8)').removeClass(weekend_day_class);
+/*9*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_9 === 'Сб' || data.day_9 === 'Вс')){ day_9_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_9 !== 'Сб' && data.day_9 !== 'Вс'){ day_9_check = 0}
+            day_9_check === 1 ? $(row).find('td:eq(9)').addClass(weekend_day_class) :  $(row).find('td:eq(9)').removeClass(weekend_day_class);
+/*10*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_10 === 'Сб' || data.day_10 === 'Вс')){ day_10_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_10 !== 'Сб' && data.day_10 !== 'Вс'){ day_10_check = 0}
+            day_10_check === 1 ? $(row).find('td:eq(10)').addClass(weekend_day_class) :  $(row).find('td:eq(10)').removeClass(weekend_day_class);
+/*11*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_11 === 'Сб' || data.day_11 === 'Вс')){ day_11_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_11 !== 'Сб' && data.day_11 !== 'Вс'){ day_11_check = 0}
+            day_11_check === 1 ? $(row).find('td:eq(11)').addClass(weekend_day_class) :  $(row).find('td:eq(11)').removeClass(weekend_day_class);
+/*12*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_12 === 'Сб' || data.day_12 === 'Вс')){ day_12_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_12 !== 'Сб' && data.day_12 !== 'Вс'){ day_12_check = 0}
+            day_12_check === 1 ? $(row).find('td:eq(12)').addClass(weekend_day_class) :  $(row).find('td:eq(12)').removeClass(weekend_day_class);
+/*13*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_13 === 'Сб' || data.day_13 === 'Вс')){ day_13_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_13 !== 'Сб' && data.day_13 !== 'Вс'){ day_13_check = 0}
+            day_13_check === 1 ? $(row).find('td:eq(13)').addClass(weekend_day_class) :  $(row).find('td:eq(13)').removeClass(weekend_day_class);
+/*14*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_14 === 'Сб' || data.day_14 === 'Вс')){ day_14_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_14 !== 'Сб' && data.day_14 !== 'Вс'){ day_14_check = 0}
+            day_14_check === 1 ? $(row).find('td:eq(14)').addClass(weekend_day_class) :  $(row).find('td:eq(14)').removeClass(weekend_day_class);
+/*15*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_15 === 'Сб' || data.day_15 === 'Вс')){ day_15_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_15 !== 'Сб' && data.day_15 !== 'Вс'){ day_15_check = 0}
+            day_15_check === 1 ? $(row).find('td:eq(15)').addClass(weekend_day_class) :  $(row).find('td:eq(15)').removeClass(weekend_day_class);
+/*16*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_16 === 'Сб' || data.day_16 === 'Вс')){ day_16_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_16 !== 'Сб' && data.day_16 !== 'Вс'){ day_16_check = 0}
+            day_16_check === 1 ? $(row).find('td:eq(16)').addClass(weekend_day_class) :  $(row).find('td:eq(16)').removeClass(weekend_day_class);
+/*17*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_17 === 'Сб' || data.day_17 === 'Вс')){ day_17_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_17 !== 'Сб' && data.day_17 !== 'Вс'){ day_17_check = 0}
+            day_17_check === 1 ? $(row).find('td:eq(17)').addClass(weekend_day_class) :  $(row).find('td:eq(17)').removeClass(weekend_day_class);
+/*18*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_18 === 'Сб' || data.day_18 === 'Вс')){ day_18_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_18 !== 'Сб' && data.day_18 !== 'Вс'){ day_18_check = 0}
+            day_18_check === 1 ? $(row).find('td:eq(18)').addClass(weekend_day_class) :  $(row).find('td:eq(18)').removeClass(weekend_day_class);
+/*19*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_19 === 'Сб' || data.day_19 === 'Вс')){ day_19_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_19 !== 'Сб' && data.day_19 !== 'Вс'){ day_19_check = 0}
+            day_19_check === 1 ? $(row).find('td:eq(19)').addClass(weekend_day_class) :  $(row).find('td:eq(19)').removeClass(weekend_day_class);
+/*20*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_20 === 'Сб' || data.day_20 === 'Вс')){ day_20_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_20 !== 'Сб' && data.day_20 !== 'Вс'){ day_20_check = 0}
+            day_20_check === 1 ? $(row).find('td:eq(20)').addClass(weekend_day_class) :  $(row).find('td:eq(20)').removeClass(weekend_day_class);
+/*21*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_21 === 'Сб' || data.day_21 === 'Вс')){ day_21_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_21 !== 'Сб' && data.day_21 !== 'Вс'){ day_21_check = 0}
+            day_21_check === 1 ? $(row).find('td:eq(21)').addClass(weekend_day_class) :  $(row).find('td:eq(21)').removeClass(weekend_day_class);
+/*22*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_22 === 'Сб' || data.day_22 === 'Вс')){ day_22_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_22 !== 'Сб' && data.day_22 !== 'Вс'){ day_22_check = 0}
+            day_22_check === 1 ? $(row).find('td:eq(22)').addClass(weekend_day_class) :  $(row).find('td:eq(22)').removeClass(weekend_day_class);
+/*23*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_23 === 'Сб' || data.day_23 === 'Вс')){ day_23_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_23 !== 'Сб' && data.day_23 !== 'Вс'){ day_23_check = 0}
+            day_23_check === 1 ? $(row).find('td:eq(23)').addClass(weekend_day_class) :  $(row).find('td:eq(23)').removeClass(weekend_day_class);
+/*24*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_24 === 'Сб' || data.day_24 === 'Вс')){ day_24_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_24 !== 'Сб' && data.day_24 !== 'Вс'){ day_24_check = 0}
+            day_24_check === 1 ? $(row).find('td:eq(24)').addClass(weekend_day_class) :  $(row).find('td:eq(24)').removeClass(weekend_day_class);
+/*25*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_25 === 'Сб' || data.day_25 === 'Вс')){ day_25_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_25 !== 'Сб' && data.day_25 !== 'Вс'){ day_25_check = 0}
+            day_25_check === 1 ? $(row).find('td:eq(25)').addClass(weekend_day_class) :  $(row).find('td:eq(25)').removeClass(weekend_day_class);
+/*26*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_26 === 'Сб' || data.day_26 === 'Вс')){ day_26_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_26 !== 'Сб' && data.day_26 !== 'Вс'){ day_26_check = 0}
+            day_26_check === 1 ? $(row).find('td:eq(26)').addClass(weekend_day_class) :  $(row).find('td:eq(26)').removeClass(weekend_day_class);
+/*27*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_27 === 'Сб' || data.day_27 === 'Вс')){ day_27_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_27 !== 'Сб' && data.day_27 !== 'Вс'){ day_27_check = 0}
+            day_27_check === 1 ? $(row).find('td:eq(27)').addClass(weekend_day_class) :  $(row).find('td:eq(27)').removeClass(weekend_day_class);
+/*28*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_28 === 'Сб' || data.day_28 === 'Вс')){ day_28_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_28 !== 'Сб' && data.day_28 !== 'Вс'){ day_28_check = 0}
+            day_28_check === 1 ? $(row).find('td:eq(28)').addClass(weekend_day_class) :  $(row).find('td:eq(28)').removeClass(weekend_day_class);
+/*29*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_29 === 'Сб' || data.day_29 === 'Вс')){ day_29_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_29 !== 'Сб' && data.day_29 !== 'Вс'){ day_29_check = 0}
+            day_29_check === 1 ? $(row).find('td:eq(29)').addClass(weekend_day_class) :  $(row).find('td:eq(29)').removeClass(weekend_day_class);
+/*30*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_30 === 'Сб' || data.day_30 === 'Вс')){ day_30_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_30 !== 'Сб' && data.day_30 !== 'Вс'){ day_30_check = 0}
+            day_30_check === 1 ? $(row).find('td:eq(30)').addClass(weekend_day_class) :  $(row).find('td:eq(30)').removeClass(weekend_day_class);
+/*31*/
+            if (dataIndex === 0 && data.row_id === 1 && (data.day_31 === 'Сб' || data.day_31 === 'Вс')){ day_31_check = 1 }
+            else if(dataIndex === 0 && data.row_id === 1 && data.day_31 !== 'Сб' && data.day_31 !== 'Вс'){ day_31_check = 0}
+            day_31_check === 1 ? $(row).find('td:eq(31)').addClass(weekend_day_class) :  $(row).find('td:eq(31)').removeClass(weekend_day_class);
+
+            $(row).find('td:eq(1)').css('background-color', data["day_1_color"]);
+            $(row).find('td:eq(2)').css('background-color', data["day_2_color"]);
+            $(row).find('td:eq(3)').css('background-color', data["day_3_color"]);
+            $(row).find('td:eq(4)').css('background-color', data["day_4_color"]);
+            $(row).find('td:eq(5)').css('background-color', data["day_5_color"]);
+            $(row).find('td:eq(6)').css('background-color', data["day_6_color"]);
+            $(row).find('td:eq(7)').css('background-color', data["day_7_color"]);
+            $(row).find('td:eq(8)').css('background-color', data["day_8_color"]);
+            $(row).find('td:eq(9)').css('background-color', data["day_9_color"]);
+            $(row).find('td:eq(10)').css('background-color', data["day_10_color"]);
+            $(row).find('td:eq(11)').css('background-color', data["day_11_color"]);
+            $(row).find('td:eq(12)').css('background-color', data["day_12_color"]);
+            $(row).find('td:eq(13)').css('background-color', data["day_13_color"]);
+            $(row).find('td:eq(14)').css('background-color', data["day_14_color"]);
+            $(row).find('td:eq(15)').css('background-color', data["day_15_color"]);
+            $(row).find('td:eq(16)').css('background-color', data["day_16_color"]);
+            $(row).find('td:eq(17)').css('background-color', data["day_17_color"]);
+            $(row).find('td:eq(18)').css('background-color', data["day_18_color"]);
+            $(row).find('td:eq(19)').css('background-color', data["day_19_color"]);
+            $(row).find('td:eq(20)').css('background-color', data["day_20_color"]);
+            $(row).find('td:eq(21)').css('background-color', data["day_21_color"]);
+            $(row).find('td:eq(22)').css('background-color', data["day_22_color"]);
+            $(row).find('td:eq(23)').css('background-color', data["day_23_color"]);
+            $(row).find('td:eq(24)').css('background-color', data["day_24_color"]);
+            $(row).find('td:eq(25)').css('background-color', data["day_25_color"]);
+            $(row).find('td:eq(26)').css('background-color', data["day_26_color"]);
+            $(row).find('td:eq(27)').css('background-color', data["day_27_color"]);
+            $(row).find('td:eq(28)').css('background-color', data["day_28_color"]);
+            $(row).find('td:eq(29)').css('background-color', data["day_29_color"]);
+            $(row).find('td:eq(30)').css('background-color', data["day_30_color"]);
+            $(row).find('td:eq(31)').css('background-color', data["day_31_color"]);
+
+            //$(row).css('background-color', data["act_status_color"]);
+        },
+        columnDefs:[
+            {"targets": [0], "width": row_id_width, "className": row_id_class, "visible": row_id_show},
+            {"targets": [1], "width": row_name_width, "className": row_name_class, "visible": row_name_show},
+
+            {"targets": [2], "width": day_1_width, "className": day_1_class, "visible": day_1_show},
+            {"targets": [3], "width": day_1_color_width, "className": day_1_color_class, "visible": day_1_color_show},
+
+            {"targets": [4], "width": day_2_width, "className": day_2_class, "visible": day_2_show},
+            {"targets": [5], "width": day_2_color_width, "className": day_2_color_class, "visible": day_2_color_show},
+
+            {"targets": [6], "width": day_3_width, "className": day_3_class, "visible": day_3_show},
+            {"targets": [7], "width": day_3_color_width, "className": day_3_color_class, "visible": day_3_color_show},
+
+            {"targets": [8], "width": day_4_width, "className": day_4_class, "visible": day_4_show},
+            {"targets": [9], "width": day_4_color_width, "className": day_4_color_class, "visible": day_4_color_show},
+
+            {"targets": [10], "width": day_5_width, "className": day_5_class, "visible": day_5_show},
+            {"targets": [11], "width": day_5_color_width, "className": day_5_color_class, "visible": day_5_color_show},
+
+            {"targets": [12], "width": day_6_width, "className": day_6_class, "visible": day_6_show},
+            {"targets": [13], "width": day_6_color_width, "className": day_6_color_class, "visible": day_6_color_show},
+
+            {"targets": [14], "width": day_7_width, "className": day_7_class, "visible": day_7_show},
+            {"targets": [15], "width": day_7_color_width, "className": day_7_color_class, "visible": day_7_color_show},
+
+            {"targets": [16], "width": day_8_width, "className": day_8_class, "visible": day_8_show},
+            {"targets": [17], "width": day_8_color_width, "className": day_8_color_class, "visible": day_8_color_show},
+
+            {"targets": [18], "width": day_9_width, "className": day_9_class, "visible": day_9_show},
+            {"targets": [19], "width": day_9_color_width, "className": day_9_color_class, "visible": day_9_color_show},
+
+            {"targets": [20], "width": day_10_width, "className": day_10_class, "visible": day_10_show},
+            {"targets": [21], "width": day_10_color_width, "className": day_10_color_class, "visible": day_10_color_show},
+
+            {"targets": [22], "width": day_11_width, "className": day_11_class, "visible": day_11_show},
+            {"targets": [23], "width": day_11_color_width, "className": day_11_color_class, "visible": day_11_color_show},
+
+            {"targets": [24], "width": day_12_width, "className": day_12_class, "visible": day_12_show},
+            {"targets": [25], "width": day_12_color_width, "className": day_12_color_class, "visible": day_12_color_show},
+
+            {"targets": [26], "width": day_13_width, "className": day_13_class, "visible": day_13_show},
+            {"targets": [27], "width": day_13_color_width, "className": day_13_color_class, "visible": day_13_color_show},
+
+            {"targets": [28], "width": day_14_width, "className": day_14_class, "visible": day_14_show},
+            {"targets": [29], "width": day_14_color_width, "className": day_14_color_class, "visible": day_14_color_show},
+
+            {"targets": [30], "width": day_15_width, "className": day_15_class, "visible": day_15_show},
+            {"targets": [31], "width": day_15_color_width, "className": day_15_color_class, "visible": day_15_color_show},
+
+            {"targets": [32], "width": day_16_width, "className": day_16_class, "visible": day_16_show},
+            {"targets": [33], "width": day_16_color_width, "className": day_16_color_class, "visible": day_16_color_show},
+
+            {"targets": [34], "width": day_17_width, "className": day_17_class, "visible": day_17_show},
+            {"targets": [35], "width": day_17_color_width, "className": day_17_color_class, "visible": day_17_color_show},
+
+            {"targets": [36], "width": day_18_width, "className": day_18_class, "visible": day_18_show},
+            {"targets": [37], "width": day_18_color_width, "className": day_18_color_class, "visible": day_18_color_show},
+
+            {"targets": [38], "width": day_19_width, "className": day_19_class, "visible": day_19_show},
+            {"targets": [39], "width": day_19_color_width, "className": day_19_color_class, "visible": day_19_color_show},
+
+            {"targets": [40], "width": day_20_width, "className": day_20_class, "visible": day_20_show},
+            {"targets": [41], "width": day_20_color_width, "className": day_20_color_class, "visible": day_20_color_show},
+
+            {"targets": [42], "width": day_21_width, "className": day_21_class, "visible": day_21_show},
+            {"targets": [43], "width": day_21_color_width, "className": day_21_color_class, "visible": day_21_color_show},
+
+            {"targets": [44], "width": day_22_width, "className": day_22_class, "visible": day_22_show},
+            {"targets": [45], "width": day_22_color_width, "className": day_22_color_class, "visible": day_22_color_show},
+
+            {"targets": [46], "width": day_23_width, "className": day_23_class, "visible": day_23_show},
+            {"targets": [47], "width": day_23_color_width, "className": day_23_color_class, "visible": day_23_color_show},
+
+            {"targets": [48], "width": day_24_width, "className": day_24_class, "visible": day_24_show},
+            {"targets": [49], "width": day_24_color_width, "className": day_24_color_class, "visible": day_24_color_show},
+
+            {"targets": [50], "width": day_25_width, "className": day_25_class, "visible": day_25_show},
+            {"targets": [51], "width": day_25_color_width, "className": day_25_color_class, "visible": day_25_color_show},
+
+            {"targets": [52], "width": day_26_width, "className": day_26_class, "visible": day_26_show},
+            {"targets": [53], "width": day_26_color_width, "className": day_26_color_class, "visible": day_26_color_show},
+
+            {"targets": [54], "width": day_27_width, "className": day_27_class, "visible": day_27_show},
+            {"targets": [55], "width": day_27_color_width, "className": day_27_color_class, "visible": day_27_color_show},
+
+            {"targets": [56], "width": day_28_width, "className": day_28_class, "visible": day_28_show},
+            {"targets": [57], "width": day_28_color_width, "className": day_28_color_class, "visible": day_28_color_show},
+
+            {"targets": [58], "width": day_29_width, "className": day_29_class, "visible": day_29_show},
+            {"targets": [59], "width": day_29_color_width, "className": day_29_color_class, "visible": day_29_color_show},
+
+            {"targets": [60], "width": day_30_width, "className": day_30_class, "visible": day_30_show},
+            {"targets": [61], "width": day_30_color_width, "className": day_30_color_class, "visible": day_30_color_show},
+
+            {"targets": [62], "width": day_31_width, "className": day_31_class, "visible": day_31_show},
+            {"targets": [63], "width": day_31_color_width, "className": day_31_color_class, "visible": day_31_color_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{wms_kpi_project.days_text.row_id}]]*/ "row_id", "data": "row_id"},
+            /*1*/{"title": /*[[#{wms_kpi_project.days_text.row_name}]]*/ "row_name", "data": "row_name"},
+
+            /*2*/{"title": "1", "data": "day_1"},
+            /*3*/{"title": "1_color", "data": "day_1_color"},
+
+            /*4*/{"title": "2", "data": "day_2"},
+            /*5*/{"title": "2_color", "data": "day_2_color"},
+
+            /*6*/{"title": "3", "data": "day_3"},
+            /*7*/{"title": "4_color", "data": "day_3_color"},
+
+            /*8*/{"title": "4", "data": "day_4"},
+            /*9*/{"title": "4_color", "data": "day_4_color"},
+
+            /*10*/{"title": "5", "data": "day_5"},
+            /*11*/{"title": "5_color", "data": "day_5_color"},
+
+            /*12*/{"title": "6", "data": "day_6"},
+            /*13*/{"title": "6_color", "data": "day_6_color"},
+
+            /*14*/{"title": "7", "data": "day_7"},
+            /*15*/{"title": "7_color", "data": "day_7_color"},
+
+            /*16*/{"title": "8", "data": "day_8"},
+            /*17*/{"title": "8_color", "data": "day_8_color"},
+
+            /*18*/{"title": "9", "data": "day_9"},
+            /*19*/{"title": "9_color", "data": "day_9_color"},
+
+            /*20*/{"title": "10", "data": "day_10"},
+            /*21*/{"title": "10_color", "data": "day_10_color"},
+
+            /*22*/{"title": "11", "data": "day_11"},
+            /*23*/{"title": "11_color", "data": "day_11_color"},
+
+            /*24*/{"title": "12", "data": "day_12"},
+            /*25*/{"title": "12_color", "data": "day_12_color"},
+
+            /*26*/{"title": "13", "data": "day_13"},
+            /*27*/{"title": "13_color", "data": "day_13_color"},
+
+            /*28*/{"title": "14", "data": "day_14"},
+            /*29*/{"title": "14_color", "data": "day_14_color"},
+
+            /*30*/{"title": "15", "data": "day_15"},
+            /*31*/{"title": "15_color", "data": "day_15_color"},
+
+            /*32*/{"title": "16", "data": "day_16"},
+            /*33*/{"title": "16_color", "data": "day_16_color"},
+
+            /*34*/{"title": "17", "data": "day_17"},
+            /*35*/{"title": "17_color", "data": "day_17_color"},
+
+            /*36*/{"title": "18", "data": "day_18"},
+            /*37*/{"title": "18_color", "data": "day_18_color"},
+
+            /*38*/{"title": "19", "data": "day_19"},
+            /*39*/{"title": "19_color", "data": "day_19_color"},
+
+            /*40*/{"title": "20", "data": "day_20"},
+            /*41*/{"title": "20_color", "data": "day_20_color"},
+
+            /*42*/{"title": "21", "data": "day_21"},
+            /*43*/{"title": "21_color", "data": "day_21_color"},
+
+            /*44*/{"title": "22", "data": "day_22"},
+            /*45*/{"title": "22_color", "data": "day_22_color"},
+
+            /*46*/{"title": "23", "data": "day_23"},
+            /*47*/{"title": "23_color", "data": "day_23_color"},
+
+            /*48*/{"title": "24", "data": "day_24"},
+            /*49*/{"title": "24_color", "data": "day_24_color"},
+
+            /*50*/{"title": "25", "data": "day_25"},
+            /*51*/{"title": "25_color", "data": "day_25_color"},
+
+            /*52*/{"title": "26", "data": "day_26"},
+            /*53*/{"title": "26_color", "data": "day_26_color"},
+
+            /*54*/{"title": "27", "data": "day_27"},
+            /*55*/{"title": "27_color", "data": "day_27_color"},
+
+            /*56*/{"title": "28", "data": "day_28"},
+            /*57*/{"title": "28_color", "data": "day_28_color"},
+
+            /*58*/{"title": "29", "data": "day_29"},
+            /*59*/{"title": "29_color", "data": "day_29_color"},
+
+            /*60*/{"title": "30", "data": "day_30"},
+            /*61*/{"title": "30_color", "data": "day_30_color"},
+
+            /*62*/{"title": "31", "data": "day_31"},
+            /*63*/{"title": "31_color", "data": "day_31_color"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function wms_kpi_project_department_days_text_switchControl(){
+        if(vWMSKPIProjectDepartmentDaysTextValue.rowdata.user_id != null) {
+        } else{
+        }
+    }
+
+    $(document).ready(function(){
+        vWMSKPIProjectDepartmentDaysTextValue.rowdata.user_id = /*[[${user_id}]]*/ null;
+
+        vWMSKPIProjectDepartmentDaysTextValue.rowdata.action_filter_type_id = /*[[${action_filter_type_id}]]*/ null;
+        vWMSKPIProjectDepartmentDaysTextValue.rowdata.action_filter_action_id = /*[[${action_filter_action_id}]]*/ null;
+        vWMSKPIProjectDepartmentDaysTextValue.rowdata.action_filter_status_id = /*[[${action_filter_status_id}]]*/ null;
+        vWMSKPIProjectDepartmentDaysTextValue.rowdata.action_filter_result_id = /*[[${action_filter_result_id}]]*/ null;
+        vWMSKPIProjectDepartmentDaysTextValue.rowdata.action_filter_client_id = /*[[${action_filter_client_id}]]*/ null;
+        vWMSKPIProjectDepartmentDaysTextValue.rowdata.action_filter_user_id = /*[[${action_filter_user_id}]]*/ null;
+        
+        recreateDataTable(vWMSKPIProjectDepartmentDaysTextValue);
+    });
+</script>
+
+</body>
+</html>

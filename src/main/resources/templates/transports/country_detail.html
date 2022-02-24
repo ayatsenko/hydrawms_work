@@ -1,0 +1,289 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{transports.country.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="card flex-fill w-100">
+    <div class="card-header">
+        <h5 class="card-title mb-0" th:text="#{transports.country.caption}"></h5>
+    </div>
+    <div class="card-body">
+        <div>
+            <!--/*@thymesVar id="transports_country_detail_detail" type="java.util.List"*/-->
+            <form id="transports-country-detail-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/transports/country_model}">
+                <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="transports-country-detail-indexfrm">Cancel</button>
+                    <div th:switch="${mode}">
+                        <button th:case="0" type="submit" id="transports-country-detail-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                        <button th:case="1" type="submit" id="transports-country-detail-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                        <button th:case="2" type="submit" id="transports-country-detail-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                    </div>
+                </div>
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="cntcl_id" th:value="${cntcl_id}" >
+
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_country_detail_table_order_column" th:value="${transports_country_detail_table_order_column}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_country_detail_table_order_type" th:value="${transports_country_detail_table_order_type}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_country_detail_table_search" th:value="${transports_country_detail_table_search}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_country_detail_table_pagelen" th:value="${transports_country_detail_table_pagelen}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_country_detail_table_page" th:value="${transports_country_detail_table_page}" >
+
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="req_country_id" th:value="${req_country_id}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="req_address" th:value="${req_address}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="req_tir_check" th:value="${req_tir_check}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="req_adr_check" th:value="${req_adr_check}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="req_ekmt_check" th:value="${req_ekmt_check}" >
+
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_list_table_order_column" th:value="${transports_list_table_order_column}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_list_table_order_type" th:value="${transports_list_table_order_type}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_list_table_search" th:value="${transports_list_table_search}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_list_table_pagelen" th:value="${transports_list_table_pagelen}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_list_table_page" th:value="${transports_list_table_page}" >
+
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_transports_collapse" th:value="${clients_transports_collapse}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_trailers_collapse" th:value="${clients_trailers_collapse}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_drivers_collapse" th:value="${clients_drivers_collapse}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_contacts_collapse" th:value="${clients_contacts_collapse}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_country_collapse" th:value="${clients_country_collapse}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_services_collapse" th:value="${clients_services_collapse}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_address_collapse" th:value="${clients_address_collapse}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_documents_collapse" th:value="${clients_documents_collapse}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_files_collapse" th:value="${clients_files_collapse}" >
+
+                <div class="form-row">
+                    <div class="col-md-1 mb-2" id="cnt_id_row">
+                        <label for="cnt_id" class="form-label" th:text="'1. '+ #{transports.list.cnt_id}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="number" class="form-control" id="cnt_id" name="cnt_id" th:value="${cnt_id}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                    <div class="col-md-5 mb-2">
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <label for="cnt_name" class="form-label" th:text="'2. '+#{transports.list.cnt_name}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="text" maxlength="120" class="form-control" id="cnt_name" name="cnt_name" th:value="${cnt_name}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div><!-- Row 1 -->
+
+                <div class="form-row">
+                    <div class="col-md-1 mb-2" id="cntcl_id_row">
+                        <label for="cntcl_id" class="form-label" th:text="'3. '+ #{transports.country.cntcl_id}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="number" class="form-control" id="cntcl_id" name="cntcl_id" th:value="${cntcl_id}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                    <div class="col-md-2 mb-2" id="cntcl_date_row">
+                        <label for="cntcl_date" class="form-label" th:text="'4. '+ #{transports.country.cntcl_date}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="text" maxlength="32" class="form-control" id="cntcl_date" name="cntcl_date" th:value="${cntcl_date}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div><!-- Row 2 -->
+
+                <div class="form-row">
+                    <div class="col-md-6 mb-1" id="country_id_row">
+                        <label for="country_id" th:text="'5. '+ #{transports.country.country_sname}"></label>
+                        <div class="input-group d-flex">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select id="country_id" name="country_id" class="form-control select2" data-toggle="select2" th:value="${country_id}">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="country : ${country_list}"
+                                        th:value="${country.country_id}"
+                                        th:text="${country.country_nameua}"
+                                        th:selected="${country.country_id == country_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            <span class="input-group-append">
+                                    <button type="button" class="btn btn-outline-primary" id="country_id_show" name="country_id_show"><i class="fas fa-clipboard-list"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div><!-- Row 3 -->
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--/*@thymesVar id="transports_country_detail_detail" type="java.util.List"*/-->
+<form id="transports-country-detail-indexfrm" method="post" th:action="@{/transports}" hidden>
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="cntcl_id" th:value="${cntcl_id}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="cnt_id" th:value="${cnt_id}">
+
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_order_column" th:value="${transports_country_detail_table_order_column}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_order_type" th:value="${transports_country_detail_table_order_type}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_search" th:value="${transports_country_detail_table_search}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_pagelen" th:value="${transports_country_detail_table_pagelen}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_page" th:value="${transports_country_detail_table_page}" >
+
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="req_country_id" th:value="${req_country_id}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="req_address" th:value="${req_address}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="req_tir_check" th:value="${req_tir_check}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="req_adr_check" th:value="${req_adr_check}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="req_ekmt_check" th:value="${req_ekmt_check}">
+
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="transports_list_table_order_column" th:value="${transports_list_table_order_column}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="transports_list_table_order_type" th:value="${transports_list_table_order_type}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="transports_list_table_search" th:value="${transports_list_table_search}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="transports_list_table_pagelen" th:value="${transports_list_table_pagelen}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="transports_list_table_page" th:value="${transports_list_table_page}" >
+
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_transports_collapse" th:value="${clients_transports_collapse}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_trailers_collapse" th:value="${clients_trailers_collapse}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_drivers_collapse" th:value="${clients_drivers_collapse}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_contacts_collapse" th:value="${clients_contacts_collapse}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_country_collapse" th:value="${clients_country_collapse}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_services_collapse" th:value="${clients_services_collapse}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_address_collapse" th:value="${clients_address_collapse}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_documents_collapse" th:value="${clients_documents_collapse}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_files_collapse" th:value="${clients_files_collapse}">
+</form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'transports-country-detail-indexfrm')">Error</span>
+
+<script>
+    $(document).ready(function(){
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#tms_li').addClass('active').removeClass('collapsed');
+        $('#tms_a').attr('aria-expanded',true);
+        $('#tms').addClass('show');
+
+        $('#transports_a').addClass('text-primary');
+<!-- Form Start -->
+        $('#country_id').prop('readOnly',true);
+        $('#country_name').prop('readOnly',true);
+
+        var cntName =  "Выберите страну";
+        var cntFindText = "Введите от 2-х символов";
+
+        $('#country_id')
+            .wrap("<div class=\"position-relative\"></div>")
+            .select2({
+                id: '-1', // the value of the option
+                placeholder: cntName,
+                allowClear: true,
+                minimumInputLength: 2,
+                language: {
+                    inputTooShort: function() {
+                        return cntFindText;
+                    }}
+            });
+        
+<!-- Change Function -->
+        if($('#mode').val() == 0){
+            $('#cntcl_id_row').prop('hidden',true);
+            $('#cntcl_date_row').prop('hidden',true);
+        }
+        else if($('#mode').val() == 1){
+            $('#cntcl_id').prop('readOnly',true);
+            $('#cntcl_date').prop('readOnly',true);
+        }
+        else if($('#mode').val() === '2' || $('#mode').val() === '4'){
+            $('#cntcl_id').prop('readOnly',true);
+            $('#cntcl_date').prop('readOnly',true);
+
+            $('#country_id').attr('readOnly',true);
+            $('#country_id_show').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+        }
+
+        $('#country_id_show').on('click', function () {
+            if($('#country_id_show').hasClass('btn-outline-primary')) {
+                $('#country_id_show').removeClass('btn-outline-primary').addClass('btn-primary');
+                var options_zero = {
+                    id: '-1', // the value of the option
+                    placeholder: cntName,
+                    allowClear: true,
+                    width: 'element',
+                    dropdownAutoWidth: true
+                };
+                $("#country_id").select2("destroy").select2(options_zero);
+            }
+            else if($('#country_id_show').hasClass('btn-primary')){
+                $('#country_id_show').addClass('btn-outline-primary').removeClass('btn-primary');
+                var options_two = {
+                    id: '-1', // the value of the option
+                    placeholder: cntName,
+                    allowClear: true,
+                    minimumInputLength: 2,
+                    language: {
+                        inputTooShort: function() {
+                            return cntFindText;
+                        }},
+                    width: 'element',
+                    dropdownAutoWidth: true
+                };
+                $("#country_id").select2("destroy").select2(options_two);
+            }
+        });
+
+    });
+</script>
+</body>
+</html>

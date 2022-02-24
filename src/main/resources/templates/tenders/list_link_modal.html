@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tenders_list_link_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="tenders_list_link_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{clients.users_roles.modal.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body m-1">
+                    <form id="tenders_list_link_modal_form">
+                    <div class="row mb-2">
+                        <div class="col-12" id="cs_user_id_row">
+                            <label for="first_user_id" class="form-label mb-0" th:text="'1. '+ #{clients.users_roles.first_user_name}"></label>
+                            <div class="input-group mt-0">
+                                <div class="flex-fill">
+                                    <select type="text" class="custom-select select2" id="first_user_id" name="first_user_id">
+                                    </select>
+                                </div>
+                                <button type="button" id="first_user_id_x" name="first_user_id_x" data-parent="first_user_id" class="btn btn-outline-primary select_clear"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="row mb-2">
+                        <div class="col-12" id="ops_user_id_row">
+                            <label for="second_user_id" class="form-label mb-0" th:text="'2. '+ #{clients.users_roles.second_user_name}"></label>
+                            <div class="input-group mt-0">
+                                <div class="flex-fill">
+                                    <select type="text" class="custom-select select2" id="second_user_id" name="second_user_id">
+                                    </select>
+                                </div>
+                                <button type="button" id="ops_user_id_x" name="ops_user_id_x" data-parent="second_user_id" class="btn btn-outline-primary select_clear"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div><!-- Row 2 -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="tenders_list_link_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="tenders_list_link_modal_savebtn" class="btn btn-outline-primary" th:text="#{general.editbtn}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    function FirstListChange(aSaleUserID){
+        $('#first_user_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tenders/get_sale_list'}]]*/ "/tenders/get_sale_list",
+            type: "get",
+            data: {},
+            success: function (sale_list_detail) {
+                for (var i = 0; i < sale_list_detail.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='first_user_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='first_user_id']").find('option').end().append("<option value='" + sale_list_detail.data[i].id + "'>" + sale_list_detail.data[i].user_surname + "</option>");
+                }
+                if(aSaleUserID !== null){
+                    $('#first_user_id').val(aSaleUserID).trigger('change');
+                }
+            }
+        }));
+    }
+
+    let userCSLinkModalPlaceHolder = 'Выберите сотрудника';
+    $('#first_user_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: userCSLinkModalPlaceHolder,
+            allowClear: true,
+            width: 'element',
+            dropdownAutoWidth: true
+        });
+
+    function SecondListChange(aSaleUserID){
+        $('#second_user_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tenders/get_sale_list'}]]*/ "/tenders/get_sale_list",
+            type: "get",
+            data: {},
+            success: function (ops_list_detail) {
+                for (var i = 0; i < ops_list_detail.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='second_user_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    if(ops_list_detail.data[i].id !== parseInt(aSaleUserID)) {
+                        $("select[name='second_user_id']").find('option').end().append("<option value='" + ops_list_detail.data[i].id + "'>" + ops_list_detail.data[i].user_surname + "</option>");
+                    }
+                }
+            }
+        }));
+    }
+
+    $('#second_user_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: userCSLinkModalPlaceHolder,
+            allowClear: true,
+            width: 'element',
+            dropdownAutoWidth: true
+        });
+
+// Clear Fields
+    function clear_tenders_list_link_modal_detail() {
+        $("#tenders_list_link_modal_detail input[type=text]").val('');
+        $("#tenders_list_link_modal_detail input[type=number]").val('');
+        $("#tenders_list_link_modal_detail select").empty();
+        $("#tenders_list_link_modal_detail textarea").val('');
+    }
+
+// Block And Required Fields
+    function block_tenders_list_link_modal_detail() {
+        $('#first_user_id').attr('disabled', true);
+        $('#second_user_id').attr('required', true);
+    }
+
+// Load Function
+    function fill_tenders_list_link_modal_detail(){
+        clear_tenders_list_link_modal_detail();
+        block_tenders_list_link_modal_detail();
+
+        $.when(
+            FirstListChange(vTenderListValue.rowdata.user_id)
+        ).then(function() {
+            $('#tenders_list_link_modal').modal('show');
+        });
+    }
+    
+    function editLinkListCsSale(){
+        if (vTenderListValue.rowdata.req_id != null) {
+            var RowID =  vTenderListValue.rowdata.req_id;
+            $.ajax({
+                url: /*[[ @{/tenders/list_link_edit} ]]*/ "/tenders/list_link_edit",
+                type: 'POST',
+                data: {
+                    "req_id": vTenderListValue.rowdata.req_id,
+                    "first_user_id": $('#first_user_id').val(),
+                    "second_user_id": $('#second_user_id').val()
+                },
+                success: function (result) {
+                    $('#tenders_list_link_modal').modal('hide');
+
+                    vTenderListValue.rowdata.req_id = RowID;
+                    $(vTenderListValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }
+
+    $('#first_user_id').change( function () {
+        SecondListChange($('#first_user_id').val());
+    });
+
+    //Validation Form
+    $('#tenders_list_link_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function(error,element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            editLinkListCsSale();
+        }
+    });
+
+    // Add button script
+    $('#tenders_list_link_modal_savebtn').on('click', function(){
+        $('#tenders_list_link_modal_form').submit();
+    });
+</script>
+
+</body>
+</html>

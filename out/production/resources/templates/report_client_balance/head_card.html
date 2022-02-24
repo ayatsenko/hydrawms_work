@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_client_balance_head_body" th:remove="tag">
+		<form class="form-inline">
+		      <div class="form-group mb-2 mr-2">
+				<label for="report_client_balance_start_date" class="mr-2" th:text="#{report_client_balance.start_date}">StartDate:</label>
+				<input class="form-control" type="text" id="report_client_balance_start_date" name="report_client_balance_start_date" />
+			  </div>
+
+			  <div class="form-group mb-2 mr-2">
+		    	<label for="report_client_balance_end_date" class="mr-2" th:text="#{report_client_balance.end_date}">EndDate:</label>
+				<input class="form-control" type="text" id="report_client_balance_end_date" name="report_client_balance_end_date" />
+			  </div>
+
+			  <div class="form-group mb-2 mr-3">
+				<label for="report_client_balance_client_list" class="mr-2" th:text="#{report_client_balance.client_list}">Client: </label>
+				<select id="report_client_balance_client_list" name="report_client_balance_client_list" class="form-control select2" data-toggle="select2" required>
+                    <option value=""></option>
+					<!--suppress ThymeleafVariablesResolveInspection -->
+					<option class="p-1"
+						th:each="cnt_list : ${cnt_list}"
+						th:value="${cnt_list.cnt_id}"
+						th:text="${cnt_list.cnt_name}"
+						th:selected="${cnt_list.cnt_id == cnt_id}"
+					></option>
+				</select>
+
+              <span class="input-group-append">
+                <button type="button" class="btn btn-outline-primary" id="report_client_balance_client_show" name="report_client_balance_client_show"><i data-feather="clipboard"></i></button>
+              </span>
+			  </div>
+
+			<a class="btn btn-outline-primary mb-2" id="report_client_balance_show" th:text="#{general.reportshow}">Show</a>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+	$('#report_client_balance_client_show').on('click', function () {
+		if($('#report_client_balance_client_show').hasClass('btn-outline-primary')) {
+			$('#report_client_balance_client_show').removeClass('btn-outline-primary').addClass('btn-primary');
+			var options_zero = {
+				id: '-1', // the value of the option
+				placeholder: /*[[#{report_client_balance.client_placeholder}]]*/ "Select a client",
+				allowClear: true,
+				width: 'element',
+				dropdownAutoWidth: true
+			};
+			$("#report_client_balance_client_list").select2("destroy").select2(options_zero);
+		}
+		else if($('#report_client_balance_client_show').hasClass('btn-primary')){
+			$('#report_client_balance_client_show').addClass('btn-outline-primary').removeClass('btn-primary');
+			var options_two = {
+				id: '-1', // the value of the option
+				placeholder: /*[[#{report_client_balance.client_placeholder}]]*/ "Select a client",
+				allowClear: true,
+				minimumInputLength: 2,
+				width: 'element',
+				dropdownAutoWidth: true
+			};
+			$("#report_client_balance_client_list").select2("destroy").select2(options_two);
+		}
+	});
+
+    $(document).ready(function(){
+		var firstYearDay = new Date(new Date().getFullYear(), 0, 1).toLocaleDateString('ru');
+
+        $("#report_client_balance_start_date").daterangepicker({
+            "singleDatePicker": true,
+			"startDate": firstYearDay,
+			"locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        $("#report_client_balance_end_date").daterangepicker({
+            "singleDatePicker": true,
+			"locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        if (window.screen.width < 1024 && window.screen.height < 768) {
+			$("#report_client_balance_start_date").attr('readonly',true);
+			$("#report_client_balance_end_date").attr('readonly',true);
+		}
+
+		$('#report_client_balance_client_list').prop('required',true);
+
+		$('#report_client_balance_client_list')
+					.wrap("<div class=\"position-relative\"></div>")
+					.select2({
+						id: '-1', // the value of the option
+						placeholder: /*[[#{report_client_balance.client_placeholder}]]*/ "Select a client",
+						allowClear: true,
+						minimumInputLength: 2,
+						width: 'element',
+						dropdownAutoWidth: true
+					});
+
+
+        $('#main_li').removeClass('active');
+
+        $('#reports_li').addClass('active').removeClass('collapsed');
+        $('#reports_a').attr('aria-expanded',true);
+        $('#reports').addClass('show');
+
+        $('#report_client_balance_a').addClass('text-primary');
+
+		$('#report_client_balance_show').on('click', function () {
+			$('#report_client_balance_detail_card').removeAttr('hidden');
+
+			vReportClientBalanceDetailValue.rowdata.start_date = $("#report_client_balance_start_date").val();
+			vReportClientBalanceDetailValue.rowdata.end_date = $("#report_client_balance_end_date").val();
+			vReportClientBalanceDetailValue.rowdata.req_cnt_id = $("#report_client_balance_client_list").val();
+			$(vReportClientBalanceDetailValue.table).DataTable().ajax.reload();
+		});
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="kpi_facts_branch_body" th:remove="tag">
+        <div><table id="table-kpi-facts-branch" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+        var dep_id_show, dep_name_show, month_1_plan_show, month_1_fact_show, month_1_color_show, month_2_plan_show, month_2_fact_show, month_2_color_show, month_3_plan_show, month_3_fact_show,
+                month_3_color_show, month_4_plan_show, month_4_fact_show, month_4_color_show, month_5_plan_show, month_5_fact_show, month_5_color_show, month_6_plan_show, month_6_fact_show,
+                month_6_color_show, month_7_plan_show, month_7_fact_show, month_7_color_show, month_8_plan_show, month_8_fact_show, month_8_color_show, month_9_plan_show, month_9_fact_show,
+                month_9_color_show, month_10_plan_show, month_10_fact_show, month_10_color_show, month_11_plan_show, month_11_fact_show, month_11_color_show, month_12_plan_show, month_12_fact_show,
+                month_12_color_show, month_13_plan_show, month_13_fact_show, month_13_color_show;
+
+        var dep_id_width, dep_name_width, month_1_plan_width, month_1_fact_width, month_1_color_width, month_2_plan_width, month_2_fact_width, month_2_color_width, month_3_plan_width, month_3_fact_width,
+                month_3_color_width, month_4_plan_width, month_4_fact_width, month_4_color_width, month_5_plan_width, month_5_fact_width, month_5_color_width, month_6_plan_width, month_6_fact_width,
+                month_6_color_width, month_7_plan_width, month_7_fact_width, month_7_color_width, month_8_plan_width, month_8_fact_width, month_8_color_width, month_9_plan_width, month_9_fact_width,
+                month_9_color_width, month_10_plan_width, month_10_fact_width, month_10_color_width, month_11_plan_width, month_11_fact_width, month_11_color_width, month_12_plan_width, month_12_fact_width,
+                month_12_color_width, month_13_plan_width, month_13_fact_width, month_13_color_width;
+
+        var dep_id_class, dep_name_class, month_1_plan_class, month_1_fact_class, month_1_color_class, month_2_plan_class, month_2_fact_class, month_2_color_class, month_3_plan_class, month_3_fact_class,
+                month_3_color_class, month_4_plan_class, month_4_fact_class, month_4_color_class, month_5_plan_class, month_5_fact_class, month_5_color_class, month_6_plan_class, month_6_fact_class,
+                month_6_color_class, month_7_plan_class, month_7_fact_class, month_7_color_class, month_8_plan_class, month_8_fact_class, month_8_color_class, month_9_plan_class, month_9_fact_class,
+                month_9_color_class, month_10_plan_class, month_10_fact_class, month_10_color_class, month_11_plan_class, month_11_fact_class, month_11_color_class, month_12_plan_class, month_12_fact_class,
+                month_12_color_class, month_13_plan_class, month_13_fact_class, month_13_color_class;
+        var vBranchDepHeader, vBranchPlanHeader, vBranchFactHeader;
+
+        var vBranchJanHeader = /*[[#{month.01_short}]]*/ null;
+        var vBrnachFebHeader = /*[[#{month.02_short}]]*/ null;
+        var vBranchMarchHeader = /*[[#{month.03_short}]]*/ null;
+        var vBranchAprlHeader = /*[[#{month.04_short}]]*/ null;
+        var vBranchMayHeader = /*[[#{month.05_short}]]*/ null;
+        var vBranchJuneHeader = /*[[#{month.06_short}]]*/ null;
+        var vBranchJulyHeader = /*[[#{month.07_short}]]*/ null;
+        var vBranchAugHeader = /*[[#{month.08_short}]]*/ null;
+        var vBranchSepHeader = /*[[#{month.09_short}]]*/ null;
+        var vBranchOctHeader = /*[[#{month.10_short}]]*/ null;
+        var vBranchNovHeader = /*[[#{month.11_short}]]*/ null;
+        var vBranchDecHeader = /*[[#{month.12_short}]]*/ null;
+        var vBranchAllHeader = /*[[#{month.all_short}]]*/ null;
+
+        if(mobileScreenSize){
+                vDomParam = "Blfrtip";
+        }
+        else if(smallScreenSize){
+                vDomParam = "Blfrtip";
+                dep_id_show = false;
+                dep_id_width = "";
+                dep_id_class = "";
+                dep_name_show = true;
+                dep_name_width = "9%";
+                dep_name_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center";
+                month_1_plan_show = true;
+                month_1_plan_width = "3%";
+                month_1_plan_class = "extra_small_size extra_small_head_size extra_small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_1_fact_show = true;
+                month_1_fact_width = "4%";
+                month_1_fact_class = "extra_small_size extra_small_head_size extra_small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_1_color_show = false;
+                month_1_color_width = "";
+                month_1_color_class = "";
+
+                month_2_plan_show = true;
+                month_2_plan_width = "3%";
+                month_2_plan_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center text-center";
+                month_2_fact_show = true;
+                month_2_fact_width = "4%";
+                month_2_fact_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center text-center";
+                month_2_color_show = false;
+                month_2_color_width = "";
+                month_2_color_class = "";
+
+                month_3_plan_show = true;
+                month_3_plan_width = "3%";
+                month_3_plan_class = "extra_small_size extra_small_head_size extra_small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_3_fact_show = true;
+                month_3_fact_width = "4%";
+                month_3_fact_class = "extra_small_size extra_small_head_size extra_small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_3_color_show = false;
+                month_3_color_width = "";
+                month_3_color_class = "";
+
+                month_4_plan_show = true;
+                month_4_plan_width = "3%";
+                month_4_plan_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center text-center";
+                month_4_fact_show = true;
+                month_4_fact_width = "4%";
+                month_4_fact_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center text-center";
+                month_4_color_show = false;
+                month_4_color_width = "";
+                month_4_color_class = "";
+
+                month_5_plan_show = true;
+                month_5_plan_width = "3%";
+                month_5_plan_class = "extra_small_size extra_small_head_size extra_small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_5_fact_show = true;
+                month_5_fact_width = "4%";
+                month_5_fact_class = "extra_small_size extra_small_head_size extra_small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_5_color_show = false;
+                month_5_color_width = "";
+                month_5_color_class = "";
+
+                month_6_plan_show = true;
+                month_6_plan_width = "3%";
+                month_6_plan_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center text-center";
+                month_6_fact_show = true;
+                month_6_fact_width = "4%";
+                month_6_fact_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center text-center";
+                month_6_color_show = false;
+                month_6_color_width = "";
+                month_6_color_class = "";
+
+                month_7_plan_show = true;
+                month_7_plan_width = "3%";
+                month_7_plan_class = "extra_small_size extra_small_head_size extra_small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_7_fact_show = true;
+                month_7_fact_width = "4%";
+                month_7_fact_class = "extra_small_size extra_small_head_size extra_small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_7_color_show = false;
+                month_7_color_width = "";
+                month_7_color_class = "";
+
+                month_8_plan_show = true;
+                month_8_plan_width = "3%";
+                month_8_plan_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center text-center";
+                month_8_fact_show = true;
+                month_8_fact_width = "4%";
+                month_8_fact_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center text-center";
+                month_8_color_show = false;
+                month_8_color_width = "";
+                month_8_color_class = "";
+
+                month_9_plan_show = true;
+                month_9_plan_width = "3%";
+                month_9_plan_class = "extra_small_size extra_small_head_size extra_small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_9_fact_show = true;
+                month_9_fact_width = "4%";
+                month_9_fact_class = "extra_small_size extra_small_head_size extra_small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_9_color_show = false;
+                month_9_color_width = "";
+                month_9_color_class = "";
+
+                month_10_plan_show = true;
+                month_10_plan_width = "3%";
+                month_10_plan_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center text-center";
+                month_10_fact_show = true;
+                month_10_fact_width = "4%";
+                month_10_fact_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center text-center";
+                month_10_color_show = false;
+                month_10_color_width = "";
+                month_10_color_class = "";
+
+                month_11_plan_show = true;
+                month_11_plan_width = "3%";
+                month_11_plan_class = "extra_small_size extra_small_head_size extra_small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_11_fact_show = true;
+                month_11_fact_width = "4%";
+                month_11_fact_class = "extra_small_size extra_small_head_size extra_small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_11_color_show = false;
+                month_11_color_width = "";
+                month_11_color_class = "";
+
+                month_12_plan_show = true;
+                month_12_plan_width = "3%";
+                month_12_plan_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center text-center";
+                month_12_fact_show = true;
+                month_12_fact_width = "4%";
+                month_12_fact_class = "extra_small_size extra_small_head_size extra_small_footer_size head-center text-center";
+                month_12_color_show = false;
+                month_12_color_width = "";
+                month_12_color_class = "";
+
+                month_13_plan_show = false;
+                month_13_plan_width = "3%";
+                month_13_plan_class = "extra_small_size extra_small_head_size extra_small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_13_fact_show = false;
+                month_13_fact_width = "4%";
+                month_13_fact_class = "extra_small_size extra_small_head_size extra_small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_13_color_show = false;
+                month_13_color_width = "";
+                month_13_color_class = "";
+
+                vBranchDepHeader = /*[[#{kpi_facts.branch.dep_name_short}]]*/ null;
+                vBranchPlanHeader = /*[[#{kpi_facts.branch.month_plan_short}]]*/ null;
+                vBranchFactHeader = /*[[#{kpi_facts.branch.month_fact_short}]]*/ null;
+
+                jan_col_header_class = "text_extra_small_size text-center head-light-grey";
+                feb_col_header_class = "text_extra_small_size text-center";
+                march_col_header_class = "text_extra_small_size text-center head-light-grey";
+                aprl_col_header_class = "text_extra_small_size text-center";
+                may_col_header_class = "text_extra_small_size text-center head-light-grey";
+                june_col_header_class = "text_extra_small_size text-center";
+                july_col_header_class = "text_extra_small_size text-center head-light-grey";
+                aug_col_header_class = "text_extra_small_size text-center";
+                sep_col_header_class = "text_extra_small_size text-center head-light-grey";
+                oct_col_header_class = "text_extra_small_size text-center";
+                nov_col_header_class = "text_extra_small_size text-center head-light-grey";
+                dec_col_header_class = "text_extra_small_size text-center";
+                all_col_header_class = "text_extra_small_size text-center head-light-grey";
+        }
+        else{
+                vDomParam = "Blfrtip";
+                dep_id_show = false;
+                dep_id_width = "";
+                dep_id_class = "";
+                dep_name_show = true;
+                dep_name_width = "7%";
+                dep_name_class = "small_size small_head_size small_footer_size head-center";
+                month_1_plan_show = true;
+                month_1_plan_width = "3%";
+                month_1_plan_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_1_fact_show = true;
+                month_1_fact_width = "4%";
+                month_1_fact_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_1_color_show = false;
+                month_1_color_width = "";
+                month_1_color_class = "";
+
+                month_2_plan_show = true;
+                month_2_plan_width = "3%";
+                month_2_plan_class = "small_size small_head_size small_footer_size head-center text-center";
+                month_2_fact_show = true;
+                month_2_fact_width = "4%";
+                month_2_fact_class = "small_size small_head_size small_footer_size head-center text-center";
+                month_2_color_show = false;
+                month_2_color_width = "";
+                month_2_color_class = "";
+
+                month_3_plan_show = true;
+                month_3_plan_width = "3%";
+                month_3_plan_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_3_fact_show = true;
+                month_3_fact_width = "4%";
+                month_3_fact_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_3_color_show = false;
+                month_3_color_width = "";
+                month_3_color_class = "";
+
+                month_4_plan_show = true;
+                month_4_plan_width = "3%";
+                month_4_plan_class = "small_size small_head_size small_footer_size head-center text-center";
+                month_4_fact_show = true;
+                month_4_fact_width = "4%";
+                month_4_fact_class = "small_size small_head_size small_footer_size head-center text-center";
+                month_4_color_show = false;
+                month_4_color_width = "";
+                month_4_color_class = "";
+
+                month_5_plan_show = true;
+                month_5_plan_width = "3%";
+                month_5_plan_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_5_fact_show = true;
+                month_5_fact_width = "4%";
+                month_5_fact_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_5_color_show = false;
+                month_5_color_width = "";
+                month_5_color_class = "";
+
+                month_6_plan_show = true;
+                month_6_plan_width = "3%";
+                month_6_plan_class = "small_size small_head_size small_footer_size head-center text-center";
+                month_6_fact_show = true;
+                month_6_fact_width = "4%";
+                month_6_fact_class = "small_size small_head_size small_footer_size head-center text-center";
+                month_6_color_show = false;
+                month_6_color_width = "";
+                month_6_color_class = "";
+
+                month_7_plan_show = true;
+                month_7_plan_width = "3%";
+                month_7_plan_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_7_fact_show = true;
+                month_7_fact_width = "4%";
+                month_7_fact_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_7_color_show = false;
+                month_7_color_width = "";
+                month_7_color_class = "";
+
+                month_8_plan_show = true;
+                month_8_plan_width = "3%";
+                month_8_plan_class = "small_size small_head_size small_footer_size head-center text-center";
+                month_8_fact_show = true;
+                month_8_fact_width = "4%";
+                month_8_fact_class = "small_size small_head_size small_footer_size head-center text-center";
+                month_8_color_show = false;
+                month_8_color_width = "";
+                month_8_color_class = "";
+
+                month_9_plan_show = true;
+                month_9_plan_width = "3%";
+                month_9_plan_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_9_fact_show = true;
+                month_9_fact_width = "4%";
+                month_9_fact_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_9_color_show = false;
+                month_9_color_width = "";
+                month_9_color_class = "";
+
+                month_10_plan_show = true;
+                month_10_plan_width = "3%";
+                month_10_plan_class = "small_size small_head_size small_footer_size head-center text-center";
+                month_10_fact_show = true;
+                month_10_fact_width = "4%";
+                month_10_fact_class = "small_size small_head_size small_footer_size head-center text-center";
+                month_10_color_show = false;
+                month_10_color_width = "";
+                month_10_color_class = "";
+
+                month_11_plan_show = true;
+                month_11_plan_width = "3%";
+                month_11_plan_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_11_fact_show = true;
+                month_11_fact_width = "4%";
+                month_11_fact_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_11_color_show = false;
+                month_11_color_width = "";
+                month_11_color_class = "";
+
+                month_12_plan_show = true;
+                month_12_plan_width = "3%";
+                month_12_plan_class = "small_size small_head_size small_footer_size head-center text-center";
+                month_12_fact_show = true;
+                month_12_fact_width = "4%";
+                month_12_fact_class = "small_size small_head_size small_footer_size head-center text-center";
+                month_12_color_show = false;
+                month_12_color_width = "";
+                month_12_color_class = "";
+
+                month_13_plan_show = true;
+                month_13_plan_width = "4%";
+                month_13_plan_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_13_fact_show = true;
+                month_13_fact_width = "5%";
+                month_13_fact_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center text-center";
+                month_13_color_show = false;
+                month_13_color_width = "";
+                month_13_color_class = "";
+
+                vBranchDepHeader = /*[[#{kpi_facts.branch.dep_name}]]*/ null;
+                vBranchPlanHeader = /*[[#{kpi_facts.branch.month_plan}]]*/ null;
+                vBranchFactHeader = /*[[#{kpi_facts.branch.month_fact}]]*/ null;
+
+                jan_col_header_class = "text_small_size text-center head-light-grey";
+                feb_col_header_class = "text_small_size text-center";
+                march_col_header_class = "text_small_size text-center head-light-grey";
+                aprl_col_header_class = "text_small_size text-center";
+                may_col_header_class = "text_small_size text-center head-light-grey";
+                june_col_header_class = "text_small_size text-center";
+                july_col_header_class = "text_small_size text-center head-light-grey";
+                aug_col_header_class = "text_small_size text-center";
+                sep_col_header_class = "text_small_size text-center head-light-grey";
+                oct_col_header_class = "text_small_size text-center";
+                nov_col_header_class = "text_small_size text-center head-light-grey";
+                dec_col_header_class = "text_small_size text-center";
+                all_col_header_class = "text_small_size text-center head-light-grey";
+        }
+
+        var vKPIFactBranchValue;
+        vKPIFactBranchValue = {
+                table : '#table-kpi-facts-branch',
+                header : 'table-kpi-facts-branch-header',
+                ajax : {
+                        "url": /*[[@{/kpi_facts/branch_table}]]*/ "kpi_facts/branch_table",
+                        "type": "post",
+                        "data": function ( d ) {
+                                d.kpi_facts_year = vKPIFactBranchValue.rowdata.kpi_facts_year;
+                                d.kpi_dep_id = vKPIFactBranchValue.rowdata.kpi_dep_id;
+                        }
+                },
+                key : "dep_id",
+                switchControl : kpi_facts_branch_switchControl,
+                rowdata:{
+                        dep_id: null,
+                        dep_name: null,
+                        kpi_facts_year: null,
+                        kpi_dep_id: null
+                },
+                ordering: true,
+                order: [
+                        [1, "asc"]
+                ],
+                dom: 'Blfrtip',
+                createdRow: function(row, data, index) {
+                        $(row).css('background-color', '#ffffff');
+                        $(row).find('td:eq(2)').css('background-color', data["month_1_color"]);
+                        $(row).find('td:eq(4)').css('background-color', data["month_2_color"]);
+                        $(row).find('td:eq(6)').css('background-color', data["month_3_color"]);
+                        $(row).find('td:eq(8)').css('background-color', data["month_4_color"]);
+                        $(row).find('td:eq(10)').css('background-color', data["month_5_color"]);
+                        $(row).find('td:eq(12)').css('background-color', data["month_6_color"]);
+                        $(row).find('td:eq(14)').css('background-color', data["month_7_color"]);
+                        $(row).find('td:eq(16)').css('background-color', data["month_8_color"]);
+                        $(row).find('td:eq(18)').css('background-color', data["month_9_color"]);
+                        $(row).find('td:eq(20)').css('background-color', data["month_10_color"]);
+                        $(row).find('td:eq(22)').css('background-color', data["month_11_color"]);
+                        $(row).find('td:eq(24)').css('background-color', data["month_12_color"]);
+                        $(row).find('td:eq(26)').css('background-color', data["month_13_color"]);
+
+                        if(data["dep_id"] === 0){
+                                $(row).css('background-color','#d5e1df');
+                                $(row).addClass("font-weight-bold text-center");
+                        }
+                },
+                columnDefs:[
+                        {"targets": [0], "width": dep_id_width, "className": dep_id_class, "visible": dep_id_show},
+                        {"targets": [1], "width": dep_name_width, "className": dep_name_class, "visible": dep_name_show},
+                        {"targets": [2], "width": month_1_plan_width, "className": month_1_plan_class, "visible": month_1_plan_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [3], "width": month_1_fact_width, "className": month_1_fact_class, "visible": month_1_fact_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [4], "width": month_1_color_width, "className": month_1_color_class, "visible": month_1_color_show},
+                        {"targets": [5], "width": month_2_plan_width, "className": month_2_plan_class, "visible": month_2_plan_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [6], "width": month_2_fact_width, "className": month_2_fact_class, "visible": month_2_fact_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [7], "width": month_2_color_width, "className": month_2_color_class, "visible": month_2_color_show},
+                        {"targets": [8], "width": month_3_plan_width, "className": month_3_plan_class, "visible": month_3_plan_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [9], "width": month_3_fact_width, "className": month_3_fact_class, "visible": month_3_fact_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [10], "width": month_3_color_width, "className": month_3_color_class, "visible": month_3_color_show},
+                        {"targets": [11], "width": month_4_plan_width, "className": month_4_plan_class, "visible": month_4_plan_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [12], "width": month_4_fact_width, "className": month_4_fact_class, "visible": month_4_fact_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [13], "width": month_4_color_width, "className": month_4_color_class, "visible": month_4_color_show},
+                        {"targets": [14], "width": month_5_plan_width, "className": month_5_plan_class, "visible": month_5_plan_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [15], "width": month_5_fact_width, "className": month_5_fact_class, "visible": month_5_fact_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [16], "width": month_5_color_width, "className": month_5_color_class, "visible": month_5_color_show},
+                        {"targets": [17], "width": month_6_plan_width, "className": month_6_plan_class, "visible": month_6_plan_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [18], "width": month_6_fact_width, "className": month_6_fact_class, "visible": month_6_fact_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [19], "width": month_6_color_width, "className": month_6_color_class, "visible": month_6_color_show},
+                        {"targets": [20], "width": month_7_plan_width, "className": month_7_plan_class, "visible": month_7_plan_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [21], "width": month_7_fact_width, "className": month_7_fact_class, "visible": month_7_fact_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [22], "width": month_7_color_width, "className": month_7_color_class, "visible": month_7_color_show},
+                        {"targets": [23], "width": month_8_plan_width, "className": month_8_plan_class, "visible": month_8_plan_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [24], "width": month_8_fact_width, "className": month_8_fact_class, "visible": month_8_fact_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [25], "width": month_8_color_width, "className": month_8_color_class, "visible": month_8_color_show},
+                        {"targets": [26], "width": month_9_plan_width, "className": month_9_plan_class, "visible": month_9_plan_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [27], "width": month_9_fact_width, "className": month_9_fact_class, "visible": month_9_fact_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [28], "width": month_9_color_width, "className": month_9_color_class, "visible": month_9_color_show},
+                        {"targets": [29], "width": month_10_plan_width, "className": month_10_plan_class, "visible": month_10_plan_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [30], "width": month_10_fact_width, "className": month_10_fact_class, "visible": month_10_fact_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [31], "width": month_10_color_width, "className": month_10_color_class, "visible": month_10_color_show},
+                        {"targets": [32], "width": month_11_plan_width, "className": month_11_plan_class, "visible": month_11_plan_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [33], "width": month_11_fact_width, "className": month_11_fact_class, "visible": month_11_fact_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [34], "width": month_11_color_width, "className": month_11_color_class, "visible": month_11_color_show},
+                        {"targets": [35], "width": month_12_plan_width, "className": month_12_plan_class, "visible": month_12_plan_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [36], "width": month_12_fact_width, "className": month_12_fact_class, "visible": month_12_fact_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [37], "width": month_12_color_width, "className": month_12_color_class, "visible": month_12_color_show},
+                        {"targets": [38], "width": month_13_plan_width, "className": month_13_plan_class, "visible": month_13_plan_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [39], "width": month_13_fact_width, "className": month_13_fact_class, "visible": month_13_fact_show, render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+                        {"targets": [40], "width": month_13_color_width, "className": month_13_color_class, "visible": month_13_color_show}
+                ],
+                columns : [
+                        /*0*/{"title": /*[[#{kpi_facts.branch.dep_id}]]*/ "dep_id", "data": "dep_id"},
+                        /*1*/{"title": vBranchDepHeader, "data": "dep_name"},
+                        /*2*/{"title": vBranchPlanHeader, "data": "month_1_plan"},
+                        /*3*/{"title": vBranchFactHeader, "data": "month_1_fact"},
+                        /*4*/{"title": /*[[#{kpi_facts.branch.month_color}]]*/ "month_1_color", "data": "month_1_color"},
+                        /*5*/{"title": vBranchPlanHeader, "data": "month_2_plan"},
+                        /*6*/{"title": vBranchFactHeader, "data": "month_2_fact"},
+                        /*7*/{"title": /*[[#{kpi_facts.branch.month_color}]]*/ "month_2_color", "data": "month_2_color"},
+                        /*8*/{"title": vBranchPlanHeader, "data": "month_3_plan"},
+                        /*9*/{"title": vBranchFactHeader, "data": "month_3_fact"},
+                        /*10*/{"title": /*[[#{kpi_facts.branch.month_color}]]*/ "month_3_color", "data": "month_3_color"},
+                        /*11*/{"title": vBranchPlanHeader, "data": "month_4_plan"},
+                        /*12*/{"title": vBranchFactHeader, "data": "month_4_fact"},
+                        /*13*/{"title": /*[[#{kpi_facts.branch.month_color}]]*/ "month_4_color", "data": "month_4_color"},
+                        /*14*/{"title": vBranchPlanHeader, "data": "month_5_plan"},
+                        /*15*/{"title": vBranchFactHeader, "data": "month_5_fact"},
+                        /*16*/{"title": /*[[#{kpi_facts.branch.month_color}]]*/ "month_5_color", "data": "month_5_color"},
+                        /*17*/{"title": vBranchPlanHeader, "data": "month_6_plan"},
+                        /*18*/{"title": vBranchFactHeader, "data": "month_6_fact"},
+                        /*19*/{"title": /*[[#{kpi_facts.branch.month_color}]]*/ "month_6_color", "data": "month_6_color"},
+                        /*20*/{"title": vBranchPlanHeader, "data": "month_7_plan"},
+                        /*21*/{"title": vBranchFactHeader, "data": "month_7_fact"},
+                        /*22*/{"title": /*[[#{kpi_facts.branch.month_color}]]*/ "month_7_color", "data": "month_7_color"},
+                        /*23*/{"title": vBranchPlanHeader, "data": "month_8_plan"},
+                        /*24*/{"title": vBranchFactHeader, "data": "month_8_fact"},
+                        /*25*/{"title": /*[[#{kpi_facts.branch.month_color}]]*/ "month_8_color", "data": "month_8_color"},
+                        /*26*/{"title": vBranchPlanHeader, "data": "month_9_plan"},
+                        /*27*/{"title": vBranchFactHeader, "data": "month_9_fact"},
+                        /*28*/{"title": /*[[#{kpi_facts.branch.month_color}]]*/ "month_9_color", "data": "month_9_color"},
+                        /*29*/{"title": vBranchPlanHeader, "data": "month_10_plan"},
+                        /*30*/{"title": vBranchFactHeader, "data": "month_10_fact"},
+                        /*31*/{"title": /*[[#{kpi_facts.branch.month_color}]]*/ "month_10_color", "data": "month_10_color"},
+                        /*32*/{"title": vBranchPlanHeader, "data": "month_11_plan"},
+                        /*33*/{"title": vBranchFactHeader, "data": "month_11_fact"},
+                        /*34*/{"title": /*[[#{kpi_facts.branch.month_color}]]*/ "month_11_color", "data": "month_11_color"},
+                        /*35*/{"title": vBranchPlanHeader, "data": "month_12_plan"},
+                        /*36*/{"title": vBranchFactHeader, "data": "month_12_fact"},
+                        /*37*/{"title": /*[[#{kpi_facts.branch.month_color}]]*/ "month_12_color", "data": "month_12_color"},
+                        /*38*/{"title": vBranchPlanHeader, "data": "month_13_plan"},
+                        /*39*/{"title": vBranchFactHeader, "data": "month_13_fact"},
+                        /*40*/{"title": /*[[#{kpi_facts.branch.month_color}]]*/ "month_13_color", "data": "month_13_color"}
+                ],
+                pageLength: 25,
+                copy_button: true,
+                excel_button: true,
+                pdf_button: true,
+                print_button: true
+        };
+
+        function kpi_facts_branch_hide(){
+                $('#kpi_facts_users_card').attr('hidden', true);
+                kpi_facts_users_hide();
+        }
+
+        function kpi_facts_branch_switchControl(){
+                kpi_facts_branch_hide();
+                if(vKPIFactBranchValue.rowdata.dep_id != null){
+                        $('#kpi_facts_users_card').removeAttr('hidden');
+                        vKPIFactUsersValue.rowdata.kpi_facts_year = $("#kpi_facts_year").val();
+                        vKPIFactUsersValue.rowdata.kpi_main_dep_id = vKPIFactListValue.rowdata.dep_id;
+                        vKPIFactUsersValue.rowdata.kpi_dep_id = vKPIFactBranchValue.rowdata.dep_id;
+                        $(vKPIFactUsersValue.table).DataTable().ajax.reload(null, false);
+                }
+                else{
+                        vKPIFactUsersValue.rowdata.kpi_facts_year = null;
+                        vKPIFactUsersValue.rowdata.kpi_main_dep_id = null;
+                        vKPIFactUsersValue.rowdata.kpi_dep_id = null;
+                        vKPIFactUsersValue.rowdata.user_id = null;
+                        $(vKPIFactUsersValue.table).DataTable().clear().draw();
+                }
+        }
+
+        $(document).ready(function(){
+                vKPIFactBranchValue.rowdata.dep_id = /*[[${id}]]*/ null;
+                vKPIFactBranchValue.rowdata.kpi_facts_year = /*[[${kpi_facts_year}]]*/ null;
+
+                vKPIFactBranchValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+                vKPIFactBranchValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+                vKPIFactBranchValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+                vKPIFactBranchValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+                vKPIFactBranchValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+                recreateDataTable(vKPIFactBranchValue);
+
+                var branchTable = $(vKPIFactBranchValue.table).DataTable();
+                $(branchTable.table().header()).attr('id',vKPIFactBranchValue.header);
+
+                if(mobileScreenSize){
+                }
+                else if(smallScreenSize) {
+                        $(vKPIFactBranchValue.table + "-header tr:first").before(
+                                '<tr role="row">' +
+                                '<th></th>' +
+                                '<th colspan="2" id="jan_col_header" class="' + jan_col_header_class + '">' + vBranchJanHeader + '</th>' +
+                                '<th colspan="2" id="feb_col_header" class="' + feb_col_header_class + '">' + vBrnachFebHeader + '</th>' +
+                                '<th colspan="2" id="march_col_header" class="' + march_col_header_class + '">' + vBranchMarchHeader + '</th>' +
+                                '<th colspan="2" id="aprl_col_header" class="' + aprl_col_header_class + '">' + vBranchAprlHeader + '</th>' +
+                                '<th colspan="2" id="may_col_header" class="' + may_col_header_class + '">' + vBranchMayHeader + '</th>' +
+                                '<th colspan="2" id="june_col_header" class="' + june_col_header_class + '">' + vBranchJuneHeader + '</th>' +
+                                '<th colspan="2" id="july_col_header" class="' + july_col_header_class + '">' + vBranchJulyHeader + '</th>' +
+                                '<th colspan="2" id="aug_col_header" class="' + aug_col_header_class + '">' + vBranchAugHeader + '</th>' +
+                                '<th colspan="2" id="sep_col_header" class="' + sep_col_header_class + '">' + vBranchSepHeader + '</th>' +
+                                '<th colspan="2" id="oct_col_header" class="' + oct_col_header_class + '">' + vBranchOctHeader + '</th>' +
+                                '<th colspan="2" id="nov_col_header" class="' + nov_col_header_class + '">' + vBranchNovHeader + '</th>' +
+                                '<th colspan="2" id="dec_col_header" class="' + dec_col_header_class + '">' + vBranchDecHeader + '</th>' +
+                                '</tr>'
+                        );
+                }
+                else{
+                        $(vKPIFactBranchValue.table + "-header tr:first").before(
+                                '<tr role="row">' +
+                                '<th></th>' +
+                                '<th colspan="2" id="jan_col_header" class="' + jan_col_header_class + '">' + vBranchJanHeader + '</th>' +
+                                '<th colspan="2" id="feb_col_header" class="' + feb_col_header_class + '">' + vBrnachFebHeader + '</th>' +
+                                '<th colspan="2" id="march_col_header" class="' + march_col_header_class + '">' + vBranchMarchHeader + '</th>' +
+                                '<th colspan="2" id="aprl_col_header" class="' + aprl_col_header_class + '">' + vBranchAprlHeader + '</th>' +
+                                '<th colspan="2" id="may_col_header" class="' + may_col_header_class + '">' + vBranchMayHeader + '</th>' +
+                                '<th colspan="2" id="june_col_header" class="' + june_col_header_class + '">' + vBranchJuneHeader + '</th>' +
+                                '<th colspan="2" id="july_col_header" class="' + july_col_header_class + '">' + vBranchJulyHeader + '</th>' +
+                                '<th colspan="2" id="aug_col_header" class="' + aug_col_header_class + '">' + vBranchAugHeader + '</th>' +
+                                '<th colspan="2" id="sep_col_header" class="' + sep_col_header_class + '">' + vBranchSepHeader + '</th>' +
+                                '<th colspan="2" id="oct_col_header" class="' + oct_col_header_class + '">' + vBranchOctHeader + '</th>' +
+                                '<th colspan="2" id="nov_col_header" class="' + nov_col_header_class + '">' + vBranchNovHeader + '</th>' +
+                                '<th colspan="2" id="dec_col_header" class="' + dec_col_header_class + '">' + vBranchDecHeader + '</th>' +
+                                '<th colspan="2" id="all_col_header" class="' + all_col_header_class + '">' + vBranchAllHeader + '</th>' +
+                                '</tr>'
+                        );
+                }
+        });
+</script>
+
+</body>
+</html>

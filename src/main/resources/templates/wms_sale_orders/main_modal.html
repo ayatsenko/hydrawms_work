@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="wms_sale_orders_main_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="wms_sale_orders_main_modal" data-toggle="validator" tabindex="-1" role="dialog"
+         data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="wms_sale_orders_main_modal_mode">
+            </div>
+
+            <div class="modal-content" id="wms_sale_orders_main_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{users_kpi_meets.users.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mb-1">
+                    <form id="wms_sale_orders_main_modal_form" name="wms_sale_orders_main_modal_form" class="was-validated" novalidate>
+                        <div class="form-row">
+                            <div class="col-12 col-md-12 mb-1" id="wms_sale_orders_main_modal_cnt_name_row">
+                                <label for="wms_sale_orders_main_modal_cnt_name" class="form-label" th:text="'1. '+ #{wms_sale_orders.main.cnt_name}"></label>
+                                <input type="text" maxlength="128" class="form-control" id="wms_sale_orders_main_modal_cnt_name" name="wms_sale_orders_main_modal_cnt_name" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-12 col-md-12 mb-1" id="wms_sale_orders_main_modal_order_num_row">
+                                <label for="wms_sale_orders_main_modal_order_num" th:text="'2. '+#{wms_sale_orders.main.order_num}"></label>
+                                <input type="text" maxlength="32" class="form-control" id="wms_sale_orders_main_modal_order_num" name="wms_sale_orders_main_modal_order_num" readonly>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="col-12 col-md-12 mb-1" id="wms_sale_orders_main_modal_exch_sale_order_post_id_row">
+                                <label for="wms_sale_orders_main_modal_exch_sale_order_post_id" th:text="'3. '+#{wms_sale_orders.main.exch_sale_order_post_id}"></label>
+                                <input type="text" maxlength="32" class="form-control" id="wms_sale_orders_main_modal_exch_sale_order_post_id" name="wms_sale_orders_main_modal_exch_sale_order_post_id">
+                            </div>
+                        </div>                        
+                    </form>
+                </div><!-- Body -->
+                <div class="modal-footer">
+                    <button type="button" id="wms_sale_orders_main_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="wms_sale_orders_main_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="wms_sale_orders_main_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="wms_sale_orders_main_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+// Clear Fields
+    function clear_wms_sale_orders_main_modal_detail() {
+        $("#wms_sale_orders_main_modal_detail input[type=text]").val('');
+        $("#wms_sale_orders_main_modal_detail input[type=number]").val('');
+        $("#wms_sale_orders_main_modal_detail select").empty();
+        $("#wms_sale_orders_main_modal_detail textarea").val('');
+    }
+
+// Block And Required Fields
+    function block_wms_sale_orders_main_modal_detail() {
+        if ($('#wms_sale_orders_main_modal_mode').val() === "0") {
+            $('#user_id').removeAttr('disabled');
+        } else if ($('#wms_sale_orders_main_modal_mode').val() === "1") {            
+            $('#user_id').removeAttr('disabled');
+        } else {
+
+            $('#user_id').attr('disabled',true);
+        }
+    }
+
+// Load Function
+    function fill_wms_sale_orders_main_modal_detail(aMode) {
+        $('#wms_sale_orders_main_modal_mode').val(aMode);
+        clear_wms_sale_orders_main_modal_detail();
+        block_wms_sale_orders_main_modal_detail();
+
+        $('#wms_sale_orders_main_modal_cnt_name').val(vWMSSaleOrderMainValue.rowdata.cnt_name);
+        $('#wms_sale_orders_main_modal_order_num').val(vWMSSaleOrderMainValue.rowdata.order_num);
+        $('#wms_sale_orders_main_modal_exch_sale_order_post_id').val(vWMSSaleOrderMainValue.rowdata.exch_sale_order_post_id);
+
+        $('#wms_sale_orders_main_modal').modal('show');
+    }
+
+// Add button script
+    $('#wms_sale_orders_main_modal_addbtn').click(function () {
+        $('#wms_sale_orders_main_modal_form').submit();
+    });
+// Edit button script
+    $('#wms_sale_orders_main_modal_editbtn').click(function () {
+        $('#wms_sale_orders_main_modal_form').submit();
+    });
+// Del button script
+    $('#wms_sale_orders_main_modal_delbtn').click(function () {
+        $('#wms_sale_orders_main_modal_form').submit();
+    });
+
+//Add KPI Meets User
+    function addWMSSaleOrdersMainModal() {
+    }
+
+//Edit KPI Meets User
+    function editWMSSaleOrdersMainModal() {
+        let RowID = vWMSSaleOrderMainValue.rowdata.exch_ser_file_id;
+
+        $.ajax({
+            url: /*[[ @{/wms_sale_orders/edit_main_post} ]]*/ "/wms_sale_orders/edit_main_post",
+            type: 'POST',
+            data: {
+                "client_id": vWMSSaleOrderMainValue.rowdata.client_id,
+                "exch_sale_order_post_id": $('#wms_sale_orders_main_modal_exch_sale_order_post_id').val()
+            },
+            success: function (result) {
+                $('#wms_sale_orders_main_modal').modal('hide');
+
+                vWMSSaleOrderMainValue.rowdata.exch_ser_file_id = RowID;
+                $(vWMSSaleOrderMainValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+//Del KPI Meets User
+    function delWMSSaleOrdersMainModal() {
+    }
+
+//Validation Form
+    $('#wms_sale_orders_main_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function (error, element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            if ($('#wms_sale_orders_main_modal_mode').val() === '0') {
+                addWMSSaleOrdersMainModal();
+            } else if ($('#wms_sale_orders_main_modal_mode').val() === '1') {
+                editWMSSaleOrdersMainModal();
+            } else if ($('#wms_sale_orders_main_modal_mode').val() === '2') {
+                delWMSSaleOrdersMainModal();
+            }
+            return false;
+        }
+    });
+// OnChange Functions
+</script>
+
+</body>
+</html>

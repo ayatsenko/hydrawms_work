@@ -1,0 +1,216 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{users.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{users.caption}"></h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <!--/*@thymesVar id="user_pass_detail_detail" type="java.util.List"*/-->
+                <form id="user-pass-detail-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/users/list_model}">
+                    <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="user-pass-detail-indexfrm">Cancel</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="user-pass-detail-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                            <button th:case="1" type="submit" id="user-pass-detail-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                            <button th:case="2" type="submit" id="user-pass-detail-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                        </div>
+                    </div>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="user_id" th:value="${user_id}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="users_list_table_order_column" th:value="${users_list_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="users_list_table_order_type" th:value="${users_list_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="users_list_table_search" th:value="${users_list_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="users_list_table_pagelen" th:value="${users_list_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="users_list_table_page" th:value="${users_list_table_page}" >
+
+                    <div class="form-row mb-1">
+                        <div class="col-md-1" id="user_id_row">
+                            <label for="user_id" class="form-label mb-0" th:text="'1. '+ #{users.list.user_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="user_id" name="user_id" th:value="${user_id}">
+                        </div>
+                        <div class="col-md-2" id="user_name_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="user_name" class="form-label mb-0" th:text="'2. '+#{users.list.user_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="user_name" name="user_name" th:value="${user_name}">
+                        </div>
+                        <div class="col-md-5" id="user_surname_row">
+                            <label for="user_surname" class="form-label mb-0" th:text="'3. '+#{users.list.user_surname}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="128" class="form-control" id="user_surname" name="user_surname" th:value="${user_surname}">
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-md-3" id="pos_id_row">
+                            <label for="pos_id" class="form-label mb-0" th:text="'4. '+ #{users.list.pos_list}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" class="custom-select" id="pos_id" name="pos_id">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option th:each="pos : ${pos_list}"
+                                        th:value="${pos.pos_id}"
+                                        th:text="${pos.pos_name}"
+                                        th:selected="${pos.pos_id == pos_id}"
+                                ></option>
+                            </select>
+                        </div>
+                        <div class="col-md-3" id="role_id_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="role_id" class="form-label mb-0" th:text="'5. '+#{users.list.role_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" class="custom-select" id="role_id" name="role_id">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <option th:each="rol : ${roles_list}"
+                                        th:value="${rol.role_id}"
+                                        th:text="${rol.role_sname}"
+                                        th:selected="${rol.role_id == role_id}"
+                            ></option>
+                            </select>
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-md-3" id="user_email_row">
+                            <label for="user_email" class="form-label mb-0" th:text="'6. '+ #{users.list.user_email}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="user_email" name="user_email" th:value="${user_email}">
+                        </div>
+                        <div class="col-md-2" id="user_mainphone_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="user_mainphone" class="form-label mb-0" th:text="'7. '+#{users.list.user_mainphone}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="user_mainphone" name="user_mainphone" th:value="${user_mainphone}">
+                        </div>
+                        <div class="col-md-2" id="user_nonmainphone_row">
+                            <label for="user_surname" class="form-label mb-0" th:text="'8. '+#{users.list.user_nonmainphone}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="48" class="form-control" id="user_nonmainphone" name="user_nonmainphone" th:value="${user_nonmainphone}">
+                        </div>
+                    </div><!-- Row 3 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-md-3" id="telegram_chatid_row">
+                            <label for="telegram_chatid" class="form-label mb-0" th:text="'9. '+ #{users.list.telegram_chatid}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="32" class="form-control" id="telegram_chatid" name="telegram_chatid" th:value="${telegram_chatid}">
+                        </div>
+                    </div><!-- Row 4 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-md-3 mb-2" id="user_status_row">
+                            <label for="user_status_id" class="form-label mb-0" th:text="'10. '+ #{users.list.user_status}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" class="form-control" id="user_status_id" name="user_status_id" required>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option th:each="status: ${status_list}"
+                                        th:value="${status.user_status_id}"
+                                        th:text="${status.user_status_name}"
+                                        th:selected="${status.user_status_id == user_status_id}"
+                                ></option>
+                            </select>
+                        </div>
+                    </div><!-- Row 5 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-md-7 mb-2">
+                            <label for="user_note" th:text="'11. '+#{users.list.user_note}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="64" style="resize:none;" id="user_note" name="user_note" th:text="${user_note}">
+                            </textarea>
+                        </div>
+                    </div><!-- Row 6 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-md-7 mb-2" id="user_token_row">
+                            <label for="user_id" class="form-label mb-0" th:text="'12. '+ #{users.list.user_token}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="user_token" name="user_token" th:value="${user_token}">
+                        </div>
+                    </div><!-- Row 7 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-md-7" id="user_password_row">
+                            <label for="user_password" class="form-label mb-0" th:text="'13. '+ #{users.list.user_password}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="user_password" name="user_password" th:value="${user_password}">
+                        </div>
+                    </div><!-- Row 8 -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--/*@thymesVar id="user_pass_detail_detail" type="java.util.List"*/-->
+    <form id="user-pass-detail-indexfrm" method="post" th:action="@{/users}" hidden>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="user_id" th:value="${user_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="users_list_table_order_column" th:value="${users_list_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="users_list_table_order_type" th:value="${users_list_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="users_list_table_search" th:value="${users_list_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="users_list_table_pagelen" th:value="${users_list_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="users_list_table_page" th:value="${users_list_table_page}" >
+    </form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'user-pass-detail-indexfrm')">Error</span>
+
+<script>
+    $(document).ready(function(){
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#settings_li').addClass('active').removeClass('collapsed');
+        $('#settings_a').attr('aria-expanded',true);
+        $('#settings').addClass('show');
+
+        $('#users_a').addClass('text-primary');
+<!-- Form Start -->
+        $('#user_id').prop('readOnly',true);
+        $('#user_name').prop('required',true);
+
+        $('#user_token').prop('readOnly',true);
+        $('#user_password').prop('readOnly',true);
+<!-- Change Function -->
+        if($('#mode').val() === '0'){
+            $('#user_id_row').prop('hidden',true);
+            $('#user_name').prop('required',true);
+
+            $('#user_status_id').attr('readOnly',true);
+        }
+        else if($('#mode').val() === '2' || $('#mode').val() === '4'){
+            $('#user_id').prop('readOnly',true);
+            $('#user_name').prop('readOnly',true);
+            $('#user_surname').prop('readOnly',true);
+            $('#pos_id').attr('readOnly',true);
+            $('#role_id').attr('readOnly',true);
+            $('#user_email').prop('readOnly',true);
+            $('#user_mainphone').prop('readOnly',true);
+            $('#user_nonmainphone').prop('readOnly',true);
+            $('#user_status_id').attr('readOnly',true);
+            $('#user_note').prop('readOnly',true);
+        }
+    });
+</script>
+</body>
+</html>

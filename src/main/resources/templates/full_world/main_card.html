@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="full_world_main_body" th:remove="tag">
+    <form id="full-world-main-detail" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+
+            <div id="full-world-main-btn-large" class="d-none d-sm-block">
+                 <button type="button" id="full-world-main-check" class="btn btn-sm btn-dark" disabled><i class="fas fa-check"></i></button>
+                 <button type="button" id="full-world-main-uncheck" class="btn btn-sm btn-dark mr-2" disabled><i class="fas fa-times"></i></button>
+
+                 <button type="button" id="full-world-main-detailbtn" class="btn btn-sm btn-dark" th:text="#{general.detailbtn}" disabled>View</button>
+                 <button type="button" id="full-world-main-addbtn" class="btn btn-sm btn-primary" th:text="#{general.addbtn}">Add</button>
+                 <button type="button" id="full-world-main-clonebtn" class="btn btn-sm btn-dark" th:text="#{general.clonebtn}" disabled>Clone</button>
+                 <button type="button" id="full-world-main-editbtn" class="btn btn-sm btn-dark" th:text="#{general.editbtn}" disabled>Edit</button>
+                 <button type="button" id="full-world-main-delbtn" class="btn btn-sm btn-dark mr-2" th:text="#{general.delbtn}" disabled>Delete</button>
+
+                 <button type="button" id="full-world-main-reload" class="btn btn-sm btn-primary mr-2"><i class="fas fa-sync-alt"></i></button>
+              </div>
+              <div id="full-world-main-btn-small" class="d-block d-sm-none">
+                 <button type="button" id="full-world-main-check-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-check"></i></button>
+                 <button type="button" id="full-world-main-uncheck-sx" class="btn btn-sm btn-dark mr-2" disabled><i class="fas fa-times"></i></button>
+
+                 <button type="button" id="full-world-main-detailbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="list"></i></button>
+                 <button type="button" id="full-world-main-addbtn-sx" class="btn btn-sm btn-primary"><i data-feather="plus"></i></button>
+                 <button type="button" id="full-world-main-clonebtn-sx" class="btn btn-sm btn-dark"><i data-feather="copy"></i></button>
+                 <button type="button" id="full-world-main-editbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="edit-2"></i></button>
+                 <button type="button" id="full-world-main-delbtn-sx" class="btn btn-sm btn-dark mr-2" disabled><i data-feather="trash-2"></i></button>
+
+                  <button type="button" id="full-world-main-reload-sx" class="btn btn-sm btn-primary mr-2"><i class="fas fa-sync-alt"></i></button>
+              </div>
+        </form>
+
+        <div><table id="table-full-world-main" class="table table-striped table-sm table-bordered nowrap" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var rn_width, clm_id_width, clm_num_width, cnt_id_width,cnt_name_width,ways_width,loads_date_width,unload_date_width,trans_id_width,trans_name_width,cars_id_width,
+        cars_number_width,driver_id_width,driver_name_width,user_id_width,user_name_width,trans_user_id_width,trans_user_name_width,clm_rate_currency_id_width,
+        clm_rate_currency_name_width,clm_rate_width,clm_costs_currency_id_width,clm_costs_currency_name_width,clm_costs_width,clm_status_id_width,
+        clm_status_sname_width,clm_status_colour_width,clm_check_width,clm_uncheck_width;
+
+    var rn_class, clm_id_class, clm_num_class, cnt_id_class,cnt_name_class,ways_class,loads_date_class,unload_date_class,trans_id_class,trans_name_class,cars_id_class,
+        cars_number_class,driver_id_class,driver_name_class,user_id_class,user_name_class,trans_user_id_class,trans_user_name_class,clm_rate_currency_id_class,
+        clm_rate_currency_name_class,clm_rate_class,clm_costs_currency_id_class,clm_costs_currency_name_class,clm_costs_class,clm_status_id_class,
+        clm_status_sname_class,clm_status_colour_class,clm_check_class,clm_uncheck_class;
+
+    var rn_show, clm_id_show, clm_num_show, cnt_id_show,cnt_name_show,ways_show,loads_date_show,unload_date_show,trans_id_show,trans_name_show,cars_id_show,
+        cars_number_show,driver_id_show,driver_name_show,user_id_show,user_name_show,trans_user_id_show,trans_user_name_show,clm_rate_currency_id_show,
+        clm_rate_currency_name_show,clm_rate_show,clm_costs_currency_id_show,clm_costs_currency_name_show,clm_costs_show,clm_status_id_show,
+        clm_status_sname_show,clm_status_colour_show,clm_check_show,clm_uncheck_show;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+
+        $('#full-world-main-detail').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        rn_width = "";
+        rn_class = "small_size small_head_size small_footer_size";
+        rn_show = true;
+        clm_id_width = "";
+        clm_id_class = "";
+        clm_id_show = false;
+        clm_num_width = "";
+        clm_num_class = "small_size small_head_size small_footer_size";
+        clm_num_show = true;
+        cnt_id_width = "";
+        cnt_id_class = "";
+        cnt_id_show = false;
+        cnt_name_width = "";
+        cnt_name_class = "small_size small_head_size small_footer_size";
+        cnt_name_show = true;
+        ways_width = "";
+        ways_class = "small_size small_head_size small_footer_size";
+        ways_show = true;
+        loads_date_width = "";
+        loads_date_class = "small_size small_head_size small_footer_size text-center";
+        loads_date_show = true;
+        unload_date_width = "";
+        unload_date_class = "small_size small_head_size small_footer_size text-center";
+        unload_date_show = true;
+        trans_id_width = "";
+        trans_id_class = "";
+        trans_id_show = false;
+        trans_name_width = "";
+        trans_name_class = "small_size small_head_size small_footer_size";
+        trans_name_show = true;
+        cars_id_width = "";
+        cars_id_class = "";
+        cars_id_show = false;
+        cars_number_width = "";
+        cars_number_class = "small_size small_head_size small_footer_size";
+        cars_number_show = true;
+        driver_id_width = "";
+        driver_id_class = "";
+        driver_id_show = false;
+        driver_name_width = "";
+        driver_name_class = "small_size small_head_size small_footer_size";
+        driver_name_show = true;
+        user_id_width = "";
+        user_id_class = "";
+        user_id_show = false;
+        user_name_width = "";
+        user_name_class = "small_size small_head_size small_footer_size";
+        user_name_show = true;
+        trans_user_id_width = "";
+        trans_user_id_class = "";
+        trans_user_id_show = false;
+        trans_user_name_width = "";
+        trans_user_name_class = "small_size small_head_size small_footer_size";
+        trans_user_name_show = true;
+        clm_rate_currency_id_width = "";
+        clm_rate_currency_id_class = "";
+        clm_rate_currency_id_show = false;
+        clm_rate_currency_name_width = "";
+        clm_rate_currency_name_class = "small_size small_head_size small_footer_size text-center";
+        clm_rate_currency_name_show = true;
+        clm_rate_width = "";
+        clm_rate_class = "small_size small_head_size small_footer_size";
+        clm_rate_show = true;
+        clm_costs_currency_id_width = "";
+        clm_costs_currency_id_class = "";
+        clm_costs_currency_id_show = false;
+        clm_costs_currency_name_width = "";
+        clm_costs_currency_name_class = "small_size small_head_size small_footer_size text-center";
+        clm_costs_currency_name_show = true;
+        clm_costs_width = "";
+        clm_costs_class = "small_size small_head_size small_footer_size";
+        clm_costs_show = true;
+        clm_status_id_width = "";
+        clm_status_id_class = "";
+        clm_status_id_show = false;
+        clm_status_sname_width = "";
+        clm_status_sname_class = "small_size small_head_size small_footer_size text-center";
+        clm_status_sname_show = true;
+        clm_status_colour_width = "";
+        clm_status_colour_class = "";
+        clm_status_colour_show = false;
+        clm_check_width = "";
+        clm_check_class = "";
+        clm_check_show = false;
+        clm_uncheck_width = "";
+        clm_uncheck_class = "";
+        clm_uncheck_show = false;
+
+        $('#full-world-main-detail').removeAttr('hidden');
+    }
+    else{
+        vDomParam = "Blfrtip";
+        rn_width = "";
+        rn_class = "small_size small_head_size small_footer_size";
+        rn_show = true;
+        clm_id_width = "";
+        clm_id_class = "";
+        clm_id_show = false;
+        clm_num_width = "";
+        clm_num_class = "small_size small_head_size small_footer_size";
+        clm_num_show = true;
+        cnt_id_width = "";
+        cnt_id_class = "";
+        cnt_id_show = false;
+        cnt_name_width = "";
+        cnt_name_class = "small_size small_head_size small_footer_size";
+        cnt_name_show = true;
+        ways_width = "";
+        ways_class = "small_size small_head_size small_footer_size";
+        ways_show = true;
+        loads_date_width = "";
+        loads_date_class = "small_size small_head_size small_footer_size text-center";
+        loads_date_show = true;
+        unload_date_width = "";
+        unload_date_class = "small_size small_head_size small_footer_size text-center";
+        unload_date_show = true;
+        trans_id_width = "";
+        trans_id_class = "";
+        trans_id_show = false;
+        trans_name_width = "";
+        trans_name_class = "small_size small_head_size small_footer_size";
+        trans_name_show = true;
+        cars_id_width = "";
+        cars_id_class = "";
+        cars_id_show = false;
+        cars_number_width = "";
+        cars_number_class = "small_size small_head_size small_footer_size";
+        cars_number_show = true;
+        driver_id_width = "";
+        driver_id_class = "";
+        driver_id_show = false;
+        driver_name_width = "";
+        driver_name_class = "small_size small_head_size small_footer_size";
+        driver_name_show = true;
+        user_id_width = "";
+        user_id_class = "";
+        user_id_show = false;
+        user_name_width = "";
+        user_name_class = "small_size small_head_size small_footer_size";
+        user_name_show = true;
+        trans_user_id_width = "";
+        trans_user_id_class = "";
+        trans_user_id_show = false;
+        trans_user_name_width = "";
+        trans_user_name_class = "small_size small_head_size small_footer_size";
+        trans_user_name_show = true;
+        clm_rate_currency_id_width = "";
+        clm_rate_currency_id_class = "";
+        clm_rate_currency_id_show = false;
+        clm_rate_currency_name_width = "";
+        clm_rate_currency_name_class = "small_size small_head_size small_footer_size text-center";
+        clm_rate_currency_name_show = true;
+        clm_rate_width = "";
+        clm_rate_class = "small_size small_head_size small_footer_size";
+        clm_rate_show = true;
+        clm_costs_currency_id_width = "";
+        clm_costs_currency_id_class = "";
+        clm_costs_currency_id_show = false;
+        clm_costs_currency_name_width = "";
+        clm_costs_currency_name_class = "small_size small_head_size small_footer_size text-center";
+        clm_costs_currency_name_show = true;
+        clm_costs_width = "";
+        clm_costs_class = "small_size small_head_size small_footer_size";
+        clm_costs_show = true;
+        clm_status_id_width = "";
+        clm_status_id_class = "";
+        clm_status_id_show = false;
+        clm_status_sname_width = "";
+        clm_status_sname_class = "small_size small_head_size small_footer_size text-center";
+        clm_status_sname_show = true;
+        clm_status_colour_width = "";
+        clm_status_colour_class = "";
+        clm_status_colour_show = false;
+        clm_check_width = "";
+        clm_check_class = "";
+        clm_check_show = false;
+        clm_uncheck_width = "";
+        clm_uncheck_class = "";
+        clm_uncheck_show = false;
+    }
+
+    var vClaimsValue;
+    vClaimsValue = {
+        table : '#table-full-world-main',
+        button_form: (mobileScreenSize || smallScreenSize ) ? null : "#full-world-main-detail",
+        ajax : {
+            "url": /*[[@{/full_world/full_world}]]*/ "full_world/full_world",
+            "type": "post",
+            "data": function ( d ) {
+                d.full_world_filter_id = vClaimsValue.rowdata.full_world_filter_id;
+                d.full_world_filter_start_date = vClaimsValue.rowdata.full_world_filter_start_date;
+                d.full_world_filter_end_date = vClaimsValue.rowdata.full_world_filter_end_date;
+            }
+        },
+        key : "clm_id",
+        switchControl : full_world_main_switchControl,
+        rowdata:{
+            clm_id: null,
+            clm_num: null,
+            cnt_name: null,
+            clm_check: null,
+            clm_uncheck: null,
+            clm_status_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        autoWidth: true,
+        scrollX: true,
+        scrollCollapse: true,
+        responsive: false,
+        paging: true,
+        orderCellsTop: true,
+        dom: vDomParam,
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["clm_status_colour"]);
+        },
+        columnDefs:[
+            {"targets": [0], "width": rn_width, "className": rn_class, "visible": rn_show},
+            {"targets": [1], "width": clm_id_width, "className": clm_id_class, "visible": clm_id_show},
+            {"targets": [2], "width": clm_num_width, "className": clm_num_class, "visible": clm_num_show},
+            {"targets": [3], "width": cnt_id_width, "className": cnt_id_class, "visible": cnt_id_show},
+            {"targets": [4], "width": cnt_name_width, "className": cnt_name_class, "visible": cnt_name_show},
+            {"targets": [5], "width": ways_width, "className": ways_class, "visible": ways_show},
+            {"targets": [6], "width": loads_date_width, "className": loads_date_class, "visible": loads_date_show},
+            {"targets": [7], "width": unload_date_width, "className": unload_date_class, "visible": unload_date_show},
+            {"targets": [8], "width": trans_id_width, "className": trans_id_class, "visible": trans_id_show},
+            {"targets": [9], "width": trans_name_width, "className": trans_name_class, "visible": trans_name_show},
+            {"targets": [10], "width": cars_id_width, "className": cars_id_class, "visible": cars_id_show},
+            {"targets": [11], "width": cars_number_width, "className": cars_number_class, "visible": cars_number_show},
+            {"targets": [12], "width": driver_id_width, "className": driver_id_class, "visible": driver_id_show},
+            {"targets": [13], "width": driver_name_width, "className": driver_name_class, "visible": driver_name_show},
+            {"targets": [14], "width": user_id_width, "className": user_id_class, "visible": user_id_show},
+            {"targets": [15], "width": user_name_width, "className": user_name_class, "visible": user_name_show},
+            {"targets": [16], "width": trans_user_id_width, "className": trans_user_id_class, "visible": trans_user_id_show},
+            {"targets": [17], "width": trans_user_name_width, "className": trans_user_name_class, "visible": trans_user_name_show},
+            {"targets": [18], "width": clm_rate_currency_id_width, "className": clm_rate_currency_id_class, "visible": clm_rate_currency_id_show},
+            {"targets": [19], "width": clm_rate_currency_name_width, "className": clm_rate_currency_name_class, "visible": clm_rate_currency_name_show},
+            {"targets": [20], "width": clm_rate_width, "className": clm_rate_class, "visible": clm_rate_show, render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [21], "width": clm_costs_currency_id_width, "className": clm_costs_currency_id_class, "visible": clm_costs_currency_id_show},
+            {"targets": [22], "width": clm_costs_currency_name_width, "className": clm_costs_currency_name_class, "visible": clm_costs_currency_name_show},
+            {"targets": [23], "width": clm_costs_width, "className": clm_costs_class, "visible": clm_costs_show, render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [24], "width": clm_status_id_width, "className": clm_status_id_class, "visible": clm_status_id_show},
+            {"targets": [25], "width": clm_status_sname_width, "className": clm_status_sname_class, "visible": clm_status_sname_show},
+            {"targets": [26], "width": clm_status_colour_width, "className": clm_status_colour_class, "visible": clm_status_colour_show},
+            {"targets": [27], "width": clm_check_width, "className": clm_check_class, "visible": clm_check_show},
+            {"targets": [28], "width": clm_uncheck_width, "className": clm_uncheck_class, "visible": clm_uncheck_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{full_world.main.rn}]]*/ "rn", "data": "rn"},
+            /*1*/{"title": /*[[#{full_world.main.clm_id}]]*/ "clm_date", "data": "clm_id"},
+            /*2*/{"title": /*[[#{full_world.main.clm_num}]]*/ "clm_num", "data": "clm_num"},
+            /*3*/{"title": /*[[#{full_world.main.cnt_id}]]*/ "cnt_id", "data": "cnt_id"},
+            /*4*/{"title": /*[[#{full_world.main.cnt_name}]]*/ "cnt_name", "data": "cnt_name"},
+            /*5*/{"title": /*[[#{full_world.main.ways}]]*/ "ways", "data": "ways"},
+            /*6*/{"title": /*[[#{full_world.main.loads_date}]]*/ "loads_date", "data": "loads_date"},
+            /*7*/{"title": /*[[#{full_world.main.unload_date}]]*/ "unload_date", "data": "unload_date"},
+            /*8*/{"title": /*[[#{full_world.main.trans_id}]]*/ "trans_id", "data": "trans_id"},
+            /*9*/{"title": /*[[#{full_world.main.trans_name}]]*/ "trans_name", "data": "trans_name"},
+            /*10*/{"title": /*[[#{full_world.main.cars_id}]]*/ "cars_id", "data": "cars_id"},
+            /*11*/{"title": /*[[#{full_world.main.cars_number}]]*/ "cars_number", "data": "cars_number"},
+            /*12*/{"title": /*[[#{full_world.main.driver_id}]]*/ "driver_id", "data": "driver_id"},
+            /*13*/{"title": /*[[#{full_world.main.driver_name}]]*/ "driver_name", "data": "driver_name"},
+            /*14*/{"title": /*[[#{full_world.main.user_id}]]*/ "user_id", "data": "user_id"},
+            /*15*/{"title": /*[[#{full_world.main.user_name}]]*/ "user_name", "data": "user_name"},
+            /*16*/{"title": /*[[#{full_world.main.trans_user_id}]]*/ "trans_user_id", "data": "trans_user_id"},
+            /*17*/{"title": /*[[#{full_world.main.trans_user_name}]]*/ "trans_user_name", "data": "trans_user_name"},
+            /*18*/{"title": /*[[#{full_world.main.clm_rate_currency_id}]]*/ "clm_rate_currency_id", "data": "clm_rate_currency_id"},
+            /*19*/{"title": /*[[#{full_world.main.clm_rate_currency_name}]]*/ "clm_rate_currency_name", "data": "clm_rate_currency_name"},
+            /*20*/{"title": /*[[#{full_world.main.clm_rate}]]*/ "clm_rate", "data": "clm_rate"},
+            /*21*/{"title": /*[[#{full_world.main.clm_costs_currency_id}]]*/ "clm_costs_currency_id", "data": "clm_costs_currency_id"},
+            /*22*/{"title": /*[[#{full_world.main.clm_costs_currency_name}]]*/ "clm_costs_currency_name", "data": "clm_costs_currency_name"},
+            /*23*/{"title": /*[[#{full_world.main.clm_costs}]]*/ "clm_costs", "data": "clm_costs"},
+            /*24*/{"title": /*[[#{full_world.main.clm_status_id}]]*/ "clm_status_id", "data": "clm_status_id"},
+            /*25*/{"title": /*[[#{full_world.main.clm_status_sname}]]*/ "clm_status_sname", "data": "clm_status_sname"},
+            /*26*/{"title": /*[[#{full_world.main.clm_status_colour}]]*/ "clm_status_colour", "data": "clm_status_colour"},
+            /*27*/{"title": /*[[#{full_world.main.clm_check}]]*/ "clm_check", "data": "clm_check"},
+            /*28*/{"title": /*[[#{full_world.main.clm_uncheck}]]*/ "clm_uncheck", "data": "clm_uncheck"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true,
+        //columnSearch: true,
+        //columnSearchSelect: [0,1,3]
+    };
+
+    function full_world_main_switchControl(){
+        if(vClaimsValue.rowdata.clm_id != null) {
+            $("#full-world-main-detailbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            $("#full-world-main-detailbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            if(RoleChiefOPS || RoleOPS) {
+                $("#full-world-main-clonebtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#full-world-main-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#full-world-main-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#full-world-main-clonebtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#full-world-main-editbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#full-world-main-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#full-world-main-clonebtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-main-editbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-main-delbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#full-world-main-clonebtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-main-editbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-main-delbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+            }
+
+            if (vClaimsValue.rowdata.clm_check === 1 &&(RoleChiefOPS || RoleOPS)) {
+                $("#full-world-main-check").prop('disabled', false).removeClass('btn-dark').addClass('btn-success');
+            } else {
+                $("#full-world-main-check").prop('disabled', true).addClass('btn-dark').removeClass('btn-success');
+            }
+
+            if (vClaimsValue.rowdata.clm_uncheck === 1 && (RoleChiefOPS || RoleOPS)) {
+                $("#full-world-main-uncheck").prop('disabled', false).removeClass('btn-dark').addClass('btn-danger');
+            } else {
+                $("#full-world-main-uncheck").prop('disabled', true).addClass('btn-dark').removeClass('btn-danger');
+            }
+            <!-- Buttons -->
+            vClaimTimeLogValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+            vClaimTimeLogValue.rowdata.clm_status_id = null;
+            $(vClaimTimeLogValue.table).DataTable().ajax.reload();
+            <!-- Logs -->
+            vClaimNotesValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+            $(vClaimNotesValue.table).DataTable().ajax.reload();
+            if(RoleChiefOPS || RoleOPS) {
+                $("#full-world-notes-addbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#full-world-notes-addbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else {
+                $("#full-world-notes-addbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-notes-addbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            <!-- Notes -->
+            vClaimTasksValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+            $(vClaimTasksValue.table).DataTable().ajax.reload();
+            if(RoleChiefOPS || RoleOPS) {
+                $("#full-world-tasks-addbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#full-world-tasks-addbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#full-world-tasks-addbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-tasks-addbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            <!-- Tasks -->
+            vClaimWaysValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+            vClaimWaysValue.rowdata.clmwl_id = null;
+            $(vClaimWaysValue.table).DataTable().ajax.reload();
+            if(RoleChiefOPS || RoleOPS) {
+                $("#full-world-ways-addbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#full-world-ways-addbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#full-world-ways-addbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-ways-addbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            <!-- Ways -->
+            vClaimLoadsValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+            vClaimLoadsValue.rowdata.clmll_id = null;
+            $(vClaimLoadsValue.table).DataTable().ajax.reload();
+            if(RoleChiefOPS || RoleOPS) {
+                $("#full-world-loads-addbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#full-world-loads-addbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#full-world-loads-addbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-loads-addbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            <!-- Loads -->
+            vClaimTransValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+            vClaimTransValue.rowdata.clmtrl_id = null;
+            $(vClaimTransValue.table).DataTable().ajax.reload();
+            if(RoleChiefOPS || RoleOPS) {
+                $("#full-world-trans-addbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#full-world-trans-addbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#full-world-trans-addbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-trans-addbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            <!-- Transports -->
+            vClaimCostsValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+            vClaimCostsValue.rowdata.clmcl_id = null;
+            $(vClaimCostsValue.table).DataTable().ajax.reload();
+            if(RoleChiefOPS || RoleOPS) {
+                $("#full-world-costs-addbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#full-world-costs-addbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#full-world-costs-addbtn").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-costs-addbtn-sx").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            <!-- Costs -->
+            vClaimReportsValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+            vClaimReportsValue.rowdata.report_id = null;
+            $(vClaimReportsValue.table).DataTable().ajax.reload();
+            <!-- Reports -->
+            vClaimReportParamsValue.rowdata.clm_id = null;
+            vClaimReportParamsValue.rowdata.report_id = null;
+            vClaimReportParamsValue.rowdata.clm_rep_link_id = null;
+            $(vClaimReportParamsValue.table).DataTable().clear().draw();
+            <!-- Report Params -->
+            vClaimErrorsValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+            vClaimErrorsValue.rowdata.clm_error_link_id = null;
+            $(vClaimErrorsValue.table).DataTable().ajax.reload();
+            <!-- Errors -->
+        } else{
+            $("#full-world-main-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-main-clonebtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-main-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-main-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#full-world-main-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-main-clonebtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary')
+            $("#full-world-main-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-main-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#full-world-main-check").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+            $("#full-world-main-uncheck").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            <!-- Buttons -->
+            vClaimTimeLogValue.rowdata.clm_id = null;
+            vClaimTimeLogValue.rowdata.clm_status_id = null;
+            $(vClaimTimeLogValue.table).DataTable().clear().draw();
+            <!-- Logs -->
+            vClaimNotesValue.rowdata.clm_id = null;
+            vClaimNotesValue.rowdata.clmtl_id = null;
+            $(vClaimNotesValue.table).DataTable().clear().draw();
+            $("#full-world-notes-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-notes-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            <!-- Notes -->
+            vClaimTasksValue.rowdata.clm_id = null;
+            vClaimTasksValue.rowdata.clmtl_id = null;
+            $(vClaimTasksValue.table).DataTable().clear().draw();
+            $("#full-world-tasks-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-tasks-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            <!-- Tasks -->
+            vClaimWaysValue.rowdata.clm_id = null;
+            vClaimWaysValue.rowdata.clmwl_id = null;
+            $(vClaimWaysValue.table).DataTable().clear().draw();
+            $("#full-world-ways-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-ways-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            <!-- Ways -->
+            vClaimLoadsValue.rowdata.clm_id = null;
+            vClaimLoadsValue.rowdata.clmll_id = null;
+            $(vClaimLoadsValue.table).DataTable().clear().draw();
+            $("#full-world-loads-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-loads-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            <!-- Loads -->
+            vClaimTransValue.rowdata.clm_id = null;
+            vClaimTransValue.rowdata.clmtrl_id = null;
+            $(vClaimTransValue.table).DataTable().clear().draw();
+            $("#full-world-trans-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-trans-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            <!-- Transports -->
+            vClaimCostsValue.rowdata.clm_id = null;
+            vClaimCostsValue.rowdata.clmcl_id = null;
+            $(vClaimCostsValue.table).DataTable().clear().draw();
+            $("#full-world-costs-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#full-world-costs-addbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            <!-- Costs -->
+            vClaimReportsValue.rowdata.clm_id = null;
+            vClaimReportsValue.rowdata.report_id = null;
+            $(vClaimReportsValue.table).DataTable().clear().draw();
+            <!-- Reports -->
+            vClaimReportParamsValue.rowdata.clm_id = null;
+            vClaimReportParamsValue.rowdata.report_id = null;
+            vClaimReportParamsValue.rowdata.clm_rep_link_id = null;
+            $(vClaimReportParamsValue.table).DataTable().clear().draw();
+            <!-- Report Params -->
+            vClaimErrorsValue.rowdata.clm_id = null;
+            vClaimErrorsValue.rowdata.clm_error_link_id = null;
+            $(vClaimErrorsValue.table).DataTable().clear().draw();
+            <!-- Errors -->
+        }
+    }
+
+    if(RoleChiefOPS || RoleOPS){
+        $("#full-world-main-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        $("#full-world-main-addbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+    }
+    else{
+        $("#full-world-main-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        $("#full-world-main-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+    }
+
+    function activaTab(tab){
+        if(tab === null){ tab = 'tab-1'}
+        $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+    }
+
+    function upproveMain(){
+        if (vClaimsValue.rowdata.clm_id != null) {
+            var RowID = vClaimsValue.rowdata.clm_id;
+            $.ajax({
+                url: /*[[ @{/full_world/main_check} ]]*/ "/full_world/main_check",
+                type: 'POST',
+                data: {"clm_id": vClaimsValue.rowdata.clm_id},
+                success: function (result) {
+                    vClaimsValue.rowdata.clm_id = RowID;
+                    $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }
+    //Check Function
+    function fullWorldMainCheck(){
+        $('#load_date_row').attr('hidden','hidden');
+        $('#loaded_date_row').attr('hidden','hidden');
+        $('#border_date_row').attr('hidden','hidden');
+        $('#custom_date_row').attr('hidden','hidden');
+        $('#unload_date_row').attr('hidden','hidden');
+        $('#unloaded_date_row').attr('hidden','hidden');
+        $('#close_date_row').attr('hidden','hidden');
+
+        let sysDay = new Date().toLocaleDateString('ru');
+        let currentCheckStatus = vClaimsValue.rowdata.clm_status_id;
+        if(currentCheckStatus === 2) {
+            $('#load_date').prop('required',true);
+            $('#load_date').data('daterangepicker').setStartDate(sysDay);
+            $('#load_date').data('daterangepicker').setEndDate(sysDay);
+            $('#load_date').trigger("apply.daterangepicker");
+
+            $('#load_date_row').removeAttr('hidden');
+            $('#full_world_main_date_modal').modal('show');
+        }
+        else if(currentCheckStatus === 3) {
+            $('#loaded_date').prop('required',true);
+            $('#loaded_date').data('daterangepicker').setStartDate(sysDay);
+            $('#loaded_date').data('daterangepicker').setEndDate(sysDay);
+            $('#loaded_date').trigger("apply.daterangepicker");
+
+            $('#loaded_date_row').removeAttr('hidden');
+            $('#full_world_main_date_modal').modal('show');
+        }
+        else if(currentCheckStatus === 5) {
+            $('#border_date').prop('required',true);
+            $('#border_date').data('daterangepicker').setStartDate(sysDay);
+            $('#border_date').data('daterangepicker').setEndDate(sysDay);
+            $('#border_date').trigger("apply.daterangepicker");
+
+            $('#border_date_row').removeAttr('hidden');
+            $('#full_world_main_date_modal').modal('show');
+        }
+        else if(currentCheckStatus === 6) {
+            $('#custom_date').prop('required',true);
+            $('#custom_date').data('daterangepicker').setStartDate(sysDay);
+            $('#custom_date').data('daterangepicker').setEndDate(sysDay);
+            $('#custom_date').trigger("apply.daterangepicker");
+
+            $('#custom_date_row').removeAttr('hidden');
+            $('#full_world_main_date_modal').modal('show');
+        }
+        else if(currentCheckStatus === 7) {
+            $('#unload_date').prop('required',true);
+            $('#unload_date').data('daterangepicker').setStartDate(sysDay);
+            $('#unload_date').data('daterangepicker').setEndDate(sysDay);
+            $('#unload_date').trigger("apply.daterangepicker");
+
+            $('#unload_date_row').removeAttr('hidden');
+            $('#full_world_main_date_modal').modal('show');
+        }
+        else if(currentCheckStatus === 8) {
+            $('#unloaded_date').prop('required',true);
+            $('#unloaded_date').data('daterangepicker').setStartDate(sysDay);
+            $('#unloaded_date').data('daterangepicker').setEndDate(sysDay);
+            $('#unloaded_date').trigger("apply.daterangepicker");
+
+            $('#unloaded_date_row').removeAttr('hidden');
+            $('#full_world_main_date_modal').modal('show');
+        }
+        else if(currentCheckStatus === 9) {
+            $('#close_date').prop('required',true);
+            $('#close_date').data('daterangepicker').setStartDate(sysDay);
+            $('#close_date').data('daterangepicker').setEndDate(sysDay);
+            $('#close_date').trigger("apply.daterangepicker");
+
+            $('#close_date_row').removeAttr('hidden');
+            $('#full_world_main_date_modal').modal('show');
+        }
+        else{
+            upproveMain();
+        }
+    }
+    //Check Button
+    $('#full-world-main-check').click(function(){
+        fullWorldMainCheck();
+    });
+    //Check Button SX
+    $('#full-world-main-check-sx').click(function(){
+        fullWorldMainCheck();
+    });
+
+    //UnCheck Function
+    function fullWorldMainUnCheck(){
+        if (vClaimsValue.rowdata.clm_id != null) {
+            var RowID = vClaimsValue.rowdata.clm_id;
+            $.ajax({
+                url: /*[[ @{/full_world/main_uncheck} ]]*/ "/full_world/main_uncheck",
+                type: 'POST',
+                data: {"clm_id": vClaimsValue.rowdata.clm_id},
+                success: function (result) {
+                    vClaimsValue.rowdata.clm_id = RowID;
+
+                    $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }
+    //UnCheck Button
+    $('#full-world-main-uncheck').click(function(){
+        fullWorldMainUnCheck();
+    });
+    //UnCheck Button SX
+    $('#full-world-main-uncheck-sx').click(function(){
+        fullWorldMainUnCheck();
+    });
+
+    //Show Button
+    $('#full-world-main-detailbtn').click(function() {
+        $('#full_world_main_modal_addbtn').attr('hidden',true);
+        $('#full_world_main_modal_editbtn').attr('hidden',true);
+        $('#full_world_main_modal_delbtn').attr('hidden',true);
+        fill_full_world_main_modal_detail(4);
+    });
+    //Show Button SX
+    $('#full-world-main-detailbtn-sx').click(function() {
+        $('#full_world_main_modal_addbtn').attr('hidden',true);
+        $('#full_world_main_modal_editbtn').attr('hidden',true);
+        $('#full_world_main_modal_delbtn').attr('hidden',true);
+        fill_full_world_main_modal_detail(4);
+    });
+    //Add Button
+    $('#full-world-main-addbtn').click(function() {
+        $('#full_world_main_modal_addbtn').removeAttr('hidden');
+        $('#full_world_main_modal_editbtn').attr('hidden',true);
+        $('#full_world_main_modal_delbtn').attr('hidden',true);
+        fill_full_world_main_modal_detail(0);
+    });
+    //Add Button SX
+    $('#full-world-main-addbtn-sx').click(function() {
+        $('#full_world_main_modal_addbtn').removeAttr('hidden');
+        $('#full_world_main_modal_editbtn').attr('hidden',true);
+        $('#full_world_main_modal_delbtn').attr('hidden',true);
+        fill_full_world_main_modal_detail(0);
+    });
+
+    //Clone Function
+    function fullWorldMainClone(){
+        if (vClaimsValue.rowdata.clm_id != null) {
+            var RowID = vClaimsValue.rowdata.clm_id;
+            $.ajax({
+                url: /*[[ @{/full_world/main_clone} ]]*/ "/full_world/main_clone",
+                type: 'POST',
+                data: {"clm_id": vClaimsValue.rowdata.clm_id},
+                success: function (result) {
+                    vClaimsValue.rowdata.clm_id = RowID;
+
+                    $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }
+    //Clone Button
+    $('#full-world-main-clonebtn').click(function() {
+        fullWorldMainClone();
+    });
+    //Clone Button SX
+    $('#full-world-main-clonebtn-sx').click(function() {
+        fullWorldMainClone();
+    });
+    // Edit Button
+    $('#full-world-main-editbtn').click(function() {
+        $('#full_world_main_modal_addbtn').attr('hidden',true);
+        $('#full_world_main_modal_editbtn').removeAttr('hidden');
+        $('#full_world_main_modal_delbtn').attr('hidden',true);
+        fill_full_world_main_modal_detail(1);
+    });
+    // Edit Button SX
+    $('#full-world-main-editbtn-sx').click(function() {
+        $('#full_world_main_modal_addbtn').attr('hidden',true);
+        $('#full_world_main_modal_editbtn').removeAttr('hidden');
+        $('#full_world_main_modal_delbtn').attr('hidden',true);
+        fill_full_world_main_modal_detail(1);
+    });
+    // Del Button
+    $('#full-world-main-delbtn').click(function() {
+        $('#full_world_main_modal_addbtn').attr('hidden',true);
+        $('#full_world_main_modal_editbtn').attr('hidden',true);
+        $('#full_world_main_modal_delbtn').removeAttr('hidden');
+        fill_full_world_main_modal_detail(2);
+    });
+    // Del Button SX
+    $('#full-world-main-delbtn-sx').click(function() {
+        $('#full_world_main_modal_addbtn').attr('hidden',true);
+        $('#full_world_main_modal_editbtn').attr('hidden',true);
+        $('#full_world_main_modal_delbtn').removeAttr('hidden');
+        fill_full_world_main_modal_detail(2);
+    });
+
+    function fullWorldMainReload(){
+        $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+    }
+    //Check Button
+    $('#full-world-main-reload').click(function(){
+        fullWorldMainReload();
+    });
+    //Check Button SX
+    $('#full-world-main-reload-sx').click(function(){
+        fullWorldMainReload();
+    });
+
+    $(document).ready(function(){
+        vClaimsValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+
+        vClaimsValue.rowdata.table_order_show = /*[[${full_world_main_table_order_show}]]*/ null;
+        vClaimsValue.rowdata.table_order_type = /*[[${full_world_main_table_order_type}]]*/ null;
+        vClaimsValue.rowdata.table_search = /*[[${full_world_main_table_search}]]*/ null;
+        vClaimsValue.rowdata.table_pagelen = /*[[${full_world_main_table_pagelen}]]*/ null;
+        vClaimsValue.rowdata.table_page = /*[[${full_world_main_table_page}]]*/ null;
+
+        vClaimsValue.rowdata.full_world_filter_id = /*[[${full_world_filter_id}]]*/ null;
+        vClaimsValue.rowdata.full_world_filter_start_date = /*[[${full_world_filter_start_date}]]*/ null;
+        vClaimsValue.rowdata.full_world_filter_end_date = /*[[${full_world_filter_end_date}]]*/ null;
+
+        if(vClaimsValue.rowdata.full_world_filter_id === 1){
+            $('#full_world_filter_check').prop('checked', true);
+            $("#full_world_filter_start_date").removeAttr('disabled').val(vClaimsValue.rowdata.full_world_filter_start_date);
+            $("#full_world_filter_end_date").removeAttr('disabled').val(vClaimsValue.rowdata.full_world_filter_end_date);
+            $("#full_world_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if (mobileScreenSize) {
+                $("#full_world_filter_start_date").attr('readonly',true);
+                $("#full_world_filter_end_date").attr('readonly',true);
+            }
+        }
+
+        recreateDataTable(vClaimsValue);
+        <!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#tms_li').addClass('active').removeClass('collapsed');
+        $('#tms_a').attr('aria-expanded',true);
+        $('#tms').addClass('show');
+
+        $('#full_world_a').addClass('text-primary');
+
+        activaTab(/*[[${full_world_tab_name}]]*/);
+    });
+</script>
+
+</body>
+</html>

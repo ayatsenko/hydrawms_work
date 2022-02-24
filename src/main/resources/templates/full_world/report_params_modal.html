@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="full_world_report_params_modal_body" th:remove="tag">
+    <div class="modal fade" id="full_world_report_params_modal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{full_world.main.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                        <div class="row">
+                            <div class="col-12" id="rep_param_name_row">
+                                <label for="rep_param_name" class="form-label" th:text="'1. '+ #{full_world.report_params.rep_param_name}"></label>
+                                <div class="input-group">
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <input type="text" class="form-control" id="rep_param_name" name="rep_param_name" readonly>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                                </div>
+                            </div>
+                        </div><!-- Load Date -->                      
+                    
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="rep_param_value" th:text="'2. '+#{full_world.report_params.rep_param_value}"></label>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <textarea class="form-control" rows="3" maxlength="216" style="resize:none;" id="rep_param_value" name="rep_param_value" th:text="${rep_param_value}">
+                                </textarea>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div><!-- Load Date -->                       
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="full_world_report_params_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="full_world_report_params_modal_savebtn" class="btn btn-outline-primary" th:text="#{general.editbtn}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+     function full_world_report_params_modal_valid(){
+        if (vClaimReportsValue.rowdata.report_id != null) {
+            var MainRowID = vClaimsValue.rowdata.clm_id;
+            var ReportRowID = vClaimReportsValue.rowdata.report_id;
+            var RowID = vClaimReportParamsValue.rowdata.clm_rep_link_id;
+            $.ajax({
+                url: /*[[ @{/full_world/edit_report_params} ]]*/ "/full_world/edit_report_params",
+                type: 'POST',
+                data: {
+                    "clm_rep_link_id": RowID,
+                    "rep_param_value": $('#rep_param_value').val()
+                },
+                success: function (result) {
+                    $('#full_world_report_params_modal').modal('hide');
+                    vClaimReportParamsValue.rowdata.clm_id = MainRowID;
+                    vClaimReportParamsValue.rowdata.report_id = ReportRowID;
+                    vClaimReportParamsValue.rowdata.clm_rep_link_id = RowID;
+                    $(vClaimReportParamsValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }
+
+    $(document).ready(function() {
+        $('#full_world_report_params_modal_savebtn').on('click', function () {
+                full_world_report_params_modal_valid();
+        });
+    });
+</script>
+
+</body>
+</html>

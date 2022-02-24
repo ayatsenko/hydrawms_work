@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="client_tenders_chat_body" th:remove="tag">
+        <div><table id="table-client-tenders-chat" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+
+              <div id="client-tenders-chat-detailbtn-large" class="d-none d-sm-block mb-2">
+                 <button id="client-tenders-chat-refreshbtn" class="btn btn-sm btn-primary" th:text="#{general.refreshbtn}">Refresh</button>
+                 <button id="client-tenders-chat-addbtn" class="btn btn-sm btn-dark" th:text="#{general.addbtn}" disabled>Add</button>
+                 <button id="client-tenders-chat-clearbtn" class="btn btn-sm btn-dark" th:text="#{general.clearbtn}" disabled>Edit</button>
+              </div>
+              <div id="client-tenders-chat-detailbtn-small" class="d-block d-sm-none mb-2">
+                 <button id="client-tenders-chat-refreshbtn-sx" class="btn btn-sm btn-primary"><i data-feather="refresh-ccw"></i></button>
+                 <button id="client-tenders-chat-addbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="plus"></i></button>
+                 <button id="client-tenders-chat-clearbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="x-circle"></i></button>
+              </div>
+
+         <textarea class="form-control text-dark font-weight-bold" rows="4" maxlength="128" style="resize:none;" id="req_chat_note" name="req_chat_note" disabled></textarea>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vClientTenderChatListValue;
+    vClientTenderChatListValue = {
+        table : '#table-client-tenders-chat',
+        ajax : {
+            "url": /*[[@{/client_tenders/get_chat_table}]]*/ "client_tenders/get_chat_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.req_id = vClientTenderChatListValue.rowdata.req_id
+            }
+        },
+        key : "req_chat_id",
+        switchControl : client_tenders_chat_switchControl,
+        rowdata:{
+            req_id: null,
+            req_chat_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 'ftp',
+        columnDefs:[
+            {"targets": [0], "visible": false}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{client_tenders.chat.req_chat_id}]]*/ "req_chat_id", "data": "req_chat_id", "width": "5%"},
+            /*1*/{"title": /*[[#{client_tenders.chat.req_chat_date}]]*/ "req_chat_date", "data": "req_chat_date", "width": "15%"},
+            /*2*/{"title": /*[[#{client_tenders.chat.user_name}]]*/ "user_name", "data": "user_name", "width": "20%", "className":"text-center"},
+            /*3*/{"title": /*[[#{client_tenders.chat.req_chat_text}]]*/ "req_chat_text", "data": "req_chat_text", "width": "60%"}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function client_tenders_chat_switchControl() {
+
+
+    };
+
+     $('#client-tenders-chat-refreshbtn').on('click', function () {
+        vClientTenderChatListValue.rowdata.req_id = vTenderListValue.rowdata.req_id;
+        $(vClientTenderChatListValue.table).DataTable().ajax.reload();
+    });
+
+    $('#client-tenders-chat-refreshbtn-sx').on('click', function () {
+        vClientTenderChatListValue.rowdata.req_id = vTenderListValue.rowdata.req_id;
+        $(vClientTenderChatListValue.table).DataTable().ajax.reload();
+    });
+<!-- Refreash Button -->
+
+    $('#client-tenders-chat-clearbtn').on('click', function () {
+        $('#req_chat_note').val('');
+    });
+
+    $('#client-tenders-chat-clearbtn-sx').on('click', function () {
+        $('#req_chat_note').val('');
+    });
+<!-- Clear Button -->
+
+    $('#client-tenders-chat-addbtn').button().click( function( event ) {
+        if($('#req_chat_note').val() !== null && $('#req_chat_note').val() !== '') {
+            $.ajax({
+                type: "POST",
+                url: /*[[@{'/client_tenders/chat_add'}]]*/ "/client_tenders/chat_add",
+                data: {
+                    "req_id": vClientTenderListValue.rowdata.req_id,
+                    "req_chat_text": $('#req_chat_note').val()
+                },
+                success: function () {
+                    vClientTenderChatListValue.rowdata.req_id = vTenderListValue.rowdata.req_id;
+                    $(vClientTenderChatListValue.table).DataTable().ajax.reload();
+                    $('#req_chat_note').val('');
+                }
+            });
+            return false;
+        }
+    });
+
+
+    $('#client-tenders-chat-addbtn-sx').button().click( function( event ) {
+        if($('#req_chat_note').val() != null && $('#req_chat_note').val() != '') {
+            $.ajax({
+                type: "POST",
+                url: /*[[@{'/tenders/chat_add'}]]*/ "/tenders/chat_add",
+                data: {
+                    "req_id": vTenderListValue.rowdata.req_id,
+                    "req_chat_text": $('#req_chat_note').val()
+                },
+                success: function () {
+                    vClientTenderChatListValue.rowdata.req_id = vTenderListValue.rowdata.req_id;
+                    $(vClientTenderChatListValue.table).DataTable().ajax.reload();
+                    $('#req_chat_note').val('');
+                }
+            });
+            return false;
+        }
+    });
+<!-- Add Button -->
+    $(document).ready(function(){
+        vClientTenderChatListValue.rowdata.req_id = /*[[${req_id}]]*/ null;
+        vClientTenderChatListValue.rowdata.req_chat_id = /*[[${req_chat_id}]]*/ null;
+
+        vClientTenderChatListValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vClientTenderChatListValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vClientTenderChatListValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vClientTenderChatListValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vClientTenderChatListValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vClientTenderChatListValue);
+    });
+</script>
+
+</body>
+</html>

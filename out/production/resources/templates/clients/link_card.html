@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_link_body" th:remove="tag">
+            <button type="submit" id="clients-link-actionbtn" form="clients-link-action-form" class="btn btn-dark" th:text="#{actions.header}" disabled>Actions</button>
+            <button type="submit" id="clients-link-requestbtn" form="clients-link-request-form" class="btn btn-dark" th:text="#{requests.header}" disabled>Requests</button>
+            <button type="submit" id="clients-link-tenderbtn" form="clients-link-tenders-form" class="btn btn-dark" th:text="#{tenders.caption}" disabled>Tenders</button>
+            <button type="submit" id="clients-link-financebtn" form="clients-link-finance-form" class="btn btn-dark" th:text="#{finance.caption}" disabled>Finance</button>
+
+        <form id="clients-link-action-form" class="mb-2" th:action="@{/client_actions}" method="post" hidden>
+            <input type="hidden" name="cnt_id">
+            <input type="hidden" name="cnt_name">
+            <input type="hidden" name="cnt_user_access">
+
+            <input type="hidden" name="clients_list_table_order_column">
+            <input type="hidden" name="clients_list_table_order_type">
+            <input type="hidden" name="clients_list_table_search">
+            <input type="hidden" name="clients_list_table_pagelen">
+            <input type="hidden" name="clients_list_table_page">
+
+            <input type="hidden" name="client_actions_filter_start_date">
+        </form>
+
+        <form id="clients-link-request-form" class="mb-2" th:action="@{/client_requests}" method="post" hidden>
+            <input type="hidden" name="cnt_id">
+            <input type="hidden" name="cnt_name">
+            <input type="hidden" name="cnt_user_access">
+
+            <input type="hidden" name="clients_list_table_order_column">
+            <input type="hidden" name="clients_list_table_order_type">
+            <input type="hidden" name="clients_list_table_search">
+            <input type="hidden" name="clients_list_table_pagelen">
+            <input type="hidden" name="clients_list_table_page">
+        </form>
+
+        <form id="clients-link-tenders-form" class="mb-2" th:action="@{/client_tenders}" method="post" hidden>
+            <input type="hidden" name="cnt_id">
+            <input type="hidden" name="cnt_name">
+            <input type="hidden" name="cnt_user_access">
+
+            <input type="hidden" name="clients_list_table_order_column">
+            <input type="hidden" name="clients_list_table_order_type">
+            <input type="hidden" name="clients_list_table_search">
+            <input type="hidden" name="clients_list_table_pagelen">
+            <input type="hidden" name="clients_list_table_page">
+        </form>
+
+        <form id="clients-link-finance-form" class="mb-2" th:action="@{/client_finance}" method="post" hidden>
+            <input type="hidden" name="cnt_id">
+            <input type="hidden" name="cnt_name">
+            <input type="hidden" name="cnt_user_access">
+
+            <input type="hidden" name="clients_list_table_order_column">
+            <input type="hidden" name="clients_list_table_order_type">
+            <input type="hidden" name="clients_list_table_search">
+            <input type="hidden" name="clients_list_table_pagelen">
+            <input type="hidden" name="clients_list_table_page">
+        </form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    $('#clients-link-action-form').submit(function() {
+        $("#clients-link-action-form input[name=cnt_id]").val(vClientsListValue.rowdata.cnt_id);
+        $("#clients-link-action-form input[name=cnt_name]").val(vClientsListValue.rowdata.cnt_name);
+        $("#clients-link-action-form input[name=cnt_user_access]").val(vClientsListValue.rowdata.cnt_user_access);
+
+        $("#clients-link-action-form input[name=clients_list_table_order_column]").val($(vClientsListValue.table).DataTable().order()[0][0]);
+        $("#clients-link-action-form input[name=clients_list_table_order_type]").val($(vClientsListValue.table).DataTable().order()[0][1]);
+        $("#clients-link-action-form input[name=clients_list_table_search]").val($(vClientsListValue.table).DataTable().search());
+        $("#clients-link-action-form input[name=clients_list_table_pagelen]").val($(vClientsListValue.table).DataTable().page.len());
+        $("#clients-link-action-form input[name=clients_list_table_page]").val($(vClientsListValue.table).DataTable().page.info().page);
+
+        $("#clients-link-action-form input[name=client_actions_filter_start_date]").val(vClientsListValue.rowdata.cnt_createdate);
+    });
+
+    $('#clients-link-request-form').submit(function() {
+        $("#clients-link-request-form input[name=cnt_id]").val(vClientsListValue.rowdata.cnt_id);
+        $("#clients-link-request-form input[name=cnt_name]").val(vClientsListValue.rowdata.cnt_name);
+        $("#clients-link-request-form input[name=cnt_user_access]").val(vClientsListValue.rowdata.cnt_user_access);
+
+        $("#clients-link-request-form input[name=clients_list_table_order_column]").val($(vClientsListValue.table).DataTable().order()[0][0]);
+        $("#clients-link-request-form input[name=clients_list_table_order_type]").val($(vClientsListValue.table).DataTable().order()[0][1]);
+        $("#clients-link-request-form input[name=clients_list_table_search]").val($(vClientsListValue.table).DataTable().search());
+        $("#clients-link-request-form input[name=clients_list_table_pagelen]").val($(vClientsListValue.table).DataTable().page.len());
+        $("#clients-link-request-form input[name=clients_list_table_page]").val($(vClientsListValue.table).DataTable().page.info().page);
+    });
+
+    $('#clients-link-tenders-form').submit(function() {
+        $("#clients-link-tenders-form input[name=cnt_id]").val(vClientsListValue.rowdata.cnt_id);
+        $("#clients-link-tenders-form input[name=cnt_name]").val(vClientsListValue.rowdata.cnt_name);
+        $("#clients-link-tenders-form input[name=cnt_user_access]").val(vClientsListValue.rowdata.cnt_user_access);
+
+        $("#clients-link-tenders-form input[name=clients_list_table_order_column]").val($(vClientsListValue.table).DataTable().order()[0][0]);
+        $("#clients-link-tenders-form input[name=clients_list_table_order_type]").val($(vClientsListValue.table).DataTable().order()[0][1]);
+        $("#clients-link-tenders-form input[name=clients_list_table_search]").val($(vClientsListValue.table).DataTable().search());
+        $("#clients-link-tenders-form input[name=clients_list_table_pagelen]").val($(vClientsListValue.table).DataTable().page.len());
+        $("#clients-link-tenders-form input[name=clients_list_table_page]").val($(vClientsListValue.table).DataTable().page.info().page);
+    });
+
+    $('#clients-link-finance-form').submit(function() {
+        $("#clients-link-finance-form input[name=cnt_id]").val(vClientsListValue.rowdata.cnt_id);
+        $("#clients-link-finance-form input[name=cnt_name]").val(vClientsListValue.rowdata.cnt_name);
+        $("#clients-link-finance-form input[name=cnt_user_access]").val(vClientsListValue.rowdata.cnt_user_access);
+
+        $("#clients-link-finance-form input[name=clients_list_table_order_column]").val($(vClientsListValue.table).DataTable().order()[0][0]);
+        $("#clients-link-finance-form input[name=clients_list_table_order_type]").val($(vClientsListValue.table).DataTable().order()[0][1]);
+        $("#clients-link-finance-form input[name=clients_list_table_search]").val($(vClientsListValue.table).DataTable().search());
+        $("#clients-link-finance-form input[name=clients_list_table_pagelen]").val($(vClientsListValue.table).DataTable().page.len());
+        $("#clients-link-finance-form input[name=clients_list_table_page]").val($(vClientsListValue.table).DataTable().page.info().page);
+    });
+</script>
+</body>
+</html>

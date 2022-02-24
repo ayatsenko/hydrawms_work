@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="kpi_facts_cs_requests" th:remove="tag">
+        <div id="kpi-facts-cs-requests-button">
+            <button type="button" id="kpi-facts-cs-requests-check" class="btn btn-sm btn-dark" disabled><i class="fas fa-times"></i></button>
+            <button type="button" id="kpi-facts-cs-requests-uncheck" class="btn btn-sm btn-dark mr-2" disabled><i class="fas fa-check"></i></button>
+
+            <button type="button" id="kpi-facts-cs-requests-link" class="btn btn-sm btn-outline-dark mr-1" th:text="#{general.gotobtn}" disabled>GoTo</button>
+        </div>
+
+        <div><table id="table-kpi-facts-cs-requests" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+
+        <form id="kpi-facts-cs-requests-link-form" th:action="@{/requests}" method="post" target="_blank">
+                <input name="req_id" hidden>
+                <input name="requests_list_table_order_column" hidden>
+                <input name="requests_list_table_order_type" hidden>
+                <input name="requests_list_table_search" hidden>
+                <input name="requests_list_table_pagelen" hidden>
+                <input name="requests_list_table_page" hidden>
+        </form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var block_check_show, dep_kpi_requests_req_id_show, dep_kpi_requests_req_name_show, dep_kpi_requests_req_user_id_show, dep_kpi_requests_req_user_name_show, dep_kpi_requests_req_date_show,
+        dep_kpi_requests_req_ops_name_show, dep_kpi_requests_req_status_id_show, dep_kpi_requests_req_status_sname_show, dep_kpi_requests_req_status_colour_show,
+        dep_kpi_requests_req_result_status_sname_show, block_note_id_show, block_note_show;
+
+    var block_check_width, dep_kpi_requests_req_id_width, dep_kpi_requests_req_name_width, dep_kpi_requests_req_user_id_width, dep_kpi_requests_req_user_name_width, dep_kpi_requests_req_date_width,
+        dep_kpi_requests_req_ops_name_width, dep_kpi_requests_req_status_id_width, dep_kpi_requests_req_status_sname_width, dep_kpi_requests_req_status_colour_width,
+        dep_kpi_requests_req_result_status_sname_width, block_note_id_width, block_note_width;
+
+    var block_check_class, dep_kpi_requests_req_id_class, dep_kpi_requests_req_name_class, dep_kpi_requests_req_user_id_class, dep_kpi_requests_req_user_name_class, dep_kpi_requests_req_date_class,
+        dep_kpi_requests_req_ops_name_class, dep_kpi_requests_req_status_id_class, dep_kpi_requests_req_status_sname_class, dep_kpi_requests_req_status_colour_class,
+        dep_kpi_requests_req_result_status_sname_class, block_note_id_class, block_note_class;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        block_check_show = true;
+        block_check_width = "5%";
+        block_check_class = "mall_size small_head_size small_footer_size text-center cs_requests_block_edit head-link";
+        dep_kpi_requests_req_id_show = false;
+        dep_kpi_requests_req_id_width = "";
+        dep_kpi_requests_req_id_class = "";
+        dep_kpi_requests_req_name_show = true;
+        dep_kpi_requests_req_name_width = "37%";
+        dep_kpi_requests_req_name_class = "small_size small_head_size small_footer_size";
+        dep_kpi_requests_req_user_id_show = false;
+        dep_kpi_requests_req_user_id_width = "";
+        dep_kpi_requests_req_user_id_class = "";
+        dep_kpi_requests_req_user_name_show = true;
+        dep_kpi_requests_req_user_name_width = "12%";
+        dep_kpi_requests_req_user_name_class = "small_size small_head_size small_footer_size text-center";
+        dep_kpi_requests_req_date_show = true;
+        dep_kpi_requests_req_date_width = "10%";
+        dep_kpi_requests_req_date_class = "small_size small_head_size small_footer_size text-center";
+        dep_kpi_requests_req_ops_name_show = true;
+        dep_kpi_requests_req_ops_name_width = "10%";
+        dep_kpi_requests_req_ops_name_class = "small_size small_head_size small_footer_size text-center";
+        dep_kpi_requests_req_status_id_show = false;
+        dep_kpi_requests_req_status_id_width = "";
+        dep_kpi_requests_req_status_id_class = "";
+        dep_kpi_requests_req_status_sname_show = true;
+        dep_kpi_requests_req_status_sname_width = "12%";
+        dep_kpi_requests_req_status_sname_class = "small_size small_head_size small_footer_size text-center";
+        dep_kpi_requests_req_status_colour_show = false;
+        dep_kpi_requests_req_status_colour_width = "";
+        dep_kpi_requests_req_status_colour_class = "none";
+        dep_kpi_requests_req_result_status_sname_show = true;
+        dep_kpi_requests_req_result_status_sname_width = "10%";
+        dep_kpi_requests_req_result_status_sname_class = "small_size small_head_size small_footer_size text-center";
+        block_note_id_show = true;
+        block_note_id_width = "4%";
+        block_note_id_class = "small_size small_head_size small_footer_size cs_meets_comment_edit head-link";
+        block_note_show = false;
+        block_note_width = "";
+        block_note_class = "";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        block_check_show = true;
+        block_check_width = "5%";
+        block_check_class = "mall_size small_head_size small_footer_size text-center cs_requests_block_edit head-link";
+        dep_kpi_requests_req_id_show = false;
+        dep_kpi_requests_req_id_width = "";
+        dep_kpi_requests_req_id_class = "";
+        dep_kpi_requests_req_name_show = true;
+        dep_kpi_requests_req_name_width = "37%";
+        dep_kpi_requests_req_name_class = "small_size small_head_size small_footer_size";
+        dep_kpi_requests_req_user_id_show = false;
+        dep_kpi_requests_req_user_id_width = "";
+        dep_kpi_requests_req_user_id_class = "";
+        dep_kpi_requests_req_user_name_show = true;
+        dep_kpi_requests_req_user_name_width = "12%";
+        dep_kpi_requests_req_user_name_class = "small_size small_head_size small_footer_size text-center";
+        dep_kpi_requests_req_date_show = true;
+        dep_kpi_requests_req_date_width = "10%";
+        dep_kpi_requests_req_date_class = "small_size small_head_size small_footer_size text-center";
+        dep_kpi_requests_req_ops_name_show = true;
+        dep_kpi_requests_req_ops_name_width = "10%";
+        dep_kpi_requests_req_ops_name_class = "small_size small_head_size small_footer_size text-center";
+        dep_kpi_requests_req_status_id_show = false;
+        dep_kpi_requests_req_status_id_width = "";
+        dep_kpi_requests_req_status_id_class = "";
+        dep_kpi_requests_req_status_sname_show = true;
+        dep_kpi_requests_req_status_sname_width = "12%";
+        dep_kpi_requests_req_status_sname_class = "small_size small_head_size small_footer_size text-center";
+        dep_kpi_requests_req_status_colour_show = false;
+        dep_kpi_requests_req_status_colour_width = "";
+        dep_kpi_requests_req_status_colour_class = "none";
+        dep_kpi_requests_req_result_status_sname_show = true;
+        dep_kpi_requests_req_result_status_sname_width = "10%";
+        dep_kpi_requests_req_result_status_sname_class = "small_size small_head_size small_footer_size text-center";
+        block_note_id_show = true;
+        block_note_id_width = "4%";
+        block_note_id_class = "small_size small_head_size small_footer_size cs_requests_comment_edit head-link";
+        block_note_show = false;
+        block_note_width = "";
+        block_note_class = "";
+    }
+
+    var vKPIFactsCsRequestsValue;
+    vKPIFactsCsRequestsValue = {
+        table : '#table-kpi-facts-cs-requests',
+        button_form: '#kpi-facts-cs-requests-button',
+        ajax : {
+            "url": /*[[@{/kpi_facts/cs_requests_menu}]]*/ "kpi_facts/cs_requests_menu",
+            "type": "post",
+            "data": function ( d ) {
+                d.kpi_facts_param_id = vKPIFactsCsRequestsValue.rowdata.kpi_facts_param_id;
+                d.kpi_facts_user_id = vKPIFactsCsRequestsValue.rowdata.kpi_facts_user_id;
+                d.kpi_facts_year = vKPIFactsCsRequestsValue.rowdata.kpi_facts_year;
+                d.kpi_facts_month = vKPIFactsCsRequestsValue.rowdata.kpi_facts_month;
+            }
+        },
+        key : "req_id",
+        switchControl : kpi_facts_cs_requests_switchControl,
+        rowdata:{
+            req_id: null,
+            req_name: null,
+            user_id: null,
+            kpi_facts_param_id: null,
+            kpi_facts_user_id: null,
+            kpi_facts_year: null,
+            kpi_facts_month: null,
+            block_check: null
+        },
+        ordering: true,
+        order: [
+            [1, "desc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            if ( data.block_check === 1 ){
+                $(row).css('background-color', '#ff8566');
+            }else {
+                $(row).css('background-color', data["req_status_colour"]);
+            }
+        },
+        columnDefs:[
+            {"targets": [0], "width": block_check_width, "className": block_check_class, "visible": block_check_show,
+            render: function ( data, type, row ) {
+                    if ( type === 'display' ) {             //if column data is 1 then set attr to checked, use row id as input id (plus prefix)
+                        return '<label class="custom-control custom-checkbox mb-0 mt-0 text-center"><input type="checkbox" ' + ((data == 1) ? 'checked' : '') + ' id="input' + row.id + '" class="custom-control-input" disabled><span class="custom-control-label"></span></label>'
+                    }
+                    return data;
+                }
+            },
+            {"targets": [1], "width": dep_kpi_requests_req_id_width, "className": dep_kpi_requests_req_id_class, "visible": dep_kpi_requests_req_id_show},
+            {"targets": [2], "width": dep_kpi_requests_req_name_width, "className": dep_kpi_requests_req_name_class, "visible": dep_kpi_requests_req_name_show},
+            {"targets": [3], "width": dep_kpi_requests_req_user_id_width, "className": dep_kpi_requests_req_user_id_class, "visible": dep_kpi_requests_req_user_id_show},
+            {"targets": [4], "width": dep_kpi_requests_req_user_name_width, "className": dep_kpi_requests_req_user_name_class, "visible": dep_kpi_requests_req_user_name_show},
+            {"targets": [5], "width": dep_kpi_requests_req_date_width, "className": dep_kpi_requests_req_date_class, "visible": dep_kpi_requests_req_date_show, type: 'de_date'},
+            {"targets": [6], "width": dep_kpi_requests_req_ops_name_width, "className": dep_kpi_requests_req_ops_name_class, "visible": dep_kpi_requests_req_ops_name_show},
+            {"targets": [7], "width": dep_kpi_requests_req_status_id_width, "className": dep_kpi_requests_req_status_id_class, "visible": dep_kpi_requests_req_status_id_show},
+            {"targets": [8], "width": dep_kpi_requests_req_status_sname_width, "className": dep_kpi_requests_req_status_sname_class, "visible": dep_kpi_requests_req_status_sname_show},
+            {"targets": [9], "width": dep_kpi_requests_req_status_colour_width, "className": dep_kpi_requests_req_status_colour_class, "visible": dep_kpi_requests_req_status_colour_show},
+            {"targets": [10], "width": dep_kpi_requests_req_result_status_sname_width, "className": dep_kpi_requests_req_result_status_sname_class, "visible": dep_kpi_requests_req_result_status_sname_show},
+            {"targets": [11], "width": block_note_id_width, "className": block_note_id_class, "visible": block_note_id_show,
+                render: function ( data, type, row ) {
+                    if ( type === 'display' ) {             //if column data is 1 then set attr to checked, use row id as input id (plus prefix)
+                        return '<label class="custom-control custom-checkbox mb-0 mt-0 text-center"><input type="checkbox" ' + ((data == 1) ? 'checked' : '') + ' id="input' + row.id + '" class="custom-control-input" disabled><span class="custom-control-label"></span></label>'
+                    }
+                    return data;
+                }
+            },
+            {"targets": [12], "width": block_note_width, "className": block_note_class, "visible": block_note_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{kpi_facts.cs_requests.block_check}]]*/ "block_check", "data": "block_check"},
+            /*1*/{"title": /*[[#{kpi_facts.cs_requests.req_id}]]*/ "req_id", "data": "req_id"},
+            /*2*/{"title": /*[[#{kpi_facts.cs_requests.req_name}]]*/ "req_name", "data": "req_name"},
+            /*3*/{"title": /*[[#{kpi_facts.cs_requests.req_user_id}]]*/ "req_user_id", "data": "req_user_id"},
+            /*4*/{"title": /*[[#{kpi_facts.cs_requests.req_user_name}]]*/ "req_user_name", "data": "req_user_name"},
+            /*5*/{"title": /*[[#{kpi_facts.cs_requests.req_date}]]*/ "req_date", "data": "req_date"},
+            /*6*/{"title": /*[[#{kpi_facts.cs_requests.req_ops_name}]]*/ "req_ops_name", "data": "req_ops_name"},
+            /*7*/{"title": /*[[#{kpi_facts.cs_requests.req_status_id}]]*/ "req_status_id", "data": "req_status_id"},
+            /*8*/{"title": /*[[#{kpi_facts.cs_requests.req_status_sname}]]*/ "req_status_sname", "data": "req_status_sname"},
+            /*9*/{"title": /*[[#{kpi_facts.cs_requests.req_status_colour}]]*/ "req_status_colour", "data": "req_status_colour"},
+            /*10*/{"title": /*[[#{kpi_facts.cs_requests.req_result_status_sname}]]*/ "req_result_status_sname", "data": "req_result_status_sname"},
+            /*11*/{"title": /*[[#{kpi_facts.cs_requests.block_note_id}]]*/ "block_note_id", "data": "block_note_id"},
+            /*12*/{"title": /*[[#{kpi_facts.cs_requests.block_note}]]*/ "block_note", "data": "block_note"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function kpi_facts_cs_requests_switchControl(){
+        if(vKPIFactsCsRequestsValue.rowdata.req_id != null) {
+            $("#kpi-facts-cs-requests-link").prop('disabled',false).removeClass('btn-outline-dark').addClass('btn-outline-primary');
+
+            if(vKPIFactsCsRequestsValue.rowdata.block_check === 0 && RoleAllAdmin === true){
+                $('#kpi-facts-cs-requests-check').prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+                $('#kpi-facts-cs-requests-check-sx').prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+            }
+            else if(vKPIFactsCsRequestsValue.rowdata.block_check === 1 && RoleAllAdmin === true){
+                $('#kpi-facts-cs-requests-check').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+                $('#kpi-facts-cs-requests-check-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            }
+        } else{
+            $("#kpi-facts-cs-requests-link").prop('disabled',true).addClass('btn-outline-dark').removeClass('btn-outline-primary');
+
+            $('#kpi-facts-cs-requests-check').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            $('#kpi-facts-cs-requests-check-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+        }
+    }
+    function csRequestsFocus() {
+        $('html,body').animate({scrollTop: $(vKPIFactsCsRequestsValue.table).offset().top}, 'slow');
+    }
+    // Add button script
+    function addCsRequestsBlock(){
+        var RowID = vKPIFactsCsRequestsValue.rowdata.req_id;
+        var YearID =  $("#kpi_facts_year").val();
+        var MainDepID = vKPIFactListValue.rowdata.dep_id;
+        var DepID = vKPIFactBranchValue.rowdata.dep_id;
+        var UserID = vKPIFactUsersValue.rowdata.user_id;
+        var MonthID = $("#kpi_facts_month").val();
+        $.ajax({
+            url: /*[[ @{/kpi_facts/add_requests_block} ]]*/ "/kpi_facts/add_requests_block",
+            type: 'POST',
+            data: {
+                "block_req_id": RowID,
+                "block_user_id": UserID,
+                "block_year": YearID,
+                "block_month": MonthID
+            },
+            success: function (result) {
+                vKPIFactListValue.rowdata.kpi_facts_year = YearID;
+                $(vKPIFactListValue.table).DataTable().ajax.reload(null, false);
+                setTimeout(function(){ csRequestsFocus(); }, 1000);
+            }
+        });
+    }
+
+    // Del button script
+    function delCsRequestsBlock(){
+        var RowID = vKPIFactsCsRequestsValue.rowdata.req_id;
+        var YearID =  $("#kpi_facts_year").val();
+        var MainDepID = vKPIFactListValue.rowdata.dep_id;
+        var DepID = vKPIFactBranchValue.rowdata.dep_id;
+        var UserID = vKPIFactUsersValue.rowdata.user_id;
+        var MonthID = $("#kpi_facts_month").val();
+        $.ajax({
+            url: /*[[ @{/kpi_facts/del_requests_block} ]]*/ "/kpi_facts/del_requests_block",
+            type: 'POST',
+            data: {
+                "block_req_id": RowID,
+                "block_user_id": UserID,
+                "block_year": YearID,
+                "block_month": MonthID
+            },
+            success: function (result) {
+                vKPIFactListValue.rowdata.kpi_facts_year = YearID;
+                $(vKPIFactListValue.table).DataTable().ajax.reload(null, false);
+                setTimeout(function(){ csRequestsFocus(); }, 1000);
+            }
+        });
+    }
+
+    $('#kpi-facts-cs-requests-check').click(function () {
+        addCsRequestsBlock();
+    });
+
+    $('#kpi-facts-cs-requests-uncheck').click(function () {
+        delCsRequestsBlock();
+    });
+
+    $('#kpi-facts-cs-requests-link').click(function (){
+        $("#kpi-facts-cs-requests-link-form input[name=req_id]").val(vKPIFactsCsRequestsValue.rowdata.req_id);
+
+        $("#kpi-facts-cs-requests-link-form input[name=requests_list_table_order_column]").val(0);
+        $("#kpi-facts-cs-requests-link-form input[name=requests_list_table_order_type]").val("desc");
+        $("#kpi-facts-cs-requests-link-form input[name=requests_list_table_search]").val(vKPIFactsCsRequestsValue.rowdata.req_name);
+        $("#kpi-facts-cs-requests-link-form input[name=requests_list_table_pagelen]").val(25);
+        $("#kpi-facts-cs-requests-link-form input[name=requests_list_table_page]").val(0);
+        $("#kpi-facts-cs-requests-link-form").submit();
+    });
+
+    function  editKPIFactsCsRequestsComment(){
+        $('#kpi_facts_cs_requests_modal_addbtn').attr('hidden',true);
+        $('#kpi_facts_cs_requests_modal_editbtn').removeAttr('hidden');
+        $('#kpi_facts_cs_requests_modal_delbtn').attr('hidden',true);
+
+        fill_kpi_facts_cs_requests_modal_detail(1);
+    }    
+    
+    $(document).ready(function(){
+        vKPIFactsCsRequestsValue.rowdata.req_id = /*[[${act_id}]]*/ null;
+
+        vKPIFactsCsRequestsValue.rowdata.user_id = /*[[${user_id}]]*/ null;
+        vKPIFactsCsRequestsValue.rowdata.dep_kpi_year = /*[[${dep_kpi_year}]]*/ null;
+        vKPIFactsCsRequestsValue.rowdata.dep_kpi_month = /*[[${dep_kpi_month}]]*/ null;
+
+        vKPIFactsCsRequestsValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vKPIFactsCsRequestsValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vKPIFactsCsRequestsValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vKPIFactsCsRequestsValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vKPIFactsCsRequestsValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vKPIFactsCsRequestsValue);
+
+        $(vKPIFactsCsRequestsValue.table).on('dblclick', '.cs_requests_comment_edit', function (e) {
+            let selectedCsRequestsRow = this._DT_CellIndex.row;
+            let csRequestsTable = $(vKPIFactsCsRequestsValue.table).DataTable();
+
+            vKPIFactsCsRequestsValue.rowdata.req_id = csRequestsTable.row(selectedCsRequestsRow).data().req_id;
+            vKPIFactsCsRequestsValue.rowdata.act_plane_date = csRequestsTable.row(selectedCsRequestsRow).data().act_plane_date;
+            vKPIFactsCsRequestsValue.rowdata.req_name = csRequestsTable.row(selectedCsRequestsRow).data().req_name;
+            vKPIFactsCsRequestsValue.rowdata.block_note = csRequestsTable.row(selectedCsRequestsRow).data().block_note;
+
+            if (RoleAllAdmin) {
+                editKPIFactsCsRequestsComment();
+            }
+        });
+
+        $(vKPIFactsCsRequestsValue.table).on('dblclick', '.cs_requests_block_edit', function (e) {
+            let selectedCsRequestsRow = this._DT_CellIndex.row;
+            let csRequestsTable = $(vKPIFactsCsRequestsValue.table).DataTable();
+
+            vKPIFactsCsRequestsValue.rowdata.req_id = csRequestsTable.row(selectedCsRequestsRow).data().req_id;
+            vKPIFactsCsRequestsValue.rowdata.block_check = csRequestsTable.row(selectedCsRequestsRow).data().block_check;
+
+            if (RoleAllAdmin && vKPIFactsCsRequestsValue.rowdata.block_check === 0) {
+                addCsRequestsBlock();
+            }
+            else if(RoleAllAdmin && vKPIFactsCsRequestsValue.rowdata.block_check === 1){
+                delCsRequestsBlock();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

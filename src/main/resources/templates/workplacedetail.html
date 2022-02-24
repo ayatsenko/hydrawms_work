@@ -1,0 +1,164 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:include="layout/layout :: header(title = #{index.workplace_a_description})"></head>
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<script th:inline="javascript">
+    $(document).ready(function() {
+        var mode=/*[[${mode}]]*/ 0;
+
+        jQuery.validator.setDefaults({
+            debug: true,
+            success: "valid"
+        });
+
+        $('#form_group').validate({
+
+            rules: {
+                loc_id : {
+                    required: true
+                },
+                wp_name: {
+                    required: true,
+                    minlength : 1,
+                    maxlength : 32
+                },
+                wp_texttemplate : {
+                    required: true,
+                    minlength : 2,
+                    maxlength : 64
+                }
+            },
+            errorLabelContainer: $("#form_group div.error"),
+            submitHandler: function(form) {
+                switch (mode) {
+                    case 0:
+                        $.ajax({
+                            url: "adm/add_workplace",
+                            data: {
+                                loc_id: /*[[${loc_id}]]*/ 0,
+                                wp_name: $("#wp_name").val(),
+                                wp_texttemplate: $("#wp_texttemplate").val()
+                            },
+                            type: 'POST',
+                            success: function (result) {
+                                if (/*[[${return_form == 'workplace'}]]*/ true) {
+                                    $("#frm_workplace input[name=wp_id]").val(result.wp_id);
+                                    $("#frm_workplace").submit();
+                                }
+                                else {
+                                    $("#frm_location input[name=wp_id]").val(result.wp_id);
+                                    $("#frm_location").submit();
+                                }
+                            }
+                        });
+                        break;
+                    case 1:
+                        $.ajax({
+                            url: "adm/update_workplace",
+                            data: {
+                                loc_id: /*[[${loc_id}]]*/ 0,
+                                wp_id: /*[[${wp_id}]]*/ 0,
+                                wp_name: $("#wp_name").val(),
+                                wp_texttemplate: $("#wp_texttemplate").val()
+                            },
+                            type: 'POST',
+                            success: function (result) {
+                                if (/*[[${return_form == 'workplace'}]]*/ true) {
+                                    $("#frm_workplace").submit();
+                                }
+                                else {
+                                    $("#frm_location").submit();
+                                }
+                            }
+                        });
+                        break;
+                    case 2:
+                        $.ajax({
+                            url: "adm/del_workplace",
+                            data: {
+                                loc_id: /*[[${loc_id}]]*/ 0,
+                                wp_id: /*[[${wp_id}]]*/ 0
+                            },
+                            type: 'POST',
+                            success: function (result) {
+                                if (/*[[${return_form == 'workplace'}]]*/ true) {
+                                    $("#frm_workplace").submit();
+                                }
+                                else {
+                                    $("#frm_location").submit();
+                                }
+                            }
+                        });
+                        break;
+                };
+                return false;
+            }
+        });
+
+    });
+
+</script>
+
+<main role="main" >
+    <div class="jumbotron ">
+        <div class="container align-items-center justify-content-center">
+            <h2 th:text="#{index.workplace_a_description}">Workplaces</h2>
+            <p th:text="#{index.workplace_description}">We will add all Workplaces of Partnership in the all locations</p>
+        </div>
+    </div>
+
+    <form id="frm_workplace" method="post" th:action="workplace">
+        <input type="hidden" name="loc_id" th:value="${loc_id}">
+        <input type="hidden" name="wp_id" th:value="${wp_id}">
+    </form>
+    <form id="frm_location" method="post" th:action="location">
+        <input type="hidden" name="loc_id" th:value="${loc_id}">
+        <input type="hidden" name="wp_id" th:value="${wp_id}">
+        <input type="hidden" name="loc_partnership" th:value="${parent_loc_partnership}">
+    </form>
+
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-12">
+                <form id="form_group" name="form_group">
+                    <div class="col-sm form-inline form-check  form-check-inline">
+                        <div th:switch="${mode}">
+                            <button th:text="#{general.back}" th:hidden="${return_form != 'workplace'}" class="btn btn-primary mb-2" form="frm_workplace" role="button">Back</button>
+                            <button th:text="#{general.back}" th:hidden="${return_form == 'workplace'}" class="btn btn-primary mb-2" form="frm_location" role="button">Back</button>
+                            <button th:case="0" type="submit" id="addbtn" class="btn btn-primary mb-2" th:text="#{workplace.addbtn}"  >Add</button>
+                            <button th:case="1" type="submit" id="editbtn" class="btn btn-primary mb-2" th:text="#{workplace.editbtn}"  >Edit</button>
+                            <button th:case="2" type="submit" id="delbtn" class="btn btn-primary mb-2" th:text="#{workplace.delbtn}"  >Delete</button>
+                        </div>
+                    </div>
+                    <div class="col-sm error"></div>
+                    <div class="form-group" id="editModalfrm">
+                        <label for="loc_id" class="form-control-label" th:text="#{workplace.loc_id}">loc_id</label>
+                        <input class="form-control" id="loc_id" name="loc_id" th:value="${loc_id}" disabled>
+                        <div th:hidden="${mode}==0">
+                            <label for="wp_id" class="form-control-label" th:text="#{workplace.wp_id}" >wp_id</label>
+                            <input class="form-control" id="wp_id" name="wp_id" th:value="${wp_id}" disabled >
+                        </div>
+
+                        <label for="wp_name" class="form-control-label" th:text="#{workplace.wp_name}">wp_name</label>
+                        <input class="form-control" id="wp_name" name="wp_name" th:value="${wp_name}" th:disabled="${mode}==2" >
+                        <label for="wp_texttemplate" class="form-control-label" th:text="#{workplace.wp_texttemplate}">wp_texttemplate</label>
+                        <input class="form-control" id="wp_texttemplate" name="wp_texttemplate" th:value="${wp_texttemplate}" th:disabled="${mode}==2">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <hr>
+
+    </div> <!-- /container -->
+
+
+
+</main>
+
+<footer th:replace="fragments/footer :: footer">Footer</footer>
+</body>
+</html>

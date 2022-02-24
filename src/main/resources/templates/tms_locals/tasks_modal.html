@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_locals_tasks_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="tms_locals_tasks_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="tms_locals_tasks_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{full_world.tasks.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <input type="hidden" id="tms_locals_tasks_modal_mode">
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="tms_locals_tasks_modal_clm_id_row">
+                            <label for="tms_locals_tasks_modal_clm_id" class="form-label mb-0" th:text="'1. '+ #{tms_locals.main.clm_id}"></label>
+                            <input type="number" class="form-control" id="tms_locals_tasks_modal_clm_id" name="tms_locals_tasks_modal_clm_id" readonly>
+                        </div>
+
+                        <div class="col-12 col-md-3" id="tms_locals_tasks_modal_clm_num_row">
+                            <label for="tms_locals_tasks_modal_clm_num" class="form-label mb-0" th:text="'2. '+ #{tms_locals.main.clm_num}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="tms_locals_tasks_modal_clm_num" name="tms_locals_tasks_modal_clm_num" readonly>
+                        </div>
+
+                        <div class="col-12 col-md-6" id="cnt_name_row">
+                            <label for="tms_locals_tasks_modal_cnt_name" class="form-label mb-0" th:text="'3. '+ #{tms_locals.main.cnt_name}"></label>
+                            <input type="text" class="form-control" id="tms_locals_tasks_modal_cnt_name" name="tms_locals_tasks_modal_cnt_name" readonly>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="clmtl_id_row">
+                            <label for="clmtl_id" class="form-label mb-0" th:text="'4. '+ #{tms_locals.tasks.clmtl_id}"></label>
+                            <input type="number" class="form-control" id="clmtl_id" name="clmtl_id" readonly>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label for="clm_task_id" class="form-label mb-0" th:text="'5. '+#{tms_locals.tasks.clm_task_sname}">Tasks: </label>
+                            <select type="text" id="clm_task_id" name="clm_task_id" class="custom-select">
+                            </select>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-6" id="start_user_id_row">
+                            <label for="start_user_id" class="form-label mb-0" th:text="'6. '+#{tms_locals.tasks.start_user_name}">Start User: </label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="start_user_id" name="start_user_id" class="custom-select" th:value="${start_user_id}">
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-3" id="deadline_date_row">
+                            <label for="deadline_date" class="form-label mb-0" th:text="'7. '+ #{tms_locals.tasks.deadline_date}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="deadline_date" name="deadline_date">
+                                <button type="button" id="deadline_date_x" name="deadline_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-3" id="tms_locals_tasks_modal_start_date_row">
+                            <label for="tms_locals_tasks_modal_start_date" class="form-label mb-0" th:text="'8. '+ #{tms_locals.tasks.start_date}"></label>
+                            <input type="text" class="form-control" id="tms_locals_tasks_modal_start_date" name="tms_locals_tasks_modal_start_date" readonly>
+                        </div>
+                    </div> <!-- Row 3 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-6" id="end_user_id_row">
+                            <label for="end_user_id" class="form-label mb-0" th:text="'9. '+#{tms_locals.tasks.end_user_name}">End User: </label>
+                            <select type="text" id="end_user_id" name="end_user_id" class="custom-select">
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-3" id="tms_locals_tasks_modal_end_date_row">
+                            <label for="tms_locals_tasks_modal_end_date" class="form-label mb-0" th:text="'10. '+ #{tms_locals.tasks.end_date}"></label>
+                            <input type="text" class="form-control" id="tms_locals_tasks_modal_end_date" name="tms_locals_tasks_modal_end_date" readonly>
+                        </div>
+                    </div> <!-- Row 4 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12">
+                            <label for="clmtl_note" class="form-label mb-0" th:text="'11. '+#{tms_locals.tasks.clmtl_note}"></label>
+                            <textarea class="form-control" rows="5" maxlength="512" style="resize:none;" id="clmtl_note" name="clmtl_note">
+                            </textarea>
+                        </div>
+                    </div>  <!-- Row 5 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="tms_locals_tasks_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="tms_locals_tasks_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="tms_locals_tasks_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="tms_locals_tasks_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+// Clear Fields
+    function clear_tms_locals_tasks_modal_detail() {
+        $("#tms_locals_tasks_modal_detail input[type=text]").val('');
+        $("#tms_locals_tasks_modal_detail input[type=number]").val('');
+        $("#tms_locals_tasks_modal_detail select").empty();
+        $("#tms_locals_tasks_modal_detail textarea").val('');
+    }
+
+// Block And Required Fields
+    function block_tms_locals_tasks_modal_detail(){
+        $('#clm_task_id').attr('required', true);
+        $('#start_user_id').attr('required', true);
+
+        if($('#tms_locals_tasks_modal_mode').val() === "0"){
+            $('#clmtl_id_row').attr('hidden',true);
+            $('#clm_task_id').removeAttr('disabled');
+            $('#start_user_id').removeAttr('disabled');
+            $('#end_user_id').removeAttr('disabled');
+            $('#clmtl_note').removeAttr('readonly');
+            $('#deadline_date').removeAttr('disabled');
+            $('#deadline_date_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+        }
+        else if($('#tms_locals_tasks_modal_mode').val() === "1"){
+            $('#clmtl_id_row').removeAttr('hidden');
+            $('#clm_task_id').removeAttr('disabled');
+            $('#start_user_id').removeAttr('disabled');
+            $('#end_user_id').removeAttr('disabled');
+            $('#clmtl_note').removeAttr('readonly');
+            $('#deadline_date').removeAttr('disabled');
+            $('#deadline_date_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+        }
+        else{
+            $('#clmtl_id_row').removeAttr('hidden');
+            $('#clm_task_id').attr('disabled',true);
+            $('#start_user_id').attr('disabled',true);
+            $('#end_user_id').attr('disabled',true);
+            $('#clmtl_note').attr('readonly',true);
+            $('#deadline_date').attr('disabled',true);
+            $('#deadline_date_x').attr('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+        }
+    }
+// Tasks List
+    function tasksChange(vMode, vClmTaskID) {
+        $('#clm_task_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/tms_locals/get_clm_tasks_list'}]]*/ "/tms_locals/get_clm_tasks_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "clm_id": $('#tms_locals_tasks_modal_clm_id').val(),
+                "clm_task_id": vClmTaskID
+            },
+            success: function (clm_tasks_list) {
+                for (var i = 0; i < clm_tasks_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='clm_task_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='clm_task_id']").find('option').end().append(
+                        "<option value='" + clm_tasks_list.data[i].clm_task_id
+                        + "'>" + clm_tasks_list.data[i].clm_task_name + "</option>");
+                }
+                if(vClmTaskID !== ''){
+                    $('#clm_task_id').val(vClmTaskID);
+                }
+            }
+        }));
+    }
+
+// Start Users List
+function startUsersChange(vMode, vStartUserID) {
+    $('#start_user_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/tms_locals/get_tasks_start_users_list'}]]*/ "/tms_locals/get_tasks_start_users_list",
+        type: "get",
+        data: {
+            "mode": vMode,
+            "start_user_id": vStartUserID
+        },
+        success: function (tasks_start_users_list) {
+            for (var i = 0; i < tasks_start_users_list.data.length; i++) {
+                $("select[name='start_user_id']").find('option').end().append(
+                    "<option value='" + tasks_start_users_list.data[i].id
+                    + "'>" + tasks_start_users_list.data[i].user_surname + "</option>");
+            }
+        }
+    }));
+}
+
+// End Users List
+function endUsersChange(vMode, vEndUserID) {
+    $('#end_user_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/tms_locals/get_tasks_end_users_list'}]]*/ "/tms_locals/get_tasks_end_users_list",
+        type: "get",
+        data: {
+            "mode": vMode,
+            "end_user_id": vEndUserID
+        },
+        success: function (tasks_end_users_list) {
+            for (var i = 0; i < tasks_end_users_list.data.length; i++) {
+                if(i === 0) {
+                    $("select[name='end_user_id']").find('option').end().append("<option value=''></option>");
+                }
+                $("select[name='end_user_id']").find('option').end().append(
+                    "<option value='" + tasks_end_users_list.data[i].id
+                    + "'>" + tasks_end_users_list.data[i].user_surname + "</option>");
+                if(vEndUserID !== ''){
+                    $('#end_user_id').val(vEndUserID);
+                }
+            }
+        }
+    }));
+}
+
+// Dead Line Date
+$("#deadline_date").daterangepicker({
+    "singleDatePicker": true,
+    "timePicker" : true,
+    "timePicker24Hour" : true,
+    "locale": {
+        "format": "DD.MM.YYYY HH:mm",
+        "separator": " - ",
+        "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+        "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+        "daysOfWeek": [
+            /*[[#{weekdays.07_short}]]*/ "Su",
+            /*[[#{weekdays.01_short}]]*/ "Mo",
+            /*[[#{weekdays.02_short}]]*/ "Tu",
+            /*[[#{weekdays.03_short}]]*/ "We",
+            /*[[#{weekdays.04_short}]]*/ "Th",
+            /*[[#{weekdays.05_short}]]*/ "Fr",
+            /*[[#{weekdays.06_short}]]*/ "Sa"
+        ],
+        "monthNames": [
+            /*[[#{month.01}]]*/ "January",
+            /*[[#{month.02}]]*/ "February",
+            /*[[#{month.03}]]*/ "March",
+            /*[[#{month.04}]]*/ "April",
+            /*[[#{month.05}]]*/ "May",
+            /*[[#{month.06}]]*/ "June",
+            /*[[#{month.07}]]*/ "July",
+            /*[[#{month.08}]]*/ "August",
+            /*[[#{month.09}]]*/ "September",
+            /*[[#{month.10}]]*/ "October",
+            /*[[#{month.11}]]*/ "November",
+            /*[[#{month.12}]]*/ "December"
+        ],
+        "firstDay": 1
+    }
+});
+
+// Load Function
+    function fill_tms_locals_tasks_modal_detail(aMode){
+        $('#tms_locals_tasks_modal_mode').val(aMode);
+        clear_tms_locals_tasks_modal_detail();
+        block_tms_locals_tasks_modal_detail();
+
+        $('#tms_locals_tasks_modal_clm_id').val(vClaimsValue.rowdata.clm_id);
+        $('#tms_locals_tasks_modal_clm_num').val(vClaimsValue.rowdata.clm_num);
+        $('#tms_locals_tasks_modal_cnt_name').val(vClaimsValue.rowdata.cnt_name);
+
+        if(aMode !== 0){
+            $.ajax({
+                url:/*[[@{'/tms_locals/get_tasks_detail'}]]*/ "tms_locals/get_tasks_detail",
+                type: "get",
+                data: {
+                    "clmtl_id": vFLDClaimTasksValue.rowdata.clmtl_id,
+                    "mode": aMode
+                },
+                success: function (tms_locals_tasks_modal_detail) {
+                    $.when(
+                        tasksChange(aMode,tms_locals_tasks_modal_detail.data[0].clm_task_id),
+                        startUsersChange(aMode,tms_locals_tasks_modal_detail.data[0].start_user_id),
+                        endUsersChange(aMode,tms_locals_tasks_modal_detail.data[0].end_user_id)
+                    ).then(function () {
+                        $('#clmtl_id').val(tms_locals_tasks_modal_detail.data[0].clmtl_id);
+                        $('#deadline_date').val(tms_locals_tasks_modal_detail.data[0].deadline_date);
+                        $('#tms_locals_tasks_modal_start_date').val(tms_locals_tasks_modal_detail.data[0].start_date);
+                        $('#tms_locals_tasks_modal_end_date').val(tms_locals_tasks_modal_detail.data[0].end_date);
+                        $('#clmtl_note').val(tms_locals_tasks_modal_detail.data[0].clmtl_note);
+
+                        $('#tms_locals_tasks_modal').modal('show');
+                    });
+                }
+            });
+        }
+        else{
+            $.when(
+                tasksChange(aMode,0),
+                startUsersChange(aMode,0),
+                endUsersChange(aMode,0)
+            ).then(function () {
+                $('#tms_locals_tasks_modal').modal('show');
+            });
+        }
+    }
+
+// Add button script
+$('#tms_locals_tasks_modal_addbtn').click(function(){
+    var MainRowID = vClaimsValue.rowdata.clm_id;
+    var RowID = vFLDClaimTasksValue.rowdata.clmtl_id;
+    $.ajax({
+        url: /*[[ @{/tms_locals/add_tasks} ]]*/ "/tms_locals/add_tasks",
+        type: 'POST',
+        data: {
+            "clm_id": MainRowID,
+            "clm_task_id": $('#clm_task_id').val(),
+            "start_user_id":  $('#start_user_id').val(),
+            "end_user_id":  $('#end_user_id').val(),
+            "clmtl_note":  $('#clmtl_note').val(),
+            "deadline_date":  $('#deadline_date').val()
+        },
+        success: function (result) {
+            $('#tms_locals_tasks_modal').modal('hide');
+            vFLDClaimTasksValue.rowdata.clm_id = MainRowID;
+            vFLDClaimTasksValue.rowdata.clmtl_id = RowID;
+            $(vFLDClaimTasksValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// Edit button script
+$('#tms_locals_tasks_modal_editbtn').click(function(){
+    var MainRowID = vClaimsValue.rowdata.clm_id;
+    var RowID = vFLDClaimTasksValue.rowdata.clmtl_id;
+    $.ajax({
+        url: /*[[ @{/tms_locals/edit_tasks} ]]*/ "/tms_locals/edit_tasks",
+        type: 'POST',
+        data: {
+            "clmtl_id": RowID,
+            "clm_task_id": $('#clm_task_id').val(),
+            "start_user_id":  $('#start_user_id').val(),
+            "end_user_id":  $('#end_user_id').val(),
+            "clmtl_note":  $('#clmtl_note').val(),
+            "deadline_date":  $('#deadline_date').val()
+        },
+        success: function (result) {
+            $('#tms_locals_tasks_modal').modal('hide');
+            vFLDClaimTasksValue.rowdata.clm_id = MainRowID;
+            vFLDClaimTasksValue.rowdata.clmtl_id = RowID;
+            $(vFLDClaimTasksValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// Del button script
+$('#tms_locals_tasks_modal_delbtn').click(function(){
+    var MainRowID = vClaimsValue.rowdata.clm_id;
+    var RowID = vFLDClaimTasksValue.rowdata.clmtl_id;
+    $.ajax({
+        url: /*[[ @{/tms_locals/del_tasks} ]]*/ "/tms_locals/del_tasks",
+        type: 'POST',
+        data: {
+            "clmtl_id": RowID
+        },
+        success: function (result) {
+            $('#tms_locals_tasks_modal').modal('hide');
+            vFLDClaimTasksValue.rowdata.clm_id = MainRowID;
+            $(vFLDClaimTasksValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// OnClick Function
+$('#deadline_date_x').on('click', function() {
+    $('#deadline_date').empty().val('');
+});
+
+</script>
+
+</body>
+</html>

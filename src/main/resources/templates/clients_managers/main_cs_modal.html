@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_managers_main_cs_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="clients_managers_main_cs_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{clients.users_roles.modal.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body m-1">
+                    <div class="row mb-2">
+                        <div class="col-12 col-md-3" id="clients_managers_main_cs_modal_cnt_id_row">
+                            <label for="clients_managers_main_cs_modal_cnt_id" class="form-label mb-0" th:text="'1. '+ #{clients.list.cnt_id}"></label>
+                            <div class="input-group mt-0">
+                                <input type="number" class="form-control" id="clients_managers_main_cs_modal_cnt_id" name="clients_managers_main_cs_modal_cnt_id" readonly>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-9" id="clients_managers_main_cs_modal_cnt_name_row">
+                            <label for="clients_managers_main_cs_modal_cnt_name" class="form-label mb-0" th:text="'2. '+ #{clients.list.cnt_name}"></label>
+                            <div class="input-group mt-0">
+                                <input type="text" class="form-control" id="clients_managers_main_cs_modal_cnt_name" name="clients_managers_main_cs_modal_cnt_name" readonly>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="row mb-2">
+                        <div class="col-12 col-md-3" id="ser_id_row">
+                            <label for="ser_id" class="form-label mb-0" th:text="'3. '+ #{clients.users_roles.ser_id}"></label>
+                            <div class="input-group mt-0">
+                                <input type="number" class="form-control" id="ser_id" name="ser_id" readonly>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-9" id="ser_name_row">
+                            <label for="ser_name" class="form-label mb-0" th:text="'4. '+ #{clients.users_roles.ser_name}"></label>
+                            <div class="input-group mt-0">
+                                <input type="text" class="form-control" id="ser_name" name="ser_name" readonly>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="row mb-2">
+                        <div class="col-12" id="cs_user_id_row">
+                            <input type="hidden" class="form-control" id="cs_cntul_id" name="cs_cntul_id">
+                            <label for="cs_user_id" class="form-label mb-0" th:text="'5. '+ #{clients.users_roles.cs_user_name}"></label>
+                            <div class="input-group mt-0">
+                                <select type="text" class="form-control" id="cs_user_id" name="cs_user_id">
+                                </select>
+                                <button type="button" id="cs_user_id_x" name="cs_user_id_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 3 -->
+
+                    <div class="row mb-2">
+                        <div class="col-12 col-md-4" id="cs_start_date_row">
+                            <label for="cs_start_date" class="form-label mb-0" th:text="'6. '+ #{clients.users_roles.modal.cs_start_date}"></label>
+                            <div class="input-group mt-0">
+                                <input type="text" class="form-control" id="cs_start_date" name="cs_start_date" disabled>
+                                <button type="button" id="cs_start_date_x" name="cs_start_date_x" class="btn btn-outline-dark" disabled><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4" id="cs_end_date_row">
+                            <label for="cs_start_date" class="form-label mb-0" th:text="'7. '+ #{clients.users_roles.modal.cs_end_date}"></label>
+                            <div class="input-group mt-0">
+                                <input type="text" class="form-control" id="cs_end_date" name="cs_end_date" disabled>
+                                <button type="button" id="cs_end_date_x" name="cs_end_date_x" class="btn btn-outline-dark" disabled><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 4 -->
+
+                    <div class="row mb-2">
+                        <div class="col-12 col-md-2" id="cs_persent_row">
+                            <label for="cs_persent" class="form-label mb-0" th:text="'8. '+ #{clients.users_roles.modal.cs_persent}"></label>
+                            <div class="input-group mt-0">
+                                <input type="number" min="0" max="100" class="form-control" id="cs_persent" name="cs_persent">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 5 -->
+
+                    <div class="row mb-2">
+                        <div class="col-12" id="ops_user_id_row">
+                            <input type="hidden" class="form-control" id="ops_cntul_id" name="ops_cntul_id">
+                            <label for="ops_user_id" class="form-label mb-0" th:text="'9. '+ #{clients.users_roles.ops_user_name}"></label>
+                            <div class="input-group mt-0">
+                                <select type="text" class="form-control" id="ops_user_id" name="ops_user_id">
+                                </select>
+                                <button type="button" id="ops_user_id_x" name="ops_user_id_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 6 -->
+
+                    <div class="row mb-2">
+                        <div class="col-12 col-md-2" id="ops_persent_row">
+                            <label for="ops_persent" class="form-label mb-0" th:text="'10. '+ #{clients.users_roles.modal.ops_persent}"></label>
+                            <div class="input-group mt-0">
+                                <input type="number" min="0" max="100" class="form-control" id="ops_persent" name="ops_persent">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 8 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="clients_managers_main_cs_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="clients_managers_main_cs_modal_savebtn" class="btn btn-outline-primary" th:text="#{general.editbtn}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    $("#cs_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#cs_start_date_x').click(function() {
+        $('#cs_start_date').empty().val('');
+    });
+    <!-- CS Start Date -->
+
+    $("#cs_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#cs_end_date_x').click(function() {
+        $('#cs_end_date').empty().val('');
+    });
+    <!-- CS End Date -->
+
+    function SaleListChange(aSaleUserID){
+        $('#cs_user_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/clients_managers/get_sale_list'}]]*/ "/clients_managers/get_sale_list",
+            type: "get",
+            data: {},
+            success: function (sale_list_detail) {
+                for (var i = 0; i < sale_list_detail.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='cs_user_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='cs_user_id']").find('option').end().append("<option value='" + sale_list_detail.data[i].id + "'>" + sale_list_detail.data[i].user_surname + "</option>");
+                }
+                if(aSaleUserID != null){
+                    $("#cs_user_id").val(aSaleUserID);
+                }
+            }
+        }));
+    }
+
+    function OPSListChange(aOpsUserID){
+        $('#ops_user_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/clients_managers/get_ops_list'}]]*/ "/clients_managers/get_ops_list",
+            type: "get",
+            data: {},
+            success: function (ops_list_detail) {
+                for (var i = 0; i < ops_list_detail.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='ops_user_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='ops_user_id']").find('option').end().append("<option value='" + ops_list_detail.data[i].id + "'>" + ops_list_detail.data[i].user_surname + "</option>");
+                }
+                if(aOpsUserID != null){
+                    $("#ops_user_id").val(aOpsUserID);
+                }
+            }
+        }));
+    }
+
+// Clear Fields
+    function clear_clients_managers_main_cs_modal_detail() {
+        $("#clients_managers_main_cs_modal_detail input[type=text]").val('');
+        $("#clients_managers_main_cs_modal_detail input[type=number]").val('');
+        $("#clients_managers_main_cs_modal_detail select").empty();
+        $("#clients_managers_main_cs_modal_detail textarea").val('');
+    }
+
+// Block And Required Fields
+    function block_clients_managers_main_cs_modal_detail() {
+    }
+
+// Load Function
+    function fill_clients_managers_main_cs_modal_detail(aMode){
+        clear_clients_managers_main_cs_modal_detail();
+        block_clients_managers_main_cs_modal_detail();
+
+        $('#clients_managers_main_cs_modal_cnt_id').val(vClientsManagersValue.rowdata.cnt_id);
+        $('#clients_managers_main_cs_modal_cnt_name').val(vClientsManagersValue.rowdata.cnt_name);
+        $('#ser_id').val(vClientsManagersValue.rowdata.ser_id);
+        $('#ser_name').val(vClientsManagersValue.rowdata.ser_name);
+
+        $('#cs_cntul_id').val('').val(vClientsManagersValue.rowdata.cs_user_link_id);
+
+        if(vClientsManagersValue.rowdata.cs_start_date != null) {
+            $('#cs_start_date').empty().val(vClientsManagersValue.rowdata.cs_start_date);
+            $('#cs_start_date').data('daterangepicker').setStartDate(vClientsManagersValue.rowdata.cs_start_date);
+            $('#cs_start_date').data('daterangepicker').setEndDate(vClientsManagersValue.rowdata.cs_start_date);
+        }
+        else{
+            $('#cs_start_date').empty().val('');
+        }
+
+        if(vClientsManagersValue.rowdata.cs_end_date != null) {
+            $('#cs_end_date').empty().val(vClientsManagersValue.rowdata.cs_end_date);
+            $('#cs_end_date').data('daterangepicker').setStartDate(vClientsManagersValue.rowdata.cs_end_date);
+            $('#cs_end_date').data('daterangepicker').setEndDate(vClientsManagersValue.rowdata.cs_end_date);
+        }
+        else{
+            $('#cs_end_date').empty().val('');
+        }
+
+        $('#cs_persent').val('').val(vClientsManagersValue.rowdata.cs_persent);
+
+        $('#ops_cntul_id').val('').val(vClientsManagersValue.rowdata.ops_user_link_id);
+
+        $('#ops_persent').val('').val(vClientsManagersValue.rowdata.ops_persent);
+
+        if(vClientsManagersValue.rowdata.cs_user_id === '' || vClientsManagersValue.rowdata.cs_user_id === null){
+            $('#cs_user_id').removeAttr('required');
+            $('#cs_persent').empty().val('').removeAttr('required');
+        }
+        else{
+            $('#cs_user_id').attr('required', true);
+            $('#cs_persent').attr('required', true);
+        }
+
+        if(vClientsManagersValue.rowdata.ops_user_id === '' || vClientsManagersValue.rowdata.ops_user_id === null){
+            $('#ops_user_id').removeAttr('required');
+            $('#ops_persent').empty().val('').removeAttr('required');
+        }
+        else{
+            $('#ops_user_id').attr('required', true);
+            $('#ops_persent').attr('required', true);
+        }
+
+        $.when(
+            SaleListChange(vClientsManagersValue.rowdata.cs_user_id),
+            OPSListChange(vClientsManagersValue.rowdata.ops_user_id)
+        ).then(function() {
+            $('#clients_managers_main_cs_modal').modal('show');
+        });
+    }
+
+    function clients_managers_main_cs_modal_valid(){
+        if (vClientsManagersValue.rowdata.ser_id != null) {
+            var RowID =  vClientsManagersValue.rowdata.cntserl_id;
+            var ClientRowID = vClientsManagersValue.rowdata.cnt_id;
+            var ServiceRowID = vClientsManagersValue.rowdata.ser_id;
+            $.ajax({
+                url: /*[[ @{/clients_managers/main_edit} ]]*/ "/clients_managers/main_edit",
+                type: 'POST',
+                data: {
+                    "cnt_id": ClientRowID,
+                    "ser_id": ServiceRowID,
+                    "cs_cntul_id": $('#cs_cntul_id').val(),
+                    "cs_user_id": $('#cs_user_id').val(),
+                    "cs_main_id":  $('#cs_check').is(':checked') ? 1 : 0,
+                    "cs_persent": $('#cs_persent').val(),
+                    "ops_cntul_id": $('#ops_cntul_id').val(),
+                    "ops_user_id": $('#ops_user_id').val(),
+                    "ops_main_id":  $('#ops_check').is(':checked') ? 1 : 0,
+                    "ops_persent": $('#ops_persent').val()
+                },
+                success: function (result) {
+                    $('#clients_managers_main_cs_modal').modal('hide');
+
+                    vClientsManagersValue.rowdata.cntserl_id = RowID;
+                    vClientsManagersValue.rowdata.req_cs_user_id = $("#clients_managers_filter_cs_user_id").val();
+                    vClientsManagersValue.rowdata.req_ops_user_id = $("#clients_managers_filter_ops_user_id").val();
+
+                    $(vClientsManagersValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }
+
+    $('#cs_user_id').change( function () {
+       if($('#cs_user_id').val() === ''){
+           $('#cs_user_id').removeAttr('required');
+           $('#cs_persent').empty().val('').removeAttr('required');
+       }
+       else{
+           $('#cs_user_id').attr('required', true);
+           $('#cs_persent').attr('required', true);
+       }
+    });
+
+    $('#ops_user_id').change( function () {
+        if($('#ops_user_id').val() === ''){
+            $('#ops_user_id').removeAttr('required');
+            $('#ops_persent').empty().val('').removeAttr('required');
+        }
+        else{
+            $('#ops_user_id').attr('required', true);
+            $('#ops_persent').attr('required', true);
+        }
+    });
+
+    $('#cs_user_id_x').click( function () {
+        $('#cs_user_id').val('').removeAttr('required');
+        $('#cs_persent').empty().val('').removeAttr('required');
+    });
+
+    $('#ops_user_id_x').click( function () {
+        $('#ops_user_id').val('').removeAttr('required');
+        $('#ops_persent').empty().val('').removeAttr('required');
+    });
+
+    $(document).ready(function() {
+        $('#clients_managers_main_cs_modal_savebtn').click(function () {
+            clients_managers_main_cs_modal_valid();
+        });
+    });
+</script>
+
+</body>
+</html>

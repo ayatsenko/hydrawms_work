@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_users_body" th:remove="tag">
+        <form id="clients-users-detail" class="mb-2" th:action="@{/clients/users_detail}" method="post" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_GM','ROLE_SALEDIR')" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="clients-users-detailbtn-large" class="d-none d-sm-block">
+                 <button type="submit" id="clients-users-detailbtn" class="btn btn-sm btn-dark clients_users_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="clients-users-addbtn" class="btn btn-sm btn-dark clients_users_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="submit" id="clients-users-editbtn" class="btn btn-sm btn-dark clients_users_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Delete</button>
+                 <button type="submit" id="clients-users-delbtn" class="btn btn-sm btn-dark clients_users_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="clients-users-detailbtn-small" class="d-block d-sm-none">
+                 <button type="submit" id="clients-users-detailbtn-sx" class="btn btn-sm btn-dark clients_users_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="clients-users-addbtn-sx" class="btn btn-sm btn-primary clients_users_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                 <button type="submit" id="clients-users-editbtn-sx" class="btn btn-sm btn-primary clients_users_btn_control" th:attr="mode=1"><i data-feather="edit-2"></i></button>
+                  <button type="submit" id="clients-users-delbtn-sx" class="btn btn-sm btn-dark clients_users_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+
+        <div><table id="table-clients-users" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vClientUsersListValue;
+    vClientUsersListValue = {
+        table: '#table-clients-users',
+        button_form: "#clients-users-detail",
+        ajax : {
+            "url": /*[[@{/clients/get_users_table}]]*/ "clients/get_users_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.cnt_id = vClientUsersListValue.rowdata.cnt_id
+            }
+        },
+        key : "cntul_id",
+        switchControl : clients_users_switchControl,
+        rowdata:{
+            cnt_id: null,
+            cntul_id: null,
+            user_id: null,
+            cntul_main_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 'ftp',
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [1], "visible": false},
+            {"targets": [2], "visible": false},
+            {"targets": [4],
+                render: function ( data, type, row ) {
+                    if ( type === 'display' ) {             //if column data is 1 then set attr to checked, use row id as input id (plus prefix)
+                        return '<input type="checkbox" ' + ((data == 1) ? 'checked' : '') + ' id="input' + row.id + '" class="filter-ck text-center" disabled="true"/>';
+                    }
+                    return data;
+                },
+                "className": "dt-body-center text-center"
+            }
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{clients.managers.cntul_id}]]*/ "cntul_id", "data": "cntul_id", "width": "1%"},
+            /*1*/{"title": /*[[#{clients.managers.user_id}]]*/ "user_id", "data": "user_id", "width": "1%"},
+            /*2*/{"title": /*[[#{clients.managers.user_name}]]*/ "user_name", "data": "user_name", "width": "1%"},
+            /*3*/{"title": /*[[#{clients.managers.user_surname}]]*/ "user_surname", "data": "user_surname", "width": "87%"},
+            /*4*/{"title": /*[[#{clients.managers.cntul_main_id}]]*/ "cntul_main_id", "data": "cntul_main_id", "width": "10%", "className": "min-tablet-p text-center"}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function clients_users_switchControl(){
+        if(vClientUsersListValue.rowdata.cntul_id != null) {
+            if(vClientsListValue.rowdata.cnt_user_main_access === 1) {
+                $("#clients-users-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#clients-users-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#clients-users-editbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+                $("#clients-users-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            }else{
+                $("#clients-users-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-users-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#clients-users-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#clients-users-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            $("#clients-users-detailbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#clients-users-detailbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+            $("#clients-users-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-users-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-users-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#clients-users-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-users-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-users-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.clients_users_btn_control').on('click', function (){
+        $("#clients-users-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#clients-users-detail').submit(function(){
+        vClientUsersListValue.rowdata.clients_users_table_order_column = $(vClientUsersListValue.table).DataTable().order()[0][0];
+        vClientUsersListValue.rowdata.clients_users_table_order_type = $(vClientUsersListValue.table).DataTable().order()[0][1];
+        vClientUsersListValue.rowdata.clients_users_table_search = $(vClientUsersListValue.table).DataTable().search();
+        vClientUsersListValue.rowdata.clients_users_table_pagelen = $(vClientUsersListValue.table).DataTable().page.len();
+        vClientUsersListValue.rowdata.clients_users_table_page = $(vClientUsersListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        vClientUsersListValue.rowdata.cnt_id = vClientsListValue.rowdata.cnt_id;
+        vClientUsersListValue.rowdata.cnt_name = vClientsListValue.rowdata.cnt_name;
+
+        vClientUsersListValue.rowdata.clients_list_table_order_column = $(vClientsListValue.table).DataTable().order()[0][0];
+        vClientUsersListValue.rowdata.clients_list_table_order_type = $(vClientsListValue.table).DataTable().order()[0][1];
+        vClientUsersListValue.rowdata.clients_list_table_search = $(vClientsListValue.table).DataTable().search();
+        vClientUsersListValue.rowdata.clients_list_table_pagelen = $(vClientsListValue.table).DataTable().page.len();
+        vClientUsersListValue.rowdata.clients_list_table_page = $(vClientsListValue.table).DataTable().page.info().page;
+
+        Object.keys(vClientUsersListValue.rowdata).forEach(function (index) {
+            $("#clients-users-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#clients-users-detail input[name=\"" + index + "\"]").val(vClientUsersListValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vClientUsersListValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+        vClientUsersListValue.rowdata.cntul_id = /*[[${cntul_id}]]*/ null;
+
+        vClientUsersListValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vClientUsersListValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vClientUsersListValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vClientUsersListValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vClientUsersListValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vClientUsersListValue);
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="users_kpi_meets_main_body" th:remove="tag">
+        <form id="users-kpi-meets-main-detail" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="users-kpi-meets-main-detailbtn-large" class="d-none d-sm-block">
+                 <button type="button" id="users-kpi-meets-main-detailbtn" class="btn btn-sm btn-dark" th:text="#{general.detailbtn}" disabled>View</button>
+                 <button type="button" id="users-kpi-meets-main-addbtn" class="btn btn-sm btn-primary" th:text="#{general.addbtn}">Add</button>
+                 <button type="button" id="users-kpi-meets-main-clonebtn" class="btn btn-sm btn-dark" th:text="#{general.clonebtn}" disabled>Edit</button>
+                 <button type="button" id="users-kpi-meets-main-editbtn" class="btn btn-sm btn-dark" th:text="#{general.editbtn}" disabled>Edit</button>
+                 <button type="button" id="users-kpi-meets-main-delbtn" class="btn btn-sm btn-dark" th:text="#{general.delbtn}" disabled>Delete</button>
+              </div>
+              <div id="users-kpi-meets-main-detailbtn-small" class="d-block d-sm-none">
+                 <button type="button" id="users-kpi-meets-main-detailbtn-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-list-ul"></i></button>
+                 <button type="button" id="users-kpi-meets-main-addbtn-sx" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></button>
+                 <button type="button" id="users-kpi-meets-main-clonebtn-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-clone"></i></button>
+                 <button type="button" id="users-kpi-meets-main-editbtn-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-pencil-alt"></i></button>
+                 <button type="button" id="users-kpi-meets-main-delbtn-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-trash-alt"></i></button>
+              </div>
+        </form>
+
+        <div><table id="table-users-kpi-meets-main" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var user_kpi_meet_id_width, user_kpi_meet_name_width, user_kpi_date_width, user_kpi_meet_type_id_width, user_kpi_meet_type_name_width, user_kpi_add_date_width, user_kpi_add_user_id_width,
+        user_kpi_add_user_name_width;
+    var user_kpi_meet_id_class, user_kpi_meet_name_class, user_kpi_date_class, user_kpi_meet_type_id_class, user_kpi_meet_type_name_class, user_kpi_add_date_class, user_kpi_add_user_id_class,
+        user_kpi_add_user_name_class;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtip";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        user_kpi_meet_id_width = "";
+        user_kpi_meet_id_class = "none";
+        user_kpi_date_width = "8%";
+        user_kpi_date_class = "text-center head-center";
+        user_kpi_meet_name_width = "47%";
+        user_kpi_meet_name_class = "head-center";
+        user_kpi_meet_type_id_width = "";
+        user_kpi_meet_type_id_class = "none";
+        user_kpi_meet_type_name_width = "20%";
+        user_kpi_meet_type_name_class = "head-center";
+        user_kpi_add_date_width = "10%";
+        user_kpi_add_date_class = "text-center head-center";
+        user_kpi_add_user_id_width = "";
+        user_kpi_add_user_id_class = "none";
+        user_kpi_add_user_name_width = "15%";
+        user_kpi_add_user_name_class = "text-center head-center";
+    }
+
+    var vUsersKPIMeetsValue;
+    vUsersKPIMeetsValue = {
+        table : '#table-users-kpi-meets-main',
+        button_form: "#users-kpi-meets-main-detail",
+        ajax : {
+            "url": /*[[@{/users_kpi_meets/get_main_table}]]*/ "users_kpi_meets/get_main_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.user_kpi_meet_id = vUsersKPIMeetsValue.rowdata.user_kpi_meet_id
+            }
+        },
+        key : "user_kpi_meet_id",
+        switchControl : users_kpi_meets_main_switchControl,
+        rowdata:{
+            user_kpi_meet_id: null,
+            user_kpi_meet_name: null,
+            user_kpi_date: null,
+            user_kpi_meet_type_id: null
+        },
+        ordering: true,
+        order: [
+            [1, "desc"]
+        ],
+
+        dom: vDomParam,
+        columnDefs:[
+            {"targets": [1], type: 'de_date'}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{users_kpi_meets.main.user_kpi_meet_id}]]*/ "user_kpi_meet_id", "data": "user_kpi_meet_id", "width": user_kpi_meet_id_width, "className": user_kpi_meet_id_class},
+            /*1*/{"title": /*[[#{users_kpi_meets.main.user_kpi_date}]]*/ "user_kpi_date", "data": "user_kpi_date", "width": user_kpi_date_width, "className": user_kpi_date_class},
+            /*2*/{"title": /*[[#{users_kpi_meets.main.user_kpi_meet_name}]]*/ "user_kpi_meet_name", "data": "user_kpi_meet_name", "width": user_kpi_meet_name_width, "className": user_kpi_meet_name_class},
+            /*3*/{"title": /*[[#{users_kpi_meets.main.user_kpi_meet_type_id}]]*/ "user_kpi_meet_type_id", "data": "user_kpi_meet_type_id", "width": user_kpi_meet_type_id_width, "className": user_kpi_meet_type_id_class},
+            /*4*/{"title": /*[[#{users_kpi_meets.main.user_kpi_meet_type_name}]]*/ "user_kpi_meet_type_name", "data": "user_kpi_meet_type_name", "width": user_kpi_meet_type_name_width, "className": user_kpi_meet_type_name_class},
+            /*5*/{"title": /*[[#{users_kpi_meets.main.user_kpi_add_date}]]*/ "user_kpi_add_date", "data": "user_kpi_add_date", "width": user_kpi_add_date_width, "className": user_kpi_add_date_class},
+            /*6*/{"title": /*[[#{users_kpi_meets.main.user_kpi_add_user_id}]]*/ "user_kpi_add_user_id", "data": "user_kpi_add_user_id", "width": user_kpi_add_user_id_width, "className": user_kpi_add_user_id_class},
+            /*7*/{"title": /*[[#{users_kpi_meets.main.user_kpi_add_user_name}]]*/ "user_kpi_add_user_name", "data": "user_kpi_add_user_name", "width": user_kpi_add_user_name_width, "className": user_kpi_add_user_name_class}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function users_kpi_meets_main_switchControl(){
+        if(vUsersKPIMeetsValue.rowdata.user_kpi_meet_id != null) {
+            $("#users-kpi-meets-main-detailbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            $("#users-kpi-meets-main-clonebtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            $("#users-kpi-meets-main-editbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            $("#users-kpi-meets-main-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#users-kpi-meets-main-detailbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            $("#users-kpi-meets-main-clonebtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            $("#users-kpi-meets-main-editbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            $("#users-kpi-meets-main-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+//Users
+            vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_id = vUsersKPIMeetsValue.rowdata.user_kpi_meet_id;
+            $(vUsersKPIMeetsUsersValue.table).DataTable().ajax.reload(null, false);
+            $("#users-kpi-meets-users-addbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+            $("#users-kpi-meets-users-addbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+        } else{
+            $("#users-kpi-meets-main-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#users-kpi-meets-main-clonebtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#users-kpi-meets-main-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#users-kpi-meets-main-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#users-kpi-meets-main-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#users-kpi-meets-main-clonebtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#users-kpi-meets-main-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#users-kpi-meets-main-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+//Users
+            vUsersKPIMeetsUsersValue.rowdata.user_kpi_meet_id = null;
+            $(vUsersKPIMeetsUsersValue.table).DataTable().clear().draw();
+            $("#users-kpi-meets-users-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#users-kpi-meets-users-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.users_kpi_meets_main_btn_control').on('click', function (){
+        $("#users-kpi-meets-main-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+// Clone button script
+    function cloneKPIMeets() {
+        var RowID = vUsersKPIMeetsValue.rowdata.user_kpi_meet_id;
+        $.ajax({
+            url: /*[[ @{/users_kpi_meets/clone_kpi_meet} ]]*/ "/users_kpi_clone/clone_kpi_meet",
+            type: 'POST',
+            data: {
+                "user_kpi_meet_id": RowID
+            },
+            success: function (result) {
+                vUsersKPIMeetsValue.rowdata.user_kpi_meet_id = RowID;
+                $(vUsersKPIMeetsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+// Show Address Button
+    $('#users-kpi-meets-main-detailbtn').click(function (){
+        $('#users_kpi_meets_main_modal_addbtn').attr('hidden',true);
+        $('#users_kpi_meets_main_modal_editbtn').attr('hidden',true);
+        $('#users_kpi_meets_main_modal_delbtn').attr('hidden',true);
+        fill_users_kpi_meets_main_modal_detail(4);
+    });
+
+    $('#users-kpi-meets-main-detailbtn-sx').click(function (){
+        $('#users_kpi_meets_main_modal_addbtn').attr('hidden',true);
+        $('#users_kpi_meets_main_modal_editbtn').attr('hidden',true);
+        $('#users_kpi_meets_main_modal_delbtn').attr('hidden',true);
+        fill_users_kpi_meets_main_modal_detail(4);
+    });
+// Add Address Button
+    $('#users-kpi-meets-main-addbtn').click(function (){
+        $('#users_kpi_meets_main_modal_addbtn').removeAttr('hidden');
+        $('#users_kpi_meets_main_modal_editbtn').attr('hidden',true);
+        $('#users_kpi_meets_main_modal_delbtn').attr('hidden',true);
+        fill_users_kpi_meets_main_modal_detail(0);
+    });
+
+    $('#users-kpi-meets-main-addbtn-sx').click(function (){
+        $('#users_kpi_meets_main_modal_addbtn').removeAttr('hidden');
+        $('#users_kpi_meets_main_modal_editbtn').attr('hidden',true);
+        $('#users_kpi_meets_main_modal_delbtn').attr('hidden',true);
+        fill_users_kpi_meets_main_modal_detail(0);
+    });
+    // Add Address Button
+    $('#users-kpi-meets-main-clonebtn').click(function (){
+        cloneKPIMeets();
+    });
+
+    $('#users-kpi-meets-main-clonebtn-sx').click(function (){
+        cloneKPIMeets();
+    });
+// Edit Address Button
+    $('#users-kpi-meets-main-editbtn').click(function (){
+        $('#users_kpi_meets_main_modal_addbtn').attr('hidden',true);
+        $('#users_kpi_meets_main_modal_editbtn').removeAttr('hidden');
+        $('#users_kpi_meets_main_modal_delbtn').attr('hidden',true);
+        fill_users_kpi_meets_main_modal_detail(1);
+    });
+
+    $('#users-kpi-meets-main-editbtn-sx').click(function (){
+        $('#users_kpi_meets_main_modal_addbtn').attr('hidden',true);
+        $('#users_kpi_meets_main_modal_editbtn').removeAttr('hidden');
+        $('#users_kpi_meets_main_modal_delbtn').attr('hidden',true);
+        fill_users_kpi_meets_main_modal_detail(1);
+    });
+// Del Address Button
+    $('#users-kpi-meets-main-delbtn').click(function (){
+        $('#users_kpi_meets_main_modal_addbtn').attr('hidden',true);
+        $('#users_kpi_meets_main_modal_editbtn').attr('hidden',true);
+        $('#users_kpi_meets_main_modal_delbtn').removeAttr('hidden');
+        fill_users_kpi_meets_main_modal_detail(2);
+    });
+
+    $('#users-kpi-meets-main-delbtn-sx').click(function (){
+        $('#users_kpi_meets_main_modal_addbtn').attr('hidden',true);
+        $('#users_kpi_meets_main_modal_editbtn').attr('hidden',true);
+        $('#users_kpi_meets_main_modal_delbtn').removeAttr('hidden');
+        fill_users_kpi_meets_main_modal_detail(2);
+    });    
+
+    $(document).ready(function(){
+// Highlight menu
+        $('#main_li').removeClass('active');
+
+        $('#crm_kpi_li').addClass('active').removeClass('collapsed');
+        $('#crm_kpi_a').attr('aria-expanded',true);
+        $('#crm_kpi').addClass('show');
+
+        $('#users_kpi_meets_a').addClass('text-primary');
+
+        vUsersKPIMeetsValue.rowdata.user_kpi_meet_id = /*[[${user_kpi_meet_id}]]*/ null;
+
+        vUsersKPIMeetsValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vUsersKPIMeetsValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vUsersKPIMeetsValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vUsersKPIMeetsValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vUsersKPIMeetsValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vUsersKPIMeetsValue);
+    });
+</script>
+
+</body>
+</html>

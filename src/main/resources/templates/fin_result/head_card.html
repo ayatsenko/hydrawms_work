@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="fin_result_head_body" th:remove="tag">
+		<form class="form-inline">
+		      <div class="form-group mb-2 mr-2">
+				<label for="fin_result_start_date" class="mr-2" th:text="#{fin_result.start_date}">StartDate:</label>
+				<input class="form-control" type="text" id="fin_result_start_date" name="fin_result_start_date" />
+			  </div>
+
+			  <div class="form-group mb-2 mr-2">
+		    	<label for="fin_result_end_date" class="mr-2" th:text="#{fin_result.end_date}">EndDate:</label>
+				<input class="form-control" type="text" id="fin_result_end_date" name="fin_result_end_date" />
+			  </div>
+
+			  <div class="form-group mb-2 mr-3">
+				<label for="fin_result_service_list" class="mr-2" th:text="#{fin_result.service_list}">Service: </label>
+				<select id="fin_result_service_list" class="form-control select2" data-toggle="select2">
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+					<option
+							   th:each="service : ${service_list}"
+							   th:value="${service.ser_id}"
+							   th:text="${service.ser_name}"
+							   th:selected="${service.ser_id == ser_id}"
+					 ></option>
+				</select>
+			  </div>
+
+			<a class="btn btn-outline-primary mb-2" id="fin_result_show" th:text="#{general.reportshow}">Show</a>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    $(document).ready(function(){
+		var firstYearDay = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toLocaleDateString('ru');
+		var thisDay = new Date().toLocaleDateString('ru');
+
+		var startDate = /*[[${fin_result_start_date}]]*/ null;
+		var endDate = /*[[${fin_result_end_date}]]*/ null;
+		var reqSerID = /*[[${req_ser_id}]]*/ null;
+
+    	$("#fin_result_start_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+		if(startDate === null || startDate === ''){
+			$('#fin_result_start_date').empty().val(firstYearDay);
+		}else{
+			$('#fin_result_start_date').empty().val(startDate);
+		}
+
+        $("#fin_result_end_date").daterangepicker({
+            "singleDatePicker": true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+		if(endDate === null || endDate === ''){
+			$('#fin_result_end_date').empty().val(thisDay);
+		}else{
+			$('#fin_result_end_date').empty().val(endDate);
+		}
+
+		if (window.screen.width < 1024 && window.screen.height < 768) {
+			$("#fin_result_start_date").attr('readonly',true);
+			$("#fin_result_end_date").attr('readonly',true);
+		}
+
+		$(".select2").each(function() {
+			$(this)
+					.wrap("<div class=\"position-relative\"></div>")
+					.select2({
+						placeholder: "Select value"
+					});
+		});
+
+		$('#main_li').removeClass('active');
+
+		$('#admin_li').addClass('active').removeClass('collapsed');
+		$('#admin_a').attr('aria-expanded',true);
+		$('#admin').addClass('show');
+
+        $('#fin_result_a').addClass('text-primary');
+
+		if(reqSerID !== null && reqSerID >= 0){
+			$('#fin_result_detail_card').removeAttr('hidden');
+
+			vFinResultDetailValue.rowdata.start_date = $("#fin_result_start_date").val();
+			vFinResultDetailValue.rowdata.end_date = $("#fin_result_end_date").val();
+			vFinResultDetailValue.rowdata.req_ser_id = $("#fin_result_service_list").val();
+			$(vFinResultDetailValue.table).DataTable().ajax.reload();
+
+			$('.nav-tabs a[href="#tab-2"]').tab('show');
+		}else{
+			$('#fin_result_detail_card').prop('hidden',true);
+		}
+
+		$('#fin_result_show').on('click', function () {
+			$('#fin_result_detail_card').removeAttr('hidden');
+
+			vFinResultDetailValue.rowdata.start_date = $("#fin_result_start_date").val();
+			vFinResultDetailValue.rowdata.end_date = $("#fin_result_end_date").val();
+			vFinResultDetailValue.rowdata.req_ser_id = $("#fin_result_service_list").val();
+			$(vFinResultDetailValue.table).DataTable().ajax.reload();
+		})
+    });
+</script>
+
+</body>
+</html>

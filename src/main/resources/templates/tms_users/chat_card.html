@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_users_chat_body" th:remove="tag">
+        <form id="tms-users-chat-detail" class="mb-2" th:action="@{/tms_users/chat_detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="tms-users-chatbtn-large" class="d-none d-sm-block">
+                 <button type="submit" id="tms-users-chat-detailbtn" class="btn btn-sm btn-dark tms_users_chat_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="tms-users-chat-addbtn" class="btn btn-sm btn-primary tms_users_chat_btn_control" th:text="#{general.addbtn}" th:attr="mode=0">Add</button>
+                 <button type="submit" id="tms-users-chat-editbtn" class="btn btn-sm btn-dark tms_users_chat_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="tms-users-chat-delbtn" class="btn btn-sm btn-dark tms_users_chat_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="tms-users-chatbtn-small" class="d-block d-sm-none">
+                 <button type="submit" id="tms-users-chat-detailbtn-sx" class="btn btn-sm btn-dark tms_users_chat_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="tms-users-chat-addbtn-sx" class="btn btn-sm btn-primary tms_users_chat_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                 <button type="submit" id="tms-users-chat-editbtn-sx" class="btn btn-sm btn-dark tms_users_chat_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="tms-users-chat-delbtn-sx" class="btn btn-sm btn-dark tms_users_chat_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-tms-users-chat" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+        var vTmsUsersChatValue;
+        vTmsUsersChatValue = {
+                table : '#table-tms-users-chat',
+                button_form: "#tms-users-chat-detail",
+                ajax : {
+                        "url": /*[[@{/tms_users/get_chat_table}]]*/ "tms_users/get_chat_table",
+                        "type": "post",
+                        "data": function ( d ) {
+                                d.req_user_id = vTmsUsersChatValue.rowdata.req_user_id
+                        }
+                },
+                key : "tms_chat_id",
+                switchControl : tms_users_chatswitchControl,
+                rowdata:{
+                        req_user_id: null,
+                        req_user_name: null,
+                        tms_chat_id: null
+                },
+                ordering: true,
+                order: [
+                        [0, "asc"]
+                ],
+
+                dom: 'Blfrtip',
+                columnDefs:[
+                        {"targets": [0], "visible": false},
+                        {"targets": [1], type: 'de_datetime'},
+                        {"targets": [2], "visible": false}
+                ],
+                columns : [
+                        /*0*/{"title": /*[[#{tms_users.chat.tms_chat_id}]]*/ "tms_chat_id", "data": "tms_chat_id"},
+                        /*1*/{"title": /*[[#{tms_users.chat.tms_chat_create}]]*/ "tms_chat_create", "data": "tms_chat_create", "width": "15%"},
+                        /*2*/{"title": /*[[#{tms_users.chat.tms_car_id}]]*/ "tms_car_id", "data": "tms_car_id"},
+                        /*3*/{"title": /*[[#{tms_users.chat.tms_car_name}]]*/ "tms_car_name", "data": "tms_car_name", "width": "25%"},
+                        /*4*/{"title": /*[[#{tms_users.chat.tms_chat_text}]]*/ "tms_chat_text", "data": "tms_chat_text", "width": "70%"}
+                ],
+                pageLength: 25,
+                copy_button: true,
+                excel_button: true,
+                pdf_button: true,
+                print_button: true
+        };
+
+        function tms_users_chatswitchControl(){
+                if(vTmsUsersChatValue.rowdata.tms_chat_id != null) {
+                        $("#tms-users-chat-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                        $("#tms-users-chat-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                        $("#tms-users-chat-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                        $("#tms-users-chat-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                        $("#tms-users-chat-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                        $("#tms-users-chat-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                } else{
+                        $("#tms-users-chat-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                        $("#tms-users-chat-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                        $("#tms-users-chat-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                        $("#tms-users-chat-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                        $("#tms-users-chat-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                        $("#tms-users-chat-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                }
+        }
+
+        $('.tms_users_chat_btn_control').on('click', function (){
+                $("#tms-users-chat-detail input[name=mode]").val($(this).attr("mode"));
+        });
+
+        $('#tms-users-chat-detail').submit(function() {
+                vTmsUsersChatValue.rowdata.tms_users_chat_table_order_column = $(vTmsUsersChatValue.table).DataTable().order()[0][0];
+                vTmsUsersChatValue.rowdata.tms_users_chat_table_order_type = $(vTmsUsersChatValue.table).DataTable().order()[0][1];
+                vTmsUsersChatValue.rowdata.tms_users_chat_table_search = $(vTmsUsersChatValue.table).DataTable().search();
+                vTmsUsersChatValue.rowdata.tms_users_chat_table_pagelen = $(vTmsUsersChatValue.table).DataTable().page.len();
+                vTmsUsersChatValue.rowdata.tms_users_chat_table_page = $(vTmsUsersChatValue.table).DataTable().page.info().page;
+                <!-- Recreate Contragent Ajax Filter Value -->
+
+                vTmsUsersChatValue.rowdata.req_user_id = vTmsUsersListValue.rowdata.user_id;
+                vTmsUsersChatValue.rowdata.req_user_name = vTmsUsersListValue.rowdata.user_name;
+
+                Object.keys(vTmsUsersChatValue.rowdata).forEach(function (index) {
+                        $("#tms-users-chat-detail").append("<input name=\"" + index + "\" hidden>");
+                        $("#tms-users-chat-detail input[name=\"" + index + "\"]").val(vTmsUsersChatValue.rowdata[index]);
+                });
+        });
+
+        $(document).ready(function(){
+                vTmsUsersChatValue.rowdata.tms_chat_id = /*[[${tms_chat_id}]]*/ null;
+
+                vTmsUsersChatValue.rowdata.table_order_column = /*[[${tms_users_chat_table_order_column}]]*/ null;
+                vTmsUsersChatValue.rowdata.table_order_type = /*[[${tms_users_chat_table_order_type}]]*/ null;
+                vTmsUsersChatValue.rowdata.table_search = /*[[${tms_users_chat_table_search}]]*/ null;
+                vTmsUsersChatValue.rowdata.table_pagelen = /*[[${tms_users_chat_table_pagelen}]]*/ null;
+                vTmsUsersChatValue.rowdata.table_page = /*[[${tms_users_chat_table_page}]]*/ null;
+
+                recreateDataTable(vTmsUsersChatValue);
+        });
+</script>
+
+</body>
+</html>

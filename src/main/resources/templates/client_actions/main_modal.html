@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="client_action_main_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="client_action_main_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="hidden">
+                <input type="hidden" id="client_action_main_modal_mode">
+            </div>
+
+            <div class="modal-content" id="client_action_main_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{actions.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <form id="client_action_main_modal_form">
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="act_id_row">
+                            <label for="act_id" class="form-label mb-0" th:text="'1. '+ #{actions.act_id}"></label>
+                            <input type="number" class="form-control" id="act_id" name="act_id" readonly>
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <label for="act_act_type_id" class="form-label mb-0" th:text="'2. '+#{actions.act_act_type_id}"></label>
+                                <input type="hidden" id="act_act_type_id" name="act_act_type_id">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="act_type_client" name="act_type_radio" checked disabled>
+                                    <label class="custom-control-label" for="act_type_client" th:text="#{actions.act_type_cold_one}">ClientAction</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="act_type_cold" name="act_type_radio" disabled>
+                                    <label class="custom-control-label" for="act_type_cold" th:text="#{actions.act_type_cold_second}">ColdAction</label>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-5">
+                            <label for="user_id" class="form-label mb-0" th:text="'3. '+#{actions.user_name}"></label>
+                            <select id="user_id" name="user_id" class="custom-select select2" data-toggle="select2">
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-5">
+                            <label for="act_type_id" class="form-label mb-0" th:text="'4. '+#{actions.act_plan_type_detail}"></label>
+                            <select id="act_type_id" name="act_type_id" class="custom-select select2" data-toggle="select2" required>
+                            </select>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-8" id="cnt_id_div">
+                            <label for="cnt_id" class="form-label mb-0" th:text="'5. '+#{actions.cnt_name}"></label>
+                            <div class="flex-fill">
+                                <select type="text" id="cnt_id" name="cnt_id" class="custom-select select2" aria-describedby="cnt_id_helpBlock">
+                                </select>
+                            </div>
+                        </div>
+                    </div> <!-- Row 3 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="act_plane_date_row">
+                            <label for="act_plane_date" class="form-label mb-0" th:text="'6. '+ #{actions.act_plane_date}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="act_plane_date" name="act_plane_date">
+                                <button type="button" id="act_plane_date_x" name="act_plane_date_x" data-parent="act_plane_date" class="btn btn-outline-primary date_clear">
+                                    <i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3" id="act_end_date_row">
+                            <label for="act_end_date" class="form-label mb-0" th:text="'7. '+ #{actions.act_end_date}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="act_end_date" name="act_end_date">
+                                <button type="button" id="act_end_date_x" name="act_end_date_x" data-parent="act_end_date" class="btn btn-outline-primary date_clear">
+                                    <i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>  <!-- Row 4 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-4" id="act_status_row">
+                            <label for="act_status_id" class="form-label mb-0" th:text="'8. '+#{actions.act_status_sname}">Status: </label>
+                            <select id="act_status_id" name="act_status_id" class="custom-select select2" data-toggle="select2">
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-4" id="act_result_row">
+                            <label for="act_result_id" class="form-label mb-0" th:text="'9. '+#{actions.act_result_sname}">Result: </label>
+                            <select id="act_result_id" name="act_result_id" class="custom-select select2" data-toggle="select2">
+                            </select>
+                        </div>
+                    </div>  <!-- Row 5 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12">
+                            <label for="act_description" class="form-label mb-0" th:text="'10. '+#{actions.act_description}"></label>
+                            <textarea class="form-control" rows="3" maxlength="512" style="resize:none;" id="act_description" name="act_description" th:text="${act_description}">
+                            </textarea>
+                        </div>
+                    </div> <!-- Row 6 -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="client_action_main_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="client_action_main_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="client_action_main_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="client_action_main_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+// Clear Fields
+    function clear_client_action_main_modal_detail() {
+        $("#client_action_main_modal_detail input[type=text]").val('');
+        $("#client_action_main_modal_detail input[type=number]").val('');
+        $("#client_action_main_modal_detail select").empty();
+        $("#client_action_main_modal_detail textarea").val('');
+    }
+// Block And Required Fields
+    function block_client_action_main_modal_detail() {
+
+        $('#act_type_sname').prop('required',true);
+        $('#cnt_id').prop('required',true);
+        $('#user_list').prop('required',true);
+        $("#act_plane_date").prop('required',true);
+        $('#cnt_id').prop('disabled',true);
+
+        if($('#client_action_main_modal_mode').val() === "0"){
+            $('#act_id_row').attr('hidden', true);
+
+            $('#user_id').prop('disabled',false);
+
+            $('#act_act_type_id').prop('readOnly',false);
+
+            $('#act_type_id').prop('disabled',false);
+
+            $('#act_plane_date').prop('disabled',false);
+            $('#act_plane_date_x').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#act_end_date').prop('disabled',false);
+            $('#act_end_date_x').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#act_status_id').prop('disabled',false);
+
+            $('#act_result_id').prop('disabled',false);
+
+            $('#act_description').prop('readOnly',false);
+        }
+        else if($('#client_action_main_modal_mode').val() === "1"){
+            $('#act_id_row').removeAttr('hidden');
+
+            $('#user_id').prop('disabled',false);
+
+            $('#act_act_type_id').prop('readOnly',false);
+
+            $('#act_type_id').prop('disabled',false);
+
+            $('#act_plane_date').prop('disabled',false);
+            $('#act_plane_date_x').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#act_end_date').prop('disabled',false);
+            $('#act_end_date_x').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#act_status_id').prop('disabled',false);
+
+            $('#act_result_id').prop('disabled',false);
+
+            $('#act_description').prop('readOnly',false);
+        }
+        else{
+            $('#act_id_row').removeAttr('hidden');
+            $('#act_id').prop('readOnly',true);
+
+            $('#user_id').prop('disabled',true);
+
+            $('#act_act_type_id').prop('readOnly',true);
+
+            $('#act_type_id').prop('disabled',true);
+
+            $('#act_plane_date').prop('disabled',true);
+            $('#act_plane_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#act_end_date').prop('disabled',true);
+            $('#act_end_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#act_status_id').prop('disabled',true);
+
+            $('#act_result_id').prop('disabled',true);
+
+            $('#act_description').prop('readOnly',true);
+        }
+    }
+
+$("#act_plane_date").daterangepicker({
+    "singleDatePicker": true,
+    "locale": {
+        "format": "DD.MM.YYYY",
+        "separator": " - ",
+        "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+        "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+        "daysOfWeek": [
+            /*[[#{weekdays.07_short}]]*/ "Su",
+            /*[[#{weekdays.01_short}]]*/ "Mo",
+            /*[[#{weekdays.02_short}]]*/ "Tu",
+            /*[[#{weekdays.03_short}]]*/ "We",
+            /*[[#{weekdays.04_short}]]*/ "Th",
+            /*[[#{weekdays.05_short}]]*/ "Fr",
+            /*[[#{weekdays.06_short}]]*/ "Sa"
+        ],
+        "monthNames": [
+            /*[[#{month.01}]]*/ "January",
+            /*[[#{month.02}]]*/ "February",
+            /*[[#{month.03}]]*/ "March",
+            /*[[#{month.04}]]*/ "April",
+            /*[[#{month.05}]]*/ "May",
+            /*[[#{month.06}]]*/ "June",
+            /*[[#{month.07}]]*/ "July",
+            /*[[#{month.08}]]*/ "August",
+            /*[[#{month.09}]]*/ "September",
+            /*[[#{month.10}]]*/ "October",
+            /*[[#{month.11}]]*/ "November",
+            /*[[#{month.12}]]*/ "December"
+        ],
+        "firstDay": 1
+    }
+});
+
+$("#act_end_date").daterangepicker({
+    "singleDatePicker": true,
+    "locale": {
+        "format": "DD.MM.YYYY",
+        "separator": " - ",
+        "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+        "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+        "daysOfWeek": [
+            /*[[#{weekdays.07_short}]]*/ "Su",
+            /*[[#{weekdays.01_short}]]*/ "Mo",
+            /*[[#{weekdays.02_short}]]*/ "Tu",
+            /*[[#{weekdays.03_short}]]*/ "We",
+            /*[[#{weekdays.04_short}]]*/ "Th",
+            /*[[#{weekdays.05_short}]]*/ "Fr",
+            /*[[#{weekdays.06_short}]]*/ "Sa"
+        ],
+        "monthNames": [
+            /*[[#{month.01}]]*/ "January",
+            /*[[#{month.02}]]*/ "February",
+            /*[[#{month.03}]]*/ "March",
+            /*[[#{month.04}]]*/ "April",
+            /*[[#{month.05}]]*/ "May",
+            /*[[#{month.06}]]*/ "June",
+            /*[[#{month.07}]]*/ "July",
+            /*[[#{month.08}]]*/ "August",
+            /*[[#{month.09}]]*/ "September",
+            /*[[#{month.10}]]*/ "October",
+            /*[[#{month.11}]]*/ "November",
+            /*[[#{month.12}]]*/ "December"
+        ],
+        "firstDay": 1
+    }
+});
+
+$('#cnt_id')
+    .select2({
+        id: '-1', // the value of the option
+        placeholder: /*[[#{requests.list.client_placeholder}]]*/ "Select a client",
+        allowClear: true,
+        width: 'element',
+        dropdownAutoWidth: true
+    });
+
+let userPlaceHolder = 'Выберите сотрудника'
+
+$('#user_id')
+    .select2({
+        id: '-1', // the value of the option
+        placeholder: userPlaceHolder,
+        allowClear: true,
+        width: 'element',
+        dropdownAutoWidth: true
+    });
+//Get Users
+function userChange(vMode, vUSERID) {
+    $('#user_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/client_actions/get_users'}]]*/ "/client_actions/get_users",
+        type: "get",
+        data: {"mode": vMode,
+              "user_id": vUSERID
+        },
+        success: function (users_list) {
+            for (var i = 0; i < users_list.data.length; i++) {
+                $("select[name='user_id']").find('option').end().append(
+                    "<option value='" + users_list.data[i].id + "'>" + users_list.data[i].user_surname + "</option>");
+            }
+            if(vUSERID != null){
+                $('#user_id').val(vUSERID);
+            }
+        }
+    }));
+}
+//Action Type
+function actionTypeChange(vMode, vActTypeID) {
+    $('#act_type_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/client_actions/get_act_type'}]]*/ "/client_actions/get_act_type",
+        type: "get",
+        data: {"mode": vMode
+        },
+        success: function (client_action_type_list) {
+            for (var i = 0; i < client_action_type_list.data.length; i++) {
+                $("select[name='act_type_id']").find('option').end().append(
+                    "<option value='" + client_action_type_list.data[i].act_type_id + "'>" + client_action_type_list.data[i].act_type_name + "</option>");
+            }
+            if(vActTypeID != null){
+                $('#act_type_id').val(vActTypeID);
+            }
+        }
+    }));
+}
+//Get Action Status
+function actionStatusChange(vMode, vActStatusID) {
+    $('#act_status_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/client_actions/get_act_status'}]]*/ "/client_actions/get_act_status",
+        type: "get",
+        data: {"mode": vMode
+        },
+        success: function (act_status_list) {
+            for (var i = 0; i < act_status_list.data.length; i++) {
+                $("select[name='act_status_id']").find('option').end().append(
+                    "<option value='" + act_status_list.data[i].act_status_id + "'>" + act_status_list.data[i].act_status_name + "</option>");
+            }
+            if(vActStatusID != null){
+                $('#act_status_id').val(vActStatusID);
+            }
+        }
+    }));
+}
+
+//Client List
+function clientChange(vMode, vClientID) {
+    $('#cnt_id').empty();
+    $("select[name='cnt_id']").find('option').end().append("<option value=''></option>");
+
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/client_actions/get_client_list'}]]*/ "/client_actions/get_client_list",
+        type: "get",
+        data: {
+            "mode": vMode,
+            "cnt_id": vClientID
+        },
+        success: function (client_list) {
+            for (var i = 0; i < client_list.data.length; i++) {
+                $("select[name='cnt_id']").find('option').end().append(
+                    "<option value='" + client_list.data[i].cnt_id + "'>" + client_list.data[i].cnt_name + "</option>");
+            }
+            if(vClientID != null){
+                $('#cnt_id').val(vClientID);
+            }
+        }
+    }));
+}
+
+//Get Action Result
+function actionResultChange(vMode, vActResultID) {
+    $('#act_result_id').empty();
+    $("select[name='act_result_id']").find('option').end().append("<option value=''></option>");
+
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/client_actions/get_act_result'}]]*/ "/client_actions/get_act_result",
+        type: "get",
+        data: {"mode": vMode
+        },
+        success: function (act_result_list) {
+            for (var i = 0; i < act_result_list.data.length; i++) {
+                $("select[name='act_result_id']").find('option').end().append(
+                    "<option value='" + act_result_list.data[i].act_result_id + "'>" + act_result_list.data[i].act_result_name + "</option>");
+            }
+            if(vActResultID != null){
+                $('#act_result_id').val(vActResultID);
+            }
+        }
+    }));
+}
+
+// Load Function
+    function fill_client_action_main_modal_detail(aMode){
+        clear_client_action_main_modal_detail();
+        $('#client_action_main_modal_mode').val(aMode);
+        block_client_action_main_modal_detail();
+
+        if(aMode !== 0) {
+            $.ajax({
+                url:/*[[@{'/client_actions/get_act_detail'}]]*/ "client_actions/get_act_detail",
+                type: "get",
+                data: {
+                    "mode": aMode,
+                    "act_id": vClientActionsValue.rowdata.act_id
+                },
+                success: function (client_action_main_modal_detail_result) {
+                    $.when(
+                        userChange(aMode),
+                        actionTypeChange(aMode, client_action_main_modal_detail_result.data[0].act_type_id),
+                        clientChange(aMode, vClientActionsValue.rowdata.cnt_id),
+                        actionStatusChange(aMode,client_action_main_modal_detail_result.data[0].act_status_id),
+                        actionResultChange(aMode,client_action_main_modal_detail_result.data[0].act_result_id)
+                    ).then(function () {
+                        $('#act_id').val(client_action_main_modal_detail_result.data[0].act_id);
+
+                        $('#act_plane_date').val(client_action_main_modal_detail_result.data[0].act_plane_date);
+
+                        $('#act_end_date').val(client_action_main_modal_detail_result.data[0].act_end_date);
+
+                        $('#act_description').val(client_action_main_modal_detail_result.data[0].act_description);
+
+                        $('#client_action_main_modal').modal('show');
+                    });
+                }
+            });
+        }
+        else {
+            $.when(
+                userChange(aMode),
+                actionTypeChange(aMode, 1),
+                clientChange(aMode, vClientActionsValue.rowdata.cnt_id),
+                actionStatusChange(aMode,0),
+                actionResultChange(aMode)
+            ).then(function () {
+                $("#act_description").removeAttr('required');
+                $("#act_end_date").removeAttr('required');
+                $("#act_result_id").removeAttr('required');
+
+                $('#client_action_main_modal').modal('show');
+            });
+        }
+    }
+
+// Add Function
+function addActionModal(){
+    var RowID = vClientActionsValue.rowdata.act_id;
+
+    $.ajax({
+        url: /*[[ @{/client_actions/add_action} ]]*/ "/client_actions/add_action",
+        type: 'POST',
+        data: {
+            "cnt_id": $('#cnt_id').val(),
+            "user_id": $('#user_id').val(),
+            "act_plane_date":  $('#act_plane_date').val(),
+            "act_end_date":  $('#act_end_date').val(),
+            "act_type_id":  $('#act_type_id').val(),
+            "act_status_id":  $('#act_status_id').val(),
+            "act_result_id":  $('#act_result_id').val(),
+            "act_description":  $('#act_description').val()
+        },
+        success: function (result) {
+            $('#client_action_main_modal').modal('hide');
+            vClientActionsValue.rowdata.act_id = RowID;
+            $(vClientActionsValue .table).DataTable().ajax.reload(null, false);
+        }
+    });
+}
+
+// Add button script
+$('#client_action_main_modal_addbtn').on('click', function(){
+    $('#client_action_main_modal_form').submit();
+});
+
+//Edit Function
+function editActionModal(){
+    var RowID = vClientActionsValue.rowdata.act_id;
+
+    $.ajax({
+        url: /*[[ @{/client_actions/edit_action} ]]*/ "/client_actions/edit_action",
+        type: 'POST',
+        data: {
+            "act_id": RowID,
+            "user_id": $('#user_id').val(),
+            "act_plane_date":  $('#act_plane_date').val(),
+            "act_end_date":  $('#act_end_date').val(),
+            "act_type_id":  $('#act_type_id').val(),
+            "act_status_id":  $('#act_status_id').val(),
+            "act_result_id":  $('#act_result_id').val(),
+            "act_description":  $('#act_description').val()
+        },
+        success: function (result) {
+            $('#client_action_main_modal').modal('hide');
+            vClientActionsValue.rowdata.act_id = RowID;
+            $(vClientActionsValue .table).DataTable().ajax.reload(null, false);
+        }
+    });
+}
+
+// Edit button script
+$('#client_action_main_modal_editbtn').on('click', function(){
+    $('#client_action_main_modal_form').submit();
+});
+
+//Delete Function
+function delActionModal(){
+    var RowID = vClientActionsValue.rowdata.act_id;
+    $.ajax({
+        url: /*[[ @{/client_actions/del_action} ]]*/ "/client_actions/del_action",
+        type: 'POST',
+        data: {
+            "act_id": RowID
+        },
+        success: function (result) {
+            $('#client_action_main_modal').modal('hide');
+            $(vClientActionsValue .table).DataTable().ajax.reload();
+        }
+    });
+}
+
+// Del button script
+$('#client_action_main_modal_delbtn').on('click', function(){
+    $('#client_action_main_modal_form').submit();
+});
+
+//Validation Form
+$('#client_action_main_modal_form').validate({
+    rules: {
+        // amount: {
+        //     //money: true, // not a valid rule
+        //     required: true
+        // },
+        // comment: {
+        //     required: false
+        // }
+    },
+    errorPlacement: function(error,element) {
+        return true;
+    },
+    submitHandler: function (form) {
+        if($('#client_action_main_modal_mode').val() === '0') {
+            addActionModal();
+        }
+        else if($('#client_action_main_modal_mode').val() === '1') {
+            editActionModal();
+        }
+        else if($('#client_action_main_modal_mode').val() === '2') {
+            delActionModal();
+        }
+        return false;
+    }
+});
+
+$("#act_status_id").on('change', function() {
+    if($("#act_status_id").val() === "1"){
+        $("#act_description").attr('required',true);
+
+        $("#act_end_date").attr('required',true);
+
+        $("#act_result_id").attr('required',true);
+    }
+    else{
+        $("#act_description").removeAttr('required');
+
+        $("#act_end_date").removeAttr('required');
+
+        $("#act_result_id").removeAttr('required');
+    }
+});
+
+$('#act_end_date').on('change', function() {
+    if($('#act_end_date').val() !== "" && $('#act_end_date').val() !== null){
+        $("#act_status_id").val(1);
+
+        $("#act_description").attr('required',true);
+
+        $("#act_end_date").attr('required',true);
+
+        $("#act_result_id").attr('required',true);
+    } else{
+        $("#act_status_id").val(0);
+
+        $("#act_description").removeAttr('required');
+
+        $("#act_end_date").removeAttr('required');
+
+        $("#act_result_id").removeAttr('required');
+    }
+});
+
+$('#act_end_date_x').on('click', function() {
+    $("#act_status_id").val(0);
+
+    $("#act_description").removeAttr('required');
+
+    $("#act_end_date").removeAttr('required');
+
+    $("#act_result_id").removeAttr('required');
+});
+
+</script>
+</body>
+</html>

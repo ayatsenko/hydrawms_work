@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{tms_cost_types.caption})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{tms_cost_types.caption}"></h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <!--/*@thymesVar id="tms_cost_types_detail" type="java.util.List"*/-->
+                <form id="tms-cost-types-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/tms_cost_types/model}">
+                    <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="tms-cost-types-indexfrm">Cancel</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="tms-cost-types-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                            <button th:case="1" type="submit" id="tms-cost-types-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                            <button th:case="2" type="submit" id="tms-cost-types-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                        </div>
+                    </div>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clmc_type_id" th:value="${clmc_type_id}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_cost_types_table_order_column" th:value="${tms_cost_types_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_cost_types_table_order_type" th:value="${tms_cost_types_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_cost_types_table_search" th:value="${tms_cost_types_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_cost_types_table_pagelen" th:value="${tms_cost_types_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="tms_cost_types_table_page" th:value="${tms_cost_types_table_page}" >
+
+                    <div class="form-row">
+                        <div class="col-md-1 mb-2" id="clmc_type_id_row">
+                            <label for="clmc_type_id" class="form-label" th:text="'1. '+ #{tms_cost_types.clmc_type_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="clmc_type_id" name="clmc_type_id" th:value="${clmc_type_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="clmc_type_sname" class="form-label" th:text="'2. '+#{tms_cost_types.clmc_type_sname}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="clmc_type_sname" name="clmc_type_sname" th:value="${clmc_type_sname}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-9 mb-2">
+                            <label for="clmc_type_name" class="form-label" th:text="'3. '+#{tms_cost_types.clmc_type_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="48" class="form-control" id="clmc_type_name" name="clmc_type_name" th:value="${clmc_type_name}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-2">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="clmc_source_id" class="form-label" th:text="'4. '+#{tms_cost_types.clmc_source_sname}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="clmc_source_id" name="clmc_source_id" class="form-control p-1" aria-describedby="clmc_source_id_helpBlock" th:value="${clmc_source_id}">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="clmc_source : ${source_list}"
+                                        th:value="${clmc_source.clmc_source_id}"
+                                        th:text="${clmc_source.clmc_source_sname}"
+                                        th:selected="${clmc_source.clmc_source_id == clmc_source_id}"
+                                ></option>
+                            </select>
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-md-12 mb-2">
+                            <label for="clmc_type_description" th:text="'5. '+#{tms_cost_types.clmc_type_description}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="512" style="resize:none;" id="clmc_type_description" name="clmc_type_description" th:text="${clmc_type_description}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-md-10 mb-2" id="clmc_type_colour_row">
+                            <label for="clmc_type_colour" class="form-label" th:text="'6. '+#{tms_cost_types.clmc_type_colour}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="color" class="form-control color" id="clmc_type_colour" name="clmc_type_colour" th:value="${clmc_type_colour}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 4 -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--/*@thymesVar id="tms_cost_types_detail" type="java.util.List"*/-->
+    <form id="tms-cost-types-indexfrm" method="post" th:action="@{/tms_cost_types}" hidden>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clmc_type_id" th:value="${clmc_type_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="tms_cost_types_table_order_column" th:value="${tms_cost_types_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="tms_cost_types_table_order_type" th:value="${tms_cost_types_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="tms_cost_types_table_search" th:value="${tms_cost_types_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="tms_cost_types_table_pagelen" th:value="${tms_cost_types_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="tms_cost_types_table_page" th:value="${tms_cost_types_table_page}" >
+    </form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'tms-cost-types-indexfrm')">Error</span>
+
+<script>
+    $(document).ready(function(){
+<!-- Hihglight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#dictionaries_li').addClass('active').removeClass('collapsed');
+        $('#dictionaries_a').attr('aria-expanded',true);
+        $('#dictionaries').addClass('show');
+
+        $('#tms_costs_a').addClass('text-primary');
+<!-- Form Start -->
+        $('#clmc_type_id').prop('readOnly',true);
+        $('#clmc_type_sname').prop('required',true);
+
+<!-- Change Function -->
+        if($('#mode').val() === '0'){
+            $('#clmc_type_id_row').prop('hidden',true);
+            $('#clmc_type_name').prop('required',true);
+        }
+        else if($('#mode').val() === '2' || $('#mode').val() === '4'){
+            $('#clmc_type_id').prop('readOnly',true);
+            $('#clmc_type_sname').prop('readOnly',true);
+            $('#clmc_type_name').prop('readOnly',true);
+            $('#clmc_type_description').prop('readOnly',true);
+            $('#clmc_type_colour').attr('disabled','disabled');
+        }
+    });
+</script>
+</body>
+</html>

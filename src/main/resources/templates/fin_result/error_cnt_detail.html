@@ -1,0 +1,490 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{clients.list.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{clients.list.caption}"></h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <!--/*@thymesVar id="fin_result_error_detail_detail" type="java.util.List"*/-->
+                <form id="fin-result-error-cnt-detail-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/fin_result/client_error_model}">
+                    <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="fin-result-error-cnt-detail-indexfrm">Cancel</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="fin-result-error-cnt-detail-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                            <button th:case="1" type="submit" id="fin-result-error-cnt-detail-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                            <button th:case="2" type="submit" id="fin-result-error-cnt-detail-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                        </div>
+                    </div>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="sfad_id" id="sfad_id" th:value="${sfad_id}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="fin_result_start_date" id="fin_result_start_date" th:value="${fin_result_start_date}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="fin_result_end_date" id="fin_result_end_date" th:value="${fin_result_end_date}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="req_ser_id" id="req_ser_id" th:value="${req_ser_id}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="ser_id" id="ser_id" th:value="${ser_id}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="fin_result_error_table_order_column" th:value="${fin_result_error_table_order_column}">
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="fin_result_error_table_order_type" th:value="${fin_result_error_table_order_type}">
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="fin_result_error_table_search" th:value="${fin_result_error_table_search}">
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="fin_result_error_table_pagelen" th:value="${fin_result_error_table_pagelen}">
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="fin_result_error_table_page" th:value="${fin_result_error_table_page}">
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-1" id="cnt_new_row">
+                            <label class="form-label" for="cnt_new" th:text="'1. '+ #{fin_result.error_client.cnt_new_row}"></label>
+                            <div class="custom-control custom-switch centered">
+                                <div class="custom-control custom-switch">
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <input class="custom-control-input" type="checkbox" id="cnt_new" name="cnt_new" checked>
+                                    <label class="custom-control-label" for="cnt_new"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-md-5 mb-1">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="cnt_name" class="form-label" th:text="'2. '+#{clients.list.cnt_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="120" class="form-control" id="cnt_name" name="cnt_name" th:value="${cnt_name}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-1">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="cnt_sname" class="form-label" th:text="'3. '+#{clients.list.cnt_sname}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="120" class="form-control" id="cnt_sname" name="cnt_sname" th:value="${cnt_sname}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-1" id="country_id_row">
+                            <label for="country_id" th:text="'4. '+#{clients.list.country_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" class="form-control select2" data-toggle="select2" id="country_id" name="country_id">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option th:each="count_list : ${country_list}"
+                                        th:value="${count_list.country_id}"
+                                        th:text="${count_list.country_nameen}"
+                                        th:selected="${count_list.country_id == country_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-3 mb-1" id="cnt_resident_row">
+                            <div class="custom-control custom-switch centered">
+                                <label class="form-label" for="cnt_resident" th:text="'5. '+ #{clients.list.cnt_resident}"></label>
+                                <div class="custom-control custom-switch">
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <input class="custom-control-input" type="checkbox" id="cnt_resident" name="cnt_resident" th:checked="${cnt_resident == 1}">
+                                    <label class="custom-control-label" for="cnt_resident"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 4 -->
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-1" id="owt_id_row">
+                            <label for="owt_id" th:text="'6. '+#{clients.list.owt_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" class="form-control" id="owt_id" name="owt_id">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                             <option class="p-1"
+                                            th:each="own : ${own_list}"
+                                            th:value="${own.owt_id}"
+                                            th:text="${own.owt_name}"
+                                            th:selected="${own.owt_id == owt_id}"
+                              ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-3 mb-1" id="cnt_identifycode_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="cnt_identifycode" class="form-label" th:text="'7. '+#{clients.list.cnt_identifycode}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="cnt_identifycode" name="cnt_identifycode" th:value="${cnt_identifycode}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 5 -->
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-1" id="user_id_row">
+                            <label for="user_id" th:text="'8. '+#{clients.list.user_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" class="form-control select2" data-toggle="select2" id="user_id" name="user_id">
+                                <option value=""></option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="user : ${user_list}"
+                                        th:value="${user.id}"
+                                        th:text="${user.user_surname}"
+                                        th:selected="${user.id == user_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-3 mb-1" id="cnt_source_id_row">
+                            <label for="cnt_source_id" th:text="'9. '+#{clients.list.cnt_source_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" class="form-control" id="cnt_source_id" name="cnt_source_id">
+                                <option value="">Выберите тип источника</option>
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="cnt_source : ${cnt_source_list}"
+                                        th:value="${cnt_source.cnt_source_id}"
+                                        th:text="${cnt_source.cnt_source_sname}"
+                                        th:selected="${cnt_source.cnt_source_id == cnt_source_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 6 -->
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-1" id="cs_id_row">
+                            <label for="cs_id" th:text="'10. '+#{clients.list.cs_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" class="form-control" id="cs_id" name="cs_id">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="cs : ${cs_list}"
+                                        th:value="${cs.cs_id}"
+                                        th:text="${cs.cs_name}"
+                                        th:selected="${cs.cs_id == cs_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 7 -->
+
+                    <div class="form-row">
+                        <div class="col-md-6 mb-1" id="cnt_note_row">
+                            <label for="cnt_note" th:text="'11. '+#{clients.list.cnt_note}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="3" maxlength="64" style="resize:none;" id="cnt_note" name="cnt_note" th:text="${cnt_note}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 8 -->
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-1" id="cnt_old_row">
+                            <label class="form-label" for="cnt_old" th:text="'12. '+ #{fin_result.error_client.cnt_old_row}"></label>
+                            <div class="custom-control custom-switch centered">
+                                <div class="custom-control custom-switch">
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <input class="custom-control-input" type="checkbox" id="cnt_old" name="cnt_old">
+                                    <label class="custom-control-label" for="cnt_old"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 9 -->
+
+                    <div class="form-row">
+                        <div class="col-md-12 mb-1" id="cnt_id_div">
+                            <label for="cnt_id" th:text="'13. '+#{fin_result.error_client.cnt_id}"></label>
+                            <div class="input-group d-flex">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <select type="text" id="cnt_id" name="cnt_id" class="form-control p-1" aria-describedby="cnt_id_helpBlock" th:value="${cnt_id}">
+                                    <option value=""></option>
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <option class="p-1"
+                                            th:each="cnt : ${cnt_list}"
+                                            th:value="${cnt.cnt_id}"
+                                            th:text="${cnt.cnt_name}"
+                                            th:selected="${cnt.cnt_id == cnt_id}">
+                                    </option>
+                                </select>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                                <span class="input-group-append">
+                                    <button type="button" class="btn btn-outline-primary" id="cnt_id_show" name="cnt_id_show"><i class="fas fa-clipboard-list"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div> <!-- Row 2 -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--/*@thymesVar id="fin_result_error_detail_detail" type="java.util.List"*/-->
+    <form id="fin-result-error-cnt-detail-indexfrm" method="post" th:action="@{/fin_result}" hidden>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="sfad_id" th:value="${sfad_id}">
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="fin_result_show" th:value="${fin_result_show}">
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="fin_result_start_date" th:value="${fin_result_start_date}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="fin_result_end_date" th:value="${fin_result_end_date}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="req_ser_id" th:value="${req_ser_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="ser_id" th:value="${ser_id}">
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="fin_result_error_table_order_column" th:value="${fin_result_error_table_order_column}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="fin_result_error_table_order_type" th:value="${fin_result_error_table_order_type}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="fin_result_error_table_search" th:value="${fin_result_error_table_search}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="fin_result_error_table_pagelen" th:value="${fin_result_error_table_pagelen}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="fin_result_error_table_page" th:value="${fin_result_error_table_page}">
+    </form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'fin-result-error-cnt-detail-indexfrm')">Error</span>
+
+<script>
+    $(document).ready(function(){
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#admin_li').addClass('active').removeClass('collapsed');
+        $('#admin_a').attr('aria-expanded',true);
+        $('#admin').addClass('show');
+
+        $('#fin_result_a').addClass('text-primary');
+<!-- Form Start -->
+        $('#cnt_id').prop('readOnly',true);
+        $('#cnt_name').prop('required',true);
+
+        $('#act_type_sname').prop('required',true);
+
+        if(['3','2'].indexOf($('#mode').val()) >= 0){
+            $('#cnt_resident').attr('disabled',true);
+            $('#owt_id').attr('disabled',true);
+            $('#cs_id').attr('disabled',true);
+        }
+
+        if ($('#cnt_resident').is(':checked')) {
+            $('#cnt_identifycode').attr('required',true);
+        }
+        else{
+            $('#cnt_identifycode').removeAttr('required');
+        }
+
+        $('#cnt_resident').click(function() {
+            if ($('#cnt_resident').is(':checked')) {
+                $('#cnt_identifycode').attr('required', true);
+            }
+            else {
+                $('#cnt_identifycode').removeAttr('required');
+            }
+        });
+
+        if($('#error_id').val() == '1'){
+            $('#cnt_name').setCursorPosition(1);
+        }
+        else if ($('#error_id').val() == '2'){
+            $('#cnt_identifycode').setCursorPosition(1);
+        }
+
+        $(".select2").each(function() {
+            $(this)
+                .wrap("<div class=\"position-relative\"></div>")
+                .select2({
+                    placeholder: "Select value"
+                });
+        });
+
+        $('#cnt_id')
+            .wrap("<div class=\"position-relative\"></div>")
+            .select2({
+                id: '-1', // the value of the option
+                placeholder: /*[[#{requests.list.client_placeholder}]]*/ "Select a client",
+                allowClear: true,
+                minimumInputLength: 2,
+                width: 'element',
+                dropdownAutoWidth: true
+            });
+
+        $('#cnt_id_show').on('click', function () {
+            if($('#cnt_id_show').hasClass('btn-outline-primary')) {
+                $('#cnt_id_show').removeClass('btn-outline-primary').addClass('btn-primary');
+                var options_zero = {
+                    id: '-1', // the value of the option
+                    placeholder: /*[[#{requests.list.client_placeholder}]]*/ "Select a client",
+                    allowClear: true,
+                    width: 'element',
+                    dropdownAutoWidth: true
+                };
+                $("#cnt_id").select2("destroy").select2(options_zero);
+            }
+            else if($('#cnt_id_show').hasClass('btn-primary')){
+                $('#cnt_id_show').addClass('btn-outline-primary').removeClass('btn-primary');
+                var options_two = {
+                    id: '-1', // the value of the option
+                    placeholder: /*[[#{requests.list.client_placeholder}]]*/ "Select a client",
+                    allowClear: true,
+                    minimumInputLength: 2,
+                    width: 'element',
+                    dropdownAutoWidth: true
+                };
+                $("#cnt_id").select2("destroy").select2(options_two);
+            }
+        });
+
+<!-- Change Function -->
+        if($('#mode').val() === '0'){
+            $('#cnt_id_row').prop('hidden',true);
+
+            $('#cnt_source_id').prop('required',true);
+            $('#cnt_old').removeAttr('checked');
+            $('#cnt_id').attr('disabled','disabled');
+        }
+        else if($('#mode').val() === '2' || $('#mode').val() === '4'){
+            $('#cnt_id').prop('readOnly',true);
+            $('#cnt_name').prop('readOnly',true);
+
+            $('#cnt_sname').prop('readOnly',true);
+
+            $('#country_id').attr('disabled','disabled');
+            $('#cnt_resident').attr('disabled','disabled');
+
+            $('#owt_id').attr('disabled','disabled');
+            $('#cnt_identifycode').prop('readOnly',true);
+
+            $('#user_id').attr('disabled','disabled');
+            $('#cnt_source_id').attr('disabled','disabled');
+
+            $('#cs_id').attr('disabled','disabled');
+            $('#cnt_note').prop('readOnly',true);
+        }
+
+        $('#cnt_new').click(function() {
+            if ($('#cnt_new').is(':checked')) {
+                $('#cnt_name').prop('readOnly',false);
+
+                $('#cnt_sname').prop('readOnly',false);
+
+                $('#country_id').removeAttr('disabled');
+                $('#cnt_resident').removeAttr('disabled');
+
+                $('#owt_id').removeAttr('disabled');
+                $('#cnt_identifycode').prop('readOnly',false);
+
+                $('#user_id').removeAttr('disabled');
+                $('#cnt_source_id').removeAttr('disabled');
+
+                $('#cs_id').removeAttr('disabled');
+                $('#cnt_note').prop('readOnly',false);
+
+                $('#cnt_old').removeAttr('checked');
+                $('#cnt_id').attr('disabled','disabled');
+            }
+            else {
+                $('#cnt_new').removeAttr('checked');
+
+                $('#cnt_name').prop('readOnly',true);
+
+                $('#cnt_sname').prop('readOnly',true);
+
+                $('#country_id').attr('disabled','disabled');
+                $('#cnt_resident').attr('disabled','disabled');
+
+                $('#owt_id').attr('disabled','disabled');
+                $('#cnt_identifycode').prop('readOnly',true);
+
+                $('#user_id').attr('disabled','disabled');
+                $('#cnt_source_id').attr('disabled','disabled');
+
+                $('#cs_id').attr('disabled','disabled');
+                $('#cnt_note').prop('readOnly',true);
+
+                $('#cnt_old').prop('checked',true);
+                $('#cnt_id').removeAttr('disabled');
+            }
+        });
+
+        $('#cnt_old').click(function() {
+            if ($('#cnt_old').is(':checked')) {
+                $('#cnt_id').removeAttr('disabled');
+
+                $('#cnt_new').prop('checked',true);
+                $('#cnt_new').removeAttr('checked');
+
+                $('#cnt_name').prop('readOnly',true);
+
+                $('#cnt_sname').prop('readOnly',true);
+
+                $('#country_id').attr('disabled','disabled');
+                $('#cnt_resident').attr('disabled','disabled');
+
+                $('#owt_id').attr('disabled','disabled');
+                $('#cnt_identifycode').prop('readOnly',true);
+
+                $('#user_id').attr('disabled','disabled');
+                $('#cnt_source_id').attr('disabled','disabled');
+
+                $('#cs_id').attr('disabled','disabled');
+                $('#cnt_note').prop('readOnly',true);
+            }
+            else{
+                $('#cnt_new').prop('checked',true);
+                $('#cnt_name').prop('readOnly',false);
+
+                $('#cnt_sname').prop('readOnly',false);
+
+                $('#country_id').removeAttr('disabled');
+                $('#cnt_resident').removeAttr('disabled');
+
+                $('#owt_id').removeAttr('disabled');
+                $('#cnt_identifycode').prop('readOnly',false);
+
+                $('#user_id').removeAttr('disabled');
+                $('#cnt_source_id').removeAttr('disabled');
+
+                $('#cs_id').removeAttr('disabled');
+                $('#cnt_note').prop('readOnly',false);
+
+                $('#cnt_id').attr('disabled','disabled');
+            }
+        });
+
+    });
+</script>
+</body>
+</html>

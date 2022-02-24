@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="aero_world_timelog_body" th:remove="tag">
+    <form id="table-aero-world-timelog-buttons" class="mb-2" hidden>
+        <input name="mode" value="0" hidden>
+        <button type="button" id="aero-world-timelog-reloadbtn" class="btn btn-primary mr-2"><i class="fas fa-sync-alt"></i></button>
+    </form>
+
+    <div><table id="table-aero-world-timelog" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+        var clm_status_id_width, clm_status_name_width, clmtl_date_width, clmtl_fact_date_width, user_surname_width, role_name_width, clm_status_colour_width, empty_column_width;
+        var clm_status_id_class, clm_status_name_class, clmtl_date_class, clmtl_fact_date_class, user_surname_class, role_name_class, clm_status_colour_class, empty_column_class;
+        var clm_status_id_show, clm_status_name_show, clmtl_date_show, clmtl_fact_date_show, user_surname_show, role_name_show, clm_status_colour_show, empty_column_show;
+
+        if(mobileScreenSize){
+                vDomParam = "Blfrtp";
+        }
+        else if(smallScreenSize){
+                vDomParam = "Blfrtip";
+                clm_status_id_show = false;
+                clm_status_id_width = "";
+                clm_status_id_class = "";
+                clm_status_name_show = true;
+                clm_status_name_width = "10%";
+                clm_status_name_class = "small_size small_head_size small_footer_size";
+                clmtl_date_show = true;
+                clmtl_date_width = "10%";
+                clmtl_date_class = "small_size small_head_size small_footer_size text-center";
+                clmtl_fact_date_show = true;
+                clmtl_fact_date_width = "10%";
+                clmtl_fact_date_class = "small_size small_head_size small_footer_size text-center";
+                user_surname_show = true;
+                user_surname_width = "20%";
+                user_surname_class = "small_size small_head_size small_footer_size text-center";
+                role_name_show = true;
+                role_name_width = "10%";
+                role_name_class = "small_size small_head_size small_footer_size";
+                clm_status_colour_show = false;
+                clm_status_colour_width = "";
+                clm_status_colour_class = "";
+                empty_column_show = true;
+                empty_column_width = "40%";
+                empty_column_class = "small_size small_head_size small_footer_size";
+        }
+        else{
+                vDomParam = "Blfrtip";
+                clm_status_id_show = false;
+                clm_status_id_width = "";
+                clm_status_id_class = "";
+                clm_status_name_show = true;
+                clm_status_name_width = "10%";
+                clm_status_name_class = "small_size small_head_size small_footer_size";
+                clmtl_date_show = true;
+                clmtl_date_width = "8%";
+                clmtl_date_class = "small_size small_head_size small_footer_size text-center";
+                clmtl_fact_date_show = true;
+                clmtl_fact_date_width = "8%";
+                clmtl_fact_date_class = "small_size small_head_size small_footer_size text-center";
+                user_surname_show = true;
+                user_surname_width = "17%";
+                user_surname_class = "small_size small_head_size small_footer_size";
+                role_name_show = true;
+                role_name_width = "10%";
+                role_name_class = "small_size small_head_size small_footer_size text-center";
+                clm_status_colour_show = false;
+                clm_status_colour_width = "";
+                clm_status_colour_class = "none";
+                empty_column_show = true;
+                empty_column_width = "47%";
+                empty_column_class = "small_size small_head_size small_footer_size";
+        }
+
+        var vFAClaimTimeLogValue;
+        vFAClaimTimeLogValue = {
+                table : '#table-aero-world-timelog',
+                button_form : '#table-aero-world-timelog-buttons',
+                ajax : {
+                        "url": /*[[@{/aero_world/get_timelog_table}]]*/ "aero_world/get_timelog_table",
+                        "type": "post",
+                        "data": function ( d ) {
+                                d.clm_id = vFAClaimTimeLogValue.rowdata.clm_id
+                        }
+                },
+                key : "clm_status_id",
+                switchControl : aero_world_timelog_switchControl,
+                rowdata:{
+                        clm_status_id: null,
+                        clm_id: null
+                },
+                ordering: true,
+                order: [
+                        [0, "asc"]
+                ],
+
+                dom: vDomParam,
+                createdRow: function( row, data, dataIndex ) {
+                        $(row).css('background-color', data["clm_status_colour"]);
+                },
+                columnDefs:[
+                        {"targets": [0], "width": clm_status_id_width, "className": clm_status_id_class, "visible": clm_status_id_show},
+                        {"targets": [1], "width": clm_status_name_width, "className": clm_status_name_class, "visible": clm_status_name_show},
+                        {"targets": [2], "width": clmtl_date_width, "className": clmtl_date_class, "visible": clmtl_date_show, type: 'de_datetime'},
+                        {"targets": [3], "width": clmtl_fact_date_width, "className": clmtl_fact_date_class, "visible": clmtl_fact_date_show, type: 'de_date'},
+                        {"targets": [4], "width": user_surname_width, "className": user_surname_class, "visible": user_surname_show},
+                        {"targets": [5], "width": role_name_width, "className": role_name_class, "visible": role_name_show},
+                        {"targets": [6], "width": clm_status_colour_width, "className": clm_status_colour_class, "visible": clm_status_colour_show},
+                        {"targets": [7], "width": empty_column_width, "className": empty_column_class, "visible": empty_column_show},
+                ],
+                columns : [
+                        /*0*/{"title": /*[[#{tms_locals.timelog.clm_status_id}]]*/ "clm_status_id", "data": "clm_status_id"},
+                        /*1*/{"title": /*[[#{tms_locals.timelog.clm_status_name}]]*/ "clm_status_name", "data": "clm_status_name"},
+                        /*2*/{"title": /*[[#{tms_locals.timelog.clmtl_date}]]*/ "clmtl_date", "data": "clmtl_date"},
+                        /*3*/{"title": /*[[#{tms_locals.timelog.clmtl_fact_date}]]*/ "clmtl_fact_date", "data": "clmtl_fact_date"},
+                        /*4*/{"title": /*[[#{tms_locals.timelog.user_surname}]]*/ "user_surname", "data": "user_surname"},
+                        /*5*/{"title": /*[[#{tms_locals.timelog.role_name}]]*/ "role_name", "data": "role_name"},
+                        /*6*/{"title": /*[[#{tms_locals.timelog.clm_status_colour}]]*/ "clm_status_colour", "data": "clm_status_colour"},
+                        /*7*/{"title": /*[[#{tms_locals.timelog.empty_column}]]*/ "empty_column", "data": "empty_column"}
+                ],
+                pageLength: 25,
+                copy_button: true,
+                excel_button: true,
+                pdf_button: true,
+                print_button: true
+        };
+
+        function aero_world_timelog_switchControl(){
+        }
+
+        function fullWorldTimelogReload(){
+                vFAClaimTimeLogValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+                $(vFAClaimTimeLogValue.table).DataTable().ajax.reload(null, false);
+        }
+//Reload Button
+        $('#aero-world-timelog-reloadbtn').click(function(){
+                fullWorldTimelogReload();
+        });
+
+        $(document).ready(function(){
+                vFAClaimTimeLogValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+                vFAClaimTimeLogValue.rowdata.clm_status_id = /*[[${clm_status_id}]]*/ null;
+
+                vFAClaimTimeLogValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+                vFAClaimTimeLogValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+                vFAClaimTimeLogValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+                vFAClaimTimeLogValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+                vFAClaimTimeLogValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+                recreateDataTable(vFAClaimTimeLogValue);
+        });
+</script>
+
+</body>
+</html>

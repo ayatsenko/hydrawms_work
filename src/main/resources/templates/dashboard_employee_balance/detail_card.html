@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="dashboard_employee_balance_detail_body" th:remove="tag">
+        <div><table id="table-dashboard-employee-balance-detail" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var user_id_width, user_name_width, user_surname_width, fin_1_width, fin_2_width, fin_3_width, fin_4_width, fin_5_width,
+        fin_6_width, fin_7_width, fin_8_width, fin_9_width, fin_10_width, fin_11_width, fin_12_width, fin_all_width;
+    var user_id_class, user_name_class, user_surname_class, fin_1_class, fin_2_class, fin_3_class, fin_4_class, fin_5_class,
+        fin_6_class, fin_7_class, fin_8_class, fin_9_class, fin_10_class, fin_11_class, fin_12_class, fin_all_class;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+
+        user_id_width = "";
+        user_id_class = "none";
+
+        user_name_width = "20%";
+        user_name_class = "all small_size small_head_size small_footer_size";
+
+        user_surname_width = "";
+        user_surname_class = "none";
+
+        fin_1_width = "";
+        fin_1_class = "none";
+        fin_2_width = "";
+        fin_2_class = "none";
+        fin_3_width = "";
+        fin_3_class = "none";
+        fin_4_width = "";
+        fin_4_class = "none";
+        fin_5_width = "";
+        fin_5_class = "none";
+        fin_6_width = "";
+        fin_6_class = "none";
+        fin_7_width = "";
+        fin_7_class = "none";
+        fin_8_width = "20%";
+        fin_8_class = "min-tablet-p small_size small_head_size small_footer_size text-center";
+        fin_9_width = "20%";
+        fin_9_class = "min-mobile-l small_size small_head_size small_footer_size text-center";
+        fin_10_width = "20%";
+        fin_10_class = "min-mobile-l small_size small_head_size small_footer_size text-center";
+        fin_11_width = "";
+        fin_11_class = "none";
+        fin_12_width = "";
+        fin_12_class = "none";
+        fin_all_width = "20%";
+        fin_all_class = "all small_size small_head_size small_footer_size text-center";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+
+        user_id_width = "";
+        user_id_class = "none";
+
+        user_name_width = "";
+        user_name_class = "none";
+
+        user_surname_width = "22%";
+        user_surname_class = "all small_size small_head_size small_footer_size";
+
+        fin_1_width = "6%";
+        fin_1_class = "small_size small_head_size small_footer_size text-center finance_month";
+        fin_2_width = "6%";
+        fin_2_class = "small_size small_head_size small_footer_size text-center finance_month";
+        fin_3_width = "6%";
+        fin_3_class = "small_size small_head_size small_footer_size text-center finance_month";
+        fin_4_width = "6%";
+        fin_4_class = "small_size small_head_size small_footer_size text-center finance_month";
+        fin_5_width = "6%";
+        fin_5_class = "small_size small_head_size small_footer_size text-center finance_month";
+        fin_6_width = "6%";
+        fin_6_class = "small_size small_head_size small_footer_size text-center finance_month";
+        fin_7_width = "6%";
+        fin_7_class = "small_size small_head_size small_footer_size text-center finance_month";
+        fin_8_width = "6%";
+        fin_8_class = "small_size small_head_size small_footer_size text-center finance_month";
+        fin_9_width = "6%";
+        fin_9_class = "small_size small_head_size small_footer_size text-center finance_month";
+        fin_10_width = "6%";
+        fin_10_class = "small_size small_head_size small_footer_size text-center finance_month";
+        fin_11_width = "6%";
+        fin_11_class = "small_size small_head_size small_footer_size text-center finance_month";
+        fin_12_width = "6%";
+        fin_12_class = "small_size small_head_size small_footer_size text-center finance_month";
+        fin_all_width = "6%";
+        fin_all_class = "small_size small_head_size small_footer_size text-center finance_month";
+    }
+    else{
+        vDomParam = "Blfrtip";
+
+        user_id_width = "";
+        user_id_class = "none";
+
+        user_name_width = "";
+        user_name_class = "none";
+
+        user_surname_width = "22%";
+        user_surname_class = "all";
+
+        fin_1_width = "6%";
+        fin_1_class = "text-center finance_month head-light-grey cell-light-grey";
+        fin_2_width = "6%";
+        fin_2_class = "text-center finance_month";
+        fin_3_width = "6%";
+        fin_3_class = "text-center finance_month head-light-grey cell-light-grey";
+        fin_4_width = "6%";
+        fin_4_class = "text-center finance_month";
+        fin_5_width = "6%";
+        fin_5_class = "text-center finance_month head-light-grey cell-light-grey";
+        fin_6_width = "6%";
+        fin_6_class = "text-center finance_month";
+        fin_7_width = "6%";
+        fin_7_class = "text-center finance_month head-light-grey cell-light-grey";
+        fin_8_width = "6%";
+        fin_8_class = "text-center finance_month";
+        fin_9_width = "6%";
+        fin_9_class = "text-center finance_month head-light-grey cell-light-grey";
+        fin_10_width = "6%";
+        fin_10_class = "text-center finance_month";
+        fin_11_width = "6%";
+        fin_11_class = "text-center finance_month head-light-grey cell-light-grey";
+        fin_12_width = "6%";
+        fin_12_class = "text-center finance_month";
+        fin_all_width = "6%";
+        fin_all_class = "text-center finance_month head-light-grey cell-light-grey";
+    }
+
+    var vReportEmployeeBalanceDetailValue;
+    vReportEmployeeBalanceDetailValue = {
+        table : '#table-dashboard-employee-balance-detail',
+        button_form: "#dashboard-employee-balance-detail-buttons",
+        ajax : {
+            "url": /*[[@{/dashboard_employee_balance/get_detail_table}]]*/ "dashboard_employee_balance/get_detail_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.start_date = vReportEmployeeBalanceDetailValue.rowdata.start_date;
+                d.end_date = vReportEmployeeBalanceDetailValue.rowdata.end_date;
+                d.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.req_user_id;
+            }
+        },
+        key : "user_id",
+        switchControl : dashboard_employee_balance_detail_switchControl,
+        rowdata:{
+            user_id: null,
+            start_date: null,
+            end_date: null,
+            req_user_id: null
+        },
+        ordering: true,
+        order: [
+            [15, "desc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function(row, data, index) {
+            if(data["user_id"] === -1){
+                $(row).css('background-color','#e6e2d3');
+                $(row).addClass("font-weight-bold");
+            }
+            else if(data["user_id"] === 0){
+                $(row).css('background-color','#d5e1df');
+                $(row).addClass("font-weight-bold");
+            }
+        },
+        columnDefs: [
+            { "targets": [3,4,5,6,7,8,9,10,11,12,13,14,15],  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{dashboard_employee_balance.detail.user_id}]]*/ "user_id", "data": "user_id", "width": user_id_width , "className": user_id_class},
+            /*1*/{"title": /*[[#{dashboard_employee_balance.detail.user_name}]]*/ "user_name", "data": "user_name", "width": user_name_width , "className": user_name_class},
+            /*2*/{"title": /*[[#{dashboard_employee_balance.detail.user_surname}]]*/ "user_surname", "data": "user_surname", "width": user_surname_width , "className": user_surname_class},
+            /*3*/{"title": /*[[#{month.01_short}]]*/ "fin_1", "data": "fin_1", "width": fin_1_width , "className": fin_1_class},
+            /*4*/{"title": /*[[#{month.02_short}]]*/ "fin_2", "data": "fin_2", "width": fin_2_width , "className": fin_2_class},
+            /*5*/{"title": /*[[#{month.03_short}]]*/ "fin_3", "data": "fin_3", "width": fin_3_width , "className": fin_3_class},
+            /*6*/{"title": /*[[#{month.04_short}]]*/ "fin_4", "data": "fin_4", "width": fin_4_width , "className": fin_4_class},
+            /*7*/{"title": /*[[#{month.05_short}]]*/ "fin_5", "data": "fin_5", "width": fin_5_width , "className": fin_5_class},
+            /*8*/{"title": /*[[#{month.06_short}]]*/ "fin_6", "data": "fin_6", "width": fin_6_width , "className": fin_6_class},
+            /*9*/{"title": /*[[#{month.07_short}]]*/ "fin_7", "data": "fin_7", "width": fin_7_width , "className": fin_7_class},
+            /*10*/{"title": /*[[#{month.08_short}]]*/ "fin_8", "data": "fin_8", "width": fin_8_width , "className": fin_8_class},
+            /*11*/{"title": /*[[#{month.09_short}]]*/ "fin_9", "data": "fin_9",  "width": fin_9_width , "className": fin_9_class},
+            /*12*/{"title": /*[[#{month.10_short}]]*/ "fin_10", "data": "fin_10", "width": fin_10_width , "className": fin_10_class},
+            /*13*/{"title": /*[[#{month.11_short}]]*/ "fin_11", "data": "fin_11", "width": fin_11_width , "className": fin_11_class},
+            /*14*/{"title": /*[[#{month.12_short}]]*/ "fin_12", "data": "fin_12", "width": fin_12_width , "className": fin_12_class},
+            /*15*/{"title": /*[[#{dashboard_employee_balance.detail.fin_all}]]*/ "fin_all", "data": "fin_all", "width": fin_all_width , "className": fin_all_class}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    $('#table-dashboard-employee-balance-detail').on('dblclick', '.finance_month', function (e) {
+        var currentTable = $('#table-dashboard-employee-balance-detail').DataTable();
+        var selectedRow = this._DT_CellIndex.row;
+        var selectedColumn = this._DT_CellIndex.column - 2;
+
+        currentTable.row(selectedRow).select();
+        $('.nav-tabs a[href="#tab-' + selectedColumn + '"]').tab('show');
+    });
+
+    function dashboard_employee_balance_detail_switchControl(){
+        if(vReportEmployeeBalanceDetailValue.rowdata.user_id != null){
+            $('#dashboard_employee_balance_tabs_div').removeAttr('hidden');
+                vDashboardService01Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+                $(vDashboardService01Value.table).DataTable().ajax.reload();
+<!-- Service 01 -->
+                vDashboardService02Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+                $(vDashboardService02Value.table).DataTable().ajax.reload();
+<!-- Service 02 -->
+                vDashboardService03Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+                $(vDashboardService03Value.table).DataTable().ajax.reload();
+<!-- Service 03 -->
+                vDashboardService04Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+                $(vDashboardService04Value.table).DataTable().ajax.reload();
+<!-- Service 04 -->
+                vDashboardService05Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+                $(vDashboardService05Value.table).DataTable().ajax.reload();
+<!-- Service 05 -->
+                vDashboardService06Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+                $(vDashboardService06Value.table).DataTable().ajax.reload();
+<!-- Service 06 -->
+                vDashboardService07Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+                $(vDashboardService07Value.table).DataTable().ajax.reload();
+<!-- Service 07 -->
+                vDashboardService08Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+                $(vDashboardService08Value.table).DataTable().ajax.reload();
+<!-- Service 08 -->
+                vDashboardService09Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+                $(vDashboardService09Value.table).DataTable().ajax.reload();
+<!-- Service 09 -->
+                vDashboardService10Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+                $(vDashboardService10Value.table).DataTable().ajax.reload();
+<!-- Service 10 -->
+                vDashboardService11Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+                $(vDashboardService11Value.table).DataTable().ajax.reload();
+<!-- Service 11 -->
+                vDashboardService12Value.rowdata.req_user_id = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+                $(vDashboardService12Value.table).DataTable().ajax.reload();
+<!-- Service 12 -->
+                vDashboardServiceAllValue.rowdata.req_user_id  = vReportEmployeeBalanceDetailValue.rowdata.user_id;
+                $(vDashboardServiceAllValue.table).DataTable().ajax.reload();
+<!-- Service All -->
+<!-- Clients 01 -->
+                vDashboardClients02Value.rowdata.req_user_id = null;
+                vDashboardClients02Value.rowdata.req_ser_id = null;
+                $(vDashboardClients02Value.table).DataTable().clear().draw();
+<!-- Clients 02 -->
+                vDashboardClients03Value.rowdata.req_user_id = null;
+                vDashboardClients03Value.rowdata.req_ser_id = null;
+                $(vDashboardClients03Value.table).DataTable().clear().draw();
+<!-- Clients 03 -->
+                vDashboardClients04Value.rowdata.req_user_id = null;
+                vDashboardClients04Value.rowdata.req_ser_id = null;
+                $(vDashboardClients04Value.table).DataTable().clear().draw();
+<!-- Clients 04 -->
+                vDashboardClients05Value.rowdata.req_user_id = null;
+                vDashboardClients05Value.rowdata.req_ser_id = null;
+                $(vDashboardClients05Value.table).DataTable().clear().draw();
+<!-- Clients 05 -->
+                vDashboardClients06Value.rowdata.req_user_id = null;
+                vDashboardClients06Value.rowdata.req_ser_id = null;
+                $(vDashboardClients06Value.table).DataTable().clear().draw();
+<!-- Clients 06 -->
+                vDashboardClients07Value.rowdata.req_user_id = null;
+                vDashboardClients07Value.rowdata.req_ser_id = null;
+                $(vDashboardClients07Value.table).DataTable().clear().draw();
+<!-- Clients 07 -->
+                vDashboardClients08Value.rowdata.req_user_id = null;
+                vDashboardClients08Value.rowdata.req_ser_id = null;
+                $(vDashboardClients08Value.table).DataTable().clear().draw();
+<!-- Clients 08 -->
+                vDashboardClients09Value.rowdata.req_user_id = null;
+                vDashboardClients09Value.rowdata.req_ser_id = null;
+                $(vDashboardClients09Value.table).DataTable().clear().draw();
+<!-- Clients 09 -->
+                vDashboardClients10Value.rowdata.req_user_id = null;
+                vDashboardClients10Value.rowdata.req_ser_id = null;
+                $(vDashboardClients10Value.table).DataTable().clear().draw();
+<!-- Clients 10 -->
+                vDashboardClients11Value.rowdata.req_user_id = null;
+                vDashboardClients11Value.rowdata.req_ser_id = null;
+                $(vDashboardClients11Value.table).DataTable().clear().draw();
+<!-- Clients 11 -->
+                vDashboardClients12Value.rowdata.req_user_id = null;
+                vDashboardClients12Value.rowdata.req_ser_id = null;
+                $(vDashboardClients12Value.table).DataTable().clear().draw();
+<!-- Clients 12 -->
+                vDashboardClientsAllValue.rowdata.req_user_id = null;
+                vDashboardClientsAllValue.rowdata.req_ser_id = null;
+                $(vDashboardClientsAllValue.table).DataTable().clear().draw();
+<!-- Clients All -->
+        } else{
+            $('#dashboard_employee_balance_tabs_div').attr('hidden', true);
+                vDashboardService01Value.rowdata.req_user_id = null;
+                $(vDashboardService01Value.table).DataTable().clear().draw();
+<!-- Service 01 -->
+                vDashboardService02Value.rowdata.req_user_id = null;
+                $(vDashboardService02Value.table).DataTable().clear().draw();
+<!-- Service 02 -->
+                vDashboardService03Value.rowdata.req_user_id = null;
+                $(vDashboardService03Value.table).DataTable().clear().draw();
+<!-- Service 03 -->
+                vDashboardService04Value.rowdata.req_user_id = null;
+                $(vDashboardService04Value.table).DataTable().clear().draw();
+<!-- Service 04 -->
+                vDashboardService05Value.rowdata.req_user_id = null;
+                $(vDashboardService05Value.table).DataTable().clear().draw();
+<!-- Service 05 -->
+                vDashboardService06Value.rowdata.req_user_id = null;
+                $(vDashboardService06Value.table).DataTable().clear().draw();
+<!-- Service 06 -->
+                vDashboardService07Value.rowdata.req_user_id = null;
+                $(vDashboardService07Value.table).DataTable().clear().draw();
+<!-- Service 07 -->
+                vDashboardService08Value.rowdata.req_user_id = null;
+                $(vDashboardService08Value.table).DataTable().clear().draw();
+<!-- Service 08 -->
+                vDashboardService09Value.rowdata.req_user_id = null;
+                $(vDashboardService09Value.table).DataTable().clear().draw();
+<!-- Service 09 -->
+                vDashboardService10Value.rowdata.req_user_id = null;
+                $(vDashboardService10Value.table).DataTable().clear().draw();
+<!-- Service 10 -->
+                vDashboardService11Value.rowdata.req_user_id = null;
+                $(vDashboardService11Value.table).DataTable().clear().draw();
+<!-- Service 11 -->
+                vDashboardService12Value.rowdata.req_user_id = null;
+                $(vDashboardService12Value.table).DataTable().clear().draw();
+<!-- Service 12 -->
+                vDashboardServiceAllValue.rowdata.req_user_id = null;
+                $(vDashboardServiceAllValue.table).DataTable().clear().draw();
+<!-- Service All -->
+                vDashboardClients01Value.rowdata.req_user_id = null;
+                vDashboardClients01Value.rowdata.req_ser_id = null;
+                $(vDashboardClients01Value.table).DataTable().clear().draw();
+<!-- Clients 01 -->
+                vDashboardClients01Value.rowdata.req_user_id = null;
+                vDashboardClients01Value.rowdata.req_ser_id = null;
+                $(vDashboardClients01Value.table).DataTable().clear().draw();
+<!-- Clients 01 -->
+                vDashboardClients02Value.rowdata.req_user_id = null;
+                vDashboardClients02Value.rowdata.req_ser_id = null;
+                $(vDashboardClients02Value.table).DataTable().clear().draw();
+<!-- Clients 02 -->
+                vDashboardClients03Value.rowdata.req_user_id = null;
+                vDashboardClients03Value.rowdata.req_ser_id = null;
+                $(vDashboardClients03Value.table).DataTable().clear().draw();
+<!-- Clients 03 -->
+                vDashboardClients04Value.rowdata.req_user_id = null;
+                vDashboardClients04Value.rowdata.req_ser_id = null;
+                $(vDashboardClients04Value.table).DataTable().clear().draw();
+<!-- Clients 04 -->
+                vDashboardClients05Value.rowdata.req_user_id = null;
+                vDashboardClients05Value.rowdata.req_ser_id = null;
+                $(vDashboardClients05Value.table).DataTable().clear().draw();
+<!-- Clients 05 -->
+                vDashboardClients06Value.rowdata.req_user_id = null;
+                vDashboardClients06Value.rowdata.req_ser_id = null;
+                $(vDashboardClients06Value.table).DataTable().clear().draw();
+<!-- Clients 06 -->
+                vDashboardClients07Value.rowdata.req_user_id = null;
+                vDashboardClients07Value.rowdata.req_ser_id = null;
+                $(vDashboardClients07Value.table).DataTable().clear().draw();
+<!-- Clients 07 -->
+                vDashboardClients08Value.rowdata.req_user_id = null;
+                vDashboardClients08Value.rowdata.req_ser_id = null;
+                $(vDashboardClients08Value.table).DataTable().clear().draw();
+<!-- Clients 08 -->
+                vDashboardClients09Value.rowdata.req_user_id = null;
+                vDashboardClients09Value.rowdata.req_ser_id = null;
+                $(vDashboardClients09Value.table).DataTable().clear().draw();
+<!-- Clients 09 -->
+                vDashboardClients10Value.rowdata.req_user_id = null;
+                vDashboardClients10Value.rowdata.req_ser_id = null;
+                $(vDashboardClients10Value.table).DataTable().clear().draw();
+<!-- Clients 10 -->
+                vDashboardClients11Value.rowdata.req_user_id = null;
+                vDashboardClients11Value.rowdata.req_ser_id = null;
+                $(vDashboardClients11Value.table).DataTable().clear().draw();
+<!-- Clients 11 -->
+                vDashboardClients12Value.rowdata.req_user_id = null;
+                vDashboardClients12Value.rowdata.req_ser_id = null;
+                $(vDashboardClients12Value.table).DataTable().clear().draw();
+<!-- Clients 12 -->
+                vDashboardClientsAllValue.rowdata.req_user_id = null;
+                vDashboardClientsAllValue.rowdata.req_ser_id = null;
+                $(vDashboardClientsAllValue.table).DataTable().clear().draw();
+<!-- Clients All -->
+
+                $('#dashboard_employee_balance_finance_card').attr('hidden',true);
+                vDashboardFinanceValue.rowdata.req_user_id = null;
+                vDashboardFinanceValue.rowdata.req_ser_id = null;
+                vDashboardFinanceValue.rowdata.req_cnt_id = null;
+                vDashboardFinanceValue.rowdata.req_month = null;
+                $(vDashboardFinanceValue.table).DataTable().clear().draw();
+        }
+    }
+
+    var currMonth = new Date().getMonth()+1;
+    var accTab = 'tab-'+currMonth;
+    $('.nav-tabs a[href="#' + accTab + '"]').tab('show');
+
+    $('.positions_btn_control').on('click', function (){
+        $("#positions-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $(document).ready(function(){
+        vReportEmployeeBalanceDetailValue.rowdata.start_date = null;
+        vReportEmployeeBalanceDetailValue.rowdata.end_date = null;
+        vReportEmployeeBalanceDetailValue.rowdata.req_user_id = null;
+
+        recreateDataTable(vReportEmployeeBalanceDetailValue);
+    });
+</script>
+
+</body>
+</html>

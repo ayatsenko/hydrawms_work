@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="kpi_facts_ops_clients_finance_old_detail_body" th:remove="tag">
+        <div id="kpi-facts-ops-clients-finance-old-detail-button">
+              <div id="dep-kpi-facts-profit-btn-large" class="d-none d-sm-block">
+                 <button type="button" id="kpi-facts-ops-clients-finance-old-detail-check" class="btn btn-sm btn-dark" disabled><i class="fas fa-times"></i></button>
+                 <button type="button" id="kpi-facts-ops-clients-finance-old-detail-uncheck" class="btn btn-sm btn-dark mr-2" disabled><i class="fas fa-check"></i></button>
+              </div>
+              <div id="dep-kpi-facts-profit-btn-small" class="d-block d-sm-none">
+                 <button type="button" id="kpi-facts-ops-clients-finance-old-detail-check-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-times"></i></button>
+                 <button type="button" id="kpi-facts-ops-clients-finance-old-detail-uncheck-sx" class="btn btn-sm btn-dark mr-2" disabled><i class="fas fa-check"></i></button>
+              </div>
+        </div>
+
+        <div><table id="table-kpi-facts-ops-clients-finance-old-detail" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+        $("#table-kpi-facts-ops-clients-finance-old-detail").append('<tfoot class="font-weight-bold" style="background-color: #d5e1df">' +
+                '<th></th><th></th><th></th><th></th><th></th>' +
+                '<th></th><th></th><th></th><th></th>' +
+                '</tfoot>');
+
+        var block_check_show, fin_id_show, fin_name_show, fin_date_show, fin_way_name_show, cnt_id_show, cnt_name_show, ser_name_show, fin_sum_show;
+        var block_check_width, fin_id_width, fin_name_width, fin_date_width, fin_way_name_width, cnt_id_width, cnt_name_width, ser_name_width, fin_sum_width;
+        var block_check_class, fin_id_class, fin_name_class, fin_date_class, fin_way_name_class, cnt_id_class, cnt_name_class, ser_name_class, fin_sum_class;
+
+        if(mobileScreenSize){
+                vDomParam = "Blfrtp";
+        }
+        else if(smallScreenSize){
+                vDomParam = "Blfrtip";
+                block_check_show = true;
+                block_check_width = "5%";
+                block_check_class = "small_size small_head_size small_footer_size text-center";
+                fin_id_show = false;
+                fin_id_width ="";
+                fin_id_class ="";
+                fin_name_show = true;
+                fin_name_width ="8%";
+                fin_name_class ="small_size small_head_size small_footer_size";
+                fin_date_show = true;
+                fin_date_width ="8%";
+                fin_date_class ="small_size small_head_size small_footer_size text-center";
+                fin_way_name_show = true;
+                fin_way_name_width ="5%";
+                fin_way_name_class ="small_size small_head_size small_footer_size";
+                cnt_id_show = false;
+                cnt_id_width ="";
+                cnt_id_class ="";
+                cnt_name_show = true;
+                cnt_name_width ="40%";
+                cnt_name_class ="small_size small_head_size small_footer_size";
+                ser_name_show = true;
+                ser_name_width ="24%";
+                ser_name_class ="small_size small_head_size small_footer_size";
+                fin_sum_show = true;
+                fin_sum_width ="10%";
+                fin_sum_class ="small_size small_head_size small_footer_size";
+        }
+        else{
+                vDomParam = "Blfrtip";
+                block_check_show = true;
+                block_check_width = "5%";
+                block_check_class = "small_size small_head_size small_footer_size text-center";
+                fin_id_show = false;
+                fin_id_width ="";
+                fin_id_class ="";
+                fin_name_show = true;
+                fin_name_width ="8%";
+                fin_name_class ="small_size small_head_size small_footer_size";
+                fin_date_show = true;
+                fin_date_width ="8%";
+                fin_date_class ="small_size small_head_size small_footer_size text-center";
+                fin_way_name_show = true;
+                fin_way_name_width ="5%";
+                fin_way_name_class ="small_size small_head_size small_footer_size";
+                cnt_id_show = false;
+                cnt_id_width ="";
+                cnt_id_class ="";
+                cnt_name_show = true;
+                cnt_name_width ="40%";
+                cnt_name_class ="small_size small_head_size small_footer_size";
+                ser_name_show = true;
+                ser_name_width ="24%";
+                ser_name_class ="small_size small_head_size small_footer_size";
+                fin_sum_show = true;
+                fin_sum_width ="10%";
+                fin_sum_class ="small_size small_head_size small_footer_size";
+        }
+
+        var vKPIFactsOpsClientsDetailFinanceOld;
+        vKPIFactsOpsClientsDetailFinanceOld = {
+                table : '#table-kpi-facts-ops-clients-finance-old-detail',
+                button_form: '#kpi-facts-ops-clients-finance-old-detail-button',
+                ajax : {
+                        "url": /*[[@{/kpi_facts/ops_clients_finance_old_detail_menu}]]*/ "kpi_facts/ops_clients_finance_old_detail_menu",
+                        "type": "post",
+                        "data": function ( d ) {
+                                d.kpi_facts_param_id = vKPIFactsOpsClientsDetailFinanceOld.rowdata.kpi_facts_param_id;
+                                d.kpi_facts_user_id = vKPIFactsOpsClientsDetailFinanceOld.rowdata.kpi_facts_user_id;
+                                d.kpi_facts_year = vKPIFactsOpsClientsDetailFinanceOld.rowdata.kpi_facts_year;
+                                d.kpi_facts_month = vKPIFactsOpsClientsDetailFinanceOld.rowdata.kpi_facts_month;
+                                d.kpi_facts_cnt_id = vKPIFactsOpsClientsDetailFinanceOld.rowdata.kpi_facts_cnt_id;
+                                d.kpi_facts_ser_id = vKPIFactsOpsClientsDetailFinanceOld.rowdata.kpi_facts_ser_id;
+                        }
+                },
+                key : "fin_id",
+                switchControl : kpi_facts_ops_clients_finance_old_detail_switchControl,
+                rowdata:{
+                        fin_id: null,
+                        user_id: null,
+                        kpi_facts_param_id: null,
+                        kpi_facts_user_id: null,
+                        kpi_facts_year: null,
+                        kpi_facts_month: null,
+                        kpi_facts_cnt_id: null,
+                        kpi_facts_ser_id: null,
+                        block_check: null
+                },
+                ordering: true,
+                order: [
+                        [8, "desc"]
+                ],
+                dom: vDomParam,
+                createdRow: function( row, data, dataIndex ) {
+                        if ( data.block_check === 1 ){
+                                $(row).css('background-color', '#ff8566');
+                        }
+                },
+                footerCallback: function ( row, data, start, end, display ) {
+                        var api = this.api(), data;
+
+                        // Remove the formatting to get integer data for summation
+                        var intVal = function ( i ) {
+                                return typeof i === 'string' ?
+                                        i.replace(/[\$,]/g, '')*1 :
+                                        typeof i === 'number' ?
+                                                i : 0;
+                        };
+                        var numFormat = $.fn.dataTable.render.number( '\ ', '.', 2, '').display;
+                        // Total over all pages
+                        Total = api.column(8, {filter:'applied'}).data().reduce( function (a, b){ return intVal(a) + intVal(b);}, 0 );
+
+                        $( api.column(7).footer()).html('Всего: ');
+                        $( api.column(8).footer()).html(numFormat(Total));
+                },
+                columnDefs:[
+                        {"targets": [0], "width": block_check_width, "className": block_check_class, "visible": block_check_show,
+                        render: function ( data, type, row ) {
+                                        if ( type === 'display' ) {             //if column data is 1 then set attr to checked, use row id as input id (plus prefix)
+                                            return '<label class="custom-control custom-checkbox mb-0 mt-0 text-center"><input type="checkbox" ' + ((data == 1) ? 'checked' : '') + ' id="input' + row.id + '" class="custom-control-input" disabled><span class="custom-control-label"></span></label>'
+                                        }
+                                        return data;
+                                }
+                        },
+                        {"targets": [1], "width": fin_id_width, "className": fin_id_class, "visible": fin_id_show},
+                        {"targets": [2], "width": fin_name_width, "className": fin_name_class, "visible": fin_name_show},
+                        {"targets": [3], "width": fin_date_width, "className": fin_date_class, "visible": fin_date_show, type: 'de_date'},
+                        {"targets": [4], "width": fin_way_name_width, "className": fin_way_name_class, "visible": fin_way_name_show},
+                        {"targets": [5], "width": cnt_id_width, "className": cnt_id_class, "visible": cnt_id_show},
+                        {"targets": [6], "width": cnt_name_width, "className": cnt_name_class, "visible": cnt_name_show},
+                        {"targets": [7], "width": ser_name_width, "className": ser_name_class, "visible": ser_name_show},
+                        {"targets": [8], "width": fin_sum_width, "className": fin_sum_class, "visible": fin_sum_show,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )}
+                ],
+                columns : [
+                        /*0*/{"title": /*[[#{kpi_facts.ops_clients_finance_old_detail.block_check}]]*/ "block_check", "data": "block_check",},
+                        /*1*/{"title": /*[[#{kpi_facts.ops_clients_finance_old_detail.fin_id}]]*/ "fin_id", "data": "fin_id"},
+                        /*2*/{"title": /*[[#{kpi_facts.ops_clients_finance_old_detail.fin_name}]]*/ "fin_name", "data": "fin_name"},
+                        /*3*/{"title": /*[[#{kpi_facts.ops_clients_finance_old_detail.fin_date}]]*/ "fin_date", "data": "fin_date"},
+                        /*4*/{"title": /*[[#{kpi_facts.ops_clients_finance_old_detail.fin_way_name}]]*/ "fin_way_name", "data": "fin_way_name"},
+                        /*5*/{"title": /*[[#{kpi_facts.ops_clients_finance_old_detail.cnt_id}]]*/ "cnt_id", "data": "cnt_id"},
+                        /*6*/{"title": /*[[#{kpi_facts.ops_clients_finance_old_detail.cnt_name}]]*/ "cnt_name", "data": "cnt_name"},
+                        /*7*/{"title": /*[[#{kpi_facts.ops_clients_finance_old_detail.ser_name}]]*/ "ser_name", "data": "ser_name"},
+                        /*8*/{"title": /*[[#{kpi_facts.ops_clients_finance_old_detail.fin_sum}]]*/ "fin_sum", "data": "fin_sum"}                
+                        ],
+                pageLength: 25,
+                copy_button: true,
+                excel_button: true,
+                pdf_button: true,
+                print_button: true
+        };
+
+        function kpi_facts_ops_clients_finance_old_detail_switchControl(){
+                if(vKPIFactsOpsClientsDetailFinanceOld.rowdata.fin_id != null) {
+                        $("#kpi-facts-ops-clients-finance-old-detail-link").prop('disabled',false).removeClass('btn-outline-dark').addClass('btn-outline-primary');
+                        $("#kpi-facts-ops-clients-finance-old-detail-link-sx").prop('disabled',false).removeClass('btn-outline-dark').addClass('btn-outline-primary');
+
+                        if(vKPIFactsOpsClientsDetailFinanceOld.rowdata.block_check === 0 && RoleAllAdmin === true){
+                                $('#kpi-facts-ops-clients-finance-old-detail-check').prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+                                $('#kpi-facts-ops-clients-finance-old-detail-check-sx').prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+
+                                $('#kpi-facts-ops-clients-finance-old-detail-uncheck').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                                $('#kpi-facts-ops-clients-finance-old-detail-uncheck-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                        }
+                        else if(vKPIFactsOpsClientsDetailFinanceOld.rowdata.block_check === 1 && RoleAllAdmin === true){
+                                $('#kpi-facts-ops-clients-finance-old-detail-check').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+                                $('#kpi-facts-ops-clients-finance-old-detail-check-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+                                $('#kpi-facts-ops-clients-finance-old-detail-uncheck').prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+                                $('#kpi-facts-ops-clients-finance-old-detail-uncheck-sx').prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+                        }
+                } else{
+                        $("#kpi-facts-ops-clients-finance-old-detail-link").prop('disabled',true).addClass('btn-outline-dark').removeClass('btn-outline-primary');
+                        $("#kpi-facts-ops-clients-finance-old-detail-link-sx").prop('disabled',true).addClass('btn-outline-dark').removeClass('btn-outline-primary');
+
+                        $('#kpi-facts-ops-clients-finance-old-detail-check').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+                        $('#kpi-facts-ops-clients-finance-old-detail-check-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+                        $('#kpi-facts-ops-clients-finance-old-detail-uncheck').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                        $('#kpi-facts-ops-clients-finance-old-detail-uncheck-sx').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');                
+                }
+        }
+
+        function addOpsFinanceOldBlock(){
+                var RowID = vKPIFactsOpsClientsDetailFinanceOld.rowdata.fin_id;
+                var YearID =  $("#kpi_facts_year").val();
+                var MainDepID = vKPIFactListValue.rowdata.dep_id;
+                var DepID = vKPIFactBranchValue.rowdata.dep_id;
+                var UserID = vKPIFactUsersValue.rowdata.user_id;
+                var MonthID = $("#kpi_facts_month").val();
+                $.ajax({
+                        url: /*[[ @{/kpi_facts/add_ops_clients_finance_old_detail_block} ]]*/ "/kpi_facts/add_ops_clients_finance_old_detail_block",
+                        type: 'POST',
+                        data: {
+                                "block_fin_id": RowID,
+                                "block_user_id": UserID,
+                                "block_year": YearID,
+                                "block_month": MonthID
+                        },
+                        success: function (result) {
+                                vKPIFactListValue.rowdata.kpi_facts_year = YearID;
+                                $(vKPIFactListValue.table).DataTable().ajax.reload(null, false);
+                        }
+                });
+        }
+//Add Block
+        $('#kpi-facts-ops-clients-finance-old-detail-check').click(function () {
+            addOpsFinanceOldBlock();
+        });
+//Add Block SX
+        $('#kpi-facts-ops-clients-finance-old-detail-check-sx').click(function () {
+            addOpsFinanceOldBlock();
+        });
+
+        function delOpsFinanceOldBlock(){
+                var RowID = vKPIFactsOpsClientsDetailFinanceOld.rowdata.fin_id;
+                var YearID =  $("#kpi_facts_year").val();
+                var UserID = vKPIFactUsersValue.rowdata.user_id;
+                var MonthID = $("#kpi_facts_month").val();
+                $.ajax({
+                        url: /*[[ @{/kpi_facts/del_ops_clients_finance_old_detail_block} ]]*/ "/kpi_facts/del_ops_clients_finance_old_detail_block",
+                        type: 'POST',
+                        data: {
+                                "block_fin_id": RowID,
+                                "block_user_id": UserID,
+                                "block_year": YearID,
+                                "block_month": MonthID
+                        },
+                        success: function (result) {
+                                vKPIFactListValue.rowdata.kpi_facts_year = YearID;
+                                $(vKPIFactListValue.table).DataTable().ajax.reload(null, false);
+                        }
+                });
+        }
+//Del Block
+        $('#kpi-facts-ops-clients-finance-old-detail-uncheck').click(function () {
+            delOpsFinanceOldBlock();
+        });
+//Del Block SX
+        $('#kpi-facts-ops-clients-finance-old-detail-uncheck-sx').click(function () {
+            delOpsFinanceOldBlock();
+        });
+        
+        $(document).ready(function(){
+                vKPIFactsOpsClientsDetailFinanceOld.rowdata.fin_id = /*[[${fin_id}]]*/ null;
+
+                vKPIFactsOpsClientsDetailFinanceOld.rowdata.user_id = /*[[${user_id}]]*/ null;
+                vKPIFactsOpsClientsDetailFinanceOld.rowdata.dep_kpi_year = /*[[${dep_kpi_year}]]*/ null;
+                vKPIFactsOpsClientsDetailFinanceOld.rowdata.dep_kpi_month = /*[[${dep_kpi_month}]]*/ null;
+
+                vKPIFactsOpsClientsDetailFinanceOld.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+                vKPIFactsOpsClientsDetailFinanceOld.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+                vKPIFactsOpsClientsDetailFinanceOld.rowdata.table_search = /*[[${table_search}]]*/ null;
+                vKPIFactsOpsClientsDetailFinanceOld.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+                vKPIFactsOpsClientsDetailFinanceOld.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+                recreateDataTable(vKPIFactsOpsClientsDetailFinanceOld);
+        });
+</script>
+
+</body>
+</html>

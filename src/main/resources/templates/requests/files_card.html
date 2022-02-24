@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="requests_files_body" th:remove="tag">
+    <form id="table-requests-files-buttons" class="mb-2" hidden>
+        <input name="mode" value="0" hidden>
+        <button type="button" id="requests-files-addbtn" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" th:title="#{general.addbtn}"><i class="fa fa-plus"></i></button>
+        <button type="submit" id="requests-files-downbtn" form="frmdownload" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" th:title="#{general.downbtn}" disabled><i class="fa fa-download"></i></button>
+        <button type="button" id="requests-files-delbtn" class="btn btn-dark mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.delbtn}" disabled><i class="fa fa-trash-alt"></i></button>
+
+        <button type="button" id="requests-files-reloadbtn" class="btn btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.refreshbtn}"><i class="fa fa-sync"></i></button>
+    </form>
+
+        <form id="frmdownload" method="post" th:action="@{/requests/files_download}">
+            <input type="hidden" name="req_store_id">
+        </form>
+
+        <div><table id="table-requests-files" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var req_store_id_show, req_store_date_show, user_name_show, req_store_filename_show;
+    var req_store_id_width, req_store_date_width, user_name_width, req_store_filename_width;
+    var req_store_id_class, req_store_date_class, user_name_class, req_store_filename_class;
+
+    if(mobileScreenSize){
+        vDomParam =
+            "<'row'<'col-12 col-sm-3'l><'col-12 col-sm-9'f>>"+
+            "<'row'<'col-12'tr>>" +
+            "<'row'<'col-12'p>>";
+        req_store_id_show = false;
+        req_store_id_width = "";
+        req_store_id_class = "";
+        req_store_date_show = true;
+        req_store_date_width = "7%";
+        req_store_date_class = "min-tablet-p small_size small_head_size small_footer_size";
+        user_name_show = true;
+        user_name_width = "7%";
+        user_name_class = "min-tablet-p small_size small_head_size small_footer_size";
+        req_store_filename_show = true;
+        req_store_filename_width = "86%";
+        req_store_filename_class = "small_size small_head_size small_footer_size";
+
+        $('#requests-files-addbtn').removeClass('btn-sm');
+        $('#requests-files-downbtn').removeClass('btn-sm');
+        $('#requests-files-delbtn').removeClass('btn-sm');
+
+        $('#table-requests-files-buttons').addClass('text-center').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "lfrtip";
+
+        req_store_id_show = false;
+        req_store_id_width = "";
+        req_store_id_class = "";
+        req_store_date_show = true;
+        req_store_date_width = "7%";
+        req_store_date_class = "small_size small_head_size small_footer_size";
+        user_name_show = true;
+        user_name_width = "7%";
+        user_name_class = "small_size small_head_size small_footer_size";
+        req_store_filename_show = true;
+        req_store_filename_width = "86%";
+        req_store_filename_class = "small_size small_head_size small_footer_size";
+
+        $('#table-requests-files-buttons').removeClass('text-center').removeAttr('hidden');
+    }
+    else{
+        vDomParam = "lfrtip";
+        req_store_id_show = false;
+        req_store_id_width = "";
+        req_store_id_class = "";
+        req_store_date_show = true;
+        req_store_date_width = "7%";
+        req_store_date_class = "small_size small_head_size small_footer_size";
+        user_name_show = true;
+        user_name_width = "7%";
+        user_name_class = "small_size small_head_size small_footer_size";
+        req_store_filename_show = true;
+        req_store_filename_width = "86%";
+        req_store_filename_class = "small_size small_head_size small_footer_size";
+
+        $('#table-requests-files-buttons').removeClass('text-center').removeAttr('hidden');
+    }
+
+    var vRequestFilesListValue;
+    vRequestFilesListValue = {
+        table : '#table-requests-files',
+        ajax : {
+            "url": /*[[@{/requests/get_files_table}]]*/ "requests/get_files_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.req_id = vRequestFilesListValue.rowdata.req_id
+            }
+        },
+        key : "req_store_id",
+        switchControl : requests_files_switchControl,
+        rowdata:{
+            req_id: null,
+            req_name: null,
+            req_store_id: null,
+            user_name: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        dom: vDomParam,
+        columnDefs:[
+            {"targets": [0], "width": req_store_id_width, "className": req_store_id_class, "visible": req_store_id_show},
+            {"targets": [1], "width": req_store_date_width, "className": req_store_date_class, "visible": req_store_date_show, type: 'de_date'},
+            {"targets": [2], "width": user_name_width, "className": user_name_class, "visible": user_name_show},
+            {"targets": [3], "width": req_store_filename_width, "className": req_store_filename_class, "visible": req_store_filename_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{requests.files.req_store_id}]]*/ "req_store_id", "data": "req_store_id"},
+            /*1*/{"title": /*[[#{requests.files.req_store_date}]]*/ "req_store_date", "data": "req_store_date"},
+            /*2*/{"title": /*[[#{requests.files.user_name}]]*/ "user_name", "data": "user_name"},
+            /*3*/{"title": /*[[#{requests.files.req_store_filename}]]*/ "req_store_filename", "data": "req_store_filename"}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function requests_files_switchControl(){
+        if(vRequestFilesListValue.rowdata.req_store_id != null) {
+            var NameString =  /*[[${#authentication.name}]]*/ '';
+            if ([-2,-1].indexOf(vRequestListValue.rowdata.req_status_id) >= 0) {
+                $("#requests-files-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            }
+            else{
+                if(NameString === vRequestFilesListValue.rowdata.user_name){
+                    $("#requests-files-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-danger');
+                }else{
+                    $("#requests-files-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+                }
+            }
+            $("#requests-files-downbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+            $("#requests-files-downbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#requests-files-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    //Add Function
+    function addRequestFiles(){
+        $('#requests_files_modal_addbtn').removeAttr('hidden');
+        $('#requests_files_modal_editbtn').attr('hidden',true);
+        $('#requests_files_modal_delbtn').attr('hidden',true);
+        fill_requests_files_modal_detail(0);
+    }
+
+    //Add Button
+    $('#requests-files-addbtn').click(function() {
+        addRequestFiles();
+    });
+
+//Del Function
+    function delRequestFiles(){
+        var MainRowID = vRequestListValue.rowdata.req_id;
+        var RowID = vRequestFilesListValue.rowdata.req_store_id;
+        $.ajax({
+            url: /*[[ @{/requests/del_request_file} ]]*/ "/requests/del_request_file",
+            type: 'POST',
+            data: {
+                "req_store_id": RowID
+            },
+            success: function (result) {
+                vRequestFilesListValue.rowdata.req_id = MainRowID;
+                vRequestFilesListValue.rowdata.req_store_id = null;
+                $(vRequestFilesListValue.table).DataTable().ajax.reload();
+            }
+        });
+    }
+
+//Del Button
+    $('#requests-files-delbtn').click(function() {
+        delRequestFiles();
+    });
+
+    $('#frmdownload').submit(function(){
+        $("#frmdownload input[name=req_store_id]").val(vRequestFilesListValue.rowdata.req_store_id);
+    });
+
+//Reload Function
+    function reloadRequestFiles(){
+        var MainRowID = vRequestListValue.rowdata.req_id;
+        var RowID = vRequestFilesListValue.rowdata.req_store_id;
+        vRequestFilesListValue.rowdata.req_id = MainRowID;
+        vRequestFilesListValue.rowdata.req_store_id = RowID;
+        $(vRequestFilesListValue.table).DataTable().ajax.reload(null, false);
+    }
+//Reload Button
+    $('#requests-files-reloadbtn').click(function() {
+        reloadRequestFiles();
+    });
+
+        $(document).ready(function(){
+        vRequestFilesListValue.rowdata.req_id = /*[[${req_id}]]*/ null;
+        vRequestFilesListValue.rowdata.req_name = /*[[${req_name}]]*/ null;
+        vRequestFilesListValue.rowdata.req_store_id = /*[[${req_id}]]*/ req_store_id;
+
+        vRequestFilesListValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vRequestFilesListValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vRequestFilesListValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vRequestFilesListValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vRequestFilesListValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vRequestFilesListValue);
+
+            <!-- Filter and Search -->
+            if(mobileScreenSize) {
+                $('#table-requests-files_length').addClass('float-none');
+                $('#table-requests-files_filter').addClass('float-none');
+            }
+    });
+</script>
+
+</body>
+</html>

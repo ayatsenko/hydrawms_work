@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:include="layout/layout :: header(title = #{index.workplace_a_description})"></head>
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+
+<main role="main" >
+    <div class="jumbotron ">
+        <div class="container align-items-center justify-content-center">
+            <h2 th:text="#{index.workplace_a_description}">Workplaces</h2>
+            <p th:text="#{index.workplace_description}">We will add all Workplaces of Partnership in the all locations</p>
+        </div>
+    </div>
+    <form id="mainfrm" th:hidden="true" method="post" th:action="users">
+        <input name="username" th:value="${parent_username}">
+        <input name="selected_id" th:value="${parent_selected_id}">
+        <input name="selected_loc_id" th:value="${parent_selected_loc_id}">
+        <input name="selected_wp_id" th:value="${parent_selected_wp_id}">
+    </form>
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-12">
+                <form id="form_group" name="form_group">
+                    <div class="col-sm form-inline form-check  form-check-inline">
+                        <button th:text="#{general.back}" class="btn btn-primary mb-2" form="mainfrm" role="button">Back</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="addbtn" class="btn btn-primary mb-2" value="Validate!" th:text="#{userworkplace.addbtn}" th:disabled="${#lists.size(workplaces) == 0}" >Add</button>
+                            <button th:case="2" type="submit" id="delbtn" class="btn btn-primary mb-2" value="Validate!" th:text="#{userworkplace.delbtn}"  >Delete</button>
+                        </div>
+                    </div>
+                    <div class="col-sm error"></div>
+                    <div class="form-group" id="editModalfrm">
+                        <label for="user_id" class="form-control-label" th:text="#{userworkplace.user_id}">user_id</label>
+                        <select class="form-control" id="user_id" name="user_id" th:value="${user_id}" disabled>
+                            <option th:each="user : ${users}"
+                                    th:value="${user.id}"
+                                    th:text="${user.username}"
+                                    th:selected="${user.id == user_id}"
+                            ></option>
+                        </select>
+                        <label for="loc_id" class="form-control-label" th:text="#{userworkplace.loc_id}">loc_id</label>
+                        <select class="form-control" id="loc_id" name="loc_id" th:value="${loc_id}" disabled>
+                            <option th:each="location : ${locations}"
+                                    th:value="${location.loc_id}"
+                                    th:text="${location.loc_location}"
+                                    th:selected="${location.loc_id == loc_id}"
+                            ></option>
+                        </select>
+                        <label for="wp_id" class="form-control-label" th:text="#{userworkplace.wp_id}" >wp_id</label>
+                        <select class="form-control" id="wp_id" name="wp_id" th:value="${wp_id}" th:disabled="${mode == 2}">
+                            <option th:each="workplace : ${workplaces}"
+                                    th:value="${workplace.wp_id}"
+                                    th:text="${workplace.wp_name}"
+                                    th:selected="${workplace.wp_id == wp_id}"
+                            ></option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <hr>
+    </div> <!-- /container -->
+</main>
+
+<footer th:replace="fragments/footer :: footer">Footer</footer>
+<script th:inline="javascript">
+
+    $(document).ready(function() {
+        var mode=/*[[${mode}]]*/ 0;
+
+        jQuery.validator.setDefaults({
+            debug: true,
+            success: "valid"
+        });
+
+        $('#form_group').validate({
+
+            rules: {
+                loc_id : {
+                    required: true
+                },
+                user_id: {
+                    required: true
+                },
+                wp_id: {
+                    required: true
+                }
+            },
+            errorLabelContainer: $("#form_group div.error"),
+            submitHandler: function(form) {
+                switch(mode) {
+                    case 0:
+                        $.ajax({
+                            url: "adm/add_userworkplace",
+                            data: {
+                                user_id: /*[[${user_id}]]*/ 0,
+                                wp_id: $("#wp_id").val()
+                            },
+                            type: 'POST',
+                            success: function (result) {
+                                $("#mainfrm").submit();
+                            }
+                        });
+                        break;
+                    case 2:
+                        $.ajax({
+                            url: "adm/del_userworkplace",
+                            data: {
+                                user_id : /*[[${user_id}]]*/ 0,
+                                wp_id : /*[[${wp_id}]]*/ 0
+                            },
+                            type: 'POST',
+                            success: function (result) {
+                                $("#mainfrm").submit();
+                            }
+                        });
+                        break;
+                };
+                return false;
+            }
+        });
+
+    });
+
+</script>
+</body>
+</html>

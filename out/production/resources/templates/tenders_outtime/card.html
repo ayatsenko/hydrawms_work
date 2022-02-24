@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tenders_outtime_body" th:remove="tag">       
+       <div id="table-tenders-outtime-buttons">
+              <div id="report-tenders-all-btn-large" class="d-none d-sm-block mb-1">
+                 <button type="submit" id="table-tenders-outtime-link" form="table-tenders-outtime-link-form" class="btn btn-sm btn-outline-dark mr-1 tenders_outtime_link_control" th:text="#{general.gotobtn}" disabled>GoTo</button>
+              </div>
+
+              <div id="report-tenders-all-btn-small" class="d-block d-sm-none mb-1">
+                 <button type="submit" id="table-tenders-outtime-link-sx" form="table-tenders-outtime-link-form" class="btn btn-sm btn-outline-dark tenders_outtime_link_control" disabled><i data-feather="external-link"></i></button>
+              </div>        
+        </div>
+            <form id="table-tenders-outtime-link-form" th:action="@{/tenders}" method="post" target="_blank">
+                <input name="req_id" hidden>
+                <input name="tenders_list_table_order_column" hidden>
+                <input name="tenders_list_table_order_type" hidden>
+                <input name="tenders_list_table_search" hidden>
+                <input name="tenders_list_table_pagelen" hidden>
+                <input name="tenders_list_table_page" hidden>
+            </form>        
+       
+        <div><table id="table-tenders-outtime-list" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vTenderOuttimeValue;
+    vTenderOuttimeValue = {
+        table : '#table-tenders-outtime-list',
+        button_form: "#table-tenders-outtime-buttons",
+        ajax : {
+            "url": /*[[@{/get_tenders_outtime}]]*/ "/get_tenders_outtime",
+            "type": "post",
+            "data":{
+            }
+        },
+        key : "req_id",
+        switchControl : tenders_outtime_switchControl,
+        rowdata:{
+           req_id: null,
+           req_name: null,
+           user_id: null,
+           user_name: null,
+           req_ops_username: null,
+           tend_status_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 'ftp',
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).find('td:eq(4)').css('background-color', data["user_status_colour"]);*/
+            $(row).css('background-color', data["tend_status_colour"]);
+        },
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [3], "visible": false},
+            {"targets": [4], type: 'de_datetime'},
+            {"targets": [5], type: 'de_date'},
+            {"targets": [6], type: 'de_date'},
+            {"targets": [9], "visible": false},
+            {"targets": [11], "visible": false, className: "noExport"},
+            {"targets": [13], "visible": false, className: "noExport"},
+            {"targets": [14], "visible": false, className: "noExport"}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{tenders.list.req_id}]]*/ "req_id", "data": "req_id", "width": "1%"},
+                /*1*/{"title": /*[[#{tenders.list.req_name}]]*/ "req_name", "data": "req_name", "width": "24%"},
+                /*2*/{"title": /*[[#{tenders.list.user_name}]]*/ "user_name", "data": "user_name", "width": "8%", "className":"min-tablet-p text-center"},
+                /*3*/{"title": /*[[#{tenders.list.user_id}]]*/ "user_id", "data": "user_id", "width": "1%"},
+                /*4*/{"title": /*[[#{tenders.list.req_date}]]*/ "req_date", "data": "req_date", "width": "8%", "className":"desktop text-center"},
+                /*5*/{"title": /*[[#{tenders.list.req_tend_date}]]*/ "req_tend_date", "data": "req_tend_date", "width": "5%", "className":"min-tablet-p text-center"},
+                /*6*/{"title": /*[[#{tenders.list.req_tend_end_date}]]*/ "req_tend_end_date", "data": "req_tend_end_date", "width": "5%", "className":"min-tablet-p text-center"},
+                /*7*/{"title": /*[[#{tenders.list.req_ops_username}]]*/ "req_ops_username", "data": "req_ops_username", "width": "8%", "className": "desktop text-center"},
+                /*8*/{"title": /*[[#{tenders.list.req_ops_answer}]]*/ "req_ops_answer", "data": "req_ops_answer", "width": "22%", "className": "desktop"},
+                /*9*/{"title": /*[[#{tenders.list.tend_status_id}]]*/ "tend_status_id", "data": "tend_status_id", "width": "1%"},
+                /*10*/{"title": /*[[#{tenders.list.tend_status_sname}]]*/ "tend_status_sname", "data": "tend_status_sname", "width": "8%", "className":"desktop text-center"},
+                /*11*/{"title": /*[[#{tenders.list.tend_status_colour}]]*/ "tend_status_colour", "data": "tend_status_colour", "width": "1%"},
+                /*12*/{"title": /*[[#{tenders.list.req_tend_status_sname}]]*/ "req_tend_status_sname", "data": "req_tend_status_sname", "width": "6%", "className":"desktop text-center"},
+                /*13*/{"title": /*[[#{tenders.list.req_action}]]*/ "req_action", "data": "req_action", "width": "1%"},
+                /*14*/{"title": /*[[#{tenders.list.req_show}]]*/ "req_show", "data": "req_show", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function tenders_outtime_switchControl(){
+            if(vTenderOuttimeValue.rowdata.req_id != null) {
+                    $("#table-tenders-outtime-link").prop('disabled',false).removeClass('btn-outline-dark').addClass('btn-outline-primary');
+
+                    $("#table-tenders-outtime-link-sx").prop('disabled',false).removeClass('btn-outline-dark').addClass('btn-outline-primary');
+            } else{
+                    $("#table-tenders-outtime-link").prop('disabled',true).addClass('btn-outline-dark').removeClass('btn-outline-primary');
+
+                    $("#table-tenders-outtime-link-sx").prop('disabled',true).addClass('btn-outline-dark').removeClass('btn-outline-primary');
+            }
+    }
+
+    $('.tenders_outtime_detail_btn_control').on('click', function (){
+        $("#tenders-list-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('.tenders_outtime_link_control').on('click', function (){
+            $("#table-tenders-outtime-link-form input[name=req_id]").val(vTenderOuttimeValue.rowdata.req_id);
+
+            $("#table-tenders-outtime-link-form input[name=tenders_list_table_order_column]").val(0);
+            $("#table-tenders-outtime-link-form input[name=tenders_list_table_order_type]").val("desc");
+            $("#table-tenders-outtime-link-form input[name=tenders_list_table_search]").val(vTenderOuttimeValue.rowdata.req_id);
+            $("#table-tenders-outtime-link-form input[name=tenders_list_table_pagelen]").val(25);
+            $("#table-tenders-outtime-link-form input[name=tenders_list_table_page]").val(0);
+    });    
+    
+    $('#tenders-list-detail').submit(function() {
+        vTenderOuttimeValue.rowdata.tenders_outtime_table_order_column = $(vTenderOuttimeValue.table).DataTable().order()[0][0];
+        vTenderOuttimeValue.rowdata.tenders_outtime_table_order_type = $(vTenderOuttimeValue.table).DataTable().order()[0][1];
+        vTenderOuttimeValue.rowdata.tenders_outtime_table_search = $(vTenderOuttimeValue.table).DataTable().search();
+        vTenderOuttimeValue.rowdata.tenders_outtime_table_pagelen = $(vTenderOuttimeValue.table).DataTable().page.len();
+        vTenderOuttimeValue.rowdata.tenders_outtime_table_page = $(vTenderOuttimeValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vTenderOuttimeValue.rowdata).forEach(function (index) {
+            $("#tenders-list-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#tenders-list-detail input[name=\"" + index + "\"]").val(vTenderOuttimeValue.rowdata[index]);
+        });
+    });
+     
+    $(document).ready(function(){
+        vTenderOuttimeValue.rowdata.req_id = /*[[${req_id}]]*/ null;
+
+        vTenderOuttimeValue.rowdata.table_order_column = /*[[${tenders_outtime_table_order_column}]]*/ null;
+        vTenderOuttimeValue.rowdata.table_order_type = /*[[${tenders_outtime_table_order_type}]]*/ null;
+        vTenderOuttimeValue.rowdata.table_search = /*[[${tenders_outtime_table_search}]]*/ null;
+        vTenderOuttimeValue.rowdata.table_pagelen = /*[[${tenders_outtime_table_pagelen}]]*/ null;
+        vTenderOuttimeValue.rowdata.table_page = /*[[${tenders_outtime_table_page}]]*/ null;
+
+        recreateDataTable(vTenderOuttimeValue);
+    });
+</script>
+
+</body>
+</html>

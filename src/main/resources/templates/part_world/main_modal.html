@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="part_world_main_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="part_world_main_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="part_world_main_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{full_world.main.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body m-1">
+                    <input type="hidden" id="part_world_main_modal_mode">
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-2" id="part_world_main_modal_clm_id_row">
+                            <label for="part_world_main_modal_clm_id" class="form-label mb-0" th:text="'1. '+ #{part_world.main.clm_id}"></label>
+                            <input type="number" class="form-control" id="part_world_main_modal_clm_id" name="part_world_main_modal_clm_id" readonly>
+                        </div>
+                        <div class="col-12 col-md-3" id="part_world_main_modal_clm_num_row">
+                            <label for="part_world_main_modal_clm_num" class="form-label mb-0" th:text="'2. '+ #{part_world.main.clm_num}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="part_world_main_modal_clm_num" name="part_world_main_modal_clm_num">
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-4" id="cnt_filter_row">
+                            <label for="cnt_filter" class="form-label mb-0" th:text="'3. '+ #{part_world.main.cnt_filter}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="cnt_filter" name="cnt_filter">
+                                <button type="button" id="cnt_filter_check" name="cnt_filter_check" class="btn btn-outline-primary"><i class="fas fa-database"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-8" id="part_world_main_modal_cnt_id_div">
+                            <label for="part_world_main_modal_cnt_id" class="form-label mb-0" th:text="'4. '+#{full_world.main.cnt_name}"></label>
+                            <div class="input-group d-flex">
+                                <select type="text" id="part_world_main_modal_cnt_id" name="part_world_main_modal_cnt_id" class="custom-select" aria-describedby="part_world_main_modal_cnt_id_helpBlock">
+                                </select>
+                            </div>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                <div class="form-row mb-1">
+                    <div class="col-12 col-md-6" id="part_world_main_modal_ser_id_row">
+                        <label for="part_world_main_modal_ser_id" class="form-label mb-0" th:text="'5. '+#{part_world.main.ser_sname}">Service: </label>
+                        <select type="text" id="part_world_main_modal_ser_id" name="part_world_main_modal_ser_id" class="custom-select">
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-6" id="part_world_main_modal_user_id_row">
+                        <label for="part_world_main_modal_user_id" class="form-label mb-0" th:text="'6. '+#{part_world.main.user_name}">User: </label>
+                        <select type="text" id="part_world_main_modal_user_id" name="part_world_main_modal_user_id" class="custom-select">
+                        </select>
+                    </div>
+                </div>  <!-- Row 2 -->
+
+                <div class="form-row mb-1">
+                    <div class="col-12 col-md-3" id="clm_sum_row">
+                        <label for="clm_sum" class="form-label mb-0" th:text="'7. '+ #{part_world.main.clm_sum}"></label>
+                        <input type="text" class="form-control" id="clm_sum" name="clm_sum">
+                    </div>
+
+                    <div class="col-12 col-md-4" id="clm_sum_currency_row">
+                        <label for="clm_sum_currency_id" class="form-label mb-0" th:text="'8. '+#{part_world.main.curreny_id}">Currency: </label>
+                        <select id="clm_sum_currency_id" name="clm_sum_currency_id" class="custom-select">
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-3" id="clm_sum_currency_date_row">
+                        <label for="clm_sum_currency_date" class="form-label mb-0" th:text="'9. '+ #{part_world.main.clm_sum_currency_date}"></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="clm_sum_currency_date" name="clm_sum_currency_date">
+                            <button type="button" id="clm_sum_currency_date_x" name="clm_sum_currency_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>  <!-- Row 3 -->
+
+                <div class="form-row mb-1">
+                    <div class="col-12 col-md-4">
+                        <label for="clm_aim_type_id" class="form-label mb-0" th:text="'10. '+#{part_world.main.clm_aim_type_sname}">Service: </label>
+                        <select type="text" id="clm_aim_type_id" name="clm_aim_type_id" class="custom-select">
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <label for="clm_status_id" class="form-label mb-0" th:text="'11. '+#{part_world.main.clm_status_sname}">Service: </label>
+                        <select type="text" id="clm_status_id" name="clm_status_id" class="custom-select" readonly>
+                        </select>
+                    </div>
+                </div><!-- Row 5 -->
+
+                <div class="form-row mb-1">
+                    <div class="col-12 col_mb-4" id="wh_check_row">
+                        <label class="form-label mb-0" for="wh_check" th:text="'12. '+ #{part_world.main.wh_check}"></label>
+                        <div class="custom-control custom-switch centered">
+                            <input class="custom-control-input" type="checkbox" id="wh_check" name="wh_check">
+                            <label class="custom-control-label" for="wh_check"></label>
+                        </div>
+                    </div>
+                </div><!-- Row 6 -->
+
+                <div class="form-row mb-1">
+                    <div class="col-12">
+                        <label for="clm_note" class="form-label mb-0" th:text="'13. '+#{part_world.main.clm_note}"></label>
+                        <textarea class="form-control" rows="5" maxlength="512" style="resize:none;" id="clm_note" name="clm_note">
+                        </textarea>
+                    </div>
+                </div>  <!-- Row 7 -->
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="part_world_main_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="part_world_main_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="part_world_main_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="part_world_main_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+// Clear Fields
+    function clear_part_world_main_modal_detail() {
+        $("#part_world_main_modal_detail input[type=text]").val('');
+        $("#part_world_main_modal_detail input[type=number]").val('');
+        $("#part_world_main_modal_detail select").empty();
+        $("#part_world_main_modal_detail textarea").val('');
+    }
+
+// Block And Required Fields
+    function block_part_world_main_modal_detail(){
+        $('#clm_sum_currency_id').attr('required', true);
+        $('#clm_sum').attr('required', true);
+        $('#part_world_main_modal_cnt_id').attr('required', true);
+
+        if($('#part_world_main_modal_mode').val() === "0"){
+            $('#part_world_main_modal_clm_id_row').attr('hidden',true);
+
+            $('#part_world_main_modal_clm_num').removeAttr('readonly');
+            $('#part_world_main_modal_ser_id').removeAttr('disabled');
+            $('#part_world_main_modal_user_id').removeAttr('disabled');
+            $('#clm_sum').val(0).removeAttr('readonly');
+            $('#clm_sum_currency_id').removeAttr('disabled');
+            $('#clm_sum_currency_date').removeAttr('readonly');
+            $('#clm_sum_currency_date_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#clm_aim_type_id').removeAttr('disabled');
+            $('#clm_status_id').attr('readonly', true).removeAttr('disabled');
+            $('#clm_note').removeAttr('readonly');
+            $('#part_world_main_modal_cnt_id').removeAttr('disabled');
+            $('#cnt_filter').removeAttr('readonly');
+            $('#cnt_filter_check').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#wh_check').removeAttr('disabled');
+        }
+        else if($('#part_world_main_modal_mode').val() === "1"){
+            $('#part_world_main_modal_clm_id_row').removeAttr('hidden');
+
+            $('#part_world_main_modal_clm_num').removeAttr('readonly');
+            $('#part_world_main_modal_ser_id').removeAttr('disabled');
+            $('#part_world_main_modal_user_id').removeAttr('disabled');
+            $('#clm_sum').removeAttr('readonly');
+            $('#clm_sum_currency_id').removeAttr('disabled');
+            $('#clm_sum_currency_date').removeAttr('disabled');
+            $('#clm_sum_currency_date_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#clm_aim_type_id').removeAttr('disabled');
+            $('#clm_status_id').attr('readonly', true).removeAttr('disabled');
+            $('#clm_note').removeAttr('readonly');
+            $('#part_world_main_modal_cnt_id').removeAttr('disabled');
+            $('#cnt_filter').removeAttr('readonly');
+            $('#cnt_filter_check').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#wh_check').removeAttr('disabled');
+        }
+        else{
+            $('#part_world_main_modal_clm_id_row').removeAttr('hidden');
+
+            $('#part_world_main_modal_clm_num').attr('readonly', true);
+            $('#part_world_main_modal_ser_id').attr('disabled', true);
+            $('#part_world_main_modal_user_id').attr('disabled', true);
+            $('#clm_sum').attr('readonly', true);
+            $('#clm_sum_currency_id').attr('disabled', true);
+            $('#clm_sum_currency_date').attr('disabled', true);
+            $('#clm_sum_currency_date_x').attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+            $('#clm_aim_type_id').attr('disabled', true);
+            $('#clm_status_id').removeAttr('readonly').attr('disabled', true);
+            $('#clm_note').attr('readonly', true);
+            $('#part_world_main_modal_cnt_id').attr('disabled', true);
+            $('#cnt_filter').attr('readonly', true);
+            $('#cnt_filter_check').attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+            $('#wh_check').attr('disabled', true);
+        }
+    }
+
+// Client List
+function tmsClientChange(vMode,vCNTID,vCNTFILTER) {
+    $('#part_world_main_modal_cnt_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/part_world/get_tms_client_list'}]]*/ "/part_world/get_tms_client_list",
+        type: "get",
+        data: {
+            "mode": vMode,
+            "cnt_filter": vCNTFILTER
+        },
+        success: function (client_list) {
+            for (var i = 0; i < client_list.data.length; i++) {
+                if(i === 0) {
+                    $("select[name='part_world_main_modal_cnt_id']").find('option').end().append("<option value=''></option>");
+                }
+                $("select[name='part_world_main_modal_cnt_id']").find('option').end().append(
+                    "<option value='" + client_list.data[i].cnt_id
+                    + "'>" + client_list.data[i].cnt_name + "</option>");
+            }
+            if(vCNTID != null){
+                $("#part_world_main_modal_cnt_id").val(vCNTID);
+            }
+        }
+    }));
+}
+// Service List
+    function serviceChange(vMode) {
+        $('#part_world_main_modal_ser_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/part_world/get_service_list'}]]*/ "/part_world/get_service_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "ser_id": 4
+            },
+            success: function (service_list) {
+                for (var i = 0; i < service_list.data.length; i++) {
+                    $("select[name='part_world_main_modal_ser_id']").find('option').end().append(
+                        "<option value='" + service_list.data[i].ser_id
+                        + "'>" + service_list.data[i].ser_name + "</option>");
+                }
+            }
+        }));
+    }
+// Managers List
+    function managerChange(vMode,vManagerID) {
+        $('#part_world_main_modal_user_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/part_world/get_managers_list'}]]*/ "/part_world/get_managers_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "user_id": vManagerID
+            },
+            success: function (managers_list) {
+                for (var i = 0; i < managers_list.data.length; i++) {
+                    $("select[name='part_world_main_modal_user_id']").find('option').end().append(
+                        "<option value='" + managers_list.data[i].id
+                        + "'>" + managers_list.data[i].user_surname + "</option>");
+                }
+            }
+        }));
+    }
+// Sum Currency List
+    function sumCurrencyChange(vMode) {
+        $('#clm_sum_currency_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/part_world/get_currency_list'}]]*/ "/part_world/get_currency_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (currency_list) {
+                for (var i = 0; i < currency_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='clm_sum_currency_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='clm_sum_currency_id']").find('option').end().append(
+                        "<option value='" + currency_list.data[i].currency_id
+                        + "'>" + currency_list.data[i].currency_name + "</option>");
+                }
+            }
+        }));
+    }
+// Aim Type List
+    function aimTypeChange(vMode) {
+    $('#clm_aim_type_id').empty();
+    return Promise.resolve($.ajax({
+        url:/*[[@{'/part_world/get_aim_type_list'}]]*/ "/part_world/get_aim_type_list",
+        type: "get",
+        data: {
+            "mode": vMode
+        },
+        success: function (aim_type_list) {
+            for (var i = 0; i < aim_type_list.data.length; i++) {
+                $("select[name='clm_aim_type_id']").find('option').end().append(
+                    "<option value='" + aim_type_list.data[i].clm_aim_type_id
+                    + "'>" + aim_type_list.data[i].clm_aim_type_name + "</option>");
+            }
+        }
+    }));
+}
+// Status List
+    function statusChange(vMode, vclmStatusID) {
+        $('#clm_status_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/part_world/get_status_list'}]]*/ "/part_world/get_status_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "clm_status_id": vclmStatusID
+            },
+            success: function (clm_status_list) {
+                for (var i = 0; i < clm_status_list.data.length; i++) {
+                    $("select[name='clm_status_id']").find('option').end().append(
+                        "<option value='" + clm_status_list.data[i].clm_status_id
+                        + "'>" + clm_status_list.data[i].clm_status_name + "</option>");
+                }
+            }
+        }));
+    }
+// Currency Date
+$("#clm_sum_currency_date").daterangepicker({
+    "singleDatePicker": true,
+    "locale": {
+        "format": "DD.MM.YYYY",
+        "separator": " - ",
+        "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+        "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+        "daysOfWeek": [
+            /*[[#{weekdays.07_short}]]*/ "Su",
+            /*[[#{weekdays.01_short}]]*/ "Mo",
+            /*[[#{weekdays.02_short}]]*/ "Tu",
+            /*[[#{weekdays.03_short}]]*/ "We",
+            /*[[#{weekdays.04_short}]]*/ "Th",
+            /*[[#{weekdays.05_short}]]*/ "Fr",
+            /*[[#{weekdays.06_short}]]*/ "Sa"
+        ],
+        "monthNames": [
+            /*[[#{month.01}]]*/ "January",
+            /*[[#{month.02}]]*/ "February",
+            /*[[#{month.03}]]*/ "March",
+            /*[[#{month.04}]]*/ "April",
+            /*[[#{month.05}]]*/ "May",
+            /*[[#{month.06}]]*/ "June",
+            /*[[#{month.07}]]*/ "July",
+            /*[[#{month.08}]]*/ "August",
+            /*[[#{month.09}]]*/ "September",
+            /*[[#{month.10}]]*/ "October",
+            /*[[#{month.11}]]*/ "November",
+            /*[[#{month.12}]]*/ "December"
+        ],
+        "firstDay": 1
+    }
+});
+
+// Load Function
+    function fill_part_world_main_modal_detail(aMode){
+        $('#part_world_main_modal_mode').val(aMode);
+        clear_part_world_main_modal_detail();
+        block_part_world_main_modal_detail();
+
+        if(aMode !== 0){
+            $.ajax({
+                url:/*[[@{'/part_world/get_main_detail'}]]*/ "part_world/get_main_detail",
+                type: "get",
+                data: {
+                    "clm_id": vFLGClaimsValue.rowdata.clm_id,
+                    "mode": aMode
+                },
+                success: function (part_world_main_modal_detail) {
+                    $('#part_world_main_modal_clm_id').val(part_world_main_modal_detail.data[0].clm_id);
+                    $('#part_world_main_modal_clm_num').val(part_world_main_modal_detail.data[0].clm_num);
+                    $('#clm_sum').val(part_world_main_modal_detail.data[0].clm_sum);
+                    $('#clm_sum_currency_date').val(part_world_main_modal_detail.data[0].clm_sum_currency_date);
+                    $('#clm_note').val(part_world_main_modal_detail.data[0].clm_note);
+                    $.when(
+                        tmsClientChange(aMode, part_world_main_modal_detail.data[0].cnt_id,part_world_main_modal_detail.data[0].cnt_name),
+                        serviceChange(aMode),
+                        managerChange(aMode, part_world_main_modal_detail.data[0].user_id),
+                        sumCurrencyChange(aMode),
+                        aimTypeChange(aMode),
+                        statusChange(aMode,part_world_main_modal_detail.data[0].clm_status_id)
+                    ).then(function () {
+                        $('#cnt_filter').val(part_world_main_modal_detail.data[0].cnt_name);
+                        $('#part_world_main_modal_ser_id').val(part_world_main_modal_detail.data[0].ser_id);
+                        $('#clm_sum_currency_id').val(part_world_main_modal_detail.data[0].clm_sum_currency_id);
+                        $('#clm_aim_type_id').val(part_world_main_modal_detail.data[0].clm_aim_type_id);
+                        var whCheck = part_world_main_modal_detail.data[0].wh_check;
+                        if(whCheck === 1){
+                            $('#wh_check').prop('checked', true);
+                        }
+                        else{
+                            $('#wh_check').removeAttr('checked');
+                        }
+                        $('#part_world_main_modal').modal('show');
+                    });
+                }
+            });
+        }
+        else{
+            $.when(
+                serviceChange(aMode),
+                managerChange(aMode,0),
+                sumCurrencyChange(aMode),
+                aimTypeChange(aMode),
+                statusChange(aMode, 0)
+            ).then(function () {
+                $('#part_world_main_modal_clm_num').val('50-2007-0001');
+
+                $('#part_world_main_modal').modal('show');
+            });
+        }
+    }
+
+// Add button script
+$('#part_world_main_modal_addbtn').click(function(){
+    var RowID = vFLGClaimsValue.rowdata.clm_id;
+    $.ajax({
+        url: /*[[ @{/part_world/add_main} ]]*/ "/part_world/add_main",
+        type: 'POST',
+        data: {
+            "clm_num": $('#part_world_main_modal_clm_num').val(),
+            "ser_id": $('#part_world_main_modal_ser_id').val(),
+            "cur_user_id":  $('#part_world_main_modal_user_id').val(),
+            "clm_sum":  $('#clm_sum').val(),
+            "clm_sum_currency_id":  $('#clm_sum_currency_id').val(),
+            "clm_sum_currency_date":  $('#clm_sum_currency_date').val(),
+            "clm_aim_type_id":  $('#clm_aim_type_id').val(),
+            "clm_note":  $('#clm_note').val(),
+            "cnt_id":  $('#part_world_main_modal_cnt_id').val(),
+            "wh_check":  $('#wh_check').is(':checked') ? 1 : 0,
+        },
+        success: function (result) {
+            $('#part_world_main_modal').modal('hide');
+            vFLGClaimsValue.rowdata.clm_id = RowID;
+            $(vFLGClaimsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// Edit button script
+$('#part_world_main_modal_editbtn').click(function(){
+    var RowID = vFLGClaimsValue.rowdata.clm_id;
+    var CostGroupRowID = vFLGClaimCostsGroupsValue.rowdata.clmcgl_id;
+    var CostRowID = vFLGClaimCostsGroupsValue.rowdata.clmcl_id;
+    $.ajax({
+        url: /*[[ @{/part_world/edit_main} ]]*/ "/part_world/edit_main",
+        type: 'POST',
+        data: {
+            "clm_id": $('#part_world_main_modal_clm_id').val(),
+            "clm_num": $('#part_world_main_modal_clm_num').val(),
+            "ser_id": $('#part_world_main_modal_ser_id').val(),
+            "cur_user_id":  $('#part_world_main_modal_user_id').val(),
+            "clm_sum":  $('#clm_sum').val(),
+            "clm_sum_currency_id":  $('#clm_sum_currency_id').val(),
+            "clm_sum_currency_date":  $('#clm_sum_currency_date').val(),
+            "clm_aim_type_id":  $('#clm_aim_type_id').val(),
+            "clm_note":  $('#clm_note').val(),
+            "cnt_id":  $('#part_world_main_modal_cnt_id').val()
+        },
+        success: function (result) {
+            $('#part_world_main_modal').modal('hide');
+            vFLGClaimsValue.rowdata.clm_id = RowID;
+            $(vFLGClaimsValue.table).DataTable().ajax.reload(null, false);
+            vFLGClaimCostsValue.rowdata.clm_id = RowID;
+            vFLGClaimCostsValue.rowdata.clmcgl_id = CostGroupRowID;
+            vFLGClaimCostsValue.rowdata.clmcl_id = CostRowID;
+            $(vFLGClaimCostsValue.table).DataTable().ajax.reload(null, false);
+        }
+    });
+});
+
+// Del button script
+$('#part_world_main_modal_delbtn').click(function(){
+    $.ajax({
+        url: /*[[ @{/part_world/del_main} ]]*/ "/part_world/del_main",
+        type: 'POST',
+        data: {
+            "clm_id": $('#part_world_main_modal_clm_id').val()
+        },
+        success: function (result) {
+            $('#part_world_main_modal').modal('hide');
+            vFLGClaimsValue.rowdata.clm_id = null;
+            $(vFLGClaimsValue.table).DataTable().ajax.reload(null, false);
+
+            vFLGClaimTimeLogValue.rowdata.clm_id = null;
+            vFLGClaimTimeLogValue.rowdata.clm_status_id = null;
+            $(vFLGClaimTimeLogValue.table).DataTable().clear().draw();
+
+            vFLGClaimTasksValue.rowdata.clm_id = null;
+            vFLGClaimTasksValue.rowdata.clmtl_id = null;
+            $(vFLGClaimTasksValue.table).DataTable().clear().draw();
+            $("#part-world-tasks-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#part-world-tasks-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            vFLGClaimWaysValue.rowdata.clm_id = null;
+            vFLGClaimWaysValue.rowdata.clmwl_id = null;
+            $(vFLGClaimWaysValue.table).DataTable().clear().draw();
+            $("#part-world-ways-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#part-world-ways-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#part-world-ways-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#part-world-ways-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            vFLGClaimLoadsValue.rowdata.clm_id = null;
+            vFLGClaimLoadsValue.rowdata.clmll_id = null;
+            $(vFLGClaimLoadsValue.table).DataTable().clear().draw();
+            $("#part-world-loads-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#part-world-loads-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            vFLGClaimTransValue.rowdata.clm_id = null;
+            vFLGClaimTransValue.rowdata.clmtrl_id = null;
+            $(vFLGClaimTransValue.table).DataTable().clear().draw();
+            $("#part-world-trans-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#part-world-trans-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            vFLGClaimTransLinkValue.rowdata.clm_id = null;
+            vFLGClaimTransLinkValue.rowdata.clmtrl_id = null;
+            $(vFLGClaimTransLinkValue.table).DataTable().clear().draw();
+
+            vFLGClaimTransWaysValue.rowdata.clm_id = null;
+            vFLGClaimTransWaysValue.rowdata.clmtrl_id = null;
+            vFLGClaimTransWaysValue.rowdata.clmtwl_id = null;
+            $(vFLGClaimTransWaysValue.table).DataTable().clear().draw();
+            <!-- Costs Groups -->
+            vFLGClaimCostsGroupsValue.rowdata.clm_id = null;
+            vFLGClaimCostsGroupsValue.rowdata.clmcgl_id = null;
+            $(vFLGClaimCostsGroupsValue.table).DataTable().clear().draw();
+            <!-- Costs -->
+            vFLGClaimCostsValue.rowdata.clm_id = null;
+            vFLGClaimCostsValue.rowdata.clmcl_id = null;
+            $(vFLGClaimCostsValue.table).DataTable().clear().draw();
+            $("#part-world-costs-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#part-world-costs-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            <!-- WH -->
+            vFLGClaimWHValue.rowdata.clm_id = null;
+            vFLGClaimWHValue.rowdata.clmwhl_id = null;
+            $(vFLGClaimWHValue.table).DataTable().clear().draw();
+            <!-- WH Param -->
+            vFLGClaimWHParamValue.rowdata.clm_id = null;
+            vFLGClaimWHParamValue.rowdata.clmwhl_id = null;
+            vFLGClaimWHParamValue.rowdata.clmwhpl_id = null;
+            $(vFLGClaimWHParamValue.table).DataTable().clear().draw();
+            <!-- Errors -->
+            vFLGClaimErrorsValue.rowdata.clm_id = null;
+            vFLGClaimErrorsValue.rowdata.clm_error_link_id = null;
+            $(vFLGClaimErrorsValue.table).DataTable().clear().draw();
+        }
+    });
+});
+
+// OnClick Function
+$('#clm_sum_currency_date_x').click(function() {
+    $('#clm_sum_currency_date').empty().val('');
+});
+
+$('#cnt_filter_check').click(function() {
+    tmsClientChange(
+        $('#part_world_main_modal_mode').val(),
+        $('#part_world_main_modal_cnt_id').val(),
+        $('#cnt_filter').val()
+    );
+});
+
+</script>
+
+</body>
+</html>

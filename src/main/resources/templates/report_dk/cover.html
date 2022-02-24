@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{report_dk.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="report_dk_filter_card">
+        <div class="card-header pb-0">
+            <div class="card-actions float-right">
+                <a href="#report_dk_filter_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+            </div>
+            <h5 class="card-title" href="#report_dk_filter_div" data-toggle="collapse" th:text="#{report_dk.caption}"></h5>
+        </div>
+        <div class="card-body pt-0 collapse show" id="report_dk_filter_div">
+            <div>
+                <span th:replace="report_dk/filter_card :: report_dk_filter_body"></span>
+            </div>
+        </div>
+    </div>
+    </div><!-- Header -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="report_dk_service_card" hidden>
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#report_dk_service_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#report_dk_service_div" id="report_dk_service_card_title" data-toggle="collapse"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="report_dk_service_div">
+                <div>
+                    <span th:replace="report_dk/report_modal :: report_dk_modal_body"></span>
+                    <span th:replace="report_dk/service_card :: report_dk_service_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Service -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="report_dk_main_card" hidden>
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#report_dk_main_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#report_dk_main_div" data-toggle="collapse" th:text="#{report_dk.main.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="report_dk_main_div">
+                <div>
+                    <span th:replace="report_dk/main_comment_modal :: report_dk_main_comment_modal_body"></span>
+                    <span th:replace="report_dk/main_card :: report_dk_main_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Main -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="report_dk_contracts_card" hidden>
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#report_dk_contracts_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#report_dk_contracts_div" data-toggle="collapse" th:text="#{report_dk.contract.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="report_dk_contracts_div">
+                <span th:replace="report_dk/contract_comment_modal :: report_dk_contract_comment_modal_body"></span>
+                <span th:replace="report_dk/contract_card :: report_dk_contract_body"></span>
+                <div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Contracts -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="report_dk_doc_card" hidden>
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#report_dk_doc_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#report_dk_doc_div" data-toggle="collapse" th:text="#{report_dk.doc.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="report_dk_doc_div">
+                <div>
+                    <span th:replace="report_dk/doc_comment_modal :: report_dk_doc_comment_modal_body"></span>
+                    <span th:replace="report_dk/doc_card :: report_dk_doc_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Doc -->
+</div>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<span th:replace="fragments/main_variable.html :: cardscript"></span>
+
+<script th:replace="report_dk/doc_comment_modal :: cardscript"></script>
+<script th:replace="report_dk/doc_card :: cardscript"></script>
+
+<script th:replace="report_dk/contract_comment_modal :: cardscript"></script>
+<script th:replace="report_dk/contract_card :: cardscript"></script>
+
+<script th:replace="report_dk/report_modal :: cardscript"></script>
+<script th:replace="report_dk/main_comment_modal :: cardscript"></script>
+<script th:replace="report_dk/main_card :: cardscript"></script>
+
+<script th:replace="report_dk/service_card :: cardscript"></script>
+<script th:replace="report_dk/filter_card :: cardscript"></script>
+
+</body>
+</html>

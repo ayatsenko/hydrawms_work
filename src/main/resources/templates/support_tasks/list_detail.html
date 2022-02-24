@@ -1,0 +1,626 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{support_tasks.tasks.caption})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{support_tasks.tasks.caption}"></h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <!--/*@thymesVar id="support_tasks_list_detail" type="java.util.List"*/-->
+                <form id="support-tasks-list-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/support_tasks/list_model}">
+                    <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                    <div class="btn-group mb-2">
+                        <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="support-tasks-list-indexfrm">Cancel</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="support-tasks-list-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                            <button th:case="1" type="submit" id="support-tasks-list-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                            <button th:case="2" type="submit" id="support-tasks-list-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                        </div>
+                    </div>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="spt_id" th:value="${spt_id}">
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="support_id" id="support_id" th:value="${support_id}">
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="show_all" id="show_all" th:value="${show_all}">
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="support_tasks_list_table_order_column" th:value="${support_tasks_list_table_order_column}">
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="support_tasks_list_table_order_type" th:value="${support_tasks_list_table_order_type}">
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="support_tasks_list_table_search" th:value="${support_tasks_list_table_search}">
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="support_tasks_list_table_pagelen" th:value="${support_tasks_list_table_pagelen}">
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="support_tasks_list_table_page" th:value="${support_tasks_list_table_page}">
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-1 mb-1" id="spt_id_row">
+                            <label for="spt_id" class="form-label" th:text="'1. '+ #{support_tasks.tasks.spt_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="spt_id" name="spt_id" th:value="${spt_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-5 mb-1" id="spt_name_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="spt_name" class="form-label" th:text="'2. '+#{support_tasks.tasks.spt_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="64" class="form-control" id="spt_name" name="spt_name" th:value="${spt_name}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="form-row" id="spt_description_row">
+                        <div class="col-12 col-md-6 mb-1">
+                            <label for="spt_description" th:text="'3. '+#{support_tasks.tasks.spt_description}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <textarea class="form-control" rows="7" maxlength="2048" style="resize:none;" id="spt_description" name="spt_description" th:text="${spt_description}">
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-2 mb-1" id="sptp_id_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="sptp_id" class="form-label" th:text="'4. '+#{support_tasks.tasks.sptp_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="sptp_id" name="sptp_id" class="form-control p-1" aria-describedby="sptp_id_helpBlock" th:value="${sptp_id}">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="sptp : ${sptp_list}"
+                                        th:value="${sptp.sptp_id}"
+                                        th:text="${sptp.sptp_sname}"
+                                        th:selected="${sptp.sptp_id == sptp_id}"
+                                ></option>
+                            </select>
+                        </div>
+
+                        <div class="col-12 col-md-2 mb-1" id="sptt_id_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="sptt_id" class="form-label" th:text="'5. '+#{support_tasks.tasks.sptt_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="sptt_id" name="sptt_id" class="form-control p-1" aria-describedby="sptt_id_helpBlock" th:value="${sptt_id}">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="sptt : ${sptt_list}"
+                                        th:value="${sptt.sptt_id}"
+                                        th:text="${sptt.sptt_sname}"
+                                        th:selected="${sptt.sptt_id == sptt_id}"
+                                ></option>
+                            </select>
+                        </div>
+                    </div><!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-1 mb-1" id="sptt_number_row">
+                            <label for="sptt_number" class="form-label" th:text="'6. '+ #{support_tasks.tasks.sptt_number}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" maxlength="16" class="form-control" id="sptt_number" name="sptt_number" th:value="${sptt_number}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-1 mb-1" id="sptt_plan_time_row">
+                            <label for="sptt_plan_time" class="form-label" th:text="'7. '+ #{support_tasks.tasks.sptt_plan_time}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="sptt_plan_time" name="sptt_plan_time" th:value="${sptt_plan_time}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-12 col-md-1 mb-1" id="sptt_fact_time_row">
+                            <label for="sptt_fact_time" class="form-label" th:text="'8. '+ #{support_tasks.tasks.sptt_fact_time_edit}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="sptt_fact_time" name="sptt_fact_time" th:value="${sptt_fact_time}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 4 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-2 mb-1" id="spts_id_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="spts_id" class="form-label" th:text="'9. '+#{support_tasks.tasks.spts_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="spts_id" name="spts_id" class="form-control p-1" aria-describedby="spts_id_helpBlock" th:value="${spts_id}">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="spts : ${spts_list}"
+                                        th:value="${spts.spts_id}"
+                                        th:text="${spts.spts_sname}"
+                                        th:selected="${spts.spts_id == spts_id}"
+                                ></option>
+                            </select>
+                        </div>
+                    </div><!-- Row 5 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="spt_author_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="spt_author_id" class="form-label" th:text="'10. '+#{support_tasks.tasks.spt_author_id}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <select type="text" id="spt_author_id" name="spt_author_id" class="form-control p-1" aria-describedby="spt_author_id_helpBlock" th:value="${spt_author_id}">
+                                    <option value=""></option>
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <option class="p-1"
+                                            th:each="spt_author : ${spt_author_list}"
+                                            th:value="${spt_author.id}"
+                                            th:text="${spt_author.username}"
+                                            th:selected="${spt_author.id == spt_author_id}"
+                                    ></option>
+                                </select>
+                                <button type="button" id="spt_author_id_x" name="spt_author_id_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-3 mb-1" id="spt_work_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="spt_work_id" class="form-label" th:text="'11. '+#{support_tasks.tasks.spt_work_id}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <select type="text" id="spt_work_id" name="spt_work_id" class="form-control p-1" aria-describedby="spt_work_id_helpBlock" th:value="${spt_work_id}">
+                                    <option value=""></option>
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <option class="p-1"
+                                            th:each="spt_work : ${spt_work_list}"
+                                            th:value="${spt_work.id}"
+                                            th:text="${spt_work.username}"
+                                            th:selected="${spt_work.id == spt_work_id}"
+                                    ></option>
+                                </select>
+                                <button type="button" id="spt_work_id_x" name="spt_work_id_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 6 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-3 mb-1" id="spt_cont_row">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="spt_cont_id" class="form-label" th:text="'12. '+#{support_tasks.tasks.spt_cont_id}"></label>
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <select type="text" id="spt_cont_id" name="spt_cont_id" class="form-control p-1" aria-describedby="spt_author_id_helpBlock" th:value="${spt_cont_id}">
+                                    <option value=""></option>
+                                    <!--suppress ThymeleafVariablesResolveInspection -->
+                                    <option class="p-1"
+                                            th:each="spt_cont : ${spt_cont_list}"
+                                            th:value="${spt_cont.id}"
+                                            th:text="${spt_cont.username}"
+                                            th:selected="${spt_cont.id == spt_cont_id}"
+                                    ></option>
+                                </select>
+                                <button type="button" id="spt_cont_id_x" name="spt_cont_id_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 7 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-2 mb-1" id="spt_create_date_row">
+                            <label for="spt_create_date" class="form-label" th:text="'13. '+ #{support_tasks.tasks.spt_create_date}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="spt_create_date" name="spt_create_date" th:value="${spt_create_date}">
+                                <button type="button" id="spt_create_date_x" name="spt_create_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-2 mb-1" id="spt_plan_date_row">
+                            <label for="spt_plan_date" class="form-label" th:text="'14. '+ #{support_tasks.tasks.spt_plan_date}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="spt_plan_date" name="spt_plan_date" th:value="${spt_plan_date}">
+                                <button type="button" id="spt_plan_date_x" name="spt_plan_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 8 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-2 mb-1" id="spt_test_date_row">
+                            <label for="spt_test_date" class="form-label" th:text="'15. '+ #{support_tasks.tasks.spt_test_date}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="spt_test_date" name="spt_test_date" th:value="${spt_test_date}">
+                                <button type="button" id="spt_test_date_x" name="spt_test_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-2 mb-1" id="spt_end_date_row">
+                            <label for="spt_end_date" class="form-label" th:text="'16. '+ #{support_tasks.tasks.spt_end_date}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <div class="input-group">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <input type="text" class="form-control" id="spt_end_date" name="spt_end_date" th:value="${spt_end_date}">
+                                <button type="button" id="spt_end_date_x" name="spt_end_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 8 -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--/*@thymesVar id="support_tasks_list_detail" type="java.util.List"*/-->
+    <form id="support-tasks-list-indexfrm" method="post" th:action="@{/support_tasks}" hidden>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="spt_id" th:value="${spt_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="support_tasks_tab_name" th:value="${support_tasks_tab_name}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="show_all" th:value="${show_all}">
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="support_tasks_list_table_order_column" th:value="${support_tasks_list_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="support_tasks_list_table_order_type" th:value="${support_tasks_list_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="support_tasks_list_table_search" th:value="${support_tasks_list_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="support_tasks_list_table_pagelen" th:value="${support_tasks_list_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="support_tasks_list_table_page" th:value="${support_tasks_list_table_page}" >
+    </form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'support-tasks-list-indexfrm')">Error</span>
+
+<script>
+    $("#spt_create_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#spt_create_date_x').on('click', function() {
+        $('#spt_create_date').empty().val('');
+    });
+
+    var sptPlanDate = $('#spt_plan_date').val();
+    $("#spt_plan_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#spt_plan_date_x').on('click', function() {
+        $('#spt_plan_date').empty().val('');
+    });
+
+    if(sptPlanDate === null || sptPlanDate === ''){
+        $('#spt_plan_date').empty().val('');
+    }
+
+    var sptTestDate = $('#spt_test_date').val();
+    $("#spt_test_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#spt_test_date_x').on('click', function() {
+        $('#spt_test_date').empty().val('');
+    });
+
+    if(sptTestDate === null || sptTestDate === ''){
+        $('#spt_test_date').empty().val('');
+    }
+
+    var sptEndDate = $('#spt_end_date').val();
+    $("#spt_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#spt_end_date_x').on('click', function() {
+        $('#spt_end_date').empty().val('');
+    });
+
+    if(sptEndDate === null || sptEndDate === ''){
+        $('#spt_end_date').empty().val('');
+    }
+
+    $('#spt_author_id_x').on('click', function() {
+        $('#spt_author_id').val('');
+    });
+
+    $('#spt_cont_id_x').on('click', function() {
+        $('#spt_cont_id').val('');
+    });
+
+    $('#spt_work_id_x').on('click', function() {
+        $('#spt_work_id').val('');
+    });
+
+    $(document).ready(function(){
+<!-- Hihglight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#support_li').addClass('active').removeClass('collapsed');
+        $('#support_a').attr('aria-expanded',true);
+        $('#support').addClass('show');
+
+        $('#support_tasks_a').addClass('text-primary');
+<!-- Form Start -->
+        $('#spt_id').prop('readOnly',true);
+        $('#spt_create_date').prop('required',true);
+
+<!-- Change Function -->
+        if($('#mode').val() === '0'){
+            $('#spt_id_row').prop('hidden',true);
+
+            if($('#support_id').val() === '1'){
+                $('#sptt_number').prop('readOnly',false);
+                $('#sptt_plan_time').prop('readOnly',false);
+                $('#sptt_fact_time').prop('readOnly',false);
+
+                $('#spt_cont_id').attr('readOnly',false);
+                $('#spt_work_id').attr('readOnly',false);
+
+                $('#spt_create_date').prop('readOnly',false);
+                $('#spt_plan_date').prop('readOnly',false);
+                $('#spt_test_date').prop('readOnly',false);
+                $('#spt_end_date').prop('readOnly',false);
+            }else{
+                $('#sptt_number').prop('readOnly',true);
+                $('#sptt_plan_time').prop('readOnly',true);
+                $('#sptt_fact_time').prop('readOnly',true);
+
+                $('#spt_cont_id').attr('readOnly',true);
+                $('#spt_cont_id_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#spt_work_id').attr('readOnly',true);
+                $('#spt_work_id_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#spt_plan_date').prop('readOnly',true);
+                $('#spt_plan_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#spt_test_date').prop('readOnly',true);
+                $('#spt_test_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#spt_end_date').prop('readOnly',true);
+                $('#spt_end_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+            }
+        }
+            else if($('#mode').val() === '1') {
+            if($('#support_id').val() === '1'){
+                $('#sptt_number').prop('readOnly',false);
+                $('#sptt_plan_time').prop('readOnly',false);
+                $('#sptt_fact_time').prop('readOnly',false);
+
+                $('#spt_cont_id').attr('readOnly',false);
+                $('#spt_work_id').attr('readOnly',false);
+
+                $('#spt_create_date').prop('readOnly',false);
+                $('#spt_plan_date').prop('readOnly',false);
+                $('#spt_test_date').prop('readOnly',false);
+                $('#spt_end_date').prop('readOnly',false);
+            }else{
+                $('#sptt_number').prop('readOnly',true);
+                $('#sptt_plan_time').prop('readOnly',true);
+                $('#sptt_fact_time').prop('readOnly',true);
+
+                $('#spt_cont_id').attr('readOnly',true);
+                $('#spt_cont_id_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#spt_work_id').attr('readOnly',true);
+                $('#spt_work_id_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#spt_plan_date').prop('readOnly',true);
+                $('#spt_plan_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#spt_test_date').prop('readOnly',true);
+                $('#spt_test_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+                $('#spt_end_date').prop('readOnly',true);
+                $('#spt_end_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+            }
+        }
+        else if($('#mode').val() === '2' || $('#mode').val() === '4'){
+            $('#spt_id').prop('readOnly',true);
+            $('#spt_name').prop('readOnly',true);
+            $('#spt_description').prop('readOnly',true);
+
+            $('#sptp_id').attr('readOnly',true);
+            $('#sptt_id').attr('readOnly',true);
+
+            $('#sptt_number').prop('readOnly',true);
+            $('#sptt_plan_time').prop('readOnly',true);
+            $('#sptt_fact_time').prop('readOnly',true);
+
+            $('#spts_id').attr('readOnly',true);
+
+            $('#spt_author_id').attr('readOnly',true);
+            $('#spt_author_id_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#spt_cont_id').attr('readOnly',true);
+            $('#spt_cont_id_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#spt_work_id').attr('readOnly',true);
+            $('#spt_work_id_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#spt_create_date').prop('readOnly',true);
+            $('#spt_create_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#spt_plan_date').prop('readOnly',true);
+            $('#spt_plan_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#spt_test_date').prop('readOnly',true);
+            $('#spt_test_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+
+            $('#spt_end_date').prop('readOnly',true);
+            $('#spt_end_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+        }
+
+        $('#spt_plan_date').on('change', function () {
+            if($('#spt_plan_date') !== '') {
+                if ($('#spt_test_date').val() === '') {
+                    $('#spt_test_date').val($('#spt_plan_date').val());
+                }
+                if ($('#spt_end_date').val() === '') {
+                    $('#spt_end_date').val($('#spt_plan_date').val());
+                }
+            }
+        })
+    });
+</script>
+</body>
+</html>

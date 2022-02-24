@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="dep_kpi_facts_clients_lost_month_04_body" th:remove="tag">
+    <div id="table-dep-kpi-facts-clients-lost-month-04-buttons">
+              <div id="dep-kpi-facts-clients-lost-month-04-btn-large" class="d-none d-sm-block mb-1">
+                  <button type="submit" id="dep-kpi-facts-clients-lost-month-04-link" form="dep-kpi-facts-clients-lost-month-04-link-form" class="btn btn-sm btn-outline-dark mr-1 dep_kpi_facts_clients_lost_month_04_link_control" th:text="#{general.gotobtn}" disabled>GoTo</button>
+              </div>
+              <div id="dep-kpi-facts-clients-lost-month-04-btn-small" class="d-block d-sm-none mb-1">
+                  <button type="submit" id="dep-kpi-facts-clients-lost-month-04-link-sx" form="dep-kpi-facts-clients-lost-month-04-link-form" class="btn btn-sm btn-outline-dark mr-1 dep_kpi_facts_clients_lost_month_04_link_control" th:text="#{general.gotobtn}" disabled>GoTo</button>
+              </div>
+    </div>
+
+            <form id="dep-kpi-facts-clients-lost-month-04-link-form" th:action="@{/clients}" method="post" target="_blank">
+                <input name="cnt_id" hidden>
+                <input name="clients_list_table_order_column" hidden>
+                <input name="clients_list_table_order_type" hidden>
+                <input name="clients_list_table_search" hidden>
+                <input name="clients_list_table_pagelen" hidden>
+                <input name="clients_list_table_page" hidden>
+            </form>
+
+            <form id="dep-kpi-facts-clients-lost-month-04-clients-link-form" th:action="@{/clients}" method="post" target="_blank">
+                <input name="cnt_id" hidden>
+                <input name="clients_list_table_order_column" hidden>
+                <input name="clients_list_table_order_type" hidden>
+                <input name="clients_list_table_search" hidden>
+                <input name="clients_list_table_pagelen" hidden>
+                <input name="clients_list_table_page" hidden>
+            </form>
+
+            <form id="dep-kpi-facts-clients-lost-month-04-finance-link-form" th:action="@{/client_finance}" method="post" target="_blank">
+                <input name="cnt_id" hidden>
+                <input name="cnt_name" hidden>
+                <input name="cnt_user_access" hidden>
+
+                <input name="clients_list_table_order_column" hidden>
+                <input name="clients_list_table_order_type" hidden>
+                <input name="clients_list_table_search" hidden>
+                <input name="clients_list_table_pagelen" hidden>
+                <input name="clients_list_table_page" hidden>
+
+                <input name="client_finance_filter_id" hidden>
+                <input name="client_finance_filter_start_date" hidden>
+                <input name="client_finance_filter_end_date" hidden>
+            </form>     
+    
+        <div><table id="table-dep-kpi-facts-clients-lost-month-04" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    $("#table-dep-kpi-facts-clients-lost-month-04").append('<tfoot>'+
+        '<th></th><th></th><th></th><th></th><th></th>'+
+        '<th></th><th></th><th></th><th></th><th></th>'+
+        '<th></th></tfoot>');
+
+    var vDepKPICRMClientsLostMonth04Value;
+    vDepKPICRMClientsLostMonth04Value = {
+        table : '#table-dep-kpi-facts-clients-lost-month-04',
+        button_form: "#table-dep-kpi-facts-clients-lost-month-04-buttons",
+        ajax : {
+            "url": /*[[@{/dep_kpi_facts/get_lost_table}]]*/ "dep_kpi_facts/get_lost_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.dep_kpi_general_param_id = vDepKPICRMClientsLostMonth04Value.rowdata.dep_kpi_general_param_id;
+                d.dep_kpi_user_id = vDepKPICRMClientsLostMonth04Value.rowdata.dep_kpi_user_id;
+                d.dep_kpi_year = vDepKPICRMClientsLostMonth04Value.rowdata.dep_kpi_year;
+                d.dep_kpi_month = vDepKPICRMClientsLostMonth04Value.rowdata.dep_kpi_month;
+            }
+        },
+        key : "cnt_id",
+        switchControl : dep_kpi_facts_clients_lost_month_04_switchControl,
+        rowdata:{
+            cnt_id: null,
+            cnt_name: null,
+            req_user_id: null,
+            cntul_id: null
+        },
+        ordering: true,
+        order: [
+            [1, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        footerCallback: function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+            var numFormat = $.fn.dataTable.render.number( '\ ', '.', 0, '').display;
+            var numFormatSec = $.fn.dataTable.render.number( '\ ', '.', 2, '').display;
+            // Total over all pages
+            AllCount = api.column(4, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+            AllSumm = api.column(5, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+            AllYearSumm = api.column(6, {filter:'applied'}).data().reduce( function (a, b) { return intVal(a) + intVal(b);}, 0 );
+
+            // Update footer
+            $( api.column(0).footer()).hide();
+
+            $( api.column(3).footer()).html('Всего: ');
+            $( api.column(4).footer()).html(numFormat(AllCount));
+            $( api.column(5).footer()).html(numFormatSec(AllSumm));
+            $( api.column(6).footer()).html(numFormatSec(AllYearSumm));
+
+            $( api.column(10).footer()).hide();
+        },
+        columnDefs: [
+            { "targets": [0],  "visible": false},
+            { "targets": [1], className: "cnt_name"},
+            { "targets": [2], className: "cnt_identifycode"},            
+            { "targets": [3], type: 'de_date', "className": "text-center"},
+
+            { "targets": [4], className: "finance"},
+            { "targets": [5], render: $.fn.dataTable.render.number( '\ ', '.', 2, '' ), className: "finance"},
+            { "targets": [6], render: $.fn.dataTable.render.number( '\ ', '.', 2, '' ), className: "finance_year"},
+            { "targets": [7], type: 'de_date', "className": "text-center fin_date"},
+            { "targets": [8], type: 'de_date', "className": "text-center fin_last_date"},
+            { "targets": [9], className: "desktop noExport"},
+            { "targets": [10], "visible": false, className: "noExport"}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{dep_kpi_facts.lost.cnt_id}]]*/ "cnt_id", "data": "cnt_id", "width": "5%"},
+            /*1*/{"title": /*[[#{dep_kpi_facts.lost.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": "25%"},
+            /*2*/{"title": /*[[#{dep_kpi_facts.lost.cnt_identifycode}]]*/ "cnt_identifycode", "data": "cnt_identifycode", "width": "10%"},
+            /*3*/{"title": /*[[#{dep_kpi_facts.lost.cnt_createdate}]]*/ "cnt_createdate", "data": "cnt_createdate", "width": "10%"},
+            /*4*/{"title": /*[[#{dep_kpi_facts.lost.fin_count}]]*/ "fin_count", "data": "fin_count", "width": "5%"},
+            /*5*/{"title": /*[[#{dep_kpi_facts.lost.fin_sum}]]*/ "fin_sum", "data": "fin_sum", "width": "8%"},
+            /*6*/{"title": /*[[#{dep_kpi_facts.lost.fin_year_sum}]]*/ "fin_year_sum", "data": "fin_year_sum", "width": "8%"},
+            /*7*/{"title": /*[[#{dep_kpi_facts.lost.fin_date}]]*/ "fin_date", "data": "fin_date", "width": "10%"},
+            /*8*/{"title": /*[[#{dep_kpi_facts.lost.fin_last_date}]]*/ "fin_last_date", "data": "fin_last_date", "width": "10%"},
+            /*9*/{"title": /*[[#{dep_kpi_facts.lost.empty_column}]]*/ "empty_column", "data": "empty_column", "width": "12%"},
+            /*10*/{"title": /*[[#{dep_kpi_facts.lost.cntul_id}]]*/ "cntul_id", "data": "cntul_id", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function dep_kpi_facts_clients_lost_month_04_switchControl(){
+        if(vDepKPICRMClientsLostMonth04Value.rowdata.cnt_id != null){
+            $("#dep-kpi-facts-clients-lost-month-04-link").prop('disabled',false).removeClass('btn-outline-dark').addClass('btn-outline-primary');
+            $("#dep-kpi-facts-clients-lost-month-04-link-sx").prop('disabled',false).removeClass('btn-outline-dark').addClass('btn-outline-primary');
+        } else{
+            $("#dep-kpi-facts-clients-lost-month-04-link").prop('disabled',true).addClass('btn-outline-dark').removeClass('btn-outline-primary');
+            $("#dep-kpi-facts-clients-lost-month-04-link-sx").prop('disabled',true).addClass('btn-outline-dark').removeClass('btn-outline-primary');
+        }
+    }
+
+    $('.dep_kpi_facts_clients_lost_month_04_link_control').click(function (){
+        $("#dep-kpi-facts-clients-lost-month-04-link-form input[name=cnt_id]").val(vDepKPICRMClientsLostMonth04Value.rowdata.cnt_id);
+
+        $("#dep-kpi-facts-clients-lost-month-04-link-form input[name=clients_list_table_order_column]").val(0);
+        $("#dep-kpi-facts-clients-lost-month-04-link-form input[name=clients_list_table_order_type]").val("desc");
+        $("#dep-kpi-facts-clients-lost-month-04-link-form input[name=clients_list_table_search]").val(vDepKPICRMClientsLostMonth04Value.rowdata.cnt_name);
+        $("#dep-kpi-facts-clients-lost-month-04-link-form input[name=clients_list_table_pagelen]").val(25);
+        $("#dep-kpi-facts-clients-lost-month-04-link-form input[name=clients_list_table_page]").val(0);
+    });
+
+    if (window.screen.width < 1044 && window.screen.height < 768) {
+        $("#dep-kpi-facts-clients-lost-month-04-clients-link-form").prop('target','_parent');
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form").prop('target','_parent');
+    }
+
+    $('#table-dep-kpi-facts-clients-lost-month-04').on('dblclick', '.cnt_name', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var currentTable = $('#table-dep-kpi-facts-clients-lost-month-04').DataTable();
+
+        $("#dep-kpi-facts-clients-lost-month-04-clients-link-form input[name=cnt_id]").val(currentTable.row(selectedRow).data().cnt_id);
+
+        $("#dep-kpi-facts-clients-lost-month-04-clients-link-form input[name=clients_list_table_order_column]").val(0);
+        $("#dep-kpi-facts-clients-lost-month-04-clients-link-form input[name=clients_list_table_order_type]").val("desc");
+        $("#dep-kpi-facts-clients-lost-month-04-clients-link-form input[name=clients_list_table_search]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#dep-kpi-facts-clients-lost-month-04-clients-link-form input[name=clients_list_table_pagelen]").val(25);
+        $("#dep-kpi-facts-clients-lost-month-04-clients-link-form input[name=clients_list_table_page]").val(0);
+        $("#dep-kpi-facts-clients-lost-month-04-clients-link-form").submit();
+    });
+
+    $('#table-dep-kpi-facts-clients-lost-month-04').on('dblclick', '.cnt_identifycode', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var currentTable = $('#table-dep-kpi-facts-clients-lost-month-04').DataTable();
+        if(currentTable.row(selectedRow).data().cnt_identifycode !== null) {
+            $("#dep-kpi-facts-clients-lost-month-04-clients-link-form input[name=cnt_id]").val(currentTable.row(selectedRow).data().cnt_id);
+
+            $("#dep-kpi-facts-clients-lost-month-04-clients-link-form input[name=clients_list_table_order_column]").val(0);
+            $("#dep-kpi-facts-clients-lost-month-04-clients-link-form input[name=clients_list_table_order_type]").val("desc");
+            $("#dep-kpi-facts-clients-lost-month-04-clients-link-form input[name=clients_list_table_search]").val(currentTable.row(selectedRow).data().cnt_identifycode);
+            $("#dep-kpi-facts-clients-lost-month-04-clients-link-form input[name=clients_list_table_pagelen]").val(25);
+            $("#dep-kpi-facts-clients-lost-month-04-clients-link-form input[name=clients_list_table_page]").val(0);
+            $("#dep-kpi-facts-clients-lost-month-04-clients-link-form").submit();
+        }
+    });
+
+    $('#table-dep-kpi-facts-clients-lost-month-04').on('dblclick', '.finance', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var currentTable = $('#table-dep-kpi-facts-clients-lost-month-04').DataTable();
+        var currentDay = new Date().toLocaleDateString('ru');
+
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=cnt_id]").val(currentTable.row(selectedRow).data().cnt_id);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=cnt_name]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=cnt_user_access]").val(1);
+
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_order_column]").val(0);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_order_type]").val("desc");
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_search]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_pagelen]").val(25);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_page]").val(0);
+
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=client_finance_filter_id]").val(0);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=client_finance_filter_start_date]").val(currentTable.row(selectedRow).data().fin_date);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=client_finance_filter_end_date]").val(currentTable.row(selectedRow).data().fin_last_date);
+
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form").submit();
+    });
+
+    $('#table-dep-kpi-facts-clients-lost-month-04').on('dblclick', '.finance_year', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var currentTable = $('#table-dep-kpi-facts-clients-lost-month-04').DataTable();
+        var firstYearDay = new Date(new Date().getFullYear(), 0, 1).toLocaleDateString('ru');
+        var LastYearDay = new Date(new Date().getFullYear(), 11, 31).toLocaleDateString('ru');
+
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=cnt_id]").val(currentTable.row(selectedRow).data().cnt_id);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=cnt_name]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=cnt_user_access]").val(1);
+
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_order_column]").val(0);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_order_type]").val("desc");
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_search]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_pagelen]").val(25);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_page]").val(0);
+
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=client_finance_filter_id]").val(1);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=client_finance_filter_start_date]").val(firstYearDay);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=client_finance_filter_end_date]").val(LastYearDay);
+
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form").submit();
+    });
+
+    $('#table-dep-kpi-facts-clients-lost-month-04').on('dblclick', '.fin_date', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var currentTable = $('#table-dep-kpi-facts-clients-lost-month-04').DataTable();
+
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=cnt_id]").val(currentTable.row(selectedRow).data().cnt_id);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=cnt_name]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=cnt_user_access]").val(1);
+
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_order_column]").val(0);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_order_type]").val("desc");
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_search]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_pagelen]").val(25);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_page]").val(0);
+
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=client_finance_filter_id]").val(1);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=client_finance_filter_start_date]").val(currentTable.row(selectedRow).data().fin_date);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=client_finance_filter_end_date]").val(currentTable.row(selectedRow).data().fin_date);
+
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form").submit();
+    });
+
+    $('#table-dep-kpi-facts-clients-lost-month-04').on('dblclick', '.fin_last_date', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var currentTable = $('#table-dep-kpi-facts-clients-lost-month-04').DataTable();
+
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=cnt_id]").val(currentTable.row(selectedRow).data().cnt_id);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=cnt_name]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=cnt_user_access]").val(1);
+
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_order_column]").val(0);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_order_type]").val("desc");
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_search]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_pagelen]").val(25);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=clients_list_table_page]").val(0);
+
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=client_finance_filter_id]").val(1);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=client_finance_filter_start_date]").val(currentTable.row(selectedRow).data().fin_last_date);
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form input[name=client_finance_filter_end_date]").val(currentTable.row(selectedRow).data().fin_last_date);
+
+        $("#dep-kpi-facts-clients-lost-month-04-finance-link-form").submit();
+    });    
+    
+    $(document).ready(function(){
+        vDepKPICRMClientsLostMonth04Value.rowdata.req_user_id = null;
+        vDepKPICRMClientsLostMonth04Value.rowdata.start_date = null;
+
+        recreateDataTable(vDepKPICRMClientsLostMonth04Value);
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="projects_timetable_head_body" th:remove="tag">
+		<form class="form-inline">
+			<a class="btn btn-outline-primary mb-2" id="projects_timetable_show" th:text="#{general.reportshow}">Show</a>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    $(document).ready(function(){
+		$('#main_li').removeClass('active');
+
+		$('#projects_li').addClass('active').removeClass('collapsed');
+		$('#projects_a').attr('aria-expanded',true);
+		$('#projects').addClass('show');
+
+		$('#projects_timetable_a').addClass('text-primary');
+
+		$('#projects_timetable_show').on('click', function () {
+			$('#projects_timetable_detail_div').removeAttr('hidden');
+
+			$(vProjectsTimetableValue.table).DataTable().ajax.reload();
+		})
+    });
+</script>
+
+</body>
+</html>

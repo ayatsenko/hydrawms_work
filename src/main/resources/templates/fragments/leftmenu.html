@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org "
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<body>
+
+<nav th:fragment="leftmenu" id="sidebar" class="sidebar" sec:authorize="isAuthenticated()">
+    <a class="sidebar-brand" th:href="@{/index}">
+        <svg>
+            <use xlink:href="#ion-ios-pulse-strong"></use>
+            <small class="d-none d-sm-inline">
+                <span sec:authorize="isAuthenticated()">HydraWMS:| v1.3.1</span>
+            </small>
+        </svg>
+    </a>
+    <div class="sidebar-content">
+        <div class="sidebar-user">
+            <img th:src="@{/img/user_icon.png}" class="img-fluid rounded-circle mb-2" alt="User Icon" />
+            <div class="font-weight-bold"><span sec:authorize="isAuthenticated()" sec:authentication="name"></span></div>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="sidebar-header text-info font-weight-bold" th:text="#{menu.main.header}">Main</li>
+            <li class="sidebar-item active" id="main_li">
+                <a class="sidebar-link" th:href="@{/index}">
+                    <i data-feather="home" class="mr-1"></i> <span class="align-middle" th:text="#{menu.main.home}">Home</span>
+                </a>
+            </li><!-- Main Menu -->
+
+            <li class="sidebar-header text-info font-weight-bold" sec:authorize="hasAnyAuthority('ROLE_ADMIN')" th:text="#{menu.clients.header}">Clients</li>
+            <li class="sidebar-item" id="clients_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+                <a class="sidebar-link collapsed" id="clients_a" data-toggle="collapse" href="#clients">
+                    <i data-feather="list" class="mr-1"></i> <span class="align-middle" th:text="#{menu.clients.header}">Clients</span>
+                </a>
+                <ul id="clients" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
+                    <li class="sidebar-item" id="clients_list_li"><a class="sidebar-link" id="clients_list_a" th:href="@{/clients}" th:text="#{menu.clients.clients}">Client List</a></li>
+                    <li class="sidebar-item" id="phone_book_li" hidden><a class="sidebar-link" id="phone_book_a" th:href="@{/phone_book}" th:text="#{menu.clients.phone_book}">Phone Book</a></li>
+                    <li class="sidebar-item" id="complaints_li" hidden><a class="sidebar-link" id="complaints_a" th:href="@{/complaints}" th:text="#{menu.clients.complaints}">Complaints</a></li>
+                    <li class="sidebar-item" id="clients_managers_li" hidden><a class="sidebar-link" id="clients_managers_a" th:href="@{/clients_managers}" th:text="#{menu.clients.clients_managers}">Clients Managers</a></li>
+                </ul>
+            </li><!-- Clients Menu -->
+
+            <li class="sidebar-header text-info font-weight-bold" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_WHUSER','ROLE_WHWORK','ROLE_WHOPER','ROLE_WHCONTROL','ROLE_LOCADMIN')" th:text="#{menu.wms.header}">WMS</li>
+            <li class="sidebar-item" id="wms_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_WHUSER','ROLE_WHWORK','ROLE_WHOPER','ROLE_WHCONTROL','ROLE_LOCADMIN')">
+                <a class="sidebar-link collapsed" id="wms_a" data-toggle="collapse" href="#wms">
+                    <i data-feather="box" class="mr-1"></i> <span class="align-middle" th:text="#{menu.wms.header}">WMS</span>
+                </a>
+                <ul id="wms" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
+                    <li class="sidebar-item" id="wms_clients_quantity_li" sec:authorize="!hasAnyAuthority('ROLE_WHWORK','ROLE_WHOPER','ROLE_WHCONTROL')"><a class="sidebar-link" id="wms_clients_quantity_a" th:href="@{/wms_clients_quantity}" th:text="#{menu.wms.clients_quantity}">WMS Clients</a></li>
+                    <li class="sidebar-item" id="wms_clients_exchange_li" sec:authorize="!hasAnyAuthority('ROLE_WHWORK','ROLE_WHOPER','ROLE_WHCONTROL')"><a class="sidebar-link" id="wms_clients_exchange_a" th:href="@{/wms_clients_exchange}" th:text="#{menu.wms.clients_exchange}">WMS Exchange</a></li>
+                    <li class="sidebar-item" id="wms_sale_orders_li" sec:authorize="!hasAnyAuthority('ROLE_WHWORK','ROLE_WHCONTROL')"><a class="sidebar-link" id="wms_sale_orders_a" th:href="@{/wms_sale_orders}" th:text="#{menu.wms.wms_sale_orders}">Sale Orders</a></li>
+                    <li class="sidebar-item" id="wms_sale_docs_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_WHWORK')"><a class="sidebar-link" id="wms_sale_docs_a" th:href="@{/wms_sale_docs}" th:text="#{menu.wms.wms_sale_docs}">Sale Docs</a></li>
+                    <li class="sidebar-item" id="wms_oper_docs_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_WHOPER','ROLE_LOCADMIN')"><a class="sidebar-link" id="wms_oper_docs_a" th:href="@{/wms_oper_docs}" th:text="#{menu.wms.wms_sale_docs}">Sale Docs</a></li>
+                    <li class="sidebar-item" id="wms_pairs_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_WHOPER','ROLE_WHWORK')"><a class="sidebar-link" id="wms_pairs_a" th:href="@{/wms_pairs}" th:text="#{menu.wms.wms_pairs}">WMS Pairs</a></li>
+                    <li class="sidebar-item" id="wms_docs_control" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_WHOPER','ROLE_WHCONTROL')"><a class="sidebar-link" id="wms_docs_control_a" th:href="@{/wms_docs_control}" th:text="#{menu.wms.wms_docs_control}">Docs Control</a></li>
+                </ul>
+            </li><!-- WMS Menu -->
+
+            <li class="sidebar-header text-info font-weight-bold" th:text="#{menu.crm_kpi.header}">KPI</li>
+            <li class="sidebar-item" id="wms_kpi_li">
+                <a class="sidebar-link collapsed" id="wms_kpi_a" data-toggle="collapse" href="#wms_kpi">
+                    <i data-feather="trending-up" class="mr-1"></i> <span class="align-middle" th:text="#{menu.crm_kpi.header}">WMS KPI</span>
+                </a>
+                <ul id="wms_kpi" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
+                    <li class="sidebar-item" id="wms_kpi_project_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_WHGM','ROLE_WHOPER')"><a class="sidebar-link" id="wms_kpi_project_a" th:href="@{/wms_kpi_project}" th:text="#{menu.wms_kpi.wms_kpi_project}">WMS KPI</a></li>
+                </ul>
+            </li><!-- WMS KPI Menu -->
+
+            <li class="sidebar-header text-info font-weight-bold" th:text="#{menu.crm.header}" hidden>CRM</li>
+            <li class="sidebar-item" id="crm_li" hidden>
+                <a class="sidebar-link collapsed" id="crm_a" data-toggle="collapse" href="#crm">
+                    <i data-feather="phone-call" class="mr-1"></i> <span class="align-middle" th:text="#{menu.crm.header}">CRM</span>
+                </a>
+                <ul id="crm" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
+                    <li class="sidebar-item" id="actions_li"><a class="sidebar-link" id="actions_a" th:href="@{/actions}" th:text="#{menu.crm.actions}">>Actions</a></li>
+                    <li class="sidebar-item" id="requests_li"><a class="sidebar-link" id="requests_a" th:href="@{/requests}" th:text="#{menu.crm.requests}">Requests</a></li>
+                    <li class="sidebar-item" id="tenders_li"><a class="sidebar-link" id="tenders_a" th:href="@{/tenders}" th:text="#{menu.crm.tenders}">Tenders</a></li>
+                    <li class="sidebar-item" id="finance_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_GM','ROLE_SALEDIR')"><a class="sidebar-link" id="finance_a" th:href="@{/finance}" th:text="#{menu.crm.finance}">Finance</a></li>
+                </ul>
+            </li><!-- CRM Menu -->
+
+            <li class="sidebar-header text-info font-weight-bold" th:text="#{menu.crm_kpi.header}" hidden>KPI</li>
+            <li class="sidebar-item" id="crm_kpi_li" hidden>
+                <a class="sidebar-link collapsed" id="crm_kpi_a" data-toggle="collapse" href="#crm_kpi">
+                    <i data-feather="trending-up" class="mr-1"></i> <span class="align-middle" th:text="#{menu.crm_kpi.header}">CRM</span>
+                </a>
+                <ul id="crm_kpi" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
+                    <li class="sidebar-item" id="dep_kpi_plans_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_GM','ROLE_SALEDIR','ROLE_HR')"><a class="sidebar-link" id="dep_kpi_plans_a" th:href="@{/dep_kpi_plans}" th:text="#{menu.crm_kpi.dep_kpi_plans}">DEP KPI Plans</a></li>
+                    <li class="sidebar-item" id="dep_kpi_facts_li" hidden><a class="sidebar-link" id="dep_kpi_facts_a" th:href="@{/dep_kpi_facts}" th:text="#{menu.crm_kpi.dep_kpi_facts}">DEP KPI Facts</a></li>
+                    <li class="sidebar-item" id="kpi_facts_li"><a class="sidebar-link" id="kpi_facts_a" th:href="@{/kpi_facts}" th:text="#{menu.crm_kpi.kpi_facts}">KPI Facts</a></li>
+                    <li class="sidebar-item" id="users_kpi_ops_li" sec:authorize="hasAnyAuthority('ROLE_OPEROPS')"><a class="sidebar-link" id="users_kpi_ops_a" th:href="@{/users_kpi_ops}" th:text="#{menu.crm_kpi.users_kpi_ops}">KPI OPS</a></li>
+                    <li class="sidebar-item" id="users_kpi_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_GM','ROLE_SALEDIR','ROLE_SALE','ROLE_JUNIOR','ROLE_CHIEFSALE')"><a class="sidebar-link" id="users_kpi_a" th:href="@{/users_kpi}" th:text="#{menu.crm_kpi.users_kpi}">KPI</a></li>
+                    <li class="sidebar-item" id="users_kpi_meets_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_GM','ROLE_SALEDIR','ROLE_CHIEFSALE')"><a class="sidebar-link" id="users_kpi_meets_a" th:href="@{/users_kpi_meets}" th:text="#{menu.crm_kpi.users_kpi_meets}">KPI Meets</a></li>
+                    <li class="sidebar-item" id="kpi_roles_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_GM','ROLE_SALEDIR','ROLE_CHIEFSALE')"><a class="sidebar-link" id="kpi_roles_a" th:href="@{/kpi_roles}" th:text="#{menu.crm_kpi.kpi_roles}">KPI Roles</a></li>
+                </ul>
+            </li><!-- KPI Menu -->
+
+            <li class="sidebar-header text-info font-weight-bold" id="tms_menu" th:text="#{menu.tms.header}" hidden>TMS</li>
+            <li class="sidebar-item" id="tms_li" hidden>
+                <a class="sidebar-link collapsed" id="tms_a" data-toggle="collapse" href="#tms">
+                    <i data-feather="globe" class="mr-1"></i> <span class="align-middle" th:text="#{menu.tms.header}">TMS</span>
+                </a>
+                <ul id="tms" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
+                    <li class="sidebar-item" id="transports_li" hidden><a class="sidebar-link" id="transports_a" th:href="@{/transports}" th:text="#{menu.tms.transports}">Transports</a></li>
+                    <li class="sidebar-item" id="dashboard_tms_status_li" hidden><a class="sidebar-link" id="dashboard_tms_status_a" th:href="@{/dashboard_tms_status}" th:text="#{menu.tms.dashboard_tms_status}">TMS Dashboard</a></li>
+                    <li class="sidebar-item" id="full_world_li" sec:authorize="!hasAnyAuthority('ROLE_HR','ROLE_ACCOUNTANT')" ><a class="sidebar-link" id="full_world_a" th:href="@{/full_world}" th:text="#{menu.tms.full_world}">FLC</a></li>
+                    <li class="sidebar-item" id="part_world_li" sec:authorize="!hasAnyAuthority('ROLE_HR','ROLE_ACCOUNTANT')"><a class="sidebar-link" id="part_world_a" th:href="@{/part_world}" th:text="#{menu.tms.part_world}">FLG</a></li>
+                    <li class="sidebar-item" id="sea_ships_li" sec:authorize="!hasAnyAuthority('ROLE_HR','ROLE_ACCOUNTANT')"><a class="sidebar-link" id="sea_ships_a" th:href="@{/sea_ships}" th:text="#{menu.tms.sea_ships}">FS</a></li>
+                    <li class="sidebar-item" id="tms_locals_li" sec:authorize="!hasAnyAuthority('ROLE_HR','ROLE_ACCOUNTANT')"><a class="sidebar-link" id="tms_locals_a" th:href="@{/tms_locals}" th:text="#{menu.tms.locals}">FLD</a></li>
+                    <li class="sidebar-item" id="brockers_li" hidden><a class="sidebar-link" id="brockers_a" th:href="@{/tms_brockers}" th:text="#{menu.tms.brockers}">FCA</a></li>
+                    <li class="sidebar-item" id="aero_world_li" sec:authorize="!hasAnyAuthority('ROLE_HR','ROLE_ACCOUNTANT')"><a class="sidebar-link" id="aero_world_a" th:href="@{/aero_world}" th:text="#{menu.tms.aero_world}">FA</a></li>
+                    <li class="sidebar-item" id="tms_maps_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_GM','ROLE_SALEDIR')"><a class="sidebar-link" id="tms_maps_a" th:href="@{/tms_maps}" th:text="#{menu.tms.tms_maps}">Maps</a></li>
+                </ul>
+            </li><!-- TMS Menu -->
+
+            <li class="sidebar-item" id="tms_poland_li" hidden>
+                <a class="sidebar-link collapsed" id="tms_poland_a" data-toggle="collapse" href="#tms_poland">
+                    <i data-feather="smartphone" class="mr-1"></i> <span class="align-middle" th:text="#{menu.tms_poland.header}">TMS Poland</span>
+                </a>
+                <ul id="tms_poland" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
+                    <li class="sidebar-item" id="tms_poland_cars_li"><a class="sidebar-link" id="tms_poland_cars_a" th:href="@{/tms_cars}" th:text="#{menu.tms_poland.tms_poland_cars}">>Cars</a></li>
+                    <li class="sidebar-item" id="tms_poland_users_li"><a class="sidebar-link" id="tms_poland_users_a" th:href="@{/tms_users}" th:text="#{menu.tms_poland.tms_poland_users}">>Users</a></li>
+                    <li class="sidebar-item" id="tms_poland_chats_li"><a class="sidebar-link" id="tms_poland_chats_a" th:href="@{/tms_chats}" th:text="#{menu.tms_poland.tms_poland_chats}" hidden>>Chats</a></li>
+                </ul>
+            </li><!-- TMS Poland Menu -->
+
+            <li class="sidebar-header text-info font-weight-bold" th:text="#{menu.analytics.header}" hidden>Analytics</li>
+            <li class="sidebar-item" id="analytics_li" hidden>
+                <a class="sidebar-link collapsed" id="analytics_a" data-toggle="collapse" href="#analytics">
+                    <i data-feather="bar-chart-2" class="mr-1"></i> <span class="align-middle" th:text="#{menu.analytics.header}">TMS</span>
+                </a>
+                <ul id="analytics" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                    <li class="sidebar-item" id="finance_abc_li"><a class="sidebar-link" id="finance_abc_a" th:href="@{/finance_abc}" th:text="#{menu.analytics.finance_abc}">Finance ABC</a></li>
+                    <li class="sidebar-item" id="clients_abc_li"><a class="sidebar-link" id="clients_abc_a" th:href="@{/clients_abc}" th:text="#{menu.analytics.clients_abc}">Clients ABC</a></li>
+                    <li class="sidebar-item" id="clients_classes_li"><a class="sidebar-link" id="clients_classes_a" th:href="@{/clients_classes}" th:text="#{menu.analytics.clients_classes}">Clients Classes</a></li>
+                    <li class="sidebar-item" id="dashboard_employee_balance_li"><a class="sidebar-link" id="dashboard_employee_balance_a" th:href="@{/dashboard_employee_balance}" th:text="#{menu.reports.reports.employee_balance}">Employee Balance</a></li>
+                </ul>
+            </li><!-- Analytics Menu -->
+
+            <li class="sidebar-header text-info font-weight-bold" hidden>Projects</li>
+            <li class="sidebar-item" id="projects_li" hidden>
+                <a class="sidebar-link collapsed" id="projects_a" data-toggle="collapse" href="#projects">
+                    <i data-feather="slack" class="mr-1"></i> <span class="align-middle" th:text="#{menu.projects.header}">Projects</span>
+                    <span class="sidebar-badge badge badge-pill badge-primary pb-2">New</span>
+                </a>
+                <ul id="projects" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                    <li class="sidebar-item" id="projects_desc_li"><a class="sidebar-link" id="projects_desc_a" th:href="@{/projects_desc}" th:text="#{menu.projects.projects_list}">Projects New</a></li>
+                    <li class="sidebar-item" id="projects_timetable_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a class="sidebar-link" id="projects_timetable_a" th:href="@{/projects_timetable}" th:text="#{menu.projects.projects_timetable}">Projects New</a></li>
+                    <li class="sidebar-item" id="projects_gantt_li"><a class="sidebar-link" id="projects_gantt_a" th:href="@{/projects_gantt}" th:text="#{menu.projects.projects_gantt}">Projects Gantt</a></li>
+                </ul>
+            </li><!-- Projects Menu -->
+
+            <li class="sidebar-header text-info font-weight-bold" th:text="#{menu.reports.header}" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_WHGM','ROLE_WHOPER')">Reports</li>
+            <li class="sidebar-item" id="reports_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_WHGM','ROLE_WHOPER')">
+                <a class="sidebar-link collapsed" data-toggle="collapse" href="#reports"  id="reports_a">
+                    <i data-feather="file-text" class="mr-1"></i> <span class="align-middle" th:text="#{menu.reports.reports.header}">Reports</span>
+                </a>
+                <ul id="reports" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                    <li sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_WHGM','ROLE_WHOPER')" class="sidebar-item" id="wms_report_1_li"><a class="sidebar-link" id="wms_report_1_a" th:href="@{/wms_report_1}" th:text="#{menu.reports.wms_report_1}">Report 1</a></li>
+                    <li sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_WHGM','ROLE_WHOPER')" class="sidebar-item" id="wms_report_2_li"><a class="sidebar-link" id="wms_report_2_a" th:href="@{/wms_report_2}" th:text="#{menu.reports.wms_report_2}">Report 2</a></li>
+                </ul>
+            </li><!-- Report CRM -->
+
+            <li class="sidebar-item" id="reports_tms_li" hidden>
+                <a class="sidebar-link collapsed" data-toggle="collapse" href="#reports_tms" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_GM','ROLE_SALEDIR')" id="reports_tms_a">
+                    <i data-feather="truck" class="mr-1"></i> <span class="align-middle" th:text="#{menu.reports.reports_tms.header}">Reports TMS</span>
+                </a>
+                <ul id="reports_tms" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                    <li class="sidebar-item" id="report_tms_trans_profit_li"><a class="sidebar-link" id="report_tms_trans_profit_a" th:href="@{/report_tms_trans_profit}" th:text="#{menu.reports.reports_tms.trans_profit}">Transport Profit</a></li>
+                    <li class="sidebar-item" id="report_tms_trans_markup_li"><a class="sidebar-link" id="report_tms_trans_markup_a" th:href="@{/report_tms_trans_markup}" th:text="#{menu.reports.reports_tms.trans_markup}">Transport Markup</a></li>
+                    <li class="sidebar-item" id="report_tms_trans_costs_li"><a class="sidebar-link" id="report_tms_trans_costs_a" th:href="@{/report_tms_trans_costs}" th:text="#{menu.reports.reports_tms.trans_costs}">Transport Costs</a></li>
+                    <li class="sidebar-item" id="report_tms_trans_corr_li"><a class="sidebar-link" id="report_tms_trans_corr_a" th:href="@{/report_tms_trans_corr}" th:text="#{menu.reports.reports_tms.trans_corr}">Transport Corr</a></li>
+                    <li class="sidebar-item" id="report_tms_trans_cities_li"><a class="sidebar-link" id="report_tms_trans_cities_a" th:href="@{/report_tms_trans_cities}" th:text="#{menu.reports.reports_tms.trans_cities}" hidden>Transport Cities</a></li>
+                    <li sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_GM','ROLE_SALEDIR')" class="sidebar-item" id="report_tms_check_li"><a class="sidebar-link" id="report_tms_check_a" th:href="@{/report_tms_check}" th:text="#{menu.reports.reports.report_tms_check}">TMS Check</a></li>
+                </ul>
+            </li><!-- Reports TMS -->
+
+            <li class="sidebar-header text-info font-weight-bold" th:text="#{menu.settings.header}">Settings</li>
+            <li class="sidebar-item" id="settings_li">
+                <a class="sidebar-link collapsed" id="settings_a" data-toggle="collapse" href="#settings">
+                    <i data-feather="settings" class="mr-1"></i> <span class="align-middle" th:text="#{menu.settings.header}">Settings</span>
+                </a>
+                <ul id="settings" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
+                    <li class="sidebar-item" id="user_settings_li"><a class="sidebar-link" id="user_settings_a" th:href="@{/user_settings}" th:text="#{menu.settings.user_settings}">User Settings</a></li>
+                    <li class="sidebar-item" id="users_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a class="sidebar-link" id="users_a" th:href="@{/users}" th:text="#{menu.settings.users}">Users</a></li>
+                </ul>
+            </li><!-- Settings Menu -->
+
+            <li class="sidebar-item" id="dictionaries_li" hidden>
+                <a class="sidebar-link collapsed" id="dictionaries_a" data-toggle="collapse" href="#dictionaries" hidden>
+                    <i data-feather="book" class="mr-1"></i> <span class="align-middle" th:text="#{menu.settings.dictionaries.header}">Dictionaries</span>
+                </a>
+                <ul id="dictionaries" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                    <li class="sidebar-item" id="service_types_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a class="sidebar-link" id="service_types_a" th:href="@{/service_types}" th:text="#{menu.settings.dictionaries.service_types}">Service Types</a></li>
+                    <li class="sidebar-item" id="directions_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a class="sidebar-link" id="directions_a" th:href="@{/directions}" th:text="#{menu.settings.dictionaries.directions}">Directions</a></li>
+                    <li class="sidebar-item" id="positions_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a class="sidebar-link" id="positions_a" th:href="@{/positions}" th:text="#{menu.settings.dictionaries.positions}">Positions</a></li>
+                    <li class="sidebar-item" id="action_types_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a class="sidebar-link" id="action_types_a" th:href="@{/action_types}" th:text="#{menu.settings.dictionaries.action_types}">Action Types</a></li>
+                    <li class="sidebar-item" id="request_types_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a class="sidebar-link" id="request_types_a" th:href="@{/request_types}" th:text="#{menu.settings.dictionaries.request_types}">Request Types</a></li>
+                    <li class="sidebar-item" id="request_statuses_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a class="sidebar-link" id="request_statuses_a" th:href="@{/request_statuses}" th:text="#{menu.settings.dictionaries.request_status}">Request Status</a></li>
+                    <li class="sidebar-item" id="tender_statuses_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN')"><a class="sidebar-link" id="tender_statuses_a" th:href="@{/tender_statuses}" th:text="#{menu.settings.dictionaries.tender_status}">Tender Status</a></li>
+                    <li class="sidebar-item" id="tms_costs_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_CHIEFOPS','ROLE_SUPOPS','ROLE_OPEROPS')" hidden><a class="sidebar-link" id="tms_costs_a" th:href="@{/tms_cost_types}" th:text="#{menu.settings.dictionaries.tms_costs}">TMS Cost Type</a></li>
+                    <li class="sidebar-item" id="tms_tasks_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_CHIEFOPS','ROLE_SUPOPS','ROLE_OPEROPS')" hidden><a class="sidebar-link" id="tms_tasks_a" th:href="@{/tms_task_types}" th:text="#{menu.settings.dictionaries.tms_tasks}">TMS Task Type</a></li>
+                    <li class="sidebar-item" id="tms_aims_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_CHIEFOPS','ROLE_SUPOPS','ROLE_OPEROPS')" hidden><a class="sidebar-link" id="tms_aims_a" href="#" th:text="#{menu.settings.dictionaries.tms_aims}">Tender Status</a></li>
+                    <li class="sidebar-item" id="tms_contracts_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_CHIEFOPS','ROLE_SUPOPS','ROLE_OPEROPS')" hidden><a class="sidebar-link" id="tms_contracts_a" href="#" th:text="#{menu.settings.dictionaries.tms_contracts}">Tender Status</a></li>
+                    <li class="sidebar-item" id="tms_cars_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_CHIEFOPS','ROLE_SUPOPS','ROLE_OPEROPS')" hidden><a class="sidebar-link" id="tms_cars_a" th:href="@{/tms_car_types}" th:text="#{menu.settings.dictionaries.tms_cars}">TMS Car Type</a></li>
+                    <li class="sidebar-item" id="tms_trailers_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_CHIEFOPS','ROLE_SUPOPS','ROLE_OPEROPS')" hidden><a class="sidebar-link" id="tms_trailers_a" th:href="@{/tms_trailer_types}" th:text="#{menu.settings.dictionaries.tms_trailers}">TMS Trailer Type</a></li>
+                    <li class="sidebar-item" id="tms_notes_types_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_CHIEFOPS','ROLE_SUPOPS','ROLE_OPEROPS')" hidden><a class="sidebar-link" id="tms_notes_types_a" th:href="@{/tms_notes_types}" th:text="#{menu.settings.dictionaries.tms_notes_types}">TMS Notes Type</a></li>
+                    <li class="sidebar-item" id="country_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_SUPOPS')"><a class="sidebar-link" id="country_a" th:href="@{/country}" th:text="#{menu.settings.dictionaries.country}">Country</a></li>
+                    <li class="sidebar-item" id="country_airports_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_SUPOPS')"><a class="sidebar-link" id="country_airports_a" th:href="@{/country_airports}" th:text="#{menu.settings.dictionaries.country_airports}">Airports</a></li>
+                    <li class="sidebar-item" id="country_shipyards_li" sec:authorize="hasAnyAuthority('ROLE_ADMIN','ROLE_SUPOPS')"><a class="sidebar-link" id="country_shipyards_a" th:href="@{/country_shipyards}" th:text="#{menu.settings.dictionaries.country_shipyards}">Shipyards</a></li>
+                </ul>
+            </li><!-- Dictionaries Menu -->
+
+            <li class="sidebar-header text-info font-weight-bold" th:text="#{menu.admin.header}" hidden>Admin</li>
+            <li class="sidebar-item" id="admin_li" hidden>
+                <a class="sidebar-link collapsed" id="admin_a" data-toggle="collapse" href="#admin">
+                    <i data-feather="database" class="mr-1"></i> <span class="align-middle" th:text="#{menu.admin.header}">Admin</span>
+                    <span class="sidebar-badge badge badge-pill badge-success" hidden="">New</span>
+                </a>
+                <ul id="admin" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                    <li class="sidebar-item" id="downloads_li" hidden><a class="sidebar-link" id="downloads_a" th:href="@{/index}" th:text="#{menu.admin.downloads}">Downloads</a></li>
+                    <li class="sidebar-item" id="auto_tasks_li"><a class="sidebar-link" id="auto_tasks_a" th:href="@{/auto_tasks}" th:text="#{menu.admin.auto_tasks}">Auto Tasks</a></li>
+                    <li class="sidebar-item" id="fin_result_li" hidden><a class="sidebar-link" id="fin_result_a" th:href="@{/fin_result}" th:text="#{menu.admin.fin_result}">Fin Result</a></li>
+                    <li class="sidebar-item" id="users_time_li"><a class="sidebar-link" id="users_time_a" th:href="@{/users_time}" th:text="#{menu.admin.users_time}">Users Time</a></li>
+                    <li class="sidebar-item" id="departments_li"><a class="sidebar-link" id="departments_a" th:href="@{/departments}" th:text="#{menu.admin.departments}">Depaterments</a></li>
+                    <li class="sidebar-item" id="system_params_li"><a class="sidebar-link" id="system_params_a" th:href="@{/system_params}" th:text="#{menu.admin.system_params}">System Params</a></li>
+                </ul>
+            </li><!-- Admin Menu -->
+
+            <li class="sidebar-header text-info font-weight-bold" th:text="#{menu.support.header}" hidden>Support</li>
+            <li class="sidebar-item" id="support_li" hidden>
+                <a class="sidebar-link collapsed" id="support_a" data-toggle="collapse" href="#support">
+                    <i data-feather="link" class="mr-1"></i><span class="align-middle" th:text="#{menu.support.header}">Support</span>
+                    <span class="sidebar-badge badge badge-pill badge-success" hidden>New</span>
+                </a>
+                <ul id="support" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                    <li class="sidebar-item" id="support_tasks_li"><a class="sidebar-link" id="support_tasks_a" th:href="@{/support_tasks}" th:text="#{menu.support.tasks}">Support Task</a></li>
+                </ul>
+            </li><!-- Support Menu -->
+        </ul><!-- Menu -->
+    </div>
+</nav>
+</body>
+</html>

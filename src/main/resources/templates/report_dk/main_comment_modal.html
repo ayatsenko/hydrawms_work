@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_dk_main_comment_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="report_dk_main_comment_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+            <div class="hidden">
+                <input type="hidden" id="report_dk_main_comment_modal_mode">
+                <input type="hidden" id="report_dk_main_comment_modal_dk_com_id">
+            </div>
+
+            <div class="modal-content" id="report_dk_main_comment_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{report_dk.main.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mb-1">
+                    <form id="report_dk_main_comment_modal_form" name="report_dk_main_comment_modal_form" class="was-validated" novalidate>
+                    <div class="form-row mb-1">
+                        <div class="col-12" id="req_ret_id_row">
+                            <label for="report_dk_main_comment_modal_cnt_name" class="form-label mb-0" th:text="'1. '+ #{report_dk.main.cnt_name}"></label>
+                            <input type="text" class="form-control" id="report_dk_main_comment_modal_cnt_name" name="report_dk_main_comment_modal_cnt_name" readonly>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12">
+                            <label for="report_dk_main_comment_modal_dk_com_text" class="form-label mb-0" th:text="'2. '+#{report_dk.main.dk_com_text}"></label>
+                            <textarea class="form-control" rows="7" maxlength="512" style="resize:none;" id="report_dk_main_comment_modal_dk_com_text" name="report_dk_main_comment_modal_dk_com_text">
+                            </textarea>
+                        </div>
+                    </div> <!-- Row 5 -->
+                    </form>
+                </div><!-- Body -->
+                <div class="modal-footer">
+                    <button type="button" id="report_dk_main_comment_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="report_dk_main_comment_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="report_dk_main_comment_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="report_dk_main_comment_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    // Clear Fields
+    function clear_report_dk_main_comment_modal_detail() {
+        $("#report_dk_main_comment_modal_detail input[type=text]").val('');
+        $("#report_dk_main_comment_modal_detail input[type=number]").val('');
+        $("#report_dk_main_comment_modal_detail select").empty();
+        $("#report_dk_main_comment_modal_detail textarea").val('');
+    }
+
+    // Block And Required Fields
+    function block_report_dk_main_comment_modal_detail() {
+        $('#report_dk_main_comment_modal_dk_com_text').prop('required',true);
+    }
+
+    // Load Function
+    function fill_report_dk_main_comment_modal_detail(aMode){
+        clear_report_dk_main_comment_modal_detail();
+        $('#report_dk_main_comment_modal_mode').val(aMode);
+        block_report_dk_main_comment_modal_detail();
+
+        if(aMode >= 0){
+            $.ajax({
+                url:/*[[@{'/report_dk/get_main_comment'}]]*/ "report_dk/get_main_comment",
+                type: "get",
+                data: {
+                    "mode": aMode,
+                    "dkm_id": vReportDKMainValue.rowdata.dkm_id,
+                    "ser_id": vReportDKServiceValue.rowdata.ser_id,
+                    "cnt_id": vReportDKMainValue.rowdata.cnt_id
+                },
+                success: function (report_dk_main_comment_modal_detail) {
+                    $.when(
+                    ).then(function () {
+                        $('#report_dk_main_comment_modal_cnt_name').val(vReportDKMainValue.rowdata.cnt_name);
+
+                        $('#report_dk_main_comment_modal_dk_com_id').val(report_dk_main_comment_modal_detail.data[0].dk_com_id);
+                        if(report_dk_main_comment_modal_detail.data[0].dk_com_id === 0){
+                            $('#report_dk_main_comment_modal_addbtn').removeAttr('hidden');
+                            $('#report_dk_main_comment_modal_editbtn').prop('hidden', true);
+                        }
+                        else{
+                            $('#report_dk_main_comment_modal_addbtn').prop('hidden', true);
+                            $('#report_dk_main_comment_modal_editbtn').removeAttr('hidden');
+                        }
+
+                        $('#report_dk_main_comment_modal_dk_com_text').val(report_dk_main_comment_modal_detail.data[0].dk_com_text);
+
+                        $('#report_dk_main_comment_modal').modal('show');
+                    });
+                }
+            });
+        }
+    }
+
+    // Add button script
+    $('#report_dk_main_comment_modal_addbtn').click(function(){
+        $('#report_dk_main_comment_modal_form').submit();
+    });
+    // Edit button script
+    $('#report_dk_main_comment_modal_editbtn').click(function(){
+        $('#report_dk_main_comment_modal_form').submit();
+    });
+    // Del button script
+    $('#report_dk_main_comment_modal_delbtn').click(function(){
+        $('#report_dk_main_comment_modal_form').submit();
+    });
+
+    //Add DK Main Comment
+    function addDKMainCommentModal(){
+        let PaidType = $("#report_dk_paid_type_list").val();
+        let MainRowID = vReportDKServiceValue.rowdata.ser_id;
+        let RowID = vReportDKMainValue.rowdata.dkm_id;
+        let CntID = vReportDKMainValue.rowdata.cnt_id;
+        $.ajax({
+            url: /*[[ @{/report_dk/add_dk_main_comment} ]]*/ "/report_dk/add_dk_main_comment",
+            type: 'POST',
+            data: {
+                "dkm_id": RowID,
+                "cnt_id": CntID,
+                "ser_id": MainRowID,
+                "dk_com_id": $('#report_dk_main_comment_modal_dk_com_id').val(),
+                "dk_com_text": $('#report_dk_main_comment_modal_dk_com_text').val()
+            },
+            success: function (result) {
+                vReportDKMainValue.rowdata.dk_paid_type_id = PaidType;
+                vReportDKMainValue.rowdata.dk_ser_id = MainRowID;
+                vReportDKMainValue.rowdata.dkm_id = RowID;
+                $(vReportDKMainValue.table).DataTable().ajax.reload(null, false);
+
+                $('#report_dk_main_comment_modal').modal('hide');
+            }
+        });
+    }
+
+    //Validation Form
+    $('#report_dk_main_comment_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function(error,element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            if($('#report_dk_main_comment_modal_mode').val() === '0') {
+                addDKMainCommentModal();
+            }
+            return false;
+        }
+    });
+</script>
+
+</body>
+</html>

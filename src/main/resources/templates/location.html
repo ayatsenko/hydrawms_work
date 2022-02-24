@@ -1,0 +1,416 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:include="layout/layout :: header(title = #{index.location_a_description})">
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<script th:inline="javascript">
+
+    $(document).ready(function() {
+        var save_state = {
+            loc_partnership : /*[[${loc_partnership}]]*/ "%",
+            loc_id : /*[[${loc_id}]]*/ '',
+            wp_id : /*[[${wp_id}]]*/ ''
+        }
+        var table;
+        var tablechild;
+        var rowdata = {
+            selected : false,
+            loc_id : null,
+            loc_location : null,
+            loc_partnership : null,
+            loc_address : null,
+            loc_city : null,
+            loc_zipcode : null,
+            loc_country_iso2 : null,
+            loc_phone : null
+        };
+        var rowdata_child = {
+            selected : false,
+            loc_id : null,
+            wp_id : null,
+            wp_name : null,
+            wp_texttemplate : null
+        };
+        function clear_rowdata_child(){
+            rowdata_child = {
+                selected : false,
+                loc_id : null,
+                wp_id : null,
+                wp_name : null,
+                wp_texttemplate : null
+            };
+        }
+
+        function selectrow(vrow, select){
+            table.$('tr.selected').removeClass('selected');
+            if (!select) {
+                rowdata.selected = false;
+                rowdata.loc_id =null;
+                rowdata.loc_location =null;
+                rowdata.loc_partnership =null;
+                rowdata.loc_address =null;
+                rowdata.loc_city =null;
+                rowdata.loc_zipcode =null;
+                rowdata.loc_country_iso2 =null;
+                rowdata.loc_phone =null;
+
+                save_state.loc_id = null;
+            } else {
+                table['row'](vrow.index()).nodes().to$().addClass('selected');
+                rowdata.selected = true;
+                rowdata.loc_id = vrow.data().loc_id;
+                rowdata.loc_location = vrow.data().loc_location;
+                rowdata.loc_partnership = vrow.data().loc_partnership;
+                rowdata.loc_address = vrow.data().loc_address;
+                rowdata.loc_city = vrow.data().loc_city;
+                rowdata.loc_zipcode = vrow.data().loc_zipcode;
+                rowdata.loc_country_iso2 = vrow.data().loc_country_iso2;
+                rowdata.loc_phone = vrow.data().loc_phone;
+
+                save_state.loc_id = vrow.data().loc_id;
+            }
+            $('#editbtn').prop('disabled', !rowdata.selected);
+            $('#delbtn').prop('disabled', !rowdata.selected);
+            $('#addworkplacebtn').prop('disabled', !rowdata.selected);
+            recreateChildTable(rowdata.loc_id);
+        }
+
+        function selectrow_child(vrow, select){
+            tablechild.$('tr.selected').removeClass('selected');
+            if (!select) {
+                rowdata_child.selected = false;
+                rowdata_child.loc_id =null;
+                rowdata_child.wp_id =null;
+                rowdata_child.wp_name =null;
+                rowdata_child.wp_texttemplate =null;
+
+                save_state.wp_id = null;
+            } else {
+                tablechild['row'](vrow.index()).nodes().to$().addClass('selected');
+                rowdata_child.selected = true;
+                rowdata_child.loc_id =vrow.data().loc_id;
+                rowdata_child.wp_id =vrow.data().wp_id;
+                rowdata_child.wp_name =vrow.data().wp_name;
+                rowdata_child.wp_texttemplate =vrow.data().wp_texttemplate;
+
+                save_state.wp_id = vrow.data().wp_id;
+            }
+            $('#delworkplacebtn').prop('disabled', !rowdata_child.selected);
+            $('#editworkplacebtn').prop('disabled', !rowdata_child.selected);
+        }
+
+        recreateTable();
+
+        function recreateChildTable(loc_id){
+
+            clear_rowdata_child();
+
+            $('#delworkplacebtn').prop('disabled', !rowdata_child.selected);
+            $('#editworkplacebtn').prop('disabled', !rowdata_child.selected);
+
+            if ($.fn.dataTable.isDataTable('#tablechild')) {
+                tablechild = $('#tablechild').DataTable();
+                tablechild.destroy();
+            }
+
+            tablechild = $('#tablechild').DataTable({
+                "ajax": {
+                    "url": "adm/get_location_workplace_table",
+                    "type": "post",
+                    "data" : { "loc_id" : loc_id }
+                },
+                "processing": true,
+                "searching": false,
+                "bLengthChange": false,
+                "ordering": false,
+                "language": {
+                    "sEmptyTable":     /*[[#{datatable.sEmptyTable}]]*/ "No data available in table",
+                    "sInfo":           /*[[#{datatable.sInfo}]]*/ "Showing _START_ to _END_ of _TOTAL_ entries",
+                    "sInfoEmpty":      /*[[#{datatable.sInfoEmpty}]]*/ "Showing 0 to 0 of 0 entries",
+                    "sInfoFiltered":   /*[[#{datatable.sInfoFiltered}]]*/ "(filtered from _MAX_ total entries)",
+                    "sInfoPostFix":    /*[[#{datatable.sInfoPostFix}]]*/ "",
+                    "sInfoThousands":  /*[[#{datatable.sInfoThousands}]]*/ ",",
+                    "sLengthMenu":     /*[[#{datatable.sLengthMenu}]]*/ "Show _MENU_ entries",
+                    "sLoadingRecords": /*[[#{datatable.sLoadingRecords}]]*/ "Loading...",
+                    "sProcessing":     /*[[#{datatable.sProcessing}]]*/ "Processing...",
+                    "sSearch":         /*[[#{datatable.sSearch}]]*/ "Search:",
+                    "sZeroRecords":    /*[[#{datatable.sZeroRecords}]]*/ "No matching records found",
+                    "oPaginate": {
+                        "sFirst":    /*[[#{datatable.oPaginate.sFirst}]]*/ "First",
+                        "sLast":     /*[[#{datatable.oPaginate.sLast}]]*/ "Last",
+                        "sNext":     /*[[#{datatable.oPaginate.sNext}]]*/ "Next",
+                        "sPrevious": /*[[#{datatable.oPaginate.sPrevious}]]*/ "Previous"
+                    },
+                    "oAria": {
+                        "sSortAscending":  /*[[#{datatable.oAria.sSortAscending}]]*/ ": activate to sort column ascending",
+                        "sSortDescending": /*[[#{datatable.oAria.sSortDescending}]]*/ ": activate to sort column descending"
+                    }
+                },
+                "columns": [
+                    {"visible" : false, "title": /*[[#{workplace.wp_id}]]*/ "wp_id", "data": "wp_id"},
+                    {"title": /*[[#{workplace.wp_name}]]*/ "wp_name", "data": "wp_name"},
+                    {"title": /*[[#{workplace.wp_texttemplate}]]*/ "wp_texttemplate", "data": "wp_texttemplate"}
+                ]
+            });
+            tablechild.off('draw');
+            tablechild.on( 'draw', function () {
+                tablechild.rows().indexes().each(
+                    function( idx ){
+                        if ( '' != /*[[${wp_id}]]*/ '' ) {
+                            if (tablechild.row(idx).data().wp_id == /*[[${wp_id}]]*/ '') {
+                                selectrow_child(tablechild.row(idx), true);
+                            }
+                        }
+                    }
+                );
+            } );
+            $('#tablechild tbody').off('click');
+            $('#tablechild tbody').on('click', 'tr', function () {
+                selectrow_child( tablechild.row( this ),!$(this).hasClass('selected'));
+            });
+
+        }
+
+        function recreateTable() {
+
+            if ($.fn.dataTable.isDataTable('#table')) {
+                table = $('#table').DataTable();
+                table.destroy();
+            }
+
+            table = $('#table').DataTable({
+                "ajax": {
+                    "url": "adm/get_locations_table",
+                    "type": "post",
+                    "data" : { "partnership" : save_state.loc_partnership }
+                },
+                "processing": true,
+                "searching": false,
+                "bLengthChange": false,
+                "ordering": false,
+                "lengthMenu": [[5], [5]],
+                "language": {
+                    "url": /*[[#{general.datatable.table_lang_url}]]*/ 'en',
+                },
+                "columns": [
+                    {"visible" : false, "title": /*[[#{location.loc_id}]]*/ "loc_id", "data": "loc_id"},
+                    {"title": /*[[#{location.loc_country_iso2}]]*/ "loc_country_iso2", "data": "loc_country_iso2"},
+                    {"title": /*[[#{location.loc_partnership}]]*/ "loc_partnership", "data": "loc_partnership"},
+                    {"title": /*[[#{location.loc_location}]]*/ "loc_location", "data": "loc_location"},
+                    {"title": /*[[#{location.loc_phone}]]*/ "loc_phone", "data": "loc_phone"}
+                ]
+            });
+
+            $('#addworkplacebtn').prop('disabled', !rowdata.selected);
+            recreateChildTable(rowdata.loc_id);
+
+
+            table.off('draw');
+            table.on( 'draw', function () {
+                table.rows().indexes().each(
+                    function( idx ){
+                        if ( '' != /*[[${loc_id}]]*/ '' ) {
+                            if (table.row(idx).data().loc_id == /*[[${loc_id}]]*/ '') {
+                                selectrow(table.row(idx), true);
+                            }
+                        }
+                    }
+                );
+            } );
+            $('#table tbody').off('click');
+            $('#table tbody').on('click', 'tr', function () {
+                selectrow( table.row( this ),!$(this).hasClass('selected'));
+            });
+        }
+
+        $("#serchbtn").on("click", function ( event ) {
+            save_state.loc_partnership =$("#search").val();
+            recreateTable();
+            return false;
+        });
+
+        $("#addbtn").on("click", function (event) {
+            $("#frm_locationdetail input[name=mode]").val(0);
+            $("#frm_locationdetail input[name=loc_id]").val(rowdata.loc_id);
+            $("#frm_locationdetail input[name=loc_location]").val(rowdata.loc_location);
+            $("#frm_locationdetail input[name=loc_partnership]").val(rowdata.loc_partnership);
+            $("#frm_locationdetail input[name=loc_address]").val(rowdata.loc_address);
+            $("#frm_locationdetail input[name=loc_city]").val(rowdata.loc_city);
+            $("#frm_locationdetail input[name=loc_zipcode]").val(rowdata.loc_zipcode);
+            $("#frm_locationdetail input[name=loc_country_iso2]").val(rowdata.loc_country_iso2);
+            $("#frm_locationdetail input[name=loc_phone]").val(rowdata.loc_phone);
+
+            $("#frm_locationdetail input[name=parent_loc_partnership]").val(save_state.loc_partnership);
+            $("#frm_locationdetail input[name=parent_loc_id]").val(save_state.loc_id);
+            $("#frm_locationdetail").submit();
+            return false;
+        });
+
+        $("#editbtn").on("click", function (event) {
+            if (rowdata.loc_id != null) {
+                $("#frm_locationdetail input[name=mode]").val(1);
+                $("#frm_locationdetail input[name=loc_id]").val(rowdata.loc_id);
+                $("#frm_locationdetail input[name=loc_location]").val(rowdata.loc_location);
+                $("#frm_locationdetail input[name=loc_partnership]").val(rowdata.loc_partnership);
+                $("#frm_locationdetail input[name=loc_address]").val(rowdata.loc_address);
+                $("#frm_locationdetail input[name=loc_city]").val(rowdata.loc_city);
+                $("#frm_locationdetail input[name=loc_zipcode]").val(rowdata.loc_zipcode);
+                $("#frm_locationdetail input[name=loc_country_iso2]").val(rowdata.loc_country_iso2);
+                $("#frm_locationdetail input[name=loc_phone]").val(rowdata.loc_phone);
+
+
+                $("#frm_locationdetail input[name=parent_loc_partnership]").val(save_state.loc_partnership);
+                $("#frm_locationdetail input[name=parent_loc_id]").val(save_state.loc_id);
+                $("#frm_locationdetail").submit();
+                return false;
+            }
+        });
+
+        $("#delbtn").on("click", function (event) {
+            if (rowdata.loc_id != null) {
+                $("#frm_locationdetail input[name=mode]").val(2);
+                $("#frm_locationdetail input[name=loc_id]").val(rowdata.loc_id);
+                $("#frm_locationdetail input[name=loc_location]").val(rowdata.loc_location);
+                $("#frm_locationdetail input[name=loc_partnership]").val(rowdata.loc_partnership);
+                $("#frm_locationdetail input[name=loc_address]").val(rowdata.loc_address);
+                $("#frm_locationdetail input[name=loc_city]").val(rowdata.loc_city);
+                $("#frm_locationdetail input[name=loc_zipcode]").val(rowdata.loc_zipcode);
+                $("#frm_locationdetail input[name=loc_country_iso2]").val(rowdata.loc_country_iso2);
+                $("#frm_locationdetail input[name=loc_phone]").val(rowdata.loc_phone);
+
+
+                $("#frm_locationdetail input[name=parent_loc_partnership]").val(save_state.loc_partnership);
+                $("#frm_locationdetail input[name=parent_loc_id]").val(save_state.loc_id);
+                $("#frm_locationdetail").submit();
+                return false;
+            }
+        });
+
+        $("#addworkplacebtn").on("click", function (event) {
+            $("#frm_workplacedetail input[name=mode]").val(0);
+            $("#frm_workplacedetail input[name=loc_id]").val(rowdata.loc_id);
+            $("#frm_workplacedetail input[name=wp_name]").val(rowdata_child.wp_name);
+            $("#frm_workplacedetail input[name=wp_texttemplate]").val(rowdata_child.wp_texttemplate);
+            $("#frm_workplacedetail input[name=return_form]").val("location");
+            $("#frm_workplacedetail input[name=parent_loc_partnership]").val(save_state.loc_partnership);
+            $("#frm_workplacedetail").submit();
+        });
+
+        $('#editworkplacebtn').on("click", function (event) {
+            if (rowdata.loc_id != null) {
+                $("#frm_workplacedetail input[name=mode]").val(1);
+                $("#frm_workplacedetail input[name=wp_id]").val(rowdata_child.wp_id);
+                $("#frm_workplacedetail input[name=loc_id]").val(rowdata.loc_id);
+                $("#frm_workplacedetail input[name=wp_name]").val(rowdata_child.wp_name);
+                $("#frm_workplacedetail input[name=wp_texttemplate]").val(rowdata_child.wp_texttemplate);
+                $("#frm_workplacedetail input[name=return_form]").val("location");
+                $("#frm_workplacedetail input[name=parent_loc_partnership]").val(save_state.loc_partnership);
+                $("#frm_workplacedetail").submit();
+            }
+        });
+
+        $('#delworkplacebtn').on("click", function (event) {
+            if (rowdata.loc_id != null) {
+                $("#frm_workplacedetail input[name=mode]").val(2);
+                $("#frm_workplacedetail input[name=wp_id]").val(rowdata_child.wp_id);
+                $("#frm_workplacedetail input[name=loc_id]").val(rowdata.loc_id);
+                $("#frm_workplacedetail input[name=wp_name]").val(rowdata_child.wp_name);
+                $("#frm_workplacedetail input[name=wp_texttemplate]").val(rowdata_child.wp_texttemplate);
+                $("#frm_workplacedetail input[name=return_form]").val("location");
+                $("#frm_workplacedetail input[name=parent_loc_partnership]").val(save_state.loc_partnership);
+                $("#frm_workplacedetail").submit();
+            }
+        });
+
+    });
+
+</script>
+
+<main role="main" >
+    <div class="jumbotron ">
+        <div class="container align-items-center justify-content-center">
+            <h2 th:text="#{index.location_a_description}">Locations</h2>
+            <p th:text="#{index.location_description}">We will add all Partnership in the all locations</p>
+        </div>
+    </div>
+
+    <form id="frm_workplacedetail" method="post" th:action="workplacedetail">
+        <input type="hidden" name="mode">
+        <input type="hidden" name="wp_id">
+        <input type="hidden" name="loc_id">
+        <input type="hidden" name="wp_name">
+        <input type="hidden" name="wp_texttemplate">
+        <input type="hidden" name="return_form">
+        <input type="hidden" name="parent_loc_partnership">
+    </form>
+    <form id="frm_locationdetail" method="post" th:action="locationdetail">
+        <input type="hidden" name="mode">
+        <input type="hidden" name="loc_id">
+        <input type="hidden" name="loc_location">
+        <input type="hidden" name="loc_partnership">
+        <input type="hidden" name="loc_address">
+        <input type="hidden" name="loc_city">
+        <input type="hidden" name="loc_zipcode">
+        <input type="hidden" name="loc_country_iso2">
+        <input type="hidden" name="loc_phone">
+
+        <input type="hidden" name="parent_loc_partnership">
+        <input type="hidden" name="parent_loc_id">
+
+    </form>
+
+    <div class="container-fluid">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-6">
+                <form id="dcldetailfrm" ></form>
+                <div class="form">
+                    <div class="form-group">
+                        <label for="search" id="label_search" th:text="#{location.location_search_by_partnership}"></label>
+                        <input type="text" id="search" class="form-control" th:value="${loc_partnership}" th:placeholder= "#{location.search.placeholder}">
+                    </div>
+                    <button type="submit" id="serchbtn" class="btn btn-primary" th:text="#{location.serchbtn}"></button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-inline">
+                    <div class="btn-group  mr-auto">
+                        <button type="button" id="addbtn" class="btn btn-primary" th:text="#{location.addbtn}"></button>
+                        <button type="button" id="editbtn" class="btn btn-primary" th:text="#{location.editbtn}" disabled></button>
+                        <button type="button" id="delbtn" class="btn btn-primary" th:text="#{location.delbtn}" disabled></button>
+                    </div>
+                    <label for="table" th:text="#{location.caption_id}">label</label>
+                </div>
+                <div class="table-responsive">
+                    <table id="table" class="display table table-striped table-hover"></table>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-inline">
+                            <div class="btn-group mr-auto">
+                                <button type="button" id="addworkplacebtn" class="btn btn-primary" th:text="#{workplace.addworkplacebtn}"></button>
+                                <button type="button" id="editworkplacebtn" class="btn btn-primary" th:text="#{workplace.editworkplacebtn}" disabled></button>
+                                <button type="button" id="delworkplacebtn" class="btn btn-primary" th:text="#{workplace.delworkplacebtn}" disabled></button>
+                            </div>
+                            <label for="tablechild" th:text="#{workplace.caption_id}">label</label>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="tablechild" class="display table table-striped table-hover"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div> <!-- /container -->
+</main>
+
+<footer th:replace="fragments/footer :: footer">Footer</footer>
+</body>
+</html>

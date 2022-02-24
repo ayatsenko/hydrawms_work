@@ -1,0 +1,239 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:include="layout/header :: header(title = #{users.caption_id})"></head>
+
+<body> <!-- right-to-left -->
+
+<div class="splash active">
+    <div class="splash-icon"></div>
+</div>
+
+<div th:replace="fragments/navigation :: navigation">navigation</div>
+<div class="header">
+    <div class="container">
+        <div class="media text-white">
+            <div class="media-body">
+                <span class="font-weight-normal"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div th:replace="fragments/leftmenu :: leftmenu">left menu</div>
+
+            <div class="col-12 col-md-8 col-lg-9 col-xl-10 pl-lg-4">
+                <div class="row">
+                    <div class="col-12 col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0" th:text="#{users.caption_id}"></h5>
+                            </div>
+                            <div class="card-body">
+                                <div>
+                                    <form data-toggle="validator">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default" id="changepasswdbtn" th:text="#{users.changepasswordbtn}" data-toggle="modal" data-target="#changePasswordModal" th:hidden="${mode}!=1">Change Password</button>
+                                            <button type="button" class="btn btn-default" id="generatetokenbtn" th:text="#{users.generatetokenbtn}" data-toggle="modal" data-target="#changeTokenModal" th:hidden="${mode}!=1">Change token</button>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-4 mb-3">
+                                                <label for="username" th:text="#{users.username}">User name</label>
+                                                <input type="text" class="form-control" id="username" name="username" placeholder="user name"  th:value="${username}" th:disabled="${mode}!=0" required>
+                                                <div class="valid-feedback">
+                                                    Looks good!
+                                                </div>
+                                                <label for="pass" th:text="#{users.password}">Password</label>
+                                                <input type="text" class="form-control" id="pass" name="pass" placeholder="password" th:value="${password}" th:disabled="${mode}!=0" required>
+                                                <div class="valid-feedback">
+                                                    Looks good!
+                                                </div>
+                                                <label for="roleid" th:text="#{users.roles}">Role</label>
+                                                <select type="text" class="form-control" id="roleid" name="roleid" required th:disabled="${mode}==2" >
+                                                    <option th:each="rol : ${roles}"
+                                                            th:value="${rol.id}"
+                                                            th:text="${rol.role}"
+                                                            th:selected="${rol.id == roleid}"
+                                                    ></option>
+                                                </select>
+                                                <div class="valid-feedback">
+                                                    Looks good!
+                                                </div>
+                                                <label for="email" th:text="#{users.email}">Password</label>
+                                                <input type="text" class="form-control" id="email" name="email" placeholder="email" th:value="${email}">
+
+                                                <label for="telegram_chatid" th:text="#{users.telegram_chatid}">ChatId</label>
+                                                <input type="text" class="form-control" id="telegram_chatid" name="telegram_chatid" placeholder="Chat Id" th:value="${telegram_chatid}">
+
+                                                <label for="token" th:text="#{users.token}" th:hidden="${mode}==0">Token</label>
+                                                <div class="summernote summernote-inline" name="token" id="token" th:disabled="true" th:hidden="${mode}==0" th:placeholder="#{users.token}" th:text="${token}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="submit" class="btn btn-default" th:text="#{general.back}" form="user-indexfrm">Cancel</button>
+                                            <div th:switch="${mode}">
+                                                <button th:case="0" type="submit" id="addbtn" class="btn btn-primary" th:text="#{general.addbtn}">Add</button>
+                                                <button th:case="1" type="submit" id="editbtn" class="btn btn-primary" th:text="#{general.editbtn}">Edit</button>
+                                                <button th:case="2" type="submit" id="delbtn" class="btn btn-primary" th:text="#{general.delbtn}">Delete</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form id="user-indexfrm" hidden method="post" th:action="users">
+        <input name="username" th:value="${parent_username}">
+        <input name="selected_id" th:value="${parent_selected_id}">
+        <input name="selected_loc_id" th:value="${parent_selected_loc_id}">
+        <input name="selected_wp_id" th:value="${parent_selected_wp_id}">
+    </form>
+    <footer th:replace="fragments/footer :: footer"></footer>
+
+    <!-- Modal change password-->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePasswordModalLabel" th:text="#{users.changepassword}">Change Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="frmchangepassword">
+                    <div class="modal-body">
+                        <input name="id" th:value="${id}" th:hidden="true">
+                        <div class="form-group">
+                            <label for="password" id="label_password" class="form-control-label" th:text="#{users.newpassword}" >Password</label>
+                            <input type="text" name="password" id="password" class="form-control" placeholder="password">
+                        </div>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="savepassword"  data-dismiss="modal">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Change token-->
+    <div class="modal fade" id="changeTokenModal" tabindex="-1" role="dialog" aria-labelledby="changeTokenModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changeTokenModalLabel" th:text="#{users.changetoken}">Change Token</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <span th:text="#{users.changetokenconfirmtext}">Вы уверены что хотите поменять токен?</span>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="savetoken" data-dismiss="modal">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+
+
+
+<footer th:replace="layout/footer :: footer"></footer>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = user-indexfrm)">Error</span>
+<script th:inline="javascript">
+    $(document).ready(function() {
+
+        $('#addbtn').on('click', function( event ) {
+            $.ajax({
+                url: "adm/add_user",
+                data: {
+                    username: $("#username").val(),
+                    pass: $("#pass").val(),
+                    roleid: $("#roleid").val(),
+                    email: $("#email").val(),
+                    telegram_chatid: $("#telegram_chatid").val()
+                },
+                type: 'POST',
+                success: function (result) {
+                    $("#user-indexfrm").submit();
+                }
+            });
+            return false;
+        });
+        $('#editbtn').on('click', function( event ) {
+            $.ajax({
+                url: "adm/update_user",
+                data: {
+                    id: /*[[${id}]]*/ 0,
+                    roleid: $("#roleid").val(),
+                    email: $("#email").val(),
+                    telegram_chatid: $("#telegram_chatid").val()
+                },
+                type: 'POST',
+                success: function (result) {
+                    $("#user-indexfrm").submit();
+                }
+            });
+            return false;
+        });
+        $('#delbtn').on('click', function( event ) {
+            $.ajax({
+                url: "adm/del_user",
+                data: {
+                    id: /*[[${id}]]*/ 0
+                },
+                type: 'POST',
+                success: function (result) {
+                    $("#user-indexfrm").submit();
+                }
+            });
+            return false;
+        });
+        $('#savepassword').on('click', function( event ) {
+            $.ajax({
+                url: "adm/change_pass",
+                type: 'POST',
+                dataType: "json",
+                data : {
+                    id : /*[[${id}]]*/ 0,
+                    password : $("#password").val()
+                },
+                success : function (data, textStatus){
+                    if (data.result) { $("#pass").val(data.data) };
+                }
+            });
+            return true;
+        });
+        $('#savetoken').on('click', function( event ) {
+            $.ajax({
+                url: "adm/createtoken",
+                type: 'POST',
+                dataType: "json",
+                data : {
+                    id : /*[[${id}]]*/ 0
+                },
+                success : function (data, textStatus){
+                    if (data.result) { $("#token").val(data.data) };
+                }
+            });
+            return true;
+        });
+
+    });
+
+</script>
+</body>
+</html>

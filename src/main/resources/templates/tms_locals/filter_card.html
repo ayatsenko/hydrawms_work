@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_locals_filter_body" th:remove="tag">
+    <form class="form-inline">
+        <div class="custom-control custom-switch">
+            <input class="custom-control-input" type="checkbox" id="tms_locals_filter_check" name="tms_locals_filter_check">
+            <label class="custom-control-label" for="tms_locals_filter_check"></label>
+        </div>
+        <div class="form-group form-group-sm mr-2">
+            <label for="tms_locals_filter_start_date" class="mr-2" th:text="#{tms_locals.filter_start_date}">StartDate:</label>
+            <input class="form-control" type="text" id="tms_locals_filter_start_date" name="tms_locals_tenders_start_date" disabled/>
+        </div>
+
+        <div class="form-group form-group-sm mr-2">
+            <label for="tms_locals_filter_end_date" class="mr-2" th:text="#{tms_locals.filter_end_date}">EndDate:</label>
+            <input class="form-control" type="text" id="tms_locals_filter_end_date" name="tms_locals_tenders_end_date" disabled/>
+        </div>
+        <button type="button" class="btn btn-dark align-middle" id="tms_locals_filter_show" disabled><i data-feather="search"></i></button>
+    </form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    $("#tms_locals_filter_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#tms_locals_filter_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#tms_locals_filter_check').click(function(){
+        if($(this).prop('checked')){
+            $('#tms_locals_filter_start_date').removeAttr('disabled');
+            $('#tms_locals_filter_end_date').removeAttr('disabled');
+            $("#tms_locals_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if (window.screen.width < 1024 && window.screen.height < 768) {
+                $("#tms_locals_filter_start_date").attr('readonly',true);
+                $("#tms_locals_filter_end_date").attr('readonly',true);
+            }
+        }
+        else{
+            $('#tms_locals_filter_start_date').attr('disabled',true);
+            $('#tms_locals_filter_end_date').attr('disabled',true);
+            $("#tms_locals_filter_show").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            if(vClaimsValue.rowdata.tms_locals_filter_id === 1){
+                vClaimsValue.rowdata.tms_locals_filter_id = 0;
+                $(vClaimsValue.table).DataTable().ajax.reload();
+            }
+        }
+    });
+
+    $('#tms_locals_filter_show').click(function() {
+        vClaimsValue.rowdata.tms_locals_filter_id = 1;
+        vClaimsValue.rowdata.tms_locals_filter_start_date = $('#tms_locals_filter_start_date').val();
+        vClaimsValue.rowdata.tms_locals_filter_end_date = $('#tms_locals_filter_end_date').val();
+
+        $(vClaimsValue.table).DataTable().ajax.reload();
+    });
+</script>
+
+</body>
+</html>

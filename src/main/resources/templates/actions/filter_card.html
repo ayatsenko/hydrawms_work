@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="actions_filter_body" th:remove="tag">
+    <div id="actions_filter_large_div">
+    <form class="form-inline mb-1">
+        <div class="input-group">
+            <div class="custom-control custom-switch">
+                <input class="custom-control-input" type="checkbox" id="action_filter_check" name="action_filter_check">
+                <label class="custom-control-label" for="action_filter_check"></label>
+            </div>
+
+            <div class="input-group-prepend">
+                <span class="input-group-text" th:text="#{actions.filter.start_date}">Start Date</span>
+            </div>
+            <input class="form-control" id="action_filter_start_date" name="report_tenders_start_date" disabled/>
+            <div class="input-group-append">
+                <button type="button" id="action_filter_start_date_x" name="action_filter_start_date_x" class="btn btn-dark" disabled><i class="fas fa-times"></i></button>
+            </div>
+<!-- Start Date -->
+            <div class="input-group-prepend">
+                <span class="input-group-text" th:text="#{actions.filter.end_date}">End Date</span>
+            </div>
+            <input class="form-control" id="action_filter_end_date" name="report_tenders_end_date" disabled/>
+            <div class="input-group-append">
+                <button type="button" id="action_filter_end_date_x" name="action_filter_end_date_x" class="btn btn-dark" disabled><i class="fas fa-times"></i></button>
+            </div>
+<!-- End Date -->
+            <div class="input-group-prepend">
+                <span class="input-group-text" th:text="#{actions.filter.act_plan_type_list}">Type</span>
+            </div>
+            <select id="action_filter_type_list" name="action_filter_type_list" class="form-control" disabled>
+                <option value=""></option>
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <option class="p-1"
+                        th:each="action_filter_plan_type : ${action_filter_plan_type_list}"
+                        th:value="${action_filter_plan_type.act_plan_type_id}"
+                        th:text="${action_filter_plan_type.act_plan_type_sname}"
+                        th:selected="${action_filter_plan_type.act_plan_type_id == act_plan_type_id}"
+                ></option>
+            </select>
+<!-- Type -->
+            <div class="input-group-prepend">
+                <span class="input-group-text" th:text="#{actions.filter.act_type_list}">Action</span>
+            </div>
+            <select id="action_filter_action_list" name="action_filter_action_list" class="form-control" disabled>
+                <option value=""></option>
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <option class="p-1"
+                        th:each="action_filter_type : ${action_filter_type_list}"
+                        th:value="${action_filter_type.act_type_id}"
+                        th:text="${action_filter_type.act_type_sname}"
+                        th:selected="${action_filter_type.act_type_id == action_filter_act_type_id}"
+                ></option>
+            </select>
+ <!-- Action -->
+            <div class="input-group-prepend">
+                <span class="input-group-text" th:text="#{actions.filter.action_filter_status_list}">Status</span>
+            </div>
+            <select id="action_filter_status_list" name="action_filter_status_list" class="form-control" disabled>
+                <option value=""></option>
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <option class="p-1"
+                        th:each="action_filter_status : ${action_filter_status_list}"
+                        th:value="${action_filter_status.act_status_id}"
+                        th:text="${action_filter_status.act_status_sname}"
+                        th:selected="${action_filter_status.act_status_id == action_filter_act_status_id}"
+                ></option>
+            </select>
+<!-- Status -->
+            <div class="input-group-prepend">
+                <span class="input-group-text" th:text="#{actions.filter.action_filter_result_list}">Result</span>
+            </div>
+            <select id="action_filter_result_list" name="action_filter_result_list" class="form-control" disabled>
+                <option value=""></option>
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <option class="p-1"
+                        th:each="action_filter_result : ${action_filter_result_list}"
+                        th:value="${action_filter_result.act_result_id}"
+                        th:text="${action_filter_result.act_result_sname}"
+                        th:selected="${action_filter_result.act_result_id == action_filter_act_result_id}"
+                ></option>
+            </select>
+        </div>
+<!-- Result -->
+    </form>
+    <form class="form-inline">
+        <div class="input-group">
+            <button type="button" class="btn btn-dark align-middle" id="action_filter_show" disabled><i data-feather="search"></i></button>
+            <div class="input-group-prepend">
+                <span class="input-group-text" th:text="#{actions.filter.action_filter_cnt_list}">Client</span>
+            </div>
+            <select id="action_filter_client_list" name="action_filter_client_list" class="form-control select2" data-toggle="select2" disabled>
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <option class="p-1"
+                        th:each="cnt_list : ${action_filter_cnt_list}"
+                        th:value="${cnt_list.cnt_id}"
+                        th:text="${cnt_list.cnt_name}"
+                        th:selected="${cnt_list.cnt_id == action_filter_cnt_id}"
+                ></option>
+            </select>
+            <div class="input-group-append">
+               <button type="button" id="action_filter_client_show" name="action_filter_client_show" class="btn btn-dark" disabled><i class="fas fa-clipboard-list"></i></button>
+            </div>
+            <div class="input-group-append">
+                <button type="button" id="action_filter_client_x" name="action_filter_client_x" class="btn btn-dark" disabled><i class="fas fa-times"></i></button>
+            </div>
+<!-- Client -->
+            <div class="input-group-prepend">
+                <span class="input-group-text" th:text="#{actions.filter.action_filter_user_list}">User</span>
+            </div>
+            <select id="action_filter_user_list" name="action_filter_user_list" class="form-control select2" data-toggle="select2" disabled>
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <option class="p-1"
+                        th:each="users : ${action_filter_user_list}"
+                        th:value="${users.id}"
+                        th:text="${users.user_surname}"
+                        th:selected="${users.id == action_filter_user_id}"
+                ></option>
+            </select>
+            <div class="input-group-append">
+               <button type="button" id="action_filter_user_show" name="action_filter_user_show" class="btn btn-dark" disabled><i class="fas fa-clipboard-list"></i></button>
+            </div>
+            <div class="input-group-append">
+                <button type="button" id="action_filter_user_x" name="action_filter_user_x" class="btn btn-dark" disabled><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+<!-- User -->
+    </form>
+    </div>
+    <div id="actions_filter_small_div">
+
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var mobileScreenSize = window.screen.width < 1024 && window.screen.height < 768;
+    var smallScreenSize = window.screen.width > 1024 && window.screen.height <= 768;
+
+    $("#action_filter_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "disableTouchKeyboard": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#action_filter_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#action_filter_check').on('click', function(){
+        if($(this).prop('checked')){
+            $('#action_filter_start_date').attr('required', true).removeAttr('disabled');
+            $('#action_filter_start_date_x').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-dark');
+
+            $('#action_filter_end_date').attr('required', true).removeAttr('disabled');
+            $('#action_filter_end_date_x').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-dark');
+
+            $('#action_filter_type_list').prop('disabled',false);
+            $('#action_filter_action_list').prop('disabled',false);
+            $('#action_filter_status_list').prop('disabled',false);
+            $('#action_filter_result_list').prop('disabled',false);
+
+            $('#action_filter_client_list').prop('disabled',false);
+            $('#action_filter_client_show').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-dark');
+            $('#action_filter_client_x').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-dark');
+
+            $('#action_filter_user_list').prop('disabled',false);
+            $('#action_filter_user_show').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-dark');
+            $('#action_filter_user_x').prop('disabled',false).addClass('btn-outline-primary').removeClass('btn-dark');
+
+            $("#action_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if (window.screen.width < 1024 && window.screen.height < 768) {
+                $("#action_filter_start_date").attr('readonly',true);
+                $("#action_filter_end_date").attr('readonly',true);
+            }
+        }
+        else{
+            $('#action_filter_start_date').removeAttr('required', true).attr('disabled','disabled');
+            $('#action_filter_start_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-dark');
+
+            $('#action_filter_end_date').removeAttr('required', true).attr('disabled','disabled');
+            $('#action_filter_end_date_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-dark');
+
+            $('#action_filter_type_list').prop('disabled',true);
+            $('#action_filter_action_list').prop('disabled',true);
+            $('#action_filter_status_list').prop('disabled',true);
+            $('#action_filter_result_list').prop('disabled',true);
+
+            $('#action_filter_client_list').prop('disabled',true);
+            $('#action_filter_client_show').prop('disabled',true).removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-dark');
+            $('#action_filter_client_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-dark');
+
+            $('#action_filter_user_list').prop('disabled',true);
+            $('#action_filter_user_show').prop('disabled',true).removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-dark');
+            $('#action_filter_user_x').prop('disabled',true).removeClass('btn-outline-primary').addClass('btn-dark');
+
+            $("#action_filter_show").prop('disabled', true).addClass('btn-dark').removeClass('btn-primary');
+
+            if(vActionsValue.rowdata.action_filter_id === 1){
+                vActionsValue.rowdata.action_filter_id = 0;
+                $(vActionsValue.table).DataTable().ajax.reload();
+                $('#action_filter_div').removeClass('show').collapse('hide');
+            }
+        }
+    });
+
+    $('#action_filter_show').on('click', function() {
+        vActionsValue.rowdata.action_filter_id = 1;
+        vActionsValue.rowdata.action_filter_start_date = $('#action_filter_start_date').val();
+        vActionsValue.rowdata.action_filter_end_date = $('#action_filter_end_date').val();
+
+        vActionsValue.rowdata.action_filter_type_id = $('#action_filter_type_list').val();
+        vActionsValue.rowdata.action_filter_action_id = $('#action_filter_action_list').val();
+        vActionsValue.rowdata.action_filter_status_id = $('#action_filter_status_list').val();
+        vActionsValue.rowdata.action_filter_result_id = $('#action_filter_result_list').val();
+        vActionsValue.rowdata.action_filter_client_id = $('#action_filter_client_list').val();
+        vActionsValue.rowdata.action_filter_user_id = $('#action_filter_user_list').val();
+
+        $(vActionsValue.table).DataTable().ajax.reload();
+        $('#action_filter_div').removeClass('show').collapse('hide');
+    });
+
+    $('#action_filter_start_date_x').on('click', function() {
+        $('#action_filter_start_date').empty().val('');
+    });
+
+    $('#action_filter_end_date_x').on('click', function() {
+        $('#action_filter_end_date').empty().val('');
+    });
+
+    $('#action_filter_client_list')
+        .wrap("<div class=\"position-relative\"></div>")
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: /*[[#{requests.list.client_placeholder}]]*/ "Select a client",
+            allowClear: true,
+            minimumInputLength: 2,
+            width: 'element',
+            dropdownAutoWidth: true
+        });
+
+    $('#action_filter_client_show').on('click', function () {
+        if($('#action_filter_client_show').hasClass('btn-outline-primary')) {
+            $('#action_filter_client_show').removeClass('btn-outline-primary').addClass('btn-primary');
+            var options_zero = {
+                id: '-1', // the value of the option
+                placeholder: /*[[#{requests.list.client_placeholder}]]*/ "Select a client",
+                allowClear: true,
+                width: 'element',
+                dropdownAutoWidth: true
+            };
+            $("#action_filter_client_list").select2("destroy").select2(options_zero);
+        }
+        else if($('#action_filter_client_show').hasClass('btn-primary')){
+            $('#action_filter_client_show').addClass('btn-outline-primary').removeClass('btn-primary');
+            var options_two = {
+                id: '-1', // the value of the option
+                placeholder: /*[[#{requests.list.client_placeholder}]]*/ "Select a client",
+                allowClear: true,
+                minimumInputLength: 2,
+                width: 'element',
+                dropdownAutoWidth: true
+            };
+            $("#action_filter_client_list").select2("destroy").select2(options_two);
+        }
+    });
+
+    $('#action_filter_client_x').on('click', function () {
+        $('#action_filter_client_list').val(0).trigger('change');
+    });
+
+    $('#action_filter_user_list')
+        .wrap("<div class=\"position-relative\"></div>")
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: /*[[#{requests.list.client_placeholder}]]*/ "Select a client",
+            allowClear: true,
+            minimumInputLength: 2,
+            width: 'element',
+            dropdownAutoWidth: true
+        });
+
+    $('#action_filter_user_show').on('click', function () {
+        if($('#action_filter_user_show').hasClass('btn-outline-primary')) {
+            $('#action_filter_user_show').removeClass('btn-outline-primary').addClass('btn-primary');
+            var options_zero = {
+                id: '-1', // the value of the option
+                placeholder: /*[[#{requests.list.client_placeholder}]]*/ "Select a client",
+                allowClear: true,
+                width: 'element',
+                dropdownAutoWidth: true
+            };
+            $("#action_filter_user_list").select2("destroy").select2(options_zero);
+        }
+        else if($('#action_filter_user_show').hasClass('btn-primary')){
+            $('#action_filter_user_show').addClass('btn-outline-primary').removeClass('btn-primary');
+            var options_two = {
+                id: '-1', // the value of the option
+                placeholder: /*[[#{requests.list.client_placeholder}]]*/ "Select a client",
+                allowClear: true,
+                minimumInputLength: 2,
+                width: 'element',
+                dropdownAutoWidth: true
+            };
+            $("#action_filter_user_list").select2("destroy").select2(options_two);
+        }
+    });
+
+    $('#action_filter_user_x').on('click', function () {
+        $('#action_filter_user_list').val(0).trigger('change');
+    });
+
+    $(document).ready(function(){
+        if(mobileScreenSize){
+            $('#actions_filter_large_div').attr('hidden',true);
+            $('#actions_filter_small_div').removeAttr('hidden');
+        }
+        else if(smallScreenSize){
+            $('#actions_filter_large_div').removeAttr('hidden');
+            $('#actions_filter_small_div').attr('hidden',true);
+        }
+        else{
+            $('#actions_filter_large_div').removeAttr('hidden');
+            $('#actions_filter_small_div').attr('hidden',true);
+        }
+    });
+</script>
+
+</body>
+</html>

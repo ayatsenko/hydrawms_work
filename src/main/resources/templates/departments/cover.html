@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:include="layout/header :: header(title = #{departments.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 col-md-7 pl-2 pr-1 pt-0">
+        <div class="card order-1 mb-2" id="departments_list_card">
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#departments_list_div" data-toggle="collapse"><i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" id="departments_list_header" th:text="#{departments.main.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="departments_list_div">
+                <div>
+                    <span th:replace="departments/main_modal :: departments_main_modal_body"></span>
+                    <span th:replace="departments/main_card :: departments_main_body"></span>
+                </div>
+            </div>
+        </div><!-- Main List Table -->
+    </div><!-- First Column -->
+
+    <div class="col-12 col-md-5 pl-1 pr-2 pt-0">
+        <div class="card order-1 mb-2" id="departments_users_card">
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#departments_list_div" data-toggle="collapse"><i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" id="departments_users_header" th:text="#{departments.users.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="departments_users_div">
+                <div>
+                    <span th:replace="departments/users_modal :: departments_users_modal_body"></span>
+                    <span th:replace="departments/users_card :: departments_users_body"></span>
+                </div>
+            </div>
+        </div><!-- Users List Table -->
+    </div><!-- Second Column -->
+
+</div><!-- Departments -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="departments/users_modal :: cardscript"></script>
+<script th:replace="departments/users_card :: cardscript"></script>
+
+<script th:replace="departments/main_modal :: cardscript"></script>
+<script th:replace="departments/main_card :: cardscript"></script>
+
+</body>
+</html>

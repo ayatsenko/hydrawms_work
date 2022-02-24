@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_managers_filter_body" th:remove="tag">
+		<form>
+			<div class="row">
+				<div class="col-12 col-md-4">
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text" th:text="#{clients_managers.filter.cs_list}">CS:</span>
+						</div>
+						<div class="flex-fill">
+							<select id="clients_managers_filter_cs_user_id" name="clients_managers_filter_cs_user_id" class="custom-select select2" data-toggle="select2">
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-12 col-md-4">
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text" th:text="#{clients_managers.filter.ops_list}">OPS:</span>
+						</div>
+						<div class="flex-fill">
+							<select id="clients_managers_filter_ops_user_id" name="clients_managers_filter_ops_user_id"  class="custom-select select2" data-toggle="select2">
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-12 col-md-2">
+					<div class="d-none d-sm-block">
+						<a class="btn btn-outline-primary" id="clients_managers_show" th:text="#{general.reportshow}">Show</a>
+					</div>
+				</div>
+			</div>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+	function filterCsListChange(){
+		$('#clients_managers_filter_cs_user_id').empty();
+		$("select[name='clients_managers_filter_cs_user_id']").find('option').end().append("<option value='0'>****All****</option>");
+		return Promise.resolve($.ajax({
+			url:/*[[@{'/clients_managers/get_sale_list'}]]*/ "/clients_managers/get_sale_list",
+			type: "get",
+			data: {},
+			success: function (clients_managers_filter_cs_user_list) {
+				for (var i = 0; i < clients_managers_filter_cs_user_list.data.length; i++) {
+					$("select[name='clients_managers_filter_cs_user_id']").find('option').end().append(
+							"<option value='" + clients_managers_filter_cs_user_list.data[i].id + "'>"
+							+ clients_managers_filter_cs_user_list.data[i].user_surname + "</option>"
+					);
+				}
+			}
+		}));
+	}
+
+	var filterCsName =   "Select a CS";
+	$('#clients_managers_filter_cs_user_id')
+			.select2({
+				id: '-1', // the value of the option
+				placeholder: filterCsName,
+				allowClear: true,
+				dropdownAutoWidth: true
+			});
+
+	function filterOpsListChange(){
+		$('#clients_managers_filter_ops_user_id').empty();
+		$("select[name='clients_managers_filter_ops_user_id']").find('option').end().append("<option value='0'>****All****</option>");
+		return Promise.resolve($.ajax({
+			url:/*[[@{'/clients_managers/get_ops_list'}]]*/ "/clients_managers/get_ops_list",
+			type: "get",
+			data: {},
+			success: function (clients_managers_filter_ops_user_list) {
+				for (var i = 0; i < clients_managers_filter_ops_user_list.data.length; i++) {
+					$("select[name='clients_managers_filter_ops_user_id']").find('option').end().append(
+							"<option value='" + clients_managers_filter_ops_user_list.data[i].id + "'>"
+							+ clients_managers_filter_ops_user_list.data[i].user_surname + "</option>"
+					);
+				}
+			}
+		}));
+	}
+
+	var filterOPSName =   "Select a OPS";
+	$('#clients_managers_filter_ops_user_id')
+			.select2({
+				id: '-1', // the value of the option
+				placeholder: filterOPSName,
+				allowClear: true,
+				dropdownAutoWidth: true
+			});
+
+	$(document).ready(function(){
+		<!-- Highlight menu -->
+		$('#main_li').removeClass('active');
+
+		$('#clients_li').addClass('active').removeClass('collapsed');
+		$('#clients_a').attr('aria-expanded',true);
+		$('#clients').addClass('show');
+
+		$('#clients_managers_a').addClass('text-primary');
+
+		$.when(
+				filterCsListChange(),
+				filterOpsListChange()
+		).then(function() {
+			$('#clients_managers_show').removeAttr('hidden');
+		});
+
+		$('#clients_managers_show').on('click', function () {
+			$('#clients_managers_main_card').removeAttr('hidden');
+
+			vClientsManagersValue.rowdata.req_cs_user_id = $("#clients_managers_filter_cs_user_id").val();
+			vClientsManagersValue.rowdata.req_ops_user_id = $("#clients_managers_filter_ops_user_id").val();
+			$(vClientsManagersValue.table).DataTable().ajax.reload();
+			$('#clients_managers_filter_div').removeClass('show').collapse('hide');
+		});
+	});
+</script>
+
+</body>
+</html>

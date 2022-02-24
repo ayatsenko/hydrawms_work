@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_dk_contract_body" th:remove="tag">
+    <div id="table-report-dk-contract-buttons">
+        <button type="button" id="table-report-dk-contract-comment" class="btn btn-dark mr-2" disabled><i class="fas fa-comment-alt"></i></button>
+    </div>
+    <div><table id="table-report-dk-contract" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var dkmd_id_width, contract_width, paid_premiss_width, approved_debt_sum_width, debt_max_day_width, currency_id_width, currency_name_width, contract_prepaying_currency_sum_width,
+        contract_prepaying_sum_width, contract_expired_currency_sum_width, contract_expired_sum_width, contract_trouble_currency_sum_width, contract_troubl_sum_width, contract_all_currency_sum_width,
+        contract_all_sum_width, comment_id_width;
+
+    var dkmd_id_class, contract_class, paid_premiss_class, approved_debt_sum_class, debt_max_day_class, currency_id_class, currency_name_class, contract_prepaying_currency_sum_class,
+        contract_prepaying_sum_class, contract_expired_currency_sum_class, contract_expired_sum_class, contract_trouble_currency_sum_class, contract_troubl_sum_class, contract_all_currency_sum_class,
+        contract_all_sum_class, comment_id_class;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+
+        dkmd_id_width = "";
+        dkmd_id_class = "none";
+        contract_width = "";
+        contract_class = "none";
+        paid_premiss_width = "40%";
+        paid_premiss_class = "all md_size md_head_size md_footer_size text-center contract";
+        approved_debt_sum_width = "15%";
+        approved_debt_sum_class = "min-tablet-p md_size md_head_size md_footer_size text-center";
+        debt_max_day_width = "15%";
+        debt_max_day_class = "md_size md_head_size md_footer_size cell-light-grey head-light-grey text-center";
+        currency_id_width = "15%";
+        currency_id_class = "min-tablet-p md_size md_head_size md_footer_size text-center";
+        currency_name_width = "";
+        currency_name_class = "none noExport";
+        comment_id_width = "";
+        comment_id_class = "none noExport";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+
+        dkmd_id_width = "";
+        dkmd_id_class = "none";
+        contract_width = "14%";
+        contract_class = "small_size small_head_size small_footer_size";
+        currency_id_width = "";
+        currency_id_class = "none";
+        currency_name_width = "4%";
+        currency_name_class = "small_size small_head_size small_footer_size text-center text-center";
+        paid_premiss_width = "15%";
+        paid_premiss_class = "small_size small_head_size small_footer_size text-center";
+        approved_debt_sum_width = "6%";
+        approved_debt_sum_class = "small_size small_head_size small_footer_size text-center";
+        debt_max_day_width = "4%";
+        debt_max_day_class = "small_size small_head_size small_footer_size text-center";
+        contract_prepaying_currency_sum_width = "6%";
+        contract_prepaying_currency_sum_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey text-center";
+        contract_prepaying_sum_width = "6%";
+        contract_prepaying_sum_class = "ssmall_size small_head_size small_footer_size cell-light-grey head-light-grey text-center";
+        contract_expired_currency_sum_width = "6%";
+        contract_expired_currency_sum_class = "small_size small_head_size small_footer_size text-center";
+        contract_expired_sum_width = "6%";
+        contract_expired_sum_class = "small_size small_head_size small_footer_size text-center";
+        contract_trouble_currency_sum_width = "6%";
+        contract_trouble_currency_sum_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey text-center";
+        contract_troubl_sum_width = "6%";
+        contract_troubl_sum_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey text-center";
+        contract_all_currency_sum_width = "7%";
+        contract_all_currency_sum_class = "small_size small_head_size small_footer_size text-center";
+        contract_all_sum_width = "7%";
+        contract_all_sum_class = "small_size small_head_size small_footer_size text-center";
+        comment_id_width = "5%";
+        comment_id_class = "small_size small_head_size small_footer_size text-center contract_comment_add";
+    }
+    else{
+        vDomParam = "Blfrtip";
+
+        dkmd_id_width = "";
+        dkmd_id_class = "none";
+        contract_width = "14%";
+        contract_class = "md_size md_head_size md_footer_size";
+        currency_id_width = "";
+        currency_id_class = "none";
+        currency_name_width = "4%";
+        currency_name_class = "md_size md_head_size md_footer_size text-center";
+        paid_premiss_width = "15%";
+        paid_premiss_class = "md_size md_head_size md_footer_size text-center";
+        approved_debt_sum_width = "6%";
+        approved_debt_sum_class = "md_size md_head_size md_footer_size text-center";
+        debt_max_day_width = "4%";
+        debt_max_day_class = "md_size md_head_size md_footer_size text-center";
+        contract_prepaying_currency_sum_width = "6%";
+        contract_prepaying_currency_sum_class = "md_size md_head_size md_footer_size cell-light-grey head-light-grey text-center";
+        contract_prepaying_sum_width = "6%";
+        contract_prepaying_sum_class = "md_size md_head_size md_footer_size cell-light-grey head-light-grey text-center";
+        contract_expired_currency_sum_width = "6%";
+        contract_expired_currency_sum_class = "md_size md_head_size md_footer_size text-center";
+        contract_expired_sum_width = "6%";
+        contract_expired_sum_class = "md_size md_head_size md_footer_size text-center";
+        contract_trouble_currency_sum_width = "6%";
+        contract_trouble_currency_sum_class = "md_size md_head_size md_footer_size cell-light-grey head-light-grey text-center";
+        contract_troubl_sum_width = "6%";
+        contract_troubl_sum_class = "md_size md_head_size md_footer_size cell-light-grey head-light-grey text-center";
+        contract_all_currency_sum_width = "7%";
+        contract_all_currency_sum_class = "md_size md_head_size md_footer_size text-center";
+        contract_all_sum_width = "7%";
+        contract_all_sum_class = "md_size md_head_size md_footer_size text-center";
+        comment_id_width = "5%";
+        comment_id_class = "md_size md_head_size md_footer_size text-center contract_comment_add";
+    }
+
+    var vReportDKContactValue;
+    vReportDKContactValue = {
+        table : '#table-report-dk-contract',
+        button_form: "#table-report-dk-contract-buttons",
+        ajax : {
+            "url": /*[[@{/report_dk/get_contract_table}]]*/ "report_dk/get_contract_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.dk_paid_type_id = vReportDKContactValue.rowdata.dk_paid_type_id;
+                d.dkm_id = vReportDKContactValue.rowdata.dkm_id;
+                d.dk_ser_id = vReportDKContactValue.rowdata.dk_ser_id;
+            }
+        },
+        key : "dkmd_id",
+        switchControl : report_dk_detail_switchControl,
+        rowdata:{
+            dkmd_id: null,
+            dk_paid_type_id: null,
+            dkm_id: null,
+            dk_ser_id: null,
+            contract: null
+        },
+        ordering: true,
+        order: [
+            [12, "desc"]
+        ],
+
+        dom: vDomParam,
+        createdRow: function(row, data, index) {
+            $(row).css('background-color', '#ffffff');
+            if ( data.prepaying_currency_sum !== '' ){ $(row).find('td:eq(7)').css('color', '#ff1d00');}
+            if ( data.prepaying_sum !== '' ){ $(row).find('td:eq(8)').css('color', '#ff1d00');}
+
+            if ( data.trouble_currency_sum > 0 ){ $(row).find('td:eq(11)').css('background-color', '#ff8566');}
+            if ( data.troubl_sum > 0 ){ $(row).find('td:eq(12)').css('background-color', '#ff8566');}
+        },
+        columnDefs: [
+            { "targets": [5,7,8,9,10,11,12,13,14],  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            { "targets": [15],
+                render: function ( data, type, row ) {
+                    if ( type === 'display' ) {             //if column data is 1 then set attr to checked, use row id as input id (plus prefix)
+                        return '<label class="custom-control custom-checkbox mb-0 mt-0 text-center"><input type="checkbox" ' + ((data == 1) ? 'checked' : '') + ' id="input' + row.id + '" class="custom-control-input" disabled><span class="custom-control-label"></span></label>'
+                    }
+                    return data;
+                }
+            },
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{report_dk.contract.dkmd_id}]]*/ "dkmd_id", "data": "dkmd_id", "width": dkmd_id_width, "className": dkmd_id_class},
+            /*1*/{"title": /*[[#{report_dk.contract.contract}]]*/ "contract", "data": "contract", "width": contract_width, "className": contract_class},
+            /*2*/{"title": /*[[#{report_dk.main.currency_id}]]*/ "currency_id", "data": "currency_id", "width": currency_id_width, "className": currency_id_class},
+            /*3*/{"title": /*[[#{report_dk.main.currency_name}]]*/ "currency_name", "data": "currency_name", "width": currency_name_width, "className": currency_name_class},
+            /*4*/{"title": /*[[#{report_dk.contract.paid_premiss}]]*/ "paid_premiss", "data": "paid_premiss", "width": paid_premiss_width, "className": paid_premiss_class},
+            /*5*/{"title": /*[[#{report_dk.contract.approved_debt_sum}]]*/ "approved_debt_sum", "data": "approved_debt_sum", "width": approved_debt_sum_width, "className": approved_debt_sum_class},
+            /*6*/{"title": /*[[#{report_dk.contract.debt_max_day}]]*/ "debt_max_day", "data": "debt_max_day", "width": debt_max_day_width, "className": debt_max_day_class},
+            /*7*/{"title": /*[[#{report_dk.main.prepaying_currency_sum}]]*/ "prepaying_currency_sum", "data": "prepaying_currency_sum", "width": contract_prepaying_currency_sum_width, "className": contract_prepaying_currency_sum_class},
+            /*8*/{"title": /*[[#{report_dk.main.prepaying_sum}]]*/ "prepaying_sum", "data": "prepaying_sum", "width": contract_prepaying_sum_width, "className": contract_prepaying_sum_class},
+            /*9*/{"title": /*[[#{report_dk.main.expired_currency_sum}]]*/ "expired_currency_sum", "data": "expired_currency_sum", "width": contract_expired_currency_sum_width, "className": contract_expired_currency_sum_class},
+            /*10*/{"title": /*[[#{report_dk.main.expired_sum}]]*/ "expired_sum", "data": "expired_sum", "width": contract_expired_sum_width, "className": contract_expired_sum_class},
+            /*11*/{"title": /*[[#{report_dk.main.trouble_currency_sum}]]*/ "trouble_currency_sum", "data": "trouble_currency_sum", "width": contract_trouble_currency_sum_width, "className": contract_trouble_currency_sum_class},
+            /*12*/{"title": /*[[#{report_dk.main.troubl_sum}]]*/ "troubl_sum", "data": "troubl_sum", "width": contract_troubl_sum_width, "className": contract_troubl_sum_class},
+            /*13*/{"title": /*[[#{report_dk.main.all_currency_sum}]]*/ "all_currency_sum", "data": "all_currency_sum", "width": contract_all_currency_sum_width, "className": contract_all_currency_sum_class},
+            /*14*/{"title": /*[[#{report_dk.main.all_sum}]]*/ "all_sum", "data": "all_sum", "width": contract_all_sum_width, "className": contract_all_sum_class},
+            /*15*/{"title": /*[[#{report_dk.main.dk_com_text_menu}]]*/ "comment_id", "data": "comment_id", "width": comment_id_width, "className": comment_id_class}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function report_dk_detail_switchControl(){
+        if(vReportDKContactValue.rowdata.dkmd_id != null){
+            $('#table-report-dk-contract-comment').prop('disabled', false).removeClass('btn-dark').addClass('btn-info');
+
+            $('#report_dk_doc_card').removeAttr('hidden');
+
+            vReportDKDocValue.rowdata.dk_paid_type_id = $("#report_dk_paid_type_list").val();
+            vReportDKDocValue.rowdata.dkm_id = vReportDKMainValue.rowdata.dkm_id;
+            vReportDKDocValue.rowdata.dkmd_id = vReportDKContactValue.rowdata.dkmd_id;
+            vReportDKDocValue.rowdata.dk_ser_id = vReportDKServiceValue.rowdata.ser_id;
+            $(vReportDKDocValue.table).DataTable().ajax.reload();
+        } else{
+            $('#table-report-dk-contract-comment').prop('disabled', true).addClass('btn-dark').removeClass('btn-info');
+
+            $('#report_dk_doc_card').attr('hidden',true);
+
+            vReportDKDocValue.rowdata.dk_paid_type_id = null;
+            vReportDKDocValue.rowdata.dkm_id = null;
+            vReportDKDocValue.rowdata.dkmd_id = null;
+            vReportDKDocValue.rowdata.dk_ser_id = null;
+            $(vReportDKDocValue.table).DataTable().clear().draw();
+        }
+    }
+
+    $('.positions_btn_control').on('click', function (){
+        $("#positions-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    function addContractComment(){
+        fill_report_dk_contract_comment_modal_detail(0);
+    }
+
+    $('#table-report-dk-contract-comment').click(function () {
+        addContractComment();
+    });
+
+    $(vReportDKContactValue.table).on('dblclick', '.contract_comment_add', function (e) {
+        var selectedMainRow = this._DT_CellIndex.row;
+        var currentMainTable = $(vReportDKContactValue.table).DataTable();
+        var NameString =  /*[[${#authentication.name}]]*/ '';
+        vReportDKContactValue.rowdata.dkm_id = vReportDKMainValue.rowdata.dkm_id;
+        vReportDKContactValue.rowdata.dkmd_id = currentMainTable.row(selectedMainRow).data().dkmd_id;
+        vReportDKContactValue.rowdata.cnt_id = vReportDKMainValue.rowdata.cnt_id;
+        vReportDKContactValue.rowdata.cnt_name = vReportDKMainValue.rowdata.cnt_name;
+        vReportDKContactValue.rowdata.contract = currentMainTable.row(selectedMainRow).data().contract;
+
+        addContractComment();
+    });
+
+    $(document).ready(function(){
+        recreateDataTable(vReportDKContactValue);
+    });
+</script>
+
+</body>
+</html>

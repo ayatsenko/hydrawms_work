@@ -1,0 +1,215 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{client_requests.files.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+    <div class="card flex-fill w-100">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{client_requests.files.caption}"></h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <!--/*@thymesVar id="client_requests_files_detail" type="java.util.List"*/-->
+                <form id="requests-files-updater-form" data-toggle="validator" method="post"  enctype="multipart/form-data" class="was-validated" th:action="@{/client_requests/files_model}">
+                    <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                    <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-outline-dark" th:text="#{general.back}" form="requests-files-indexfrm">Cancel</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="requests-files-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                            <button th:case="1" type="submit" id="requests-files-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                            <button th:case="2" type="submit" id="requests-files-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                        </div>
+                    </div>
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="req_store_id" th:value="${req_store_id}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="req_id" th:value="${req_id}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="cnt_id" th:value="${cnt_id}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="cnt_name" th:value="${cnt_name}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="cnt_user_access" th:value="${cnt_user_access}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="client_requests_files_table_order_column" th:value="${client_requests_files_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="client_requests_files_table_order_type" th:value="${client_requests_files_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="client_requests_files_table_search" th:value="${client_requests_files_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="client_requests_files_table_pagelen" th:value="${client_requests_files_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="client_requests_files_table_page" th:value="${client_requests_files_table_page}" >
+
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_list_table_order_column" th:value="${clients_list_table_order_column}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_list_table_order_type" th:value="${clients_list_table_order_type}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_list_table_search" th:value="${clients_list_table_search}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_list_table_pagelen" th:value="${clients_list_table_pagelen}" >
+                    <!--suppress ThymeleafVariablesResolveInspection -->
+                    <input type="hidden" name="clients_list_table_page" th:value="${clients_list_table_page}" >                    
+                    
+                    <div class="form-row">
+                        <div class="col-md-2 mb-2" id="req_type_id_row">
+                            <label for="req_id" class="form-label" th:text="'1. '+ #{client_requests.list.req_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="req_id" name="req_id" th:value="${req_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <label for="req_name" class="form-label" th:text="'2. '+#{client_requests.list.req_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="req_name" name="req_name" th:value="${req_name}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- First Row -->
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-2" id="req_store_id_row">
+                            <label for="req_store_id" th:text="'3. '+#{client_requests.files.req_store_id}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="req_store_id" name="req_store_id" th:value="${req_store_id}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-2 mb-2" id="req_store_date_row">
+                            <label for="req_store_date" th:text="'4. '+#{client_requests.files.req_store_date}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="number" class="form-control" id="req_store_date" name="req_store_date" th:value="${req_store_date}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-4 mb-2" id="user_id_row">
+                            <label for="user_id" th:text="'5. '+#{client_requests.files.user_name}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <select type="text" id="user_id" name="user_id" class="form-control p-1" aria-describedby="user_id_helpBlock" th:value="${user_id}">
+                                <!--suppress ThymeleafVariablesResolveInspection -->
+                                <option class="p-1"
+                                        th:each="store_user : ${store_user_list}"
+                                        th:value="${store_user.id}"
+                                        th:text="${store_user.username}"
+                                        th:selected="${store_user.id == user_id}"
+                                ></option>
+                            </select>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Second Row -->
+
+                    <div class="form-row">
+                        <div class="col-md-3 mb-3" id="req_store_filename_row">
+                            <label for="req_store_filename" th:text="'6. '+#{client_requests.files.req_store_filename}"></label>
+                            <!--suppress ThymeleafVariablesResolveInspection -->
+                            <input type="text" class="form-control" id="req_store_filename" name="req_store_filename" th:value="${req_store_filename}">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+
+                        <div class="col-md-3 mb-3" id="req_store_addfile_row">
+                            <div class="form-group">
+                                <label class="form-label" for="req_store_file" th:text="'6. '+#{client_requests.files.req_file_addname}">File</label>
+                                <div>
+                                    <input type="file" class="validation-file btn" id="req_store_file" name="file">
+                                </div>
+                            </div>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Third Row -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--/*@thymesVar id="client_requests_files_detail" type="java.util.List"*/-->
+    <form id="requests-files-indexfrm" method="post" th:action="@{/client_requests}" hidden>
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="req_store_id" th:value="${req_store_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="req_id" th:value="${req_id}">
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="cnt_id" th:value="${cnt_id}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="cnt_name" th:value="${cnt_name}">
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="cnt_user_access" th:value="${cnt_user_access}">
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_order_column" th:value="${client_requests_files_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_order_type" th:value="${client_requests_files_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_search" th:value="${client_requests_files_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_pagelen" th:value="${client_requests_files_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="table_page" th:value="${client_requests_files_table_page}" >
+
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_list_table_order_column" th:value="${clients_list_table_order_column}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_list_table_order_type" th:value="${clients_list_table_order_type}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_list_table_search" th:value="${clients_list_table_search}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_list_table_pagelen" th:value="${clients_list_table_pagelen}" >
+        <!--suppress ThymeleafVariablesResolveInspection -->
+        <input name="clients_list_table_page" th:value="${clients_list_table_page}" >
+    </form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'requests-files-indexfrm')">Error</span>
+
+<script>
+    $(document).ready(function(){
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#clients_li').addClass('active').removeClass('collapsed');
+        $('#clients_a').attr('aria-expanded',true);
+        $('#clients').addClass('show');
+
+        $('#clients_list_a').addClass('text-primary');
+<!-- Form Start -->
+        $('#req_id').prop('readOnly',true);
+        $('#req_name').prop('readOnly',true);
+
+        $('#user_id').attr('readOnly',true);
+
+        $('#req_store_id').prop('readOnly',true);
+
+        $('#req_store_date').prop('readOnly',true);
+
+        $('#req_store_filename').prop('readOnly',true);
+
+<!-- Change Function -->
+        if($('#mode').val() === '0'){
+            $('#req_store_id_row').prop('hidden',true);
+            $('#req_store_date_row').prop('hidden',true);
+            $('#req_store_filename_row').prop('hidden',true);
+
+            $('#req_store_file').prop('required',true);
+        }
+        else if($('#mode').val() === '2' || $('#mode').val() === '4'){
+            $('#req_store_addfile_row').prop('hidden',true);
+        }
+    });
+</script>
+</body>
+</html>

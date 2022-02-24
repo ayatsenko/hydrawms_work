@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_dk_main_body" th:remove="tag">
+    <div id="table-report-dk-main-buttons">
+        <button type="button" id="table-report-dk-main-check" class="btn btn-dark mr-2" disabled><i class="fas fa-times"></i></button>
+        
+        <button type="button" id="table-report-dk-main-comment" class="btn btn-dark mr-2" disabled><i class="fas fa-comment-alt"></i></button>
+    </div>
+    <div><table id="table-report-dk-main" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+    
+    <form id="table-report-dk-main-link-form" th:action="@{/clients}" method="post" target="_blank">
+                <input name="cnt_id" hidden>
+                <input name="clients_list_table_order_column" hidden>
+                <input name="clients_list_table_order_type" hidden>
+                <input name="clients_list_table_search" hidden>
+                <input name="clients_list_table_pagelen" hidden>
+                <input name="clients_list_table_page" hidden>
+     </form>    
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    $("#table-report-dk-main").append('<tfoot class="font-weight-bold" style="background-color: #d5e1df">' +
+        '<th></th><th></th><th></th><th></th><th></th>' +
+        '<th></th><th></th><th></th><th></th><th></th>' +
+        '<th></th><th></th><th></th><th></th><th></th>' +
+        '<th></th><th></th><th></th>><th></th>' +
+        '</tfoot>');
+
+    var sfa_id_show, dk_paid_type_id_show, dk_paid_type_name_show, dkm_id_show, cnt_id_show, cnt_name_show, currency_id_show, currency_name_show, prepaying_currency_sum_show,
+        prepaying_sum_show, expired_currency_sum_show, expired_sum_show, trouble_currency_sum_show, troubl_sum_show, all_currency_sum_show, all_sum_show, empty_column_show,
+        approved_all_debt_sum_show, comment_id_show;
+
+    var sfa_id_width, dk_paid_type_id_width, dk_paid_type_name_width, dkm_id_width, cnt_id_width, cnt_name_width, currency_id_width, currency_name_width, prepaying_currency_sum_width,
+        prepaying_sum_width, expired_currency_sum_width, expired_sum_width, trouble_currency_sum_width, troubl_sum_width, all_currency_sum_width, all_sum_width, empty_column_width,
+        approved_all_debt_sum_width, comment_id_width;
+
+    var sfa_id_class, dk_paid_type_id_class, dk_paid_type_name_class, dkm_id_class, cnt_id_class, cnt_name_class, currency_id_class, currency_name_class, prepaying_currency_sum_class,
+        prepaying_sum_class, expired_currency_sum_class, expired_sum_class, trouble_currency_sum_class, troubl_sum_class, all_currency_sum_class, all_sum_class, empty_column_class,
+        approved_all_debt_sum_class, comment_id_class;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+
+        sfa_id_width = "";
+        sfa_id_class = "none";
+        dk_paid_type_id_width = "";
+        dk_paid_type_id_class = "none";
+        dk_paid_type_name_width = "40%";
+        dk_paid_type_name_class = "all md_size md_head_size md_footer_size text-center dk_paid_type_id";
+        dkm_id_width = "15%";
+        dkm_id_class = "md_size md_head_size md_footer_size cell-light-grey head-light-grey text-center";
+        cnt_id_width = "15%";
+        cnt_id_class = "min-tablet-p md_size md_head_size md_footer_size text-center";
+        cnt_name_width = "15%";
+        cnt_name_class = "md_size md_head_size md_footer_size cell-light-grey head-light-grey text-center";
+        currency_id_width = "15%";
+        currency_id_class = "min-tablet-p md_size md_head_size md_footer_size text-center";
+        currency_name_width = "";
+        currency_name_class = "none noExport";
+        empty_column_width = "";
+        empty_column_class = "none noExport";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        sfa_id_show = false;
+        sfa_id_width = "";
+        sfa_id_class = "";
+        dk_paid_type_id_show = false;
+        dk_paid_type_id_width = "";
+        dk_paid_type_id_class = "";
+        dk_paid_type_name_show = false;
+        dk_paid_type_name_width = "";
+        dk_paid_type_name_class = "";
+        dkm_id_show = false;
+        dkm_id_width = "";
+        dkm_id_class = "";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "";
+        cnt_name_show = true;
+        cnt_name_width = "35%";
+        cnt_name_class = "small_size small_head_size small_footer_size client_link";
+        currency_id_show = false;
+        currency_id_width = "";
+        currency_id_class = "";
+        currency_name_show = true;
+        currency_name_width = "3%";
+        currency_name_class = "small_size small_head_size small_footer_size text-center head-center";
+        approved_all_debt_sum_show = true;
+        approved_all_debt_sum_width = "5%";
+        approved_all_debt_sum_class = "small_size small_head_size small_footer_size text-center head-center";
+        prepaying_currency_sum_show = true;
+        prepaying_currency_sum_width = "5%";
+        prepaying_currency_sum_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center text-center";
+        prepaying_sum_show = true;
+        prepaying_sum_width = "5%";
+        prepaying_sum_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center text-center";
+        expired_currency_sum_show = true;
+        expired_currency_sum_width = "5%";
+        expired_currency_sum_class = "small_size small_head_size small_footer_size head-center text-center";
+        expired_sum_show = true;
+        expired_sum_width = "5%";
+        expired_sum_class = "small_size small_head_size small_footer_size head-center text-center";
+        trouble_currency_sum_show = true;
+        trouble_currency_sum_width = "5%";
+        trouble_currency_sum_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center text-center";
+        troubl_sum_show = true;
+        troubl_sum_width = "6%";
+        troubl_sum_class = "small_size small_head_size small_footer_size cell-light-grey head-light-grey head-center text-center";
+        all_currency_sum_show = true;
+        all_currency_sum_width = "7%";
+        all_currency_sum_class = "small_size small_head_size small_footer_size head-center text-center";
+        all_sum_show = true;
+        all_sum_width = "7%";
+        all_sum_class = "small_size small_head_size small_footer_size head-center text-center";
+        empty_column_show = false;
+        empty_column_width = "";
+        empty_column_class = "";
+        comment_id_show = true;
+        comment_id_width = "5%";
+        comment_id_class = "small_size small_head_size small_footer_size head-center text-center main_comment_add";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        sfa_id_show = false;
+        sfa_id_width = "";
+        sfa_id_class = "";
+        dk_paid_type_id_show = false;
+        dk_paid_type_id_width = "";
+        dk_paid_type_id_class = "";
+        dk_paid_type_name_show = false;
+        dk_paid_type_name_width = "";
+        dk_paid_type_name_class = "";
+        dkm_id_show = false;
+        dkm_id_width = "";
+        dkm_id_class = "";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "";
+        cnt_name_show = true;
+        cnt_name_width = "22%";
+        cnt_name_class = "md_size md_head_size md_footer_size client_link";
+        currency_id_show = false;
+        currency_id_width = "";
+        currency_id_class = "";
+        currency_name_show = true;
+        currency_name_width = "3%";
+        currency_name_class = "md_size md_head_size md_footer_size text-center head-center";
+        approved_all_debt_sum_show = true;
+        approved_all_debt_sum_width = "5%";
+        approved_all_debt_sum_class = "small_size small_head_size small_footer_size text-center head-center";
+        prepaying_currency_sum_show = true;
+        prepaying_currency_sum_width = "6%";
+        prepaying_currency_sum_class = "md_size md_head_size md_footer_size cell-light-grey head-light-grey head-center text-center";
+        prepaying_sum_show = true;
+        prepaying_sum_width = "6%";
+        prepaying_sum_class = "md_size md_head_size md_footer_size cell-light-grey head-light-grey head-center text-center";
+        expired_currency_sum_show = true;
+        expired_currency_sum_width = "6%";
+        expired_currency_sum_class = "md_size md_head_size md_footer_size head-center text-center";
+        expired_sum_show = true;
+        expired_sum_width = "6%";
+        expired_sum_class = "md_size md_head_size md_footer_size head-center text-center";
+        trouble_currency_sum_show = true;
+        trouble_currency_sum_width = "6%";
+        trouble_currency_sum_class = "md_size md_head_size md_footer_size cell-light-grey head-light-grey head-center text-center";
+        troubl_sum_show = true;
+        troubl_sum_width = "6%";
+        troubl_sum_class = "md_size md_head_size md_footer_size cell-light-grey head-light-grey head-center text-center";
+        all_currency_sum_show = true;
+        all_currency_sum_width = "7%";
+        all_currency_sum_class = "md_size md_head_size md_footer_size head-center text-center";
+        all_sum_show = true;
+        all_sum_width = "7%";
+        all_sum_class = "md_size md_head_size md_footer_size head-center text-center";
+        empty_column_show = true;
+        empty_column_width = "10%";
+        empty_column_class = "md_size md_head_size md_footer_size head-center";
+        comment_id_show = true;
+        comment_id_width = "5%";
+        comment_id_class = "small_size small_head_size small_footer_size head-center text-center main_comment_add";
+    }
+
+    var vReportDKMainValue;
+    vReportDKMainValue = {
+        table : '#table-report-dk-main',
+        button_form: "#table-report-dk-main-buttons",
+        ajax : {
+            "url": /*[[@{/report_dk/get_main_table}]]*/ "report_dk/get_main_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.dk_paid_type_id = vReportDKMainValue.rowdata.dk_paid_type_id;
+                d.dk_ser_id = vReportDKMainValue.rowdata.dk_ser_id;
+            }
+        },
+        key : "dkm_id",
+        switchControl : report_dk_detail_switchControl,
+        rowdata:{
+            dkm_id: null,
+            dk_paid_type_id: null,
+            dk_ser_id: null,
+            cnt_id: null,
+            cnt_name: null
+        },
+        ordering: true,
+        order: [
+            [13, "desc"]
+        ],
+        autoWidth: true,
+        dom: vDomParam,
+        footerCallback: function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+            var numFormat = $.fn.dataTable.render.number( '\ ', '.', 2, '').display;
+            // Total over all pages
+            //prepaying_currency_sum = api.column(8, {filter:'applied'}).data().reduce( function (a, b){ return intVal(a) + intVal(b);}, 0 );
+            prepaying_sum = api.column(10, {filter:'applied'}).data().reduce( function (a, b){ return intVal(a) + intVal(b);}, 0 );
+
+            //expired_currency_sum = api.column(10, {filter:'applied'}).data().reduce( function (a, b){ return intVal(a) + intVal(b);}, 0 );
+            expired_sum = api.column(12, {filter:'applied'}).data().reduce( function (a, b){ return intVal(a) + intVal(b);}, 0 );
+
+            //trouble_currency_sum = api.column(12, {filter:'applied'}).data().reduce( function (a, b){ return intVal(a) + intVal(b);}, 0 );
+            trouble_sum = api.column(14, {filter:'applied'}).data().reduce( function (a, b){ return intVal(a) + intVal(b);}, 0 );
+
+            //all_currency_sum = api.column(14, {filter:'applied'}).data().reduce( function (a, b){ return intVal(a) + intVal(b);}, 0 );
+            all_sum = api.column(16, {filter:'applied'}).data().reduce( function (a, b){ return intVal(a) + intVal(b);}, 0 );
+
+            $( api.column(7).footer()).html('Всего: ');
+            //$( api.column(8).footer()).html(numFormat(prepaying_currency_sum));
+            $( api.column(10).footer()).html(numFormat(prepaying_sum));
+            //$( api.column(10).footer()).html(numFormat(expired_currency_sum));
+            $( api.column(12).footer()).html(numFormat(expired_sum));
+            //$( api.column(12).footer()).html(numFormat(trouble_currency_sum));
+            $( api.column(14).footer()).html(numFormat(trouble_sum));
+            //$( api.column(14).footer()).html(numFormat(all_currency_sum));
+            $( api.column(16).footer()).html(numFormat(all_sum));
+        },
+        createdRow: function(row, data, index) {
+            if ( data.prepaying_currency_sum !== '' ){ $(row).find('td:eq(3)').css('color', '#ff1d00');}
+            if ( data.prepaying_sum !== '' ){ $(row).find('td:eq(4)').css('color', '#ff1d00');}
+
+            if ( data.trouble_currency_sum > 0 ){ $(row).find('td:eq(7)').css('background-color', '#ff8566');}
+            if ( data.troubl_sum > 0 ){ $(row).find('td:eq(8)').css('background-color', '#ff8566');}
+        },
+        columnDefs: [
+            {"targets": [0], "width": sfa_id_width, "className": sfa_id_class, "visible": sfa_id_show},
+            {"targets": [1], "width": dk_paid_type_id_width, "className": dk_paid_type_id_class, "visible": dk_paid_type_id_show, render: function (a, b, data, d) {
+                    if(data.dk_paid_type_name === 'С покупателем') { return '<a class=\"btn btn-xs m-0 p-0\"><i class=\"align-middle text-success fas fa-fw fa-user-tie\"></i></a>';}
+                    else if(data.dk_paid_type_name === 'С поставщиком') { return '<a class=\"btn btn-xs m-0 p-0\"><i class=\"align-middle text-danger fas fa-fw fa-truck\"></i></a>';}
+                    else{return '';}
+            }},
+            {"targets": [2], "width": dk_paid_type_name_width, "className": dk_paid_type_name_class, "visible": dk_paid_type_name_show},
+            {"targets": [3], "width": dkm_id_width, "className": dkm_id_class, "visible": dkm_id_show},
+            {"targets": [4], "width": cnt_id_width, "className": cnt_id_class, "visible": cnt_id_show},
+            {"targets": [5], "width": cnt_name_width, "className": cnt_name_class, "visible": cnt_name_show},
+            {"targets": [6], "width": currency_id_width, "className": currency_id_class, "visible": currency_id_show},
+            {"targets": [7], "width": currency_name_width, "className": currency_name_class, "visible": currency_name_show},
+            {"targets": [8], "width": approved_all_debt_sum_width, "className": approved_all_debt_sum_class, "visible": approved_all_debt_sum_show, render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [9], "width": prepaying_currency_sum_width, "className": prepaying_currency_sum_class, "visible": prepaying_currency_sum_show, render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [10], "width": prepaying_sum_width, "className": prepaying_sum_class, "visible": prepaying_sum_show, render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [11], "width": expired_currency_sum_width, "className": expired_currency_sum_class, "visible": expired_currency_sum_show, render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [12], "width": expired_sum_width, "className": expired_sum_class, "visible": expired_sum_show, render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [13], "width": trouble_currency_sum_width, "className": trouble_currency_sum_class, "visible": trouble_currency_sum_show, render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [14], "width": troubl_sum_width, "className": troubl_sum_class, "visible": troubl_sum_show, render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [15], "width": all_currency_sum_width, "className": all_currency_sum_class, "visible": all_currency_sum_show, render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [16], "width": all_sum_width, "className": all_sum_class, "visible": all_sum_show, render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [17], "width": comment_id_width, "className": comment_id_class, "visible": comment_id_show,
+                render: function ( data, type, row ) {
+                    if ( type === 'display' ) {             //if column data is 1 then set attr to checked, use row id as input id (plus prefix)
+                        return '<label class="custom-control custom-checkbox mb-0 mt-0 text-center"><input type="checkbox" ' + ((data == 1) ? 'checked' : '') + ' id="input' + row.id + '" class="custom-control-input" disabled><span class="custom-control-label"></span></label>'
+                    }
+                    return data;
+                }
+            },
+            {"targets": [18], "width": empty_column_width, "className": empty_column_class, "visible": empty_column_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{report_dk.main.sfa_id}]]*/ "sfa_id", "data": "sfa_id"},
+            /*1*/{"title": /*[[#{report_dk.main.dk_paid_type_id}]]*/ "dk_paid_type_id", "data": "dk_paid_type_id"},
+            /*2*/{"title": /*[[#{report_dk.main.dk_paid_type_name}]]*/ "dk_paid_type_name", "data": "dk_paid_type_name"},
+            /*3*/{"title": /*[[#{report_dk.main.dkm_id}]]*/ "dkm_id", "data": "dkm_id"},
+            /*4*/{"title": /*[[#{report_dk.main.cnt_id}]]*/ "cnt_id", "data": "cnt_id"},
+            /*5*/{"title": /*[[#{report_dk.main.cnt_name}]]*/ "cnt_name", "data": "cnt_name"},
+            /*6*/{"title": /*[[#{report_dk.main.currency_id}]]*/ "currency_id", "data": "currency_id"},
+            /*7*/{"title": /*[[#{report_dk.main.currency_name}]]*/ "currency_name", "data": "currency_name"},
+            /*8*/{"title": /*[[#{report_dk.main.approved_all_debt_sum}]]*/ "approved_all_debt_sum", "data": "approved_all_debt_sum"},
+            /*9*/{"title": /*[[#{report_dk.main.prepaying_currency_sum}]]*/ "prepaying_currency_sum", "data": "prepaying_currency_sum"},
+            /*10*/{"title": /*[[#{report_dk.main.prepaying_sum}]]*/ "prepaying_sum", "data": "prepaying_sum"},
+            /*11*/{"title": /*[[#{report_dk.main.expired_currency_sum}]]*/ "expired_currency_sum", "data": "expired_currency_sum"},
+            /*12*/{"title": /*[[#{report_dk.main.expired_sum}]]*/ "expired_sum", "data": "expired_sum"},
+            /*13*/{"title": /*[[#{report_dk.main.trouble_currency_sum}]]*/ "trouble_currency_sum", "data": "trouble_currency_sum"},
+            /*14*/{"title": /*[[#{report_dk.main.troubl_sum}]]*/ "troubl_sum", "data": "troubl_sum"},
+            /*15*/{"title": /*[[#{report_dk.main.all_currency_sum}]]*/ "all_currency_sum", "data": "all_currency_sum"},
+            /*16*/{"title": /*[[#{report_dk.main.all_sum}]]*/ "all_sum", "data": "all_sum"},
+            /*17*/{"title": /*[[#{report_dk.main.dk_com_text_menu}]]*/ "comment_id", "data": "comment_id"},
+            /*18*/{"title": /*[[#{report_dk.main.empty_column}]]*/ "empty_column", "data": "empty_column"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    $('#table-report-dk-main').on('dblclick', '.client_link', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var currentTable = $('#table-report-dk-main').DataTable();
+
+        $("#table-report-dk-main-link-form input[name=cnt_id]").val(currentTable.row(selectedRow).data().cnt_id);
+
+        $("#table-report-dk-main-link-form input[name=clients_list_table_order_column]").val(0);
+        $("#table-report-dk-main-link-form input[name=clients_list_table_order_type]").val("desc");
+        $("#table-report-dk-main-link-form input[name=clients_list_table_search]").val(currentTable.row(selectedRow).data().cnt_name);
+        $("#table-report-dk-main-link-form input[name=clients_list_table_pagelen]").val(25);
+        $("#table-report-dk-main-link-form input[name=clients_list_table_page]").val(0);
+        $("#table-report-dk-main-link-form").submit();
+    });    
+    
+    function report_dk_detail_switchControl(){
+        if(vReportDKMainValue.rowdata.dkm_id != null){
+            $('#report_dk_contracts_card').removeAttr('hidden');
+
+            vReportDKContactValue.rowdata.dk_paid_type_id = $("#report_dk_paid_type_list").val();
+            vReportDKContactValue.rowdata.dkm_id = vReportDKMainValue.rowdata.dkm_id;
+            vReportDKContactValue.rowdata.dk_ser_id = vReportDKServiceValue.rowdata.ser_id;
+            $(vReportDKContactValue.table).DataTable().ajax.reload();
+
+            $('#report_dk_doc_card').attr('hidden',true);
+
+            vReportDKDocValue.rowdata.dk_paid_type_id = null;
+            vReportDKDocValue.rowdata.dkm_id = null;
+            vReportDKDocValue.rowdata.dkmd_id = null;
+            vReportDKDocValue.rowdata.dk_ser_id = null;
+            $(vReportDKDocValue.table).DataTable().clear().draw();
+
+            if(RoleAllAdmin === true) {
+                $('#table-report-dk-main-check').prop('disabled', false).removeClass('btn-dark').addClass('btn-danger');
+            }
+            else{
+                $('#table-report-dk-main-check').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            }
+
+            $('#table-report-dk-main-comment').prop('disabled', false).removeClass('btn-dark').addClass('btn-info');
+        }
+        else{
+            $('#report_dk_contracts_card').attr('hidden',true);
+
+            vReportDKContactValue.rowdata.dk_paid_type_id = null;
+            vReportDKContactValue.rowdata.dkm_id = null;
+            vReportDKContactValue.rowdata.dk_ser_id = null;
+            $(vReportDKContactValue.table).DataTable().clear().draw();
+
+            $('#report_dk_doc_card').attr('hidden',true);
+
+            vReportDKDocValue.rowdata.dk_paid_type_id = null;
+            vReportDKDocValue.rowdata.dkm_id = null;
+            vReportDKDocValue.rowdata.dkmd_id = null;
+            vReportDKDocValue.rowdata.dk_ser_id = null;
+            $(vReportDKDocValue.table).DataTable().clear().draw();
+
+            $('#table-report-dk-main-check').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            $('#table-report-dk-main-comment').prop('disabled', true).addClass('btn-dark').removeClass('btn-info');
+        }
+    }
+
+    $('.positions_btn_control').on('click', function (){
+        $("#positions-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    function addBlockReportDKMain(){
+        var RowID = vReportDKMainValue.rowdata.dkm_id;
+        var CntID = vReportDKMainValue.rowdata.cnt_id;
+        $.ajax({
+            url: /*[[ @{/report_dk/report_dk_block} ]]*/ "/report_dk/report_dk_block",
+            type: 'POST',
+            data: {
+                "cnt_id": CntID
+            },
+            success: function (result) {
+                vReportDKMainValue.rowdata.dkm_id = RowID;
+                $(vReportDKMainValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    $('#table-report-dk-main-check').click(function () {
+        addBlockReportDKMain();
+    });
+
+    function addMainComment(){
+        fill_report_dk_main_comment_modal_detail(0);
+    }
+
+    $('#table-report-dk-main-comment').click(function () {
+        addMainComment();
+    });
+
+    $(vReportDKMainValue.table).on('dblclick', '.main_comment_add', function (e) {
+        var selectedMainRow = this._DT_CellIndex.row;
+        var currentMainTable = $(vReportDKMainValue.table).DataTable();
+        var NameString =  /*[[${#authentication.name}]]*/ '';
+        vReportDKMainValue.rowdata.dkm_id = currentMainTable.row(selectedMainRow).data().dkm_id;
+        vReportDKMainValue.rowdata.cnt_id = currentMainTable.row(selectedMainRow).data().cnt_id;
+        vReportDKMainValue.rowdata.cnt_name = currentMainTable.row(selectedMainRow).data().cnt_name;
+
+        addMainComment();
+    });
+
+    $(document).ready(function(){
+        recreateDataTable(vReportDKMainValue);
+    });
+</script>
+
+</body>
+</html>

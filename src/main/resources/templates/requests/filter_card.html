@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="requests_filter_body" th:remove="tag">
+   <div id="requests_filter_large_div">
+       <form class="form-inline">
+        <div class="custom-control custom-switch">
+            <input class="custom-control-input" type="checkbox" id="requests_filter_check" name="request_filters_check">
+            <label class="custom-control-label" for="requests_filter_check"></label>
+        </div>
+        <div class="form-group form-group-sm mr-2">
+            <label for="requests_filter_start_date" class="mr-2" th:text="#{requests.list.filter_start_date}">StartDate:</label>
+            <input class="form-control" type="text" id="requests_filter_start_date" name="requests_filter_start_date" disabled/>
+        </div>
+
+        <div class="form-group form-group-sm mr-2">
+            <label for="requests_filter_end_date" class="mr-2" th:text="#{requests.list.filter_end_date}">EndDate:</label>
+            <input class="form-control" type="text" id="requests_filter_end_date" name="requests_filter_end_date" disabled/>
+        </div>
+        <button type="button" class="btn btn-dark align-middle" id="requests_filter_show" disabled><i data-feather="search"></i></button>
+       </form>
+   </div>
+       <div id="requests_filter_small_div">
+       </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var mobileScreenSize = window.screen.width < 1024 && window.screen.height < 768;
+    var smallScreenSize = window.screen.width > 1024 && window.screen.height <= 768;
+
+    $("#requests_filter_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#requests_filter_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#requests_filter_check').on('click', function(){
+        if($(this).prop('checked')){
+            $('#requests_filter_start_date').removeAttr('disabled');
+            $('#requests_filter_end_date').removeAttr('disabled');
+            $("#requests_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        }
+        else{
+            $('#requests_filter_start_date').attr('disabled',true);
+            $('#requests_filter_end_date').attr('disabled',true);
+            $("#requests_filter_show").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            if(vRequestListValue.rowdata.requests_filter_id === 1){
+                vRequestListValue.rowdata.requests_filter_id = 0;
+                $(vRequestListValue.table).DataTable().ajax.reload();
+                $('#requests_filter_div').removeClass('show').collapse('hide');
+            }
+        }
+    });
+
+    $(document).ready(function() {
+        if (mobileScreenSize) {
+            $("#requests_filter_start_date").attr('readonly',true);
+            $("#requests_filter_end_date").attr('readonly',true);
+
+            $('#requests_files_div').removeClass('show').collapse('hide');
+            $('#requests_answers_div').removeClass('show').collapse('hide');
+            $('#requests_times_div').removeClass('show').collapse('hide');
+            $('#requests_chat_div').removeClass('show').collapse('hide');
+
+            $('#requests_filter_large_div').attr('hidden',true);
+            $('#requests_filter_small_div').removeAttr('hidden');
+        }
+        else if(smallScreenSize){
+            $('#requests_filter_large_div').removeAttr('hidden');
+            $('#requests_filter_small_div').attr('hidden',true);
+        }
+        else{
+            $('#requests_filter_large_div').removeAttr('hidden');
+            $('#requests_filter_small_div').attr('hidden',true);
+        }
+    });
+</script>
+
+</body>
+</html>

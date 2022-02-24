@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="client_requests_back_body" th:remove="tag">
+        <div class="input-group">
+                <div class="input-group-prepend">
+                    <button type="submit" id="client-requests-back-backbtn" form="client-requests-back-form" class="btn btn-primary" th:text="#{general.back}">Back</button>
+
+                    <span class="input-group-text" id="cur_cnt_text">Клиент: </span>
+                    <span class="input-group-text" id="cur_cnt_id"></span>
+                </div>
+            <input type="text" maxlength="128" class="form-control" id="cur_cnt_name" readonly>
+        </div>
+
+        <form id="client-requests-back-form" class="mb-2" th:action="@{/clients}" method="post" hidden>
+            <input type="hidden" name="cnt_id">
+
+            <input type="hidden" name="clients_list_table_order_column">
+            <input type="hidden" name="clients_list_table_order_type">
+            <input type="hidden" name="clients_list_table_search">
+            <input type="hidden" name="clients_list_table_pagelen">
+            <input type="hidden" name="clients_list_table_page">
+        </form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    $('#client-requests-back-form').submit(function() {
+        $("#client-requests-back-form input[name=cnt_id]").val($('#cnt_id').val());
+
+        $("#client-requests-back-form input[name=clients_list_table_order_column]").val($('#clients_list_table_order_column').val());
+        $("#client-requests-back-form input[name=clients_list_table_order_type]").val($('#clients_list_table_order_type').val());
+        $("#client-requests-back-form input[name=clients_list_table_search]").val($('#clients_list_table_search').val());
+        $("#client-requests-back-form input[name=clients_list_table_pagelen]").val($('#clients_list_table_pagelen').val());
+        $("#client-requests-back-form input[name=clients_list_table_page]").val($('#clients_list_table_page').val());
+    });
+</script>
+</body>
+</html>

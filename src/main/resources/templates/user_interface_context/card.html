@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="user_interface_context_body" th:remove="tag">
+        <div><table id="table-user-interface-context" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+
+              <div id="location-workplace-btn-small" class="d-block">
+                 <button id="user-interface-context-upbtn-sx" class="btn btn-secondary" disabled><i data-feather="arrow-up"></i></button>
+                 <button id="user-interface-context-downbtn-sx" class="btn btn-secondary" disabled><i data-feather="arrow-down"></i></button>
+                 <button id="user-interface-context-hidebtn-sx" class="btn btn-secondary" disabled><i data-feather="layers"></i></button>
+              </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+        var vUserInterfaceContextValue;
+        vUserInterfaceContextValue = {
+                table : '#table-user-interface-context',
+                ajax : {
+                        "url": /*[[@{/user_interface_context/gettable}]]*/ "user_interface_context/gettable",
+                        "type": "post",
+                        "data": function ( d ) {
+                                d.role_id = vUserInterfaceRoleValue.rowdata.role_id,
+                                d.menu_id = vUserInterfaceMenuValue.rowdata.menu_id
+                        }
+                },
+                key : "mcurl_id",
+                switchControl : user_interface_context_switchControl,
+                rowdata: {
+                        mcurl_id: null,
+                        role_id: null,
+                        menu_id: null,
+                        mc_hide: null,
+                        mc_default: null,
+                        mc_list_num: null,
+
+                        user_interface_context_table_order_column: null,
+                        user_interface_context_table_order_type: null,
+                        user_interface_context_table_search: null,
+                        user_interface_context_table_pagelen: null,
+                        user_interface_context_table_page: null
+                },
+                ordering: true,
+                order: [
+                        [0, "asc"]
+                ],
+
+                dom: 'Blfrtip',
+                columnDefs:[
+                        {"targets": 0, "visible": false},
+                        {"targets": 1, "visible": false},
+                        {"targets": 3, "visible": false},
+                        {"targets": [5,6],
+                                render: function ( data, type, row ) {
+                                        if ( type === 'display' ) {             //if column data is 1 then set attr to checked, use row id as input id (plus prefix)
+                                                return '<input type="checkbox" ' + ((data == 1) ? 'checked' : '') + ' id="input' + row.id + '" class="filter-ck" disabled="true" />';
+                                        }
+                                        return data;
+                                },
+                                "className": "dt-body-center"
+                        },
+                        {"targets": 7, "visible": false}
+                ],
+                columns : [
+                    /*0*/{"title": /*[[#{user_interface_context.rn}]]*/ "rn", "data": "rn", "width": "5%", "className": "desktop"},
+                    /*1*/{"title": /*[[#{user_interface_context.mcurl_id}]]*/ "mcurl_id", "data": "mcurl_id", "width": "5%"},
+                    /*2*/{"title": /*[[#{user_interface_context.mc_row}]]*/ "mc_row", "data": "mc_row", "width": "5%"},
+                    /*3*/{"title": /*[[#{user_interface_context.mc_id}]]*/ "mc_id", "data": "mc_id", "width": "5%"},
+                    /*4*/{"title": /*[[#{user_interface_context.mc_name}]]*/ "mc_name", "data": "mc_name", "width": "65%"},
+                    /*5*/{"title": /*[[#{user_interface_context.mc_default}]]*/ "mc_default", "data": "mc_default", "width": "5%"},
+                    /*6*/{"title": /*[[#{user_interface_context.mc_hide}]]*/ "mc_hide", "data": "mc_hide", "width": "5%"},
+                    /*7*/{"title": /*[[#{user_interface_context.mc_list_num}]]*/ "mc_list_num", "data": "mc_list_num", "width": "5%"}
+                ],
+                pageLength: 25,
+                copy_button: false,
+                excel_button: false,
+                pdf_button: false,
+                print_button: false
+        };
+
+        function user_interface_context_switchControl(){
+                if(vUserInterfaceContextValue.rowdata.mcurl_id != null) {
+                    <!-- Manin Button -->
+                        if(vUserInterfaceContextValue.rowdata.mc_list_num === 1) {
+                                $("#user-interface-context-upbtn-sx").prop('disabled',true).addClass('btn-secondary').removeClass('btn-primary');
+                        }
+                        else{
+                                $("#user-interface-context-upbtn-sx").prop('disabled', false).removeClass('btn-secondary').addClass('btn-primary');
+                        }
+
+                        if(vUserInterfaceContextValue.rowdata.mc_list_num === 12) {
+                                $("#user-interface-context-downbtn-sx").prop('disabled',true).addClass('btn-secondary').removeClass('btn-primary');
+                        }
+                        else{
+                                $("#user-interface-context-downbtn-sx").prop('disabled', false).removeClass('btn-secondary').addClass('btn-primary');
+                        }
+
+                        if(vUserInterfaceContextValue.rowdata.mc_default === 1) {
+                                $("#user-interface-context-hidebtn-sx").prop('disabled',true).addClass('btn-secondary').removeClass('btn-primary');
+                        }
+                        else{
+                                $("#user-interface-context-hidebtn-sx").prop('disabled', false).removeClass('btn-secondary').addClass('btn-primary');
+                        }
+                } else{
+                    <!-- Manin Button -->
+                        $("#user-interface-context-upbtn-sx").prop('disabled',true).addClass('btn-secondary').removeClass('btn-primary');
+                        $("#user-interface-context-downbtn-sx").prop('disabled',true).addClass('btn-secondary').removeClass('btn-primary');
+                        $("#user-interface-context-hidebtn-sx").prop('disabled',true).addClass('btn-secondary').removeClass('btn-primary');
+                }
+        }
+        
+        $('.user_interface_context_btn_control').on('click', function (){
+                $("#user-interface-context-detail input[name=mode]").val($(this).attr("mode"));
+        });
+
+        $('#user-interface-context-detail').submit(function() {
+                vUserInterfaceContextValue.rowdata.user_interface_context_table_order_column = $(vUserInterfaceContextValue.table).DataTable().order()[0][0];
+                vUserInterfaceContextValue.rowdata.user_interface_context_table_order_type = $(vUserInterfaceContextValue.table).DataTable().order()[0][1];
+                vUserInterfaceContextValue.rowdata.user_interface_context_table_search = $(vUserInterfaceContextValue.table).DataTable().search();
+                vUserInterfaceContextValue.rowdata.user_interface_context_table_pagelen = $(vUserInterfaceContextValue.table).DataTable().page.len();
+                vUserInterfaceContextValue.rowdata.user_interface_context_table_page = $(vUserInterfaceContextValue.table).DataTable().page.info().page;
+                <!-- Recreate Contragent Ajax Filter Value -->
+
+                Object.keys(vUserInterfaceContextValue.rowdata).forEach(function (index) {
+                   $("#user-interface-context-detail").append("<input name=\"" + index + "\" hidden>");
+                   $("#user-interface-context-detail input[name=\"" + index + "\"]").val(vUserInterfaceContextValue.rowdata[index]);
+                });
+        });
+
+        $('#user-interface-context-upbtn-sx').on('click', function( event ) {
+                if (vUserInterfaceContextValue.rowdata.mcurl_id != null) {
+                        $.ajax({
+                                url: /*[[ @{/user_interface_context/up} ]]*/ "/user_interface_context/up",
+                                type: 'POST',
+                                data: {"mcurl_id": vUserInterfaceContextValue.rowdata.mcurl_id},
+                                success: function (result) {
+                                        vUserInterfaceContextValue.rowdata.murl_id = vUserInterfaceContextValue.rowdata.mcurl_id;
+                                        vUserInterfaceContextValue.rowdata.role_id = vUserInterfaceRoleValue.rowdata.role_id;
+                                        vUserInterfaceContextValue.rowdata.menu_id = vUserInterfaceMenuValue.rowdata.menu_id;
+                                        $(vUserInterfaceContextValue.table).DataTable().ajax.reload();
+                                }
+                        });
+                }
+        }); <!-- Up Button -->
+
+        $('#user-interface-context-downbtn-sx').on('click', function( event ) {
+                if (vUserInterfaceContextValue.rowdata.mcurl_id != null) {
+                        $.ajax({
+                                url: /*[[ @{/user_interface_context/down} ]]*/ "/user_interface_context/down",
+                                type: 'POST',
+                                data: {"mcurl_id": vUserInterfaceContextValue.rowdata.mcurl_id},
+                                success: function (result) {
+                                        vUserInterfaceContextValue.rowdata.murl_id = vUserInterfaceContextValue.rowdata.mcurl_id;
+                                        vUserInterfaceContextValue.rowdata.role_id = vUserInterfaceRoleValue.rowdata.role_id;
+                                        vUserInterfaceContextValue.rowdata.menu_id = vUserInterfaceMenuValue.rowdata.menu_id;
+                                        $(vUserInterfaceContextValue.table).DataTable().ajax.reload();
+                                }
+                        });
+                }
+        }); <!-- Down Button -->
+
+        $('#user-interface-context-hidebtn-sx').on('click', function( event ) {
+                if (vUserInterfaceContextValue.rowdata.mcurl_id != null) {
+                        $.ajax({
+                                url: /*[[ @{/user_interface_context/hide} ]]*/ "/user_interface_context/hide",
+                                type: 'POST',
+                                data: {"mcurl_id": vUserInterfaceContextValue.rowdata.mcurl_id},
+                                success: function (result) {
+                                        vUserInterfaceContextValue.rowdata.murl_id = vUserInterfaceContextValue.rowdata.mcurl_id;
+                                        vUserInterfaceContextValue.rowdata.role_id = vUserInterfaceRoleValue.rowdata.role_id;
+                                        vUserInterfaceContextValue.rowdata.menu_id = vUserInterfaceMenuValue.rowdata.menu_id;
+                                        $(vUserInterfaceContextValue.table).DataTable().ajax.reload();
+                                }
+                        });
+                }
+        }); <!-- Hide Button -->
+
+        $(document).ready(function() {
+                vUserInterfaceContextValue.rowdata.murl_id = /*[[${murl_id}]]*/ null;
+                vUserInterfaceContextValue.rowdata.role_id = /*[[${role_id}]]*/ null;
+                vUserInterfaceContextValue.rowdata.menu_id = /*[[${menu_id}]]*/ null;
+                 recreateDataTable(vUserInterfaceContextValue);
+        });
+</script>
+
+</body>
+</html>

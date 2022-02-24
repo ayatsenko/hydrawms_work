@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{client_actions.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 col-lg-7 pl-2 pr-1 pt-0">
+        <div class="card order-2 mb-2" id="client_actions_back_div">
+            <div>
+                <span th:replace="client_actions/back_card :: clients_actions_back_body"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-5 pl-1 pr-2 pt-0">
+        <div class="card order-2 mb-2" id="client_actions_link_div">
+            <div class="text-center">
+                <span th:replace="client_actions/link_card :: clients_actions_link_body"></span>
+            </div>
+        </div>
+    </div><!-- Client And Buttons Card -->
+
+    <div class="col-12 col-lg-12 pl-2 pr-2 pt-0">
+        <div class="card mb-1">
+            <div class="card-header">
+                <div class="card-actions float-right">
+                    <a href="#client_actions_filter_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#client_actions_filter_div" data-toggle="collapse" th:text="#{client_actions.filter.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse" id="client_actions_filter_div">
+                <form class="form-inline">
+                    <div class="custom-control custom-switch">
+                        <input class="custom-control-input" type="checkbox" id="client_actions_filter_check" name="client_actions_filter_check">
+                        <label class="custom-control-label" for="client_actions_filter_check"></label>
+                    </div>
+                    <div class="form-group form-group-sm mr-2">
+                        <label for="client_actions_filter_start_date" class="mr-2" th:text="#{client_actions.filter_start_date}">StartDate:</label>
+                        <input class="form-control" type="text" id="client_actions_filter_start_date" name="client_actions_start_date" disabled/>
+                    </div>
+
+                    <div class="form-group form-group-sm mr-2">
+                        <label for="client_actions_filter_end_date" class="mr-2" th:text="#{client_actions.filter_end_date}">EndDate:</label>
+                        <input class="form-control" type="text" id="client_actions_filter_end_date" name="client_actions_end_date" disabled/>
+                    </div>
+                    <button type="button" class="btn btn-dark align-middle" id="client_actions_filter_show" disabled><i data-feather="search"></i></button>
+                </form>
+            </div>
+        </div><!-- Filter Client Action Card -->
+    </div>
+
+    <div class="col-12 col-lg-12 pl-2 pr-2 pt-0">
+        <div class="card mb-1">
+            <div class="card-header">
+                <h5 class="card-title" th:text="#{client_actions.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="client_actions_div">
+                <div>
+                    <span th:replace="client_actions/main_modal :: client_action_main_modal_body"></span>
+                    <span th:replace="client_actions/card :: client_actions_body"></span>
+                </div>
+            </div>
+        </div><!-- Client Action Card -->
+    </div>
+</div><!-- Table Row -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="client_actions/back_card :: cardscript"></script>
+<script th:replace="client_actions/link_card :: cardscript"></script>
+<script th:replace="client_actions/main_modal :: cardscript"></script>
+<script th:replace="client_actions/card :: cardscript"></script>
+</body>
+</html>

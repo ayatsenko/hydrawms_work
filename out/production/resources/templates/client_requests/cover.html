@@ -1,0 +1,223 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{client_requests.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 col-lg-7">
+        <div class="card order-2 col-12" id="client_actions_back_div">
+            <div>
+                <span th:replace="client_requests/back_card :: client_requests_back_body"></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-5">
+        <div class="card order-2 col-12" id="client_actions_link_div">
+            <div class="text-center">
+                <span th:replace="client_requests/link_card :: client_requests_link_body"></span>
+            </div>
+        </div>
+    </div><!-- Client And Buttons Row -->
+
+    <div class="col-12 col-lg-8">
+        <div class="card" id="requests_list_div">
+            <div class="card-header">
+                <h5 class="card-title mb-0" th:text="#{client_requests.list.caption}"></h5>
+                <form class="form-inline">
+                    <div class="custom-control custom-switch">
+                        <input class="custom-control-input" type="checkbox" id="client_requests_filter_check" name="client_requests_filter_check">
+                        <label class="custom-control-label" for="client_requests_filter_check"></label>
+                    </div>
+                    <div class="form-group form-group-sm mr-2">
+                        <label for="client_requests_filter_start_date" class="mr-2" th:text="#{requests.list.filter_start_date}">StartDate:</label>
+                        <input class="form-control" type="text" id="client_requests_filter_start_date" name="client_requests_start_date" disabled/>
+                    </div>
+
+                    <div class="form-group form-group-sm mr-2">
+                        <label for="client_requests_filter_end_date" class="mr-2" th:text="#{requests.list.filter_end_date}">EndDate:</label>
+                        <input class="form-control" type="text" id="client_requests_filter_end_date" name="client_requests_end_date" disabled/>
+                    </div>
+                    <button type="button" class="btn btn-dark align-middle" id="client_requests_filter_show" disabled><i data-feather="search"></i></button>
+                </form>
+            </div>
+            <div class="card-body py-3">
+                <div>
+                    <span th:replace="client_requests/list_card :: client_requests_list_body"></span>
+                </div>
+            </div>
+        </div><!-- Requests List -->
+
+        <div class="card" id="requests_chat_card">
+            <div class="card-header">
+                <div class="card-actions float-right">
+                    <a href="#requests_chat_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title mb-0" th:text="#{client_requests.chat.caption}"></h5>
+            </div>
+            <div class="card-body py-3 collapse show" id="requests_chat_div">
+                <div>
+                    <span th:replace="client_requests/chat_card :: client_requests_chat_body"></span>
+                </div>
+            </div>
+        </div><!-- First Column -->
+    </div><!-- First Column -->
+
+    <div class="col-12 col-lg-4">
+        <div class="card" id="requests_times_card">
+            <div class="card-header">
+                <div class="card-actions float-right">
+                    <a href="#requests_times_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title mb-0" th:text="#{client_requests.times.caption}"></h5>
+            </div>
+            <div class="card-body py-3 collapse show" id="requests_times_div">
+                <div class="row mb-3">
+                    <div class="col-12 col-lg-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" th:text="#{client_requests.times.req_date}">Request Date:</span>
+                            </div>
+                            <input type="text" class="form-control text-dark font-weight-bold" id="req_date" name="req_date" disabled>
+                        </div>
+                    </div>
+                </div><!-- Request Date Row -->
+
+                <div class="row mb-3">
+                    <div class="col-12 col-lg-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" th:text="#{client_requests.times.sale_date}">Sale Date:</span>
+                            </div>
+                            <input type="text" class="form-control text-dark font-weight-bold" id="req_fill_value" name="req_fill_value" disabled>
+                            <input type="text" class="form-control text-dark font-weight-bold" id="req_fill_date" name="req_fill_date" disabled>
+                        </div>
+                    </div>
+                </div><!-- Sale Date Row -->
+
+                <div class="row mb-3">
+                    <div class="col-12 col-lg-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" th:text="#{client_requests.times.ops_date}">OPS Date:</span>
+                            </div>
+                            <input type="text" class="form-control text-dark font-weight-bold" id="req_ops_value" name="req_ops_value" disabled>
+                            <input type="text" class="form-control text-dark font-weight-bold" id="req_ops_date" name="req_ops_date" disabled>
+                        </div>
+                    </div>
+                </div><!-- OPS Date Row -->
+
+                <div class="row mb-3">
+                    <div class="col-12 col-lg-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" th:text="#{client_requests.times.send_date}">Send Date:</span>
+                            </div>
+                            <input type="text" class="form-control text-dark font-weight-bold" id="req_sale_value" name="req_sale_value" disabled>
+                            <input type="text" class="form-control text-dark font-weight-bold" id="req_sale_date" name="req_sale_date" disabled>
+                        </div>
+                    </div>
+                </div><!-- Send Date Row -->
+
+                <div class="row mb-3">
+                    <div class="col-12 col-lg-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" th:text="#{client_requests.times.end_date}">End Date:</span>
+                            </div>
+                            <input type="text" class="form-control text-dark font-weight-bold" id="req_end_value" name="req_end_value" disabled>
+                            <input type="text" class="form-control text-dark font-weight-bold" id="req_end_date" name="req_end_date" disabled>
+                        </div>
+                    </div>
+                </div><!-- End Date Row -->
+
+                <div class="row mb-3">
+                    <div class="col-12 col-lg-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" th:text="#{client_requests.times.all_date}">All Date:</span>
+                            </div>
+                            <input type="text" class="form-control text-dark font-weight-bold" id="req_all_value" name="req_all_value" disabled>
+                        </div>
+                    </div>
+                </div><!-- All Date Row -->
+            </div>
+        </div><!-- User Services -->
+
+        <div class="card" id="requests_answers_card">
+            <div class="card-header">
+                <div class="card-actions float-right">
+                    <a href="#requests_answers_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title mb-0" th:text="#{client_requests.answers.caption}"></h5>
+            </div>
+            <div class="card-body py-3 collapse show" id="requests_answers_div">
+                <div class="row">
+                    <div class="col-12 col-lg-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" th:text="#{client_requests.answers.ops_name}">OPS:</span>
+                            </div>
+                            <input type="text" class="form-control text-dark font-weight-bold" id="req_ops_name" name="req_ops_name" disabled>
+                        </div>
+                    </div>
+                </div><!-- Ops User Name Row -->
+
+                <div class="row mb-3">
+                    <label for="req_ops_note" class="col-form-label" th:text="#{client_requests.answers.ops_text}">Text</label>
+                    <div class="col-12 col-lg-12">
+                                <textarea class="form-control text-dark font-weight-bold" rows="4" maxlength="128" style="resize:none;" id="req_ops_note" name="req_ops_note" disabled>
+                                </textarea>
+                    </div>
+                </div><!-- Ops Text Row -->
+
+                <div class="row">
+                    <div class="col-12 col-lg-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" th:text="#{client_requests.answers.sale_name}">Sale:</span>
+                            </div>
+                            <input type="text" class="form-control text-dark font-weight-bold" id="req_sale_name" name="req_sale_name" disabled>
+                        </div>
+                    </div>
+                </div><!-- Sale User Name Row -->
+
+                <div class="row mb-3">
+                    <label for="req_sale_note" class="col-form-label" th:text="#{client_requests.answers.sale_text}">Text</label>
+                    <div class="col-12 col-lg-12">
+                                <textarea class="form-control text-dark font-weight-bold" rows="4" maxlength="128" style="resize:none;" id="req_sale_note" name="req_sale_note" disabled>
+                                </textarea>
+                    </div>
+                </div><!-- Sale Text Row -->
+            </div>
+        </div><!-- User SubUsers -->
+
+        <div class="card" id="requests_files_card">
+            <div class="card-header">
+                <div class="card-actions float-right">
+                    <a href="#requests_files_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title mb-0" th:text="#{client_requests.files.caption}"></h5>
+            </div>
+            <div class="card-body py-3 collapse show" id="requests_files_div">
+                <div>
+                    <span th:replace="client_requests/files_card :: client_requests_files_body"></span>
+                </div>
+            </div>
+        </div><!-- Request Files -->
+    </div><!-- Second Column -->
+</div><!-- First Row -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<script th:replace="client_requests/files_card :: cardscript"></script>
+<script th:replace="client_requests/chat_card :: cardscript"></script>
+
+<script th:replace="client_requests/back_card :: cardscript"></script>
+<script th:replace="client_requests/link_card :: cardscript"></script>
+<script th:replace="client_requests/list_card :: cardscript"></script>
+
+</body>
+</html>

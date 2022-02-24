@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="client_requests_list_body" th:remove="tag">
+    <form id="client-requests-cnt-detail">
+        <input type="hidden" id="cnt_id">
+        <input type="hidden" id="cnt_name">
+        <input type="hidden" id="cnt_user_access">
+
+        <input type="hidden" id="clients_list_table_order_column">
+        <input type="hidden" id="clients_list_table_order_type">
+        <input type="hidden" id="clients_list_table_search">
+        <input type="hidden" id="clients_list_table_pagelen">
+        <input type="hidden" id="clients_list_table_page">
+    </form>
+
+    <form id="table-client-requests-list-buttons" class="mb-2">
+        <input name="mode" value="0" hidden>
+        <button type="button" id="client-requests-list-detailbtn" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.detailbtn}" disabled><i class="fa fa-list"></i></button>
+        <button type="button" id="client-requests-list-addbtn" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" th:title="#{general.addbtn}"><i class="fa fa-plus"></i></button>
+        <button type="button" id="client-requests-list-clonebtn" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.clonebtn}" disabled><i class="fa fa-copy"></i></button>
+        <button type="button" id="client-requests-list-editbtn" class="btn btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.editbtn}" disabled><i class="fa fa-pencil-alt"></i></button>
+        <button type="button" id="client-requests-list-delbtn" class="btn btn-dark mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.delbtn}" disabled><i class="fa fa-trash-alt"></i></button>
+
+        <button type="button" id="client-requests-list-reloadbtn" class="btn btn-primary mr-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.refreshbtn}"><i class="fa fa-sync"></i></button>
+
+        <button type="button" id="client-requests-list-link-edit" class="btn btn-dark mr-2" disabled data-toggle="tooltip" data-placement="bottom" title="Sale All Edit"><i class="fas fa-user-friends"></i></button>
+    </form>
+
+        <div><table id="table-client-requests-list" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var req_id_show, req_name_show, req_user_id_show, req_user_name_show, req_date_show, req_ops_name_show, req_status_id_show, req_status_sname_show, req_status_colour_show,
+        req_result_status_sname_show, req_sub_check_show, cnt_id_show, cnt_name_show;
+
+    var req_id_width, req_name_width, req_user_id_width, req_user_name_width, req_date_width, req_ops_name_width, req_status_id_width, req_status_sname_width, req_status_colour_width,
+        req_result_status_sname_width, req_sub_check_width, cnt_id_width, cnt_name_width;
+
+    var req_id_class, req_name_class, req_user_id_class, req_user_name_class, req_date_class, req_ops_name_class, req_status_id_class, req_status_sname_class, req_status_colour_class,
+        req_result_status_sname_class, req_sub_check_class, cnt_id_class, cnt_name_class;
+
+    if(mobileScreenSize){
+        vDomParam =
+            "<'row'<'col-12'B>>"+
+            "<'row'<'col-12 col-sm-3'l><'col-12 col-sm-9'f>>"+
+            "<'row'<'col-12'tr>>" +
+            "<'row'<'col-12'p>>";
+
+        req_id_show = false;
+        req_id_width = "";
+        req_id_class = "";
+        req_name_show = true;
+        req_name_width = "54%";
+        req_name_class = "small_size small_head_size small_footer_size";
+        req_user_id_show = true;
+        req_user_id_width  = "";
+        req_user_id_class  = "none";
+        req_user_name_show = true;
+        req_user_name_width  = "10%";
+        req_user_name_class  = "small_size small_head_size small_footer_size text-center cs_user_edit";
+        req_date_show = false;
+        req_date_width  = "";
+        req_date_class  = "";
+        req_ops_name_show = true;
+        req_ops_name_width  = "12%";
+        req_ops_name_class  = "min-tablet-p small_size small_head_size small_footer_size text-center";
+        req_status_id_show = false;
+        req_status_id_width  = "";
+        req_status_id_class  = "";
+        req_status_sname_show = true;
+        req_status_sname_width  = "12%";
+        req_status_sname_class  = "small_size small_head_size small_footer_size text-center";
+        req_status_colour_show = false;
+        req_status_colour_width  = "";
+        req_status_colour_class  = "";
+        req_result_status_sname_show = true;
+        req_result_status_sname_width  = "12%";
+        req_result_status_sname_class  = "min-tablet-p small_size small_head_size small_footer_size text-center";
+        req_sub_check_show = false;
+        req_sub_check_width = "";
+        req_sub_check_class = "";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "";
+        cnt_name_show = false;
+        cnt_name_width = "";
+        cnt_name_class = "";
+
+        $('#sale_first_name_group').addClass('input-group-sm');
+        $('#req_plan_sum_group').addClass('input-group-sm');
+        $('#sale_first_note').addClass('text_small_size');
+
+        $('#ops_name_group').addClass('input-group-sm');
+        $('#req_ops_price_group').addClass('input-group-sm');
+        $('#req_ops_note').addClass('text_small_size');
+
+        $('#req_result_name_group').addClass('input-group-sm');
+        $('#req_result_sum_group').addClass('input-group-sm');
+        $('#req_result_note').addClass('text_small_size');
+
+        $('#table-requests-list-buttons').addClass('text-center').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        req_id_show = false;
+        req_id_width = "";
+        req_id_class = "";
+        req_name_show = true;
+        req_name_width = "46%";
+        req_name_class = "small_size small_head_size small_footer_size request_list_edit";
+        req_user_id_show = false;
+        req_user_id_width  = "";
+        req_user_id_class  = "none";
+        req_user_name_show = true;
+        req_user_name_width  = "10%";
+        req_user_name_class  = "small_size small_head_size small_footer_size text-center cs_user_edit";
+        req_date_show = true;
+        req_date_width  = "15%";
+        req_date_class  = "small_size small_head_size small_footer_size text-center request_list_edit";
+        req_ops_name_show = true;
+        req_ops_name_width  = "10%";
+        req_ops_name_class  = "small_size small_head_size small_footer_size text-center request_list_edit";
+        req_status_id_show = false;
+        req_status_id_width  = "";
+        req_status_id_class  = "";
+        req_status_sname_show = true;
+        req_status_sname_width  = "12%";
+        req_status_sname_class  = "small_size small_head_size small_footer_size text-center request_list_edit";
+        req_status_colour_show = false;
+        req_status_colour_width  = "";
+        req_status_colour_class  = "";
+        req_result_status_sname_show = true;
+        req_result_status_sname_width  = "7%";
+        req_result_status_sname_class  = "small_size small_head_size small_footer_size text-center request_list_edit";
+        req_sub_check_show = false;
+        req_sub_check_width = "";
+        req_sub_check_class = "";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "";
+        cnt_name_show = false;
+        cnt_name_width = "";
+        cnt_name_class = "";
+
+        /*Детализация запросов*/
+        $('#req_date_group').addClass('input-group-sm');
+        $('#sale_date_group').addClass('input-group-sm');
+        $('#ops_date_group').addClass('input-group-sm');
+        $('#send_date_group').addClass('input-group-sm');
+        $('#end_date_group').addClass('input-group-sm');
+        $('#contract_date_group').addClass('input-group-sm');
+        $('#start_date_group').addClass('input-group-sm');
+        $('#all_date_group').addClass('input-group-sm');
+
+        $('#sale_first_name_group').addClass('input-group-sm');
+        $('#req_plan_sum_group').addClass('input-group-sm');
+        $('#sale_first_note').addClass('text_small_size');
+
+        $('#ops_name_group').addClass('input-group-sm');
+        $('#req_ops_price_group').addClass('input-group-sm');
+        $('#req_ops_note').addClass('text_small_size');
+
+        $('#req_result_name_group').addClass('input-group-sm');
+        $('#req_result_sum_group').addClass('input-group-sm');
+        $('#req_result_note').addClass('text_small_size');
+
+        $('#table-requests-list-buttons').removeAttr('hidden');
+    }
+    else{
+        vDomParam = "Blfrtip";
+        req_id_show = false;
+        req_id_width = "";
+        req_id_class = "";
+        req_name_show = true;
+        req_name_width = "46%";
+        req_name_class = "small_size small_head_size small_footer_size request_list_edit";
+        req_user_id_show = false;
+        req_user_id_width  = "";
+        req_user_id_class  = "none";
+        req_user_name_show = true;
+        req_user_name_width  = "10%";
+        req_user_name_class  = "small_size small_head_size small_footer_size text-center cs_user_edit";
+        req_date_show = true;
+        req_date_width  = "15%";
+        req_date_class  = "small_size small_head_size small_footer_size text-center request_list_edit";
+        req_ops_name_show = true;
+        req_ops_name_width  = "10%";
+        req_ops_name_class  = "small_size small_head_size small_footer_size text-center request_list_edit";
+        req_status_id_show = false;
+        req_status_id_width  = "";
+        req_status_id_class  = "";
+        req_status_sname_show = true;
+        req_status_sname_width  = "12%";
+        req_status_sname_class  = "small_size small_head_size small_footer_size text-center request_list_edit";
+        req_status_colour_show = false;
+        req_status_colour_width  = "";
+        req_status_colour_class  = "";
+        req_result_status_sname_show = true;
+        req_result_status_sname_width  = "7%";
+        req_result_status_sname_class  = "small_size small_head_size small_footer_size text-center request_list_edit";
+        req_sub_check_show = false;
+        req_sub_check_width = "";
+        req_sub_check_class = "";
+        cnt_id_show = false;
+        cnt_id_width = "";
+        cnt_id_class = "";
+        cnt_name_show = false;
+        cnt_name_width = "";
+        cnt_name_class = "";
+    }
+
+    var vClientRequestListValue;
+    vClientRequestListValue = {
+        table : '#table-client-requests-list',
+        ajax : {
+            "url": /*[[@{/client_requests/get_list_table}]]*/ "client_requests/get_list_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.cnt_id = vClientRequestListValue.rowdata.cnt_id;
+                d.client_requests_filter_id = vClientRequestListValue.rowdata.client_requests_filter_id;
+                d.client_requests_filter_start_date = vClientRequestListValue.rowdata.client_requests_filter_start_date;
+                d.client_requests_filter_end_date = vClientRequestListValue.rowdata.client_requests_filter_end_date;
+            }
+        },
+        key : "req_id",
+        switchControl : client_requests_list_switchControl,
+        rowdata:{
+            cnt_id: null,
+            cnt_name: null,
+            cnt_user_access: null,
+
+            req_id: null,
+            req_name: null,
+            req_user_id: null,
+            req_user_name: null,
+            req_status_id: null,
+            req_ops_name: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).find('td:eq(4)').css('background-color', data["user_status_colour"]);*/
+            $(row).css('background-color', data["req_status_colour"]);
+        },
+        columnDefs:[
+            {"targets": [0], "width": req_id_width, "className": req_id_class, "visible": req_id_show},
+            {"targets": [1], "width": req_name_width, "className": req_name_class, "visible": req_name_show},
+            {"targets": [2], "width": req_user_id_width, "className": req_user_id_class, "visible": req_user_id_show},
+            {"targets": [3], "width": req_user_name_width, "className": req_user_name_class, "visible": req_user_name_show},
+            {"targets": [4], "width": req_date_width, "className": req_date_class, "visible": req_date_show,
+                type: 'de_datetime'
+            },
+            {"targets": [5], "width": req_ops_name_width, "className": req_ops_name_class, "visible": req_ops_name_show},
+            {"targets": [6], "width": req_status_id_width, "className": req_status_id_class, "visible": req_status_id_show},
+            {"targets": [7], "width": req_status_sname_width, "className": req_status_sname_class, "visible": req_status_sname_show},
+            {"targets": [8], "width": req_status_colour_width, "className": req_status_colour_class, "visible": req_status_colour_show},
+            {"targets": [9], "width": req_result_status_sname_width, "className": req_result_status_sname_class, "visible": req_result_status_sname_show},
+            {"targets": [10], "width": req_sub_check_width, "className": req_sub_check_class, "visible": req_sub_check_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{client_requests.list.req_id}]]*/ "req_id", "data": "req_id"},
+            /*1*/{"title": /*[[#{client_requests.list.req_name}]]*/ "req_name", "data": "req_name"},
+            /*2*/{"title": /*[[#{client_requests.list.req_user_id}]]*/ "req_user_id", "data": "req_user_id"},
+            /*3*/{"title": /*[[#{client_requests.list.req_user_name}]]*/ "req_user_name", "data": "req_user_name"},
+            /*4*/{"title": /*[[#{client_requests.list.req_date}]]*/ "req_date", "data": "req_date", "width": "14%"},
+            /*5*/{"title": /*[[#{client_requests.list.req_ops_name}]]*/ "req_ops_name", "data": "req_ops_name"},
+            /*6*/{"title": /*[[#{client_requests.list.req_status_id}]]*/ "req_status_id", "data": "req_status_id"},
+            /*7*/{"title": /*[[#{client_requests.list.req_status_sname}]]*/ "req_status_sname", "data": "req_status_sname"},
+            /*8*/{"title": /*[[#{client_requests.list.req_status_colour}]]*/ "req_status_colour", "data": "req_status_colour"},
+            /*9*/{"title": /*[[#{client_requests.list.req_result_status_sname}]]*/ "req_result_status_sname", "data": "req_result_status_sname"},
+            /*10*/{"title": /*[[#{client_requests.list.req_sub_check}]]*/ "req_sub_check", "data": "req_sub_check"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function getChatMeassages(){
+        var currentUser =  /*[[${#authentication.name}]]*/ '';
+        $('#client_requests_chat_container').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/client_requests/get_chat_box'}]]*/ "/client_requests/get_chat_box",
+            type: "get",
+            data: {
+                "req_id" : vClientRequestListValue.rowdata.req_id
+            },
+            success: function (chat_list_client_result) {
+                for (let i = 0; i < chat_list_client_result.data.length; i++) {
+                    let div_container = "client_requests_chat_" + chat_list_client_result.data[i].req_chat_id + "_container";
+                    let div_header = "client_requests_chat_" + chat_list_client_result.data[i].req_chat_id + "_header";
+                    let div_message = "client_requests_chat_" + chat_list_client_result.data[i].req_chat_id + "_message";
+
+                    if ($('#' + div_container).length) {
+                    }
+                    else {
+                        if (chat_list_client_result.data[i].user_name === currentUser) {
+                            $('#client_requests_chat_container').append("<div id='" + div_container + "' class='chat-message-right pb-2'></div>");
+                        } else {
+                            $('#client_requests_chat_container').append("<div id='" + div_container + "' class='chat-message-left pb-2'></div>");
+                        }
+
+                        $('#' + div_container).append("<div id='" + div_message + "' class='flex-shrink-1 bg-light rounded py-2 px-3 mr-3'></div>");
+                        $('#' + div_message).append('<div class="font-weight-bold text-info">' + chat_list_client_result.data[i].user_name + '</div>');
+                        $('#' + div_message).append('<a>' + chat_list_client_result.data[i].req_chat_text + '</a>');
+                        $('#' + div_message).append('<p class="text-right text-sm">' + chat_list_client_result.data[i].req_chat_date + '</p>');
+                    }
+                }
+            }
+        }));
+    }
+
+    $('#client_requests_chat_new_button').on('click', function () {
+        if(vClientRequestListValue.rowdata.req_id !== null){
+            $.ajax({
+                url: /*[[ @{/client_requests/chat_add} ]]*/ "/client_requests/chat_add",
+                type: 'POST',
+                data: {
+                    "req_id" : vClientRequestListValue.rowdata.req_id,
+                    "req_chat_text": $('#client_requests_chat_new_text').val()
+                },
+                success: function (chat_list_result) {
+                    $('#client_requests_chat_new_text').val('');
+                    getChatMeassages();
+                }
+            });
+        }
+    });
+
+    function client_requests_list_switchControl(){
+        if(vClientRequestListValue.rowdata.req_id != null) {
+            var RoleString = /*[[ ${#authorization.expression('!hasRole("ROLE_SALEOPS")')} ]]*/ null;
+            if(
+                currentUser === vClientRequestListValue.rowdata.req_user_name
+                && [1,2,4,5,6].indexOf(vClientRequestListValue.rowdata.req_status_id) >= 0) {
+                $("#client-requests-list-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else if(RoleAllAdmin === true){
+                $("#client-requests-list-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else if((currentUser === vClientRequestListValue.rowdata.req_ops_name || vClientRequestListValue.rowdata.req_ops_name == null)
+                && currentUser !== vClientRequestListValue.rowdata.req_user_name
+                && (RoleString === false || RoleChiefOPS === false|| RoleSuperOPS === false)
+                && [2,3,4].indexOf(vClientRequestListValue.rowdata.req_status_id) >= 0)
+            {
+                $("#client-requests-list-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else if((currentUser !== vClientRequestListValue.rowdata.req_ops_name || vClientRequestListValue.rowdata.req_ops_name !== null)
+                && currentUser !== vClientRequestListValue.rowdata.req_user_name
+                && vClientRequestListValue.rowdata.req_sub_check === "1"
+                && [2,3,4].indexOf(vClientRequestListValue.rowdata.req_status_id) >= 0)
+            {
+                $("#client-requests-list-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#client-requests-list-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            <!-- Request Buttons -->
+            if(currentUser === vClientRequestListValue.rowdata.req_user_name){
+                $("#client-requests-list-clonebtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            }else{
+                $("#client-requests-list-clonebtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+
+            if(RoleAllAdmin){
+                $('#client-requests-list-link-edit').prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+            }
+            else{
+                $('#client-requests-list-link-edit').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            }
+
+            if(RoleAllAdmin){
+                $('#client-requests-list-link-edit').prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+            }
+            else{
+                $('#client-requests-list-link-edit').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            }
+            <!-- Request Clone Buttons -->
+            $("#client-requests-list-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+            /*Детализация запросов*/
+            $.ajax({
+                url:/*[[@{'/client_requests/get_times_detail'}]]*/ "/client_requests/get_times_detail",
+                type: "get",
+                data: {"req_id": vClientRequestListValue.rowdata.req_id},
+                success: function (client_reqdetail) {
+                    $('#req_date').val('').val(client_reqdetail.data[0].req_date);
+
+                    $('#req_fill_value').val('').val(client_reqdetail.data[0].req_fill_value);
+                    $('#req_fill_date').val('').val(client_reqdetail.data[0].req_fill_date);
+
+                    $('#req_ops_value').val('').val(client_reqdetail.data[0].req_ops_value);
+                    $('#req_ops_date').val('').val(client_reqdetail.data[0].req_ops_date);
+
+                    $('#req_sale_value').val('').val(client_reqdetail.data[0].req_sale_value);
+                    $('#req_sale_date').val('').val(client_reqdetail.data[0].req_sale_date);
+
+                    $('#req_end_value').val('').val(client_reqdetail.data[0].req_end_value);
+                    $('#req_end_date').val('').val(client_reqdetail.data[0].req_end_date);
+
+                    $('#req_contract_value').val('').val(client_reqdetail.data[0].req_contract_value);
+                    $('#req_contract_date').val('').val(client_reqdetail.data[0].req_contract_date);
+
+                    $('#req_start_value').val('').val(client_reqdetail.data[0].req_start_value);
+                    $('#req_start_date').val('').val(client_reqdetail.data[0].req_start_date);
+
+                    $('#req_all_value').val('').val(client_reqdetail.data[0].req_all_value);
+
+                    $('#sale_first_name').val('').val(client_reqdetail.data[0].first_user_surname);
+                    $('#sale_first_plan_price').val('').val(client_reqdetail.data[0].first_plan_price);
+                    $('#sale_first_plan_currency_name').val('').val(client_reqdetail.data[0].first_plan_currency_name);
+                    $('#sale_first_note').val('').val(client_reqdetail.data[0].first_note);
+
+                    $('#ops_second_name').val('').val(client_reqdetail.data[0].ops_user_surname);
+                    $('#ops_second_price').val('').val(client_reqdetail.data[0].ops_price);
+                    $('#ops_second_currency_name').val('').val(client_reqdetail.data[0].ops_currency_name);
+                    $('#ops_second_note').val('').val(client_reqdetail.data[0].ops_note);
+
+                    $('#user_result_name').val('').val(client_reqdetail.data[0].result_user_surname);
+                    $('#user_result_price').val('').val(client_reqdetail.data[0].result_price);
+                    $('#user_result_currency_name').val('').val(client_reqdetail.data[0].result_currency_name);
+                    $('#user_result_note').val('').val(client_reqdetail.data[0].result_text);
+                }
+            });
+
+            /*Файлы запросов*/
+            vClientRequestFilesListValue.rowdata.req_id = vClientRequestListValue.rowdata.req_id;
+            vClientRequestFilesListValue.rowdata.req_name = vClientRequestListValue.rowdata.req_name;
+            vClientRequestFilesListValue.rowdata.req_store_id = null;
+            $(vClientRequestFilesListValue.table).DataTable().ajax.reload();
+
+            if([-4,-3,-2,-1].indexOf(vClientRequestListValue.rowdata.req_status_id) >= 0) {
+                $("#client-requests-files-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }else{
+                $('#client-requests-files-addbtn').prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            }
+//Chat
+            getChatMeassages();
+        }
+        else{
+            $("#client-requests-list-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#client-requests-list-clonebtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#client-requests-list-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#client-requests-list-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+            $('#client-requests-list-link-edit').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            /*Детализация запросов*/
+            $('#req_date').val('');
+
+            $('#req_fill_value').val('');
+            $('#req_fill_date').val('');
+
+            $('#req_ops_value').val('');
+            $('#req_ops_date').val('');
+
+            $('#req_sale_value').val('');
+            $('#req_sale_date').val('');
+
+            $('#req_end_value').val('');
+            $('#req_end_date').val('');
+
+            $('#req_contract_value').val('');
+            $('#req_contract_date').val('');
+
+            $('#req_start_value').val('');
+            $('#req_start_date').val('');
+
+            $('#req_all_value').val('');
+
+            $('#sale_first_name').val('');
+            $('#sale_first_plan_price').val('');
+            $('#sale_first_plan_currency_name').val('');
+            $('#sale_first_note').val('');
+
+            $('#ops_second_name').val('');
+            $('#ops_second_price').val('');
+            $('#ops_second_currency_name').val('');
+            $('#ops_second_note').val('');
+
+            $('#user_result_name').val('');
+            $('#user_result_price').val('');
+            $('#user_result_currency_name').val('');
+            $('#user_result_note').val('');
+
+            /*Файлы запросов*/
+            vClientRequestFilesListValue.rowdata.req_id = null;
+            vClientRequestFilesListValue.rowdata.req_name = null;
+            vClientRequestFilesListValue.rowdata.req_store_id = null;
+            $(vClientRequestFilesListValue.table).DataTable().clear().draw();
+            $("#client-requests-files-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+//Chat
+            $('#client-requests_chat_container').empty();
+        }
+    }
+
+    //Show Function
+    function showRequest(){
+        $('#client_requests_list_modal_addbtn').attr('hidden',true);
+        $('#client_requests_list_modal_editbtn').attr('hidden',true);
+        $('#client_requests_list_modal_delbtn').attr('hidden',true);
+        fill_client_requests_list_modal_detail(4);
+    }
+
+    //Show Button
+    $('#client-requests-list-detailbtn').click(function() {
+        showRequest();
+    });
+
+    //Add Function
+    function addRequest(){
+        $('#client_requests_list_modal_addbtn').removeAttr('hidden');
+        $('#client_requests_list_modal_editbtn').attr('hidden',true);
+        $('#client_requests_list_modal_delbtn').attr('hidden',true);
+        fill_client_requests_list_modal_detail(0);
+    }
+
+    //Add Button
+    $('#client-requests-list-addbtn').click(function() {
+        addRequest();
+    });
+
+    //Edit Function
+    function editRequest(){
+        $('#client_requests_list_modal_addbtn').attr('hidden',true);
+        $('#client_requests_list_modal_editbtn').removeAttr('hidden');
+        $('#client_requests_list_modal_delbtn').attr('hidden',true);
+        fill_client_requests_list_modal_detail(1);
+    }
+
+    //Edit Button
+    $('#client-requests-list-editbtn').click(function() {
+        editRequest();
+    });
+
+    function editRequestCsUser(){
+        fill_client_requests_list_link_modal_detail(1);
+    }
+
+    //Sale Link Edit Button
+    $('#client-requests-list-link-edit').click(function(){
+        editRequestCsUser();
+    });
+
+    //Reload Function
+    function reloadRequest(){
+        var requests_filter_id;
+        if($('#requests_filter_check').prop('checked')){
+            requests_filter_id = 1;
+        }else{
+            requests_filter_id = 0;
+        }
+        var RowID = vClientRequestListValue.rowdata.req_id;
+        var requests_filter_start_date = $('#requests_filter_start_date').val();
+        var requests_filter_end_date = $('#requests_filter_end_date').val();
+
+        vClientRequestListValue.rowdata.req_id = RowID;
+        vClientRequestListValue.rowdata.cnt_id = parseInt($('#cur_cnt_id').text());
+        vClientRequestListValue.rowdata.requests_filter_id = requests_filter_id;
+        vClientRequestListValue.rowdata.requests_filter_start_date = requests_filter_start_date;
+        vClientRequestListValue.rowdata.requests_filter_end_date = requests_filter_end_date;
+        $(vClientRequestListValue.table).DataTable().ajax.reload(null, false);
+    }
+
+    //Reload Button
+    $('#client-requests-list-reloadbtn').click(function() {
+        reloadRequest();
+    });
+
+    //Delete Function
+    function delRequest(){
+        $('#client_requests_list_modal_addbtn').attr('hidden',true);
+        $('#client_requests_list_modal_editbtn').attr('hidden',true);
+        $('#client_requests_list_modal_delbtn').removeAttr('hidden');
+        fill_client_requests_list_modal_detail(2);
+    }
+
+    //Delete Button
+    $('#client-requests-list-delbtn').click(function() {
+        delRequest();
+    });
+
+    //Link Button
+    $('#client-requests-list-linkbtn').click(function() {
+        $("#requests-client-link-form input[name=cnt_id]").val(vClientRequestListValue.rowdata.cnt_id);
+
+        $("#requests-client-link-form input[name=clients_list_table_order_column]").val(0);
+        $("#requests-client-link-form input[name=clients_list_table_order_type]").val("desc");
+        $("#requests-client-link-form input[name=clients_list_table_search]").val(vClientRequestListValue.rowdata.cnt_name);
+        $("#requests-client-link-form input[name=clients_list_table_pagelen]").val(25);
+        $("#requests-client-link-form input[name=clients_list_table_page]").val(0);
+        $("#requests-client-link-form").submit();
+    });
+
+    $('#requests_filter_show').on('click', function() {
+        vClientRequestListValue.rowdata.requests_filter_id = 1;
+        vClientRequestListValue.rowdata.requests_filter_start_date = $('#requests_filter_start_date').val();
+        vClientRequestListValue.rowdata.requests_filter_end_date = $('#requests_filter_end_date').val();
+
+        $(vClientRequestListValue.table).DataTable().ajax.reload();
+        $('#requests_filter_div').removeClass('show').collapse('hide');
+    });
+
+    $('#client-requests-list-clonebtn').on('click', function( event ) {
+        if (vClientRequestListValue.rowdata.req_id != null) {
+            var RowID = vClientRequestListValue.rowdata.req_id;
+            var client_requests_list_table_order_column = $(vClientRequestListValue.table).DataTable().order()[0][0];
+            var client_requests_list_table_order_type = $(vClientRequestListValue.table).DataTable().order()[0][1];
+            var client_requests_list_table_search = $(vClientRequestListValue.table).DataTable().search();
+            var client_requests_list_table_pagelen = $(vClientRequestListValue.table).DataTable().page.len();
+            var client_requests_list_table_page = $(vClientRequestListValue.table).DataTable().page.info().page;
+            var requests_filter_id;
+
+            if($('#requests_filter_check').prop('checked')){
+                requests_filter_id = 1;
+            }else{
+                requests_filter_id = 0;
+            }
+
+            var requests_filter_start_date = $('#requests_filter_start_date').val();
+            var requests_filter_end_date = $('#requests_filter_end_date').val();
+            $.ajax({
+                url: /*[[ @{/client_requests/client_requests_clone} ]]*/ "/client_requests/client_requests_clone",
+                type: 'POST',
+                data: {"req_id": vClientRequestListValue.rowdata.req_id},
+                success: function (result) {
+                    vClientRequestListValue.rowdata.req_id = RowID;
+                    vClientRequestListValue.rowdata.client_requests_list_table_order_column = client_requests_list_table_order_column;
+                    vClientRequestListValue.rowdata.client_requests_list_table_order_type = client_requests_list_table_order_type;
+                    vClientRequestListValue.rowdata.client_requests_list_table_search = client_requests_list_table_search;
+                    vClientRequestListValue.rowdata.client_requests_list_table_pagelen = client_requests_list_table_pagelen;
+                    vClientRequestListValue.rowdata.client_requests_list_table_page = client_requests_list_table_page;
+
+                    vClientRequestListValue.rowdata.requests_filter_id = requests_filter_id;
+                    vClientRequestListValue.rowdata.requests_filter_start_date = requests_filter_start_date;
+                    vClientRequestListValue.rowdata.requests_filter_end_date = requests_filter_end_date;
+
+                    $(vClientRequestListValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    });
+    <!-- Clone Request Button -->
+
+    $(document).ready(function(){
+        vClientRequestListValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+        vClientRequestListValue.rowdata.cnt_name = /*[[${cnt_name}]]*/ null;
+        vClientRequestListValue.rowdata.cnt_user_access = /*[[${cnt_user_access}]]*/ null;
+
+        vClientRequestListValue.rowdata.req_id = /*[[${req_id}]]*/ null;
+
+        vClientRequestListValue.rowdata.table_order_column = /*[[${client_requests_list_table_order_column}]]*/ null;
+        vClientRequestListValue.rowdata.table_order_type = /*[[${client_requests_list_table_order_type}]]*/ null;
+        vClientRequestListValue.rowdata.table_search = /*[[${client_requests_list_table_search}]]*/ null;
+        vClientRequestListValue.rowdata.table_pagelen = /*[[${client_requests_list_table_pagelen}]]*/ null;
+        vClientRequestListValue.rowdata.table_page = /*[[${client_requests_list_table_page}]]*/ null;
+
+        vClientRequestListValue.rowdata.client_requests_filter_id = /*[[${client_requests_filter_id}]]*/ null;
+
+        var startDate =  /*[[${client_requests_filter_start_date}]]*/ null;
+        vClientRequestListValue.rowdata.client_requests_filter_start_date = startDate;
+
+        var endDate = /*[[${client_requests_filter_end_date}]]*/ null;
+        vClientRequestListValue.rowdata.client_requests_filter_end_date = endDate;
+
+        if(startDate != null){
+            $('#client_requests_filter_start_date').empty().val(startDate);
+            $('#client_requests_filter_start_date').data('daterangepicker').setStartDate(startDate);
+            $('#client_requests_filter_start_date').data('daterangepicker').setEndDate(startDate);
+        }
+
+        if(endDate != null){
+            $('#client_requests_filter_end_date').empty().val(endDate);
+            $('#client_requests_filter_end_date').data('daterangepicker').setStartDate(endDate);
+            $('#client_requests_filter_end_date').data('daterangepicker').setEndDate(endDate);
+        }
+
+        if(vClientRequestListValue.rowdata.cnt_user_access === 1){
+            $('#client-requests-link-financebtn').prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        }else{
+            $('#client-requests-link-financebtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+
+        if(vClientRequestListValue.rowdata.cnt_user_access === 1 && (RoleAllAdmin || currentUser === "k.boboshko")){
+            $('#client-requests-link-docbtn').prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        }else{
+            $('#client-requests-link-docbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+
+        <!-- Start Filter -->
+        if(vClientRequestListValue.rowdata.client_requests_filter_id === 1){
+            $('#client_requests_filter_check').prop('checked', true);
+            $("#client_requests_filter_start_date").removeAttr('disabled').val(vClientRequestListValue.rowdata.client_requests_filter_start_date);
+            $("#client_requests_filter_end_date").removeAttr('disabled').val(vClientRequestListValue.rowdata.client_requests_filter_end_date);
+            $("#client_requests_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if (window.screen.width < 1024 && window.screen.height < 768) {
+                $("#client_requests_filter_start_date").attr('readonly',true);
+                $("#client_requests_filter_end_date").attr('readonly',true);
+            }
+        }
+
+        $(vClientRequestListValue.table).on('dblclick', '.cs_user_edit', function (e) {
+            var selectedRow = this._DT_CellIndex.row;
+            var currentTable = $(vClientRequestListValue.table).DataTable();
+            vClientRequestListValue.rowdata.req_id = currentTable.row(selectedRow).data().req_id;
+            vClientRequestListValue.rowdata.req_user_id = currentTable.row(selectedRow).data().req_user_id;
+            editRequestCsUser();
+        });
+
+        recreateDataTable(vClientRequestListValue);
+        <!-- Client Detail -->
+        $('#cnt_id').val(/*[[${cnt_id}]]*/);
+        $('#cnt_name').val(/*[[${cnt_name}]]*/);
+        $('#cnt_user_access').val(/*[[${cnt_user_access}]]*/);
+
+        $('#actions_cnt_id').val(/*[[${cnt_id}]]*/);
+        $('#actions_cnt_name').val(/*[[${cnt_name}]]*/);
+        $('#actions_cnt_user_access').val(/*[[${cnt_user_access}]]*/);
+
+        $('#tenders_cnt_id').val(/*[[${cnt_id}]]*/);
+        $('#tenders_cnt_name').val(/*[[${cnt_name}]]*/);
+        $('#tenders_cnt_user_access').val(/*[[${cnt_user_access}]]*/);
+
+        $('#finance_cnt_id').val(/*[[${cnt_id}]]*/);
+        $('#finance_cnt_name').val(/*[[${cnt_name}]]*/);
+        $('#finance_cnt_user_access').val(/*[[${cnt_user_access}]]*/);
+
+        $('#docs_cnt_id').val(/*[[${cnt_id}]]*/);
+        $('#docs_cnt_name').val(/*[[${cnt_name}]]*/);
+        $('#docs_cnt_user_access').val(/*[[${cnt_user_access}]]*/);
+
+        $('#clients_list_table_order_column').val(/*[[${clients_list_table_order_column}]]*/);
+        $('#clients_list_table_order_type').val(/*[[${clients_list_table_order_type}]]*/);
+        $('#clients_list_table_search').val(/*[[${clients_list_table_search}]]*/);
+        $('#clients_list_table_pagelen').val(/*[[${clients_list_table_pagelen}]]*/);
+        $('#clients_list_table_page').val(/*[[${clients_list_table_page}]]*/);
+        <!-- Client Show Detail -->
+        $('#cur_cnt_id').text(/*[[${cnt_id}]]*/);
+        $('#cur_cnt_name').val(/*[[${cnt_name}]]*/);
+        <!-- Disabled Add Button -->
+        // if($('#cnt_user_access').val() === '1'){
+        //     $("#client-requests-list-addbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        //
+        //     $("#client-requests-list-addbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        // }else{
+        //     $("#client-requests-list-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        //
+        //     $("#client-requests-list-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        // }
+        <!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#clients_li').addClass('active').removeClass('collapsed');
+        $('#clients_a').attr('aria-expanded',true);
+        $('#clients').addClass('show');
+
+        $('#clients_list_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

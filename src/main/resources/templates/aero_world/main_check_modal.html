@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="aero_world_main_time_modal_body" th:remove="tag">
+    <div class="modal fade" id="aero_world_main_time_modal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{aero_world.main.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                        <div class="row">
+                            <div class="col-6" id="load_date_row">
+                                <label for="load_date" class="form-label" th:text="#{aero_world.modal.load_date}"></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="load_date" name="load_date" required>
+                                    <button type="button" id="load_date_x" name="load_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                                    <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                    <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                                </div>
+                            </div>
+                        </div><!-- Load Date -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="aero_world_main_time_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="aero_world_main_time_modal_savebtn" class="btn btn-outline-primary" th:text="#{general.editbtn}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+//Load Date
+    $("#load_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#load_date_x').on('click', function() {
+        $('#load_date').empty().val('');
+    });
+
+    function aero_world_main_time_modal_valid(){
+        if (vFAClaimsValue.rowdata.clm_id != null) {
+            var RowID = vFAClaimsValue.rowdata.clm_id;
+            $.ajax({
+                url: /*[[ @{/aero_world/main_full_check} ]]*/ "/aero_world/main_full_check",
+                type: 'POST',
+                data: {
+                    "clm_id": RowID,
+                    "load_date": $('#load_date').val()
+                },
+                success: function (result) {
+                    $('#aero_world_main_time_modal').modal('hide');
+                    vFAClaimsValue.rowdata.clm_id = RowID;
+                    $(vFAClaimsValue.table).DataTable().ajax.reload(null, false);
+                    vFAClaimTimeLogValue.rowdata.clm_id = RowID;
+                    $(vFAClaimTimeLogValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }
+
+    $(document).ready(function() {
+        $('#aero_world_main_time_modal_savebtn').on('click', function () {
+                aero_world_main_time_modal_valid();
+        });
+    });
+</script>
+
+</body>
+</html>

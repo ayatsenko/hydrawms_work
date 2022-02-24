@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<script th:fragment="cardscript" th:inline="javascript">
+    var smallScreenSize = (window.screen.width > 1024 && window.screen.height <= 768)
+        || (window.screen.width > 1024 && window.screen.height > 768 && window.devicePixelRatio > 1.2);
+    var mobileScreenSize = window.screen.width < 1024 && window.screen.height <= 896;
+    var oldIPhoneScreenSize = window.screen.width < 1024 && window.screen.height <= 768;
+
+    var currentUser = /*[[${#authentication.name}]]*/ null;
+    var RoleAllAdmin = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_GM","ROLE_SALEDIR","ROLE_ADMIN")')}]]*/ null;
+    var RoleChiefSale = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_CHIEFSALE")')}]]*/ null;
+    var RoleSale = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_SALE")')}]]*/ null;
+    var RoleHR = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_HR")')}]]*/ null;
+    var RoleAccountant = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_ACCOUNTANT")')}]]*/ null;
+    var RoleOPS = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_SALEOPS")')}]]*/ null;
+    var RoleChiefOPS = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_CHIEFOPS")')}]]*/ null;
+    var RoleSuperOPS = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_SUPOPS")')}]]*/ null;
+    var RoleWHOper = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_WHOPER")')}]]*/ null;
+    var RoleWHWork = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_WHWORK")')}]]*/ null;
+    var RoleWHGM = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_WHGM")')}]]*/ null;
+    var RoleWHPMU = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_WHPMU")')}]]*/ null;
+    var RoleWHAdmin = /*[[ ${#authorization.expression('hasAnyAuthority("ROLE_LOCADMIN")')}]]*/ null;
+
+    var currentDayRu = new Date().toLocaleDateString('ru');
+    var currentYear = new Date().getFullYear();
+    var currentMonth = new Date().getMonth()+1;
+
+    var currentFirstYearDay = new Date(new Date().getFullYear(), 0, 1).toLocaleDateString('ru');
+    var currentLastYearDay = new Date(new Date().getFullYear(), 11, 31).toLocaleDateString('ru');
+    var currentFirstMonthDay = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toLocaleDateString('ru');
+    var currentLastMonthDay = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).toLocaleDateString('ru');
+</script>
+
+</body>
+</html>

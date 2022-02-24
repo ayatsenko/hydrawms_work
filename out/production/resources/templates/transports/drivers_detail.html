@@ -1,0 +1,276 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{transports.drivers.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="card flex-fill w-100">
+    <div class="card-header">
+        <h5 class="card-title mb-0" th:text="#{transports.drivers.caption}"></h5>
+    </div>
+    <div class="card-body">
+        <div>
+            <!--/*@thymesVar id="transports_drivers_detail_detail" type="java.util.List"*/-->
+            <form id="transports-drivers-detail-updater-form" data-toggle="validator" method="post" class="was-validated" th:action="@{/transports/drivers_model}">
+                <!--/*@thymesVar id="mode" type="java.lang.Long"*/-->
+                <input type="hidden" id="mode" name="mode" th:value="${mode}">
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-outline-dark mr-1" th:text="#{general.back}" form="transports-drivers-detail-indexfrm">Cancel</button>
+                    <div th:switch="${mode}">
+                        <button th:case="0" type="submit" id="transports-drivers-detail-addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}">Add</button>
+                        <button th:case="1" type="submit" id="transports-drivers-detail-editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}">Edit</button>
+                        <button th:case="2" type="submit" id="transports-drivers-detail-delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}">Delete</button>
+                    </div>
+                </div>
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="cntd_id" th:value="${cntd_id}" >
+
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_drivers_detail_table_order_column" th:value="${transports_drivers_detail_table_order_column}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_drivers_detail_table_order_type" th:value="${transports_drivers_detail_table_order_type}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_drivers_detail_table_search" th:value="${transports_drivers_detail_table_search}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_drivers_detail_table_pagelen" th:value="${transports_drivers_detail_table_pagelen}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_drivers_detail_table_page" th:value="${transports_drivers_detail_table_page}" >
+
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="req_country_id" th:value="${req_country_id}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="req_address" th:value="${req_address}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="req_tir_check" th:value="${req_tir_check}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="req_adr_check" th:value="${req_adr_check}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="req_ekmt_check" th:value="${req_ekmt_check}" >
+
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_list_table_order_column" th:value="${transports_list_table_order_column}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_list_table_order_type" th:value="${transports_list_table_order_type}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_list_table_search" th:value="${transports_list_table_search}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_list_table_pagelen" th:value="${transports_list_table_pagelen}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="transports_list_table_page" th:value="${transports_list_table_page}" >
+
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_transports_collapse" th:value="${clients_transports_collapse}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_trailers_collapse" th:value="${clients_trailers_collapse}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_drivers_collapse" th:value="${clients_drivers_collapse}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_contacts_collapse" th:value="${clients_contacts_collapse}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_country_collapse" th:value="${clients_country_collapse}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_services_collapse" th:value="${clients_services_collapse}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_address_collapse" th:value="${clients_address_collapse}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_documents_collapse" th:value="${clients_documents_collapse}" >
+                <!--suppress ThymeleafVariablesResolveInspection -->
+                <input type="hidden" name="clients_files_collapse" th:value="${clients_files_collapse}" >
+
+                <div class="form-row">
+                    <div class="col-md-1 mb-2" id="cnt_id_row">
+                        <label for="cnt_id" class="form-label" th:text="'1. '+ #{transports.list.cnt_id}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="number" class="form-control" id="cnt_id" name="cnt_id" th:value="${cnt_id}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                    <div class="col-md-5 mb-2">
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <label for="cnt_name" class="form-label" th:text="'2. '+#{transports.list.cnt_name}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="text" maxlength="120" class="form-control" id="cnt_name" name="cnt_name" th:value="${cnt_name}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div><!-- Row 1 -->
+
+                <div class="form-row">
+                    <div class="col-md-1 mb-2" id="cntd_id_row">
+                        <label for="cntd_id" class="form-label" th:text="'3. '+ #{transports.drivers.cntd_id}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="number" class="form-control" id="cntd_id" name="cntd_id" th:value="${cntd_id}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div><!-- Row 2 -->
+
+                <div class="form-row">
+                    <div class="col-md-4 mb-2" id="cntd_name_row">
+                        <label for="cntd_name" class="form-label" th:text="'4. '+ #{transports.drivers.cntd_name}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="text" maxlength="32" class="form-control" id="cntd_name" name="cntd_name" th:value="${cntd_name}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+
+                    <div class="col-md-4 mb-2" id="cntd_name_eng_row">
+                        <label for="cntd_name_eng" th:text="'5. '+#{transports.drivers.cntd_name_eng}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="text" class="form-control" maxlength="32" id="cntd_name_eng" name="cntd_name_eng" th:value="${cntd_name_eng}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div><!-- Row 3 -->
+
+                <div class="form-row">
+                    <div class="col-md-4 mb-2" id="cntd_name_doc_row">
+                        <label for="cntd_name_doc" th:text="'6. '+#{transports.drivers.cntd_name_doc}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="text" class="form-control" maxlength="32" id="cntd_name_doc" name="cntd_name_doc" th:value="${cntd_name_doc}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+
+                    <div class="col-md-4 mb-2" id="cntd_name_lisence_row">
+                        <label for="cntd_name_lisence" th:text="'7. '+#{transports.drivers.cntd_name_lisence}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="text" class="form-control" maxlength="32" id="cntd_name_lisence" name="cntd_name_lisence" th:value="${cntd_name_lisence}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div><!-- Row 4 -->
+
+                <div class="form-row">
+                    <div class="col-md-4 mb-2" id="cntd_main_phone_row">
+                        <label for="cntd_main_phone" th:text="'8. '+#{transports.drivers.cntd_main_phone}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="text" class="form-control" maxlength="32" id="cntd_main_phone" name="cntd_main_phone" th:value="${cntd_main_phone}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+
+                    <div class="col-md-4 mb-2" id="cntd_second_phone_row">
+                        <label for="cntd_second_phone" th:text="'9. '+#{transports.drivers.cntd_second_phone}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="text" class="form-control" maxlength="32" id="cntd_second_phone" name="cntd_second_phone" th:value="${cntd_second_phone}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div><!-- Row 5 -->
+
+                <div class="form-row">
+                    <div class="col-md-4 mb-2" id="cntd_second_email_row">
+                        <label for="cntd_second_email" th:text="'10. '+#{transports.drivers.cntd_second_email}"></label>
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <input type="text" class="form-control" maxlength="32" id="cntd_second_email" name="cntd_second_email" th:value="${cntd_second_email}">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div><!-- Row 6 -->
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--/*@thymesVar id="transports_drivers_detail_detail" type="java.util.List"*/-->
+<form id="transports-drivers-detail-indexfrm" method="post" th:action="@{/transports}" hidden>
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="cntd_id" th:value="${cntd_id}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="cnt_id" th:value="${cnt_id}">
+
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_order_column" th:value="${transports_drivers_detail_table_order_column}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_order_type" th:value="${transports_drivers_detail_table_order_type}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_search" th:value="${transports_drivers_detail_table_search}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_pagelen" th:value="${transports_drivers_detail_table_pagelen}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="table_page" th:value="${transports_drivers_detail_table_page}" >
+
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="req_country_id" th:value="${req_country_id}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="req_address" th:value="${req_address}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="req_tir_check" th:value="${req_tir_check}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="req_adr_check" th:value="${req_adr_check}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="req_ekmt_check" th:value="${req_ekmt_check}">
+
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="transports_list_table_order_column" th:value="${transports_list_table_order_column}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="transports_list_table_order_type" th:value="${transports_list_table_order_type}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="transports_list_table_search" th:value="${transports_list_table_search}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="transports_list_table_pagelen" th:value="${transports_list_table_pagelen}" >
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="transports_list_table_page" th:value="${transports_list_table_page}" >
+
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_transports_collapse" th:value="${clients_transports_collapse}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_trailers_collapse" th:value="${clients_trailers_collapse}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_drivers_collapse" th:value="${clients_drivers_collapse}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_contacts_collapse" th:value="${clients_contacts_collapse}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_country_collapse" th:value="${clients_country_collapse}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_services_collapse" th:value="${clients_services_collapse}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_address_collapse" th:value="${clients_address_collapse}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_documents_collapse" th:value="${clients_documents_collapse}">
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <input name="clients_files_collapse" th:value="${clients_files_collapse}">
+</form>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<span th:replace="fragments/error :: errorscript_frm(formname = 'transports-drivers-detail-indexfrm')">Error</span>
+
+<script>
+    $(document).ready(function(){
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#tms_li').addClass('active').removeClass('collapsed');
+        $('#tms_a').attr('aria-expanded',true);
+        $('#tms').addClass('show');
+
+        $('#transports_a').addClass('text-primary');
+<!-- Form Start -->
+        $('#cnt_id').prop('readOnly',true);
+        $('#cnt_name').prop('readOnly',true);
+
+        $('#cntd_id').prop('readOnly',true);
+
+        $('#cntd_second_email_row').prop('hidden',true);
+
+<!-- Change Function -->
+        if($('#mode').val() == 0){
+            $('#cntd_id_row').prop('hidden',true);
+        }
+        else if($('#mode').val() === '2' || $('#mode').val() === '4'){
+            $('#cntd_name').attr('readOnly',true);
+            $('#cntd_name_eng').attr('readOnly',true);
+            $('#cntd_name_doc').attr('readOnly',true);
+            $('#cntd_name_lisence').attr('readOnly',true);
+            $('#cntd_main_phone').attr('readOnly',true);
+            $('#cntd_second_phone').prop('readOnly',true);
+            $('#cntd_second_email').prop('readOnly',true);
+        }
+    });
+</script>
+</body>
+</html>

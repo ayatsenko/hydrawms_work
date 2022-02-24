@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{wms_report_1.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="wms_report_1_list_card">
+            <div class="card-header pt-1 pb-1 pr-1 pl-1">
+                <div class="row">
+                    <div class="col-2 col-lg-1 text-center text-info" id="wms_report_1_main_filter_btn_div">
+                        <a><i class="fa fa-search" id="wms_report_1_main_filter_btn"></i></a>
+                    </div>
+                    <div class="col-10">
+                        <h4 class="text-center text-primary pb-0" href="#wms_report_1_main_div" data-toggle="collapse" th:text="#{wms_report_1.caption}"></h4>
+                    </div>
+                    <div class="col-1 text-center">
+                        <a href="#wms_report_1_main_div" data-toggle="collapse"><i class="fa fa-minus"></i> </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pt-md-0 pb-md-2 pr-md-2 pl-md-2 collapse show" id="wms_report_1_main_div">
+                <div>
+                    <span th:replace="wms_report_1/main_card :: wms_report_1_main_body"></span>
+
+                    <span th:replace="wms_report_1/main_filter_modal :: wms_report_1_main_filter_modal_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Location -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="wms_report_1/main_card :: cardscript"></script>
+
+<script th:replace="wms_report_1/main_filter_modal :: cardscript"></script>
+</body>
+</html>

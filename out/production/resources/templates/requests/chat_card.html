@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="requests_chat_body" th:remove="tag">
+        <div><table id="table-requests-chat" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+
+              <div id="requests-chat-detailbtn-large" class="d-none d-sm-block mb-2">
+                 <button id="requests-chat-refreshbtn" class="btn btn-sm btn-primary" th:text="#{general.refreshbtn}">Refresh</button>
+                 <button id="requests-chat-addbtn" class="btn btn-sm btn-dark" th:text="#{general.addbtn}" disabled>Add</button>
+                 <button id="requests-chat-clearbtn" class="btn btn-sm btn-dark" th:text="#{general.clearbtn}" disabled>Edit</button>
+              </div>
+              <div id="requests-chat-detailbtn-small" class="d-block d-sm-none mb-2">
+                 <button id="requests-chat-refreshbtn-sx" class="btn btn-sm btn-primary"><i data-feather="refresh-ccw"></i></button>
+                 <button id="requests-chat-addbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="plus"></i></button>
+                 <button id="requests-chat-clearbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="x-circle"></i></button>
+              </div>
+
+         <textarea class="form-control text-dark font-weight-bold" rows="4" maxlength="128" style="resize:none;" id="req_chat_note" name="req_chat_note" disabled></textarea>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vRequestChatListValue;
+    vRequestChatListValue = {
+        table : '#table-requests-chat',
+        ajax : {
+            "url": /*[[@{/requests/get_chat_table}]]*/ "requests/get_chat_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.req_id = vRequestChatListValue.rowdata.req_id
+            }
+        },
+        key : "req_chat_id",
+        switchControl : requests_chat_switchControl,
+        rowdata:{
+            req_id: null,
+            req_chat_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 'ftp',
+        columnDefs:[
+            {"targets": [0], "visible": false},
+            {"targets": [1], type: 'de_datetime'}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{requests.chat.req_chat_id}]]*/ "req_chat_id", "data": "req_chat_id", "width": "1%"},
+            /*1*/{"title": /*[[#{requests.chat.req_chat_date}]]*/ "req_chat_date", "data": "req_chat_date", "width": "15%", "className":"min-tablet-p"},
+            /*2*/{"title": /*[[#{requests.chat.user_name}]]*/ "user_name", "data": "user_name", "width": "20%", "className":"text-center min-tablet-l"},
+            /*3*/{"title": /*[[#{requests.chat.req_chat_text}]]*/ "req_chat_text", "data": "req_chat_text", "width": "64%", "className":"min-tablet-l"},
+            /*4*/{"title": /*[[#{requests.chat.req_chat_text_sh}]]*/ "req_chat_text_sh", "data": "req_chat_text_sh", "width": "64%", "className":"max-tablet-p"}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function requests_chat_switchControl() {
+    };
+
+     $('#requests-chat-refreshbtn').on('click', function () {
+        vRequestChatListValue.rowdata.req_id = vRequestListValue.rowdata.req_id;
+        $(vRequestChatListValue.table).DataTable().ajax.reload();
+    });
+
+    $('#requests-chat-refreshbtn-sx').on('click', function () {
+        vRequestChatListValue.rowdata.req_id = vRequestListValue.rowdata.req_id;
+        $(vRequestChatListValue.table).DataTable().ajax.reload();
+    });
+<!-- Refreash Button -->
+
+    $('#requests-chat-clearbtn').on('click', function () {
+        $('#req_chat_note').val('');
+    });
+
+    $('#requests-chat-clearbtn-sx').on('click', function () {
+        $('#req_chat_note').val('');
+    });
+<!-- Clear Button -->
+
+    $('#requests-chat-addbtn').button().click( function( event ) {
+        if($('#req_chat_note').val() != null && $('#req_chat_note').val() != '') {
+            $.ajax({
+                type: "POST",
+                url: /*[[@{'/requests/chat_add'}]]*/ "/requests/chat_add",
+                data: {
+                    "req_id": vRequestListValue.rowdata.req_id,
+                    "req_chat_text": $('#req_chat_note').val()
+                },
+                success: function () {
+                    vRequestChatListValue.rowdata.req_id = vRequestListValue.rowdata.req_id;
+                    $(vRequestChatListValue.table).DataTable().ajax.reload();
+                    $('#req_chat_note').val('');
+                }
+            });
+            return false;
+        }
+    });
+
+
+    $('#requests-chat-addbtn-sx').button().click( function( event ) {
+        if($('#req_chat_note').val() != null && $('#req_chat_note').val() != '') {
+            $.ajax({
+                type: "POST",
+                url: /*[[@{'/requests/chat_add'}]]*/ "/requests/chat_add",
+                data: {
+                    "req_id": vRequestListValue.rowdata.req_id,
+                    "req_chat_text": $('#req_chat_note').val()
+                },
+                success: function () {
+                    vRequestChatListValue.rowdata.req_id = vRequestListValue.rowdata.req_id;
+                    $(vRequestChatListValue.table).DataTable().ajax.reload();
+                    $('#req_chat_note').val('');
+                }
+            });
+            return false;
+        }
+    });
+<!-- Add Button -->
+    $(document).ready(function(){
+        vRequestChatListValue.rowdata.req_id = /*[[${req_id}]]*/ null;
+        vRequestChatListValue.rowdata.req_chat_id = /*[[${req_chat_id}]]*/ null;
+
+        vRequestChatListValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vRequestChatListValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vRequestChatListValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vRequestChatListValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vRequestChatListValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vRequestChatListValue);
+    });
+</script>
+
+</body>
+</html>

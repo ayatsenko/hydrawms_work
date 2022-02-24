@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_classes_list_body" th:remove="tag">
+            <form id="clients-classes-list-detail" class="mr-2" hidden>
+               <div class="input-group input-group-sm">
+                <div class="mr-2">
+                   <select id="edit_classes_list" class="form-control form-control-sm">
+                        <!--suppress ThymeleafVariablesResolveInspection -->
+                        <option
+                              th:each="edit_classes : ${edit_classes_list}"
+                              th:value="${edit_classes.cnt_class_id}"
+                              th:text="${edit_classes.cnt_class_name}"
+                              th:selected="${edit_classes.cnt_class_id == edit_cnt_class_id}"
+                        ></option>
+                   </select>
+                </div>
+
+                <div id="clients_classes_list_detailbtn_large">
+                     <button type="button" id="clients-classes-list-editbtn" class="btn btn-sm btn-dark" th:text="#{general.editbtn}" disabled>Edit</button>
+                     <button type="button" id="clients-classes-list-delbtn" class="btn btn-sm btn-dark" th:text="#{general.delbtn}" disabled>Delete</button>
+
+                     <button type="button" id="clients-classes-list-reloadbtn" class="btn btn-sm btn-primary" th:text="#{general.refreshbtn}">Refresh</button>
+                  </div>
+                  <div id="clients_classes_list_detailbtn_small">
+                     <button type="button" id="clients-classes-list-editbtn-sx" class="btn btn-dark" disabled><i data-feather="edit-2"></i></button>
+                     <button type="button" id="clients-classes-list-delbtn-sx" class="btn btn-dark" disabled><i data-feather="trash-2"></i></button>
+                  </div>
+               </div>
+            </form>
+        <div><table id="table-clients-classes-list" class="table table-striped table-sm table-bordered compact" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var smallScreenSize = window.screen.width > 1024 && window.screen.height <= 768;
+    var mobileScreenSize = window.screen.width < 1024 && window.screen.height < 768;
+
+    if(smallScreenSize){
+        $('#clients_classes_list_detailbtn_large').prop('hidden','hidden');
+    }
+    else if(mobileScreenSize){
+        $('#clients_classes_list_detailbtn_large').prop('hidden','hidden');
+    }
+    else{
+        $('#clients_classes_list_detailbtn_small').prop('hidden','hidden');
+    }
+
+    var vClientsClassesListValue;
+    vClientsClassesListValue = {
+        table: '#table-clients-classes-list',
+        button_form: '#clients-classes-list-detail',
+        ajax: {
+            "url": /*[[@{/clients_classes/get_list_table}]]*/ "clients_classes/get_list_table",
+            "type": "post",
+            "data": function (d) {
+                d.clients_classes_filter_check = vClientsClassesListValue.rowdata.clients_classes_filter_check;
+                d.clients_classes_filters_user_id = vClientsClassesListValue.rowdata.clients_classes_filters_user_id;
+                d.clients_classes_filters_status_id = vClientsClassesListValue.rowdata.clients_classes_filters_status_id;
+                d.clients_classes_filters_class_id = vClientsClassesListValue.rowdata.clients_classes_filters_class_id;
+                d.clients_classes_filters_start_date = vClientsClassesListValue.rowdata.clients_classes_filters_start_date;
+                d.clients_classes_filters_end_date = vClientsClassesListValue.rowdata.clients_classes_filters_end_date;
+            }
+        },
+        key: "cnt_id",
+        switchControl: clients_classes_list_switchControl,
+        rowdata: {
+            cnt_id: null,
+            cnt_name: null,
+            cnt_user_main_access: null,
+            cnt_user_access: null,
+            user_name: null,
+            cnt_createdate: null,
+            vt_id: null
+        },
+        ordering: true,
+        order: [
+            [5, "desc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            if (smallScreenSize) {
+                $(row).find('td:eq(0)').addClass('text_small_size');
+                $(row).find('td:eq(1)').addClass('text_small_size');
+                $(row).find('td:eq(2)').addClass('text_small_size');
+                $(row).find('td:eq(3)').addClass('text_small_size');
+                $(row).find('td:eq(4)').addClass('text_small_size');
+                $(row).find('td:eq(5)').addClass('text_small_size');
+                $(row).find('td:eq(6)').addClass('text_small_size');
+                $(row).find('td:eq(7)').addClass('text_small_size');
+                $(row).find('td:eq(8)').addClass('text_small_size');
+                $(row).find('td:eq(9)').addClass('text_small_size');
+                $(row).find('td:eq(10)').addClass('text_small_size');
+                $(row).find('td:eq(11)').addClass('text_small_size');
+            }
+            $(row).css('background-color', data["cs_color"]);
+            $(row).find('td:eq(2)').css('background-color', data["cnt_class_color"]);
+        },
+        columnDefs:[
+            {"targets": [2], "visible": false, className: "noExport"},
+            {"targets": [4], "visible": false, className: "noExport"},
+            {"targets": [5,6],  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' )},
+            {"targets": [7,8,9,10,11,12,13,14],  render: $.fn.dataTable.render.number( '\ ', '.', 0, '' ), "className": "text-center"},
+            {"targets": [6,8,10,12,14], "visible": false},
+            {"targets": [18], "visible": false},
+            {"targets": [20], "visible": false},
+            {"targets": [21], "visible": false},
+            {"targets": [22], "visible": false},
+            {"targets": [23], "visible": false, className: "noExport"},
+            {"targets": [24], "visible": false}
+
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{clients_classes.list.cnt_id}]]*/ "cnt_id", "data": "cnt_id", "width": "3%"},
+            /*1*/{"title": /*[[#{clients_classes.list.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": "34%", "className": "all"},
+
+            /*2*/{"title": /*[[#{clients_classes.list.cnt_class_id}]]*/ "cnt_class_id", "data": "cnt_class_id", "width": "1%"},
+            /*3*/{"title": /*[[#{clients_classes.list.cnt_class_sname}]]*/ "cnt_class_sname", "data": "cnt_class_sname", "width": "5%", "className": "text-center"},
+            /*4*/{"title": /*[[#{clients_classes.list.cnt_class_color}]]*/ "cnt_class_color", "data": "cnt_class_color", "width": "1%"},
+
+            /*5*/{"title": /*[[#{clients_classes.list.finance_current}]]*/ "finance_current", "data": "finance_current", "width": "6%"},
+            /*6*/{"title": /*[[#{clients_classes.list.finance_all}]]*/ "finance_all", "data": "finance_all", "width": "1%"},
+            /*7*/{"title": /*[[#{clients_classes.list.tenders_current}]]*/ "tenders_current", "data": "tenders_current", "width": "3%"},
+            /*8*/{"title": /*[[#{clients_classes.list.tenders_all}]]*/ "tenders_all", "data": "tenders_all", "width": "1%"},
+            /*9*/{"title": /*[[#{clients_classes.list.requests_current}]]*/ "requests_current", "data": "requests_current", "width": "3%"},
+            /*10*/{"title": /*[[#{clients_classes.list.requests_all}]]*/ "requests_all", "data": "requests_all", "width": "1%"},
+            /*11*/{"title": /*[[#{clients_classes.list.meets_current}]]*/ "meets_current", "data": "meets_current", "width": "3%"},
+            /*12*/{"title": /*[[#{clients_classes.list.meets_all}]]*/ "meets_all", "data": "meets_all", "width": "1%"},
+            /*13*/{"title": /*[[#{clients_classes.list.calls_current}]]*/ "calls_current", "data": "calls_current", "width": "3%"},
+            /*14*/{"title": /*[[#{clients_classes.list.calls_all}]]*/ "calls_all", "data": "calls_all", "width": "1%"},
+
+            /*15*/{"title": /*[[#{clients_classes.list.cnt_sname}]]*/ "cnt_sname", "data": "cnt_sname", "width": "6%", "className": "text-center"},
+            /*16*/{"title": /*[[#{clients_classes.list.cnt_identifycode}]]*/ "cnt_identifycode", "data": "cnt_identifycode", "width": "5%", "className": "desktop text-center"},
+            /*17*/{"title": /*[[#{clients_classes.list.cs_sname}]]*/ "cs_sname", "data": "cs_sname", "width": "11%", "className": "desktop text-center"},
+            /*18*/{"title": /*[[#{clients_classes.list.cs_color}]]*/ "cs_color", "data": "cs_color", "width": "1%"},
+            /*19*/{"title": /*[[#{clients_classes.list.user_name}]]*/ "user_name", "data": "user_name", "width": "8%", "className": "min-tablet-l text-center"},
+            /*20*/{"title": /*[[#{clients_classes.list.cnt_user_access}]]*/ "cnt_user_access", "data": "cnt_user_access", "width": "1%"},
+            /*21*/{"title": /*[[#{clients_classes.list.cnt_user_main_access}]]*/ "cnt_user_main_access", "data": "cnt_user_main_access", "width": "1%"},
+            /*22*/{"title": /*[[#{clients_classes.list.cnt_user_show}]]*/ "cnt_user_show", "data": "cnt_user_show", "width": "1%"},
+            /*23*/{"title": /*[[#{clients_classes.list.cnt_createdate}]]*/ "cnt_createdate", "data": "cnt_createdate", "width": "1%"},
+            /*24*/{"title": /*[[#{clients_classes.list.vt_id}]]*/ "vt_id", "data": "vt_id", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function clients_classes_list_switchControl(){
+        var vStartDate = $("#clients_classes_filters_start_date").val();
+        var vEndDate = $("#clients_classes_filters_end_date").val();
+
+        var vFilterCheck;
+        if($('#clients_classes_filter_check').is(':checked')){
+            vFilterCheck = 1;
+        }else{
+            vFilterCheck = 0;
+        }
+        var vFilterUserID = $('#clients_classes_filters_users_list').val();
+        var vFiltersStatusID = $('#clients_classes_filters_statuses_list').val();
+        var vFiltersClassID = $('#clients_classes_filters_classes_list').val();
+
+        if(vClientsClassesListValue.rowdata.cnt_id !== null){
+            $("#clients-classes-list-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#clients-classes-list-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#clients-classes-list-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#clients-classes-list-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+/*
+            $("#clients_classes_stat_start_date").empty().val('').val(vClientsClassesListValue.rowdata.cnt_createdate);
+            $("#clients_classes_stat_start_date").data('daterangepicker').setStartDate(vClientsClassesListValue.rowdata.cnt_createdate);
+            $("#clients_classes_stat_start_date").data('daterangepicker').setEndDate(vClientsClassesListValue.rowdata.cnt_createdate);
+            $("#clients_classes_stat_show").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+            vClientClassesStatListValue.rowdata.cnt_id = vClientsClassesListValue.rowdata.cnt_id;
+            vClientClassesStatListValue.rowdata.cnts_id = null;
+            $(vClientClassesStatListValue.table).DataTable().ajax.reload();
+*/
+<!-- Statistics -->
+            CreateFinanceChart(5, vClientsClassesListValue.rowdata.cnt_id,vStartDate,vEndDate, vFilterCheck, vFilterUserID, vFiltersStatusID, vFiltersClassID);
+<!-- Fiance Graph -->
+            CreateTendersChart(4, vClientsClassesListValue.rowdata.cnt_id,vStartDate,vEndDate, vFilterCheck, vFilterUserID, vFiltersStatusID, vFiltersClassID);
+<!-- Tenders Graph -->
+            CreateRequestsChart(3, vClientsClassesListValue.rowdata.cnt_id,vStartDate,vEndDate, vFilterCheck, vFilterUserID, vFiltersStatusID, vFiltersClassID);
+<!-- Requests Graph -->
+            CreateMeetsChart(2, vClientsClassesListValue.rowdata.cnt_id,vStartDate,vEndDate, vFilterCheck, vFilterUserID, vFiltersStatusID, vFiltersClassID);
+<!-- Meets Graph -->
+            CreateCallsChart(1, vClientsClassesListValue.rowdata.cnt_id,vStartDate,vEndDate, vFilterCheck, vFilterUserID, vFiltersStatusID, vFiltersClassID);
+<!-- Calls Graph -->
+            vClientsClassesFinanceValue.rowdata.cnt_id = vClientsClassesListValue.rowdata.cnt_id;
+            vClientsClassesFinanceValue.rowdata.clients_classes_finance_filter_start_date = vStartDate;
+            vClientsClassesFinanceValue.rowdata.clients_classes_finance_filter_end_date = vEndDate;
+            vClientsClassesFinanceValue.rowdata.filter_check = vFilterCheck;
+            vClientsClassesFinanceValue.rowdata.filters_user_id = vFilterUserID;
+            vClientsClassesFinanceValue.rowdata.filters_status_id = vFiltersStatusID;
+            vClientsClassesFinanceValue.rowdata.filters_class_id = vFiltersClassID;
+
+            $(vClientsClassesFinanceValue.table).DataTable().ajax.reload();
+<!-- Finance -->
+            vClientsClassesTenderListValue.rowdata.cnt_id = vClientsClassesListValue.rowdata.cnt_id;
+            vClientsClassesTenderListValue.rowdata.clients_classes_tenders_filter_start_date = vStartDate;
+            vClientsClassesTenderListValue.rowdata.clients_classes_tenders_filter_end_date = vEndDate;
+            vClientsClassesTenderListValue.rowdata.filter_check = vFilterCheck;
+            vClientsClassesTenderListValue.rowdata.filters_user_id = vFilterUserID;
+            vClientsClassesTenderListValue.rowdata.filters_status_id = vFiltersStatusID;
+            vClientsClassesTenderListValue.rowdata.filters_class_id = vFiltersClassID;
+
+            $(vClientsClassesTenderListValue.table).DataTable().ajax.reload();
+<!-- Tenders -->
+            vClientsClassesRequestsListValue.rowdata.cnt_id = vClientsClassesListValue.rowdata.cnt_id;
+            vClientsClassesRequestsListValue.rowdata.clients_classes_requests_filter_start_date = vStartDate;
+            vClientsClassesRequestsListValue.rowdata.clients_classes_requests_filter_end_date = vEndDate;
+            vClientsClassesRequestsListValue.rowdata.filter_check = vFilterCheck;
+            vClientsClassesRequestsListValue.rowdata.filters_user_id = vFilterUserID;
+            vClientsClassesRequestsListValue.rowdata.filters_status_id = vFiltersStatusID;
+            vClientsClassesRequestsListValue.rowdata.filters_class_id = vFiltersClassID;
+
+            $(vClientsClassesRequestsListValue.table).DataTable().ajax.reload();
+<!-- Requests -->
+            vClientsClassesMeetsValue.rowdata.cnt_id = vClientsClassesListValue.rowdata.cnt_id;
+            vClientsClassesMeetsValue.rowdata.clients_classes_meets_filter_start_date = vStartDate;
+            vClientsClassesMeetsValue.rowdata.clients_classes_meets_filter_end_date = vEndDate;
+            vClientsClassesMeetsValue.rowdata.filter_check = vFilterCheck;
+            vClientsClassesMeetsValue.rowdata.filters_user_id = vFilterUserID;
+            vClientsClassesMeetsValue.rowdata.filters_status_id = vFiltersStatusID;
+            vClientsClassesMeetsValue.rowdata.filters_class_id = vFiltersClassID;
+
+            $(vClientsClassesMeetsValue.table).DataTable().ajax.reload();
+<!-- Meets -->
+            vClientsClassesCallsValue.rowdata.cnt_id = vClientsClassesListValue.rowdata.cnt_id;
+            vClientsClassesCallsValue.rowdata.clients_classes_calls_filter_start_date = vStartDate;
+            vClientsClassesCallsValue.rowdata.clients_classes_calls_filter_end_date = vEndDate;
+            vClientsClassesCallsValue.rowdata.filter_check = vFilterCheck;
+            vClientsClassesCallsValue.rowdata.filters_user_id = vFilterUserID;
+            vClientsClassesCallsValue.rowdata.filters_status_id = vFiltersStatusID;
+            vClientsClassesCallsValue.rowdata.filters_class_id = vFiltersClassID;
+
+            $(vClientsClassesCallsValue.table).DataTable().ajax.reload();
+<!-- Calls -->
+        }
+        else{
+/*
+            vClientClassesStatListValue.rowdata.cnt_id = null;
+            vClientClassesStatListValue.rowdata.cnts_id = null;
+            $(vClientClassesStatListValue.table).DataTable().clear().draw();
+*/
+            $("#clients-classes-list-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-classes-list-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#clients-classes-list-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#clients-classes-list-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+<!-- Statistics -->
+            RemoteFinanceChart();
+<!-- Meets Graph -->
+            RemoteTendersChart();
+<!-- Tenders Graph -->
+            RemoteRequestsChart();
+<!-- Requests Graph -->
+            RemoteMeetsChart();
+<!-- Meets Graph -->
+            RemoteCallsChart();
+<!-- Calls Graph -->
+            vClientsClassesFinanceValue.rowdata.cnt_id = null;
+            vClientsClassesFinanceValue.rowdata.clients_classes_finance_filter_start_date = null;
+            vClientsClassesFinanceValue.rowdata.clients_classes_finance_filter_end_date = null;
+            vClientsClassesFinanceValue.rowdata.filter_check = null;
+            vClientsClassesFinanceValue.rowdata.filters_user_id = null;
+            vClientsClassesFinanceValue.rowdata.filters_status_id = null;
+            vClientsClassesFinanceValue.rowdata.filters_class_id = null;
+            $(vClientsClassesFinanceValue.table).DataTable().clear().draw();
+<!-- Finance -->
+            vClientsClassesTenderListValue.rowdata.cnt_id = null;
+            vClientsClassesTenderListValue.rowdata.clients_classes_tenders_filter_start_date = null;
+            vClientsClassesTenderListValue.rowdata.clients_classes_tenders_filter_end_date = null;
+            vClientsClassesTenderListValue.rowdata.filter_check = null;
+            vClientsClassesTenderListValue.rowdata.filters_user_id = null;
+            vClientsClassesTenderListValue.rowdata.filters_status_id = null;
+            vClientsClassesTenderListValue.rowdata.filters_class_id = null;
+            $(vClientsClassesTenderListValue.table).DataTable().clear().draw();
+<!-- Tenders -->
+            vClientsClassesRequestsListValue.rowdata.cnt_id = null;
+            vClientsClassesRequestsListValue.rowdata.clients_classes_requests_filter_start_date = null;
+            vClientsClassesRequestsListValue.rowdata.clients_classes_requests_filter_end_date = null;
+            vClientsClassesRequestsListValue.rowdata.filter_check = null;
+            vClientsClassesRequestsListValue.rowdata.filters_user_id = null;
+            vClientsClassesRequestsListValue.rowdata.filters_status_id = null;
+            vClientsClassesRequestsListValue.rowdata.filters_class_id = null;
+            $(vClientsClassesRequestsListValue.table).DataTable().clear().draw();
+<!-- Requests -->
+            vClientsClassesMeetsValue.rowdata.cnt_id = null;
+            vClientsClassesMeetsValue.rowdata.clients_classes_meets_filter_start_date = null;
+            vClientsClassesMeetsValue.rowdata.clients_classes_meets_filter_end_date = null;
+            vClientsClassesMeetsValue.rowdata.filter_check = null;
+            vClientsClassesMeetsValue.rowdata.filters_user_id = null;
+            vClientsClassesMeetsValue.rowdata.filters_status_id = null;
+            vClientsClassesMeetsValue.rowdata.filters_class_id = null;
+            $(vClientsClassesMeetsValue.table).DataTable().clear().draw();
+<!-- Meets -->
+            vClientsClassesCallsValue.rowdata.cnt_id = null;
+            vClientsClassesCallsValue.rowdata.clients_classes_calls_filter_start_date = null;
+            vClientsClassesCallsValue.rowdata.clients_classes_calls_filter_end_date = null;
+            vClientsClassesCallsValue.rowdata.filter_check = null;
+            vClientsClassesCallsValue.rowdata.filters_user_id = null;
+            vClientsClassesCallsValue.rowdata.filters_status_id = null;
+            vClientsClassesCallsValue.rowdata.filters_class_id = null;
+            $(vClientsClassesCallsValue.table).DataTable().clear().draw();
+<!-- Calls -->
+        }
+    }
+
+    $("#clients_classes_filters_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#clients_classes_filters_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    if (window.screen.width < 1024 && window.screen.height < 768) {
+        $("#clients_classes_filters_start_date").attr('readonly',true);
+        $("#clients_classes_filters_end_date").attr('readonly',true);
+    }
+
+    $('.clients_classes_list_btn_control').on('click', function (){
+        $("#clients-classes-list-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#clients-classes-list-detail').submit(function() {
+        vClientsClassesListValue.rowdata.clients_classes_list_table_order_column = $(vClientsClassesListValue.table).DataTable().order()[0][0];
+        vClientsClassesListValue.rowdata.clients_classes_list_table_order_type = $(vClientsClassesListValue.table).DataTable().order()[0][1];
+        vClientsClassesListValue.rowdata.clients_classes_list_table_search = $(vClientsClassesListValue.table).DataTable().search();
+        vClientsClassesListValue.rowdata.clients_classes_list_table_pagelen = $(vClientsClassesListValue.table).DataTable().page.len();
+        vClientsClassesListValue.rowdata.clients_classes_list_table_page = $(vClientsClassesListValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        if($('#clients_classes_filter_check').is(':checked')){
+            vClientsClassesListValue.rowdata.clients_classes_filter_check = 1;
+        }else{
+            vClientsClassesListValue.rowdata.clients_classes_filter_check = 0;
+        }
+        vClientsClassesListValue.rowdata.clients_classes_filters_user_id = $('#clients_classes_filters_users_list').val();
+        vClientsClassesListValue.rowdata.clients_classes_filters_status_id = $('#clients_classes_filters_statuses_list').val();
+        vClientsClassesListValue.rowdata.clients_classes_filters_class_id = $('#clients_classes_filters_classes_list').val();
+        vClientsClassesListValue.rowdata.clients_classes_filters_start_date = $('#clients_classes_filters_start_date').val();
+        vClientsClassesListValue.rowdata.clients_classes_filters_end_date = $('#clients_classes_filters_end_date').val();
+
+        Object.keys(vClientsClassesListValue.rowdata).forEach(function (index) {
+            $("#clients-classes-list-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#clients-classes-list-detail input[name=\"" + index + "\"]").val(vClientsClassesListValue.rowdata[index]);
+        });
+    });
+
+    $('#clients_classes_filter_check').click(function() {
+        if ($('#clients_classes_filter_check').is(':checked')) {
+            $('#clients_classes_filters_users_list').removeAttr('disabled');
+            $('#clients_classes_filters_statuses_list').removeAttr('disabled');
+            $('#clients_classes_filters_classes_list').removeAttr('disabled');
+
+            $("#clients_classes_filters_start_date").removeAttr('disabled');
+            $("#clients_classes_filters_end_date").removeAttr('disabled');
+
+            $('#clients_classes_filters_show').prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $('#clients_classes_filters_users_show').prop('disabled',false).removeClass('btn-outline-dark').addClass('btn-outline-primary');
+        }
+        else{
+            $('#clients_classes_filter_check').removeAttr('checked');
+
+            $('#clients_classes_filters_users_list').attr('disabled', 'disabled');
+            $('#clients_classes_filters_statuses_list').attr('disabled', 'disabled');
+            $('#clients_classes_filters_classes_list').attr('disabled', 'disabled');
+
+            $("#clients_classes_filters_start_date").attr('disabled', 'disabled');
+            $("#clients_classes_filters_end_date").attr('disabled', 'disabled');
+
+            $('#clients_classes_filters_show').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $('#clients_classes_filters_users_show').prop('disabled',true).addClass('btn-outline-dark').removeClass('btn-outline-primary');
+        }
+    });
+    $('#clients-classes-list-reloadbtn').on('click', function () {
+        vClientsClassesListValue.rowdata.clients_classes_filter_check = 1;
+        vClientsClassesListValue.rowdata.clients_classes_filters_user_id = $('#clients_classes_filters_users_list').val();
+        vClientsClassesListValue.rowdata.clients_classes_filters_status_id = $('#clients_classes_filters_statuses_list').val();
+        vClientsClassesListValue.rowdata.clients_classes_filters_class_id = $('#clients_classes_filters_classes_list').val();
+        vClientsClassesListValue.rowdata.clients_classes_filters_start_date = $('#clients_classes_filters_start_date').val();
+        vClientsClassesListValue.rowdata.clients_classes_filters_end_date = $('#clients_classes_filters_end_date').val();
+
+        vClientsClassesListValue.rowdata.table_order_column = $(vClientsClassesListValue.table).DataTable().order()[0][0];
+        vClientsClassesListValue.rowdata.table_order_type = $(vClientsClassesListValue.table).DataTable().order()[0][1];
+        vClientsClassesListValue.rowdata.table_search = $(vClientsClassesListValue.table).DataTable().search();
+        vClientsClassesListValue.rowdata.table_pagelen = $(vClientsClassesListValue.table).DataTable().page.len();
+        vClientsClassesListValue.rowdata.table_page = $(vClientsClassesListValue.table).DataTable().page.info().page;
+
+        $(vClientsClassesListValue.table).DataTable().ajax.reload(null, false);
+    });
+
+    $('#clients_classes_filters_show').on('click', function () {
+        vClientsClassesListValue.rowdata.clients_classes_filter_check = 1;
+        vClientsClassesListValue.rowdata.clients_classes_filters_user_id = $('#clients_classes_filters_users_list').val();
+        vClientsClassesListValue.rowdata.clients_classes_filters_status_id = $('#clients_classes_filters_statuses_list').val();
+        vClientsClassesListValue.rowdata.clients_classes_filters_class_id = $('#clients_classes_filters_classes_list').val();
+        vClientsClassesListValue.rowdata.clients_classes_filters_start_date = $('#clients_classes_filters_start_date').val();
+        vClientsClassesListValue.rowdata.clients_classes_filters_end_date = $('#clients_classes_filters_end_date').val();
+        var vClassFilterCheck  = 1;
+        $.ajax({
+            url:/*[[@{'/clients_classes/create_temp'}]]*/ "/clients_classes/create_temp",
+            type: "post",
+            data: {
+                "start_date": $("#clients_classes_filters_start_date").val(),
+                "end_date": $("#clients_classes_filters_end_date").val(),
+                "filter_check": vClassFilterCheck,
+                "filters_user_id": $("#clients_classes_filters_users_list").val(),
+                "filters_status_id": $("#clients_classes_filters_statuses_list").val(),
+                "filters_class_id": $("#clients_classes_filters_classes_list").val()
+            },
+            success: function (reqdetail) {
+                $(vClientsClassesListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    });
+
+    $('#clients_classes_filters_users_list')
+        .wrap("<div class=\"position-relative\"></div>")
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: /*[[#{clients.filter.filter_user_placeholder}]]*/ "Select a user",
+            allowClear: true,
+            dropdownAutoWidth: true
+        });
+
+    $('#clients-classes-list-editbtn').on('click', function( event ) {
+        if (vClientsClassesListValue.rowdata.cnt_id != null) {
+            var RowID = vClientsClassesListValue.rowdata.cnt_id;
+            var vClassFilterCheck;
+            if($('#clients_classes_filter_check').is(':checked')){
+                vClassFilterCheck = 1;
+            }else{
+                vClassFilterCheck = 0;
+            }
+            $.ajax({
+                url: /*[[ @{/clients_classes/list_edit} ]]*/ "/clients_classes/list_edit",
+                type: 'POST',
+                data: {
+                    "cnt_id": RowID,
+                    "edit_class_id": $('#edit_classes_list').val()
+                },
+                success: function (result) {
+                    vClientsClassesListValue.rowdata.cnt_id = RowID;
+                    vClientsClassesListValue.rowdata.clients_classes_filter_check = vClassFilterCheck;
+                    vClientsClassesListValue.rowdata.clients_classes_filters_user_id = $('#clients_classes_filters_users_list').val();
+                    vClientsClassesListValue.rowdata.clients_classes_filters_status_id = $('#clients_classes_filters_statuses_list').val();
+                    vClientsClassesListValue.rowdata.clients_classes_filters_class_id = $('#clients_classes_filters_classes_list').val();
+                    vClientsClassesListValue.rowdata.clients_classes_filters_start_date = $('#clients_classes_filters_start_date').val();
+                    vClientsClassesListValue.rowdata.clients_classes_filters_end_date = $('#clients_classes_filters_end_date').val();
+
+                    $(vClientsClassesListValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    });
+
+    $('#clients-classes-list-editbtn-sx').on('click', function( event ) {
+        if (vClientsClassesListValue.rowdata.cnt_id != null) {
+            var RowID = vClientsClassesListValue.rowdata.cnt_id;
+            var vClassFilterCheck;
+            if($('#clients_classes_filter_check').is(':checked')){
+                vClassFilterCheck = 1;
+            }else{
+                vClassFilterCheck = 0;
+            }
+            $.ajax({
+                url: /*[[ @{/clients_classes/list_edit} ]]*/ "/clients_classes/list_edit",
+                type: 'POST',
+                data: {
+                    "cnt_id": RowID,
+                    "edit_class_id": $('#edit_classes_list').val()
+                },
+                success: function (result) {
+                    vClientsClassesListValue.rowdata.cnt_id = RowID;
+                    vClientsClassesListValue.rowdata.clients_classes_filter_check = vClassFilterCheck;
+                    vClientsClassesListValue.rowdata.clients_classes_filters_user_id = $('#clients_classes_filters_users_list').val();
+                    vClientsClassesListValue.rowdata.clients_classes_filters_status_id = $('#clients_classes_filters_statuses_list').val();
+                    vClientsClassesListValue.rowdata.clients_classes_filters_class_id = $('#clients_classes_filters_classes_list').val();
+                    vClientsClassesListValue.rowdata.clients_classes_filters_start_date = $('#clients_classes_filters_start_date').val();
+                    vClientsClassesListValue.rowdata.clients_classes_filters_end_date = $('#clients_classes_filters_end_date').val();
+
+                    $(vClientsClassesListValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    });
+<!-- Class Edit Button -->
+
+    $('#clients-classes-list-delbtn').on('click', function( event ) {
+        if (vClientsClassesListValue.rowdata.cnt_id != null) {
+            var RowID = vClientsClassesListValue.rowdata.cnt_id;
+            var vClassFilterCheck;
+            if($('#clients_classes_filter_check').is(':checked')){
+                vClassFilterCheck = 1;
+            }else{
+                vClassFilterCheck = 0;
+            }
+            $.ajax({
+                url: /*[[ @{/clients_classes/list_del} ]]*/ "/clients_classes/list_del",
+                type: 'POST',
+                data: {
+                    "cnt_id": RowID
+                },
+                success: function (result) {
+                    vClientsClassesListValue.rowdata.clients_classes_filter_check = vClassFilterCheck;
+                    vClientsClassesListValue.rowdata.clients_classes_filters_user_id = $('#clients_classes_filters_users_list').val();
+                    vClientsClassesListValue.rowdata.clients_classes_filters_status_id = $('#clients_classes_filters_statuses_list').val();
+                    vClientsClassesListValue.rowdata.clients_classes_filters_class_id = $('#clients_classes_filters_classes_list').val();
+                    vClientsClassesListValue.rowdata.clients_classes_filters_start_date = $('#clients_classes_filters_start_date').val();
+                    vClientsClassesListValue.rowdata.clients_classes_filters_end_date = $('#clients_classes_filters_end_date').val();
+                    $(vClientsClassesListValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    });
+
+    $('#clients-classes-list-delbtn-sx').on('click', function( event ) {
+        if (vClientsClassesListValue.rowdata.cnt_id != null) {
+            var RowID = vClientsClassesListValue.rowdata.cnt_id;
+            var vClassFilterCheck;
+            if($('#clients_classes_filter_check').is(':checked')){
+                vClassFilterCheck = 1;
+            }else{
+                vClassFilterCheck = 0;
+            }
+            $.ajax({
+                url: /*[[ @{/clients_classes/list_del} ]]*/ "/clients_classes/list_del",
+                type: 'POST',
+                data: {
+                    "cnt_id": RowID
+                },
+                success: function (result) {
+                    vClientsClassesListValue.rowdata.clients_classes_filter_check = vClassFilterCheck;
+                    vClientsClassesListValue.rowdata.clients_classes_filters_user_id = $('#clients_classes_filters_users_list').val();
+                    vClientsClassesListValue.rowdata.clients_classes_filters_status_id = $('#clients_classes_filters_statuses_list').val();
+                    vClientsClassesListValue.rowdata.clients_classes_filters_class_id = $('#clients_classes_filters_classes_list').val();
+                    vClientsClassesListValue.rowdata.clients_classes_filters_start_date = $('#clients_classes_filters_start_date').val();
+                    vClientsClassesListValue.rowdata.clients_classes_filters_end_date = $('#clients_classes_filters_end_date').val();
+                    $(vClientsClassesListValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    });
+<!-- Class Del Button -->
+
+    $(document).ready(function(){
+        vClientsClassesListValue.rowdata.cnt_id = /*[[${cnt_id}]]*/ null;
+
+        var clientsFilterCheck =  /*[[${clients_classes_filter_check}]]*/ null;
+        vClientsClassesListValue.rowdata.clients_classes_filter_check = clientsFilterCheck;
+        if(clientsFilterCheck === 1 && clientsFilterCheck != null){
+            $('#clients_classes_filter_check').attr('checked', true);
+
+            $('#clients_classes_filters_users_list').removeAttr('disabled');
+            $('#clients_classes_filters_statuses_list').removeAttr('disabled');
+            $('#clients_classes_filters_classes_list').removeAttr('disabled');
+
+            $("#clients_classes_filters_start_date").removeAttr('disabled');
+            $("#clients_classes_filters_end_date").removeAttr('disabled');
+
+            $('#clients_classes_filters_show').prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        }
+        else{
+            $('#clients_classes_filters_users_list').attr('disabled', 'disabled');
+            $('#clients_classes_filters_statuses_list').attr('disabled', 'disabled');
+            $('#clients_classes_filters_classes_list').attr('disabled', 'disabled');
+
+            $("#clients_classes_filters_start_date").attr('disabled', 'disabled');
+            $("#clients_classes_filters_end_date").attr('disabled', 'disabled');
+
+            $('#clients_classes_filters_show').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+
+        var clientsFiltersUserID = /*[[${clients_classes_filters_user_id}]]*/ null;
+        vClientsClassesListValue.rowdata.clients_classes_filters_user_id = clientsFiltersUserID;
+        if(clientsFiltersUserID > 0){
+            $('#clients_classes_filters_users_list').val(clientsFiltersUserID).trigger('change');
+        }
+
+        var clientsFiltersStatusID = /*[[${clients_classes_filters_status_id}]]*/ null;
+        vClientsClassesListValue.rowdata.clients_classes_filters_status_id = clientsFiltersStatusID;
+        if(clientsFiltersStatusID > -10){
+            $('#clients_classes_filters_statuses_list').val(clientsFiltersStatusID);
+        }
+
+        var clientsFiltersClassID = /*[[${clients_classes_filters_class_id}]]*/ null;
+        vClientsClassesListValue.rowdata.clients_classes_filters_class_id = clientsFiltersClassID;
+        if(clientsFiltersClassID > 0){
+            $('#clients_classes_filters_classes_list').val(clientsFiltersClassID);
+        }
+
+        var clientsFiltersStartDate = /*[[${clients_classes_filters_start_date}]]*/ null;
+        vClientsClassesListValue.rowdata.clients_classes_filters_start_date = clientsFiltersStartDate;
+        if(clientsFiltersStartDate != null){
+            $("#clients_classes_filters_start_date").val(clientsFiltersStartDate);
+        }
+
+        var clientsFiltersEndDate = /*[[${clients_classes_filters_end_date}]]*/ null;
+        vClientsClassesListValue.rowdata.clients_classes_filters_end_date = clientsFiltersEndDate;
+        if(clientsFiltersEndDate != null){
+            $("#clients_classes_filters_end_date").val(clientsFiltersEndDate);
+        }
+
+        vClientsClassesListValue.rowdata.table_order_column = /*[[${clients_classes_list_table_order_column}]]*/ null;
+        vClientsClassesListValue.rowdata.table_order_type = /*[[${clients_classes_list_table_order_type}]]*/ null;
+        vClientsClassesListValue.rowdata.table_search = /*[[${clients_classes_list_table_search}]]*/ null;
+        vClientsClassesListValue.rowdata.table_pagelen = /*[[${clients_classes_list_table_pagelen}]]*/ null;
+        vClientsClassesListValue.rowdata.table_page = /*[[${clients_classes_list_table_page}]]*/ null;
+
+        var clientsFilterCollapse = /*[[${clients_classes_filter_collapse}]]*/ null;
+        vClientsClassesListValue.rowdata.clients_classes_filter_collapse = clientsFilterCollapse;
+        if(clientsFilterCollapse === true){ $('#clients_classes_filter_div').collapse('show');}
+        else if(clientsFilterCollapse === false){ $('#clients_classes_filter_div').removeClass('show').collapse('hide');}
+<!-- Collapse Filter -->
+
+        var vClassFilterCheck;
+        if($('#clients_classes_filter_check').is(':checked')){
+            vClassFilterCheck = 1;
+        }else{
+            vClassFilterCheck = 0;
+        }
+
+        $.ajax({
+            url:/*[[@{'/clients_classes/create_temp'}]]*/ "/clients_classes/create_temp",
+            type: "post",
+            data: {
+                "start_date": $("#clients_classes_filters_start_date").val(),
+                "end_date": $("#clients_classes_filters_end_date").val(),
+                "filter_check": vClassFilterCheck,
+                "filters_user_id": $("#clients_classes_filters_users_list").val(),
+                "filters_status_id": $("#clients_classes_filters_statuses_list").val(),
+                "filters_class_id": $("#clients_classes_filters_classes_list").val()
+            },
+            success: function (reqdetail) {
+                recreateDataTable(vClientsClassesListValue);
+            }
+        });
+
+        // var vFinName = /*[[#{clients_classes.list.finance_category}]]*/ null;
+        // var vTendName = /*[[#{clients_classes.list.tenders_category}]]*/ null;
+        // var vReqName = /*[[#{clients_classes.list.requests_category}]]*/ null;
+        // var vMeetsName = /*[[#{clients_classes.list.meets_category}]]*/ null;
+        // var vCallsName = /*[[#{clients_classes.list.calls_category}]]*/ null;
+        //
+        // if (window.screen.width > 1024 && window.screen.height >= 768) {
+        //     $("#table-clients-classes-list thead tr:first").before(
+        //         '<tr role="row">' +
+        //         '<th colspan="7"></th>' +
+        //         '<th colspan="2" class="text-center">' + vFinName + '</th>' +
+        //         '<th colspan="2" class="text-center">' + vTendName + '</th>' +
+        //         '<th colspan="2" class="text-center">' + vReqName + '</th>' +
+        //         '<th colspan="2" class="text-center">' + vMeetsName + '</th>' +
+        //         '<th colspan="2" class="text-center">' + vCallsName + '</th>' +
+        //         '</tr>');
+        // }
+
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#analytics_li').addClass('active').removeClass('collapsed');
+        $('#analytics_a').attr('aria-expanded',true);
+        $('#analytics').addClass('show');
+
+        $('#clients_classes_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

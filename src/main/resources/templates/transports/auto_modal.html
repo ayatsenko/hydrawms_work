@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="transports_auto_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="transports_auto_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="transports_auto_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{transports.auto.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="cntc_id_row">
+                            <label for="cntc_id" class="form-label mb-0" th:text="'1. '+ #{transports.auto.cntc_id}"></label>
+                            <input type="number" class="form-control" id="cntc_id" name="cntc_id">
+                        </div>
+                        <div class="col-12 col-md-8" id="cntc_type_brand_row">
+                            <label for="cntc_type_brand" class="form-label mb-0" th:text="'2. '+#{transports.auto.cntc_type_brand}"></label>
+                            <input type="text" maxlength="120" class="form-control" id="cntc_type_brand" name="cntc_type_brand">
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-5" id="cntc_type_number_row">
+                            <label for="cntc_type_number" class="form-label mb-0" th:text="'3. '+#{transports.auto.cntc_type_number}"></label>
+                            <input type="text" maxlength="64" class="form-control" id="cntc_type_number" name="cntc_type_number">
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-5" id="cntc_type_id_row">
+                            <label for="cntc_type_id" class="form-label mb-0" th:text="'4. '+#{transports.auto.cntc_type_sname}"></label>
+                            <div class="input-group d-flex">
+                                <div class="flex-fill">
+                                    <select type="text" id="cntc_type_id" name="cntc_type_id" class="custom-select" aria-describedby="cntc_type_id_helpBlock">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 3 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-4" id="cntc_weight_type_id_row">
+                            <label for="cntc_type_id" class="form-label mb-0" th:text="'5. '+#{transports.auto.cntc_weight_type_name}"></label>
+                            <div class="input-group d-flex">
+                                <div class="flex-fill">
+                                    <select type="text" id="cntc_weight_type_id" name="cntc_weight_type_id" class="custom-select" aria-describedby="cntc_weight_type_id_helpBlock">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 3 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="transports_auto_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="transports_auto_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="transports_auto_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="transports_auto_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    // Clear Fields
+    function clear_transports_auto_modal_detail() {
+        $("#transports_auto_modal_detail input[type=text]").val('');
+        $("#transports_auto_modal_detail input[type=number]").val('');
+        $("#transports_auto_modal_detail select").empty();
+        $("#transports_auto_modal_detail textarea").val('');
+    }
+
+    // Block And Required Fields
+    function block_transports_auto_modal_detail() {
+        $('#cntc_type_number').attr('required', true);
+
+        if($('#mode').val() === "0"){
+            $('#cntc_id_row').attr('hidden', true);
+            $('#cntc_type_brand').removeAttr('readonly');
+            $('#cntc_type_number').removeAttr('readonly');
+
+            $('#cntc_type_id').removeAttr('disabled');
+            $('#cntc_weight_type_id').removeAttr('disabled');
+        }
+        else if($('#mode').val() === "1"){
+            $('#cntc_id_row').removeAttr('hidden');
+            $('#cntc_id').attr('readonly', true);
+            $('#cntc_type_brand').removeAttr('readonly');
+            $('#cntc_type_number').removeAttr('readonly');
+
+            $('#cntc_type_id').removeAttr('disabled');
+            $('#cntc_weight_type_id').removeAttr('disabled');
+        }
+        else{
+            $('#cntc_id_row').removeAttr('hidden');
+            $('#cntc_id').attr('readonly', true);
+            $('#cntc_type_brand').attr('readonly', true);
+            $('#cntc_type_number').attr('readonly', true);
+
+            $('#cntc_type_id').attr('disabled', true);
+            $('#cntc_weight_type_id').attr('disabled', true);
+        }
+    }
+
+    function carTypeChange(vMode, vCarTypeID) {
+        $('#cntc_type_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/transports/get_auto_type'}]]*/ "/transports/get_auto_type",
+            type: "get",
+            data: {"mode": vMode
+            },
+            success: function (car_type_list) {
+                for (var i = 0; i < car_type_list.data.length; i++) {
+                    $("select[name='cntc_type_id']").find('option').end().append(
+                        "<option value='" + car_type_list.data[i].cntc_type_id + "'>" + car_type_list.data[i].cntc_type_sname + "</option>"
+                    );
+                }
+                if (vCarTypeID !== ''){
+                    $('#cntc_type_id').val(vCarTypeID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    function carTypeWeightChange(vMode, vCarTypeWeightID) {
+        $('#cntc_weight_type_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/transports/get_auto_weight_type'}]]*/ "/transports/get_auto_weight_type",
+            type: "get",
+            data: {"mode": vMode
+            },
+            success: function (car_weight_type_list) {
+                for (var i = 0; i < car_weight_type_list.data.length; i++) {
+                    $("select[name='cntc_weight_type_id']").find('option').end().append(
+                        "<option value='" + car_weight_type_list.data[i].cntc_weight_type_id + "'>" + car_weight_type_list.data[i].cntc_weight_type_name + "</option>"
+                    );
+                }
+                if (vCarTypeWeightID !== ''){
+                    $('#cntc_weight_type_id').val(vCarTypeWeightID);
+                }
+            },
+            error: function(){}
+        }));
+    }    
+    
+    // Load Function
+    function fill_transports_auto_modal_detail(aMode){
+        clear_transports_auto_modal_detail();
+        $('#mode').val(aMode);
+        block_transports_auto_modal_detail();
+
+        if(aMode > 0) {
+            $.ajax({
+                url:/*[[@{'/transports/get_auto_detail'}]]*/ "transports/get_auto_detail",
+                type: "get",
+                data: {
+                    "cntc_id": vTransportAutoListValue.rowdata.cntc_id,
+                    "mode": aMode
+                },
+                success: function (transports_auto_modal_detail) {
+                    $.when(
+                        carTypeChange(aMode, transports_auto_modal_detail.data[0].cntc_type_id),
+                        carTypeWeightChange(aMode, transports_auto_modal_detail.data[0].cntc_weight_type_id)                        
+                    ).then(function () {
+                        $('#cntc_id').val(transports_auto_modal_detail.data[0].cntc_id);
+                        $('#cntc_type_brand').val(transports_auto_modal_detail.data[0].cntc_type_brand);
+                        $('#cntc_type_number').val(transports_auto_modal_detail.data[0].cntc_type_number);
+                        
+                        $('#transports_auto_modal').modal('show');
+                    });
+                }
+            });
+        }
+        else if (aMode === 0){
+            $.when(
+                carTypeChange(aMode, 0),
+                carTypeWeightChange(aMode, 0)
+            ).then(function () {
+                $('#transports_auto_modal').modal('show');
+            });
+        }
+    }
+
+    // Add button script
+    $('#transports_auto_modal_addbtn').on('click', function(){
+        var MainRowID = vTransportsListValue.rowdata.cnt_id;
+        var RowID = vTransportAutoListValue.rowdata.cntc_id;
+        $.ajax({
+            url: /*[[ @{/transports/add_auto} ]]*/ "/transports/add_auto",
+            type: 'POST',
+            data: {
+                "cnt_id": MainRowID,
+                "cntc_type_brand": $('#cntc_type_brand').val(),
+                "cntc_type_number": $('#cntc_type_number').val(),
+                "cntc_type_id":  $('#cntc_type_id').val(),
+                "cntc_weight_type_id": $('#cntc_weight_type_id').val()
+            },
+            success: function (result) {
+                $('#transports_auto_modal').modal('hide');
+                vTransportAutoListValue.rowdata.cnt_id = MainRowID;
+                vTransportAutoListValue.rowdata.cntc_id = RowID;
+                $(vTransportAutoListValue.table).DataTable().ajax.reload(null, false);
+
+            }
+        });
+    });
+
+    // Edit button script
+    $('#transports_auto_modal_editbtn').on('click', function(){
+        var MainRowID = vTransportsListValue.rowdata.cnt_id;
+        var RowID = vTransportAutoListValue.rowdata.cntc_id;
+        $.ajax({
+            url: /*[[ @{/transports/edit_auto} ]]*/ "/transports/edit_auto",
+            type: 'POST',
+            data: {
+                "cntc_id": RowID,
+                "cntc_type_brand": $('#cntc_type_brand').val(),
+                "cntc_type_number": $('#cntc_type_number').val(),
+                "cntc_type_id":  $('#cntc_type_id').val(),
+                "cntc_weight_type_id": $('#cntc_weight_type_id').val()
+            },
+            success: function (result) {
+                $('#transports_auto_modal').modal('hide');
+                vTransportAutoListValue.rowdata.cnt_id = MainRowID;
+                vTransportAutoListValue.rowdata.cntc_id = RowID;
+                $(vTransportAutoListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    });
+
+    // Del button script
+    $('#transports_auto_modal_delbtn').on('click', function(){
+        var MainRowID = vTransportsListValue.rowdata.cnt_id;
+        var RowID = vTransportAutoListValue.rowdata.cntc_id;
+        $.ajax({
+            url: /*[[ @{/transports/del_auto} ]]*/ "/transports/del_auto",
+            type: 'POST',
+            data: {
+                "cntc_id": RowID
+            },
+            success: function (result) {
+                $('#transports_auto_modal').modal('hide');
+                vTransportAutoListValue.rowdata.cnt_id = MainRowID;
+                $(vTransportAutoListValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

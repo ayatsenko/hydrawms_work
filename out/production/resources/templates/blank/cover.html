@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:include="layout/header :: header(title = #{blank.caption})"></head>
+
+<body class=""> <!-- right-to-left -->
+
+<div class="splash active">
+    <div class="icon"></div>
+</div>
+
+<div class="wrapper">
+
+    <div th:replace="fragments/navigation :: navigation">navigation</div>
+
+    <div class="content">
+        <header class="page-header">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-8 page-title-wrapper">
+                        <h1 class="page-title" th:text="#{blank.caption}"></h1>
+                        <h2 class="page-subtitle" th:text="#{blank.description}"></h2>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="page-body">
+            <div class="container-fluid">
+                <div th:replace="fragments/leftmenu :: leftmenu">left menu</div>
+                    <div class="page-content">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-8">
+                                <div class="card card-default widget">
+                                    <div class="card-heading">
+                                        <div class="card-controls">
+                                            <i class="fa fa-heart fa-2x"></i>
+
+                                        </div>
+                                        <h3 class="card-title" th:text="#{blank.caption}"></h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div style="height:150px;">
+                                            <p th:text="#{blank.description}"></p>
+                                            <span th:replace="blank/card :: blank_body"></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div><!-- /.col-md-12 -->
+                        </div>
+
+
+                        <footer th:replace="fragments/footer :: footer">Footer</footer>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /#wrapper -->
+
+
+
+<footer th:replace="layout/footer :: footer">Footer</footer>
+
+<script th:replace="blank/card :: cardscript">posttracking</script>
+
+</body>
+</html>

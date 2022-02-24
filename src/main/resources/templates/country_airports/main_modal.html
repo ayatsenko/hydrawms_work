@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="country_airports_main_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="country_airports_main_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="country_airports_main_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{country_airports.main.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-3" id="aeroport_id_row">
+                            <label for="aeroport_id" class="form-label mb-0" th:text="'1. '+ #{country_airports.main.aeroport_id}"></label>
+                            <input type="number" class="form-control" id="aeroport_id" name="aeroport_id">
+                        </div>
+                        <div class="col-12 col-md-5" id="aeroport_name_row">
+                            <label for="aeroport_name" class="form-label mb-0" th:text="'2. '+#{country_airports.main.aeroport_name}"></label>
+                            <input type="text" maxlength="120" class="form-control" id="aeroport_name" name="aeroport_name">
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-5" id="aeroport_city_row">
+                            <label for="aeroport_city" class="form-label mb-0" th:text="'3. '+#{country_airports.main.aeroport_city}"></label>
+                            <input type="text" maxlength="64" class="form-control" id="aeroport_city" name="aeroport_city">
+                        </div>
+
+                        <div class="col-12 col-md-3" id="aeroport_code_row">
+                            <label for="aeroport_code" class="form-label mb-0" th:text="'4. '+#{country_airports.main.aeroport_code}"></label>
+                            <input type="text" maxlength="8" class="form-control" id="aeroport_code" name="aeroport_code">
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-6" id="country_id_row">
+                            <label for="country_id" class="form-label mb-0" th:text="'5. '+#{country_airports.main.country_id}"></label>
+                            <div class="input-group d-flex">
+                                <div class="flex-fill">
+                                    <select type="text" id="country_id" name="country_id" class="custom-select select2" aria-describedby="country_id_helpBlock">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 3 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="country_airports_main_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="country_airports_main_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="country_airports_main_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="country_airports_main_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    // Clear Fields
+    function clear_country_airports_main_modal_detail() {
+        $("#country_airports_main_modal_detail input[type=text]").val('');
+        $("#country_airports_main_modal_detail input[type=number]").val('');
+        $("#country_airports_main_modal_detail select").empty();
+        $("#country_airports_main_modal_detail textarea").val('');
+    }
+
+    // Block And Required Fields
+    function block_country_airports_main_modal_detail() {
+        $('#aeroport_name').attr('required', true);
+
+        if($('#mode').val() === "0"){
+            $('#aeroport_id_row').attr('hidden', true);
+            $('#aeroport_name').removeAttr('readonly');
+
+            $('#aeroport_city').removeAttr('readonly');
+            $('#aeroport_code').removeAttr('readonly');
+
+            $('#country_id').removeAttr('disabled');
+        }
+        else if($('#mode').val() === "1"){
+            $('#aeroport_id_row').removeAttr('hidden');
+            $('#aeroport_id').attr('readonly', true);
+
+            $('#aeroport_name').removeAttr('readonly');
+            $('#aeroport_city').removeAttr('readonly');
+            $('#aeroport_code').removeAttr('readonly');
+
+            $('#country_id').removeAttr('disabled');
+        }
+        else{
+            $('#aeroport_id_row').removeAttr('hidden');
+            $('#aeroport_id').attr('readonly', true);
+
+            $('#aeroport_name').attr('readonly', true);
+            $('#aeroport_city').attr('readonly', true);
+            $('#aeroport_code').attr('readonly', true);
+
+            $('#country_id').attr('disabled', true);
+        }
+    }
+
+    function countryChange(vMode, vCountryID) {
+        $('#country_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/country_airports/get_country'}]]*/ "/country_airports/get_country",
+            type: "get",
+            data: {"mode": vMode,
+                "country_id": vCountryID
+            },
+            success: function (country_list) {
+                for (var i = 0; i < country_list.data.length; i++) {
+                    $("select[name='country_id']").find('option').end().append(
+                        "<option value='" + country_list.data[i].country_id + "'>" + country_list.data[i].country_nameua + "</option>"
+                    );
+                }
+                if (vCountryID !== ''){
+                    $('#country_id').val(vCountryID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    // Load Function
+    function fill_country_airports_main_modal_detail(aMode){
+        clear_country_airports_main_modal_detail();
+        $('#mode').val(aMode);
+        block_country_airports_main_modal_detail();
+
+        if(aMode > 0) {
+            $.ajax({
+                url:/*[[@{'/country_airports/get_main_detail'}]]*/ "country_airports/get_main_detail",
+                type: "get",
+                data: {
+                    "aeroport_id": vCountryAirportsValue.rowdata.aeroport_id,
+                    "mode": aMode
+                },
+                success: function (client_list_modal_detail) {
+                    $.when(
+                        countryChange(aMode, client_list_modal_detail.data[0].country_id)
+                    ).then(function () {
+                        $('#aeroport_id').val(client_list_modal_detail.data[0].aeroport_id);
+                        $('#aeroport_name').val(client_list_modal_detail.data[0].aeroport_name);
+                        $('#aeroport_city').val(client_list_modal_detail.data[0].aeroport_city);
+                        $('#aeroport_code').val(client_list_modal_detail.data[0].aeroport_code);
+                        $('#country_airports_main_modal').modal('show');
+                    });
+                }
+            });
+        }
+        else if (aMode === 0){
+            $.when(
+                countryChange(aMode, 2)
+            ).then(function () {
+                $('#country_airports_main_modal').modal('show');
+            });
+        }
+    }
+
+    var countryName =   /*[[#{country_airports.main.country_placeholder}]]*/ "Select a country";
+    $('#country_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: countryName,
+            allowClear: true,
+            dropdownAutoWidth: true
+        });
+
+    // Add button script
+    $('#country_airports_main_modal_addbtn').on('click', function(){
+        var RowID = vCountryAirportsValue.rowdata.aeroport_id;
+        $.ajax({
+            url: /*[[ @{/country_airports/add_country_airport} ]]*/ "/country_airports/add_country_airport",
+            type: 'POST',
+            data: {
+                "aeroport_name": $('#aeroport_name').val(),
+                "aeroport_city": $('#aeroport_city').val(),
+                "aeroport_code": $('#aeroport_code').val(),
+                "country_id":  $('#country_id').val()
+            },
+            success: function (result) {
+                $('#country_airports_main_modal').modal('hide');
+                vCountryAirportsValue.rowdata.aeroport_id = RowID;
+                $(vCountryAirportsValue.table).DataTable().ajax.reload(null, false);
+
+            }
+        });
+    });
+
+    // Edit button script
+    $('#country_airports_main_modal_editbtn').on('click', function(){
+        var RowID = vCountryAirportsValue.rowdata.aeroport_id;
+        $.ajax({
+            url: /*[[ @{/country_airports/edit_country_airport} ]]*/ "/country_airports/edit_country_airport",
+            type: 'POST',
+            data: {
+                "aeroport_id": RowID,
+                "aeroport_name": $('#aeroport_name').val(),
+                "aeroport_city": $('#aeroport_city').val(),
+                "aeroport_code": $('#aeroport_code').val(),
+                "country_id":  $('#country_id').val()
+            },
+            success: function (result) {
+                $('#country_airports_main_modal').modal('hide');
+                vCountryAirportsValue.rowdata.aeroport_id = RowID;
+                $(vCountryAirportsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    });
+
+    // Del button script
+    $('#country_airports_main_modal_delbtn').on('click', function(){
+        var RowID = vCountryAirportsValue.rowdata.aeroport_id;
+        $.ajax({
+            url: /*[[ @{/country_airports/del_country_airport} ]]*/ "/country_airports/del_country_airport",
+            type: 'POST',
+            data: {
+                "aeroport_id": RowID
+            },
+            success: function (result) {
+                $('#country_airports_main_modal').modal('hide');
+                $(vCountryAirportsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

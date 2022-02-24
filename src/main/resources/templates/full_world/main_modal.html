@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="full_world_main_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="full_world_main_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="full_world_main_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{full_world.main.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body m-1">
+                    <form id="full_world_main_modal_form" name="full_world_main_modal_form" class="was-validated" novalidate>
+                    <input type="hidden" id="full_world_main_modal_mode">
+                    <div class="form-row">
+                        <div class="col-12 col-md-2 mb-1" id="full_world_main_modal_clm_id_row">
+                            <label for="full_world_main_modal_clm_id" class="form-label" th:text="'1. '+ #{full_world.main.clm_id}"></label>
+                            <input type="number" class="form-control" id="full_world_main_modal_clm_id" name="full_world_main_modal_clm_id" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-12 col-md-3 mb-1" id="full_world_main_modal_clm_num_row">
+                            <label for="full_world_main_modal_clm_num" class="form-label" th:text="'2. '+ #{full_world.main.clm_num}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="full_world_main_modal_clm_num" name="full_world_main_modal_clm_num">
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                        <div class="col-12 col-md-2 mb-1" id="clm_date_row">
+                            <label for="clm_date" class="form-label" th:text="'3. '+ #{full_world.main.clm_date}"></label>
+                            <input type="text" class="form-control" id="clm_date" name="clm_date" readonly>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-4 mb-1" id="cnt_filter_row">
+                            <label for="cnt_filter" class="form-label" th:text="'4. '+ #{full_world.main.cnt_filter}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="cnt_filter" name="cnt_filter">
+                                <button type="button" id="cnt_filter_check" name="cnt_filter_check" class="btn btn-outline-primary"><i class="fas fa-database"></i></button>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-8 mb-1" id="full_world_main_modal_cnt_id_div">
+                            <label for="full_world_main_modal_cnt_id" th:text="'5. '+#{full_world.main.cnt_name}"></label>
+                            <div class="input-group d-flex">
+                                <select type="text" id="full_world_main_modal_cnt_id" name="full_world_main_modal_cnt_id" class="form-control p-1" aria-describedby="full_world_main_modal_cnt_id_helpBlock">
+                                </select>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                            </div>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                <div class="form-row">
+                    <div class="col-12 col-md-6 mb-1" id="full_world_main_modal_ser_id_row">
+                        <label for="full_world_main_modal_ser_id" class="mr-2" th:text="'6. '+#{full_world.main.ser_sname}">Service: </label>
+                        <select type="text" id="full_world_main_modal_ser_id" name="full_world_main_modal_ser_id" class="form-control p-1">
+                        </select>
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 mb-1" id="full_world_main_modal_user_id_row">
+                        <label for="full_world_main_modal_user_id" class="mr-2" th:text="'7. '+#{full_world.main.user_name}">User: </label>
+                        <select type="text" id="full_world_main_modal_user_id" name="full_world_main_modal_user_id" class="form-control p-1">
+                        </select>
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div>  <!-- Row 2 -->
+
+                <div class="form-row">
+                    <div class="col-12 col-md-3 mb-1" id="clm_sum_row">
+                        <label for="clm_sum" class="form-label" th:text="'7. '+ #{full_world.main.clm_sum}"></label>
+                        <input type="text" class="form-control" id="clm_sum" name="clm_sum">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+
+                    <div class="col-12 col-md-4 mb-1" id="clm_sum_currency_row">
+                        <label for="clm_sum_currency_id" class="mr-2" th:text="'8. '+#{full_world.main.clm_rate_currency_id}">Currency: </label>
+                        <select id="clm_sum_currency_id" name="clm_sum_currency_id" class="form-control">
+                        </select>
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div><!-- Row 3 -->
+
+                <div class="form-row">
+                    <div class="col-12 col-md-3 mb-1" id="clm_sum_currency_type1_row">
+                        <label for="clm_sum_currency_date" class="form-label" th:text="'9. '+ #{full_world.main.clm_sum_currency_date}"></label>
+                        <label class="custom-control custom-radio">
+                            <input id="clm_sum_currency_ondate" name="clm_sum_currency_ondate" type="radio" class="custom-control-input" value="1">
+                            <span class="custom-control-label text-body">Курс на дату</span>
+                        </label>
+                        <label class="custom-control custom-radio">
+                            <input id="clm_sum_currency_onload" name="clm_sum_currency_ondate" type="radio" class="custom-control-input" value="2">
+                            <span class="custom-control-label text-body">Курс на дату загрузки</span>
+                        </label>
+                    </div>
+                    <div class="col-12 col-md-3 mb-1" id="clm_sum_currency_type2_row">
+                        <label class="form-label"> </label>
+                        <label class="custom-control custom-radio">
+                            <input id="clm_sum_currency_onboarder" name="clm_sum_currency_ondate" type="radio" class="custom-control-input" value="3">
+                            <span class="custom-control-label text-body">Курс на дату там.очистки</span>
+                        </label>
+                        <label class="custom-control custom-radio">
+                            <input id="clm_sum_currency_onunload" name="clm_sum_currency_ondate" type="radio" class="custom-control-input" value="4">
+                            <span class="custom-control-label text-body">Курс на дату выгрузки</span>
+                        </label>
+                    </div>
+                    <div class="col-12 col-md-3 mb-1" id="clm_sum_currency_date_row">
+                        <label class="form-label"> </label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="clm_sum_currency_date" name="clm_sum_currency_date">
+                            <button type="button" id="clm_sum_currency_date_x" name="clm_sum_currency_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div>
+                </div>  <!-- Row 4 -->
+
+                <div class="form-row">
+                    <div class="col-12 col-md-3 mb-1" id="clm_rate_row">
+                        <label for="clm_rate" class="form-label" th:text="'10. '+ #{full_world.main.clm_rate}"></label>
+                        <input type="text" class="form-control" id="clm_rate" name="clm_rate">
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                    <div class="col-12 col-md-4 mb-1" id="clm_rate_currency_row">
+                        <label for="clm_rate_currency_id" class="mr-2" th:text="'11. '+#{full_world.main.clm_rate_currency_id}">Currency: </label>
+                        <select id="clm_rate_currency_id" name="clm_rate_currency_id" class="form-control">
+                        </select>
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div>  <!-- Row 5 -->
+
+                <div class="form-row">
+                    <div class="col-12 col-md-3 mb-1" id="clm_rate_currency_type1_row">
+                        <label for="clm_sum_currency_date" class="form-label" th:text="'12. '+ #{full_world.main.clm_rate_currency_date}"></label>
+                        <label class="custom-control custom-radio">
+                            <input id="clm_rate_currency_ondate" name="clm_rate_currency_ondate" type="radio" class="custom-control-input" value="1">
+                            <span class="custom-control-label text-body">Курс на дату</span>
+                        </label>
+                        <label class="custom-control custom-radio">
+                            <input id="clm_rate_currency_onload" name="clm_rate_currency_ondate" type="radio" class="custom-control-input" value="2">
+                            <span class="custom-control-label text-body">Курс на дату загрузки</span>
+                        </label>
+                    </div>
+                    <div class="col-12 col-md-3 mb-1" id="clm_rate_currency_type2_row">
+                        <label class="form-label"> </label>
+                        <label class="custom-control custom-radio">
+                            <input id="clm_rate_currency_onboarder" name="clm_rate_currency_ondate" type="radio" class="custom-control-input" value="3">
+                            <span class="custom-control-label text-body">Курс на дату там.очистки</span>
+                        </label>
+                        <label class="custom-control custom-radio">
+                            <input id="clm_rate_currency_onunload" name="clm_rate_currency_ondate" type="radio" class="custom-control-input" value="4">
+                            <span class="custom-control-label text-body">Курс на дату выгрузки</span>
+                        </label>
+                    </div>
+                    <div class="col-12 col-md-3 mb-1" id="clm_rate_currency_date_row">
+                        <label class="form-label"> </label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="clm_rate_currency_date" name="clm_rate_currency_date">
+                            <button type="button" id="clm_rate_currency_date_x" name="clm_rate_currency_date_x" class="btn btn-outline-primary"><i class="fas fa-times"></i></button>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div>
+                </div>  <!-- Row 4 -->
+
+                <div class="form-row">
+                    <div class="col-12 col-md-4 mb-1">
+                        <label for="clm_aim_type_id" class="mr-2" th:text="'13. '+#{full_world.main.clm_aim_type_sname}">Service: </label>
+                        <select type="text" id="clm_aim_type_id" name="clm_aim_type_id" class="form-control p-1">
+                        </select>
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+
+                    <div class="col-md-4 mb-1">
+                        <label for="clm_status_id" class="mr-2" th:text="'14. '+#{full_world.main.clm_status_sname}">Status: </label>
+                        <select type="text" id="clm_status_id" name="clm_status_id" class="form-control p-1" readonly>
+                        </select>
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div><!-- Row 6 -->
+
+                <div class="form-row">
+                    <div class="col-12 mb-1">
+                        <label for="clm_note" th:text="'15. '+#{full_world.main.clm_note}"></label>
+                        <textarea class="form-control" rows="5" maxlength="512" style="resize:none;" id="clm_note" name="clm_note">
+                            </textarea>
+                        <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                        <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                    </div>
+                </div>  <!-- Row 7 -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="full_world_main_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="full_world_main_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                    <button type="button" id="full_world_main_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="full_world_main_modal_delbtn" class="btn btn-outline-primary" th:text="#{general.delbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    // Clear Fields
+    function clear_full_world_main_modal_detail() {
+        $("#full_world_main_modal_detail input[type=text]").val('');
+        $("#full_world_main_modal_detail input[type=number]").val('');
+        $("#full_world_main_modal_detail select").empty();
+        $("#full_world_main_modal_detail textarea").val('');
+    }
+
+    // Block And Required Fields
+    function block_full_world_main_modal_detail(){
+        $('#clm_sum_currency_id').attr('required', true);
+        $('#clm_sum').attr('required', true);
+        $('#full_world_main_modal_cnt_id').attr('required', true);
+        $('#full_world_main_modal_ser_id').attr('required', true);
+
+        if($('#full_world_main_modal_mode').val() === "0"){
+            $('#full_world_main_modal_clm_id_row').attr('hidden',true);
+            $('#clm_date_row').attr('hidden',true);
+
+            $('#full_world_main_modal_clm_num').removeAttr('readonly');
+            $('#full_world_main_modal_ser_id').removeAttr('disabled');
+            $('#full_world_main_modal_user_id').removeAttr('disabled');
+
+            $('#clm_sum').removeAttr('readonly');
+            $('#clm_sum_currency_id').removeAttr('disabled');
+
+            $('#clm_sum_currency_ondate').attr('checked',true);
+            $('#clm_sum_currency_date').removeAttr('readonly');
+            $('#clm_sum_currency_date_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#clm_rate').removeAttr('readonly');
+            $('#clm_rate_currency_id').removeAttr('disabled');
+
+            $('#clm_rate_currency_ondate').attr('checked',true);
+            $('#clm_rate_currency_date').removeAttr('disabled');
+            $('#clm_rate_currency_date_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+
+            $('#clm_aim_type_id').removeAttr('disabled');
+            $('#clm_status_id').attr('readonly', true).removeAttr('disabled');
+            $('#clm_note').removeAttr('readonly');
+            $('#full_world_main_modal_cnt_id').removeAttr('disabled');
+            $('#cnt_filter').removeAttr('readonly');
+            $('#cnt_filter_check').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#wh_check').removeAttr('disabled');
+        }
+        else if($('#full_world_main_modal_mode').val() === "1"){
+            $('#full_world_main_modal_clm_id_row').attr('hidden',true);
+            $('#clm_date_row').removeAttr('hidden');
+
+            $('#full_world_main_modal_clm_num').removeAttr('readonly');
+            $('#full_world_main_modal_ser_id').removeAttr('disabled');
+            $('#full_world_main_modal_user_id').removeAttr('disabled');
+            $('#clm_sum').removeAttr('readonly');
+            $('#clm_sum_currency_id').removeAttr('disabled');
+            $('#clm_sum_currency_date').removeAttr('disabled');
+            $('#clm_sum_currency_date_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#clm_rate').removeAttr('readonly');
+            $('#clm_rate_currency_id').removeAttr('disabled');
+            $('#clm_rate_currency_date').removeAttr('disabled');
+            $('#clm_rate_currency_date_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#clm_aim_type_id').removeAttr('disabled');
+            $('#clm_status_id').attr('readonly', true).removeAttr('disabled');
+            $('#clm_note').removeAttr('readonly');
+            $('#full_world_main_modal_cnt_id').removeAttr('disabled');
+            $('#cnt_filter').removeAttr('readonly');
+            $('#cnt_filter_check').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+            $('#wh_check').removeAttr('disabled');
+        }
+        else{
+            $('#full_world_main_modal_clm_id_row').attr('hidden',true);
+            $('#clm_date_row').removeAttr('hidden');
+
+            $('#full_world_main_modal_clm_num').attr('readonly', true);
+            $('#full_world_main_modal_ser_id').attr('disabled', true);
+            $('#full_world_main_modal_user_id').attr('disabled', true);
+            $('#clm_sum').attr('readonly', true);
+            $('#clm_sum_currency_id').attr('disabled', true);
+            $('#clm_sum_currency_date').attr('disabled', true);
+            $('#clm_sum_currency_date_x').attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+            $('#clm_rate').attr('readonly', true);
+            $('#clm_rate_currency_id').attr('disabled', true);
+            $('#clm_rate_currency_date').attr('disabled', true);
+            $('#clm_rate_currency_date_x').attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+            $('#clm_aim_type_id').attr('disabled', true);
+            $('#clm_status_id').removeAttr('readonly').attr('disabled', true);
+            $('#clm_note').attr('readonly', true);
+            $('#full_world_main_modal_cnt_id').attr('disabled', true);
+            $('#cnt_filter').attr('readonly', true);
+            $('#cnt_filter_check').attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+            $('#wh_check').attr('disabled', true);
+        }
+    }
+
+    // Client List
+    function tmsClientChange(vMode,vCNTID,vCNTFILTER) {
+        $('#full_world_main_modal_cnt_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/full_world/get_tms_client_list'}]]*/ "/full_world/get_tms_client_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "cnt_filter": vCNTFILTER
+            },
+            success: function (client_list) {
+                for (var i = 0; i < client_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='full_world_main_modal_cnt_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='full_world_main_modal_cnt_id']").find('option').end().append(
+                        "<option value='" + client_list.data[i].cnt_id
+                        + "'>" + client_list.data[i].cnt_name + "</option>");
+                }
+                if(vCNTID != null){
+                    $("#full_world_main_modal_cnt_id").val(vCNTID);
+                }
+            }
+        }));
+    }
+    // Service List
+    function serviceChange(vMode) {
+        $('#full_world_main_modal_ser_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/full_world/get_service_list'}]]*/ "/full_world/get_service_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "ser_id": 1
+            },
+            success: function (service_list) {
+                for (var i = 0; i < service_list.data.length; i++) {
+                    $("select[name='full_world_main_modal_ser_id']").find('option').end().append(
+                        "<option value='" + service_list.data[i].ser_id
+                        + "'>" + service_list.data[i].ser_name + "</option>");
+                }
+            }
+        }));
+    }
+    // Managers List
+    function managerChange(vMode,vManagerID) {
+        $('#full_world_main_modal_user_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/full_world/get_managers_list'}]]*/ "/full_world/get_managers_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "user_id": vManagerID
+            },
+            success: function (managers_list) {
+                for (var i = 0; i < managers_list.data.length; i++) {
+                    $("select[name='full_world_main_modal_user_id']").find('option').end().append(
+                        "<option value='" + managers_list.data[i].id
+                        + "'>" + managers_list.data[i].user_surname + "</option>");
+                }
+            }
+        }));
+    }
+    // Sum Currency List
+    function sumCurrencyChange(vMode) {
+        $('#clm_sum_currency_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/full_world/get_currency_list'}]]*/ "/full_world/get_currency_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (currency_list) {
+                for (var i = 0; i < currency_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='clm_sum_currency_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='clm_sum_currency_id']").find('option').end().append(
+                        "<option value='" + currency_list.data[i].currency_id
+                        + "'>" + currency_list.data[i].currency_name + "</option>");
+                }
+            }
+        }));
+    }
+    // Sum Currency List
+    function rateCurrencyChange(vMode) {
+        $('#clm_rate_currency_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/full_world/get_currency_list'}]]*/ "/full_world/get_currency_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (rate_currency_list) {
+                for (var i = 0; i < rate_currency_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='clm_rate_currency_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='clm_rate_currency_id']").find('option').end().append(
+                        "<option value='" + rate_currency_list.data[i].currency_id
+                        + "'>" + rate_currency_list.data[i].currency_name + "</option>");
+                }
+            }
+        }));
+    }
+    // Aim Type List
+    function aimTypeChange(vMode) {
+        $('#clm_aim_type_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/full_world/get_aim_type_list'}]]*/ "/full_world/get_aim_type_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (aim_type_list) {
+                for (var i = 0; i < aim_type_list.data.length; i++) {
+                    $("select[name='clm_aim_type_id']").find('option').end().append(
+                        "<option value='" + aim_type_list.data[i].clm_aim_type_id
+                        + "'>" + aim_type_list.data[i].clm_aim_type_name + "</option>");
+                }
+            }
+        }));
+    }
+    // Status List
+    function statusChange(vMode, vclmStatusID) {
+        $('#clm_status_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/full_world/get_status_list'}]]*/ "/full_world/get_status_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "clm_status_id": vclmStatusID
+            },
+            success: function (clm_status_list) {
+                for (var i = 0; i < clm_status_list.data.length; i++) {
+                    $("select[name='clm_status_id']").find('option').end().append(
+                        "<option value='" + clm_status_list.data[i].clm_status_id
+                        + "'>" + clm_status_list.data[i].clm_status_name + "</option>");
+                }
+            }
+        }));
+    }
+    // Currency Date
+    $("#clm_sum_currency_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+    // Rate Currency Date
+    $("#clm_rate_currency_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+    // Load Function
+    function fill_full_world_main_modal_detail(aMode){
+        clear_full_world_main_modal_detail();
+        $('#full_world_main_modal_mode').val(aMode);
+        block_full_world_main_modal_detail();
+
+        $.ajax({
+            url:/*[[@{'/full_world/get_main_detail'}]]*/ "full_world/get_main_detail",
+            type: "get",
+            data: {
+                "mode": aMode,
+                "clm_id": aMode === 0 ? 0 : vClaimsValue.rowdata.clm_id
+            },
+            success: function (full_world_main_modal_detail) {
+                if(aMode === 0) {
+                    $.when(
+                        serviceChange(aMode),
+                        managerChange(aMode, full_world_main_modal_detail.data[0].user_id),
+                        sumCurrencyChange(aMode),
+                        rateCurrencyChange(aMode),
+                        aimTypeChange(aMode),
+                        statusChange(aMode, full_world_main_modal_detail.data[0].clm_status_id)
+                    ).then(function () {
+                        $('#full_world_main_modal_clm_num').val(full_world_main_modal_detail.data[0].clm_num);
+                        $('#full_world_main_modal_ser_id').val(full_world_main_modal_detail.data[0].ser_id);
+                        $('#clm_sum').val(full_world_main_modal_detail.data[0].clm_sum);
+                        $('#clm_sum_currency_id').val(full_world_main_modal_detail.data[0].clm_sum_currency_id);
+                        $('#clm_sum_currency_date').val(full_world_main_modal_detail.data[0].clm_sum_currency_date);
+                        $('#clm_rate').val(full_world_main_modal_detail.data[0].clm_rate);
+                        $('#clm_rate_currency_id').val(full_world_main_modal_detail.data[0].clm_rate_currency_id);
+                        $('#clm_rate_currency_date').val(full_world_main_modal_detail.data[0].clm_rate_currency_date);
+                        $('#clm_aim_type_id').val(full_world_main_modal_detail.data[0].clm_aim_type_id);
+                        $('#full_world_main_modal').modal('show');
+                    });
+                }
+                else if (aMode >= 1) {
+                    $.when(
+                        tmsClientChange(aMode, full_world_main_modal_detail.data[0].cnt_id, full_world_main_modal_detail.data[0].cnt_name),
+                        serviceChange(aMode),
+                        managerChange(aMode, full_world_main_modal_detail.data[0].user_id),
+                        sumCurrencyChange(aMode),
+                        rateCurrencyChange(aMode),
+                        aimTypeChange(aMode),
+                        statusChange(aMode, full_world_main_modal_detail.data[0].clm_status_id)
+                    ).then(function () {
+                        $('#full_world_main_modal_clm_id').val(full_world_main_modal_detail.data[0].clm_id);
+                        $('#full_world_main_modal_clm_num').val(full_world_main_modal_detail.data[0].clm_num);
+                        $('#clm_date').val(full_world_main_modal_detail.data[0].clm_date);
+                        $('#cnt_filter').val(full_world_main_modal_detail.data[0].cnt_name);
+                        $('#full_world_main_modal_ser_id').val(full_world_main_modal_detail.data[0].ser_id);
+                        $('#clm_sum').val(full_world_main_modal_detail.data[0].clm_sum);
+                        $('#clm_sum_currency_id').val(full_world_main_modal_detail.data[0].clm_sum_currency_id);
+                        $('#clm_sum_currency_date').val(full_world_main_modal_detail.data[0].clm_sum_currency_date);
+                        $('#clm_rate').val(full_world_main_modal_detail.data[0].clm_rate);
+                        $('#clm_rate_currency_id').val(full_world_main_modal_detail.data[0].clm_rate_currency_id);
+                        $('#clm_rate_currency_date').val(full_world_main_modal_detail.data[0].clm_rate_currency_date);
+                        $('#clm_aim_type_id').val(full_world_main_modal_detail.data[0].clm_aim_type_id);
+                        $('#clm_note').val(full_world_main_modal_detail.data[0].clm_note);
+                        $('#full_world_main_modal').modal('show');
+                    });
+                }
+            }
+        });
+    }
+
+// Add button function
+    function addFullWorldMain(){
+        let RowID = vClaimsValue.rowdata.clm_id;
+        $.ajax({
+            url: /*[[ @{/full_world/add_main} ]]*/ "/full_world/add_main",
+            type: 'POST',
+            data: {
+                "clm_num": $('#full_world_main_modal_clm_num').val(),
+                "ser_id": $('#full_world_main_modal_ser_id').val(),
+                "cur_user_id":  $('#full_world_main_modal_user_id').val(),
+                "clm_sum":  $('#clm_sum').val(),
+                "clm_sum_currency_id":  $('#clm_sum_currency_id').val(),
+                "clm_sum_currency_date":  $('#clm_sum_currency_date').val(),
+                "clm_rate":  $('#clm_rate').val(),
+                "clm_rate_currency_id":  $('#clm_rate_currency_id').val(),
+                "clm_rate_currency_date":  $('#clm_rate_currency_date').val(),
+                "clm_aim_type_id":  $('#clm_aim_type_id').val(),
+                "clm_note":  $('#clm_note').val(),
+                "cnt_id":  $('#full_world_main_modal_cnt_id').val()
+            },
+            success: function (result) {
+                $('#full_world_main_modal').modal('hide');
+                vClaimsValue.rowdata.clm_id = RowID;
+                $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+// Edit button function
+    function editFullWorldMain(){
+        let RowID = vClaimsValue.rowdata.clm_id;
+        $.ajax({
+            url: /*[[ @{/full_world/edit_main} ]]*/ "/full_world/edit_main",
+            type: 'POST',
+            data: {
+                "clm_id": $('#full_world_main_modal_clm_id').val(),
+                "clm_num": $('#full_world_main_modal_clm_num').val(),
+                "ser_id": $('#full_world_main_modal_ser_id').val(),
+                "cur_user_id":  $('#full_world_main_modal_user_id').val(),
+                "clm_sum":  $('#clm_sum').val(),
+                "clm_sum_currency_id":  $('#clm_sum_currency_id').val(),
+                "clm_sum_currency_date":  $('#clm_sum_currency_date').val(),
+                "clm_rate":  $('#clm_rate').val(),
+                "clm_rate_currency_id":  $('#clm_rate_currency_id').val(),
+                "clm_rate_currency_date":  $('#clm_rate_currency_date').val(),
+                "clm_aim_type_id":  $('#clm_aim_type_id').val(),
+                "clm_note":  $('#clm_note').val(),
+                "cnt_id":  $('#full_world_main_modal_cnt_id').val()
+            },
+            success: function (result) {
+                $('#full_world_main_modal').modal('hide');
+                vClaimsValue.rowdata.clm_id = RowID;
+                $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+// Del button function
+    function delFullWorldMain(){
+        $.ajax({
+            url: /*[[ @{/full_world/del_main} ]]*/ "/full_world/del_main",
+            type: 'POST',
+            data: {
+                "clm_id": $('#full_world_main_modal_clm_id').val()
+            },
+            success: function (result) {
+                $('#full_world_main_modal').modal('hide');
+                vClaimsValue.rowdata.clm_id = null;
+                $(vClaimsValue.table).DataTable().ajax.reload(null, false);
+
+                vClaimTimeLogValue.rowdata.clm_id = null;
+                vClaimTimeLogValue.rowdata.clm_status_id = null;
+                $(vClaimTimeLogValue.table).DataTable().clear().draw();
+
+                vClaimTasksValue.rowdata.clm_id = null;
+                vClaimTasksValue.rowdata.clmtl_id = null;
+                $(vClaimTasksValue.table).DataTable().clear().draw();
+                $("#part-world-tasks-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#part-world-tasks-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                vClaimWaysValue.rowdata.clm_id = null;
+                vClaimWaysValue.rowdata.clmwl_id = null;
+                $(vClaimWaysValue.table).DataTable().clear().draw();
+                $("#part-world-ways-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#part-world-ways-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#part-world-ways-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#part-world-ways-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                vClaimLoadsValue.rowdata.clm_id = null;
+                vClaimLoadsValue.rowdata.clmll_id = null;
+                $(vClaimLoadsValue.table).DataTable().clear().draw();
+                $("#part-world-loads-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#part-world-loads-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                vClaimTransValue.rowdata.clm_id = null;
+                vClaimTransValue.rowdata.clmtrl_id = null;
+                $(vClaimTransValue.table).DataTable().clear().draw();
+                $("#part-world-trans-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#part-world-trans-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                <!-- Errors -->
+                vClaimErrorsValue.rowdata.clm_id = null;
+                vClaimErrorsValue.rowdata.clm_error_link_id = null;
+                $(vClaimErrorsValue.table).DataTable().clear().draw();
+            }
+        });
+    }
+
+// Add button script
+    $('#full_world_main_modal_addbtn').click(function(){
+        $('#full_world_main_modal_form').submit();
+    });
+// Edit button script
+    $('#full_world_main_modal_editbtn').click(function(){
+        $('#full_world_main_modal_form').submit();
+    });
+// Del button script
+    $('#full_world_main_modal_delbtn').click(function(){
+        $('#full_world_main_modal_form').submit();
+    });
+
+    //Validation Form
+    $('#full_world_main_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function(error,element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            if($('#full_world_main_modal_mode').val() === '0') {
+                addFullWorldMain();
+            }
+            else if($('#full_world_main_modal_mode').val() === '1') {
+                editFullWorldMain();
+            }
+            else if($('#full_world_main_modal_mode').val() === '2') {
+                delFullWorldMain();
+            }
+            return false;
+        }
+    });
+
+    // OnClick Function
+    $('#clm_sum_currency_date_x').click(function() {
+        $('#clm_sum_currency_date').empty().val('');
+    });
+
+    $('#clm_rate_currency_date_x').click(function() {
+        $('#clm_rate_currency_date').empty().val('');
+    });
+
+    $('#cnt_filter_check').click(function() {
+        tmsClientChange(
+            $('#full_world_main_modal_mode').val(),
+            $('#full_world_main_modal_cnt_id').val(),
+            $('#cnt_filter').val()
+        );
+    });
+
+    $("input[name='clm_sum_currency_ondate']").on('change', function () {
+        if ($("input[name='clm_sum_currency_ondate']:checked").val() === '1') {
+            $('#clm_sum_currency_date').removeAttr('disabled');
+            $('#clm_sum_currency_date_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+        } else {
+            $('#clm_sum_currency_date').attr('disabled', true);
+            $('#clm_sum_currency_date_x').attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+        }
+    });
+
+    $("input[name='clm_rate_currency_ondate']").on('change', function () {
+        if($("input[name='clm_rate_currency_ondate']:checked").val() === '1'){
+            $('#clm_rate_currency_date').removeAttr('disabled');
+            $('#clm_rate_currency_date_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+        }
+        else{
+            $('#clm_rate_currency_date').attr('disabled', true);
+            $('#clm_rate_currency_date_x').attr('disabled', true).removeClass('btn-outline-primary').addClass('btn-outline-dark');
+        }
+    });
+</script>
+
+</body>
+</html>

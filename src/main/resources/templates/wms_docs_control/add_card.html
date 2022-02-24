@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="wms_docs_control_add_body" th:remove="tag">
+    <div>
+        <h3 class="text-primary bg-primary text-light text-center"></h3>
+        <div class="row md-1">
+            <div class="col-12 mb-1 d-flex justify-content-center text-center">
+                <div class="input-group input-group-lg">
+                    <input type="text" maxlength="32" class="form-control" style="text-align:center;" id="wms_docs_control_new_post_id" name="wms_docs_control_new_post_id">
+                </div>
+            </div>
+
+            <div class="col-12 mb-1 text-center" id="wms_docs_control_new_post_message_row">
+                <div class="alert alert-light alert-dismissible" role="alert" id="wms_docs_control_new_post_message_alert">
+                    <div class="alert-message">
+                        <strong><a id="wms_docs_control_new_post_message" th:text="#{wms_docs_control.main.add_post_default_text}"></a></strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 mb-1 d-flex justify-content-center">
+                <button class="btn btn-lg btn-success btn-block" id="wms_docs_control_new_post_btn" th:text="#{general.addbtn}"></button>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    $('#wms_docs_control_new_post_id').prop('disabled',false).select();
+    $(".sidebar").toggleClass("toggled");
+
+    function addPostControl(){
+        let PostID = $('#wms_docs_control_new_post_id').val();
+        $.ajax({
+            url: /*[[ @{/wms_docs_control/add_new_post_to_doc} ]]*/ "/wms_docs_control/add_new_post_to_doc",
+            type: 'POST',
+            data: {
+                "post_id": PostID
+            },
+            error: function (error_result) {
+                if(error_result.responseText === 'DUBLICATE')
+                {
+                    let dublicate_text = /*[[#{wms_docs_control.main.dublicate_text}]]*/ null;
+                    $('#wms_docs_control_new_post_message_alert').removeClass('alert-light').removeClass('alert-danger').removeClass('alert-success').addClass('alert-warning');
+                    $('#wms_docs_control_new_post_message').text('').text($('#wms_docs_control_new_post_id').val() +': '+ dublicate_text);
+                }
+                else if(error_result.responseText === 'NOT FOUND')
+                {
+                    let notfound_text = /*[[#{wms_docs_control.main.notfound_text}]]*/ null;
+                    $('#wms_docs_control_new_post_message_alert').removeClass('alert-light').addClass('alert-danger').removeClass('alert-success').removeClass('alert-warning');
+                    $('#wms_docs_control_new_post_message').text('').text($('#wms_docs_control_new_post_id').val() +': '+ notfound_text);
+                }
+                else {
+                    let defaulterror_text = /*[[#{wms_docs_control.main.defaulterror_text}]]*/ null;
+                    $('#wms_docs_control_new_post_message_alert').removeClass('alert-light').addClass('alert-danger').removeClass('alert-success').removeClass('alert-warning');
+                    $('#wms_docs_control_new_post_message').text('').text($('#wms_docs_control_new_post_id').val() +': '+ defaulterror_text);
+                }
+
+                $('#wms_docs_control_new_post_id').val('');
+            },
+            success: function (result) {
+
+                $.ajax({
+                    url: /*[[ @{/wms_docs_control/get_doc_check} ]]*/ "/wms_docs_control/get_doc_check",
+                    type: 'GET',
+                    data: {
+                        "client_post_id": PostID
+                    },
+                    error: function (error_check_result) {
+                    },
+                    success: function (success_check_result) {
+                        if (success_check_result.data[0].doc_control_count === 1){
+                            $('#wms_docs_control_new_post_message_alert').removeClass('alert-light').removeClass('alert-danger').addClass('alert-success').removeClass('alert-warning');
+
+                            let success_text = /*[[#{wms_docs_control.main.success_text}]]*/ null;
+                            $('#wms_docs_control_new_post_message').text('').text(PostID +': '+success_text);
+
+                            reloadDocsControlDoc();
+                            reloadDocsControlPost();
+                        }
+                        else if(success_check_result.data[0].doc_control_count === 0){
+                            $('#wms_docs_control_new_post_message_alert').removeClass('alert-light').removeClass('alert-danger').addClass('alert-success').removeClass('alert-warning');
+
+                            let success_text = /*[[#{wms_docs_control.main.success_text}]]*/ null;
+                            let docdefaulprint_text = /*[[#{wms_docs_control.main.docdefaulprint_text}]]*/ null;
+                            $('#wms_docs_control_new_post_message').text('').text(PostID +': '+success_text+': '+docdefaulprint_text);
+
+                            reloadDocsControlDoc();
+                            reloadDocsControlPost();
+
+                            // $.ajax({
+                            //     url: /*[[ @{/wms_docs_control/get_post_print} ]]*/ "/wms_docs_control/get_post_print",
+                            //     type: 'POST',
+                            //     data: {
+                            //         "post_id": success_check_result.data[0].doc_id,
+                            //         "post_doc_id": success_check_result.data[0].post_id
+                            //     },
+                            //     success: function () {
+                            //         reloadDocsControlDoc();
+                            //         reloadDocsControlPost();
+                            //     }
+                            // });
+                        }
+                        else{
+                            let docdefaulerror_text = /*[[#{wms_docs_control.main.docdefaulerror_text}]]*/ null;
+                            $('#wms_docs_control_new_post_message_alert').removeClass('alert-light').addClass('alert-danger').removeClass('alert-success').removeClass('alert-warning');
+                            $('#wms_docs_control_new_post_message').text('').text(docdefaulerror_text);
+
+                            reloadDocsControlDoc();
+                            reloadDocsControlPost();
+                        }
+                    }
+                });
+                $('#wms_docs_control_new_post_id').val('');
+            }
+        });
+    }
+
+    $('#wms_docs_control_new_post_btn').on('click', function () {
+        addPostControl();
+    });
+
+    let addInput = document.getElementById("wms_docs_control_new_post_id");
+    addInput.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("wms_docs_control_new_post_btn").click();
+        }
+    });
+</script>
+
+</body>
+</html>

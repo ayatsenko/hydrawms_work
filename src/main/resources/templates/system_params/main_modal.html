@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="system_params_main_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="system_params_main_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{system_params.header}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body m-1">
+                    <div class="row mb-2">
+                        <div class="col-12 col-md-3" id="crm_sys_par_id_row">
+                            <label for="crm_sys_par_id" class="form-label mb-0" th:text="'1. '+ #{system_params.main.crm_sys_par_id}"></label>
+                            <div class="input-group mt-0">
+                                <input type="number" class="form-control" id="crm_sys_par_id" name="crm_sys_par_id" readonly>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 1 -->
+
+                    <div class="row mb-2">
+                        <div class="col-12 col-md-3" id="crm_system_id_row">
+                            <label for="crm_system_id" class="form-label mb-0" th:text="'2. '+ #{system_params.main.crm_system_id}"></label>
+                            <div class="input-group mt-0">
+                                <input type="number" class="form-control" id="crm_system_id" name="crm_system_id" readonly>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-9" id="crm_system_sname_row">
+                            <label for="crm_system_sname" class="form-label mb-0" th:text="'3. '+ #{system_params.main.crm_system_sname}"></label>
+                            <div class="input-group mt-0">
+                                <input type="text" class="form-control" id="crm_system_sname" name="crm_system_sname" readonly>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 2 -->
+
+                    <div class="row mb-2">
+                        <div class="col-12 col-md-3" id="crm_system_sub_id_row">
+                            <label for="crm_system_sub_id" class="form-label mb-0" th:text="'4. '+ #{system_params.main.crm_system_sub_id}"></label>
+                            <div class="input-group mt-0">
+                                <input type="number" class="form-control" id="crm_system_sub_id" name="crm_system_sub_id" readonly>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-9" id="crm_system_sub_sname_row">
+                            <label for="crm_system_sub_sname" class="form-label mb-0" th:text="'5. '+ #{system_params.main.crm_system_sub_sname}"></label>
+                            <div class="input-group mt-0">
+                                <input type="text" class="form-control" id="crm_system_sub_sname" name="crm_system_sub_sname" readonly>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 3 -->
+
+                    <div class="row mb-2">
+                        <div class="col-12 col-md-4" id="crm_sys_par_default_row">
+                            <label for="crm_sys_par_default" class="form-label mb-0" th:text="'6. '+ #{system_params.main.crm_sys_par_default}"></label>
+                            <div class="input-group mt-0">
+                                <input type="text" class="form-control" id="crm_sys_par_default" name="crm_sys_par_default" disabled>
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4" id="crm_sys_par_client_row">
+                            <label for="crm_sys_par_client" class="form-label mb-0" th:text="'7. '+ #{system_params.main.crm_sys_par_client}"></label>
+                            <div class="input-group mt-0">
+                                <input type="text" class="form-control" id="crm_sys_par_client" name="crm_sys_par_client">
+                                <div class="valid-feedback" th:text="#{general.field_fill}"> looks good! </div>
+                                <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> bad! </div>
+                            </div>
+                        </div>
+                    </div><!-- Row 4 -->
+
+                    <div class="form-row mb-2">
+                        <div class="col-12" id="req_work_note_row">
+                            <label for="crm_sys_par_description" class="form-label mb-0" th:text="'8. '+ #{system_params.main.crm_sys_par_description}"></label>
+                            <textarea class="form-control" rows="5" maxlength="256" style="resize:none;" id="crm_sys_par_description" name="crm_sys_par_description" disabled>
+                            </textarea>
+                            <div class="valid-feedback" th:text="#{general.field_fill}"> Looks good! </div>
+                            <div class="invalid-feedback" th:text="#{general.filed_unfilled}"> Bad! </div>
+                        </div>
+                    </div><!-- Row 5 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="system_params_main_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="system_params_main_modal_savebtn" class="btn btn-outline-primary" th:text="#{general.editbtn}"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+// Clear Fields
+    function clear_system_params_main_modal_detail() {
+        $("#system_params_main_modal_detail input[type=text]").val('');
+        $("#system_params_main_modal_detail input[type=number]").val('');
+        $("#system_params_main_modal_detail select").empty();
+        $("#system_params_main_modal_detail textarea").val('');
+    }
+
+// Block And Required Fields
+    function block_system_params_main_modal_detail() {
+    }
+
+// Load Function
+    function fill_system_params_main_modal_detail(aMode){
+        clear_system_params_main_modal_detail();
+        block_system_params_main_modal_detail();
+        
+        $('#crm_sys_par_id').val(vSystemParamsValue.rowdata.crm_sys_par_id);
+        $('#crm_system_id').val(vSystemParamsValue.rowdata.crm_system_id);
+        $('#crm_system_sname').val(vSystemParamsValue.rowdata.crm_system_sname);
+        $('#crm_system_sub_id').val(vSystemParamsValue.rowdata.crm_system_sub_id);
+        $('#crm_system_sub_sname').val(vSystemParamsValue.rowdata.crm_system_sub_sname);
+        $('#crm_sys_par_default').val(vSystemParamsValue.rowdata.crm_sys_par_default);
+        $('#crm_sys_par_client').val(vSystemParamsValue.rowdata.crm_sys_par_client);
+        $('#crm_sys_par_description').val(vSystemParamsValue.rowdata.crm_sys_par_description);
+        
+        $('#system_params_main_modal').modal('show');
+    }
+
+    function system_params_main_modal_valid(){
+        if (vSystemParamsValue.rowdata.crm_sys_par_id != null) {
+            var RowID =  vSystemParamsValue.rowdata.crm_sys_par_id;
+            $.ajax({
+                url: /*[[ @{/system_params/edit_system_params} ]]*/ "/system_params/edit_system_params",
+                type: 'POST',
+                data: {
+                    "crm_sys_par_id": RowID,
+                    "crm_sys_par_client": $('#crm_sys_par_client').val()
+                },
+                success: function (result) {
+                    $('#system_params_main_modal').modal('hide');
+
+                    vSystemParamsValue.rowdata.crm_sys_par_id = RowID;
+                    $(vSystemParamsValue.table).DataTable().ajax.reload(null, false);
+                }
+            });
+        }
+    }
+
+    $(document).ready(function() {
+        $('#system_params_main_modal_savebtn').click(function () {
+            system_params_main_modal_valid();
+        });
+    });
+</script>
+
+</body>
+</html>

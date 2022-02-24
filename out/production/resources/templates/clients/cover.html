@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:include="layout/header :: header(title = #{clients.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 col-lg-7">
+
+        <div class="card order-1" id="clients_list_div">
+            <div class="card-header">
+                <h5 class="card-title mb-0" th:text="#{clients.list.caption}"></h5>
+            </div>
+            <div class="card-body py-3">
+                <div>
+                    <span th:replace="clients/list_card :: clients_list_body"></span>
+                </div>
+            </div>
+        </div><!-- CLient List Table -->
+    </div><!-- First Column -->
+
+    <div class="col-12 col-lg-5">
+        <div class="row">
+            <div class="card order-2 col-12" id="clients_link_card">
+                <div class="text-center">
+                    <span th:replace="clients/link_card :: clients_link_body"></span>
+                </div>
+            </div><!-- Link Card -->
+
+            <div class="card order-2 col-12" id="clients_statistics_card">
+                <div class="card-header">
+                    <div class="card-actions float-right">
+                        <a href="#clients_statistics_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                    </div>
+                    <h5 class="card-title mb-0" th:text="#{clients.statistics.caption}"></h5>
+                </div>
+                <div class="card-body py-3 collapse show" id="clients_statistics_div">
+                    <div>
+                        <span th:replace="clients/statistics_card :: clients_statistics_body"></span>
+                    </div>
+                </div>
+            </div><!-- Statistic Card -->
+
+            <div class="card order-2 col-12" id="clients_contscts_card">
+                <div class="card-header">
+                    <div class="card-actions float-right">
+                        <a href="#clients_contacts_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                    </div>
+                    <h5 class="card-title mb-0" th:text="#{clients.contacts.caption}"></h5>
+                </div>
+                <div class="card-body py-3 collapse show" id="clients_contacts_div">
+                    <div>
+                        <span th:replace="clients/contacts_card :: clients_contacts_body"></span>
+                    </div>
+                </div>
+            </div><!-- Contacts Card -->
+
+            <div class="card order-2 col-12" id="clients_services_card">
+                <div class="card-header">
+                    <div class="card-actions float-right">
+                        <a href="#clients_services_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                    </div>
+                    <h5 class="card-title mb-0" th:text="#{clients.services.caption}"></h5>
+                </div>
+                <div class="card-body py-3 collapse show" id="clients_services_div">
+                    <div>
+                        <span th:replace="clients/services_card :: clients_services_body"></span>
+                    </div>
+                </div>
+            </div><!-- Services Card -->
+
+            <div class="card order-2 col-12" id="clients_address_card">
+                <div class="card-header">
+                    <div class="card-actions float-right">
+                        <a href="#clients_address_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                    </div>
+                    <h5 class="card-title mb-0" th:text="#{clients.address.caption}"></h5>
+                </div>
+                <div class="card-body py-3 collapse show" id="clients_address_div">
+                    <div>
+                        <span th:replace="clients/address_card :: clients_address_body"></span>
+                    </div>
+                </div>
+            </div><!-- Address Card -->
+
+            <div class="card order-2 col-12" id="clients_documents_card">
+                <div class="card-header">
+                    <div class="card-actions float-right">
+                        <a href="#clients_documents_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                    </div>
+                    <h5 class="card-title mb-0" th:text="#{clients.documents.caption}"></h5>
+                </div>
+                <div class="card-body py-3 collapse show" id="clients_documents_div">
+                    <div>
+                        <span th:replace="clients/documents_card :: clients_documents_body"></span>
+                    </div>
+                </div>
+            </div><!-- Documents Card -->
+
+            <div class="card order-2 col-12" id="clients_files_card">
+                <div class="card-header">
+                    <div class="card-actions float-right">
+                        <a href="#clients_files_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                    </div>
+                    <h5 class="card-title mb-0" th:text="#{clients.files.caption}"></h5>
+                </div>
+                <div class="card-body py-3 collapse show" id="clients_files_div">
+                    <div>
+                        <span th:replace="clients/files_card :: clients_files_body"></span>
+                    </div>
+                </div>
+            </div><!-- Files Card -->
+
+            <div class="card order-2 col-12" id="clients_managers_card">
+                <div class="card-header">
+                    <div class="card-actions float-right">
+                        <a href="#clients_managers_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                    </div>
+                    <h5 class="card-title mb-0" th:text="#{clients.managers.caption}"></h5>
+                </div>
+                <div class="card-body py-3 collapse show" id="clients_managers_div">
+                    <div>
+                        <span th:replace="clients/users_card :: clients_users_body"></span>
+                    </div>
+                </div>
+            </div><!-- Managers Card -->
+        </div>
+    </div><!-- Second Column -->
+</div><!-- Clients -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<script th:replace="clients/users_card :: cardscript"></script>
+<script th:replace="clients/statistics_card :: cardscript"></script>
+<script th:replace="clients/contacts_card :: cardscript"></script>
+<script th:replace="clients/services_card :: cardscript"></script>
+<script th:replace="clients/address_card :: cardscript"></script>
+<script th:replace="clients/files_card :: cardscript"></script>
+
+<script th:replace="clients/documents_card :: cardscript"></script>
+<script th:replace="clients/link_card :: cardscript"></script>
+<script th:replace="clients/list_card :: cardscript"></script>
+
+</body>
+</html>

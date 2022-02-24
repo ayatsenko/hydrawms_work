@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{users_kpi.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0" th:text="#{users_kpi.caption}"></h5>
+            </div>
+            <div class="card-body py-3">
+                <div>
+                    <div class="mb-0">
+                        <span th:replace="users_kpi/head_card :: users_kpi_head_body"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Header -->
+
+    <div class="col-12">
+        <div class="card" id="users_kpi_list_div" hidden>
+            <div class="card-header">
+                <h5 class="card-title mb-0" th:text="#{users_kpi.list.caption}"></h5>
+            </div>
+            <div class="card-body py-3">
+                <div>
+                    <span th:replace="users_kpi/list_card :: users_kpi_list_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Detail -->
+
+    <div class="col-12">
+        <div id="users_kpi_tabs_div" hidden>
+            <div class="tab">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"><a class="nav-link active" href="#tab-1" data-toggle="tab" role="tab" th:text="#{users_kpi.tabs.tab_meets}">Meets</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab-2" data-toggle="tab" role="tab" th:text="#{users_kpi.tabs.tab_calls}">Calls</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab-3" data-toggle="tab" role="tab" th:text="#{users_kpi.tabs.tab_requests}">Requests</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab-4" data-toggle="tab" role="tab" th:text="#{users_kpi.tabs.tab_tenders}">Tenders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab-5" data-toggle="tab" role="tab" th:text="#{users_kpi.tabs.tab_profit}">Profit</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-1" role="tabpanel">
+                        <span th:replace="users_kpi/meets_card :: users_kpi_meets_body"></span>
+                    </div>
+                    <div class="tab-pane" id="tab-2" role="tabpanel">
+                        <span th:replace="users_kpi/calls_card :: users_kpi_calls_body"></span>
+                    </div>
+                    <div class="tab-pane" id="tab-3" role="tabpanel">
+                        <span th:replace="users_kpi/requests_card :: user_kpi_requests_body"></span>
+                    </div>
+                    <div class="tab-pane" id="tab-4" role="tabpanel">
+                        <span th:replace="users_kpi/tenders_card :: user_kpi_tenders_body"></span>
+                    </div>
+                    <div class="tab-pane" id="tab-5" role="tabpanel">
+                        <span th:replace="users_kpi/finance_card :: user_kpi_finance_body"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Tabs -->
+</div>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<script th:replace="users_kpi/finance_card :: cardscript"></script>
+<script th:replace="users_kpi/tenders_card :: cardscript"></script>
+<script th:replace="users_kpi/requests_card :: cardscript"></script>
+<script th:replace="users_kpi/calls_card :: cardscript"></script>
+<script th:replace="users_kpi/meets_card :: cardscript"></script>
+
+<script th:replace="users_kpi/list_card :: cardscript"></script>
+
+<script th:replace="users_kpi/head_card :: cardscript"></script>
+
+</body>
+</html>

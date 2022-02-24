@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="support_tasks_head_body" th:remove="tag">
+		<form class="form-inline">
+		      <div class="form-group mb-2 mr-2">
+				<label for="support_tasks_result_start_date" class="mr-2" th:text="#{support_tasks.result.start_date}">StartDate:</label>
+				<input class="form-control" type="text" id="support_tasks_result_start_date" name="support_tasks_result_start_date" />
+			  </div>
+
+			  <div class="form-group mb-2 mr-2">
+		    	<label for="support_tasks_result_end_date" class="mr-2" th:text="#{support_tasks.result.end_date}">EndDate:</label>
+				<input class="form-control" type="text" id="support_tasks_result_end_date" name="support_tasks_result_end_date" />
+			  </div>
+
+			<a class="btn btn-outline-primary mb-2" id="support_tasks_result_show" th:text="#{general.reportshow}">Show</a>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    $(document).ready(function(){
+		var firstDay = new Date(new Date().getFullYear()-1, 0, 1).toLocaleDateString('ru');
+		var lastDay = new Date(new Date().getFullYear()+1, 0, 1).toLocaleDateString('ru');
+
+    	$("#support_tasks_result_start_date").daterangepicker({
+            "singleDatePicker": true,
+			"startDate": firstDay,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+        $("#support_tasks_result_end_date").daterangepicker({
+            "singleDatePicker": true,
+			"startDate": lastDay,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+                "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+                "daysOfWeek": [
+                    /*[[#{weekdays.07_short}]]*/ "Su",
+                    /*[[#{weekdays.01_short}]]*/ "Mo",
+                    /*[[#{weekdays.02_short}]]*/ "Tu",
+                    /*[[#{weekdays.03_short}]]*/ "We",
+                    /*[[#{weekdays.04_short}]]*/ "Th",
+                    /*[[#{weekdays.05_short}]]*/ "Fr",
+                    /*[[#{weekdays.06_short}]]*/ "Sa"
+                ],
+                "monthNames": [
+                    /*[[#{month.01}]]*/ "January",
+                    /*[[#{month.02}]]*/ "February",
+                    /*[[#{month.03}]]*/ "March",
+                    /*[[#{month.04}]]*/ "April",
+                    /*[[#{month.05}]]*/ "May",
+                    /*[[#{month.06}]]*/ "June",
+                    /*[[#{month.07}]]*/ "July",
+                    /*[[#{month.08}]]*/ "August",
+                    /*[[#{month.09}]]*/ "September",
+                    /*[[#{month.10}]]*/ "October",
+                    /*[[#{month.11}]]*/ "November",
+                    /*[[#{month.12}]]*/ "December"
+                ],
+                "firstDay": 1
+            }
+        });
+
+		if (window.screen.width < 1024 && window.screen.height < 768) {
+			$("#support_tasks_result_start_date").attr('readonly',true);
+			$("#support_tasks_result_end_date").attr('readonly',true);
+
+			$('#support_tasks_result_table_div').addClass('order-1');
+			$('#support_tasks_result_div').addClass('order-2');
+			$('#support_tasks_time_table_div').addClass('order-3');
+			$('#support_tasks_time_div').addClass('order-4');
+		}else{
+			$('#support_tasks_result_table_div').addClass('order-1');
+			$('#support_tasks_time_table_div').addClass('order-2');
+			$('#support_tasks_result_div').addClass('order-3');
+			$('#support_tasks_time_div').addClass('order-4');
+		}
+
+		var myNewChart;
+
+		function CreateResultGraph (aStartDate, aEndDate) {
+			$('#support-tasks-result').remove();
+			$('#par-support-tasks-result').append('<canvas id="support-tasks-result"></canvas>');
+
+			var labelPoints = [];
+			var backGroundColor = [];
+			var dataPoints = [];
+
+			$.ajax({
+				url: /*[[ @{/support_tasks/get_result_graph} ]]*/ "/support_tasks/get_result_graph",
+				type: 'GET',
+				data: {
+					"start_date": aStartDate,
+					"end_date": aEndDate
+				},
+				success: function (data) {
+					$.each(data, function(key, value){
+						labelPoints.push(value.spts_name);
+						dataPoints.push(value.spts_count);
+						backGroundColor.push(value.spts_color);
+					});
+
+					myNewChart = new Chart($("#support-tasks-result"), {
+						type: 'pie',
+						data: {
+							datasets: [{
+								data: dataPoints,
+								backgroundColor: backGroundColor
+							}],
+							labels: labelPoints
+						},
+						options: {
+							responsive: true
+						}
+					});
+				}
+			});
+		};
+
+		function CreateTimeGraph (aStartDate, aEndDate) {
+			$('#support-tasks-time').remove();
+			$('#par-support-tasks-time').append('<canvas id="support-tasks-time"></canvas>');
+
+			var labelPoints = [];
+			var backGroundColor = [];
+			var dataPoints = [];
+
+			$.ajax({
+				url: /*[[ @{/support_tasks/get_time_graph} ]]*/ "/support_tasks/get_time_graph",
+				type: 'GET',
+				data: {
+					"start_date": aStartDate,
+					"end_date": aEndDate
+				},
+				success: function (data) {
+					$.each(data, function(key, value){
+						labelPoints.push(value.sptt_name);
+						dataPoints.push(value.sptt_count);
+						backGroundColor.push(value.sptt_color);
+					});
+
+					new Chart($("#support-tasks-time"), {
+						type: 'pie',
+						data: {
+							datasets: [{
+								data: dataPoints,
+								backgroundColor: backGroundColor
+							}],
+							labels: labelPoints
+						},
+						options: {
+							responsive: true
+						}
+					});
+				}
+			});
+		};
+
+		CreateResultGraph($("#support_tasks_result_start_date").val(),$("#support_tasks_result_end_date").val());
+		CreateTimeGraph($("#support_tasks_result_start_date").val(),$("#support_tasks_result_end_date").val());
+
+		var canvas = document.getElementById("support-tasks-time");
+
+		canvas.onclick = function (evt) {
+			var activePoints = myNewChart.getElementsAtEvent(evt);
+			if (activePoints[0]) {
+				var chartData = activePoints[0]['_chart'].config.data;
+				var idx = activePoints[0]['_index'];
+
+				var label = chartData.labels[idx];
+				var value = chartData.datasets[0].data[idx];
+
+				var url = "http://example.com/?label=" + label + "&value=" + value;
+				alert(url);
+			}
+		};
+
+		$('#support_tasks_result_show').on('click', function () {
+			vSupportTasksResultValue.rowdata.start_date = $("#support_tasks_result_start_date").val();
+			vSupportTasksResultValue.rowdata.end_date = $("#support_tasks_result_end_date").val();
+			$(vSupportTasksResultValue.table).DataTable().ajax.reload();
+
+			vSupportTasksTimeValue.rowdata.start_date = $("#support_tasks_result_start_date").val();
+			vSupportTasksTimeValue.rowdata.end_date = $("#support_tasks_result_end_date").val();
+			$(vSupportTasksTimeValue.table).DataTable().ajax.reload();
+
+			CreateResultGraph($("#support_tasks_result_start_date").val(), $("#support_tasks_result_end_date").val());
+			CreateTimeGraph($("#support_tasks_result_start_date").val(), $("#support_tasks_result_end_date").val());
+		});
+    });
+</script>
+
+</body>
+</html>

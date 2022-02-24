@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="departments_users_body" th:remove="tag">
+        <form id="departments-users-detail" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="departments-users-detailbtn-large" class="d-none d-sm-block">
+                 <button type="button" id="departments-users-addbtn" class="btn btn-sm btn-dark" th:text="#{general.addbtn}" disabled>Add</button>
+                 <button type="button" id="departments-users-delbtn" class="btn btn-sm btn-dark" th:text="#{general.delbtn}" disabled>Delete</button>
+              </div>
+              <div id="departments-users-detailbtn-small" class="d-block d-sm-none">
+                 <button type="button" id="departments-users-addbtn-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-plus"></i></button>
+                 <button type="button" id="departments-users-delbtn-sx" class="btn btn-sm btn-dark" disabled><i class="fas fa-trash-alt"></i></button>
+              </div>
+        </form>
+
+        <div><table id="table-departments-users" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var dep_user_link_id_width, user_id_width, user_name_width;
+    var dep_user_link_id_class, user_id_class, user_name_class;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtip";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        dep_user_link_id_width = "";
+        dep_user_link_id_class = "none";
+        user_id_width = "";
+        user_id_class = "none";
+        user_name_width = "100%";
+        user_name_class = "small_size small_head_size small_footer_size head-center";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        dep_user_link_id_width = "";
+        dep_user_link_id_class = "none";
+        user_id_width = "";
+        user_id_class = "none";
+        user_name_width = "100%";
+        user_name_class = "head-center";
+    }
+
+    var vDepartmentsUsersValue;
+    vDepartmentsUsersValue = {
+        table : '#table-departments-users',
+        button_form: "#departments-users-detail",
+        ajax : {
+            "url": /*[[@{/departments/get_users_table}]]*/ "departments/get_users_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.dep_id = vDepartmentsUsersValue.rowdata.dep_id;
+                d.dep_user_link_id = vDepartmentsUsersValue.rowdata.dep_user_link_id;
+            }
+        },
+        key : "dep_user_link_id",
+        switchControl : departments_users_switchControl,
+        rowdata:{
+            dep_user_link_id: null,
+            user_id: null
+        },
+        ordering: true,
+        order: [
+            [2, "asc"]
+        ],
+
+        dom: vDomParam,
+        columnDefs:[
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{departments.users.dep_user_link_id}]]*/ "dep_user_link_id", "data": "dep_user_link_id", "width": dep_user_link_id_width, "className": dep_user_link_id_class},
+            /*1*/{"title": /*[[#{departments.users.user_id}]]*/ "user_id", "data": "user_id", "width": user_id_width, "className": user_id_class},
+            /*2*/{"title": /*[[#{departments.users.user_name}]]*/ "user_name", "data": "user_name", "width": user_name_width, "className": user_name_class}
+        ],
+        pageLength: 25,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function departments_users_switchControl(){
+        if(vDepartmentsUsersValue.rowdata.dep_user_link_id != null) {
+            $("#departments-users-delbtn").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#departments-users-delbtn-sx").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+            $("#departments-users-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#departments-users-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.departments_users_btn_control').on('click', function (){
+        $("#departments-users-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+// Add Address Button
+    $('#departments-users-addbtn').click(function (){
+        $('#departments_users_modal_addbtn').removeAttr('hidden');
+        $('#departments_users_modal_editbtn').attr('hidden',true);
+        $('#departments_users_modal_delbtn').attr('hidden',true);
+        fill_departments_users_modal_detail(0);
+    });
+
+    $('#departments-users-addbtn-sx').click(function (){
+        $('#departments_users_modal_addbtn').removeAttr('hidden');
+        $('#departments_users_modal_editbtn').attr('hidden',true);
+        $('#departments_users_modal_delbtn').attr('hidden',true);
+        fill_departments_users_modal_detail(0);
+    });
+// Del Address Button
+    $('#departments-users-delbtn').click(function (){
+        $('#departments_users_modal_addbtn').attr('hidden',true);
+        $('#departments_users_modal_editbtn').attr('hidden',true);
+        $('#departments_users_modal_delbtn').removeAttr('hidden');
+        fill_departments_users_modal_detail(2);
+    });
+
+    $('#departments-users-delbtn-sx').click(function (){
+        $('#departments_users_modal_addbtn').attr('hidden',true);
+        $('#departments_users_modal_editbtn').attr('hidden',true);
+        $('#departments_users_modal_delbtn').removeAttr('hidden');
+        fill_departments_users_modal_detail(2);
+    });    
+
+    $(document).ready(function(){
+// Highlight menu
+        $('#users_li').removeClass('active');
+
+        $('#admin_li').addClass('active').removeClass('collapsed');
+        $('#admin_a').attr('aria-expanded',true);
+        $('#admin').addClass('show');
+
+        $('#departments_a').addClass('text-primary');
+
+        vDepartmentsUsersValue.rowdata.dep_id = /*[[${dep_id}]]*/ null;
+        vDepartmentsUsersValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vDepartmentsUsersValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vDepartmentsUsersValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vDepartmentsUsersValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vDepartmentsUsersValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vDepartmentsUsersValue);
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="wms_pairs_detail_body" th:remove="tag">
+    <div id="table-wms-pairs-detail-buttons">
+        <input name="mode" value="0" hidden>
+        <button type="button" id="wms-pairs-detail-addbtn" class="btn btn-lg btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.addbtn}" disabled><i class="fa fa-plus"></i></button>
+        <button type="button" id="wms-pairs-detail-editbtn" class="btn btn-lg btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.editbtn}" disabled><i class="fa fa-pencil-alt"></i></button>
+        <button type="button" id="wms-pairs-detail-delbtn" class="btn btn-lg btn-dark mr-1" data-toggle="tooltip" data-placement="bottom" th:title="#{general.delbtn}" disabled><i class="fa fa-trash-alt"></i></button>
+
+        <button type="button" id="wms-pairs-detail-check" class="btn btn-lg btn-dark" data-toggle="tooltip" data-placement="bottom" th:title="#{general.checkbtn}" disabled><i class="fas fa-check"></i></button>
+        <button type="button" id="wms-pairs-detail-uncheck" class="btn btn-lg btn-dark mr-md-2" data-toggle="tooltip" data-placement="bottom" th:title="#{general.uncheckbtn}" disabled><i class="fas fa-times"></i></button>
+
+        <button type="button" id="wms-pairs-detail-reloadbtn" class="btn btn-lg btn-primary mr-1" data-toggle="tooltip" data-placement="bottom" ><i class="fa fa-sync"></i></button>
+    </div>
+
+    <div><table id="table-wms-pairs-detail" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var pair_user_link_id_show, user_id_show, user_name_show, add_date_show, add_time_show, add_user_id_show, add_user_name_show, add_role_id_show, close_date_show, close_time_show, close_user_id_show, 
+        close_user_name_show, close_role_id_show, status_link_id_show, status_link_name_show, status_link_color_show, pair_auto_id_show;
+    
+    var pair_user_link_id_width, user_id_width, user_name_width, add_date_width, add_time_width, add_user_id_width, add_user_name_width, add_role_id_width, close_date_width, close_time_width,
+        close_user_id_width, close_user_name_width, close_role_id_width, status_link_id_width, status_link_name_width, status_link_color_width, pair_auto_id_width;
+
+    var pair_user_link_id_class, user_id_class, user_name_class, add_date_class, add_time_class, add_user_id_class, add_user_name_class, add_role_id_class, close_date_class, close_time_class,
+        close_user_id_class, close_user_name_class, close_role_id_class, status_link_id_class, status_link_name_class, status_link_color_class, pair_auto_id_class;
+
+    if(mobileScreenSize){
+        vDomParam =
+            "<'row'<'col-12'B>>"+
+            "<'row'<'col-12 col-sm-3'l><'col-12 col-sm-9'f>>"+
+            "<'row'<'col-12'tr>>" +
+            "<'row'<'col-12'p>>";
+        user_id_show = false;
+        user_id_width = "";
+        user_id_class = "";
+        user_name_show = true;
+        user_name_width = "30%";
+        user_name_class = "small_size small_head_size small_footer_size";
+        add_date_show = false;
+        add_date_width = "";
+        add_date_class = "";
+        add_user_id_show = true;
+        add_user_id_width = "10%";
+        add_user_id_class = "min-tablet-p small_size small_head_size small_footer_size";
+        add_user_id_show = false;
+        add_user_id_width = "";
+        add_user_id_class = "";
+        add_user_name_show = true;
+        add_user_name_width = "50%";
+        add_user_name_class = "small_size small_head_size small_footer_size";
+        add_role_id_show = true;
+        add_role_id_width = "8%";
+        add_role_id_class = "min-tablet-p small_size small_head_size small_footer_size text-center";
+        close_date_show = false;
+        close_date_width = "";
+        close_date_class = "";
+        close_time_show = false;
+        close_time_width = "";
+        close_time_class = "";
+        close_user_id_show = false;
+        close_user_id_width = "";
+        close_user_id_class = "";
+        close_user_name_show = false;
+        close_user_name_width = "";
+        close_user_name_class = "";
+        close_role_id_show = false;
+        close_role_id_width = "";
+        close_role_id_class = "";
+        status_link_id_show = false;
+        status_link_id_width = "";
+        status_link_id_class = "";
+        status_link_name_show = false;
+        status_link_name_width = "";
+        status_link_name_class = "";
+        status_link_color_show = false;
+        status_link_color_width = "";
+        status_link_color_class = "";
+        pair_auto_id_show = false;
+        pair_auto_id_width = "";
+        pair_auto_id_class = "";
+
+        $('#wms-pairs-detail-detail').addClass('text-center').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "lftip";
+        pair_user_link_id_show = false;
+        pair_user_link_id_width = "";
+        pair_user_link_id_class = "";
+        user_id_show = false;
+        user_id_width = "";
+        user_id_class = "";
+        user_name_show = true;
+        user_name_width = "30%";
+        user_name_class = "small_size small_head_size small_footer_size";
+        add_date_show = true;
+        add_date_width = "15%";
+        add_date_class = "small_size small_head_size small_footer_size text-center";
+        add_time_show = true;
+        add_time_width = "15%";
+        add_time_class = "small_size small_head_size small_footer_size text-center";
+        add_user_id_show = false;
+        add_user_id_width = "";
+        add_user_id_class = "";
+        add_user_name_show = false;
+        add_user_name_width = "";
+        add_user_name_class = "";
+        add_role_id_show = false;
+        add_role_id_width = "";
+        add_role_id_class = "";
+        close_date_show = false;
+        close_date_width = "";
+        close_date_class = "";
+        close_time_show = true;
+        close_time_width = "15%";
+        close_time_class = "small_size small_head_size small_footer_size text-center";
+        close_user_id_show = false;
+        close_user_id_width = "";
+        close_user_id_class = "";
+        close_user_name_show = false;
+        close_user_name_width = "";
+        close_user_name_class = "";
+        close_role_id_show = false;
+        close_role_id_width = "";
+        close_role_id_class = "";
+        status_link_id_show = false;
+        status_link_id_width = "";
+        status_link_id_class = "";
+        status_link_name_show = true;
+        status_link_name_width = "25%";
+        status_link_name_class = "small_size small_head_size small_footer_size text-center";
+        status_link_color_show = false;
+        status_link_color_width = "";
+        status_link_color_class = "";
+        pair_auto_id_show = false;
+        pair_auto_id_width = "";
+        pair_auto_id_class = "";
+
+        $('#wms-pairs-detail-detail').removeAttr('hidden');
+    }
+    else{
+        vDomParam = "lftip";
+        pair_user_link_id_show = false;
+        pair_user_link_id_width = "";
+        pair_user_link_id_class = "";
+        user_id_show = false;
+        user_id_width = "";
+        user_id_class = "";
+        user_name_show = true;
+        user_name_width = "30%";
+        user_name_class = "small_size small_head_size small_footer_size";
+        add_date_show = true;
+        add_date_width = "15%";
+        add_date_class = "small_size small_head_size small_footer_size text-center";
+        add_time_show = true;
+        add_time_width = "15%";
+        add_time_class = "small_size small_head_size small_footer_size text-center";
+        add_user_id_show = false;
+        add_user_id_width = "";
+        add_user_id_class = "";
+        add_user_name_show = false;
+        add_user_name_width = "";
+        add_user_name_class = "";
+        add_role_id_show = false;
+        add_role_id_width = "";
+        add_role_id_class = "";
+        close_date_show = false;
+        close_date_width = "";
+        close_date_class = "";
+        close_time_show = true;
+        close_time_width = "15%";
+        close_time_class = "small_size small_head_size small_footer_size text-center";
+        close_user_id_show = false;
+        close_user_id_width = "";
+        close_user_id_class = "";
+        close_user_name_show = false;
+        close_user_name_width = "";
+        close_user_name_class = "";
+        close_role_id_show = false;
+        close_role_id_width = "";
+        close_role_id_class = "";
+        status_link_id_show = false;
+        status_link_id_width = "";
+        status_link_id_class = "";
+        status_link_name_show = true;
+        status_link_name_width = "25%";
+        status_link_name_class = "small_size small_head_size small_footer_size text-center";
+        status_link_color_show = false;
+        status_link_color_width = "";
+        status_link_color_class = "";
+        pair_auto_id_show = false;
+        pair_auto_id_width = "";
+        pair_auto_id_class = "";
+
+        $('#wms-pairs-detail-detail').addClass('text-center').removeAttr('hidden');
+    }
+
+    var vWMSPairUsersValue;
+    vWMSPairUsersValue = {
+        table : '#table-wms-pairs-detail',
+        //button_form: (mobileScreenSize) ? null : "#table-wms-pairs-detail-buttons",
+        ajax : {
+            "url": /*[[@{/wms_pairs/get_detail_menu}]]*/ "wms_pairs/get_detail_menu",
+            "type": "post",
+            "data": function ( d ) {
+                d.pair_id = vWMSPairUsersValue.rowdata.pair_id
+            }
+        },
+        key : "pair_user_link_id",
+        switchControl : wms_pairs_detail_switchControl,
+        rowdata:{
+            pair_user_link_id: null,
+            status_link_id: null,
+            user_id: null,
+            add_date: null,
+            add_time: null,
+            close_date: null,
+            close_time: null,
+
+            pair_id: null
+        },
+        order: [
+            [2, "desc"]
+        ],
+        dom: vDomParam,
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["status_link_color"]);
+        },
+        columnDefs:[
+            {"targets": [0], "width": pair_user_link_id_width, "className": pair_user_link_id_class, "visible": pair_user_link_id_show},
+            {"targets": [1], "width": user_id_width, "className": user_id_class, "visible": user_id_show},
+            {"targets": [2], "width": user_name_width, "className": user_name_class, "visible": user_name_show},
+
+            {"targets": [3], "width": add_date_width, "className": add_date_class, "visible": add_date_show, type: 'de_date'},
+            {"targets": [4], "width": add_time_width, "className": add_time_class, "visible": add_time_show},
+            {"targets": [5], "width": add_user_id_width, "className": add_user_id_class, "visible": add_user_id_show},
+            {"targets": [6], "width": add_user_name_width, "className": add_user_name_class, "visible": add_user_name_show},
+            {"targets": [7], "width": add_role_id_width, "className": add_role_id_class, "visible": add_role_id_show},
+
+            {"targets": [8], "width": close_date_width, "className": close_date_class, "visible": close_date_show, type: 'de_date'},
+            {"targets": [9], "width": close_time_width, "className": close_time_class, "visible": close_time_show},
+            {"targets": [10], "width": close_user_id_width, "className": close_user_id_class, "visible": close_user_id_show},
+            {"targets": [11], "width": close_user_name_width, "className": close_user_name_class, "visible": close_user_name_show},
+            {"targets": [12], "width": close_role_id_width, "className": close_role_id_class, "visible": close_role_id_show},
+
+            {"targets": [13], "width": status_link_id_width, "className": status_link_id_class, "visible": status_link_id_show},
+            {"targets": [14], "width": status_link_name_width, "className": status_link_name_class, "visible": status_link_name_show},
+            {"targets": [15], "width": status_link_color_width, "className": status_link_color_class, "visible": status_link_color_show},
+            {"targets": [16], "width": pair_auto_id_width, "className": pair_auto_id_class, "visible": pair_auto_id_show}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{wms_pairs.detail.pair_user_link_id}]]*/ "pair_user_link_id", "data": "pair_user_link_id"},
+            /*1*/{"title": /*[[#{wms_pairs.detail.user_id}]]*/ "user_id", "data": "user_id"},
+            /*2*/{"title": /*[[#{wms_pairs.detail.user_name}]]*/ "user_name", "data": "user_name"},
+
+            /*3*/{"title": /*[[#{wms_pairs.detail.add_date}]]*/ "add_date", "data": "add_date"},
+            /*4*/{"title": /*[[#{wms_pairs.detail.add_time}]]*/ "add_time", "data": "add_time"},
+            /*5*/{"title": /*[[#{wms_pairs.detail.add_user_id}]]*/ "add_user_id", "data": "add_user_id"},
+            /*6*/{"title": /*[[#{wms_pairs.detail.add_user_name}]]*/ "add_user_name", "data": "add_user_name"},
+            /*7*/{"title": /*[[#{wms_pairs.detail.add_role_id}]]*/ "add_role_id", "data": "add_role_id"},
+
+            /*8*/{"title": /*[[#{wms_pairs.detail.close_date}]]*/ "close_date", "data": "close_date"},
+            /*9*/{"title": /*[[#{wms_pairs.detail.close_time}]]*/ "close_time", "data": "close_time"},
+            /*10*/{"title": /*[[#{wms_pairs.detail.close_user_id}]]*/ "close_user_id", "data": "close_user_id"},
+            /*11*/{"title": /*[[#{wms_pairs.detail.close_user_name}]]*/ "close_user_name", "data": "close_user_name"},
+            /*12*/{"title": /*[[#{wms_pairs.detail.close_role_id}]]*/ "close_role_id", "data": "close_role_id"},
+
+            /*13*/{"title": /*[[#{wms_pairs.detail.status_link_id}]]*/ "status_link_id", "data": "status_link_id"},
+            /*14*/{"title": /*[[#{wms_pairs.detail.status_link_name}]]*/ "status_link_name", "data": "status_link_name"},
+            /*15*/{"title": /*[[#{wms_pairs.detail.status_link_color}]]*/ "status_link_color", "data": "status_link_color"},
+            /*16*/{"title": /*[[#{wms_pairs.detail.pair_auto_id}]]*/ "pair_auto_id", "data": "pair_auto_id"}
+        ],
+        pageLength: 50,
+        copy_button: false,
+        excel_button: false,
+        pdf_button: false,
+        print_button: false
+    };
+
+    function wms_pairs_detail_switchControl(){
+        if(vWMSPairUsersValue.rowdata.pair_user_link_id != null && (RoleAllAdmin || RoleWHOper)){
+            if(vWMSPairUsersValue.rowdata.status_link_id === 0){
+                $('#wms-pairs-detail-editbtn').prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $('#wms-pairs-detail-check').prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+                $('#wms-pairs-detail-uncheck').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            }
+            else if(vWMSPairUsersValue.rowdata.status_link_id === 1){
+                $('#wms-pairs-detail-editbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $('#wms-pairs-detail-check').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                $('#wms-pairs-detail-uncheck').prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+            }
+            else{
+                $('#wms-pairs-detail-editbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $('#wms-pairs-detail-check').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                $('#wms-pairs-detail-uncheck').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+            }
+            $('#wms-pairs-detail-delbtn').prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+        }
+        else{
+            $('#wms-pairs-detail-editbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $('#wms-pairs-detail-delbtn').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+            $('#wms-pairs-detail-check').prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+            $('#wms-pairs-detail-uncheck').prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+        }
+    }
+
+//Reload Function
+    function reloadPairDetail(){
+        let RowID = vWMSPairUsersValue.rowdata.pair_user_link_id;
+
+        vWMSPairUsersValue.rowdata.pair_id = vWMSPairMainValue.rowdata.pair_id;
+        vWMSPairUsersValue.rowdata.pair_user_link_id = RowID;
+        $(vWMSPairUsersValue.table).DataTable().ajax.reload(null, false);
+    }
+//Reload button
+    $('#wms-pairs-detail-reloadbtn').click(function() {
+        reloadPairDetail();
+    });
+//Check Function
+    function checkPairDetail(){
+        let RowID = vWMSPairUsersValue.rowdata.pair_user_link_id;
+        $.ajax({
+            url: /*[[ @{/wms_pairs/check_detail_pair} ]]*/ "/wms_pairs/check_detail_pair",
+            type: 'POST',
+            data: {
+                "pair_user_link_id": RowID
+            },
+            success: function (result) {
+                reloadPairDetail();
+            }
+        });
+    }
+//Check button
+    $('#wms-pairs-detail-check').click(function() {
+        checkPairDetail();
+    });
+//UnCheck Function
+    function uncheckPairDetail(){
+        let RowID = vWMSPairUsersValue.rowdata.pair_user_link_id;
+        $.ajax({
+            url: /*[[ @{/wms_pairs/uncheck_detail_pair} ]]*/ "/wms_pairs/uncheck_detail_pair",
+            type: 'POST',
+            data: {
+                "pair_user_link_id": RowID,
+            },
+            success: function (result) {
+                reloadPairDetail();
+            }
+        });
+    }
+//Uncheck button
+    $('#wms-pairs-detail-uncheck').click(function() {
+        uncheckPairDetail();
+    });
+//Add Function
+    function addPairDetail() {
+        $('#wms_pairs_detail_modal_addbtn').removeAttr('hidden');
+        $('#wms_pairs_detail_modal_editbtn').attr('hidden',true);
+        $('#wms_pairs_detail_modal_delbtn').attr('hidden',true);
+
+        fill_wms_pairs_detail_modal_detail(0);
+    }
+//Add button
+    $('#wms-pairs-detail-addbtn').click(function() {
+        addPairDetail();
+    });
+//Edit Function
+    function editPairDetail() {
+        $('#wms_pairs_detail_modal_addbtn').attr('hidden',true);
+        $('#wms_pairs_detail_modal_editbtn').removeAttr('hidden');
+        $('#wms_pairs_detail_modal_delbtn').attr('hidden',true);
+
+        fill_wms_pairs_detail_modal_detail(1);
+    }
+    //Add button
+    $('#wms-pairs-detail-editbtn').click(function() {
+        editPairDetail();
+    });
+//Delete Function
+    function delPairDetail(){
+        let RowID = vWMSPairUsersValue.rowdata.pair_user_link_id
+        $.ajax({
+            url: /*[[ @{/wms_pairs/del_detail_pair} ]]*/ "/wms_pairs/del_detail_pair",
+            type: 'POST',
+            data: {
+                "pair_user_link_id": RowID,
+            },
+            success: function (result) {
+                reloadPairDetail();
+            }
+        });
+    }
+//Delete button
+    $('#wms-pairs-detail-delbtn').click(function() {
+        delPairDetail();
+    });
+
+    $(document).ready(function(){
+        vWMSPairUsersValue.rowdata.user_id = /*[[${user_id}]]*/ null;
+
+        vWMSPairUsersValue.rowdata.action_filter_type_id = /*[[${action_filter_type_id}]]*/ null;
+        vWMSPairUsersValue.rowdata.action_filter_action_id = /*[[${action_filter_action_id}]]*/ null;
+        vWMSPairUsersValue.rowdata.action_filter_status_id = /*[[${action_filter_status_id}]]*/ null;
+        vWMSPairUsersValue.rowdata.action_filter_result_id = /*[[${action_filter_result_id}]]*/ null;
+        vWMSPairUsersValue.rowdata.action_filter_add_role_id = /*[[${action_filter_add_role_id}]]*/ null;
+        vWMSPairUsersValue.rowdata.action_filter_user_id = /*[[${action_filter_user_id}]]*/ null;
+
+        recreateDataTable(vWMSPairUsersValue);
+    });
+</script>
+
+</body>
+</html>

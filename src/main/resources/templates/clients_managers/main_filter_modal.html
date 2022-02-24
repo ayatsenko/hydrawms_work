@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="clients_managers_main_filter_modal_body" th:remove="tag">
+    <div class="modal fade" id="clients_managers_main_filter_modal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+
+            <div class="modal-content" id="clients_managers_main_filter_modal_detail">
+                <div class="modal-header" data-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title" th:text="#{clients_managers.main.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-1">
+                    <input type="hidden" id="clients_managers_main_filter_fill_id" value="0">
+
+                    <form id="clients_managers_main_filter_modal_form" name="clients_managers_main_filter_modal_form">
+                    <div class="form-row">
+                        <div class="col-12">
+                            <button type="button" class="btn btn-outline-primary btn-sm btn-block" id="clients_managers_filter_clear_button" name="clients_managers_filter_clear_button" th:text="#{general.clearbtn}"></button>
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="clients_managers_filter_rn" class="mb-0" th:text="#{clients_managers.main.rn}+':'" >RN:</label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm clients_managers_filter_column" type="text" id="clients_managers_filter_rn" name="clients_managers_filter_rn" th:attr="table-column=0"/>
+                                <button type="button" id="clients_managers_filter_rn_x" name="clients_managers_filter_rn_x" class="btn btn-sm btn-outline-primary filter_select_x" data-parent="clients_managers_filter_rn"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-6">
+                            <label for="clients_managers_filter_clm_date" class="mb-0" th:text="#{clients_managers.main.clm_date}+':'" >CLM_DATE:</label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm clients_managers_filter_column clients_managers_filter_date" type="text" id="clients_managers_filter_clm_date" name="clients_managers_filter_clm_date" th:attr="table-column=2"/>
+                                <button type="button" id="clients_managers_filter_clm_date_x" name="clients_managers_filter_clm_date_x" class="btn btn-sm btn-outline-primary filter_date_x" data-parent="clients_managers_filter_clm_date"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div> <!-- Row 3 -->
+
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="clients_managers_filter_clm_num" class="mb-0" th:text="#{clients_managers.main.clm_num}+':'" >CLM_NUM:</label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm clients_managers_filter_column" type="text" id="clients_managers_filter_clm_num" name="clients_managers_filter_clm_num" th:attr="table-column=3"/>
+                                <button type="button" id="clients_managers_filter_clm_num_x" name="clients_managers_filter_clm_num_x" class="btn btn-sm btn-outline-primary filter_select_x" data-parent="clients_managers_filter_clm_num"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div> <!-- Row 4 -->
+
+                    <div class="form-row">
+                        <div class="col-12 col-md-6">
+                            <label for="clients_managers_filter_clm_way_date" class="mb-0" th:text="#{clients_managers.main.clm_way_date}+':'" >CLM_WAY_DATE:</label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm clients_managers_filter_column clients_managers_filter_date" type="text" id="clients_managers_filter_clm_way_date" name="clients_managers_filter_clm_way_date" th:attr="table-column=4"/>
+                                <button type="button" id="clients_managers_filter_clm_way_date_x" name="clients_managers_filter_clm_way_date_x" class="btn btn-sm btn-outline-primary filter_date_x" data-parent="clients_managers_filter_clm_way_date"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div> <!-- Row 5 -->
+
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="clients_managers_filter_load_point" class="mb-0" th:text="#{clients_managers.main.load_point}+':'" >LOAD_POINT:</label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm clients_managers_filter_column" type="text" id="clients_managers_filter_load_point" name="clients_managers_filter_load_point" th:attr="table-column=5"/>
+                                <button type="button" id="clients_managers_filter_load_point_x" name="clients_managers_filter_load_point_x" class="btn btn-sm btn-outline-primary filter_select_x" data-parent="clients_managers_filter_load_point"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div> <!-- Row 6 -->
+
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="clients_managers_filter_unload_point" class="mb-0" th:text="#{clients_managers.main.unload_point}+':'" >UNLOAD_POINT:</label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm form-control-sm clients_managers_filter_column" type="text" id="clients_managers_filter_unload_point" name="clients_managers_filter_unload_point" th:attr="table-column=6"/>
+                                <button type="button" id="clients_managers_filter_unload_point_x" name="clients_managers_filter_unload_point_x" class="btn btn-sm btn-outline-primary filter_select_x" data-parent="clients_managers_filter_unload_point"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div> <!-- Row 7 -->
+
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="clients_managers_filter_cnt_name" class="mb-0" th:text="#{clients_managers.main.cnt_name}+':'" >CNT_NAME:</label>
+                            <div class="input-group">
+                                <select type="text" id="clients_managers_filter_cnt_name" name="clients_managers_filter_cnt_name" class="clients_managers_filter_column clients_managers_filter_select filter_select2 form-control form-control-sm" data-toggle="select2" style="width: 100%" th:attr="table-column=8"></select>
+                            </div>
+                        </div>
+                    </div> <!-- Row 8 -->
+
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="clients_managers_filter_doc_number" class="mb-0" th:text="#{clients_managers.main.doc_number}+':'" >DOC_NUMBER:</label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm clients_managers_filter_column" type="text" id="clients_managers_filter_doc_number" name="clients_managers_filter_doc_number" th:attr="table-column=9"/>
+                                <button type="button" id="clients_managers_filter_doc_number_x" name="clients_managers_filter_doc_number_x" class="btn btn-sm btn-outline-primary filter_select_x" data-parent="clients_managers_filter_doc_number"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div> <!-- Row 9 -->
+
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="clients_managers_filter_loads_detail" class="mb-0" th:text="#{clients_managers.main.loads_detail}+':'" >LOADS_DETAIL:</label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm clients_managers_filter_column" type="text" id="clients_managers_filter_loads_detail" name="clients_managers_filter_loads_detail" th:attr="table-column=10"/>
+                                <button type="button" id="clients_managers_filter_loads_detail_x" name="clients_managers_filter_loads_detail_x" class="btn btn-sm btn-outline-primary filter_select_x" data-parent="clients_managers_filter_loads_detail"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div> <!-- Row 10 -->
+
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="clients_managers_filter_user_name" class="mb-0" th:text="#{clients_managers.main.user_name}+':'" >USER_NAME:</label>
+                            <div class="input-group">
+                                <select type="text" id="clients_managers_filter_user_name" name="clients_managers_filter_user_name" class="custom-select custom-select-sm clients_managers_filter_column clients_managers_filter_select" th:attr="table-column=15"></select>
+                                <button type="button" id="clients_managers_filter_user_name_x" name="clients_managers_filter_user_name_x" class="btn btn-sm btn-outline-primary filter_select_x" data-parent="clients_managers_filter_user_name"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div> <!-- Row 11 -->
+
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="clients_managers_filter_trans_name" class="mb-0" th:text="#{clients_managers.main.trans_name}+':'" >TRANS_NAME:</label>
+                            <div class="input-group">
+                                <select type="text" id="clients_managers_filter_trans_name" name="clients_managers_filter_trans_name" class="clients_managers_filter_column clients_managers_filter_select filter_select2 form-control form-control-sm" data-toggle="select2" style="width: 100%" th:attr="table-column=17"></select>
+                            </div>
+                        </div>
+                    </div> <!-- Row 12 -->
+
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="clients_managers_filter_trans_detail" class="mb-0" th:text="#{clients_managers.main.trans_detail}+':'" >TRANS_DETAIL:</label>
+                            <div class="input-group">
+                                <input class="form-control form-control-sm clients_managers_filter_column" type="text" id="clients_managers_filter_trans_detail" name="clients_managers_filter_trans_detail" th:attr="table-column=18"/>
+                                <button type="button" id="clients_managers_filter_trans_detail_x" name="clients_managers_filter_trans_detail_x" class="btn btn-sm btn-outline-primary filter_select_x" data-parent="clients_managers_filter_trans_detail"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div> <!-- Row 13 -->
+
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="clients_managers_filter_trans_user_name" class="mb-0" th:text="#{clients_managers.main.trans_user_name}+':'" >TRANS_USER_NAME:</label>
+                            <div class="input-group">
+                                <select type="text" id="clients_managers_filter_trans_user_name" name="clients_managers_filter_trans_user_name" class="custom-select custom-select-sm clients_managers_filter_column clients_managers_filter_select" th:attr="table-column=23"></select>
+                                <button type="button" id="clients_managers_filter_trans_user_name_x" name="clients_managers_filter_trans_user_name_x" class="btn btn-sm btn-outline-primary filter_select_x" data-parent="clients_managers_filter_trans_user_name"><i class="fas fa-times"></i></button>
+                            </div>
+                       </div>
+                    </div> <!-- Row 14 -->
+
+                    <div class="form-row">
+                        <div class="col-12">
+                            <label for="clients_managers_filter_clm_status_sname" class="mb-0" th:text="#{clients_managers.main.clm_status_sname}+':'" >CLM_STATUS_SNAME:</label>
+                            <div class="input-group">
+                                <select type="text" id="clients_managers_filter_clm_status_sname" name="clients_managers_filter_clm_status_sname" class="custom-select custom-select-sm clients_managers_filter_column clients_managers_filter_select" th:attr="table-column=25"></select>
+                                <button type="button" id="clients_managers_filter_clm_status_sname_x" name="clients_managers_filter_clm_status_sname_x" class="btn btn-sm btn-outline-primary filter_select_x" data-parent="clients_managers_filter_clm_status_sname"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div> <!-- Row 15 -->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    // Clear Fields
+    function clear_clients_managers_main_filter_modal_detail(){
+        $("#clients_managers_main_filter_modal_detail input[type=text]").val('');
+        $("#clients_managers_main_filter_modal_detail input[type=number]").val('');
+        $("#clients_managers_main_filter_modal_detail select").val('');
+        $('#clients_managers_main_filter_modal_detail .filter_select2').val('').trigger('change');
+
+        var clearTable = $(vClientsManagersValue.table).DataTable();
+        clearTable.search('').columns().search('').draw();
+    }
+
+    //Select Function
+    function fill_clients_managers_filter_select_create(col,select_id){
+        var fill_clients_managers_filter_currentTable = $(vClientsManagersValue.table).DataTable();
+        $('#'+select_id).append('<option value="" selected></option>');
+        fill_clients_managers_filter_currentTable.column(col).data().unique().sort().each( function ( d, j ) {
+            $('#'+select_id).append( '<option value="'+d+'">'+d+'</option>')
+        });
+    }
+
+    // Load Function
+    function fill_clients_managers_main_filter_modal_detail(){
+        if($('#clients_managers_main_filter_fill_id').val() === '0') {
+            $('.clients_managers_filter_select').each(function () {
+                fill_clients_managers_filter_select_create($(this).attr("table-column"), $(this).attr("id"));
+            });
+
+            $('.clients_managers_filter_date').each(function () {
+                $(this).empty().val('');
+            });
+
+            $('#clients_managers_main_filter_fill_id').val(1);
+        }
+
+        $('#clients_managers_main_filter_modal').modal('show');
+    }
+
+    $(".clients_managers_filter_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    //Function clear
+    $("#clients_managers_filter_clear_button").click( function () {
+        clear_clients_managers_main_filter_modal_detail();
+    });
+
+    $(document).ready(function(){
+        var currentTable = $(vClientsManagersValue.table).DataTable();
+
+        $('.clients_managers_filter_column').on('change', function () {
+            currentTable.column($(this).attr("table-column")).search($(this).val()).draw(false);
+        });
+
+        //Date clear function
+        $('.filter_date_x').click( function () {
+            $('#'+$(this).attr("data-parent")).empty().val('');
+            currentTable.column($('#'+$(this).attr("data-parent")).attr("table-column")).search('').draw(false);
+        });
+
+        //Select clear function
+        $('.filter_select_x').click( function () {
+            $('#'+$(this).attr("data-parent")).val('');
+            currentTable.column($('#'+$(this).attr("data-parent")).attr("table-column")).search('').draw(false);
+        });
+
+        var FilterPlaceHolderDefault = /*[[#{select2.default_placeholder}]]*/ "Select a value";
+
+        //Filter Select2 function
+        $('.filter_select2').select2({
+            placeholder: FilterPlaceHolderDefault,
+            allowClear: true
+        });
+    });
+</script>
+
+</body>
+</html>

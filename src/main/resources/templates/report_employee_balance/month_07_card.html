@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_employee_balance_month_07_body" th:remove="tag">
+    <div id="table-report-employee-balance-month-07-buttons">
+              <div id="report-employee-balance-month-07-btn-large" class="d-none d-sm-block mb-1">
+                 <button type="submit" id="report-employee-balance-month-07-xlsbtn" form="report-employee-balance-month-07-xls-form" class="btn btn-sm btn-outline-primary mr-1" th:text="#{general.reportxls}">Xls</button>
+                 <button type="submit" id="report-employee-balance-month-07-pdfbtn" form="report-employee-balance-month-07-pdf-form" class="btn btn-sm btn-outline-primary" th:text="#{general.reportpdf}">Pdf</button>
+              </div>
+              <div id="report-employee-balance-month-07-btn-small" class="d-block d-sm-none mb-1">
+                 <button type="submit" id="report-employee-balance-month-07-xlsbtn-sx" form="report-employee-balance-month-07-xls-form" class="btn btn-sm btn-outline-primary mr-1"><i class="far fa-file-excel"></i></button>
+                 <button type="submit" id="report-employee-balance-month-07-pdfbtn-sx" form="report-employee-balance-month-07-pdf-form" class="btn btn-sm btn-outline-primary"><i class="far fa-file-pdf"></i></button>
+              </div>
+    </div>
+            <form id="report-employee-balance-month-07-pdf-form" th:action="@{/report_employee_balance/pdf_month}" method="get">
+                <input name="start_date" hidden>
+                <input name="end_date" hidden>
+                <input name="req_user_id" hidden>
+                <input name="month_id" hidden>
+            </form>
+
+            <form id="report-employee-balance-month-07-xls-form" th:action="@{/report_employee_balance/xls_month}" method="get">
+                <input name="start_date" hidden>
+                <input name="end_date" hidden>
+                <input name="req_user_id" hidden>
+                <input name="month_id" hidden>
+            </form>
+
+        <div><table id="table-report-employee-balance-month-07" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    $("#table-report-employee-balance-month-07").append('<tfoot class="font-weight-bold" style="background-color: #d5e1df">' +
+        '<th></th><th></th><th></th><th></th><th></th>' +
+        '<th></th><th></th><th></th><th></th><th></th>' +
+        '<th></th><th></th><th></th><th></th><th></th>' +
+        '<th></th><th></th>' +
+        '</tfoot>');
+    var currentMonth07 = 7;
+
+    var fin_id_width, fin_name_width, fin_date_width, fin_month_width, fin_way_id_width, fin_way_name_width, cnt_id_width, cnt_name_width, cnt_identifycode_width, user_id_width, username_width,
+        branch_id_width, branch_name_width, fin_sum_width, fa_id_width, fad_id_width, empty_column_width;
+
+    var fin_id_class, fin_name_class, fin_date_class, fin_month_class, fin_way_id_class, fin_way_name_class, cnt_id_class, cnt_name_class, cnt_identifycode_class, user_id_class, username_class,
+        branch_id_class, branch_name_class, fin_sum_class, fa_id_class, fad_id_class, empty_column_class;
+
+    var smallScreenSize = window.screen.width > 1024 && window.screen.height <= 768;
+    var mobileScreenSize = window.screen.width < 1024 && window.screen.height < 768;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+
+        fin_id_width = "";
+        fin_id_class = "none";
+        fin_name_width = "10%";
+        fin_name_class = "min-tablet-p small_size small_head_size small_footer_size";
+        fin_date_width = "10%";
+        fin_date_class = "small_size small_head_size small_footer_size";
+        fin_month_width = "";
+        fin_month_class = "none";
+        fin_way_id_width = "";
+        fin_way_id_class = "none";
+        fin_way_name_width = "";
+        fin_way_name_class = "none";
+        cnt_id_width = "";
+        cnt_id_class = "none";
+        cnt_name_width = "50%";
+        cnt_name_class = "small_size small_head_size small_footer_size";
+        cnt_identifycode_width = "";
+        cnt_identifycode_class = "none";
+        user_id_width = "";
+        user_id_class = "none";
+        username_width = "";
+        username_class = "none";
+        branch_id_width = "";
+        branch_id_class = "none";
+        branch_name_width = "15%";
+        branch_name_class = "min-tablet-p small_size small_head_size small_footer_size text-center";
+        fin_sum_width = "15%";
+        fin_sum_class = "small_size small_head_size small_footer_size";
+        fa_id_width = "";
+        fa_id_class = "none";
+        fad_id_width = "";
+        fad_id_class = "none";
+        empty_column_width = "";
+        empty_column_class = "none";
+        $('#table-report-employee-balance-month-07-buttons').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+
+        fin_id_width = "";
+        fin_id_class = "none";
+        fin_name_width = "7%";
+        fin_name_class = "small_size small_head_size small_footer_size";
+        fin_date_width = "5%";
+        fin_date_class = "small_size small_head_size small_footer_size";
+        fin_month_width = "";
+        fin_month_class = "none";
+        fin_way_id_width = "";
+        fin_way_id_class = "none";
+        fin_way_name_width = "6%";
+        fin_way_name_class = "small_size small_head_size small_footer_size text-center";
+        cnt_id_width = "";
+        cnt_id_class = "none";
+        cnt_name_width = "28%";
+        cnt_name_class = "small_size small_head_size small_footer_size";
+        cnt_identifycode_width = "";
+        cnt_identifycode_class = "none";
+        user_id_width = "";
+        user_id_class = "none";
+        username_width = "";
+        username_class = "none";
+        branch_id_width = "";
+        branch_id_class = "none";
+        branch_name_width = "8%";
+        branch_name_class = "small_size small_head_size small_footer_size text-center";
+        fin_sum_width = "8%";
+        fin_sum_class = "small_size small_head_size small_footer_size";
+        fa_id_width = "";
+        fa_id_class = "none";
+        fad_id_width = "";
+        fad_id_class = "none";
+        empty_column_width = "38%";
+        empty_column_class = "";
+    }
+    else{
+        vDomParam = "Blfrtip";
+
+        fin_id_width = "";
+        fin_id_class = "none";
+
+        fin_name_width = "7%";
+        fin_name_class = "";
+
+        fin_date_width = "5%";
+        fin_date_class = "";
+
+        fin_month_width = "";
+        fin_month_class = "none";
+
+        fin_way_id_width = "";
+        fin_way_id_class = "none";
+
+        fin_way_name_width = "6%";
+        fin_way_name_class = "text-center";
+
+        cnt_id_width = "";
+        cnt_id_class = "none";
+
+        cnt_name_width = "25%";
+        cnt_name_class = "";
+
+        cnt_identifycode_width = "";
+        cnt_identifycode_class = "none";
+
+        user_id_width = "";
+        user_id_class = "none";
+
+        username_width = "";
+        username_class = "none";
+
+        branch_id_width = "";
+        branch_id_class = "none";
+
+        branch_name_width = "8%";
+        branch_name_class = "text-center";
+
+        fin_sum_width = "8%";
+        fin_sum_class = "";
+
+        fa_id_width = "";
+        fa_id_class = "none";
+
+        fad_id_width = "";
+        fad_id_class = "none";
+
+        empty_column_width = "41%";
+        empty_column_class = "";
+    }
+
+    var vReportEmployeeBalanceMonth07Value;
+    vReportEmployeeBalanceMonth07Value = {
+        table : '#table-report-employee-balance-month-07',
+        button_form: (mobileScreenSize) ? null : "#table-report-employee-balance-month-07-buttons",
+        ajax : {
+            "url": /*[[@{/report_employee_balance/get_month}]]*/ "report_employee_balance/get_month",
+            "type": "post",
+            "data": function ( d ) {
+                d.start_date = vReportEmployeeBalanceMonth07Value.rowdata.start_date;
+                d.end_date = vReportEmployeeBalanceMonth07Value.rowdata.end_date;
+                d.req_user_id = vReportEmployeeBalanceMonth07Value.rowdata.req_user_id;
+                d.month_id = currentMonth07;
+            }
+        },
+        key : "fin_id",
+        switchControl : report_employee_balance_month_07_switchControl,
+        rowdata:{
+            act_id: null,
+            start_date: null,
+            end_date: null,
+            req_user_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+
+        dom: vDomParam,
+        footerCallback: function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+            var numFormat = $.fn.dataTable.render.number( '\ ', '.', 2, '').display;
+            // Total over all pages
+            Total = api.column(13, {filter:'applied'}).data().reduce( function (a, b){ return intVal(a) + intVal(b);}, 0 );
+
+            // Update footer
+            $( api.column(3).footer()).hide();
+            $( api.column(4).footer()).hide();
+            $( api.column(6).footer()).hide();
+            $( api.column(8).footer()).hide();
+            $( api.column(9).footer()).hide();
+            $( api.column(10).footer()).hide();
+            $( api.column(11).footer()).hide();
+
+            $( api.column(12).footer()).html('Всего: ');
+            $( api.column(13).footer()).html(numFormat(Total));
+
+            $( api.column(14).footer()).hide();
+            $( api.column(15).footer()).hide();
+        },
+        columnDefs:[
+            {"targets": 2, render:function(data){return (data === null) ? data : moment(data).format('DD.MM.YYYY');}, type: 'de_date'},
+            {"targets": 13,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{report_employee_balance.tabs.fin_id}]]*/ "fin_id","data": "fin_id","width": fin_id_width, "className": fin_id_class},
+            /*1*/{"title": /*[[#{report_employee_balance.tabs.fin_name}]]*/ "fin_name","data": "fin_name","width": fin_name_width, "className": fin_name_class},
+            /*2*/{"title": /*[[#{report_employee_balance.tabs.fin_date}]]*/ "fin_date","data": "fin_date","width": fin_date_width, "className": fin_date_class},
+            /*3*/{"title": /*[[#{report_employee_balance.tabs.fin_month}]]*/ "fin_month","data": "fin_month","width": fin_month_width, "className": fin_month_class},
+            /*4*/{"title": /*[[#{report_employee_balance.tabs.fin_way_id}]]*/ "fin_way_id","data": "fin_way_id","width": fin_way_id_width, "className": fin_way_id_class},
+            /*5*/{"title": /*[[#{report_employee_balance.tabs.fin_way_name}]]*/ "fin_way_name","data": "fin_way_name","width": fin_way_name_width, "className": fin_way_name_class},
+            /*6*/{"title": /*[[#{report_employee_balance.tabs.cnt_id}]]*/ "cnt_id","data": "cnt_id","width": cnt_id_width, "className": cnt_id_class},
+            /*7*/{"title": /*[[#{report_employee_balance.tabs.cnt_name}]]*/ "cnt_name","data": "cnt_name","width": cnt_name_width, "className": cnt_name_class},
+            /*8*/{"title": /*[[#{report_employee_balance.tabs.cnt_identifycode}]]*/ "cnt_identifycode","data": "cnt_identifycode","width": cnt_identifycode_width, "className": cnt_identifycode_class},
+            /*9*/{"title": /*[[#{report_employee_balance.tabs.user_id}]]*/ "user_id","data": "user_id","width": user_id_width, "className": user_id_class},
+            /*10*/{"title": /*[[#{report_employee_balance.tabs.username}]]*/ "username","data": "username","width": username_width, "className": username_class},
+            /*11*/{"title": /*[[#{report_employee_balance.tabs.branch_id}]]*/ "branch_id","data": "branch_id","width": branch_id_width, "className": branch_id_class},
+            /*12*/{"title": /*[[#{report_employee_balance.tabs.branch_name}]]*/ "branch_name","data": "branch_name","width": branch_name_width, "className": branch_name_class},
+            /*13*/{"title": /*[[#{report_employee_balance.tabs.fin_sum}]]*/ "fin_sum","data": "fin_sum","width": fin_sum_width, "className": fin_sum_class},
+            /*14*/{"title": /*[[#{report_employee_balance.tabs.fa_id}]]*/ "fa_id","data": "fa_id","width": fa_id_width, "className": fa_id_class},
+            /*15*/{"title": /*[[#{report_employee_balance.tabs.fad_id}]]*/ "fad_id","data": "fad_id","width": fad_id_width, "className": fad_id_class},
+            /*16*/{"title": /*[[#{report_employee_balance.tabs.empty_column}]]*/ "empty_column","data": "empty_column","width": empty_column_width, "className": empty_column_class}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function report_employee_balance_month_07_switchControl(){
+        if(vReportEmployeeBalanceMonth07Value.rowdata.fin_id != null) {
+        } else{
+        }
+    }
+
+    $('.report_employee_balance_month_07_btn_control').on('click', function (){
+        $("#report-employee-balance-month-07-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#report-employee-balance-month-07-detail').submit(function() {
+        vReportEmployeeBalanceMonth07Value.rowdata.report_employee_balance_month_07_table_order_column = $(vReportEmployeeBalanceMonth07Value.table).DataTable().order()[0][0];
+        vReportEmployeeBalanceMonth07Value.rowdata.report_employee_balance_month_07_table_order_type = $(vReportEmployeeBalanceMonth07Value.table).DataTable().order()[0][1];
+        vReportEmployeeBalanceMonth07Value.rowdata.report_employee_balance_month_07_table_search = $(vReportEmployeeBalanceMonth07Value.table).DataTable().search();
+        vReportEmployeeBalanceMonth07Value.rowdata.report_employee_balance_month_07_table_pagelen = $(vReportEmployeeBalanceMonth07Value.table).DataTable().page.len();
+        vReportEmployeeBalanceMonth07Value.rowdata.report_employee_balance_month_07_table_page = $(vReportEmployeeBalanceMonth07Value.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vReportEmployeeBalanceMonth07Value.rowdata).forEach(function (index) {
+            $("#report-employee-balance-month-07-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#report-employee-balance-month-07-detail input[name=\"" + index + "\"]").val(vReportEmployeeBalanceMonth07Value.rowdata[index]);
+        });
+    });
+
+    $('#report-employee-balance-month-07-xls-form').submit(function() {
+        $("#report-employee-balance-month-07-xls-form input[name=start_date]").val($("#report_employee_balance_start_date").val());
+        $("#report-employee-balance-month-07-xls-form input[name=end_date]").val($("#report_employee_balance_end_date").val());
+        $("#report-employee-balance-month-07-xls-form input[name=req_user_id]").val(vReportEmployeeBalanceDetailValue.rowdata.user_id);
+        $("#report-employee-balance-month-07-xls-form input[name=month_id]").val(currentMonth07);
+    });
+
+    $('#report-employee-balance-month-07-pdf-form').submit(function() {
+        $("#report-employee-balance-month-07-pdf-form input[name=start_date]").val($("#report_employee_balance_start_date").val());
+        $("#report-employee-balance-month-07-pdf-form input[name=end_date]").val($("#report_employee_balance_end_date").val());
+        $("#report-employee-balance-month-07-pdf-form input[name=req_user_id]").val(vReportEmployeeBalanceDetailValue.rowdata.user_id);
+        $("#report-employee-balance-month-07-pdf-form input[name=month_id]").val(currentMonth07);
+    });
+
+    $(document).ready(function(){
+        vReportEmployeeBalanceMonth07Value.rowdata.act_id = /*[[${act_id}]]*/ null;
+        vReportEmployeeBalanceMonth07Value.rowdata.start_date = null;
+        vReportEmployeeBalanceMonth07Value.rowdata.end_date = null;
+        vReportEmployeeBalanceMonth07Value.rowdata.req_user_id = null;
+
+        vReportEmployeeBalanceMonth07Value.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vReportEmployeeBalanceMonth07Value.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vReportEmployeeBalanceMonth07Value.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vReportEmployeeBalanceMonth07Value.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vReportEmployeeBalanceMonth07Value.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vReportEmployeeBalanceMonth07Value);
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="full_world_trans_body" th:remove="tag">
+        <form id="table-full-world-trans-buttons" class="mb-2" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="full-world-trans-btn-large" class="d-none d-sm-block">
+                 <button type="button" id="full-world-trans-detailbtn" class="btn btn-sm btn-dark" th:text="#{general.detailbtn}" disabled>View</button>
+                 <button type="button" id="full-world-trans-addbtn" class="btn btn-sm btn-dark" th:text="#{general.addbtn}" disabled>Add</button>
+                 <button type="button" id="full-world-trans-editbtn" class="btn btn-sm btn-dark" th:text="#{general.editbtn}" disabled>Edit</button>
+                 <button type="button" id="full-world-trans-delbtn" class="btn btn-sm btn-dark mr-2" th:text="#{general.delbtn}" disabled>Delete</button>
+                  
+                  <button type="button" id="full-world-trans-reload" class="btn btn-sm btn-primary mr-2"><i class="fas fa-sync-alt"></i></button>
+              </div>
+              <div id="full-world-trans-btn-small" class="d-block d-sm-none">
+                 <button type="button" id="full-world-trans-detailbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="list"></i></button>
+                 <button type="button" id="full-world-trans-addbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="plus"></i></button>
+                 <button type="button" id="full-world-trans-editbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="edit-2"></i></button>
+                 <button type="button" id="full-world-trans-delbtn-sx" class="btn btn-sm btn-dark mr-2" disabled><i data-feather="trash-2"></i></button>
+                  
+                  <button type="button" id="full-world-trans-reload-sx" class="btn btn-sm btn-primary mr-2"><i class="fas fa-sync-alt"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-full-world-trans" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var clmtrl_id_width, cnt_name_width, cntc_type_sname_width, cntc_type_brand_width, cntc_type_number_width, cntt_type_sname_width, cntt_type_brand_width, cntt_type_number_width, cntd_name_width,
+        cntd_name_eng_width, cntd_name_doc_width, cntd_name_lisence_width, cntd_main_phone_width, cntd_second_phone_width, cntd_email_width;
+
+    var clmtrl_id_class, cnt_name_class, cntc_type_sname_class, cntc_type_brand_class, cntc_type_number_class, cntt_type_sname_class, cntt_type_brand_class, cntt_type_number_class, cntd_name_class,
+        cntd_name_eng_class, cntd_name_doc_class, cntd_name_lisence_class, cntd_main_phone_class, cntd_second_phone_class, cntd_email_class;
+
+    var clmtrl_id_show, cnt_name_show, cntc_type_sname_show, cntc_type_brand_show, cntc_type_number_show, cntt_type_sname_show, cntt_type_brand_show, cntt_type_number_show, cntd_name_show,
+        cntd_name_eng_show, cntd_name_doc_show, cntd_name_lisence_show, cntd_main_phone_show, cntd_second_phone_show, cntd_email_show;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        clmtrl_id_show = false;
+        clmtrl_id_width = "";
+        clmtrl_id_class = "";
+        cnt_name_show = true;
+        cnt_name_width = "36%";
+        cnt_name_class = "small_size small_head_size small_footer_size";
+        cntc_type_sname_show = true;
+        cntc_type_sname_width = "5%";
+        cntc_type_sname_class = "small_size small_head_size small_footer_size text-center";
+        cntc_type_brand_show = false;
+        cntc_type_brand_width = "";
+        cntc_type_brand_class = "";
+        cntc_type_number_show = true;
+        cntc_type_number_width = "8%";
+        cntc_type_number_class = "small_size small_head_size small_footer_size text-center";
+        cntt_type_sname_show = true;
+        cntt_type_sname_width = "5%";
+        cntt_type_sname_class = "small_size small_head_size small_footer_size text-center";
+        cntt_type_brand_show = false;
+        cntt_type_brand_width = "";
+        cntt_type_brand_class = "";
+        cntt_type_number_show = true;
+        cntt_type_number_width = "8%";
+        cntt_type_number_class = "small_size small_head_size small_footer_size text-center";
+        cntd_name_show = true;
+        cntd_name_width = "18%";
+        cntd_name_class = "small_size small_head_size small_footer_size";
+        cntd_name_eng_show = false;
+        cntd_name_eng_width = "";
+        cntd_name_eng_class = "";
+        cntd_name_doc_show = false;
+        cntd_name_doc_width = "";
+        cntd_name_doc_class = "";
+        cntd_name_lisence_show = false;
+        cntd_name_lisence_width = "";
+        cntd_name_lisence_class = "";
+        cntd_main_phone_show = true;
+        cntd_main_phone_width = "10%";
+        cntd_main_phone_class = "small_size small_head_size small_footer_size";
+        cntd_second_phone_show = true;
+        cntd_second_phone_width = "10%";
+        cntd_second_phone_class = "small_size small_head_size small_footer_size";
+        cntd_email_show = false;
+        cntd_email_width = "";
+        cntd_email_class = "none";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        clmtrl_id_show = false;
+        clmtrl_id_width = "";
+        clmtrl_id_class = "";
+        cnt_name_show = true;
+        cnt_name_width = "36%";
+        cnt_name_class = "trans_id_shift";
+        cntc_type_sname_show = true;
+        cntc_type_sname_width = "8%";
+        cntc_type_sname_class = "text-center";
+        cntc_type_brand_show = false;
+        cntc_type_brand_width = "";
+        cntc_type_brand_class = "";
+        cntc_type_number_show = true;
+        cntc_type_number_width = "5%";
+        cntc_type_number_class = "text-center";
+        cntt_type_sname_show = true;
+        cntt_type_sname_width = "8%";
+        cntt_type_sname_class = "text-center";
+        cntt_type_brand_show = false;
+        cntt_type_brand_width = "";
+        cntt_type_brand_class = "";
+        cntt_type_number_show = true;
+        cntt_type_number_width = "5%";
+        cntt_type_number_class = "text-center";
+        cntd_name_show = true;
+        cntd_name_width = "18%";
+        cntd_name_class = "";
+        cntd_name_eng_show = false;
+        cntd_name_eng_width = "";
+        cntd_name_eng_class = "";
+        cntd_name_doc_show = false;
+        cntd_name_doc_width = "";
+        cntd_name_doc_class = "";
+        cntd_name_lisence_show = false;
+        cntd_name_lisence_width = "";
+        cntd_name_lisence_class = "";
+        cntd_main_phone_show = true;
+        cntd_main_phone_width = "10%";
+        cntd_main_phone_class = "";
+        cntd_second_phone_show = true;
+        cntd_second_phone_width = "10%";
+        cntd_second_phone_class = "";
+        cntd_email_show = false;
+        cntd_email_width = "";
+        cntd_email_class = "none";
+    }
+
+    var vClaimTransValue;
+    vClaimTransValue = {
+        table : '#table-full-world-trans',
+        button_form: "#table-full-world-trans-buttons",
+        ajax : {
+            "url": /*[[@{/full_world/get_trans_table}]]*/ "full_world/get_trans_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vClaimTransValue.rowdata.clm_id
+            }
+        },
+        key : "clmtrl_id",
+        switchControl : full_world_trans_switchControl,
+        rowdata:{
+            clm_id: null,
+            clmtrl_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            /*$(row).css('background-color', data["act_type_colour"]);*/
+        },
+        columnDefs:[
+            {"targets": [0], "width": clmtrl_id_width, "className": clmtrl_id_class, "visible": clmtrl_id_show},
+            {"targets": [1], "width": cnt_name_width, "className": cnt_name_class, "visible": cnt_name_show},
+            {"targets": [2], "width": cntc_type_sname_width, "className": cntc_type_sname_class, "visible": cntc_type_sname_show},
+            {"targets": [3], "width": cntc_type_brand_width, "className": cntc_type_brand_class, "visible": cntc_type_brand_show},
+            {"targets": [4], "width": cntc_type_number_width, "className": cntc_type_number_class, "visible": cntc_type_number_show},
+            {"targets": [5], "width": cntt_type_sname_width, "className": cntt_type_sname_class, "visible": cntt_type_sname_show},
+            {"targets": [6], "width": cntt_type_brand_width, "className": cntt_type_brand_class, "visible": cntt_type_brand_show},
+            {"targets": [7], "width": cntt_type_number_width, "className": cntt_type_number_class, "visible": cntt_type_number_show},
+            {"targets": [8], "width": cntd_name_width, "className": cntd_name_class, "visible": cntd_name_show},
+            {"targets": [9], "width": cntd_name_eng_width, "className": cntd_name_eng_class, "visible": cntd_name_eng_show},
+            {"targets": [10], "width": cntd_name_doc_width, "className": cntd_name_doc_class, "visible": cntd_name_doc_show},
+            {"targets": [11], "width": cntd_name_lisence_width, "className": cntd_name_lisence_class, "visible": cntd_name_lisence_show},
+            {"targets": [12], "width": cntd_main_phone_width, "className": cntd_main_phone_class, "visible": cntd_main_phone_show},
+            {"targets": [13], "width": cntd_second_phone_width, "className": cntd_second_phone_class, "visible": cntd_second_phone_show},
+            {"targets": [14], "width": cntd_email_width, "className": cntd_email_class, "visible": cntd_email_show}
+        ],
+        columns:[
+                /*0*/{"title": /*[[#{full_world.trans.clmtrl_id}]]*/ "clmtrl_id", "data": "clmtrl_id"},
+                /*1*/{"title": /*[[#{full_world.trans.cnt_name}]]*/ "cnt_name", "data": "cnt_name"},
+                /*2*/{"title": /*[[#{full_world.trans.cntc_type_sname}]]*/ "cntc_type_sname", "data": "cntc_type_sname"},
+                /*3*/{"title": /*[[#{full_world.trans.cntc_type_brand}]]*/ "cntc_type_brand", "data": "cntc_type_brand"},
+                /*4*/{"title": /*[[#{full_world.trans.cntc_type_number}]]*/ "cntc_type_number", "data": "cntc_type_number"},
+                /*5*/{"title": /*[[#{full_world.trans.cntt_type_sname}]]*/ "cntt_type_sname", "data": "cntt_type_sname"},
+                /*6*/{"title": /*[[#{full_world.trans.cntt_type_brand}]]*/ "cntt_type_brand", "data": "cntt_type_brand"},
+                /*7*/{"title": /*[[#{full_world.trans.cntt_type_number}]]*/ "cntt_type_number", "data": "cntt_type_number"},
+                /*8*/{"title": /*[[#{full_world.trans.cntd_name}]]*/ "cntd_name", "data": "cntd_name"},
+                /*9*/{"title": /*[[#{full_world.trans.cntd_name_eng}]]*/ "cntd_name_eng", "data": "cntd_name_eng"},
+                /*10*/{"title": /*[[#{full_world.trans.cntd_name_doc}]]*/ "cntd_name_doc", "data": "cntd_name_doc"},
+                /*11*/{"title": /*[[#{full_world.trans.cntd_name_lisence}]]*/ "cntd_name_lisence", "data": "cntd_name_lisence"},
+                /*12*/{"title": /*[[#{full_world.trans.cntd_main_phone}]]*/ "cntd_main_phone", "data": "cntd_main_phone"},
+                /*13*/{"title": /*[[#{full_world.trans.cntd_second_phone}]]*/ "cntd_second_phone", "data": "cntd_second_phone"},
+                /*14*/{"title": /*[[#{full_world.trans.cntd_email}]]*/ "cntd_email", "data": "cntd_email"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function full_world_trans_switchControl(){
+        if(vClaimTransValue.rowdata.clmtrl_id != null) {
+            $("#full-world-trans-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#full-world-trans-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+            if(RoleChiefOPS || RoleOPS){
+                $("#full-world-trans-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#full-world-trans-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#full-world-trans-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#full-world-trans-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#full-world-trans-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-trans-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#full-world-trans-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-trans-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+        } else{
+                $("#full-world-trans-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-trans-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-trans-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#full-world-trans-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-trans-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-trans-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    // Detail Button
+    $('#full-world-trans-detailbtn').click( function () {
+        $('#full_world_trans_modal_addbtn').attr('hidden',true);
+        $('#full_world_trans_modal_editbtn').attr('hidden',true);
+        $('#full_world_trans_modal_delbtn').attr('hidden',true);
+        fill_full_world_trans_modal_detail(4);
+    });
+    // Detail Button SX
+    $('#full-world-trans-detailbtn-sx').click( function () {
+        $('#full_world_trans_modal_addbtn').attr('hidden',true);
+        $('#full_world_trans_modal_editbtn').attr('hidden',true);
+        $('#full_world_trans_modal_delbtn').attr('hidden',true);
+        fill_full_world_trans_modal_detail(4);
+    });
+    // Add Button
+    $('#full-world-trans-addbtn').click( function () {
+        $('#full_world_trans_modal_addbtn').removeAttr('hidden');
+        $('#full_world_trans_modal_editbtn').attr('hidden',true);
+        $('#full_world_trans_modal_delbtn').attr('hidden',true);
+        fill_full_world_trans_modal_detail(0);
+    });
+    // Add Button SX
+    $('#full-world-trans-addbtn-sx').click( function () {
+        $('#full_world_trans_modal_addbtn').removeAttr('hidden');
+        $('#full_world_trans_modal_editbtn').attr('hidden',true);
+        $('#full_world_trans_modal_delbtn').attr('hidden',true);
+        fill_full_world_trans_modal_detail(0);
+    });
+    // Edit Button
+    $('#full-world-trans-editbtn').click( function () {
+        $('#full_world_trans_modal_addbtn').attr('hidden',true);
+        $('#full_world_trans_modal_editbtn').removeAttr('hidden');
+        $('#full_world_trans_modal_delbtn').attr('hidden',true);
+        fill_full_world_trans_modal_detail(1);
+    });
+    // Edit Button SX
+    $('#full-world-trans-editbtn-sx').click( function () {
+        $('#full_world_trans_modal_addbtn').attr('hidden',true);
+        $('#full_world_trans_modal_editbtn').removeAttr('hidden');
+        $('#full_world_trans_modal_delbtn').attr('hidden',true);
+        fill_full_world_trans_modal_detail(1);
+    });
+    // Del Button
+    $('#full-world-trans-delbtn').click( function () {
+        $('#full_world_trans_modal_addbtn').attr('hidden',true);
+        $('#full_world_trans_modal_editbtn').attr('hidden',true);
+        $('#full_world_trans_modal_delbtn').removeAttr('hidden');
+        fill_full_world_trans_modal_detail(2);
+    });
+    // Del Button SX
+    $('#full-world-trans-delbtn-sx').click( function () {
+        $('#full_world_trans_modal_addbtn').attr('hidden',true);
+        $('#full_world_trans_modal_editbtn').attr('hidden',true);
+        $('#full_world_trans_modal_delbtn').removeAttr('hidden');
+        fill_full_world_trans_modal_detail(2);
+    });
+    //Shift click
+    $('#table-full-world-trans').on('click','.trans_id_shift', function (e) {
+        var selectedRow = this._DT_CellIndex.row;
+        var taskTable = $("#table-full-world-trans").DataTable();
+
+        if (e.shiftKey) {
+            taskTable.row(selectedRow).select();
+            $('#full_world_trans_modal_addbtn').attr('hidden',true);
+            $('#full_world_trans_modal_editbtn').attr('hidden',true);
+            $('#full_world_trans_modal_delbtn').attr('hidden',true);
+            fill_full_world_trans_modal_detail(4);
+        }
+    });
+
+    function fullWorldTransReload(){
+        vClaimTransValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+        $(vClaimTransValue.table).DataTable().ajax.reload(null, false);
+    }
+    //Reload Button
+    $('#full-world-trans-reload').click(function(){
+        fullWorldTransReload();
+    });
+    //Reload Button SX
+    $('#full-world-trans-reload-sx').click(function(){
+        fullWorldTransReload();
+    });    
+    
+    $(document).ready(function(){
+        vClaimTransValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vClaimTransValue.rowdata.clmtrl_id = /*[[${clmtrl_id}]]*/ null;
+
+        vClaimTransValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vClaimTransValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vClaimTransValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vClaimTransValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vClaimTransValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vClaimTransValue);
+    });
+</script>
+
+</body>
+</html>

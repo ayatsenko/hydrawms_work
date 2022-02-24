@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="full_world_costs_body" th:remove="tag">
+        <form id="table-full-world-costs-buttons" class="mb-2" th:action="@{/full_world/costs_detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="full-world-costs-btn-large" class="d-none d-sm-block">
+                 <button type="button" id="full-world-costs-detailbtn" class="btn btn-sm btn-dark" th:text="#{general.detailbtn}" disabled>View</button>
+                 <button type="button" id="full-world-costs-addbtn" class="btn btn-sm btn-dark" th:text="#{general.addbtn}" disabled>Add</button>
+                 <button type="button" id="full-world-costs-editbtn" class="btn btn-sm btn-dark" th:text="#{general.editbtn}" disabled>Edit</button>
+                 <button type="button" id="full-world-costs-delbtn" class="btn btn-sm btn-dark mr-2" th:text="#{general.delbtn}" disabled>Delete</button>
+                  
+                 <button type="button" id="full-world-costs-reload" class="btn btn-sm btn-primary mr-2"><i class="fas fa-sync-alt"></i></button>
+              </div>
+              <div id="full-world-costs-btn-small" class="d-block d-sm-none">
+                 <button type="button" id="full-world-costs-detailbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="list"></i></button>
+                 <button type="button" id="full-world-costs-addbtn-sx" class="btn btn-sm btn-dark"><i data-feather="plus"></i></button>
+                 <button type="button" id="full-world-costs-editbtn-sx" class="btn btn-sm btn-dark" disabled><i data-feather="edit-2"></i></button>
+                 <button type="button" id="full-world-costs-delbtn-sx" class="btn btn-sm btn-dark mr-2" disabled><i data-feather="trash-2"></i></button>
+                  
+                 <button type="button" id="full-world-costs-reload-sx" class="btn btn-sm btn-primary mr-2"><i class="fas fa-sync-alt"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-full-world-costs" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var rn_width, clmc_source_id_width, clmc_source_sname_width, clmc_source_color_width, clmcl_id_width, clmc_type_id_width, clmc_type_sname_width, currency_name_width, clmcl_sum_width,
+        currency_date_width, clmcl_note_width;
+
+    var rn_class, clmc_source_id_class, clmc_source_sname_class, clmc_source_color_class, clmcl_id_class, clmc_type_id_class, clmc_type_sname_class, currency_name_class, clmcl_sum_class,
+        currency_date_class, clmcl_note_class;
+
+    var rn_show, clmc_source_id_show, clmc_source_sname_show, clmc_source_color_show, clmcl_id_show, clmc_type_id_show, clmc_type_sname_show, currency_name_show, clmcl_sum_show,
+        currency_date_show, clmcl_note_show;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        rn_show = false;
+        rn_width = "";
+        rn_class = "";
+        clmc_source_id_show = false;
+        clmc_source_id_width = "";
+        clmc_source_id_class = "";
+        clmc_source_sname_show = true;
+        clmc_source_sname_width = "6%";
+        clmc_source_sname_class = "small_size small_head_size small_footer_size";
+        clmc_source_color_show  = false;
+        clmc_source_color_width = "";
+        clmc_source_color_class = "";
+        clmcl_id_show = false;
+        clmcl_id_width = "";
+        clmcl_id_class = "";
+        clmc_type_id_show = false;
+        clmc_type_id_width = "";
+        clmc_type_id_class = "";
+        clmc_type_sname_show = true;
+        clmc_type_sname_width = "14%";
+        clmc_type_sname_class = "small_size small_head_size small_footer_size";
+        currency_name_show = true;
+        currency_name_width = "8%";
+        currency_name_class = "small_size small_head_size small_footer_size text-center";
+        clmcl_sum_show = true;
+        clmcl_sum_width = "8%";
+        clmcl_sum_class = "small_size small_head_size small_footer_size";
+        currency_date_show = true;
+        currency_date_width = "6%";
+        currency_date_class = "small_size small_head_size small_footer_size text-center";
+        clmcl_note_show = true;
+        clmcl_note_width = "58%";
+        clmcl_note_class = "small_size small_head_size small_footer_size";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        rn_show = false;
+        rn_width = "";
+        rn_class = "";
+        clmc_source_id_show = false;
+        clmc_source_id_width = "";
+        clmc_source_id_class = "";
+        clmc_source_sname_show = true;
+        clmc_source_sname_width = "6%";
+        clmc_source_sname_class = "";
+        clmc_source_color_show = false;
+        clmc_source_color_width = "";
+        clmc_source_color_class = "";
+        clmcl_id_show = false;
+        clmcl_id_width = "";
+        clmcl_id_class = "";
+        clmc_type_id_show = false;
+        clmc_type_id_width = "";
+        clmc_type_id_class = "";
+        clmc_type_sname_show = true;
+        clmc_type_sname_width = "14%";
+        clmc_type_sname_class = "";
+        currency_name_show = true;
+        currency_name_width = "8%";
+        currency_name_class = "text-center";
+        clmcl_sum_show = true;
+        clmcl_sum_width = "8%";
+        clmcl_sum_class = "";
+        currency_date_show = true;
+        currency_date_width = "6%";
+        currency_date_class = "text-center";
+        clmcl_note_show = true;
+        clmcl_note_width = "66%";
+        clmcl_note_class = "";
+    }
+
+    var vClaimCostsValue;
+    vClaimCostsValue = {
+        table : '#table-full-world-costs',
+        button_form: "#table-full-world-costs-buttons",
+        ajax : {
+            "url": /*[[@{/full_world/get_costs_table}]]*/ "full_world/get_costs_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.clm_id = vClaimCostsValue.rowdata.clm_id;
+            }
+        },
+        key : "clmcl_id",
+        switchControl : full_world_costs_switchControl,
+        rowdata:{
+            clm_id: null,
+            clmcl_id: null,
+            clmc_type_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["clmc_source_color"]);
+        },
+        columnDefs:[
+            {"targets": [0], "width": rn_width, "className": rn_class, "visible": rn_show},
+            {"targets": [1], "width": clmc_source_id_width, "className": clmc_source_id_class, "visible": clmc_source_id_show},
+            {"targets": [2], "width": clmc_source_sname_width, "className": clmc_source_sname_class, "visible": clmc_source_sname_show},
+            {"targets": [3], "width": clmc_source_color_width, "className": clmc_source_color_class, "visible": clmc_source_color_show},
+            {"targets": [4], "width": clmcl_id_width, "className": clmcl_id_class, "visible": clmcl_id_show},
+            {"targets": [5], "width": clmc_type_id_width, "className": clmc_type_id_class, "visible": clmc_type_id_show},
+            {"targets": [6], "width": clmc_type_sname_width, "className": clmc_type_sname_class, "visible": clmc_type_sname_show},
+            {"targets": [7], "width": currency_name_width, "className": currency_name_class, "visible": currency_name_show},
+            {"targets": [8], "width": clmcl_sum_width, "className": clmcl_sum_class, "visible": clmcl_sum_show,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )},
+            {"targets": [9], "width": currency_date_width, "className": currency_date_class, "visible": currency_date_show},
+            {"targets": [10], "width": clmcl_note_width, "className": clmcl_note_class, "visible": clmcl_note_width}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{full_world.costs.rn}]]*/ "rn", "data": "rn"},
+            /*1*/{"title": /*[[#{full_world.costs.clmc_source_id}]]*/ "clmc_source_id", "data": "clmc_source_id"},
+            /*2*/{"title": /*[[#{full_world.costs.clmc_source_sname}]]*/ "clmc_source_sname", "data": "clmc_source_sname"},
+            /*3*/{"title": /*[[#{full_world.costs.clmc_source_color}]]*/ "clmc_source_color", "data": "clmc_source_color"},
+            /*4*/{"title": /*[[#{full_world.costs.clmcl_id}]]*/ "clmcl_id", "data": "clmcl_id"},
+            /*5*/{"title": /*[[#{full_world.costs.clmc_type_id}]]*/ "clmc_type_id", "data": "clmc_type_id"},
+            /*6*/{"title": /*[[#{full_world.costs.clmc_type_sname}]]*/ "clmc_type_sname", "data": "clmc_type_sname"},
+            /*7*/{"title": /*[[#{full_world.costs.currency_name}]]*/ "currency_name", "data": "currency_name"},
+            /*8*/{"title": /*[[#{full_world.costs.clmcl_sum}]]*/ "clmcl_sum", "data": "clmcl_sum"},
+            /*9*/{"title": /*[[#{full_world.costs.currency_date}]]*/ "currency_date", "data": "currency_date"},
+            /*10*/{"title": /*[[#{full_world.costs.clmcl_note}]]*/ "clmcl_note", "data": "clmcl_note"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function full_world_costs_switchControl(){
+        if(vClaimCostsValue.rowdata.clmcl_id != null) {
+            if(vClaimCostsValue.rowdata.clmc_type_id === 1 || vClaimCostsValue.rowdata.clmc_type_id === 8){
+                $("#full-world-costs-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-costs-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+            else if((vClaimCostsValue.rowdata.clmc_type_id !== 1 && vClaimCostsValue.rowdata.clmc_type_id !== 8) && (RoleChiefOPS || RoleOPS)){
+                $("#full-world-costs-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#full-world-costs-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#full-world-costs-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-costs-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+
+            if(RoleChiefOPS || RoleOPS){
+                $("#full-world-costs-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#full-world-costs-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            }
+            else{
+                $("#full-world-costs-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#full-world-costs-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            }
+
+            $("#full-world-costs-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#full-world-costs-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+            $("#full-world-costs-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-costs-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-costs-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#full-world-costs-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-costs-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#full-world-costs-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    //Show Button
+    $('#full-world-costs-detailbtn').click(function() {
+        $('#full_world_costs_modal_addbtn').attr('hidden',true);
+        $('#full_world_costs_modal_editbtn').attr('hidden',true);
+        $('#full_world_costs_modal_delbtn').attr('hidden',true);
+        fill_full_world_costs_modal_detail(4);
+    });
+    //Show Button SX
+    $('#full-world-costs-detailbtn-sx').click(function() {
+        $('#full_world_costs_modal_addbtn').attr('hidden',true);
+        $('#full_world_costs_modal_editbtn').attr('hidden',true);
+        $('#full_world_costs_modal_delbtn').attr('hidden',true);
+        fill_full_world_costs_modal_detail(4);
+    });
+    //Add Button
+    $('#full-world-costs-addbtn').click(function() {
+        $('#full_world_costs_modal_addbtn').removeAttr('hidden');
+        $('#full_world_costs_modal_editbtn').attr('hidden',true);
+        $('#full_world_costs_modal_delbtn').attr('hidden',true);
+        fill_full_world_costs_modal_detail(0);
+    });
+    //Add Button SX
+    $('#full-world-costs-addbtn-sx').click(function() {
+        $('#full_world_costs_modal_addbtn').removeAttr('hidden');
+        $('#full_world_costs_modal_editbtn').attr('hidden',true);
+        $('#full_world_costs_modal_delbtn').attr('hidden',true);
+        fill_full_world_costs_modal_detail(0);
+    });
+    // Edit Button
+    $('#full-world-costs-editbtn').click(function() {
+        $('#full_world_costs_modal_addbtn').attr('hidden',true);
+        $('#full_world_costs_modal_editbtn').removeAttr('hidden');
+        $('#full_world_costs_modal_delbtn').attr('hidden',true);
+        fill_full_world_costs_modal_detail(1);
+    });
+    // Edit Button SX
+    $('#full-world-costs-editbtn-sx').click(function() {
+        $('#full_world_costs_modal_addbtn').attr('hidden',true);
+        $('#full_world_costs_modal_editbtn').removeAttr('hidden');
+        $('#full_world_costs_modal_delbtn').attr('hidden',true);
+        fill_full_world_costs_modal_detail(1);
+    });
+    // Del Button
+    $('#full-world-costs-delbtn').click(function() {
+        $('#full_world_costs_modal_addbtn').attr('hidden',true);
+        $('#full_world_costs_modal_editbtn').attr('hidden',true);
+        $('#full_world_costs_modal_delbtn').removeAttr('hidden');
+        fill_full_world_costs_modal_detail(2);
+    });
+    // Del Button SX
+    $('#full-world-costs-delbtn-sx').click(function() {
+        $('#full_world_costs_modal_addbtn').attr('hidden',true);
+        $('#full_world_costs_modal_editbtn').attr('hidden',true);
+        $('#full_world_costs_modal_delbtn').removeAttr('hidden');
+        fill_full_world_costs_modal_detail(2);
+    });
+
+    function fullWorldCostsReload(){
+        vClaimCostsValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+        $(vClaimCostsValue.table).DataTable().ajax.reload(null, false);
+    }
+    //Reload Button
+    $('#full-world-costs-reload').click(function(){
+        fullWorldCostsReload();
+    });
+    //Reload Button SX
+    $('#full-world-costs-reload-sx').click(function(){
+        fullWorldCostsReload();
+    });
+
+    $(document).ready(function(){
+        vClaimCostsValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+        vClaimCostsValue.rowdata.clmcl_id = /*[[${clmcl_id}]]*/ null;
+
+        vClaimCostsValue.rowdata.table_order_column = /*[[${full_world_costs_table_order_column}]]*/ null;
+        vClaimCostsValue.rowdata.table_order_type = /*[[${full_world_costs_table_order_type}]]*/ null;
+        vClaimCostsValue.rowdata.table_search = /*[[${full_world_costs_table_search}]]*/ null;
+        vClaimCostsValue.rowdata.table_pagelen = /*[[${full_world_costs_table_pagelen}]]*/ null;
+        vClaimCostsValue.rowdata.table_page = /*[[${full_world_costs_table_page}]]*/ null;
+
+        recreateDataTable(vClaimCostsValue);
+    });
+</script>
+
+</body>
+</html>

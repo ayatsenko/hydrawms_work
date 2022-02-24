@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_month_debtors_month_all_body" th:remove="tag">
+    <div id="table-report-month-debtors-month-all-buttons">
+    </div>
+    <div><table id="table-report-month-debtors-month-all" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    var currentMonthAll = 0;
+
+    var rn_width, cnt_id_width, cnt_name_width, ser_id_width, ser_name_width, cs_user_id_width, cs_user_name_width, ops_user_id_width, ops_user_name_width, fin_sum_width;
+
+    var rn_class, cnt_id_class, cnt_name_class, ser_id_class, ser_name_class, cs_user_id_class, cs_user_name_class, ops_user_id_class, ops_user_name_class, fin_sum_class;
+
+    if(mobileScreenSize){
+        vDomParam = "Blfrtp";
+
+        rn_width = "";
+        rn_class = "none";
+        cnt_id_width = "";
+        cnt_id_class = "none";
+        cnt_name_width = "40%";
+        cnt_name_class = "small_size small_head_size small_footer_size";
+        ser_id_width = "";
+        ser_id_class = "none";
+        ser_name_width = "10%";
+        ser_name_class = "small_size small_head_size small_footer_size text_center";
+        cs_user_id_width = "";
+        cs_user_id_class = "none";
+        cs_user_name_width = "";
+        cs_user_name_class = "none";
+        ops_user_id_width = "";
+        ops_user_id_class = "none";
+        ops_user_name_width = "";
+        ops_user_name_class = "none";
+        fin_sum_width = "30%";
+        fin_sum_class = "small_size small_head_size small_footer_size";
+        $('#table-report-month-debtors-month-all-buttons').removeAttr('hidden');
+    }
+    else if(smallScreenSize){
+        vDomParam = "Blfrtip";
+        rn_width = "";
+        rn_class = "none";
+        cnt_id_width = "";
+        cnt_id_class = "none";
+        cnt_name_width = "40%";
+        cnt_name_class = "small_size small_head_size small_footer_size";
+        ser_id_width = "";
+        ser_id_class = "none";
+        ser_name_width = "10%";
+        ser_name_class = "small_size small_head_size small_footer_size text_center";
+        cs_user_id_width = "";
+        cs_user_id_class = "none";
+        cs_user_name_width = "10%";
+        cs_user_name_class = "small_size small_head_size small_footer_size text-center";
+        ops_user_id_width = "";
+        ops_user_id_class = "none";
+        ops_user_name_width = "10%";
+        ops_user_name_class = "small_size small_head_size small_footer_size text-center";
+        fin_sum_width = "30%";
+        fin_sum_class = "small_size small_head_size small_footer_size";
+    }
+    else{
+        vDomParam = "Blfrtip";
+        rn_width = "";
+        rn_class = "none";
+        cnt_id_width = "";
+        cnt_id_class = "none";
+        cnt_name_width = "40%";
+        cnt_name_class = "";
+        ser_id_width = "";
+        ser_id_class = "none";
+        ser_name_width = "10%";
+        ser_name_class = "text_center";
+        cs_user_id_width = "";
+        cs_user_id_class = "none";
+        cs_user_name_width = "10%";
+        cs_user_name_class = "text-center";
+        ops_user_id_width = "";
+        ops_user_id_class = "none";
+        ops_user_name_width = "10%";
+        ops_user_name_class = "text-center";
+        fin_sum_width = "30%";
+        fin_sum_class = "";
+    }
+
+    var vReportMonthDebtorsMonthAllValue;
+    vReportMonthDebtorsMonthAllValue = {
+        table : '#table-report-month-debtors-month-all',
+        button_form: (mobileScreenSize) ? null : "#table-report-month-debtors-month-all-buttons",
+        ajax : {
+            "url": /*[[@{/report_month_debtors/get_month_table}]]*/ "report_month_debtors/get_month_table",
+            "type": "post",
+            "data": function ( d ) {
+                d.req_ser_id = vReportMonthDebtorsMonthAllValue.rowdata.req_ser_id;
+                d.req_year = vReportMonthDebtorsMonthAllValue.rowdata.req_year;
+                d.req_month = currentMonthAll;
+            }
+        },
+        key : "rn",
+        switchControl : report_month_debtors_month_all_switchControl,
+        rowdata:{
+            act_id: null,
+            req_year: null,
+            req_month: null,
+            req_user_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+
+        dom: vDomParam,
+        columnDefs:[
+            {"targets": 9,  render: $.fn.dataTable.render.number( '\ ', '.', 2, '' )}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{report_month_debtors.tabs.rn}]]*/ "rn","data": "rn","width": rn_width, "className": rn_class},
+            /*1*/{"title": /*[[#{report_month_debtors.tabs.cnt_id}]]*/ "cnt_id","data": "cnt_id","width": cnt_id_width, "className": cnt_id_class},
+            /*2*/{"title": /*[[#{report_month_debtors.tabs.cnt_name}]]*/ "cnt_name","data": "cnt_name","width": cnt_name_width, "className": cnt_name_class},
+            /*3*/{"title": /*[[#{report_month_debtors.tabs.ser_id}]]*/ "ser_id","data": "ser_id","width": ser_id_width, "className": ser_id_class},
+            /*4*/{"title": /*[[#{report_month_debtors.tabs.ser_name}]]*/ "ser_name","data": "ser_name","width": ser_name_width, "className": ser_name_class},
+            /*5*/{"title": /*[[#{report_month_debtors.tabs.cs_user_id}]]*/ "cs_user_id","data": "cs_user_id","width": cs_user_id_width, "className": cs_user_id_class},
+            /*6*/{"title": /*[[#{report_month_debtors.tabs.cs_user_name}]]*/ "cs_user_name","data": "cs_user_name","width": cs_user_name_width, "className": cs_user_name_class},
+            /*7*/{"title": /*[[#{report_month_debtors.tabs.ops_user_id}]]*/ "ops_user_id","data": "ops_user_id","width": ops_user_id_width, "className": ops_user_id_class},
+            /*8*/{"title": /*[[#{report_month_debtors.tabs.ops_user_name}]]*/ "ops_user_name","data": "ops_user_name","width": ops_user_name_width, "className": ops_user_name_class},
+            /*9*/{"title": /*[[#{report_month_debtors.tabs.fin_sum}]]*/ "fin_sum","data": "fin_sum","width": fin_sum_width, "className": fin_sum_class}
+         ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function report_month_debtors_month_all_switchControl(){
+        if(vReportMonthDebtorsMonthAllValue.rowdata.rn != null) {
+        } else{
+        }
+    }
+
+    $('.report_month_debtors_month_all_btn_control').on('click', function (){
+        $("#report-month-debtors-month-all-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#report-month-debtors-month-all-detail').submit(function() {
+        vReportMonthDebtorsMonthAllValue.rowdata.report_month_debtors_month_all_table_order_column = $(vReportMonthDebtorsMonthAllValue.table).DataTable().order()[0][0];
+        vReportMonthDebtorsMonthAllValue.rowdata.report_month_debtors_month_all_table_order_type = $(vReportMonthDebtorsMonthAllValue.table).DataTable().order()[0][1];
+        vReportMonthDebtorsMonthAllValue.rowdata.report_month_debtors_month_all_table_search = $(vReportMonthDebtorsMonthAllValue.table).DataTable().search();
+        vReportMonthDebtorsMonthAllValue.rowdata.report_month_debtors_month_all_table_pagelen = $(vReportMonthDebtorsMonthAllValue.table).DataTable().page.len();
+        vReportMonthDebtorsMonthAllValue.rowdata.report_month_debtors_month_all_table_page = $(vReportMonthDebtorsMonthAllValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vReportMonthDebtorsMonthAllValue.rowdata).forEach(function (index) {
+            $("#report-month-debtors-month-all-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#report-month-debtors-month-all-detail input[name=\"" + index + "\"]").val(vReportMonthDebtorsMonthAllValue.rowdata[index]);
+        });
+    });
+
+    $('#report-month-debtors-month-all-xls-form').submit(function() {
+        $("#report-month-debtors-month-all-xls-form input[name=start_date]").val($("#report_month_debtors_start_date").val());
+        $("#report-month-debtors-month-all-xls-form input[name=end_date]").val($("#report_month_debtors_end_date").val());
+        $("#report-month-debtors-month-all-xls-form input[name=req_user_id]").val(vReportEmployeeBalanceDetailValue.rowdata.user_id);
+        $("#report-month-debtors-month-all-xls-form input[name=month_id]").val(currentMonthAll);
+    });
+
+    $('#report-month-debtors-month-all-pdf-form').submit(function() {
+        $("#report-month-debtors-month-all-pdf-form input[name=start_date]").val($("#report_month_debtors_start_date").val());
+        $("#report-month-debtors-month-all-pdf-form input[name=end_date]").val($("#report_month_debtors_end_date").val());
+        $("#report-month-debtors-month-all-pdf-form input[name=req_user_id]").val(vReportEmployeeBalanceDetailValue.rowdata.user_id);
+        $("#report-month-debtors-month-all-pdf-form input[name=month_id]").val(currentMonthAll);
+    });
+
+    $(document).ready(function(){
+        vReportMonthDebtorsMonthAllValue.rowdata.act_id = /*[[${act_id}]]*/ null;
+        vReportMonthDebtorsMonthAllValue.rowdata.start_date = null;
+        vReportMonthDebtorsMonthAllValue.rowdata.end_date = null;
+        vReportMonthDebtorsMonthAllValue.rowdata.req_user_id = null;
+
+        vReportMonthDebtorsMonthAllValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vReportMonthDebtorsMonthAllValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vReportMonthDebtorsMonthAllValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vReportMonthDebtorsMonthAllValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vReportMonthDebtorsMonthAllValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vReportMonthDebtorsMonthAllValue);
+    });
+</script>
+
+</body>
+</html>

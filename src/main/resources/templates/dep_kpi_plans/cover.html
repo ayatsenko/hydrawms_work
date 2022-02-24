@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{dep_kpi_plans.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2">
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#dep_kpi_plans_filter_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#dep_kpi_plans_filter_div" data-toggle="collapse" th:text="#{dep_kpi_plans.filter.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="dep_kpi_plans_filter_div">
+                <div>
+                    <div>
+                        <span th:replace="dep_kpi_plans/head_card :: dep_kpi_plans_head_body"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Header -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="dep_kpi_plans_main_card" hidden>
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#dep_kpi_plans_main_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#dep_kpi_plans_main_div" data-toggle="collapse" th:text="#{dep_kpi_plans.main.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="dep_kpi_plans_main_div">
+                <div>
+                    <span th:replace="dep_kpi_plans/main_modal :: dep_kpi_plans_main_modal_body"></span>
+                    <span th:replace="dep_kpi_plans/main_card :: dep_kpi_plans_main_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Main -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="dep_kpi_plans_clients_card" hidden>
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#dep_kpi_plans_clients_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#dep_kpi_plans_clients_div" data-toggle="collapse" th:text="#{dep_kpi_plans.clients.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="dep_kpi_plans_clients_div">
+                <div>
+                    <span th:replace="dep_kpi_plans/clients_modal :: dep_kpi_plans_clients_modal_body"></span>
+                    <span th:replace="dep_kpi_plans/clients_card :: dep_kpi_plans_clients_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Main -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="dep_kpi_plans_middle_card" hidden>
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#dep_kpi_plans_middle_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#dep_kpi_plans_middle_div" data-toggle="collapse" th:text="#{dep_kpi_plans.middle.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="dep_kpi_plans_middle_div">
+                <div>
+                    <span th:replace="dep_kpi_plans/middle_card :: dep_kpi_plans_middle_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Middle -->
+
+    <div class="col-12 pl-2 pr-2 pt-0">
+        <div class="card mb-2" id="dep_kpi_plans_users_card" hidden>
+            <div class="card-header pb-0">
+                <div class="card-actions float-right">
+                    <a href="#dep_kpi_plans_users_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+                </div>
+                <h5 class="card-title" href="#dep_kpi_plans_users_div" data-toggle="collapse" th:text="#{dep_kpi_plans.users.caption}"></h5>
+            </div>
+            <div class="card-body pt-0 collapse show" id="dep_kpi_plans_users_div">
+                <div>
+                    <span th:replace="dep_kpi_plans/users_modal :: dep_kpi_plans_users_modal_body"></span>
+                    <span th:replace="dep_kpi_plans/users_card :: dep_kpi_plans_users_body"></span>
+                </div>
+            </div>
+        </div>
+    </div><!-- Users -->
+</div>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="dep_kpi_plans/users_modal :: cardscript"></script>
+<script th:replace="dep_kpi_plans/users_card :: cardscript"></script>
+<script th:replace="dep_kpi_plans/middle_card :: cardscript"></script>
+
+<script th:replace="dep_kpi_plans/clients_modal :: cardscript"></script>
+<script th:replace="dep_kpi_plans/clients_card :: cardscript"></script>
+
+<script th:replace="dep_kpi_plans/main_modal :: cardscript"></script>
+<script th:replace="dep_kpi_plans/main_card :: cardscript"></script>
+
+<script th:replace="dep_kpi_plans/main_card :: cardscript"></script>
+<script th:replace="dep_kpi_plans/head_card :: cardscript"></script>
+
+</body>
+</html>

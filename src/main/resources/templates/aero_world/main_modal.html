@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="aero_world_main_modal_body" th:remove="tag">
+    <div class="modal fade was-validated" id="aero_world_main_modal" data-toggle="validator" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+            <div class="hidden">
+                <input type="hidden" id="mode">
+            </div>
+
+            <div class="modal-content" id="aero_world_main_modal_detail">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{aero_world.main.caption}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body pr-3 pl-3 pb-1 pt-1">
+                    <form id="aero_world_main_modal_form" name="aero_world_main_modal_form" class="was-validated" novalidate>
+                    <input type="hidden" id="aero_world_main_modal_mode" name="aero_world_main_modal_mode">
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-2" id="aero_world_main_modal_clm_id_row">
+                            <label for="aero_world_main_modal_clm_id" class="form-label mb-0" th:text="'1. '+ #{aero_world.main.clm_id}"></label>
+                            <input type="number" class="form-control" id="aero_world_main_modal_clm_id" name="aero_world_main_modal_clm_num" readonly>
+                        </div>
+                        <div class="col-12 col-md-2" id="aero_world_main_modal_clm_num_row">
+                            <label for="aero_world_main_modal_clm_num" class="form-label mb-0" th:text="'2. '+ #{aero_world.main.clm_num}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="aero_world_main_modal_clm_num" name="aero_world_main_modal_clm_num">
+                        </div>
+                        <div class="col-12 col-md-3" id="aero_world_main_modal_clm_client_num_row">
+                            <label for="aero_world_main_modal_clm_client_num" class="form-label mb-0" th:text="'3. '+ #{aero_world.main.clm_client_num}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="aero_world_main_modal_clm_client_num" name="aero_world_main_modal_clm_client_num">
+                        </div>
+                        <div class="col-12 col-md-3" id="aero_world_main_modal_clm_latitude_row">
+                            <label for="aero_world_main_modal_clm_latitude" class="form-label mb-0" th:text="'4. '+ #{aero_world.main.latitude}"></label>
+                            <input type="text" maxlength="16" class="form-control" id="aero_world_main_modal_clm_latitude" name="aero_world_main_modal_clm_latitude">
+                        </div>
+                    </div> <!-- Row 1 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-5">
+                            <label for="aero_world_main_modal_ser_id" class="form-label mb-0" th:text="'5. '+#{aero_world.main.ser_sname}">Service </label>
+                            <select type="text" id="aero_world_main_modal_ser_id" name="aero_world_main_modal_ser_id" class="custom-select">
+                            </select>
+                        </div>
+                    </div> <!-- Row 2 -->
+
+                    <div class="form-row mb-1">
+                        <div class="col-12 col-md-4" id="cnt_filter_row">
+                            <label for="cnt_filter" class="form-label mb-0" th:text="'6. '+ #{tms_locals.main.cnt_filter}"></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="cnt_filter" name="cnt_filter">
+                                <button type="button" id="cnt_filter_check" name="cnt_filter_check" class="btn btn-outline-primary"><i class="fas fa-database"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6" id="aero_world_main_modal_cnt_id_div">
+                            <label for="aero_world_main_modal_cnt_id" class="form-label mb-0" th:text="'7. '+#{tms_locals.main.cnt_name}"></label>
+                            <div class="input-group">
+                                <select type="text" id="aero_world_main_modal_cnt_id" name="aero_world_main_modal_cnt_id" class="custom-select" aria-describedby="aero_world_main_modal_cnt_id_helpBlock">
+                                </select>
+                                <button type="button" id="aero_world_main_modal_cnt_id_x" name="aero_world_main_modal_cnt_id_x" class="btn btn-outline-primary select_clear" data-parent="aero_world_main_modal_cnt_id"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div> <!-- Row 4 -->
+
+                    <div class="form-row">
+                        <div class="col-12 m-0 p-0 container">
+						    <div class="tab tab-vertical tab-light">
+								<ul class="nav nav-tabs" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link text-primary active" href="#aero_world_main_modal_tab_1" data-toggle="tab" role="tab">
+                                            <i class="align-middle fa fa-plane"></i>
+                                        </a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link text-primary" href="#aero_world_main_modal_tab_2" data-toggle="tab" role="tab">
+                                            <i class="align-middle fa fa-map-marked-alt"></i>
+                                        </a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link text-primary" href="#aero_world_main_modal_tab_3" data-toggle="tab" role="tab">
+                                            <i class="align-middle fa fa-box-open"></i>
+                                        </a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link text-primary" href="#aero_world_main_modal_tab_4" data-toggle="tab" role="tab">
+                                            <i class="align-middle fa fa-dollar-sign"></i>
+                                        </a>
+									</li>
+								</ul>
+								<div class="tab-content p-3">
+                                    <div class="tab-pane active" id="aero_world_main_modal_tab_1" role="tabpanel">
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-8" id="trans_cnt_id_row">
+                                                <label for="trans_cnt_id" class="form-label text-dark mb-0" th:text="'8. '+#{tms_locals.main.trans_name}"></label>
+                                                <div class="input-group d-flex">
+                                                    <select type="text" id="trans_cnt_id" name="trans_cnt_id" class="custom-select select2" style="width:100%" aria-describedby="trans_cnt_id_helpBlock">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div> <!--Tab 1 Row 1-->
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-9" id="trans_cnt_name_new_row">
+                                                <label for="trans_cnt_name_new" class="form-label text-dark mb-0 text-dark" th:text="'8.1. '+#{clients.list.cnt_name}"></label>
+                                                <input type="text" maxlength="120" class="form-control" id="trans_cnt_name_new" name="trans_cnt_name_new" readonly>
+                                            </div>
+                                        </div><!--Tab 1 Row 2-->
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-2" id="trans_cnt_resident_new_row">
+                                                <label class="form-label mb-0 text-dark" for="trans_cnt_resident_new" th:text="'8.2. '+ #{clients.list.cnt_resident}"></label>
+                                                <div class="custom-control custom-switch centered">
+                                                    <input class="custom-control-input" type="checkbox" id="trans_cnt_resident_new" name="trans_cnt_resident_new" disabled>
+                                                    <label class="custom-control-label" for="trans_cnt_resident_new"></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-5" id="trans_cnt_identifycode_new_row">
+                                                <label for="trans_cnt_identifycode_new" class="form-label mb-0 text-dark" th:text="'8.3. '+#{clients.list.cnt_identifycode}"></label>
+                                                <input type="text" maxlength="16" class="form-control" id="trans_cnt_identifycode_new" name="trans_cnt_identifycode_new" readonly>
+                                            </div>
+                                        </div><!--Tab 1 Row 3-->
+                                    </div><!--Tab 1-->
+                                    <div class="tab-pane" id="aero_world_main_modal_tab_2" role="tabpanel">
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-6">
+                                                <label for="aero_world_main_modal_start_country_id" class="form-label mb-0 text-dark" th:text="'9. '+#{aero_world.main.start_country_name}"></label>
+                                                <div class="input-group">
+                                                    <button type="button" id="aero_world_main_modal_start_country_button" name="aero_world_main_modal_start_country_button" class="btn btn-primary" disabled><i class="fas fa-plane-departure"></i></button>
+                                                    <div class="flex-fill">
+                                                        <select type="text" class="custom-select select2" id="aero_world_main_modal_start_country_id" name="aero_world_main_modal_start_country_id">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <label for="aero_world_main_modal_start_aeroport_id" class="form-label mb-0 text-dark" th:text="'10. '+#{aero_world.main.start_aeroport_name}"></label>
+                                                <select type="text" class="custom-select select2" id="aero_world_main_modal_start_aeroport_id" name="aero_world_main_modal_start_aeroport_id" disabled>
+                                                </select>
+                                            </div>
+                                        </div><!--Tab 2 Row 1-->
+
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-5" id="aero_world_main_modal_start_aeroport_new_name_row">
+                                                <label for="aero_world_main_modal_start_aeroport_new_name" class="form-label mb-0 text-dark" th:text="'10.1. '+ #{aero_world.main.aero_world_new_name}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="aero_world_main_modal_start_aeroport_new_name" name="aero_world_main_modal_start_aeroport_new_name" readonly>
+                                            </div>
+                                            <div class="col-12 col-md-3" id="aero_world_main_modal_start_aeroport_new_code_row">
+                                                <label for="aero_world_main_modal_start_aeroport_new_code" class="form-label mb-0 text-dark" th:text="'10.2. '+ #{aero_world.main.aero_world_new_code}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="aero_world_main_modal_start_aeroport_new_code" name="aero_world_main_modal_start_aeroport_new_code" readonly>
+                                            </div>
+                                        </div><!--Tab 2 Row 2-->
+
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-6">
+                                                <label for="aero_world_main_modal_end_country_id" class="form-label mb-0 text-dark" th:text="'11. '+#{aero_world.main.end_country_name}"></label>
+                                                <div class="input-group">
+                                                    <button type="button" id="aero_world_main_modal_end_country_button" name="aero_world_main_modal_end_country_button" class="btn btn-primary" disabled><i class="fas fa-plane-arrival"></i></button>
+                                                    <div class="flex-fill">
+                                                        <select type="text" class="custom-select select2" id="aero_world_main_modal_end_country_id" name="aero_world_main_modal_end_country_id">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <label for="aero_world_main_modal_end_aeroport_id" class="form-label mb-0 text-dark" th:text="'12. '+#{aero_world.main.end_aeroport_name}"></label>
+                                                <select type="text" class="custom-select select2" id="aero_world_main_modal_end_aeroport_id" name="aero_world_main_modal_end_aeroport_id" disabled>
+                                                </select>
+                                            </div>
+                                        </div><!--Tab 2 Row 3-->
+
+                                        <div class="row mb-1">
+                                            <div class="col-12 col-md-5" id="aero_world_main_modal_end_aeroport_new_name_row">
+                                                <label for="aero_world_main_modal_end_aeroport_new_name" class="form-label mb-0 text-dark" th:text="'12.1. '+ #{aero_world.main.aero_world_new_name}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="aero_world_main_modal_end_aeroport_new_name" name="aero_world_main_modal_end_aeroport_new_name" readonly>
+                                            </div>
+                                            <div class="col-12 col-md-3" id="aero_world_main_modal_end_aeroport_new_code_row">
+                                                <label for="aero_world_main_modal_end_aeroport_new_code" class="form-label mb-0 text-dark" th:text="'12.1. '+ #{aero_world.main.aero_world_new_code}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="aero_world_main_modal_end_aeroport_new_code" name="aero_world_main_modal_end_aeroport_new_code" readonly>
+                                            </div>
+                                        </div><!--Tab 2 Row 4-->
+
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-3" id="mawb_row">
+                                                <label for="mawb" class="form-label mb-0 text-dark" th:text="'13. '+ #{aero_world.main.mawb}"></label>
+                                                <input type="text" maxlength="32" class="form-control" id="mawb" name="mawb">
+                                            </div>
+
+                                            <div class="col-12 col-md-3" id="hawb_row">
+                                                <label for="hawb" class="form-label mb-0 text-dark" th:text="'14. '+ #{aero_world.main.hawb}"></label>
+                                                <input type="text" maxlength="32" class="form-control" id="hawb" name="hawb">
+                                            </div>
+                                        </div> <!--Tab 2 Row 5-->
+
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-6" id="shipper_id_div">
+                                                <label for="shipper_id" class="form-label text-dark mb-0" th:text="'15. '+#{aero_world.main.shipper_name}"></label>
+                                                <div class="input-group d-flex">
+                                                    <select type="text" id="shipper_id" name="shipper_id" class="custom-select" style="width:100%" aria-describedby="shipper_id_helpBlock">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-5" id="aero_world_main_modal_shipper_new_name_row">
+                                                <label for="aero_world_main_modal_shipper_new_name" class="form-label mb-0 text-dark" th:text="'15.1. '+ #{aero_world.main.aero_world_new_name}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="aero_world_main_modal_shipper_new_name" name="aero_world_main_modal_shipper_new_name" readonly>
+                                            </div>
+                                        </div> <!--Tab 2 Row 6-->
+
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-6" id="consignee_id_div">
+                                                <label for="consignee_id" class="form-label text-dark mb-0" th:text="'16. '+#{aero_world.main.consignee_name}"></label>
+                                                <div class="input-group d-flex">
+                                                    <select type="text" id="consignee_id" name="consignee_id" class="custom-select" style="width:100%" aria-describedby="consignee_id_helpBlock">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-5" id="aero_world_main_modal_consignee_new_name_row">
+                                                <label for="aero_world_main_modal_consignee_new_name" class="form-label mb-0 text-dark" th:text="'16.1. '+ #{aero_world.main.aero_world_new_name}"></label>
+                                                <input type="text" maxlength="64" class="form-control" id="aero_world_main_modal_consignee_new_name" name="aero_world_main_modal_consignee_new_name" readonly>
+                                            </div>
+                                        </div> <!--Tab 2 Row 7-->
+                                    </div><!--Tab 2-->
+                                    <div class="tab-pane" id="aero_world_main_modal_tab_3" role="tabpanel">
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-3" id="package_count_row">
+                                                <label for="package_count" class="form-label mb-0 text-dark" th:text="'17. '+ #{aero_world.main.package_count}"></label>
+                                                <input type="text" maxlength="32" class="form-control" id="package_count" name="package_count">
+                                            </div>
+                                        </div> <!--Tab 2 Row 1-->
+
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-3" id="gross_weight_row">
+                                                <label for="gross_weight" class="form-label mb-0 text-dark" th:text="'18. '+ #{aero_world.main.gross_weight}"></label>
+                                                <input type="text" maxlength="32" class="form-control" id="gross_weight" name="gross_weight">
+                                            </div>
+                                        </div> <!--Tab 2 Row 2-->
+
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-3" id="chargeble_weight_row">
+                                                <label for="chargeble_weight" class="form-label mb-0 text-dark" th:text="'19. '+ #{aero_world.main.chargeble_weight}"></label>
+                                                <input type="text" maxlength="32" class="form-control" id="chargeble_weight" name="chargeble_weight">
+                                            </div>
+                                        </div> <!--Tab 2 Row 3-->
+                                    </div><!--Tab 3-->
+                                    <div class="tab-pane" id="aero_world_main_modal_tab_4" role="tabpanel">
+                                        <div class="form-row mb-1">
+                                            <div class="col-12 col-md-2" id="clm_sum_row">
+                                                <label for="clm_sum" class="form-label mb-0 text-dark" th:text="'20. '+ #{tms_locals.main.clm_sum}"></label>
+                                                <input type="text" class="form-control" id="clm_sum" name="clm_sum">
+                                            </div>
+
+                                            <div class="col-12 col-md-4" id="clm_sum_currency_row">
+                                                <label for="clm_sum_currency_id" class="form-label mb-0 text-dark" th:text="'21. '+#{full_world.main.clm_rate_currency_id}">Currency: </label>
+                                                <select id="clm_sum_currency_id" name="clm_sum_currency_id" class="custom-select">
+                                                </select>
+                                            </div>
+                                        </div><!--Tab 3 Row 1-->
+                                    </div><!--Tab 4-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="aero_world_main_modal_closebtn" class="btn btn-outline-dark mr-1" data-dismiss="modal" th:text="#{general.back}"></button>
+                    <button type="button" id="aero_world_main_modal_editbtn" class="btn btn-outline-primary" th:text="#{general.editbtn}" hidden></button>
+                    <button type="button" id="aero_world_main_modal_addbtn" class="btn btn-outline-primary" th:text="#{general.addbtn}" hidden></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+    let currentDate = new Date().toLocaleDateString('ru');
+    function aero_world_main_modal_block() {
+        $('#aero_world_main_modal_cnt_id').attr('required',true);
+    }
+    // Block And Required Fields
+    function block_aero_world_main_modal_detail(){
+        $('#aero_world_main_modal_cnt_id').attr('required', true);
+        $('#aero_world_main_modal_ser_id').attr('required',true);
+        $('#aero_world_main_modal_start_country_id').attr('required',true);
+        $('#aero_world_main_modal_end_country_id').attr('required',true);
+
+        if($('#aero_world_main_modal_mode').val() === 0){
+            $('#aero_world_main_modal_clm_id_row').attr('hidden', true);
+
+            $('#trans_cnt_name_new').attr('readonly', true);
+            $('#trans_cnt_resident_new').removeAttr('required').attr('readonly', true);
+            $('#trans_cnt_identifycode_new').removeAttr('required').attr('readonly', true);
+
+            $('#aero_world_main_modal_start_aeroport_id').prop('disabled', true);
+            $('#aero_world_main_modal_start_aeroport_new_name').removeAttr('required').attr('readonly', true);
+            $('#aero_world_main_modal_start_aeroport_new_code').removeAttr('required').attr('readonly', true);
+
+            $('#aero_world_main_modal_end_aeroport_id').prop('disabled', true);
+            $('#aero_world_main_modal_end_aeroport_new_name').removeAttr('required').attr('readonly', true);
+            $('#aero_world_main_modal_end_aeroport_new_code').removeAttr('required').attr('readonly', true);
+
+            $('#aero_world_main_modal_shipper_new_name').removeAttr('required').attr('readonly', true);
+
+            $('#aero_world_main_modal_consignee_new_name').removeAttr('required').attr('readonly', true);
+        }
+        else if($('#aero_world_main_modal_mode').val() === 1){
+            $('#aero_world_main_modal_clm_id_row').removeAttr('hidden');
+
+            $('#trans_cnt_name_new').attr('readonly', true);
+            $('#trans_cnt_resident_new').attr('readonly', true);
+            $('#trans_cnt_identifycode_new').removeAttr('required').attr('readonly', true);
+
+            $('#aero_world_main_modal_start_aeroport_id').prop('disabled', false);
+            $('#aero_world_main_modal_start_aeroport_new_name').removeAttr('required').attr('readonly', true);
+            $('#aero_world_main_modal_start_aeroport_new_code').removeAttr('required').attr('readonly', true);
+
+            $('#aero_world_main_modal_end_aeroport_id').prop('disabled', false);
+            $('#aero_world_main_modal_end_aeroport_new_name').removeAttr('required').attr('readonly', true);
+            $('#aero_world_main_modal_end_aeroport_new_code').removeAttr('required').attr('readonly', true);
+
+            $('#aero_world_main_modal_shipper_new_name').removeAttr('required').attr('readonly', true);
+
+            $('#aero_world_main_modal_consignee_new_name').removeAttr('required').attr('readonly', true);
+        }
+        else{
+
+        }
+    }
+
+    // Clear Fields
+    function clear_aero_world_main_modal_detail() {
+        $("#aero_world_main_modal_detail input[type=text]").val('');
+        $("#aero_world_main_modal_detail input[type=number]").val('');
+        $("#aero_world_main_modal_detail select").empty();
+        $("#aero_world_main_modal_detail textarea").val('');
+    }
+
+    // Service List
+    function addServiceChange(vMode) {
+        $('#aero_world_main_modal_ser_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/aero_world/get_service_list'}]]*/ "/aero_world/aero_world",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "ser_id": 1
+            },
+            success: function (aero_world_modal_ser_list) {
+                for (var i = 0; i < aero_world_modal_ser_list.data.length; i++) {
+                    $("select[name='aero_world_main_modal_ser_id']").find('option').end().append(
+                        "<option value='" + aero_world_modal_ser_list.data[i].ser_id
+                        + "'>" + aero_world_modal_ser_list.data[i].ser_name + "</option>");
+                }
+            }
+        }));
+    }    
+    
+    // Client List
+    function tmsAddClientChange(vMode,vCNTID,vClientFilter) {
+        $('#aero_world_main_modal_cnt_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/aero_world/get_tms_client_list'}]]*/ "/aero_world/get_tms_client_list",
+            type: "get",
+            data: {
+                "mode": vMode,
+                "cnt_filter": vClientFilter
+            },
+            success: function (client_list) {
+                for (var i = 0; i < client_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='aero_world_main_modal_cnt_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='aero_world_main_modal_cnt_id']").find('option').end().append(
+                        "<option value='" + client_list.data[i].cnt_id
+                        + "'>" + client_list.data[i].cnt_name + "</option>");
+                }
+                if(vCNTID != null){
+                    $("#aero_world_main_modal_cnt_id").val(vCNTID);
+                }
+            }
+        }));
+    }
+
+    let transName =  "Выберите перевозчика";
+    $('#trans_cnt_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: transName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    // Clients List
+    function transClientChange(vMode, vTransCntID){
+        $('#trans_cnt_id').empty();
+        $("select[name='trans_cnt_id']").find('option').end().append("<option value=''></option>");
+        $("select[name='trans_cnt_id']").find('option').end().append("<option value='0' class='bg-success text-white' style='color: lightgreen'>New</option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/aero_world/get_trans_clients_list'}]]*/ "/aero_world/get_trans_clients_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (trans_client_list) {
+                for (var i = 0; i < trans_client_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='trans_cnt_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='trans_cnt_id']").find('option').end().append(
+                        "<option value='" + trans_client_list.data[i].cnt_id
+                        + "'>" + trans_client_list.data[i].cnt_name + "</option>");
+                }
+                if(vTransCntID !== ''){
+                    $('#trans_cnt_id').val(vTransCntID);
+                }
+            }
+        }));
+    }
+
+    //Start Country List
+    function tmsStartCountryList(vMode, vStartCountryID) {
+        $('#aero_world_main_modal_start_country_id').empty();
+        $("select[name='aero_world_main_modal_start_country_id']").find('option').end().append("<option value=''></option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/aero_world/get_country'}]]*/ "/aero_world/get_country",
+            type: "get",
+            data: {"mode": vMode
+            },
+            success: function (start_country_list) {
+                for (var i = 0; i < start_country_list.data.length; i++) {
+                    $("select[name='aero_world_main_modal_start_country_id']").find('option').end().append(
+                        "<option value='" + start_country_list.data[i].country_id + "'>"
+                        + start_country_list.data[i].country_nameua + "</option>"
+                    );
+                }
+                if(vStartCountryID !== ''){
+                    $('#aero_world_main_modal_start_country_id').val(vStartCountryID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    let startCountryName =  "Выберите страну";
+    $('#aero_world_main_modal_start_country_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: startCountryName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    //Start Country Shipyard List
+    function tmsStartCountryAeroportList(vMode, vStartCountryID, vStartShipyardID) {
+        $('#aero_world_main_modal_start_aeroport_id').empty();
+        $("select[name='aero_world_main_modal_start_aeroport_id']").find('option').end().append("<option value=''></option>");
+        $("select[name='aero_world_main_modal_start_aeroport_id']").find('option').end().append("<option value='0' class='bg-success text-white' style='color: lightgreen'>New</option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/aero_world/get_country_aeroport_list'}]]*/ "/aero_world/get_country_aeroport_list",
+            type: "get",
+            data: {"mode": vMode,
+                "country_id": vStartCountryID
+            },
+            success: function (start_aeroport_list) {
+                for (var i = 0; i < start_aeroport_list.data.length; i++) {
+                    $("select[name='aero_world_main_modal_start_aeroport_id']").find('option').end().append(
+                        "<option value='" + start_aeroport_list.data[i].aeroport_id + "'>"
+                        + start_aeroport_list.data[i].aeroport_name + "</option>"
+                    );
+                }
+                if(vStartShipyardID !== ''){
+                    $('#aero_world_main_modal_start_aeroport_id').val(vStartShipyardID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    let startAirportName =  "Выберите аэропорт";
+    $('#aero_world_main_modal_start_aeroport_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: startAirportName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    //End Country List
+    function tmsEndCountryList(vMode, vEndCountryID) {
+        $('#aero_world_main_modal_end_country_id').empty();
+        $("select[name='aero_world_main_modal_end_country_id']").find('option').end().append("<option value=''></option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/aero_world/get_country'}]]*/ "/aero_world/get_country",
+            type: "get",
+            data: {"mode": vMode
+            },
+            success: function (end_country_list) {
+                for (var i = 0; i < end_country_list.data.length; i++) {
+                    $("select[name='aero_world_main_modal_end_country_id']").find('option').end().append(
+                        "<option value='" + end_country_list.data[i].country_id + "'>"
+                        + end_country_list.data[i].country_nameua + "</option>"
+                    );
+                }
+                if(vEndCountryID !== ''){
+                    $('#aero_world_main_modal_end_country_id').val(vEndCountryID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    let endCountryName =  "Выберите страну";
+    $('#aero_world_main_modal_end_country_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: endCountryName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    //Start Country Shipyard List
+    function tmsEndCountryAeroportList(vMode, vEndCountryID, vEndShipyardID) {
+        $('#aero_world_main_modal_end_aeroport_id').empty();
+        $("select[name='aero_world_main_modal_end_aeroport_id']").find('option').end().append("<option value=''></option>");
+        $("select[name='aero_world_main_modal_end_aeroport_id']").find('option').end().append("<option value='0' class='bg-success text-white'>New</option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/aero_world/get_country_aeroport_list'}]]*/ "/aero_world/get_country_aeroport_list",
+            type: "get",
+            data: {"mode": vMode,
+                "country_id": vEndCountryID
+            },
+            success: function (end_aeroport_list) {
+                for (var i = 0; i < end_aeroport_list.data.length; i++) {
+                    $("select[name='aero_world_main_modal_end_aeroport_id']").find('option').end().append(
+                        "<option value='" + end_aeroport_list.data[i].aeroport_id + "'>"
+                        + end_aeroport_list.data[i].aeroport_name + "</option>"
+                    );
+                }
+                if(vEndShipyardID !== ''){
+                    $('#aero_world_main_modal_end_aeroport_id').val(vEndShipyardID);
+                }
+            },
+            error: function(){}
+        }));
+    }
+
+    let endAirportName =  "Выберите аэропорт";
+    $('#aero_world_main_modal_end_aeroport_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: endAirportName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    // Clients List
+    function shipperClientChange(vMode, vShipperID) {
+        $('#shipper_id').empty();
+        $("select[name='shipper_id']").find('option').end().append("<option value=''></option>");
+        $("select[name='shipper_id']").find('option').end().append("<option value='0' class='bg-success text-white'>New</option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/aero_world/get_tms_shipper_list'}]]*/ "/aero_world/get_tms_shipper_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (shipper_list) {
+                for (var i = 0; i < shipper_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='shipper_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='shipper_id']").find('option').end().append(
+                        "<option value='" + shipper_list.data[i].cnt_id
+                        + "'>" + shipper_list.data[i].cnt_name + "</option>");
+                }
+                if(vShipperID !== ''){
+                    $('#shipper_id').val(vShipperID);
+                }
+            }
+        }));
+    }
+
+    let shipperName =  "Choose Shipper";
+    $('#shipper_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: shipperName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    // Clients List
+    function shipperConsigneeChange(vMode, vConsignee) {
+        $('#consignee_id').empty();
+        $("select[name='consignee_id']").find('option').end().append("<option value=''></option>");
+        $("select[name='consignee_id']").find('option').end().append("<option value='0' class='bg-success text-white'>New</option>");
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/aero_world/get_tms_consignee_list'}]]*/ "/aero_world/get_tms_consignee_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (trans_consignee_list) {
+                for (var i = 0; i < trans_consignee_list.data.length; i++) {
+                    if (i === 0) {
+                        $("select[name='consignee_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='consignee_id']").find('option').end().append(
+                        "<option value='" + trans_consignee_list.data[i].cnt_id
+                        + "'>" + trans_consignee_list.data[i].cnt_name + "</option>");
+                }
+                if (vConsignee !== '') {
+                    $('#consignee_id').val(vConsignee);
+                }
+            }
+        }));
+    }
+
+    let consigneeName =  "Choose Consignee";
+    $('#consignee_id')
+        .select2({
+            id: '-1', // the value of the option
+            placeholder: consigneeName,
+            allowClear: true,
+            width: 'resolve',
+            dropdownAutoWidth: true
+        });
+
+    // Sum Currency List
+    function rateAddCurrencyChange(vMode, vCurrencyID) {
+        $('#clm_sum_currency_id').empty();
+        return Promise.resolve($.ajax({
+            url:/*[[@{'/aero_world/get_currency_list'}]]*/ "/aero_world/get_currency_list",
+            type: "get",
+            data: {
+                "mode": vMode
+            },
+            success: function (sum_currency_list) {
+                for (var i = 0; i < sum_currency_list.data.length; i++) {
+                    if(i === 0) {
+                        $("select[name='clm_sum_currency_id']").find('option').end().append("<option value=''></option>");
+                    }
+                    $("select[name='clm_sum_currency_id']").find('option').end().append(
+                        "<option value='" + sum_currency_list.data[i].currency_id
+                        + "'>" + sum_currency_list.data[i].currency_name + "</option>");
+                }
+                if (vCurrencyID !== '') {
+                    $('#clm_sum_currency_id').val(vCurrencyID);
+                }
+            }
+        }));
+    }
+        // Load Function
+    function fill_aero_world_main_modal_detail(aMode){
+        clear_aero_world_main_modal_detail();
+        $('#aero_world_main_modal_mode').val(aMode);
+        block_aero_world_main_modal_detail();
+        aero_world_main_modal_block();
+
+        if(aMode === 0) {
+            $.when(
+                addServiceChange(aMode),
+                tmsStartCountryList(aMode),
+                tmsEndCountryList(aMode),
+                shipperClientChange(aMode),
+                shipperConsigneeChange(aMode),
+                transClientChange(aMode),
+                rateAddCurrencyChange(aMode)
+            ).then(function () {
+                $('#aero_world_main_modal_clm_id_row').attr('hidden', true);
+                $('#aero_world_main_modal_clm_num').val('80-2007-0001');
+
+                $('#aero_world_main_modal_start_aeroport_id').prop('disabled', true);
+
+                $('#aero_world_main_modal_end_aeroport_id').prop('disabled', true);
+
+                $('#package_count').val(0);
+                $('#gross_weight').val('0.00');
+                $('#chargeble_weight').val('0.00');
+
+                $('#clm_sum').val('0.00');
+                $('#clm_sum_currency_id').val(980);
+
+                $('#aero_world_main_modal').modal('show');
+            });
+        }
+        else if(aMode === 1){
+            $.ajax({
+                url:/*[[@{'/aero_world/aero_world_main_detail'}]]*/ "aero_world/aero_world_main_detail",
+                type: "get",
+                data: {
+                    "mode": aMode,
+                    "clm_id": vFAClaimsValue.rowdata.clm_id
+                },
+                success: function (aero_world_main_modal_detail_result) {
+                    $.when(
+                        addServiceChange(aMode, aero_world_main_modal_detail_result.data[0].ser_id),
+                        tmsAddClientChange(aMode, aero_world_main_modal_detail_result.data[0].cnt_id, aero_world_main_modal_detail_result.data[0].cnt_name),
+                        tmsStartCountryList(aMode, aero_world_main_modal_detail_result.data[0].start_country_id),
+                        tmsStartCountryAeroportList(aMode, aero_world_main_modal_detail_result.data[0].start_country_id, aero_world_main_modal_detail_result.data[0].start_airport_id),
+                        tmsEndCountryList(aMode, aero_world_main_modal_detail_result.data[0].end_country_id),
+                        tmsEndCountryAeroportList(aMode, aero_world_main_modal_detail_result.data[0].end_country_id, aero_world_main_modal_detail_result.data[0].end_airport_id),
+                        shipperClientChange(aMode, aero_world_main_modal_detail_result.data[0].shipper_id),
+                        shipperConsigneeChange(aMode, aero_world_main_modal_detail_result.data[0].consignee_id),
+                        transClientChange(aMode, aero_world_main_modal_detail_result.data[0].trans_id),
+                        rateAddCurrencyChange(aMode, aero_world_main_modal_detail_result.data[0].clm_sum_currency_id)
+                    ).then(function () {
+                        $('#aero_world_main_modal_clm_id').val(aero_world_main_modal_detail_result.data[0].clm_id);
+                        $('#aero_world_main_modal_clm_num').val(aero_world_main_modal_detail_result.data[0].clm_num);
+
+                        $('#aero_world_main_modal_clm_client_num').val(aero_world_main_modal_detail_result.data[0].clm_client_num);
+                        $('#aero_world_main_modal_clm_latitude').val(aero_world_main_modal_detail_result.data[0].latitude);
+
+                        $('#cnt_filter').val(aero_world_main_modal_detail_result.data[0].cnt_name);
+
+                        $('#mawb').val(aero_world_main_modal_detail_result.data[0].mawb);
+                        $('#hawb').val(aero_world_main_modal_detail_result.data[0].hawb);
+
+                        $('#package_count').val(aero_world_main_modal_detail_result.data[0].package_count);
+                        $('#gross_weight').val(aero_world_main_modal_detail_result.data[0].gross_weight);
+                        $('#chargeble_weight').val(aero_world_main_modal_detail_result.data[0].chargeble_weight);
+
+                        $('#clm_sum').val(aero_world_main_modal_detail_result.data[0].clm_sum);
+
+                        $('#aero_world_main_modal_start_aeroport_id').prop('disabled', false);
+
+                        $('#aero_world_main_modal_end_aeroport_id').prop('disabled', false);
+
+                        $('#aero_world_main_modal').modal('show');
+                    });
+                }
+            });
+        }
+    }
+    // Add button function
+    function addTMSLocalsMain(){
+        let RowID = vFAClaimsValue.rowdata.clm_id;
+        $.ajax({
+            url: /*[[ @{/aero_world/add_main} ]]*/ "/aero_world/add_main",
+            type: 'POST',
+            data: {
+                "clm_num": $('#aero_world_main_modal_clm_num').val(),
+                "clm_client_num": $('#aero_world_main_modal_clm_client_num').val(),
+                "latitude": $('#aero_world_main_modal_clm_latitude').val(),
+                "ser_id": $('#aero_world_main_modal_ser_id').val(),
+                "trans_cnt_id": $('#trans_cnt_id').val(),
+                "trans_cnt_name_new": $('#trans_cnt_name_new').val(),
+                "trans_cnt_resident_new":  $('#trans_cnt_resident_new').is(':checked') ? 1 : 0,
+                "trans_cnt_identifycode_new": $('#trans_cnt_identifycode_new').val(),
+                "cnt_id": $('#aero_world_main_modal_cnt_id').val(),
+                "start_country_id": $('#aero_world_main_modal_start_country_id').val(),
+                "start_aeroport_id": $('#aero_world_main_modal_start_aeroport_id').val(),
+                "start_aeroport_new_name": $('#aero_world_main_modal_start_aeroport_new_name').val(),
+                "start_aeroport_new_code": $('#aero_world_main_modal_start_aeroport_new_code').val(),
+                "end_country_id": $('#aero_world_main_modal_end_country_id').val(),
+                "end_aeroport_id": $('#aero_world_main_modal_end_aeroport_id').val(),
+                "end_aeroport_new_name": $('#aero_world_main_modal_end_aeroport_new_name').val(),
+                "end_aeroport_new_code": $('#aero_world_main_modal_end_aeroport_new_code').val(),
+                "mawb": $('#mawb').val(),
+                "hawb": $('#hawb').val(),
+                "shipper_id": $('#shipper_id').val(),
+                "shipper_new_name": $('#aero_world_main_modal_shipper_new_name').val(),
+                "consignee_id": $('#consignee_id').val(),
+                "consignee_new_name": $('#aero_world_main_modal_consignee_new_name').val(),
+                "package_count": $('#package_count').val(),
+                "gross_weight": $('#gross_weight').val(),
+                "chargeble_weight": $('#chargeble_weight').val(),
+                "clm_sum": $('#clm_sum').val(),
+                "clm_sum_currency_id": $('#clm_sum_currency_id').val()
+            },
+            success: function (result) {
+                $('#aero_world_main_modal').modal('hide');
+                vFAClaimsValue.rowdata.clm_id = RowID;
+                $(vFAClaimsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    // Add button script
+    $('#aero_world_main_modal_addbtn').click(function(){
+        $('#aero_world_main_modal_form').submit();
+    });
+
+    function editTMSLocalsMain(){
+        let RowID = vFAClaimsValue.rowdata.clm_id;
+        $.ajax({
+            url: /*[[ @{/aero_world/edit_main} ]]*/ "/aero_world/edit_main",
+            type: 'POST',
+            data: {
+                "clm_id": RowID,
+                "clm_num": $('#aero_world_main_modal_clm_num').val(),
+                "clm_client_num": $('#aero_world_main_modal_clm_client_num').val(),
+                "latitude": $('#aero_world_main_modal_clm_latitude').val(),
+                "ser_id": $('#aero_world_main_modal_ser_id').val(),
+                "trans_cnt_id": $('#trans_cnt_id').val(),
+                "trans_cnt_name_new": $('#trans_cnt_name_new').val(),
+                "trans_cnt_resident_new":  $('#trans_cnt_resident_new').is(':checked') ? 1 : 0,
+                "trans_cnt_identifycode_new": $('#trans_cnt_identifycode_new').val(),
+                "cnt_id": $('#aero_world_main_modal_cnt_id').val(),
+                "start_country_id": $('#aero_world_main_modal_start_country_id').val(),
+                "start_aeroport_id": $('#aero_world_main_modal_start_aeroport_id').val(),
+                "start_aeroport_new_name": $('#aero_world_main_modal_start_aeroport_new_name').val(),
+                "start_aeroport_new_code": $('#aero_world_main_modal_start_aeroport_new_code').val(),
+                "end_country_id": $('#aero_world_main_modal_end_country_id').val(),
+                "end_aeroport_id": $('#aero_world_main_modal_end_aeroport_id').val(),
+                "end_aeroport_new_name": $('#aero_world_main_modal_end_aeroport_new_name').val(),
+                "end_aeroport_new_code": $('#aero_world_main_modal_end_aeroport_new_code').val(),
+                "mawb": $('#mawb').val(),
+                "hawb": $('#hawb').val(),
+                "shipper_id": $('#shipper_id').val(),
+                "shipper_new_name": $('#aero_world_main_modal_shipper_new_name').val(),
+                "consignee_id": $('#consignee_id').val(),
+                "consignee_new_name": $('#aero_world_main_modal_consignee_new_name').val(),
+                "package_count": $('#package_count').val(),
+                "gross_weight": $('#gross_weight').val(),
+                "chargeble_weight": $('#chargeble_weight').val(),
+                "clm_sum": $('#clm_sum').val(),
+                "clm_sum_currency_id": $('#clm_sum_currency_id').val()
+            },
+            success: function (result) {
+                $('#aero_world_main_modal').modal('hide');
+                vFAClaimsValue.rowdata.clm_id = RowID;
+                $(vFAClaimsValue.table).DataTable().ajax.reload(null, false);
+            }
+        });
+    }
+
+    // Edit button script
+    $('#aero_world_main_modal_editbtn').click(function(){
+        $('#aero_world_main_modal_form').submit();
+    });
+
+    //Validation Form
+    $('#aero_world_main_modal_form').validate({
+        rules: {
+            // amount: {
+            //     //money: true, // not a valid rule
+            //     required: true
+            // },
+            // comment: {
+            //     required: false
+            // }
+        },
+        errorPlacement: function(error,element) {
+            return true;
+        },
+        submitHandler: function (form) {
+            if($('#aero_world_main_modal_mode').val() === '0') {
+                addTMSLocalsMain();
+            }
+            else if($('#aero_world_main_modal_mode').val() === '1') {
+                editTMSLocalsMain();
+            }
+            return false;
+        }
+    });
+    //On Change
+    $('#cnt_filter_check').click(function() {
+        $('#aero_world_main_modal_cnt_id').removeAttr('disabled');
+        $('#aero_world_main_modal_cnt_id_x').removeAttr('disabled').addClass('btn-outline-primary').removeClass('btn-outline-dark');
+        tmsAddClientChange(
+            $('#aero_world_main_modal_mode').val(),
+            $('#aero_world_main_modal_cnt_id').val(),
+            $('#cnt_filter').val()
+        );
+    });
+
+    function startAeroportChange(){
+        if($('#aero_world_main_modal_start_aeroport_id').val() === '0'){
+            $('#aero_world_main_modal_start_aeroport_new_name').prop('readonly',false).prop('required',true);
+            $('#aero_world_main_modal_start_aeroport_new_code').prop('readonly',false).prop('required',true);
+        }
+        else{
+            $('#aero_world_main_modal_start_aeroport_new_name').prop('readonly',true).prop('required',false);
+            $('#aero_world_main_modal_start_aeroport_new_code').prop('readonly',true).prop('required',false);
+        }
+    }
+
+    $('#aero_world_main_modal_start_country_id').on('change', function() {
+        $('#aero_world_main_modal_start_aeroport_id').empty().removeAttr('disabled');
+        tmsStartCountryAeroportList( $('#aero_world_main_modal_mode').val(), $('#aero_world_main_modal_start_country_id').val());
+        startAeroportChange();
+        if($('#aero_world_main_modal_start_country_id').val() !== ''){
+            $('#aero_world_main_modal_start_aeroport_id').prop('required',true);
+        }
+        else{
+            $('#aero_world_main_modal_start_aeroport_id').prop('required',false);
+        }
+    });
+
+    $('#aero_world_main_modal_start_aeroport_id').on('change', function() {
+        startAeroportChange();
+    });
+
+    function endAeroportChange(){
+        if($('#aero_world_main_modal_end_aeroport_id').val() === '0'){
+            $('#aero_world_main_modal_end_aeroport_new_name').prop('readonly',false).prop('required',true);
+            $('#aero_world_main_modal_end_aeroport_new_code').prop('readonly',false).prop('required',true);
+        }
+        else{
+            $('#aero_world_main_modal_end_aeroport_new_name').prop('readonly',true).prop('required',false);
+            $('#aero_world_main_modal_end_aeroport_new_code').prop('readonly',true).prop('required',false);
+        }
+    }
+
+    $('#aero_world_main_modal_end_country_id').on('change', function() {
+        $('#aero_world_main_modal_end_aeroport_id').empty().removeAttr('disabled');
+        tmsEndCountryAeroportList( $('#aero_world_main_modal_mode').val(), $('#aero_world_main_modal_end_country_id').val());
+        endAeroportChange();
+        if($('#aero_world_main_modal_end_country_id').val() !== ''){
+            $('#aero_world_main_modal_end_aeroport_id').prop('required',true);
+        }
+        else{
+            $('#aero_world_main_modal_end_aeroport_id').prop('required',false);
+        }
+    });
+
+    $('#aero_world_main_modal_end_aeroport_id').on('change', function() {
+        endAeroportChange();
+    });
+
+    function shipperChange(){
+        if($('#shipper_id').val() === '0'){
+            $('#aero_world_main_modal_shipper_new_name').prop('readonly',false).prop('required',true);
+        }
+        else{
+            $('#aero_world_main_modal_shipper_new_name').prop('readonly',true).prop('required',false);
+        }
+    }
+
+    $('#shipper_id').on('change', function () {
+        shipperChange();
+    });
+
+    function consigneeChange(){
+        if($('#consignee_id').val() === '0'){
+            $('#aero_world_main_modal_consignee_new_name').prop('readonly',false).prop('required',true);
+        }
+        else{
+            $('#aero_world_main_modal_consignee_new_name').prop('readonly',true).prop('required',false);
+        }
+    }
+
+    $('#consignee_id').on('change', function () {
+        consigneeChange();
+    });
+
+    $('#trans_cnt_id').on('change', function () {
+       if($('#trans_cnt_id').val() === '0'){
+           $('#trans_cnt_name_new').removeAttr('readonly').attr('required',true);
+           $('#trans_cnt_resident_new').removeAttr('checked').removeAttr('disabled');
+           $('#trans_cnt_identifycode_new').removeAttr('required').removeAttr('readonly');
+       }
+       else{
+           $('#trans_cnt_name_new').attr('readonly',true).removeAttr('required');
+           $('#trans_cnt_resident_new').removeAttr('checked').attr('disabled',true);
+           $('#trans_cnt_identifycode_new').removeAttr('required').attr('readonly',true);
+       }
+    });
+
+    $('#trans_cnt_resident_new').click(function() {
+        if ($('#trans_cnt_resident_new').is(':checked')) {
+            $('#trans_cnt_identifycode_new').attr('required', true);
+        }
+        else {
+            $('#trans_cnt_identifycode_new').removeAttr('required');
+        }
+    });
+</script>
+</body>
+</html>

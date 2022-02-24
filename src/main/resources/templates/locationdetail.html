@@ -1,0 +1,173 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:include="layout/layout :: header(title = #{index.location_a_description})">
+
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<script th:inline="javascript">
+
+    $(document).ready(function() {
+        var mode=/*[[${mode}]]*/ 0;
+
+        jQuery.validator.setDefaults({
+            debug: true,
+            success: "valid"
+        });
+
+        $('#form_group').validate({
+
+            rules: {
+                loc_location : {
+                    required: true,
+                    minlength : 1,
+                    maxlength : 64
+                },
+                loc_partnership: {
+                    required: true,
+                    minlength : 1,
+                    maxlength : 64
+                },
+                loc_address : {
+                    required: false,
+                    maxlength : 128
+                },
+                loc_city :{
+                    required: false,
+                    maxlength : 32
+                },
+                loc_zipcode :{
+                    required: false,
+                    maxlength : 16
+                },
+                loc_country_iso2 :{
+                    required: true,
+                    minlength : 2,
+                    maxlength :2
+                },
+                loc_phone :{
+                    required: false,
+                    maxlength : 32
+                }
+            },
+            errorLabelContainer: $("#form_group div.error"),
+            submitHandler: function(form) {
+                switch(mode) {
+                    case 0:
+                        $.ajax({
+                            url: "adm/add_location",
+                            data: {
+                                loc_location: $("#loc_location").val(),
+                                loc_partnership: $("#loc_partnership").val(),
+                                loc_address: $("#loc_address").val(),
+                                loc_city: $("#loc_city").val(),
+                                loc_zipcode: $("#loc_zipcode").val(),
+                                loc_country_iso2: $("#loc_country_iso2").val(),
+                                loc_phone: $("#loc_phone").val()
+                            },
+                            type: 'POST',
+                            success: function (result) {
+                                $("#frm_location").submit();
+                            }
+                        });
+                        break;
+                    case 1:
+                        $.ajax({
+                            url: "adm/set_location",
+                            data: {
+                                loc_id : /*[[${loc_id}]]*/ 0,
+                                loc_location: $("#loc_location").val(),
+                                loc_partnership: $("#loc_partnership").val(),
+                                loc_address: $("#loc_address").val(),
+                                loc_city: $("#loc_city").val(),
+                                loc_zipcode: $("#loc_zipcode").val(),
+                                loc_country_iso2: $("#loc_country_iso2").val(),
+                                loc_phone: $("#loc_phone").val()
+                            },
+                            type: 'POST',
+                            success: function (result) {
+                                $("#frm_location").submit();
+                            }
+                        });
+                        break;
+                    case 2:
+                        $.ajax({
+                            url: "adm/del_location",
+                            data: {
+                                loc_id : /*[[${loc_id}]]*/ 0
+                            },
+                            type: 'POST',
+                            success: function (result) {
+                                $("#frm_location").submit();
+                            }
+                        });
+                        break;
+                };
+                return false;
+            }
+        });
+    });
+
+</script>
+
+
+<main role="main" >
+    <div class="jumbotron ">
+        <div class="container align-items-center justify-content-center">
+            <h2 th:text="#{index.location_a_description}">Locations</h2>
+            <p th:text="#{index.location_description}">We will add all Partnership in the all locations</p>
+        </div>
+    </div>
+
+    <form id="frm_location" method="post" th:action="location">
+        <input type="hidden" name="loc_partnership" th:value="${parent_loc_partnership}">
+        <input type="hidden" name="loc_id" th:value="${parent_loc_id}">
+    </form>
+
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-12">
+                <form id="form_group" name="form_group">
+                    <div class="col-sm form-inline form-check  form-check-inline">
+                        <button th:text="#{general.back}" class="btn btn-primary mb-2" form="frm_location" role="button">Back</button>
+                        <div th:switch="${mode}">
+                            <button th:case="0" type="submit" id="addbtn" class="btn btn-primary mb-2" value="Validate!" th:text="#{location.addbtn}"  >Add</button>
+                            <button th:case="1" type="submit" id="editbtn" class="btn btn-primary mb-2" value="Validate!" th:text="#{location.editbtn}"  >Edit</button>
+                            <button th:case="2" type="submit" id="delbtn" class="btn btn-primary mb-2" value="Validate!" th:text="#{location.delbtn}"  >Delete</button>
+                        </div>
+                    </div>
+                    <div class="col-sm error"></div>
+                    <div class="form-group" id="editModalfrm">
+                        <label for="loc_id" class="form-control-label" th:text="#{location.loc_id}">Id</label>
+                        <input class="form-control" id="loc_id" name="loc_id" th:value="${loc_id}" disabled>
+                        <label for="loc_location" class="form-control-label" th:text="#{location.loc_location}">Location:</label>
+                        <input class="form-control" id="loc_location" name="loc_location" th:value="${loc_location}" th:disabled="${mode}==2">
+                        <label for="loc_partnership" class="form-control-label" th:text="#{location.loc_partnership}">Partnetship:</label>
+                        <input class="form-control" id="loc_partnership" name="loc_partnership" th:value="${loc_partnership}" th:disabled="${mode}==2">
+                        <label for="loc_address" class="form-control-label" th:text="#{location.loc_address}">Address</label>
+                        <input class="form-control" id="loc_address" name="loc_address" th:value="${loc_address}" th:disabled="${mode}==2">
+                        <label for="loc_city" class="form-control-label" th:text="#{location.loc_city}">city</label>
+                        <input class="form-control" id="loc_city" name="loc_city" th:value="${loc_city}" th:disabled="${mode}==2">
+                        <label for="loc_zipcode" class="form-control-label" th:text="#{location.loc_zipcode}">Zip code</label>
+                        <input class="form-control" id="loc_zipcode" name="loc_zipcode" th:value="${loc_zipcode}" th:disabled="${mode}==2">
+                        <label for="loc_country_iso2" class="form-control-label" th:text="#{location.loc_country_iso2}">Country iso2:</label>
+                        <input class="form-control" id="loc_country_iso2" name="loc_country_iso2" th:value="${loc_country_iso2}" th:disabled="${mode}==2">
+                        <label for="loc_phone" class="form-control-label" th:text="#{location.loc_phone}">Phone</label>
+                        <input class="form-control" id="loc_phone" name="loc_phone" th:value="${loc_phone}" th:disabled="${mode}==2">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <hr>
+
+    </div> <!-- /container -->
+
+
+
+</main>
+
+<footer th:replace="fragments/footer :: footer">Footer</footer>
+</body>
+</html>

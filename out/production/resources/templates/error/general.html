@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:include="layout/header :: header(title = #{index.caption_id})"></head>
+
+<body class=""> <!-- right-to-left -->
+
+<div class="splash active">
+    <div class="icon"></div>
+</div>
+
+<div class="wrapper">
+
+    <div class="page-content full-width">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mx-auto">
+
+                    <div class="page-brand">
+                        <i class="ion ion-ios-pulse-strong" aria-hidden="true"></i>
+                    </div>
+
+                    <div class="card card-default widget">
+                        <div class="card-heading text-center">
+                            <h3 class="card-title">Error Page</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-center text-muted" th:text="${errorMessage}"></p>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <a href="javascript:history.back()">Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /#wrapper -->
+
+<footer th:replace="layout/footer :: footer">Footer</footer>
+
+</body>
+</html>

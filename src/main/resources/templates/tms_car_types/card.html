@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_car_types_body" th:remove="tag">
+        <form id="tms-car-types-detail" class="mb-2" th:action="@{/tms_car_types/detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="tms-car-types-btn-large" class="d-none d-sm-block">
+                 <button type="submit" id="tms-car-types-detailbtn" class="btn btn-sm btn-dark tms_car_types_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="tms-car-types-addbtn" class="btn btn-sm btn-primary tms_car_types_btn_control" th:text="#{general.addbtn}" th:attr="mode=0">Add</button>
+                 <button type="submit" id="tms-car-types-editbtn" class="btn btn-sm btn-dark tms_car_types_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="tms-car-types-delbtn" class="btn btn-sm btn-dark tms_car_types_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="tms-car-types-btn-small" class="d-block d-sm-none">
+                 <button type="submit" id="tms-car-types-detailbtn-sx" class="btn btn-sm btn-dark tms_car_types_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="tms-car-types-addbtn-sx" class="btn btn-sm btn-primary tms_car_types_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                 <button type="submit" id="tms-car-types-editbtn-sx" class="btn btn-sm btn-dark tms_car_types_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="tms-car-types-delbtn-sx" class="btn btn-sm btn-dark tms_car_types_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-tms-car-types" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vTmsCarTypesValue;
+    vTmsCarTypesValue = {
+        table : '#table-tms-car-types',
+        button_form: "#tms-car-types-detail",
+        ajax : {
+            "url": /*[[@{/tms_car_types/gettable}]]*/ "tms_car_types/gettable",
+            "type": "post",
+            "data": {
+            }
+        },
+        key : "cntc_type_id",
+        switchControl : tms_car_types_switchControl,
+        rowdata:{
+           cntc_type_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["cntc_type_colour"]);
+        },
+        columnDefs:[
+                    {"targets": [4], "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{tms_car_types.cntc_type_id}]]*/ "cntc_type_id", "data": "cntc_type_id", "width": "3%"},
+                /*1*/{"title": /*[[#{tms_car_types.cntc_type_sname}]]*/ "cntc_type_sname", "data": "cntc_type_sname", "width": "13%", "className": "desktop"},
+                /*2*/{"title": /*[[#{tms_car_types.cntc_type_name}]]*/ "cntc_type_name", "data": "cntc_type_name", "width": "20%"},
+                /*3*/{"title": /*[[#{tms_car_types.cntc_type_description}]]*/ "cntc_type_description", "data": "cntc_type_description", "width": "63%", "className": "desktop"},
+                /*4*/{"title": /*[[#{tms_car_types.cntc_type_colour}]]*/ "cntc_type_colour", "data": "cntc_type_colour", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function tms_car_types_switchControl(){
+        if(vTmsCarTypesValue.rowdata.cntc_type_id != null) {
+                $("#tms-car-types-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-car-types-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#tms-car-types-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-car-types-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+                $("#tms-car-types-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-car-types-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#tms-car-types-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-car-types-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.tms_car_types_btn_control').on('click', function (){
+        $("#tms-car-types-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#tms-car-types-detail').submit(function() {
+        vTmsCarTypesValue.rowdata.tms_car_types_table_order_column = $(vTmsCarTypesValue.table).DataTable().order()[0][0];
+        vTmsCarTypesValue.rowdata.tms_car_types_table_order_type = $(vTmsCarTypesValue.table).DataTable().order()[0][1];
+        vTmsCarTypesValue.rowdata.tms_car_types_table_search = $(vTmsCarTypesValue.table).DataTable().search();
+        vTmsCarTypesValue.rowdata.tms_car_types_table_pagelen = $(vTmsCarTypesValue.table).DataTable().page.len();
+        vTmsCarTypesValue.rowdata.tms_car_types_table_page = $(vTmsCarTypesValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vTmsCarTypesValue.rowdata).forEach(function (index) {
+            $("#tms-car-types-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#tms-car-types-detail input[name=\"" + index + "\"]").val(vTmsCarTypesValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vTmsCarTypesValue.rowdata.cntc_type_id = /*[[${cntc_type_id}]]*/ null;
+
+        vTmsCarTypesValue.rowdata.table_order_column = /*[[${tms_car_types_table_order_column}]]*/ null;
+        vTmsCarTypesValue.rowdata.table_order_type = /*[[${tms_car_types_table_order_type}]]*/ null;
+        vTmsCarTypesValue.rowdata.table_search = /*[[${tms_car_types_table_search}]]*/ null;
+        vTmsCarTypesValue.rowdata.table_pagelen = /*[[${tms_car_types_table_pagelen}]]*/ null;
+        vTmsCarTypesValue.rowdata.table_page = /*[[${tms_car_types_table_page}]]*/ null;
+
+        recreateDataTable(vTmsCarTypesValue);
+        $('#main_li').removeClass('active');
+
+        $('#dictionaries_li').addClass('active').removeClass('collapsed');
+        $('#dictionaries_a').attr('aria-expanded',true);
+        $('#dictionaries').addClass('show');
+
+        $('#tms_cars_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

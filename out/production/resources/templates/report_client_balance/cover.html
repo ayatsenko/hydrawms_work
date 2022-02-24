@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{report_client_balance.header})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0" th:text="#{report_client_balance.caption}"></h5>
+        </div>
+        <div class="card-body py-3">
+            <div>
+                <span th:replace="report_client_balance/head_card :: report_client_balance_head_body"></span>
+            </div>
+        </div>
+    </div>
+    </div><!-- Header -->
+
+    <div class="col-12">
+        <div class="card" id="report_client_balance_detail_card" hidden>
+        <div class="card-header">
+            <div class="card-actions float-right">
+                <a href="#report_client_balance_detail_div" data-toggle="collapse"> <i class="align-middle" data-feather="minus"></i> </a>
+            </div>
+            <h5 class="card-title mb-0" th:text="#{report_client_balance.detail.caption}"></h5>
+        </div>
+        <div class="card-body py-3 collapse show" id="report_client_balance_detail_div">
+            <div>
+                <span th:replace="report_client_balance/detail_card :: report_client_balance_detail_body"></span>
+            </div>
+        </div>
+    </div>
+    </div><!-- Detail -->
+
+    <div class="col-12">
+        <div id="report_client_balance_tabs_div" hidden>
+        <div class="tab">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item"><a class="nav-link text-primary active" href="#tab-1" data-toggle="tab" role="tab" th:text="#{month.01}">January</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-2" data-toggle="tab" role="tab" th:text="#{month.02}">February</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-3" data-toggle="tab" role="tab" th:text="#{month.03}">March</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-4" data-toggle="tab" role="tab" th:text="#{month.04}">April</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-5" data-toggle="tab" role="tab" th:text="#{month.05}">May</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-6" data-toggle="tab" role="tab" th:text="#{month.06}">June</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-7" data-toggle="tab" role="tab" th:text="#{month.07}">July</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-8" data-toggle="tab" role="tab" th:text="#{month.08}">August</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-9" data-toggle="tab" role="tab" th:text="#{month.09}">September</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-10" data-toggle="tab" role="tab" th:text="#{month.10}">October</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-11" data-toggle="tab" role="tab" th:text="#{month.11}">November</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-12" data-toggle="tab" role="tab" th:text="#{month.12}">December</a></li>
+                <li class="nav-item"><a class="nav-link text-primary" href="#tab-13" data-toggle="tab" role="tab" th:text="#{report_client_balance.tabs.all}">All</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab-1" role="tabpanel">
+                    <span th:replace="report_client_balance/month_01_card :: report_client_balance_month_01_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-2" role="tabpanel">
+                    <span th:replace="report_client_balance/month_02_card :: report_client_balance_month_02_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-3" role="tabpanel">
+                    <span th:replace="report_client_balance/month_03_card :: report_client_balance_month_03_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-4" role="tabpanel">
+                    <span th:replace="report_client_balance/month_04_card :: report_client_balance_month_04_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-5" role="tabpanel">
+                    <span th:replace="report_client_balance/month_05_card :: report_client_balance_month_05_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-6" role="tabpanel">
+                    <span th:replace="report_client_balance/month_06_card :: report_client_balance_month_06_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-7" role="tabpanel">
+                    <span th:replace="report_client_balance/month_07_card :: report_client_balance_month_07_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-8" role="tabpanel">
+                    <span th:replace="report_client_balance/month_08_card :: report_client_balance_month_08_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-9" role="tabpanel">
+                    <span th:replace="report_client_balance/month_09_card :: report_client_balance_month_09_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-10" role="tabpanel">
+                    <span th:replace="report_client_balance/month_10_card :: report_client_balance_month_10_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-11" role="tabpanel">
+                    <span th:replace="report_client_balance/month_11_card :: report_client_balance_month_11_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-12" role="tabpanel">
+                    <span th:replace="report_client_balance/month_12_card :: report_client_balance_month_12_body"></span>
+                </div>
+                <div class="tab-pane" id="tab-13" role="tabpanel">
+                    <span th:replace="report_client_balance/month_all_card :: report_client_balance_month_all_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div><!-- Tabs -->
+</div>
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+
+<script th:replace="report_client_balance/month_01_card :: cardscript"></script>
+<script th:replace="report_client_balance/month_02_card :: cardscript"></script>
+<script th:replace="report_client_balance/month_03_card :: cardscript"></script>
+<script th:replace="report_client_balance/month_04_card :: cardscript"></script>
+<script th:replace="report_client_balance/month_05_card :: cardscript"></script>
+<script th:replace="report_client_balance/month_06_card :: cardscript"></script>
+
+<script th:replace="report_client_balance/month_07_card :: cardscript"></script>
+<script th:replace="report_client_balance/month_08_card :: cardscript"></script>
+<script th:replace="report_client_balance/month_09_card :: cardscript"></script>
+<script th:replace="report_client_balance/month_10_card :: cardscript"></script>
+<script th:replace="report_client_balance/month_11_card :: cardscript"></script>
+<script th:replace="report_client_balance/month_12_card :: cardscript"></script>
+
+<script th:replace="report_client_balance/month_all_card :: cardscript"></script>
+
+<script th:replace="report_client_balance/detail_card :: cardscript"></script>
+<script th:replace="report_client_balance/head_card :: cardscript"></script>
+
+</body>
+</html>

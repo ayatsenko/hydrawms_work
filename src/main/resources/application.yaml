@@ -1,0 +1,236 @@
+spring:
+  profiles:
+    active: prod
+  jpa:
+    database-platform: org.hibernate.dialect.Oracle10gDialect
+    properties.hibernate.proc.param_null_passing : true
+    open-in-view: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      write-dates-as-timestamps: false
+  mvc:
+    throw-exception-if-no-handler-found : true
+
+scheduler:
+  ftp_stock:
+    enable: false
+    fixedRate:
+      in:
+        milliseconds: 10000
+  ftp_in:
+    enable: false
+    fixedRate:
+      in:
+        milliseconds: 10000
+  common:
+    enable : true
+    fixedRate:
+      in:
+        milliseconds: 10000
+  telegram:
+    enable : false
+    fixedRate:
+      in:
+        milliseconds: 10000
+  rolehandler:
+    enable : false
+    fixedRate:
+      in:
+        milliseconds: 10000
+  justin:
+    enable: false
+    fixedRate:
+      in:
+        milliseconds: 3600000
+  bat:
+    enable: false
+    outputdir : c:\\delme\\
+    fixedRate:
+      in:
+        milliseconds: 10000
+  glovoup:
+    enable: false
+    outputdir: opt/files/OUT/7535/
+    inputdir: opt/files/IN/7535/
+    fixedRate:
+      in:
+        milliseconds: 10000
+    fixedRateInv:
+      in:
+        milliseconds: 10000
+  zammler1c:
+    enable: false
+    delete_enable: true
+    fixedRate:
+      in:
+        milliseconds: 120000
+    filename: C://Temp2//Test.xml
+    filepath: C://Temp2//
+    api_enable: false
+    api_filename: C://Temp3//Test.xml
+    api_filepath: C://Temp3//
+  ukr_post:
+    enable: false
+    fixedRate:
+      in:
+        milliseconds: 120000
+    filepath: C://Temp3//
+    filename: houses.csv
+  np_post_list:
+    enable: false
+    fixedRate:
+      in:
+        milliseconds: 900000
+post:
+  declaration:
+    create:
+      enable: false
+server :
+  compression :
+    enabled : true
+  error:
+    whitelabel:
+      enabled: false
+  servlet:
+    context-path: /hydrawms_new
+    session:
+      timeout: 3600
+
+---
+spring:
+  profiles: prod_test
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    dataSourceClassName: oracle.jdbc.pool.OracleDataSource
+    url: jdbc:oracle:thin:@//localhost:1531/ORCLPDB1
+    username: ZCRM
+    password: qazzaq
+    hikari:
+      connection-init-sql: alter session set current_schema=ZCRM
+      minimum-idle: 2
+      maximum-pool-size: 10
+      schema: ZCRM
+
+server:
+  port: 8081
+
+scheduler:
+  ftp_stock:
+    enable: false
+    fixedRate:
+      in:
+        milliseconds: 10000
+  ftp_in:
+    enable: false
+    fixedRate:
+      in:
+        milliseconds: 10000
+  zammler1c:
+    enable: false
+    delete_enable: false
+    fixedRate:
+      in:
+        milliseconds: 120000
+    filename: C://Temp3//BuyersAccounts.xml
+    filepath: C://Temp3//
+    api_enable: false
+    api_filename: C://Temp3//BuyersAccounts.xml
+    api_filepath: C://Temp3//
+  ukr_post:
+    enable: false
+    fixedRate:
+      in:
+        milliseconds: 120000
+    filepath: C://Temp3//
+    filename: houses.csv
+  bat:
+    enable: false
+    outputdir : /opt/files/OUT/
+    fixedRate:
+      in:
+        milliseconds: 10000
+  glovoup:
+    enable: false
+    outputdir: C://Temp4//OUT//
+    inputdir: C://Temp4//IN//
+    fixedRate:
+      in:
+        milliseconds: 10000
+    fixedRateInv:
+      in:
+        milliseconds: 10000
+  np_post_list:
+    enable: false
+    fixedRate:
+      in:
+        milliseconds: 900000
+---
+
+spring:
+  profiles: prod
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    dataSourceClassName: oracle.jdbc.pool.OracleDataSource
+    url: jdbc:oracle:thin:@//localhost:1531/ORCLPDB1
+    username: ZCRM
+    password: qazzaq
+    hikari:
+      connection-init-sql: alter session set current_schema=zcrm
+      minimum-idle: 5
+      maximum-pool-size: 20
+      schema: ZCRM
+
+server:
+  port: 8081
+  servlet:
+    context-path: /hydrawms_new
+
+scheduler:
+  ftp_stock:
+    enable: false
+    fixedRate:
+      in:
+        milliseconds: 300000
+  ftp_in:
+    enable: false
+    fixedRate:
+      in:
+        milliseconds: 300000
+  zammler1c:
+    enable: false
+    delete_enable: true
+    fixedRate:
+      in:
+        milliseconds: 120000
+    filename: opt/files/IN/BuyersAccounts.xml
+    filepath: opt/files/IN/
+  ukr_post:
+    enable: false
+    fixedRate:
+      in:
+        milliseconds: 120000
+    filepath: opt/files/IN/
+    filename: houses.csv
+  glovoup:
+    enable: false
+    outputdir: opt/files/OUT/7535/
+    inputdir: opt/files/IN/7535/
+    fixedRate:
+      in:
+        milliseconds: 10000
+    fixedRateInv:
+      in:
+        milliseconds: 10000
+  bat:
+    enable: false
+    outputdir: opt/files/OUT/7536/
+    inputdir: opt/files/IN/7536/
+    fixedRate:
+      in:
+        milliseconds: 10000
+  np_post_list:
+    enable: true
+    fixedRate:
+      in:
+        milliseconds: 900000

@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout/header :: header(title = #{wms_docs_control.caption})"></head>
+
+<body class="theme-blue"> <!-- right-to-left -->
+<span th:replace="fragments/layout_v1.html :: top">top</span>
+
+<div class="row">
+    <div class="col-12 col-lg-4 col-md-4 col-sm-4 pl-2 pr-1 pt-0">
+        <div class="card mb-md-1" id="wms_docs_control_add_post_card">
+            <div class="card-body pt-md-0 pb-md-2 pr-md-2 pl-md-2 collapse show" id="wms_docs_control_position_div">
+                <span th:replace="wms_docs_control/add_card :: wms_docs_control_add_body"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-4 col-md-4 col-sm-4 pl-0 pr-1 pt-0">
+        <div class="card mb-md-1" id="wms_sale_docs_list_card">
+            <div class="card-header pt-1 pb-1 pr-1 pl-1">
+                <div class="row">
+                    <div class="col-1 col-sm-2 text-center text-primary">
+                        <a><i class="fa fa-search"></i></a>
+                    </div>
+                    <div class="col-10 col-sm-8">
+                        <h4 class="text-center text-primary pb-0" href="#wms_sale_docs_main_div" data-toggle="collapse" th:text="#{wms_docs_control.docs.caption}"></h4>
+                    </div>
+                    <div class="col-1 col-sm-2 text-center">
+                        <a href="#wms_sale_docs_main_div" data-toggle="collapse"><i class="fa fa-minus"></i> </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pt-md-0 pb-md-2 pr-md-2 pl-md-2 collapse show" id="wms_sale_docs_main_div">
+                <div>
+                    <span th:replace="wms_docs_control/doc_card :: wms_docs_control_doc_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-4 col-md-4 col-sm-4 pl-0 pr-2 pt-0">
+        <div class="card mb-md-1" id="wms_sale_post_list_card">
+            <div class="card-header pt-1 pb-1 pr-1 pl-1">
+                <div class="row">
+                    <div class="col-1 col-sm-2 text-center text-primary">
+                        <a><i class="fa fa-search"></i></a>
+                    </div>
+                    <div class="col-10 col-sm-8">
+                        <h4 class="text-center text-primary pb-0" href="#wms_sale_docs_post_div" data-toggle="collapse" th:text="#{wms_docs_control.post.caption}"></h4>
+                    </div>
+                    <div class="col-1 col-sm-2 text-center">
+                        <a href="#wms_sale_docs_post_div" data-toggle="collapse"><i class="fa fa-minus"></i> </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pt-md-0 pb-md-2 pr-md-2 pl-md-2 collapse show" id="wms_sale_docs_post_div">
+                <div>
+                    <span th:replace="wms_docs_control/post_card :: wms_docs_control_post_body"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Location -->
+
+<span th:replace="fragments/layout_v1.html :: bottom">bottom</span>
+<script th:replace="fragments/main_variable :: cardscript"></script>
+
+<script th:replace="wms_docs_control/post_card :: cardscript"></script>
+
+<script th:replace="wms_docs_control/doc_card :: cardscript"></script>
+
+<script th:replace="wms_docs_control/add_card :: cardscript"></script>
+</body>
+</html>

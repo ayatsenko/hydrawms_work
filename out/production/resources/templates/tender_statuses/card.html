@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tender_statuses_body" th:remove="tag">
+        <form id="tender-statuses-detail" class="mb-2" th:action="@{/tender_statuses/detail}" method="post">
+            <input name="mode" value="0" hidden>
+              <div id="tender-statuses-btn-large" class="d-none d-sm-block">
+                 <button type="submit" id="tender-statuses-detailbtn" class="btn btn-sm btn-dark tender_statuses_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="tender-statuses-addbtn" class="btn btn-sm btn-dark tender_statuses_btn_control" th:text="#{general.addbtn}" th:attr="mode=0" disabled>Add</button>
+                 <button type="submit" id="tender-statuses-editbtn" class="btn btn-sm btn-dark tender_statuses_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="tender-statuses-delbtn" class="btn btn-sm btn-dark tender_statuses_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="tender-statuses-btn-small" class="d-block d-sm-none">
+                 <button type="submit" id="tender-statuses-detailbtn-sx" class="btn btn-sm btn-dark tender_statuses_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="tender-statuses-addbtn-sx" class="btn btn-sm btn-dark tender_statuses_btn_control" th:attr="mode=0" disabled><i data-feather="plus"></i></button>
+                 <button type="submit" id="tender-statuses-editbtn-sx" class="btn btn-sm btn-dark tender_statuses_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="tender-statuses-delbtn-sx" class="btn btn-sm btn-dark tender_statuses_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-tender-statuses" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vTenderStatusesValue;
+    vTenderStatusesValue = {
+        table : '#table-tender-statuses',
+        ajax : {
+            "url": /*[[@{/tender_statuses/gettable}]]*/ "tender_statuses/gettable",
+            "type": "post",
+            "data": {
+            }
+        },
+        key : "req_tend_status_id",
+        switchControl : tender_statuses_switchControl,
+        rowdata:{
+            req_tend_status_id: null
+        },
+        ordering: true,
+        order: [
+            [0, "asc"]
+        ],
+        scrollX: true,
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["req_tend_status_colour"]);
+        },
+        columnDefs:[
+            {"targets": [4], "visible": false}
+        ],
+        columns : [
+            /*0*/{"title": /*[[#{tender_statuses.req_tend_status_id}]]*/ "req_tend_status_id", "data": "req_tend_status_id", "width": "3%"},
+            /*1*/{"title": /*[[#{tender_statuses.req_tend_status_sname}]]*/ "req_tend_status_sname", "data": "req_tend_status_sname", "width": "15%", "className": "desktop" },
+            /*2*/{"title": /*[[#{tender_statuses.req_tend_status_name}]]*/ "req_tend_status_name", "data": "req_tend_status_name", "width": "21%"},
+            /*3*/{"title": /*[[#{tender_statuses.req_tend_status_description}]]*/ "req_tend_status_description", "data": "req_tend_status_description", "width": "60%", "className": "desktop"},
+            /*4*/{"title": /*[[#{tender_statuses.req_tend_status_colour}]]*/ "req_tend_status_colour", "data": "req_tend_status_colour", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function tender_statuses_switchControl(){
+        if(vTenderStatusesValue.rowdata.req_tend_status_id != null) {
+            $("#tender-statuses-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#tender-statuses-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+            $("#tender-statuses-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+            $("#tender-statuses-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+            $("#tender-statuses-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tender-statuses-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            $("#tender-statuses-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+            $("#tender-statuses-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+        }
+    }
+
+    $('.tender_statuses_btn_control').on('click', function (){
+        $("#tender-statuses-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#tender-statuses-detail').submit(function() {
+        vTenderStatusesValue.rowdata.tender_statuses_table_order_column = $(vTenderStatusesValue.table).DataTable().order()[0][0];
+        vTenderStatusesValue.rowdata.tender_statuses_table_order_type = $(vTenderStatusesValue.table).DataTable().order()[0][1];
+        vTenderStatusesValue.rowdata.tender_statuses_table_search = $(vTenderStatusesValue.table).DataTable().search();
+        vTenderStatusesValue.rowdata.tender_statuses_table_pagelen = $(vTenderStatusesValue.table).DataTable().page.len();
+        vTenderStatusesValue.rowdata.tender_statuses_table_page = $(vTenderStatusesValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vTenderStatusesValue.rowdata).forEach(function (index) {
+            $("#tender-statuses-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#tender-statuses-detail input[name=\"" + index + "\"]").val(vTenderStatusesValue.rowdata[index]);
+        });
+    });
+
+    $(document).ready(function(){
+        vTenderStatusesValue.rowdata.req_tend_status_id = /*[[${req_tend_status_id}]]*/ null;
+
+        vTenderStatusesValue.rowdata.table_order_column = /*[[${table_order_column}]]*/ null;
+        vTenderStatusesValue.rowdata.table_order_type = /*[[${table_order_type}]]*/ null;
+        vTenderStatusesValue.rowdata.table_search = /*[[${table_search}]]*/ null;
+        vTenderStatusesValue.rowdata.table_pagelen = /*[[${table_pagelen}]]*/ null;
+        vTenderStatusesValue.rowdata.table_page = /*[[${table_page}]]*/ null;
+
+        recreateDataTable(vTenderStatusesValue);
+        $('#main_li').removeClass('active');
+
+        $('#dictionaries_li').addClass('active').removeClass('collapsed');
+        $('#dictionaries_a').attr('aria-expanded',true);
+        $('#dictionaries').addClass('show');
+
+        $('#tender_statuses_a').addClass('text-primary');
+    });
+</script>
+
+</body>
+</html>

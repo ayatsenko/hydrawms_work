@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="report_phonebook_head_body" th:remove="tag">
+		<form class="form-inline">
+			  <div class="form-group mr-3">
+				<label for="report_phonebook_client_list" class="mr-2" th:text="#{report_phonebook.client_list}">Client: </label>
+				<select id="report_phonebook_client_list" class="form-control select2" data-toggle="select2">
+                    <option value=""></option>
+					<option class="p-1"
+							th:each="cnt_list : ${cnt_list}"
+							th:value="${cnt_list.cnt_id}"
+							th:text="${cnt_list.cnt_name}"
+							th:selected="${cnt_list.cnt_id == cnt_id}"
+					></option>
+				</select>
+			  </div>
+
+			<a class="btn btn-outline-primary" id="report_phonebook_show" th:text="#{general.reportshow}">Show</a>
+		</form>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+	$(document).ready(function(){
+		$('#report_phonebook_client_list')
+				.wrap("<div class=\"position-relative\"></div>")
+				.select2({
+					id: '-1', // the value of the option
+					placeholder: /*[[#{report_phonebook.client_placeholder}]]*/ "Select a client",
+					allowClear: true,
+					minimumInputLength: 3
+				});
+
+		$('#main_li').removeClass('active');
+
+		$('#reports_li').addClass('active').removeClass('collapsed');
+		$('#reports_a').attr('aria-expanded',true);
+		$('#reports').addClass('show');
+
+		$('#report_phonebook_a').addClass('text-primary');
+
+		$('#report_phonebook_show').on('click', function () {
+			$('#report_phonebook_detail_card').removeAttr('hidden');
+
+			vReportPhoneBookDetailValue.rowdata.req_cnt_id = $("#report_phonebook_client_list").val();
+			$(vReportPhoneBookDetailValue.table).DataTable().ajax.reload();
+			$('#report_phonebook_filter_div').removeClass('show').collapse('hide');
+		});
+	});
+</script>
+
+</body>
+</html>

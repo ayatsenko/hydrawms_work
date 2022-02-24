@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.thymeleaf.org ">
+<body>
+<span th:fragment="tms_brockers_main_body" th:remove="tag">
+    <form id="tms-brockers-main-detail" class="mb-2" th:action="@{/tms_brockers/main_detail}" method="post" hidden>
+            <input name="mode" value="0" hidden>
+              <div id="tms-brockers-main-btn-large" class="d-none d-sm-block">
+                 <button type="submit" id="tms-brockers-main-detailbtn" class="btn btn-sm btn-dark tms_brockers_main_btn_control" th:text="#{general.detailbtn}" th:attr="mode=4" disabled>View</button>
+                 <button type="submit" id="tms-brockers-main-addbtn" class="btn btn-sm btn-primary tms_brockers_main_btn_control" th:text="#{general.addbtn}" th:attr="mode=0">Add</button>
+                 <button type="submit" id="tms-brockers-main-editbtn" class="btn btn-sm btn-dark tms_brockers_main_btn_control" th:text="#{general.editbtn}" th:attr="mode=1" disabled>Edit</button>
+                 <button type="submit" id="tms-brockers-main-delbtn" class="btn btn-sm btn-dark tms_brockers_main_btn_control" th:text="#{general.delbtn}" th:attr="mode=2" disabled>Delete</button>
+              </div>
+              <div id="tms-brockers-main-btn-small" class="d-block d-sm-none">
+                 <button type="submit" id="tms-brockers-main-detailbtn-sx" class="btn btn-sm btn-dark tms_brockers_main_btn_control" th:attr="mode=4" disabled><i data-feather="list"></i></button>
+                 <button type="submit" id="tms-brockers-main-addbtn-sx" class="btn btn-sm btn-primary tms_brockers_main_btn_control" th:attr="mode=0"><i data-feather="plus"></i></button>
+                 <button type="submit" id="tms-brockers-main-editbtn-sx" class="btn btn-sm btn-dark tms_brockers_main_btn_control" th:attr="mode=1" disabled><i data-feather="edit-2"></i></button>
+                 <button type="submit" id="tms-brockers-main-delbtn-sx" class="btn btn-sm btn-dark tms_brockers_main_btn_control" th:attr="mode=2" disabled><i data-feather="trash-2"></i></button>
+              </div>
+        </form>
+        
+        <div><table id="table-tms-brockers-main" class="table table-striped table-sm table-bordered" cellspacing="0" style="width:100%;"></table></div>
+
+        <button type="submit" id="tms-brockers-main-check" class="btn btn-dark" disabled><i data-feather="check-square"></i></button>
+        <button type="submit" id="tms-brockers-main-uncheck" class="btn btn-dark" disabled><i data-feather="x-square"></i></button>
+</span>
+
+<script th:fragment="cardscript" th:inline="javascript">
+
+    var vClaimsValue;
+    vClaimsValue = {
+        table : '#table-tms-brockers-main',
+        button_form: "#tms-brockers-main-detail",
+        ajax : {
+            "url": /*[[@{/tms_brockers/tms_brockers}]]*/ "tms_brockers/tms_brockers",
+            "type": "post",
+            "data": function ( d ) {
+                d.tms_brockers_filter_id = vClaimsValue.rowdata.tms_brockers_filter_id;
+                d.tms_brockers_filter_start_date = vClaimsValue.rowdata.tms_brockers_filter_start_date;
+                d.tms_brockers_filter_end_date = vClaimsValue.rowdata.tms_brockers_filter_end_date;
+            }
+        },
+        key : "clm_id",
+        switchControl : tms_brockers_main_switchControl,
+        rowdata:{
+           clm_id: null,
+           clm_num: null,
+           cnt_name: null,
+           clm_check: null,
+           clm_uncheck: null
+        },
+        ordering: true,
+        order: [
+            [0, "desc"]
+        ],
+        scrollX: true,
+        dom: 'Blfrtip',
+        createdRow: function( row, data, dataIndex ) {
+            $(row).css('background-color', data["clm_status_colour"]);
+        },
+        columnDefs:[
+            {"targets": [1], type: 'de_date'},
+
+            {"targets": [10], "visible": false},
+            {"targets": [11], "visible": false},
+
+            {"targets": [14], "visible": false},
+            {"targets": [15], "visible": false},
+            {"targets": [16], "visible": false}
+        ],
+        columns : [
+                /*0*/{"title": /*[[#{tms_brockers.main.clm_id}]]*/ "clm_id", "data": "clm_id", "width": "3%"},
+                /*1*/{"title": /*[[#{tms_brockers.main.clm_date}]]*/ "clm_date", "data": "clm_date", "width": "10%", "className": "desktop" },
+                /*2*/{"title": /*[[#{tms_brockers.main.clm_num}]]*/ "clm_num", "data": "clm_num", "width": "10%"},
+                /*3*/{"title": /*[[#{tms_brockers.main.cnt_name}]]*/ "cnt_name", "data": "cnt_name", "width": "30%", "className": "desktop"},
+                /*4*/{"title": /*[[#{tms_brockers.main.ser_sname}]]*/ "ser_sname", "data": "ser_sname", "width": "8%"},
+                /*5*/{"title": /*[[#{tms_brockers.main.user_name}]]*/ "user_name", "data": "user_name", "width": "5%"},
+                /*6*/{"title": /*[[#{tms_brockers.main.clm_sum_currency_name}]]*/ "clm_sum_currency_name", "data": "clm_sum_currency_name", "width": "5%"},
+                /*7*/{"title": /*[[#{tms_brockers.main.clm_sum}]]*/ "clm_sum", "data": "clm_sum", "width": "5%"},
+                /*8*/{"title": /*[[#{tms_brockers.main.clm_rate_currency_name}]]*/ "clm_rate_currency_name", "data": "clm_rate_currency_name", "width": "1%"},
+                /*9*/{"title": /*[[#{tms_brockers.main.clm_rate}]]*/ "clm_rate", "data": "clm_rate", "width": "1%"},
+                /*10*/{"title": /*[[#{tms_brockers.main.clm_costs}]]*/ "clm_costs", "data": "clm_costs", "width": "1%"},
+                /*11*/{"title": /*[[#{tms_brockers.main.clm_profit}]]*/ "clm_profit", "data": "clm_profit", "width": "1%"},
+                /*12*/{"title": /*[[#{tms_brockers.main.clm_aim_type_sname}]]*/ "clm_aim_type_sname", "data": "clm_aim_type_sname", "width": "5%"},
+                /*13*/{"title": /*[[#{tms_brockers.main.clm_status_sname}]]*/ "clm_status_sname", "data": "clm_status_sname", "width": "6%"},
+                /*14*/{"title": /*[[#{tms_brockers.main.clm_status_colour}]]*/ "clm_status_colour", "data": "clm_status_colour", "width": "1%"},
+                /*15*/{"title": /*[[#{tms_brockers.main.clm_check}]]*/ "clm_check", "data": "clm_check", "width": "1%"},
+                /*16*/{"title": /*[[#{tms_brockers.main.clm_uncheck}]]*/ "clm_uncheck", "data": "clm_uncheck", "width": "1%"}
+        ],
+        pageLength: 25,
+        copy_button: true,
+        excel_button: true,
+        pdf_button: true,
+        print_button: true
+    };
+
+    function tms_brockers_main_switchControl(){
+        if(vClaimsValue.rowdata.clm_id != null) {
+                $("#tms-brockers-main-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-main-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-main-delbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                $("#tms-brockers-main-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-main-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-main-delbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                if(vClaimsValue.rowdata.clm_check === 1){
+                    $("#tms-brockers-main-check").prop('disabled',false).removeClass('btn-dark').addClass('btn-success');
+                }
+                else{
+                    $("#tms-brockers-main-check").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                }
+
+                if(vClaimsValue.rowdata.clm_uncheck === 1){
+                    $("#tms-brockers-main-uncheck").prop('disabled',false).removeClass('btn-dark').addClass('btn-danger');
+                }
+                else{
+                    $("#tms-brockers-main-uncheck").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+                }
+
+                vClaimTimeLogValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+                vClaimTimeLogValue.rowdata.clm_status_id = null;
+                $(vClaimTimeLogValue.table).DataTable().ajax.reload();
+
+                vClaimTasksValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+                vClaimTasksValue.rowdata.clmtl_id = null;
+                $(vClaimTasksValue.table).DataTable().ajax.reload();
+                $("#tms-brockers-tasks-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-tasks-addbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                vClaimWaysValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+                vClaimWaysValue.rowdata.clmwl_id = null;
+                $(vClaimWaysValue.table).DataTable().ajax.reload();
+                $("#tms-brockers-ways-detailbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-ways-detailbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-ways-editbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-ways-editbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                vClaimLoadsValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+                vClaimLoadsValue.rowdata.clmll_id = null;
+                $(vClaimLoadsValue.table).DataTable().ajax.reload();
+                $("#tms-brockers-loads-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-loads-addbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                vClaimTransValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+                vClaimTransValue.rowdata.clmtrl_id = null;
+                $(vClaimTransValue.table).DataTable().ajax.reload();
+                $("#tms-brockers-trans-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-trans-addbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+
+                vClaimCostsValue.rowdata.clm_id = vClaimsValue.rowdata.clm_id;
+                vClaimCostsValue.rowdata.clmcl_id = null;
+                $(vClaimCostsValue.table).DataTable().ajax.reload();
+                $("#tms-brockers-costs-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-costs-addbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        } else{
+                $("#tms-brockers-main-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-main-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-main-delbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#tms-brockers-main-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-main-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-main-delbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                $("#tms-brockers-main-check").prop('disabled',true).addClass('btn-dark').removeClass('btn-success');
+                $("#tms-brockers-main-uncheck").prop('disabled',true).addClass('btn-dark').removeClass('btn-danger');
+
+                vClaimTimeLogValue.rowdata.clm_id = null;
+                vClaimTimeLogValue.rowdata.clm_status_id = null;
+                $(vClaimTimeLogValue.table).DataTable().clear().draw();
+
+                vClaimTasksValue.rowdata.clm_id = null;
+                vClaimTasksValue.rowdata.clmtl_id = null;
+                $(vClaimTasksValue.table).DataTable().clear().draw();
+                $("#tms-brockers-tasks-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-tasks-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                vClaimWaysValue.rowdata.clm_id = null;
+                vClaimWaysValue.rowdata.clmwl_id = null;
+                $(vClaimWaysValue.table).DataTable().clear().draw();
+                $("#tms-brockers-ways-detailbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-ways-detailbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-ways-editbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-ways-editbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                vClaimLoadsValue.rowdata.clm_id = null;
+                vClaimLoadsValue.rowdata.clmll_id = null;
+                $(vClaimLoadsValue.table).DataTable().clear().draw();
+                $("#tms-brockers-loads-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-loads-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                vClaimTransValue.rowdata.clm_id = null;
+                vClaimTransValue.rowdata.clmtrl_id = null;
+                $(vClaimTransValue.table).DataTable().clear().draw();
+                $("#tms-brockers-trans-addbtn").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+                $("#tms-brockers-trans-addbtn-sx").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+                vClaimCostsValue.rowdata.clm_id = null;
+                vClaimCostsValue.rowdata.clmcl_id = null;
+                $(vClaimCostsValue.table).DataTable().clear().draw();
+                $("#tms-brockers-costs-addbtn").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+                $("#tms-brockers-costs-addbtn-sx").prop('disabled',false).removeClass('btn-dark').addClass('btn-primary');
+        }
+    }
+
+    $('.tms_brockers_main_btn_control').on('click', function (){
+        $("#tms-brockers-main-detail input[name=mode]").val($(this).attr("mode"));
+    });
+
+    $('#tms-brockers-main-detail').submit(function() {
+        vClaimsValue.rowdata.tms_brockers_main_table_order_column = $(vClaimsValue.table).DataTable().order()[0][0];
+        vClaimsValue.rowdata.tms_brockers_main_table_order_type = $(vClaimsValue.table).DataTable().order()[0][1];
+        vClaimsValue.rowdata.tms_brockers_main_table_search = $(vClaimsValue.table).DataTable().search();
+        vClaimsValue.rowdata.tms_brockers_main_table_pagelen = $(vClaimsValue.table).DataTable().page.len();
+        vClaimsValue.rowdata.tms_brockers_main_table_page = $(vClaimsValue.table).DataTable().page.info().page;
+        <!-- Recreate Contragent Ajax Filter Value -->
+
+        Object.keys(vClaimsValue.rowdata).forEach(function (index) {
+            $("#tms-brockers-main-detail").append("<input name=\"" + index + "\" hidden>");
+            $("#tms-brockers-main-detail input[name=\"" + index + "\"]").val(vClaimsValue.rowdata[index]);
+        });
+    });
+
+    function activaTab(tab){
+        if(tab === null){ tab = 'tab-1'};
+        $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+    }
+
+    $('#tms-brockers-main-check').on('click', function( event ) {
+        if (vClaimsValue.rowdata.clm_id != null) {
+            var RowID = vClaimsValue.rowdata.clm_id;
+            $.ajax({
+                url: /*[[ @{/tms_brockers/main_check} ]]*/ "/tms_brockers/main_check",
+                type: 'POST',
+                data: {"clm_id": vClaimsValue.rowdata.clm_id},
+                success: function (result) {
+                    vClaimsValue.rowdata.clm_id = RowID;
+                    $(vClaimsValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    }); <!-- Check Button -->
+
+    $('#tms-brockers-main-uncheck').on('click', function( event ) {
+        if (vClaimsValue.rowdata.clm_id != null) {
+            var RowID = vClaimsValue.rowdata.clm_id;
+            $.ajax({
+                url: /*[[ @{/tms_brockers/main_uncheck} ]]*/ "/tms_brockers/main_uncheck",
+                type: 'POST',
+                data: {"clm_id": vClaimsValue.rowdata.clm_id},
+                success: function (result) {
+                    vClaimsValue.rowdata.clm_id = RowID;
+                    $(vClaimsValue.table).DataTable().ajax.reload();
+                }
+            });
+        }
+    }); <!-- Check Button -->
+
+    $("#tms_brockers_filter_start_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $("#tms_brockers_filter_end_date").daterangepicker({
+        "singleDatePicker": true,
+        "locale": {
+            "format": "DD.MM.YYYY",
+            "separator": " - ",
+            "applyLabel": /*[[#{datapicker.apply}]]*/ "Applay",
+            "cancelLabel": /*[[#{datapicker.cancel}]]*/ "Cancel",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "weekLabel":  /*[[#{datapicker.week}]]*/ "W",
+            "daysOfWeek": [
+                /*[[#{weekdays.07_short}]]*/ "Su",
+                /*[[#{weekdays.01_short}]]*/ "Mo",
+                /*[[#{weekdays.02_short}]]*/ "Tu",
+                /*[[#{weekdays.03_short}]]*/ "We",
+                /*[[#{weekdays.04_short}]]*/ "Th",
+                /*[[#{weekdays.05_short}]]*/ "Fr",
+                /*[[#{weekdays.06_short}]]*/ "Sa"
+            ],
+            "monthNames": [
+                /*[[#{month.01}]]*/ "January",
+                /*[[#{month.02}]]*/ "February",
+                /*[[#{month.03}]]*/ "March",
+                /*[[#{month.04}]]*/ "April",
+                /*[[#{month.05}]]*/ "May",
+                /*[[#{month.06}]]*/ "June",
+                /*[[#{month.07}]]*/ "July",
+                /*[[#{month.08}]]*/ "August",
+                /*[[#{month.09}]]*/ "September",
+                /*[[#{month.10}]]*/ "October",
+                /*[[#{month.11}]]*/ "November",
+                /*[[#{month.12}]]*/ "December"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#tms_brockers_filter_check').on('click', function(){
+        if($(this).prop('checked')){
+            $('#tms_brockers_filter_start_date').removeAttr('disabled');
+            $('#tms_brockers_filter_end_date').removeAttr('disabled');
+            $("#tms_brockers_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if (window.screen.width < 1024 && window.screen.height < 768) {
+                $("#tms_brockers_filter_start_date").attr('readonly',true);
+                $("#tms_brockers_filter_end_date").attr('readonly',true);
+            }
+        }
+        else{
+            $('#tms_brockers_filter_start_date').attr('disabled',true);
+            $('#tms_brockers_filter_end_date').attr('disabled',true);
+            $("#tms_brockers_filter_show").prop('disabled',true).addClass('btn-dark').removeClass('btn-primary');
+
+            if(vClaimsValue.rowdata.tms_brockers_filter_id === 1){
+                vClaimsValue.rowdata.tms_brockers_filter_id = 0;
+                $(vClaimsValue.table).DataTable().ajax.reload();
+            }
+        }
+    });
+
+    $('#tms_brockers_filter_show').on('click', function() {
+        vClaimsValue.rowdata.tms_brockers_filter_id = 1;
+        vClaimsValue.rowdata.tms_brockers_filter_start_date = $('#tms_brockers_filter_start_date').val();
+        vClaimsValue.rowdata.tms_brockers_filter_end_date = $('#tms_brockers_filter_end_date').val();
+
+        $(vClaimsValue.table).DataTable().ajax.reload();
+    });    
+    
+    $(document).ready(function(){
+        vClaimsValue.rowdata.clm_id = /*[[${clm_id}]]*/ null;
+
+        vClaimsValue.rowdata.table_order_column = /*[[${tms_brockers_table_order_column}]]*/ null;
+        vClaimsValue.rowdata.table_order_type = /*[[${tms_brockers_table_order_type}]]*/ null;
+        vClaimsValue.rowdata.table_search = /*[[${tms_brockers_table_search}]]*/ null;
+        vClaimsValue.rowdata.table_pagelen = /*[[${tms_brockers_table_pagelen}]]*/ null;
+        vClaimsValue.rowdata.table_page = /*[[${tms_brockers_table_page}]]*/ null;
+
+        vClaimsValue.rowdata.tms_brockers_filter_id = /*[[${tms_brockers_filter_id}]]*/ null;
+        vClaimsValue.rowdata.tms_brockers_filter_start_date = /*[[${tms_brockers_filter_start_date}]]*/ null;
+        vClaimsValue.rowdata.tms_brockers_filter_end_date = /*[[${tms_brockers_filter_end_date}]]*/ null;
+
+        if(vClaimsValue.rowdata.tms_brockers_filter_id === 1){
+            $('#tms_brockers_filter_check').prop('checked', true);
+            $("#tms_brockers_filter_start_date").removeAttr('disabled').val(vClaimsValue.rowdata.tms_brockers_filter_start_date);
+            $("#tms_brockers_filter_end_date").removeAttr('disabled').val(vClaimsValue.rowdata.tms_brockers_filter_end_date);
+            $("#tms_brockers_filter_show").prop('disabled', false).removeClass('btn-dark').addClass('btn-primary');
+
+            if (window.screen.width < 1024 && window.screen.height < 768) {
+                $("#tms_brockers_filter_start_date").attr('readonly',true);
+                $("#tms_brockers_filter_end_date").attr('readonly',true);
+            }
+        }        
+        
+        recreateDataTable(vClaimsValue);
+<!-- Highlight menu -->
+        $('#main_li').removeClass('active');
+
+        $('#tms_li').addClass('active').removeClass('collapsed');
+        $('#tms_a').attr('aria-expanded',true);
+        $('#tms').addClass('show');
+
+        $('#brockers_a').addClass('text-primary');
+
+        activaTab(/*[[${tms_brockers_tab_name}]]*/);
+    });
+</script>
+
+</body>
+</html>
